@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Purebaric</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>
+  // Defensive cleanup: remove any malformed Netlify Identity / GoTrue tokens left in
+  // localStorage from previous sessions. Without this, gotrue-js throws a noisy
+  // "Failed to parse tokenResponse claims" SyntaxError on init when it tries to
+  // JSON.parse a corrupted value. The error is non-blocking (a fresh sign-in still
+  // works) but pollutes the console. This pre-clean prevents the error entirely.
+  (function clearCorruptedIdentityTokens() {
+    function claimsAreParseable(jwt) {
+      // A GoTrue access_token is "<header>.<claims>.<sig>". gotrue-js throws
+      // "Failed to parse tokenResponse claims" when the middle segment can't be
+      // base64url-decoded to JSON. Validate that here so we can drop bad tokens.
+      if (typeof jwt !== 'string') return false;
+      const parts = jwt.split('.');
+      if (parts.length !== 3) return false;
+      try {
+        const b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+        JSON.parse(decodeURIComponent(escape(atob(b64))));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    try {
+      const keys = Object.keys(localStorage);
+      for (const key of keys) {
+        if (!/gotrue|netlify/i.test(key)) continue;
+        const value = localStorage.getItem(key);
+        if (!value) continue;
+        let bad = false;
+        let parsed = null;
+        try {
+          parsed = JSON.parse(value);
+        } catch (e) {
+          bad = true; // Malformed JSON
+        }
+        // Valid JSON can still hold a JWT whose claims segment is corrupt — that
+        // is the case the old check missed and gotrue-js chokes on at init.
+        if (!bad && parsed && parsed.token && 'access_token' in parsed.token) {
+          if (!claimsAreParseable(parsed.token.access_token)) bad = true;
+        }
+        if (bad) localStorage.removeItem(key);
+      }
+    } catch (_) { /* localStorage unavailable — ignore */ }
+  })();
+</script>
+<script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<style>
+  body { background: var(--cream-warm); }
+  .admin-wrap { max-width: 1180px; margin: 0 auto; padding: 2rem 1.5rem 6rem; }
+  .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--line); }
+  .admin-header h1 { font-size: 2rem; margin: 0; }
+  .admin-user { font-size: 0.85rem; color: var(--stone-muted); }
+  .admin-user button { background: none; border: none; color: var(--terracotta); cursor: pointer; font-family: inherit; font-size: 0.85rem; padding: 0; text-decoration: underline; }
+  .login-card { background: var(--cream); border: 1px solid var(--line); padding: 3rem; max-width: 480px; margin: 4rem auto; text-align: center; border-radius: 4px; }
+  .login-card h2 { margin-bottom: 0.5rem; }
+  .login-card p { color: var(--stone-muted); margin-bottom: 1.5rem; }
+  .tabs { display: flex; gap: 0.5rem; border-bottom: 1px solid var(--line); margin-bottom: 2rem; }
+  .tab-btn { background: none; border: none; padding: 0.85rem 1.25rem; font-family: inherit; font-size: 0.95rem; color: var(--stone-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .tab-btn.active { color: var(--ink); border-bottom-color: var(--terracotta); font-weight: 600; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .panel-actions { display: flex; gap: 0.75rem; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .panel-actions h2 { margin: 0; font-size: 1.5rem; }
+  .data-table { width: 100%; border-collapse: collapse; background: var(--cream); border: 1px solid var(--line); }
+  .data-table th, .data-table td { padding: 0.75rem 0.9rem; text-align: left; border-bottom: 1px solid var(--line); font-size: 0.9rem; vertical-align: top; }
+  .data-table th { background: var(--cream-warm); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--stone-muted); }
+  .data-table tr:last-child td { border-bottom: none; }
+  .pill { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  .pill-active   { background: #dbeacd; color: #3d5a26; }
+  .pill-available { background: #dbeacd; color: #3d5a26; }
+  .pill-rented   { background: #d9e2eb; color: #2e4a66; }
+  .pill-maintenance { background: #f2e5d2; color: #6b5326; }
+  .pill-archived { background: #e8e2d6; color: #6b6357; }
+  .pill-new      { background: #f2cfa1; color: #6b3f12; }
+  .pill-contacted{ background: #d9e2eb; color: #2e4a66; }
+  .pill-approved { background: #dbeacd; color: #3d5a26; }
+  .pill-rejected { background: #f2d9d4; color: #82402f; }
+  .pill-unpaid   { background: #f2d9d4; color: #82402f; }
+  .pill-partial  { background: #f2e5d2; color: #6b5326; }
+  .pill-paid     { background: #dbeacd; color: #3d5a26; }
+  .pill-refunded { background: #e8e2d6; color: #6b6357; }
+  .pill-scheduled{ background: #d9e2eb; color: #2e4a66; }
+  .pill-completed{ background: #e8e2d6; color: #6b6357; }
+  .pill-cancelled{ background: #f2d9d4; color: #82402f; }
+  .pill-queued   { background: #f2e5d2; color: #6b5326; }
+  .pill-hold     { background: #f2cfa1; color: #6b3f12; }
+  .pill-notified { background: #d9e2eb; color: #2e4a66; }
+  .pill-out-of-area { background: #e3d4ec; color: #4a2e66; }
+  .pill-converted{ background: #dbeacd; color: #3d5a26; }
+  .pill-expired  { background: #e8e2d6; color: #6b6357; }
+  .row-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .btn-sm { padding: 0.3rem 0.7rem; font-size: 0.78rem; min-height: auto; }
+  .form-card { background: var(--cream); border: 1px solid var(--line); padding: 1.5rem; margin-bottom: 1.5rem; display: none; }
+  .form-card.open { display: block; }
+  .form-card h3 { margin: 0 0 1rem; font-size: 1.15rem; }
+  .form-card .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-card .form-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+  .form-card input, .form-card select, .form-card textarea { width: 100%; }
+  .form-card .form-buttons { display: flex; gap: 0.75rem; margin-top: 1rem; }
+  .empty-state { background: var(--cream); border: 1px dashed var(--line); padding: 3rem 1.5rem; text-align: center; color: var(--stone-muted); }
+  .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--ink); color: var(--cream); padding: 0.85rem 1.25rem; border-radius: 4px; box-shadow: 0 8px 24px rgba(0,0,0,0.18); opacity: 0; transform: translateY(8px); transition: all 0.18s; z-index: 9999; max-width: 360px; font-size: 0.9rem; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.err { background: #82402f; }
+  .renter-line { font-size: 0.85rem; color: var(--stone-muted); }
+  .stat-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(20, 18, 15, 0.45); display: none; align-items: center; justify-content: center; z-index: 9998; padding: 1rem; }
+  .modal-backdrop.open { display: flex; }
+  .modal { background: var(--cream); border-radius: 4px; max-width: 640px; width: 100%; max-height: 86vh; overflow-y: auto; padding: 2rem; box-shadow: 0 12px 36px rgba(0,0,0,0.18); }
+  .modal-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+  .modal-header h3 { margin: 0; font-size: 1.4rem; }
+  .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--stone-muted); padding: 0; line-height: 1; }
+  .modal-row { display: grid; grid-template-columns: 140px 1fr; gap: 1rem; padding: 0.55rem 0; border-bottom: 1px dashed var(--line); font-size: 0.92rem; }
+  .modal-row:last-child { border-bottom: none; }
+  .modal-row strong { color: var(--stone-muted); font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .modal-section { margin-top: 1.5rem; }
+  .modal-section h4 { font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--terracotta); letter-spacing: 0.02em; }
+  .modal-section textarea { width: 100%; min-height: 80px; }
+  .modal-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--line); flex-wrap: wrap; }
+  .flag-warn { color: #82402f; font-weight: 600; }
+  .customer-card { background: var(--cream); border: 1px solid var(--line); padding: 1.25rem; margin-bottom: 1rem; }
+  .customer-card-head { display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.75rem; }
+  .customer-card-head h4 { margin: 0; font-size: 1.05rem; }
+  .customer-meta { display: flex; gap: 1.25rem; flex-wrap: wrap; font-size: 0.82rem; color: var(--stone-muted); margin-bottom: 0.75rem; }
+  .customer-records { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; font-size: 0.85rem; }
+  .customer-record-block { background: var(--cream-warm); padding: 0.6rem 0.85rem; border-radius: 3px; }
+  .customer-record-block strong { display: block; color: var(--stone-muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.25rem; }
+  .customer-record-block ul { margin: 0; padding-left: 1.1rem; }
+  .stat-block { background: var(--cream); border: 1px solid var(--line); padding: 1.25rem; font: inherit; text-align: left; color: inherit; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease; }
+  .stat-block:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(26,31,26,0.08); border-color: var(--terracotta); }
+  .stat-block:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 2px; }
+  .stat-block .stat-label { font-size: 0.75rem; color: var(--stone-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat-block .stat-val { font-family: var(--font-display); font-size: 2rem; color: var(--ink); }
+  /* ─── Mobile / responsive ─── */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); }
+  .table-wrap .data-table { border: none; min-width: 640px; }
+  @media (max-width: 1080px) {
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .customer-records { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .admin-wrap { padding: 1.25rem 0.9rem 5rem; }
+    .admin-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    .admin-header h1 { font-size: 1.5rem; }
+    .admin-user { font-size: 0.8rem; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+    .stat-block { padding: 0.85rem; }
+    .stat-block .stat-val { font-size: 1.6rem; }
+    .stat-block .stat-label { font-size: 0.68rem; }
+    .tabs {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      scrollbar-width: none;
+      margin-left: -0.9rem;
+      margin-right: -0.9rem;
+      padding: 0 0.9rem;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab-btn { padding: 0.7rem 1rem; font-size: 0.85rem; flex-shrink: 0; }
+    .panel-actions { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+    .panel-actions h2 { font-size: 1.25rem; }
+    .panel-actions > div { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .form-card { padding: 1rem; }
+    .form-card .form-row, .form-card .form-row.triple { grid-template-columns: 1fr; }
+    .data-table { font-size: 0.85rem; min-width: 560px; }
+    .data-table th, .data-table td { padding: 0.6rem 0.55rem; }
+    .modal { padding: 1.25rem; max-width: calc(100% - 1.5rem); }
+    .modal-row { grid-template-columns: 1fr; gap: 0.25rem; padding: 0.5rem 0; }
+    .modal-header h3 { font-size: 1.15rem; }
+    .modal-actions { flex-direction: column; }
+    .modal-actions .btn { width: 100%; text-align: center; }
+    .customer-card { padding: 1rem; }
+    .customer-card-head { flex-direction: column; align-items: stretch; }
+    .customer-card-head > div:last-child { text-align: left !important; display: flex; align-items: baseline; gap: 0.5rem; }
+    .customer-card-head > div:last-child .renter-line { display: inline; }
+    .customer-meta { font-size: 0.75rem; gap: 0.6rem; }
+    .row-actions { gap: 0.3rem; }
+    .btn-sm { padding: 0.35rem 0.6rem; font-size: 0.75rem; }
+    .toast { left: 1rem; right: 1rem; max-width: none; bottom: 1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<div class="admin-wrap">
+  <div class="admin-header">
+    <h1>Purebaric admin</h1>
+    <div class="admin-user" id="adminUser"></div>
+  </div>
+
+  <div id="loginGate" class="login-card" hidden>
+    <h2>Sign in</h2>
+    <p>This area is restricted to Purebaric staff.</p>
+    <button class="btn btn-primary" onclick="netlifyIdentity.open()">Sign in</button>
+  </div>
+
+  <div id="adminApp" hidden>
+
+    <div class="stat-row">
+      <button type="button" class="stat-block" data-jump-tab="chambers"><div class="stat-label">Active chambers</div><div class="stat-val" id="statActive">—</div></button>
+      <button type="button" class="stat-block" data-jump-tab="chambers"><div class="stat-label">Available today</div><div class="stat-val" id="statAvailable">—</div></button>
+      <button type="button" class="stat-block" data-jump-tab="bookings"><div class="stat-label">New rental requests</div><div class="stat-val" id="statBookings">—</div></button>
+      <button type="button" class="stat-block" data-jump-tab="waitlist"><div class="stat-label">Waitlist queued</div><div class="stat-val" id="statWaitlist">—</div></button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="chambers">Chambers</button>
+      <button class="tab-btn" data-tab="rentals">Rentals</button>
+      <button class="tab-btn" data-tab="bookings">Rental requests</button>
+      <button class="tab-btn" data-tab="waitlist">Waitlist</button>
+      <button class="tab-btn" data-tab="customers">Customers</button>
+    </div>
+
+    <!-- ───── Chambers ───── -->
+    <section class="tab-panel active" data-panel="chambers">
+      <div class="panel-actions">
+        <h2>Chambers</h2>
+        <div>
+          <label style="font-size: 0.85rem;"><input type="checkbox" id="showArchived"> Show archived</label>
+          <button class="btn btn-primary btn-sm" onclick="toggleForm('chamberForm')">+ Add chamber</button>
+        </div>
+      </div>
+
+      <div class="form-card" id="chamberForm">
+        <h3 id="chamberFormTitle">New chamber</h3>
+        <form id="chamberFormEl" onsubmit="return submitChamber(event)">
+          <input type="hidden" name="id">
+          <div class="form-row">
+            <div class="form-group"><label>Name<span class="req">*</span></label><input name="name" required placeholder="e.g. Chamber 1"></div>
+            <div class="form-group"><label>Model</label><input name="model" placeholder="Purebaric 1.5 ATA"></div>
+          </div>
+          <div class="form-group"><label>Notes</label><textarea name="notes" rows="2"></textarea></div>
+          <div class="form-buttons">
+            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="toggleForm('chamberForm')">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="chambersList"></div>
+    </section>
+
+    <!-- ───── Rentals ───── -->
+    <section class="tab-panel" data-panel="rentals">
+      <div class="panel-actions">
+        <h2>Rentals</h2>
+        <div>
+          <select id="rentalStatusFilter" style="padding: 0.4rem 0.7rem;">
+            <option value="">All statuses</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="toggleForm('rentalForm')">+ New rental</button>
+        </div>
+      </div>
+
+      <div class="form-card" id="rentalForm">
+        <h3 id="rentalFormTitle">New rental</h3>
+        <form id="rentalFormEl" onsubmit="return submitRental(event)">
+          <input type="hidden" name="id">
+          <div class="form-row">
+            <div class="form-group"><label>Chamber<span class="req">*</span></label><select name="chamberId" id="rentalChamberSelect" required></select></div>
+            <div class="form-group"><label>Status</label>
+              <select name="status">
+                <option value="scheduled">Scheduled</option>
+                <option value="active">Active</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row triple">
+            <div class="form-group"><label>Start date<span class="req">*</span></label><input type="date" name="startDate" required></div>
+            <div class="form-group"><label>End date<span class="req">*</span></label><input type="date" name="endDate" required></div>
+            <div class="form-group"><label>Monthly rate ($)</label><input type="number" name="monthlyRate" min="0" step="1" placeholder="729"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Renter name<span class="req">*</span></label><input name="renter-name" required></div>
+            <div class="form-group"><label>Renter email<span class="req">*</span></label><input type="email" name="renter-email" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Renter phone</label><input type="tel" name="renter-phone"></div>
+            <div class="form-group"><label>ZIP</label><input name="renter-zip"></div>
+          </div>
+          <div class="form-row triple">
+            <div class="form-group"><label>Street</label><input name="renter-street"></div>
+            <div class="form-group"><label>City</label><input name="renter-city"></div>
+            <div class="form-group"><label>State</label><input name="renter-state" placeholder="UT"></div>
+          </div>
+          <div class="form-row triple">
+            <div class="form-group"><label>Payment status</label>
+              <select name="paymentStatus">
+                <option value="unpaid">Unpaid</option>
+                <option value="partial">Partial</option>
+                <option value="paid">Paid</option>
+                <option value="refunded">Refunded</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Paid amount ($)</label><input type="number" name="paidAmount" min="0" step="1"></div>
+            <div class="form-group"><label>Payment date</label><input type="date" name="paymentDate"></div>
+          </div>
+          <div class="form-group"><label>Payment method</label><input name="paymentMethod" placeholder="Stripe, check, cash, Venmo, etc."></div>
+          <div class="form-group"><label>Internal notes</label><textarea name="notes" rows="2" placeholder="Anything to remember about this rental — extensions, complaints, special handling…"></textarea></div>
+          <div class="form-buttons">
+            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="toggleForm('rentalForm')">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="rentalsList"></div>
+    </section>
+
+    <!-- ───── Rental requests ───── -->
+    <section class="tab-panel" data-panel="bookings">
+      <div class="panel-actions">
+        <h2>Rental requests</h2>
+        <select id="bookingStatusFilter" style="padding: 0.4rem 0.7rem;">
+          <option value="">All statuses</option>
+          <option value="new">New</option>
+          <option value="contacted">Contacted</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+          <option value="converted">Converted</option>
+        </select>
+      </div>
+      <div id="bookingsList"></div>
+    </section>
+
+    <!-- ───── Waitlist ───── -->
+    <section class="tab-panel" data-panel="waitlist">
+      <div class="panel-actions">
+        <h2>Waitlist</h2>
+        <select id="waitlistStatusFilter" style="padding: 0.4rem 0.7rem;">
+          <option value="">All statuses</option>
+          <option value="queued">Queued</option>
+          <option value="hold">On hold</option>
+          <option value="notified">Notified</option>
+          <option value="converted">Converted</option>
+          <option value="expired">Expired</option>
+        </select>
+      </div>
+      <div id="waitlistList"></div>
+    </section>
+
+    <!-- ───── Customers ───── -->
+    <section class="tab-panel" data-panel="customers">
+      <div class="panel-actions">
+        <h2>Customers</h2>
+        <div style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
+          <input type="search" id="customerSearch" placeholder="Search by name, email, phone…" style="padding: 0.5rem 0.85rem; min-width: 260px;">
+          <button class="btn btn-primary btn-sm" onclick="toggleForm('customerForm')">+ Add customer</button>
+        </div>
+      </div>
+
+      <div class="form-card" id="customerForm">
+        <h3 id="customerFormTitle">New customer</h3>
+        <form id="customerFormEl" onsubmit="return submitCustomer(event)">
+          <input type="hidden" name="id">
+          <div class="form-row">
+            <div class="form-group"><label>Name<span class="req">*</span></label><input name="name" required></div>
+            <div class="form-group"><label>Email<span class="req">*</span></label><input type="email" name="email" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Phone</label><input type="tel" name="phone"></div>
+            <div class="form-group"><label>Tags (comma-separated)</label><input name="tags" placeholder="VIP, practitioner-referral, medical"></div>
+          </div>
+          <div class="form-row triple">
+            <div class="form-group"><label>Street</label><input name="street"></div>
+            <div class="form-group"><label>City</label><input name="city"></div>
+            <div class="form-group"><label>State</label><input name="state" placeholder="UT"></div>
+          </div>
+          <div class="form-group"><label>ZIP</label><input name="zip"></div>
+          <div class="form-group"><label>Internal notes</label><textarea name="notes" rows="2" placeholder="Practitioner referrer, medical context, special handling…"></textarea></div>
+          <div class="form-buttons">
+            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="toggleForm('customerForm')">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="customersList"></div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Detail modal (used for bookings, waitlist details, customers) -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Details</h3>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">×</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ───────── Identity ─────────
+  const gate = document.getElementById('loginGate');
+  const app = document.getElementById('adminApp');
+  const userEl = document.getElementById('adminUser');
+
+  function paintUser(user) {
+    if (!user) { userEl.innerHTML = ''; return; }
+    userEl.innerHTML = `Signed in as <strong>${user.email}</strong> · <button onclick="netlifyIdentity.logout()">Sign out</button>`;
+  }
+
+  window.netlifyIdentity.on('init', user => {
+    if (user) { gate.hidden = true; app.hidden = false; paintUser(user); loadAll(); }
+    else { gate.hidden = false; app.hidden = true; paintUser(null); }
+  });
+  window.netlifyIdentity.on('login', user => {
+    netlifyIdentity.close();
+    gate.hidden = true; app.hidden = false; paintUser(user); loadAll();
+  });
+  window.netlifyIdentity.on('logout', () => {
+    gate.hidden = false; app.hidden = true; paintUser(null);
+  });
+
+  // ───────── Auth token helper ─────────
+  // Fetch a fresh JWT, tolerating a corrupted/expired stored token. If it can't
+  // be refreshed, sign the user out and prompt re-login instead of silently 401ing.
+  async function getAuthToken(user) {
+    try {
+      return await user.jwt();
+    } catch (e) {
+      try {
+        return await user.jwt(true); // force refresh
+      } catch (e2) {
+        try { await window.netlifyIdentity.logout(); } catch (_) {}
+        toast('Your session expired — please sign in again.', true);
+        throw new Error('session expired');
+      }
+    }
+  }
+
+  // ───────── API helper ─────────
+  async function api(path, opts = {}) {
+    const user = window.netlifyIdentity.currentUser();
+    const headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+    if (user) {
+      headers.Authorization = `Bearer ${await getAuthToken(user)}`;
+    }
+    const resp = await fetch(path, { ...opts, headers });
+    const text = await resp.text();
+    const json = text ? JSON.parse(text) : {};
+    if (!resp.ok) throw new Error(json.error || `HTTP ${resp.status}`);
+    return json;
+  }
+
+  function toast(msg, isErr = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.toggle('err', isErr);
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3200);
+  }
+
+  // ───────── Tab switching ─────────
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.dataset.panel === tab));
+    });
+  });
+
+  function toggleForm(id, prefill) {
+    const card = document.getElementById(id);
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.form-card').forEach(c => c.classList.remove('open'));
+    if (!isOpen) {
+      card.classList.add('open');
+      const form = card.querySelector('form');
+      form.reset();
+      form.querySelector('input[name="id"]').value = '';
+      const title = card.querySelector('h3');
+      title.textContent = title.textContent.replace(/^Edit /, '');
+      if (!title.textContent.startsWith('New')) title.textContent = 'New ' + title.textContent.toLowerCase();
+      if (prefill) {
+        Object.entries(prefill).forEach(([k, v]) => {
+          const f = form.querySelector(`[name="${k}"]`);
+          if (f) f.value = v == null ? '' : v;
+        });
+        title.textContent = title.textContent.replace(/^New /, 'Edit ');
+      }
+    }
+  }
+
+  // ───────── State + render ─────────
+  let _chambers = [];
+  let _rentals = [];
+  let _waitlist = [];
+  let _bookings = [];
+  let _customers = [];
+
+  async function loadAll() {
+    await Promise.all([loadChambers(), loadRentals(), loadWaitlist(), loadBookings()]);
+    paintStats();
+  }
+
+  function paintStats() {
+    const active = _chambers.filter(c => c.status === 'active').length;
+    const today = new Date().toISOString().slice(0, 10);
+    const busy = new Set(_rentals
+      .filter(r => (r.status === 'scheduled' || r.status === 'active') && r.startDate <= today && r.endDate >= today)
+      .map(r => r.chamberId));
+    const available = _chambers.filter(c => c.status === 'active' && !busy.has(c.id)).length;
+    const queued = _waitlist.filter(w => w.status === 'queued' || w.status === 'hold').length;
+    const newBookings = _bookings.filter(b => b.status === 'new').length;
+    const unpaid = _rentals.filter(r =>
+      (r.status === 'scheduled' || r.status === 'active') &&
+      (r.paymentStatus === 'unpaid' || r.paymentStatus === 'partial' || !r.paymentStatus)
+    ).length;
+    document.getElementById('statActive').textContent = active;
+    document.getElementById('statAvailable').textContent = available;
+    document.getElementById('statWaitlist').textContent = queued;
+    document.getElementById('statBookings').textContent = newBookings;
+  }
+
+  // Modal helpers
+  function openModal(title, bodyHtml) {
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalBody').innerHTML = bodyHtml;
+    document.getElementById('modalBackdrop').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('modalBackdrop').classList.remove('open');
+  }
+  document.getElementById('modalBackdrop').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('modalBackdrop')) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  function nextAvailableForChamber(chamberId) {
+    const today = new Date().toISOString().slice(0, 10);
+    const upcoming = _rentals
+      .filter(r => r.chamberId === chamberId && (r.status === 'scheduled' || r.status === 'active'))
+      .filter(r => r.endDate >= today)
+      .sort((a, b) => a.startDate.localeCompare(b.startDate));
+    if (!upcoming.length) return today;
+    let cursor = today;
+    for (const r of upcoming) {
+      if (r.startDate > cursor) break;
+      const dayAfter = new Date(new Date(r.endDate).getTime() + 86400000).toISOString().slice(0, 10);
+      if (dayAfter > cursor) cursor = dayAfter;
+    }
+    return cursor;
+  }
+
+  // ─── Chambers ───
+  async function loadChambers() {
+    const includeArchived = document.getElementById('showArchived').checked;
+    const data = await api(`/api/admin/chambers?includeArchived=${includeArchived}`);
+    _chambers = data.chambers;
+    renderChambers();
+    populateChamberSelect();
+  }
+  function renderChambers() {
+    const list = document.getElementById('chambersList');
+    if (!_chambers.length) {
+      list.innerHTML = `<div class="empty-state">No chambers yet. Click <strong>+ Add chamber</strong> to create one.</div>`;
+      return;
+    }
+    const today = new Date().toISOString().slice(0, 10);
+    const rows = _chambers.map(c => {
+      // Operational state — what the admin actually cares about at a glance
+      const activeRental = _rentals.find(r =>
+        r.chamberId === c.id &&
+        (r.status === 'scheduled' || r.status === 'active') &&
+        r.startDate <= today && r.endDate >= today
+      );
+      let opState, opLabel, availability;
+      if (c.status === 'archived') {
+        opState = 'archived'; opLabel = 'Archived';
+        availability = '<span class="renter-line">—</span>';
+      } else if (c.status === 'maintenance') {
+        opState = 'maintenance'; opLabel = 'Maintenance';
+        availability = '<span class="renter-line">Out of service</span>';
+      } else if (activeRental) {
+        opState = 'rented'; opLabel = 'Rented';
+        const renter = activeRental.renter?.name || '—';
+        const endDate = new Date(activeRental.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        availability = `<span class="renter-line">${escape(renter)} · free <strong>${escape(endDate)}</strong></span>`;
+      } else {
+        const next = nextAvailableForChamber(c.id);
+        if (next === today) {
+          opState = 'available'; opLabel = 'Available';
+          availability = '<span class="renter-line">Free now</span>';
+        } else {
+          // No active rental today but scheduled in future
+          opState = 'available'; opLabel = 'Available';
+          const date = new Date(next).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          availability = `<span class="renter-line">Next booked from <strong>${escape(date)}</strong></span>`;
+        }
+      }
+      const statusActions = [];
+      if (c.status === 'active') {
+        statusActions.push(`<button class="btn btn-ghost btn-sm" onclick='setChamberStatus(${JSON.stringify(c.id)}, "maintenance")'>To maintenance</button>`);
+        statusActions.push(`<button class="btn btn-ghost btn-sm" onclick='archiveChamberFn(${JSON.stringify(c.id)})'>Archive</button>`);
+      } else if (c.status === 'maintenance') {
+        statusActions.push(`<button class="btn btn-ghost btn-sm" onclick='setChamberStatus(${JSON.stringify(c.id)}, "active")'>Return to service</button>`);
+        statusActions.push(`<button class="btn btn-ghost btn-sm" onclick='archiveChamberFn(${JSON.stringify(c.id)})'>Archive</button>`);
+      } else {
+        statusActions.push(`<button class="btn btn-ghost btn-sm" onclick='setChamberStatus(${JSON.stringify(c.id)}, "active")'>Restore</button>`);
+      }
+      return `
+      <tr>
+        <td><strong>${escape(c.name)}</strong><div class="renter-line">${escape(c.model || '')}</div></td>
+        <td><span class="pill pill-${opState}">${opLabel}</span></td>
+        <td>${availability}</td>
+        <td>${escape(c.notes || '')}</td>
+        <td>
+          <div class="row-actions">
+            <button class="btn btn-ghost btn-sm" onclick='editChamber(${JSON.stringify(c.id)})'>Edit</button>
+            ${statusActions.join('')}
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+    list.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Chamber</th><th>State</th><th>Detail</th><th>Notes</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+
+  async function setChamberStatus(id, status) {
+    try {
+      await api(`/api/admin/chambers/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
+      toast(`Chamber set to ${status}`);
+      await loadAll();
+    } catch (err) { toast(err.message, true); }
+  }
+  document.getElementById('showArchived').addEventListener('change', loadChambers);
+
+  function editChamber(id) {
+    const c = _chambers.find(x => x.id === id);
+    if (!c) return;
+    toggleForm('chamberForm', { id: c.id, name: c.name, model: c.model, notes: c.notes });
+  }
+
+  async function submitChamber(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = Object.fromEntries(new FormData(form));
+    try {
+      if (data.id) {
+        const { id, ...patch } = data;
+        await api(`/api/admin/chambers/${id}`, { method: 'PATCH', body: JSON.stringify(patch) });
+        toast('Chamber updated');
+      } else {
+        delete data.id;
+        await api('/api/admin/chambers', { method: 'POST', body: JSON.stringify(data) });
+        toast('Chamber added');
+      }
+      toggleForm('chamberForm');
+      await loadAll();
+    } catch (err) { toast(err.message, true); }
+    return false;
+  }
+
+  async function archiveChamberFn(id) {
+    if (!confirm('Archive this chamber? It will be hidden from availability counts and the rental form.')) return;
+    try { await api(`/api/admin/chambers/${id}`, { method: 'DELETE' }); toast('Chamber archived'); await loadAll(); }
+    catch (err) { toast(err.message, true); }
+  }
+
+  function populateChamberSelect() {
+    const sel = document.getElementById('rentalChamberSelect');
+    const rentable = _chambers.filter(c => c.status === 'active' || c.status === 'maintenance');
+    sel.innerHTML = '<option value="">Select a chamber</option>' + rentable.map(c => {
+      const label = c.status === 'maintenance' ? `${c.name} (in maintenance)` : c.name;
+      return `<option value="${c.id}">${escape(label)}</option>`;
+    }).join('');
+  }
+
+  // ─── Rentals ───
+  async function loadRentals() {
+    const status = document.getElementById('rentalStatusFilter').value;
+    const qs = status ? `?status=${status}` : '';
+    const data = await api(`/api/admin/rentals${qs}`);
+    _rentals = data.rentals;
+    renderRentals();
+  }
+  document.getElementById('rentalStatusFilter').addEventListener('change', loadRentals);
+
+  function renderRentals() {
+    const list = document.getElementById('rentalsList');
+    if (!_rentals.length) {
+      list.innerHTML = `<div class="empty-state">No rentals yet.</div>`;
+      return;
+    }
+    const rows = _rentals.map(r => {
+      const chamber = _chambers.find(c => c.id === r.chamberId);
+      const renter = r.renter || {};
+      const payStatus = r.paymentStatus || 'unpaid';
+      const paymentLabel = r.paidAmount
+        ? `${payStatus} · $${r.paidAmount}`
+        : payStatus;
+      return `
+      <tr>
+        <td><strong>${escape(chamber ? chamber.name : '(deleted chamber)')}</strong></td>
+        <td>${escape(renter.name || '—')}<div class="renter-line">${escape(renter.email || '')}${renter.phone ? ' · ' + escape(renter.phone) : ''}</div></td>
+        <td>${escape(r.startDate)} → ${escape(r.endDate)}</td>
+        <td>$${r.monthlyRate || 0}/mo</td>
+        <td><span class="pill pill-${r.status}">${r.status}</span></td>
+        <td><span class="pill pill-${payStatus}">${escape(paymentLabel)}</span></td>
+        <td>${r.waiverFileKey
+            ? `<a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color: var(--terracotta);">View waiver</a>`
+            : `<label class="btn btn-ghost btn-sm" style="cursor: pointer;">Attach waiver<input type="file" accept="application/pdf,image/*" style="display:none;" onchange="uploadWaiver(event, '${r.id}')"></label>`}</td>
+        <td>
+          <div class="row-actions">
+            <button class="btn btn-ghost btn-sm" onclick='editRental(${JSON.stringify(r.id)})'>Edit</button>
+            ${r.status !== 'cancelled' && r.status !== 'completed' ? `<button class="btn btn-ghost btn-sm" onclick='cancelRental(${JSON.stringify(r.id)})'>Cancel</button>` : ''}
+            <button class="btn btn-ghost btn-sm" style="color:#82402f;" onclick='deleteRental(${JSON.stringify(r.id)})'>Delete</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+    list.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Chamber</th><th>Renter</th><th>Dates</th><th>Rate</th><th>Status</th><th>Payment</th><th>Waiver</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+
+  function editRental(id) {
+    const r = _rentals.find(x => x.id === id);
+    if (!r) return;
+    toggleForm('rentalForm', {
+      id: r.id, chamberId: r.chamberId, status: r.status,
+      startDate: r.startDate, endDate: r.endDate, monthlyRate: r.monthlyRate,
+      'renter-name': r.renter && r.renter.name, 'renter-email': r.renter && r.renter.email,
+      'renter-phone': r.renter && r.renter.phone, 'renter-zip': r.renter && r.renter.address && r.renter.address.zip,
+      'renter-street': r.renter && r.renter.address && r.renter.address.street,
+      'renter-city': r.renter && r.renter.address && r.renter.address.city,
+      'renter-state': r.renter && r.renter.address && r.renter.address.state,
+      paymentStatus: r.paymentStatus, paidAmount: r.paidAmount,
+      paymentDate: r.paymentDate, paymentMethod: r.paymentMethod,
+      notes: r.notes,
+    });
+  }
+
+  // Custom fetch wrapper that surfaces 409 conflict details for rental save
+  async function postRentalWithConflictHandling(path, method, payload) {
+    const user = window.netlifyIdentity.currentUser();
+    const headers = { 'Content-Type': 'application/json' };
+    if (user) headers.Authorization = `Bearer ${await getAuthToken(user)}`;
+    const resp = await fetch(path, { method, headers, body: JSON.stringify(payload) });
+    const json = resp.headers.get('content-type')?.includes('json') ? await resp.json() : {};
+    if (resp.status === 409 && json.error === 'rental_conflict') {
+      if (confirm(`${json.message || 'Rental conflict detected'}\n\nOverride and save anyway?`)) {
+        return postRentalWithConflictHandling(path, method, { ...payload, overrideConflict: true });
+      }
+      throw new Error('cancelled');
+    }
+    if (!resp.ok) throw new Error(json.error || `HTTP ${resp.status}`);
+    return json;
+  }
+
+  async function submitRental(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = Object.fromEntries(new FormData(form));
+    try {
+      if (data.id) {
+        const { id, ...patch } = data;
+        await postRentalWithConflictHandling(`/api/admin/rentals/${id}`, 'PATCH', patch);
+        toast('Rental updated');
+      } else {
+        delete data.id;
+        await postRentalWithConflictHandling('/api/admin/rentals', 'POST', data);
+        toast('Rental created');
+      }
+      toggleForm('rentalForm');
+      await loadAll();
+    } catch (err) {
+      if (err.message !== 'cancelled') toast(err.message, true);
+    }
+    return false;
+  }
+
+  async function cancelRental(id) {
+    if (!confirm('Cancel this rental?')) return;
+    try { await api(`/api/admin/rentals/${id}`, { method: 'DELETE' }); toast('Rental cancelled'); await loadAll(); }
+    catch (err) { toast(err.message, true); }
+  }
+
+  async function deleteRental(id) {
+    const r = _rentals.find(x => x.id === id);
+    const renter = r && r.renter && r.renter.name ? r.renter.name : 'this rental';
+    if (!confirm(`Permanently delete ${renter}'s rental? This removes the record from storage and cannot be undone. (To preserve history, use Cancel instead.)`)) return;
+    try { await api(`/api/admin/rentals/${id}?hard=true`, { method: 'DELETE' }); toast('Rental deleted permanently'); await loadAll(); }
+    catch (err) { toast(err.message, true); }
+  }
+
+  async function uploadWaiver(e, rentalId) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const dataBase64 = reader.result.split(',')[1];
+      try {
+        await api('/api/admin/waiver', {
+          method: 'POST',
+          body: JSON.stringify({ rentalId, contentType: file.type, dataBase64 })
+        });
+        toast('Waiver uploaded');
+        await loadRentals();
+      } catch (err) { toast(err.message, true); }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ─── Customers (derived view) ───
+  async function loadCustomers() {
+    const q = document.getElementById('customerSearch').value.trim();
+    const qs = q ? `?q=${encodeURIComponent(q)}` : '';
+    const data = await api(`/api/admin/customers${qs}`);
+    _customers = data.customers;
+    renderCustomers();
+  }
+  const _customerSearchDebounced = (() => {
+    let t = null;
+    return () => { clearTimeout(t); t = setTimeout(loadCustomers, 220); };
+  })();
+  document.getElementById('customerSearch').addEventListener('input', _customerSearchDebounced);
+
+  function renderCustomers() {
+    const list = document.getElementById('customersList');
+    if (!_customers.length) {
+      list.innerHTML = `<div class="empty-state">No customers yet. Click <strong>+ Add customer</strong> to create one, or they'll be auto-created when bookings/rentals/waitlist entries come in.</div>`;
+      return;
+    }
+    list.innerHTML = _customers.map(c => {
+      const lastDate = c.lastActivity ? new Date(c.lastActivity).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+      const firstDate = c.firstSeen ? new Date(c.firstSeen).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+      const rentalList = c.rentals.length
+        ? c.rentals.sort((a,b) => b.startDate.localeCompare(a.startDate)).map(r => {
+            const ch = _chambers.find(x => x.id === r.chamberId);
+            return `<li>${escape(r.startDate)} → ${escape(r.endDate)} · ${escape(ch ? ch.name : '—')} · <span class="pill pill-${r.status}" style="font-size:0.65rem;">${r.status}</span></li>`;
+          }).join('')
+        : '<li style="color:var(--stone-muted);">None</li>';
+      const bookingList = c.bookings.length
+        ? c.bookings.map(b => `<li>${new Date(b.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} · <span class="pill pill-${b.status}" style="font-size:0.65rem;">${b.status}</span></li>`).join('')
+        : '<li style="color:var(--stone-muted);">None</li>';
+      const waitlistList = c.waitlist.length
+        ? c.waitlist.map(w => `<li>${new Date(w.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} · <span class="pill pill-${w.status}" style="font-size:0.65rem;">${w.status}</span></li>`).join('')
+        : '<li style="color:var(--stone-muted);">None</li>';
+      const addressLine = c.address ? [c.address.street, c.address.city, c.address.state, c.address.zip].filter(Boolean).join(', ') : '';
+      const tagPills = (c.tags && c.tags.length)
+        ? c.tags.map(t => `<span class="pill" style="background:#e8e2d6;color:#6b6357;font-size:0.65rem;">${escape(t)}</span>`).join(' ')
+        : '';
+      const notesBlock = c.notes
+        ? `<div class="renter-line" style="margin-top:0.5rem;color:var(--terracotta);">📝 ${escape(c.notes)}</div>` : '';
+      const editButton = `<button class="btn btn-ghost btn-sm" onclick='editCustomer(${JSON.stringify(c.email)})'>Edit</button>`;
+      return `
+        <div class="customer-card">
+          <div class="customer-card-head">
+            <div>
+              <h4>${escape(c.name || '(no name)')} ${tagPills}</h4>
+              <div class="renter-line">${escape(c.email)}${c.phone ? ' · ' + escape(c.phone) : ''}</div>
+              ${addressLine ? `<div class="renter-line">${escape(addressLine)}</div>` : ''}
+              ${notesBlock}
+            </div>
+            <div style="text-align:right;">
+              <div style="font-family: var(--font-display); font-size: 1.35rem;">$${c.totalPaid.toLocaleString()}</div>
+              <div class="renter-line">Lifetime paid</div>
+              <div style="margin-top:0.5rem;">${editButton}</div>
+            </div>
+          </div>
+          <div class="customer-meta">
+            <span>First seen: <strong>${escape(firstDate)}</strong></span>
+            <span>Last activity: <strong>${escape(lastDate)}</strong></span>
+            <span>${c.rentals.length} rental${c.rentals.length === 1 ? '' : 's'} · ${c.bookings.length} rental request${c.bookings.length === 1 ? '' : 's'} · ${c.waitlist.length} waitlist</span>
+          </div>
+          <div class="customer-records">
+            <div class="customer-record-block"><strong>Rentals</strong><ul>${rentalList}</ul></div>
+            <div class="customer-record-block"><strong>Rental requests</strong><ul>${bookingList}</ul></div>
+            <div class="customer-record-block"><strong>Waitlist</strong><ul>${waitlistList}</ul></div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  async function submitCustomer(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = Object.fromEntries(new FormData(form));
+    try {
+      if (data.id) {
+        const { id, ...patch } = data;
+        await api(`/api/admin/customers/${id}`, { method: 'PATCH', body: JSON.stringify(patch) });
+        toast('Customer updated');
+      } else {
+        delete data.id;
+        await api('/api/admin/customers', { method: 'POST', body: JSON.stringify(data) });
+        toast('Customer added');
+      }
+      toggleForm('customerForm');
+      await loadCustomers();
+    } catch (err) { toast(err.message, true); }
+    return false;
+  }
+
+  // Open the customer form pre-filled with the merged customer data.
+  // Works for both manually-created customers (PATCHes existing record) and
+  // derived customers (POSTs a new manual record on first save).
+  function editCustomer(email) {
+    const c = _customers.find(x => x.email === email);
+    if (!c) return;
+    // Address fallback: if no manual address yet, pull from the most recent rental
+    let addr = c.address || {};
+    const hasManualAddr = addr.street || addr.city || addr.state || addr.zip;
+    if (!hasManualAddr && c.rentals && c.rentals.length) {
+      const latest = [...c.rentals].sort((a, b) => (b.startDate || '').localeCompare(a.startDate || ''))[0];
+      if (latest && latest.renter && latest.renter.address) addr = latest.renter.address;
+    }
+    toggleForm('customerForm', {
+      id: c.manualId || '',
+      name: c.name || '',
+      email: c.email || '',
+      phone: c.phone || '',
+      street: addr.street || '',
+      city: addr.city || '',
+      state: addr.state || '',
+      zip: addr.zip || '',
+      tags: (c.tags || []).join(', '),
+      notes: c.notes || '',
+    });
+  }
+
+  // Lazy-load customers when the tab is clicked (data is derived; fresh on every visit)
+  document.querySelector('.tab-btn[data-tab="customers"]').addEventListener('click', loadCustomers);
+
+  // Stat blocks jump to their corresponding tab
+  document.querySelectorAll('.stat-block[data-jump-tab]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-jump-tab');
+      const tabBtn = document.querySelector(`.tab-btn[data-tab="${target}"]`);
+      if (tabBtn) tabBtn.click();
+    });
+  });
+
+  // ─── Waitlist ───
+  async function loadWaitlist() {
+    const status = document.getElementById('waitlistStatusFilter').value;
+    const qs = status ? `?status=${status}` : '';
+    const data = await api(`/api/admin/waitlist${qs}`);
+    _waitlist = data.waitlist;
+    renderWaitlist();
+  }
+  document.getElementById('waitlistStatusFilter').addEventListener('change', loadWaitlist);
+
+  function renderWaitlist() {
+    const list = document.getElementById('waitlistList');
+    if (!_waitlist.length) {
+      list.innerHTML = `<div class="empty-state">Waitlist is empty.</div>`;
+      return;
+    }
+    // Position-in-queue for queued entries only
+    const queuedOrder = _waitlist.filter(w => w.status === 'queued').sort((a,b) => a.createdAt.localeCompare(b.createdAt));
+    const positionMap = new Map(queuedOrder.map((w, i) => [w.id, i + 1]));
+    const totalQueued = queuedOrder.length;
+    const rows = _waitlist.map(w => {
+      const created = new Date(w.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const holdNote = w.status === 'hold' && w.holdExpiresAt
+        ? `<div class="renter-line">Hold expires ${new Date(w.holdExpiresAt).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' })}</div>`
+        : '';
+      const positionNote = w.status === 'queued' ? `<div class="renter-line">#${positionMap.get(w.id)} of ${totalQueued}</div>` : '';
+      const notesPreview = w.adminNotes ? `<div class="renter-line" style="color:var(--terracotta);">📝 ${escape(w.adminNotes.slice(0, 60))}${w.adminNotes.length > 60 ? '…' : ''}</div>` : '';
+      return `
+      <tr>
+        <td>${escape(created)}</td>
+        <td><strong>${escape(w.name)}</strong>${w.category === 'out-of-area' ? ' <span class="pill pill-out-of-area">Out-of-area</span>' : ''}<div class="renter-line">${escape(w.email)}${w.phone ? ' · ' + escape(w.phone) : ''}${w.zip ? ' · ' + escape(w.zip) : ''}</div></td>
+        <td>${escape(w.preferredStartDate || '—')}<div class="renter-line">${escape((w.reason || '').slice(0, 80))}</div>${notesPreview}</td>
+        <td><span class="pill pill-${w.status}">${w.status}</span>${holdNote}${positionNote}</td>
+        <td>
+          <div class="row-actions">
+            <button class="btn btn-ghost btn-sm" onclick='viewWaitlistDetails(${JSON.stringify(w.id)})'>Details</button>
+            ${w.status === 'queued' ? `<button class="btn btn-primary btn-sm" onclick='offerHold(${JSON.stringify(w.id)})'>Offer hold</button>` : ''}
+            ${w.status !== 'converted' && w.status !== 'expired' ? `<button class="btn btn-primary btn-sm" onclick='convertWaitlistToRental(${JSON.stringify(w.id)})'>→ Rental</button>` : ''}
+            <button class="btn btn-ghost btn-sm" onclick='deleteEntry(${JSON.stringify(w.id)})'>Delete</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+    list.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Added</th><th>Contact</th><th>Preferred / reason</th><th>Status</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+
+  function viewWaitlistDetails(id) {
+    const w = _waitlist.find(x => x.id === id);
+    if (!w) return;
+    const body = `
+      <div class="modal-row"><strong>Contact</strong><div>${escape(w.name)}<br>${escape(w.email)}<br>${escape(w.phone || '—')}</div></div>
+      <div class="modal-row"><strong>ZIP</strong><div>${escape(w.zip || '—')}</div></div>
+      <div class="modal-row"><strong>Preferred start</strong><div>${escape(w.preferredStartDate || '—')}</div></div>
+      <div class="modal-row"><strong>Reason / context</strong><div>${escape(w.reason || '—')}</div></div>
+      <div class="modal-row"><strong>Status</strong><div><span class="pill pill-${w.status}">${w.status}</span></div></div>
+      ${w.holdExpiresAt ? `<div class="modal-row"><strong>Hold expires</strong><div>${new Date(w.holdExpiresAt).toLocaleString()}</div></div>` : ''}
+      <div class="modal-row"><strong>Added</strong><div>${new Date(w.createdAt).toLocaleString()}</div></div>
+      <div class="modal-section">
+        <h4>Internal notes</h4>
+        <textarea id="waitlistNotesEdit" placeholder="Follow-ups, conversations, preferences…">${escape(w.adminNotes || '')}</textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary btn-sm" onclick='saveWaitlistNotes(${JSON.stringify(w.id)})'>Save notes</button>
+        ${w.status !== 'converted' && w.status !== 'expired' ? `<button class="btn btn-primary btn-sm" onclick='convertWaitlistToRental(${JSON.stringify(w.id)})'>Convert → rental</button>` : ''}
+        <a href="mailto:${escape(w.email)}" class="btn btn-ghost btn-sm">Email</a>
+        ${w.phone ? `<a href="tel:${escape(w.phone)}" class="btn btn-ghost btn-sm">Call</a>` : ''}
+      </div>
+    `;
+    openModal(`Waitlist — ${w.name}`, body);
+  }
+
+  async function saveWaitlistNotes(id) {
+    const notes = document.getElementById('waitlistNotesEdit').value;
+    try {
+      await api(`/api/admin/waitlist/${id}`, { method: 'PATCH', body: JSON.stringify({ adminNotes: notes }) });
+      toast('Notes saved');
+      await loadWaitlist();
+    } catch (err) { toast(err.message, true); }
+  }
+
+  function convertWaitlistToRental(id) {
+    const w = _waitlist.find(x => x.id === id);
+    if (!w) return;
+    closeModal();
+    const start = w.preferredStartDate || new Date().toISOString().slice(0, 10);
+    document.querySelector('.tab-btn[data-tab="rentals"]').click();
+    toggleForm('rentalForm', {
+      chamberId: w.notifiedChamberId || '',
+      status: 'scheduled',
+      startDate: start, endDate: addMonths(start, 1),
+      monthlyRate: 729,
+      'renter-name': w.name, 'renter-email': w.email, 'renter-phone': w.phone,
+      'renter-zip': w.zip,
+      paymentStatus: 'unpaid', paidAmount: 0,
+      notes: `Converted from waitlist ${id}. Reason: ${w.reason || '—'}`,
+    });
+    toast('Pick a chamber + adjust dates, then Save — waitlist entry will auto-mark converted');
+    const form = document.getElementById('rentalFormEl');
+    const onceListener = async () => {
+      setTimeout(async () => {
+        const found = _rentals.find(r => r.renter && r.renter.email === w.email);
+        if (found) {
+          try {
+            await api(`/api/admin/waitlist/${id}/convert`, { method: 'POST', body: JSON.stringify({ rentalId: found.id }) });
+            await loadAll();
+          } catch (e) { /* non-fatal */ }
+        }
+      }, 600);
+      form.removeEventListener('submit', onceListener);
+    };
+    form.addEventListener('submit', onceListener);
+  }
+
+  async function offerHold(id) {
+    const today = new Date().toISOString().slice(0, 10);
+    const busy = new Set(_rentals.filter(r => (r.status === 'scheduled' || r.status === 'active') && r.startDate <= today && r.endDate >= today).map(r => r.chamberId));
+    const free = _chambers.filter(c => c.status === 'active' && !busy.has(c.id));
+    if (!free.length) { toast('No free chambers right now', true); return; }
+    const choice = free.length === 1 ? free[0] : free.find(c => c.name === prompt(`Which chamber? (${free.map(c => c.name).join(', ')})`, free[0].name));
+    if (!choice) return;
+    try {
+      await api(`/api/admin/waitlist/${id}/hold`, { method: 'POST', body: JSON.stringify({ chamberId: choice.id }) });
+      toast(`Hold placed on ${choice.name} — renter emailed`);
+      await loadAll();
+    } catch (err) { toast(err.message, true); }
+  }
+
+  async function deleteEntry(id) {
+    if (!confirm('Delete this waitlist entry?')) return;
+    try { await api(`/api/admin/waitlist/${id}`, { method: 'DELETE' }); toast('Deleted'); await loadAll(); }
+    catch (err) { toast(err.message, true); }
+  }
+
+  // ─── Bookings ───
+  async function loadBookings() {
+    const status = document.getElementById('bookingStatusFilter').value;
+    const qs = status ? `?status=${status}` : '';
+    const data = await api(`/api/admin/bookings${qs}`);
+    _bookings = data.bookings;
+    renderBookings();
+  }
+  document.getElementById('bookingStatusFilter').addEventListener('change', loadBookings);
+
+  function renderBookings() {
+    const list = document.getElementById('bookingsList');
+    if (!_bookings.length) {
+      list.innerHTML = `<div class="empty-state">No rental requests yet.</div>`;
+      return;
+    }
+    const rows = _bookings.map(b => {
+      const created = new Date(b.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const flags = (b.medicalScreeningFlags && b.medicalScreeningFlags !== 'none')
+        ? `<div class="renter-line" style="color:#82402f;"><strong>Flags:</strong> ${escape(b.medicalScreeningFlags)}</div>` : '';
+      const address = [b.streetAddress, b.city, b.state, b.zip].filter(Boolean).join(', ');
+      const STATUSES = ['new', 'contacted', 'approved', 'rejected', 'converted'];
+      const statusOptions = STATUSES.map(s => `<option value="${s}"${s === b.status ? ' selected' : ''}>${s}</option>`).join('');
+      let routingBadge = '';
+      if (b.autoNotified === 'available') {
+        routingBadge = `<div class="renter-line" style="color:#3d5a26;">📩 Notified: chamber available</div>`;
+      } else if (b.autoNotified === 'waitlist') {
+        routingBadge = `<div class="renter-line" style="color:#6b5326;">📩 Notified: added to waitlist</div>`;
+      }
+      return `
+      <tr>
+        <td>${escape(created)}</td>
+        <td><strong>${escape(b.firstName + ' ' + (b.lastName || ''))}</strong>
+          <div class="renter-line">${escape(b.email)}${b.phone ? ' · ' + escape(b.phone) : ''}</div>
+          <div class="renter-line">${escape(address || '—')}</div>
+          ${routingBadge}
+        </td>
+        <td>${escape(b.startDate || '—')} · ${escape(b.rentalLength || '—')}<div class="renter-line">${escape((b.reason || '').slice(0, 120))}</div>${flags}</td>
+        <td><select class="booking-status-sel" data-id="${b.id}" style="padding: 0.3rem 0.5rem; font-size: 0.85rem;">${statusOptions}</select></td>
+        <td>
+          <div class="row-actions">
+            <button class="btn btn-ghost btn-sm" onclick='viewBookingDetails(${JSON.stringify(b.id)})'>Details</button>
+            ${b.status !== 'converted' && b.status !== 'rejected' ? `<button class="btn btn-primary btn-sm" onclick='convertBookingToRental(${JSON.stringify(b.id)})'>→ Rental</button>` : ''}
+            <button class="btn btn-ghost btn-sm" onclick='deleteBooking(${JSON.stringify(b.id)})'>Delete</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+    list.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Received</th><th>Contact</th><th>Rental request</th><th>Status</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    document.querySelectorAll('.booking-status-sel').forEach(sel => {
+      sel.addEventListener('change', async (e) => {
+        try {
+          await api(`/api/admin/bookings/${e.target.dataset.id}`, { method: 'PATCH', body: JSON.stringify({ status: e.target.value }) });
+          toast('Booking updated');
+          await loadAll();
+        } catch (err) { toast(err.message, true); }
+      });
+    });
+  }
+
+  function viewBookingDetails(id) {
+    const b = _bookings.find(x => x.id === id);
+    if (!b) return;
+    const fullName = `${b.firstName} ${b.lastName || ''}`.trim();
+    const address = [b.streetAddress, b.city, b.state, b.zip].filter(Boolean).join(', ') || '—';
+    const flagsHtml = (b.medicalScreeningFlags && b.medicalScreeningFlags !== 'none')
+      ? `<span class="flag-warn">⚠ ${escape(b.medicalScreeningFlags)}</span>` : 'none';
+    let autoRoutingHtml = '';
+    if (b.autoNotified === 'available') {
+      autoRoutingHtml = `<div class="modal-row"><strong>Auto-routing</strong><div style="color:#3d5a26;"><strong>📩 Chamber available</strong> — customer was emailed: "We will be in contact shortly to arrange delivery."</div></div>`;
+    } else if (b.autoNotified === 'waitlist') {
+      const linkText = b.linkedWaitlistId ? `Linked to waitlist entry <code>${escape(b.linkedWaitlistId.slice(0, 8))}…</code>` : '';
+      autoRoutingHtml = `<div class="modal-row"><strong>Auto-routing</strong><div style="color:#6b5326;"><strong>📩 Added to waitlist</strong> — customer was emailed about it. ${linkText}</div></div>`;
+    }
+    const body = `
+      ${autoRoutingHtml}
+      <div class="modal-row"><strong>Contact</strong><div>${escape(fullName)}<br>${escape(b.email)}<br>${escape(b.phone || '—')}</div></div>
+      <div class="modal-row"><strong>Delivery address</strong><div>${escape(address)}</div></div>
+      <div class="modal-row"><strong>Requested start</strong><div>${escape(b.startDate || '—')}</div></div>
+      <div class="modal-row"><strong>Rental length</strong><div>${escape(b.rentalLength || '—')}</div></div>
+      <div class="modal-row"><strong>Reason for renting</strong><div>${escape(b.reason || '—')}</div></div>
+      <div class="modal-row"><strong>Prior experience</strong><div>${escape(b.priorExperience || '—')}</div></div>
+      <div class="modal-row"><strong>Safety flags</strong><div>${flagsHtml}</div></div>
+      <div class="modal-row"><strong>Consent</strong><div>Medical: ${b.consentMedical ? '✓' : '✗'} · Terms: ${b.consentTerms ? '✓' : '✗'}</div></div>
+      <div class="modal-row"><strong>Received</strong><div>${new Date(b.createdAt).toLocaleString()}</div></div>
+      <div class="modal-section">
+        <h4>Internal notes</h4>
+        <textarea id="bookingNotesEdit" placeholder="Calls, follow-ups, anything to remember…">${escape(b.adminNotes || '')}</textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary btn-sm" onclick='saveBookingNotes(${JSON.stringify(b.id)})'>Save notes</button>
+        ${b.status !== 'converted' && b.status !== 'rejected' ? `<button class="btn btn-primary btn-sm" onclick='convertBookingToRental(${JSON.stringify(b.id)})'>Convert → rental</button>` : ''}
+        <a href="mailto:${escape(b.email)}" class="btn btn-ghost btn-sm">Email renter</a>
+        ${b.phone ? `<a href="tel:${escape(b.phone)}" class="btn btn-ghost btn-sm">Call</a>` : ''}
+      </div>
+    `;
+    openModal(`Booking — ${fullName}`, body);
+  }
+
+  async function saveBookingNotes(id) {
+    const notes = document.getElementById('bookingNotesEdit').value;
+    try {
+      await api(`/api/admin/bookings/${id}`, { method: 'PATCH', body: JSON.stringify({ adminNotes: notes }) });
+      toast('Notes saved');
+      await loadBookings();
+    } catch (err) { toast(err.message, true); }
+  }
+
+  // Convert a booking into a pre-filled new-rental form
+  function convertBookingToRental(id) {
+    const b = _bookings.find(x => x.id === id);
+    if (!b) return;
+    closeModal();
+    // Heuristic: derive endDate from rentalLength
+    const start = b.startDate || new Date().toISOString().slice(0, 10);
+    const months = parseRentalLengthMonths(b.rentalLength);
+    const endDate = months ? addMonths(start, months) : start;
+    document.querySelector('.tab-btn[data-tab="rentals"]').click();
+    toggleForm('rentalForm', {
+      chamberId: '', status: 'scheduled',
+      startDate: start, endDate,
+      monthlyRate: 729,
+      'renter-name': `${b.firstName} ${b.lastName || ''}`.trim(),
+      'renter-email': b.email, 'renter-phone': b.phone,
+      'renter-street': b.streetAddress, 'renter-city': b.city,
+      'renter-state': b.state, 'renter-zip': b.zip,
+      paymentStatus: 'unpaid', paidAmount: 0,
+      notes: `Converted from booking ${id}. Reason: ${b.reason || '—'}`,
+    });
+    toast('Pick a chamber and Save to create the rental — booking will auto-mark converted');
+    // Hook the form so on success, also mark booking as converted
+    const form = document.getElementById('rentalFormEl');
+    const onceListener = async () => {
+      // After loadAll, find the most-recent rental for this renter and mark booking converted
+      setTimeout(async () => {
+        const found = _rentals.find(r => r.renter && r.renter.email === b.email);
+        if (found) {
+          try {
+            await api(`/api/admin/bookings/${id}`, { method: 'PATCH', body: JSON.stringify({ status: 'converted', convertedRentalId: found.id }) });
+            await loadAll();
+          } catch (e) { /* non-fatal */ }
+        }
+      }, 600);
+      form.removeEventListener('submit', onceListener);
+    };
+    form.addEventListener('submit', onceListener);
+  }
+
+  function parseRentalLengthMonths(s) {
+    if (!s) return null;
+    const m = String(s).match(/(\d+)\s*(month|mo|year|yr)/i);
+    if (!m) return null;
+    const n = parseInt(m[1], 10);
+    return /year|yr/i.test(m[2]) ? n * 12 : n;
+  }
+  function addMonths(isoDate, months) {
+    const d = new Date(isoDate);
+    d.setMonth(d.getMonth() + months);
+    d.setDate(d.getDate() - 1); // inclusive end date
+    return d.toISOString().slice(0, 10);
+  }
+
+  async function deleteBooking(id) {
+    if (!confirm('Delete this rental request? This cannot be undone.')) return;
+    try { await api(`/api/admin/bookings/${id}`, { method: 'DELETE' }); toast('Deleted'); await loadAll(); }
+    catch (err) { toast(err.message, true); }
+  }
+
+  function escape(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+  }
+</script>
+
+</body>
+</html>
+</parameter>
+</invoke>

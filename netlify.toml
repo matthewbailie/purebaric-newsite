@@ -1,0 +1,84 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# ───────── Public API ─────────
+[[redirects]]
+  from = "/api/availability"
+  to = "/.netlify/functions/availability"
+  status = 200
+
+[[redirects]]
+  from = "/api/booking-submit"
+  to = "/.netlify/functions/booking-submit"
+  status = 200
+
+[[redirects]]
+  from = "/api/waitlist-join"
+  to = "/.netlify/functions/waitlist-join"
+  status = 200
+
+[[redirects]]
+  from = "/api/contact-submit"
+  to = "/.netlify/functions/contact-submit"
+  status = 200
+
+# ───────── Admin API (base path + sub-paths) ─────────
+[[redirects]]
+  from = "/api/admin/chambers"
+  to = "/.netlify/functions/admin-chambers"
+  status = 200
+[[redirects]]
+  from = "/api/admin/chambers/*"
+  to = "/.netlify/functions/admin-chambers/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/rentals"
+  to = "/.netlify/functions/admin-rentals"
+  status = 200
+[[redirects]]
+  from = "/api/admin/rentals/*"
+  to = "/.netlify/functions/admin-rentals/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/bookings"
+  to = "/.netlify/functions/admin-bookings"
+  status = 200
+[[redirects]]
+  from = "/api/admin/bookings/*"
+  to = "/.netlify/functions/admin-bookings/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/waitlist"
+  to = "/.netlify/functions/admin-waitlist"
+  status = 200
+[[redirects]]
+  from = "/api/admin/waitlist/*"
+  to = "/.netlify/functions/admin-waitlist/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/customers"
+  to = "/.netlify/functions/admin-customers"
+  status = 200
+[[redirects]]
+  from = "/api/admin/customers/*"
+  to = "/.netlify/functions/admin-customers/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/waiver"
+  to = "/.netlify/functions/admin-waiver"
+  status = 200
+[[redirects]]
+  from = "/api/admin/waiver/*"
+  to = "/.netlify/functions/admin-waiver/:splat"
+  status = 200
+
+# ───────── Scheduled function ─────────
+# Auto-expires waitlist holds and transitions rentals by date. Runs hourly.
+[functions."expire-holds"]
+  schedule = "0 * * * *"
