@@ -66,7 +66,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   .frm .row2{grid-template-columns:1fr}
 }
 </style>
-  <script src="/analytics.js"></script>
+  <script src="/pb-metrics.js"></script>
 </head><body>
 <header>
   <div class="wrap nav">
@@ -213,10 +213,10 @@ function checkZip(){
 document.getElementById('zip').addEventListener('input',checkZip);
 
 /* analytics: plan choice, service-area result, form start (no PII) */
-document.getElementById('zip').addEventListener('change',function(){var z=this.value.trim();if(!/^\d{5}$/.test(z))return;trackPurebaricEvent('service_area_check',{result:servedZip(z)?'eligible':'unsupported',rental_months:+document.getElementById('mo').value});});
-document.getElementById('mo').addEventListener('change',function(){var mm=+this.value,rr=rate(mm);trackPurebaricEvent('select_rental_plan',{chamber_id:'soft_shell_1_5_ata',rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD'});});
+document.getElementById('zip').addEventListener('change',function(){var z=this.value.trim();if(!/^\d{5}$/.test(z))return;window.trackPurebaricEvent?.('service_area_check',{result:servedZip(z)?'eligible':'unsupported',rental_months:+document.getElementById('mo').value});});
+document.getElementById('mo').addEventListener('change',function(){var mm=+this.value,rr=rate(mm);window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:'soft_shell_1_5_ata',rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD'});});
 var bookingFormStarted=false;
-document.getElementById('resForm').addEventListener('focusin',function(){if(bookingFormStarted)return;bookingFormStarted=true;trackPurebaricEvent('booking_form_start',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:+document.getElementById('mo').value||1,source:'book_page'});});
+document.getElementById('resForm').addEventListener('focusin',function(){if(bookingFormStarted)return;bookingFormStarted=true;window.trackPurebaricEvent?.('booking_form_start',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:+document.getElementById('mo').value||1,source:'book_page'});});
 
 /* carry over homepage selection */
 (function(){
@@ -259,20 +259,20 @@ document.getElementById('resForm').addEventListener('submit',function(e){
        f.reset();document.getElementById('mo').value=m;recalc();document.getElementById('zipNote').hidden=true;
        window.scrollTo({top:0,behavior:'smooth'});
      }else if(j&&(j.success||j.ok)){
-       trackPurebaricEvent('booking_request_submit',{chamber_id:String(document.getElementById('ch').value),rental_months:m,estimated_total:total,currency:'USD',source:'book_page'});
+       window.trackPurebaricEvent?.('booking_request_submit',{chamber_id:String(document.getElementById('ch').value),rental_months:m,estimated_total:total,currency:'USD',source:'book_page'});
        res.className='result ok';
        res.innerHTML='Reservation received'+(j.booking_number?(' ('+j.booking_number+')'):'')+'. '+(j.message||"Our team will contact you shortly to confirm delivery.");
        f.reset();document.getElementById('mo').value=m;recalc();document.getElementById('zipNote').hidden=true;
        window.scrollTo({top:0,behavior:'smooth'});
      }else{
-       trackPurebaricEvent('booking_request_error',{error_type:'api_rejected'});
+       window.trackPurebaricEvent?.('booking_request_error',{error_type:'api_rejected'});
        res.className='result err';
        res.textContent=(j&&j.message)||'Something went wrong. Please try again, or email hello@purebaric.com.';
      }
    })
    .catch(function(){
      btn.disabled=false;btn.innerHTML=orig;
-     trackPurebaricEvent('booking_request_error',{error_type:'network_error'});
+     window.trackPurebaricEvent?.('booking_request_error',{error_type:'network_error'});
      res.className='result err';
      res.textContent='Network error. Please try again, or email hello@purebaric.com.';
    });

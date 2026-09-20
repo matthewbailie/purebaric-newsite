@@ -1,9 +1,9 @@
-/* Purebaric analytics bootstrap - consent-gated GA4.
+/* Purebaric metrics bootstrap - consent-gated GA4.
  *
- * OWNER ACTION: create the standalone Purebaric GA4 property (its own account, NOT
- * Nerd United), then replace GA_ID below with that property's Measurement ID
- * (e.g. G-XXXXXXXXXX) and redeploy. Until a real ID is set, this file safely
- * no-ops: no GA network requests are made and tracked events queue harmlessly.
+ * Served as /pb-metrics.js (a neutral first-party name; a file literally named
+ * "analytics.js" is blocked by many ad/privacy blockers as ERR_BLOCKED_BY_CLIENT).
+ * GA_ID points at the standalone Purebaric "Purebaric Website" property
+ * (account 408850169, property 555169638, stream 15813569788).
  *
  * PRIVACY: never pass names, emails, phones, addresses, ZIP/city, notes, health
  * info, raw form payloads, or API responses into any event. Only allowlisted,
@@ -14,8 +14,8 @@
   window.dataLayer = window.dataLayer || [];
   window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
 
-  var GA_ID = 'G-PUREBARIC_ID'; // <-- REPLACE with the real Measurement ID
-  var READY = GA_ID.indexOf('PUREBARIC_ID') === -1; // false while placeholder
+  var GA_ID = 'G-Q1X04YRWP1'; // standalone Purebaric Website property
+  var READY = /^G-[A-Z0-9]+$/.test(GA_ID) && GA_ID.indexOf('PUREBARIC_ID') === -1;
 
   gtag('consent', 'default', {
     analytics_storage: 'denied',
