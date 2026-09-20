@@ -7,6 +7,7 @@
   from = "/_internal/*"
   to = "/"
   status = 404
+  force = true
 
 # ───────── Public API ─────────
 [[redirects]]
