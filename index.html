@@ -49,7 +49,7 @@
     "addressCountry": "US"
   },
   "geo": { "@type": "GeoCoordinates", "latitude": 40.6461, "longitude": -111.498 },
-  "areaServed": ["Park City","Salt Lake City","Lehi","Provo","St. George","Draper","Sandy","Utah"]
+  "areaServed": ["Park City","Salt Lake City","Lehi","Provo","Draper","Sandy","Utah"]
 }
 </script>
 
@@ -124,8 +124,9 @@ h2{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
 .math li{padding:5px 0 5px 20px;position:relative;color:#5f544d}
 .math .win li:before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
 .math .side:not(.win) li:before{content:"–";position:absolute;left:0;color:var(--muted)}
-.map{height:220px;border-radius:12px;background:#eae0d0;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px;position:relative;overflow:hidden;margin-top:6px}
-.map .zips{position:absolute;bottom:12px;left:12px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:12px;color:#5f544d}
+.map{height:360px;border-radius:12px;background:#eae0d0;border:1px solid var(--line);position:relative;overflow:hidden;margin-top:6px}
+.map iframe{width:100%;height:100%;border:0;display:block}
+.map .zips{position:absolute;bottom:12px;left:12px;right:12px;background:rgba(255,253,249,.95);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:12px;color:#5f544d}
 .articles-band{border-top:1px solid var(--line);background:var(--cream2)}
 .articles{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
 .acard{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;display:block}
@@ -246,7 +247,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
       <h1>Hyperbaric chamber rentals,<br>delivered across Utah.</h1>
       <p>We handle delivery, setup, and support — so you can focus on your recovery. Unlimited daily sessions in your own home.</p>
     </div>
-    <button class="gallery-pill" onclick="lbOpen(0)">▦ View all 5 photos</button>
+    <button class="gallery-pill" onclick="lbOpen(0)">▦ View all 3 photos</button>
   </div>
   <div class="hero-below">
     <span class="eyebrow2">● Now delivering across Utah</span>
@@ -285,7 +286,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
               <a class="btn btn-primary" href="/book">Reserve</a></div>
           </div>
           <div class="chamber soon">
-            <div class="imgwrap"><img src="/images/chamber-top.jpg" alt="1.5 ATA sitting chamber"><span class="soon-badge">Coming soon · Late Oct 2026</span></div>
+            <div class="imgwrap"><img src="/images/chamber-hero.jpg" alt="1.5 ATA sitting chamber (coming soon)"><span class="soon-badge">Coming soon · Late Oct 2026</span></div>
             <div class="b"><b>1.5 ATA Sitting Chamber</b><div class="price" style="color:var(--muted)">Coming soon</div>
               <ul><li>Upright, seated design</li><li>1.5 ATA mild pressure</li><li>Easier entry &amp; exit</li></ul>
               <a class="waitlink" href="/waitlist">Join the waitlist →</a></div>
@@ -304,8 +305,11 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
       </section>
 
       <section>
-        <h2>Where we deliver</h2>
-        <div class="map">2-hour delivery radius across Utah<div class="zips">Salt Lake City · Park City · Provo · Lehi · Draper · Sandy · St. George</div></div>
+        <h2>Where we deliver</h2><p class="lead">Free white-glove delivery across Utah's Wasatch Front — about a 2-hour radius.</p>
+        <div class="map">
+          <iframe title="Purebaric delivery area — Utah's Wasatch Front" src="https://www.openstreetmap.org/export/embed.html?bbox=-112.20%2C40.05%2C-111.30%2C40.95&amp;layer=mapnik&amp;marker=40.62%2C-111.80" loading="lazy" referrerpolicy="no-referrer"></iframe>
+          <div class="zips">Salt Lake City · Park City · Provo · Lehi · Draper · Sandy</div>
+        </div>
       </section>
     </div>
 
@@ -334,9 +338,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   <div class="articles">
     <a class="acard" href="/blog/post-surgical-healing-first-30-days-mhbot"><img src="/images/chamber-hero.jpg" alt="">
       <div class="b"><div class="cat">Recovery science</div><h3>Post-surgical healing: the first 30 days with mHBOT</h3><p>How mild hyperbaric oxygen supports tissue repair and reduces downtime after surgery.</p><span class="rd">Read the case study →</span></div></a>
-    <a class="acard" href="/blog/utah-altitude-hyperbaric-recovery-guide"><img src="/images/o2-reading.jpg" alt="">
+    <a class="acard" href="/blog/utah-altitude-hyperbaric-recovery-guide"><img src="/images/chamber-side.newdesign.jpg" alt="">
       <div class="b"><div class="cat">Utah &amp; altitude</div><h3>The Utah altitude recovery guide</h3><p>Why living at elevation changes your oxygen needs — and how home HBOT helps.</p><span class="rd">Read the guide →</span></div></a>
-    <a class="acard" href="/blog"><img src="/images/chamber-gauge.jpg" alt="">
+    <a class="acard" href="/blog"><img src="/images/chamber-side.jpg" alt="">
       <div class="b"><div class="cat">Benefits</div><h3>What is mild HBOT — and who is it for?</h3><p>Athletes, post-op recovery, cognitive clarity, and everyday wellness, explained.</p><span class="rd">Learn the basics →</span></div></a>
   </div>
 </section></div></div>
@@ -437,7 +441,7 @@ function toggleMenu(){var m=document.getElementById('mobileMenu'),b=document.que
 function cookieChoice(accept){try{localStorage.setItem('pb_cookie',accept?'accept':'decline');}catch(e){}document.getElementById('cookie').hidden=true;}
 
 /* photo lightbox */
-var LBI=['/images/chamber-side.jpg','/images/chamber-top.jpg','/images/chamber-gauge.jpg','/images/chamber-hero.jpg','/images/o2-reading.jpg'];
+var LBI=['/images/chamber-side.newdesign.jpg','/images/chamber-hero.jpg','/images/chamber-side.jpg'];
 var lbi=0;
 function lbShow(){document.getElementById('lbImg').src=LBI[lbi];document.getElementById('lbCount').textContent=(lbi+1)+' / '+LBI.length;}
 function lbOpen(i){lbi=i||0;lbShow();document.getElementById('lb').hidden=false;}
