@@ -29,6 +29,37 @@ Laravel app that exists in old zips (see "Dead ends" below).
 
 ---
 
+## 1b. 2026 redesign — what changed (read before editing pages)
+
+The homepage and top pages were redesigned into a **warm** look (cream / terracotta / olive) replacing the old teal/navy theme.
+
+**Design system split:**
+- `index.html` — the new homepage. **Self-contained** (its own inline `<style>`/`<script>`), including the rental-length pricing slider, mobile booking sheet, photo lightbox, hamburger menu, footer, and cookie banner.
+- `chambers.html`, `pricing.html`, `how-it-works.html` — restyled to the warm design. They share **`/warm.css`** (design tokens, nav, footer, cookie, common components) and **`/warm.js`** (mobile menu toggle + cookie consent).
+- All **other** pages (`about`, `faq`, `contact`, `safety`, `terms`, `waitlist`, `book`, `blog/…`, `use-cases/…`, `service-area`, `practitioners`) still use the **older `styles.css`** (teal). They remain fully functional; migrate them to the warm design later.
+
+**Chamber & pricing model (single chamber):**
+- There is now **one** rentable chamber: **Soft-Shell 1.5 ATA**. The **1.5 ATA Sitting Chamber** is marked "Coming soon · Late Oct 2026."
+- The old **Executive Hard-Shell 2.0 ATA** was **removed from all frontend pages** (chamber cards, booking dropdowns, and JSON-LD).
+- Pricing is **length-tiered** on the one chamber:
+
+  | Rental length | Monthly rate | Savings |
+  |---|---|---|
+  | 1 month | $729 | — |
+  | 2–3 months | $659 | Save 10% |
+  | 4–11 months | $579 | Save 21% |
+  | 12 months | $529 | Save 27% |
+
+**Where to change prices (keep these in sync):**
+- Homepage slider math: the `rate(m)` function in the inline `<script>` at the bottom of `index.html` (and the mirror copy in the mockup `~/projects/purebaric-mockups/base.html`).
+- Pricing page cards: the `.tiers` block in `pricing.html`.
+- Chamber "from $" figures: `index.html` (Chambers section) and `chambers.html`.
+
+**⚠️ Owner-only action — remove the 2.0 ATA from the admin inventory:**
+The `/admin` portal lists **physical chamber units from Netlify Blobs**, not from code. If a unit named/modelled as "2.0 ATA" (or the old Executive Hard-Shell) still exists there, **archive it yourself**: sign in at `/admin` → **Chambers** tab → open that unit → set status to **Archived** (or Delete). Code changes and deploys cannot remove Blobs data — only the authenticated admin portal can.
+
+---
+
 ## 2. Accounts & credentials (get these from the owner / password manager)
 
 The owner is **Matthew Bailie**. None of these secrets are stored here.
