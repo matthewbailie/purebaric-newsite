@@ -2,6 +2,12 @@
   publish = "."
   functions = "netlify/functions"
 
+# ───────── Internal docs (never served publicly) ─────────
+[[redirects]]
+  from = "/_internal/*"
+  to = "/"
+  status = 404
+
 # ───────── Public API ─────────
 [[redirects]]
   from = "/api/availability"
