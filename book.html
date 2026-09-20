@@ -35,9 +35,19 @@
 .result.warn{display:block;background:#f4e7df;color:#7a4a1e;border:1px solid #e6cdbb}
 .zipnote{font-size:12.5px;margin-top:6px;line-height:1.5}
 .zipnote.ok{color:#5c7a34}.zipnote.warn{color:#9a4f3a}
+.screen{border-top:1px solid var(--line);margin-top:6px;padding-top:16px;margin-bottom:6px}
+.ck{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#5f544d;font-weight:400;margin-bottom:12px;cursor:pointer}
+.ck input{width:auto;margin-top:3px;flex:none}
+.ck a{color:var(--terra-d);text-decoration:underline}
+.next{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-top:16px}
+.next-h{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600;margin-bottom:12px}
+.next ol{list-style:none}
+.next li{display:flex;gap:11px;align-items:flex-start;font-size:13.5px;color:#5f544d;padding:6px 0}
+.next li span{width:22px;height:22px;border-radius:50%;background:var(--terra);color:#fff;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex:none}
 /* summary card */
 .book-side-label{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600;margin-bottom:10px}
-.book{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;position:sticky;top:88px}
+.book{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.book-sticky{position:sticky;top:88px}
 .ptop{display:flex;align-items:baseline;gap:8px}
 .price{font-size:32px;font-weight:800;letter-spacing:-.02em}.permo{font-size:16px;color:var(--muted);font-weight:500}
 .strike{font-size:14px;color:var(--muted);font-weight:500;text-decoration:line-through}
@@ -62,7 +72,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .fine{font-size:12px;color:var(--muted);text-align:center;margin-top:12px}
 @media(max-width:900px){
   .book-layout{grid-template-columns:1fr;gap:26px}
-  .book-side{order:-1}.book{position:static}
+  .book-side{order:-1}.book-sticky{position:static}
   .frm .row2{grid-template-columns:1fr}
 }
 </style>
@@ -89,7 +99,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   <div class="wrap">
     <span class="eyebrow2">Rental request</span>
     <h1>Reserve your chamber.</h1>
-    <p>Confirm your chamber and rental length, share your details, and we'll be in touch shortly to arrange delivery. No charge upfront.</p>
+    <p>Confirm your chamber and rental length and share your details. This is a reservation request, not an instant booking, we'll confirm availability and delivery to your ZIP before anything is scheduled or billed.</p>
   </div>
 </section>
 
@@ -119,6 +129,11 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
         <div class="fg"><label>Preferred start date</label><input type="date" id="cdate" name="preferred_date"></div>
         <div class="fg"><label>Notes (optional)</label><textarea id="cnotes" name="notes" placeholder="Ground floor setup, stairs, morning delivery preference..."></textarea></div>
 
+        <div class="screen">
+          <label class="ck"><input type="checkbox" id="ackMed" required> I've reviewed the <a href="/safety" target="_blank" rel="noopener">safety information</a> and have no known contraindications to mild hyperbaric therapy, or I've discussed use with my physician. <span class="req">*</span></label>
+          <label class="ck"><input type="checkbox" id="ackReq" required> I understand this is a reservation request, not a confirmed booking, and Purebaric will contact me to confirm availability before any delivery or charge. <span class="req">*</span></label>
+        </div>
+
         <button type="submit" class="btn btn-primary submit" id="submitBtn">Request reservation →</button>
 
         <div class="trust">
@@ -129,6 +144,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
       </form>
 
       <aside class="book-side">
+        <div class="book-sticky">
         <div class="book-side-label">Your reservation</div>
         <div class="book">
           <div class="ptop"><span class="price" id="pr">$659</span><span class="permo">/mo</span><span class="strike" id="strike">$729</span></div>
@@ -141,7 +157,16 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
           <div class="brow"><span>You save</span><span class="amt" id="tot">$210</span></div>
           <div class="brow"><span>Delivery, install &amp; training</span><span class="amt">Included</span></div>
           <div class="total"><span>Due today</span><span>$0</span></div>
-          <div class="fine">No charges upfront · we confirm delivery to your ZIP</div>
+          <div class="fine">No charge upfront · cancel free up to 7 days before delivery</div>
+        </div>
+        <div class="next">
+          <div class="next-h">What happens next</div>
+          <ol>
+            <li><span>1</span><div>We review your request and confirm chamber availability for your dates.</div></li>
+            <li><span>2</span><div>We reach out to schedule delivery, installation, and hands-on training.</div></li>
+            <li><span>3</span><div>You start daily sessions on your schedule. We handle support and pickup.</div></li>
+          </ol>
+        </div>
         </div>
       </aside>
 
@@ -162,6 +187,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
       <div class="foot-col"><h5>Company</h5><ul>
         <li><a href="/about">About</a></li><li><a href="/faq">FAQ</a></li><li><a href="/contact">Contact</a></li><li><a href="/safety">Safety &amp; disclosures</a></li><li><a href="/terms">Terms</a></li></ul></div>
       <div class="foot-col"><h5>Get in touch</h5><ul>
+        <li><a href="tel:+18019010873">(801) 901-0873</a></li>
         <li><a href="mailto:hello@purebaric.com">hello@purebaric.com</a></li>
         <li class="foot-muted" style="margin-top:12px">Mon–Sat, 8:00 AM – 6:00 PM MT</li>
         <li class="foot-muted">Salt Lake City, UT</li></ul></div>
@@ -237,7 +263,8 @@ document.getElementById('resForm').addEventListener('submit',function(e){
   var months=mos(m);
   var plan='Selected plan: Soft-Shell 1.5 ATA, '+months+' rental at $'+r+'/mo'+(p>0?(' (save '+p+'%, $'+save.toLocaleString()+' total off)'):'')+'. Est. rental total '+money(total)+'. Delivery ZIP '+document.getElementById('zip').value+'.';
   var notes=document.getElementById('cnotes').value.trim();
-  var full=notes?(notes+'\n\n'+plan):plan;
+  var ack='Acknowledged: reviewed safety/contraindications; understands this is a request pending confirmation.';
+  var full=(notes?(notes+'\n\n'):'')+plan+'\n'+ack;
   var data=new URLSearchParams();
   data.set('chamber_id',document.getElementById('ch').value);
   data.set('rental-length',months);

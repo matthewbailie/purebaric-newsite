@@ -3,3 +3,4 @@ node_modules
 .gitignore
 .netlify
 .DS_Store
+*.md
