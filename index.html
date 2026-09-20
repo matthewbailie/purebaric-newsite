@@ -451,7 +451,7 @@ function checkZip(s){s=s||'';var el=document.getElementById('zip'+s),n=document.
 
 /* cookie consent */
 (function(){try{if(!localStorage.getItem('pb_cookie'))document.getElementById('cookie').hidden=false;}catch(e){}})();
-function cookieChoice(accept){try{localStorage.setItem('pb_cookie',accept?'accept':'decline');}catch(e){}document.getElementById('cookie').hidden=true;}
+function cookieChoice(accept){try{localStorage.setItem('pb_cookie',accept?'accept':'decline');}catch(e){}document.getElementById('cookie').hidden=true;if(accept){window.loadPurebaricAnalytics&&window.loadPurebaricAnalytics();}else{window.declinePurebaricAnalytics&&window.declinePurebaricAnalytics();}}
 
 /* photo lightbox */
 var LBI=['/images/chamber-hero.jpg','/images/chamber-side.jpg'];
