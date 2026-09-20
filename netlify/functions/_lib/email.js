@@ -17,7 +17,7 @@ async function send({ to, subject, html, text }) {
     from: FROM,
     to: recipients,
     // v4 SDK uses camelCase `replyTo`; v1-v2 used snake_case `reply_to`.
-    // We send both for maximum compatibility — extra fields are ignored.
+    // We send both for maximum compatibility, extra fields are ignored.
     replyTo: REPLY_TO,
     reply_to: REPLY_TO,
     subject,
@@ -28,10 +28,10 @@ async function send({ to, subject, html, text }) {
   try {
     result = await resend.emails.send(payload);
   } catch (err) {
-    // Network errors, timeouts, etc. — SDK threw outright
+    // Network errors, timeouts, etc., SDK threw outright
     throw new Error(`Resend send threw: ${err && err.message ? err.message : String(err)}`);
   }
-  // Resend SDK returns { data, error } — API-level errors are NOT thrown,
+  // Resend SDK returns { data, error }, API-level errors are NOT thrown,
   // they come back as result.error and must be inspected manually.
   if (result && result.error) {
     const errObj = result.error;
@@ -76,7 +76,7 @@ function wrap(bodyHtml) {
 </head>
 <body style="margin:0; padding:0; background:#e8e2d6; font-family:'Manrope', -apple-system, 'Segoe UI', Roboto, sans-serif; color:#3a3530; line-height:1.6;">
   <!-- Preheader: hidden on render, shown by inbox preview -->
-  <div style="display:none; font-size:1px; color:#e8e2d6; line-height:1px; max-height:0; max-width:0; overflow:hidden;">Purebaric — hyperbaric chamber rentals delivered across Utah.</div>
+  <div style="display:none; font-size:1px; color:#e8e2d6; line-height:1px; max-height:0; max-width:0; overflow:hidden;">Purebaric, hyperbaric chamber rentals delivered across Utah.</div>
 
   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background:#e8e2d6;">
     <tr>
@@ -129,10 +129,10 @@ async function notifyAdminWaitlistJoin(entry) {
   const html = wrap(`
     <p><strong>New waitlist signup</strong></p>
     <p>${escapeHtml(entry.name)} &lt;${escapeHtml(entry.email)}&gt;<br>
-    Phone: ${escapeHtml(entry.phone || "—")}<br>
-    ZIP: ${escapeHtml(entry.zip || "—")}<br>
-    Preferred start: ${escapeHtml(entry.preferredStartDate || "—")}</p>
-    <p><strong>Reason / context:</strong><br>${escapeHtml(entry.reason || "—").replace(/\n/g, "<br>")}</p>
+    Phone: ${escapeHtml(entry.phone || ", ")}<br>
+    ZIP: ${escapeHtml(entry.zip || ", ")}<br>
+    Preferred start: ${escapeHtml(entry.preferredStartDate || ", ")}</p>
+    <p><strong>Reason / context:</strong><br>${escapeHtml(entry.reason || ", ").replace(/\n/g, "<br>")}</p>
   `);
   return send({ to: ADMIN_NOTIFY, subject: `Waitlist: ${entry.name}`, html });
 }
@@ -141,10 +141,10 @@ async function notifyWaitlistChamberAvailable(entry, chamber) {
   const expires = new Date(entry.holdExpiresAt).toLocaleString("en-US", { timeZone: "America/Denver", dateStyle: "long", timeStyle: "short" });
   const html = wrap(`
     <p>Hi ${escapeHtml(entry.name.split(" ")[0])},</p>
-    <p>Good news — a chamber just opened up. We're holding <strong>${escapeHtml(chamber.name)}</strong> (${escapeHtml(chamber.model)}) for you until <strong>${expires} Mountain Time</strong>.</p>
+    <p>Good news, a chamber just opened up. We're holding <strong>${escapeHtml(chamber.name)}</strong> (${escapeHtml(chamber.model)}) for you until <strong>${expires} Mountain Time</strong>.</p>
     <p>To claim it, reply to this email or call us at <a href="tel:+18019010873" style="color:#b8654d;">(801) 901-0873</a> and we'll get you set up.</p>
     <p>If we don't hear back by then, the chamber will roll to the next person on the list.</p>
-    <p>— Matthew, Purebaric</p>
+    <p>Matthew, Purebaric</p>
   `);
   return send({
     to: entry.email,
@@ -169,13 +169,13 @@ async function notifyCustomerChamberAvailable(booking) {
     : "the date you requested";
   const html = wrap(`
     <p>Hi ${escapeHtml(first)},</p>
-    <p>Thanks for your booking request — <strong>we have a chamber available</strong>.</p>
+    <p>Thanks for your booking request, <strong>we have a chamber available</strong>.</p>
     <p>We will be in contact shortly to arrange delivery for ${escapeHtml(startDate)}. Most deliveries happen within 24–48 hours of confirmation.</p>
-    <p>— Matthew, Purebaric</p>
+    <p>Matthew, Purebaric</p>
   `);
   return send({
     to: booking.email,
-    subject: "Purebaric — chamber available, we'll be in touch shortly",
+    subject: "Purebaric, chamber available, we'll be in touch shortly",
     html,
   });
 }
@@ -187,11 +187,11 @@ async function notifyCustomerWaitlistAdded(booking) {
     <p>Hi ${escapeHtml(first)},</p>
     <p>Thanks for your booking request. All of our chambers are currently out on rental, so <strong>we've added you to our waitlist</strong>.</p>
     <p>Here's how it works: we work through the waitlist in order. When a chamber frees up, we email the next person in line and hold the unit for 24 hours so they can claim it. Most waitlist clients are matched within 1–3 weeks.</p>
-    <p>— Matthew, Purebaric</p>
+    <p>Matthew, Purebaric</p>
   `);
   return send({
     to: booking.email,
-    subject: "Purebaric — you've been added to the waitlist",
+    subject: "Purebaric, you've been added to the waitlist",
     html,
   });
 }
@@ -201,12 +201,12 @@ async function notifyAdminBooking(b, routing = {}) {
   const flags = b.medicalScreeningFlags && b.medicalScreeningFlags !== "none"
     ? `<strong style="color:#82402f;">${escapeHtml(b.medicalScreeningFlags)}</strong>`
     : "none";
-  const address = [b.streetAddress, b.city, b.state, b.zip].filter(Boolean).join(", ") || "—";
+  const address = [b.streetAddress, b.city, b.state, b.zip].filter(Boolean).join(", ") || ", ";
   let routingBlock = "";
   if (routing.autoNotified === "available") {
     routingBlock = `<p style="padding:0.85rem 1rem; background:#dbeacd; color:#3d5a26; border-radius:4px;"><strong>✓ Auto-routed: chamber available.</strong><br>Customer was emailed: "we will be in contact shortly to arrange delivery." <strong>Action: reach out to confirm.</strong></p>`;
   } else if (routing.autoNotified === "waitlist") {
-    routingBlock = `<p style="padding:0.85rem 1rem; background:#f2e5d2; color:#6b5326; border-radius:4px;"><strong>⏱ Auto-routed: no chambers available.</strong><br>Customer was added to waitlist and emailed about it. Linked waitlist id: <code>${escapeHtml(routing.linkedWaitlistId || "—")}</code></p>`;
+    routingBlock = `<p style="padding:0.85rem 1rem; background:#f2e5d2; color:#6b5326; border-radius:4px;"><strong>⏱ Auto-routed: no chambers available.</strong><br>Customer was added to waitlist and emailed about it. Linked waitlist id: <code>${escapeHtml(routing.linkedWaitlistId || ", ")}</code></p>`;
   }
   const subjectTag = routing.autoNotified === "available" ? " [chamber available]" :
                      routing.autoNotified === "waitlist" ? " [→ waitlist]" : "";
@@ -214,13 +214,13 @@ async function notifyAdminBooking(b, routing = {}) {
     <p><strong>New booking request</strong></p>
     ${routingBlock}
     <p>${escapeHtml(name)} &lt;${escapeHtml(b.email)}&gt;<br>
-    Phone: ${escapeHtml(b.phone || "—")}<br>
+    Phone: ${escapeHtml(b.phone || ", ")}<br>
     Delivery address: ${escapeHtml(address)}</p>
     <p><strong>Rental:</strong><br>
-    Start: ${escapeHtml(b.startDate || "—")}<br>
-    Length: ${escapeHtml(b.rentalLength || "—")}<br>
-    Reason: ${escapeHtml(b.reason || "—")}<br>
-    Prior experience: ${escapeHtml(b.priorExperience || "—")}</p>
+    Start: ${escapeHtml(b.startDate || ", ")}<br>
+    Length: ${escapeHtml(b.rentalLength || ", ")}<br>
+    Reason: ${escapeHtml(b.reason || ", ")}<br>
+    Prior experience: ${escapeHtml(b.priorExperience || ", ")}</p>
     <p><strong>Safety screening flags:</strong> ${flags}</p>
     <p><a href="https://purebaric.com/admin.html" style="color:#b8654d;">View in admin →</a></p>
   `);

@@ -1,4 +1,4 @@
-/* Purebaric — warm design system (shared shell + inner-page components) */
+/* Purebaric, warm design system (shared shell + inner-page components) */
 :root{--ink:#2b2320;--muted:#6f635b;--cream:#f7f2ea;--cream2:#efe7db;--terra:#b8654d;--terra-d:#9a4f3a;--terra-bg:#f4e7df;--line:#e6dccd;--card:#fffdf9;--ok:#5c7a34;--ok-bg:#ebf2da}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--cream);line-height:1.55}

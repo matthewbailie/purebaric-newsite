@@ -29,7 +29,7 @@ exports.handler = async (event) => {
   try {
     const body = parseBody(event);
 
-    // Honeypot — silently accept and drop
+    // Honeypot, silently accept and drop
     if (body["bot-field"]) {
       return { statusCode: 200, body: JSON.stringify({ ok: true }) };
     }
@@ -74,7 +74,7 @@ exports.handler = async (event) => {
       if (available > 0) {
         routing.autoNotified = "available";
         await updateBooking(booking.id, { autoNotified: "available" });
-        // Await the email — Lambda freezes pending I/O on return, so fire-and-forget
+        // Await the email, Lambda freezes pending I/O on return, so fire-and-forget
         // .catch() patterns lose the in-flight request before Resend receives it.
         try {
           await notifyCustomerChamberAvailable(booking);
@@ -92,7 +92,7 @@ exports.handler = async (event) => {
           zip: booking.zip || "",
           reason: booking.reason || "",
           preferredStartDate: booking.startDate || "",
-          adminNotes: `Auto-added from booking ${booking.id}. Rental length: ${booking.rentalLength || "—"}.`,
+          adminNotes: `Auto-added from booking ${booking.id}. Rental length: ${booking.rentalLength || ", "}.`,
         });
         routing.autoNotified = "waitlist";
         routing.linkedWaitlistId = waitlistEntry.id;
@@ -109,11 +109,11 @@ exports.handler = async (event) => {
         }
       }
     } catch (err) {
-      // Don't fail the booking submission if routing fails — admin will still get notified
+      // Don't fail the booking submission if routing fails, admin will still get notified
       console.error("auto-routing failed", err);
     }
 
-    // Admin notification — runs regardless of routing outcome
+    // Admin notification, runs regardless of routing outcome
     try {
       await notifyAdminBooking(booking, routing);
       emailResults.admin = "sent";

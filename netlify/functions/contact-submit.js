@@ -20,7 +20,7 @@ exports.handler = async (event) => {
   try {
     const body = parseBody(event);
 
-    // Honeypot — silently accept and drop
+    // Honeypot, silently accept and drop
     if (body["bot-field"]) return { statusCode: 200, body: JSON.stringify({ ok: true, success: true }) };
 
     const name = (body.name || "").trim();
@@ -41,7 +41,7 @@ exports.handler = async (event) => {
       <h2>New contact message</h2>
       <p><strong>Name:</strong> ${esc(name)}</p>
       <p><strong>Email:</strong> ${esc(email)}</p>
-      <p><strong>Phone:</strong> ${esc(phone) || "—"}</p>
+      <p><strong>Phone:</strong> ${esc(phone) || ", "}</p>
       <p><strong>Topic:</strong> ${esc(topic)}</p>
       <p><strong>Message:</strong></p>
       <p>${esc(message).replace(/\n/g, "<br>")}</p>

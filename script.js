@@ -11,7 +11,7 @@
 })();
 
 // Netlify Identity tokens (invite / recovery / confirmation) arrive in the URL hash.
-// They're only useful on /admin where the Identity widget is loaded — so bounce there.
+// They're only useful on /admin where the Identity widget is loaded, so bounce there.
 (function bounceIdentityTokensToAdmin() {
   const hash = window.location.hash || '';
   const isToken = /^#(invite_token|recovery_token|confirmation_token|email_change_token)=/.test(hash);
@@ -74,7 +74,7 @@ if (heroImage && lightbox) {
   });
 }
 
-// Analytics helper — safe no-op if gtag isn't loaded (e.g. local preview, ad-blockers)
+// Analytics helper, safe no-op if gtag isn't loaded (e.g. local preview, ad-blockers)
 function track(event, params) {
   try {
     if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
@@ -136,7 +136,7 @@ async function submitAjaxForm(form, endpoint) {
     });
     if (!resp.ok) throw new Error('Form returned ' + resp.status);
     if (btn) {
-      btn.textContent = 'Sent ✓ — we\'ll be in touch';
+      btn.textContent = 'Sent ✓, we\'ll be in touch';
       btn.style.background = 'var(--moss-deep)';
     }
     const formName = form.getAttribute('name') || form.id || 'unknown';
@@ -157,7 +157,7 @@ async function submitAjaxForm(form, endpoint) {
   } catch (err) {
     console.error('Form submission failed:', err);
     if (btn) {
-      btn.textContent = 'Send failed — please email hello@purebaric.com';
+      btn.textContent = 'Send failed, please email hello@purebaric.com';
       btn.style.background = '';
       btn.disabled = false;
     }
@@ -225,11 +225,11 @@ if (zipForm) {
       result.classList.add('zip-yes');
       zipTier = 'tier2';
     } else if (ZIP_UTAH.test(zip)) {
-      result.innerHTML = 'We may be able to deliver to ' + zip + ' — please <a href="/contact?topic=service-area" style="color:inherit;text-decoration:underline;">contact us</a> for a quote.';
+      result.innerHTML = 'We may be able to deliver to ' + zip + ', please <a href="/contact?topic=service-area" style="color:inherit;text-decoration:underline;">contact us</a> for a quote.';
       result.classList.add('zip-maybe');
       zipTier = 'tier3-quote';
     } else if (/^8[34]\d{3}$/.test(zip)) {
-      result.innerHTML = zip + ' is outside our regular delivery area. <a href="/contact?topic=service-area" style="color:inherit;text-decoration:underline;">Get in touch</a> — we may still be able to help.';
+      result.innerHTML = zip + ' is outside our regular delivery area. <a href="/contact?topic=service-area" style="color:inherit;text-decoration:underline;">Get in touch</a>we may still be able to help.';
       result.classList.add('zip-maybe');
       zipTier = 'utah-outside-area';
     } else {
@@ -333,7 +333,7 @@ if (safetyYesNotice) {
   safetyRadios.forEach(r => r.addEventListener('change', updateSafetyNotice));
 }
 
-// Sticky mobile CTA — reveal after user scrolls past hero
+// Sticky mobile CTA, reveal after user scrolls past hero
 const mobileBar = document.getElementById('mobileCtaBar');
 if (mobileBar) {
   const onScroll = () => {
@@ -385,9 +385,9 @@ if (bookingForm) {
       if (result) {
         result.hidden = false;
         if (json.autoNotified === 'available') {
-          result.textContent = "✓ Booking request received — we have a chamber available. Check your email; we will be in contact soon.";
+          result.textContent = "✓ Booking request received, we have a chamber available. Check your email; we will be in contact soon.";
         } else if (json.autoNotified === 'waitlist') {
-          result.textContent = "✓ Booking received. All chambers are currently out on rental, so we've added you to the waitlist. Check your email — we'll notify you the moment a chamber opens up.";
+          result.textContent = "✓ Booking received. All chambers are currently out on rental, so we've added you to the waitlist. Check your email, we'll notify you the moment a chamber opens up.";
         } else {
           result.textContent = "✓ Booking request received. We will be in contact shortly to arrange delivery.";
         }
@@ -411,7 +411,7 @@ if (bookingForm) {
       });
     } catch (err) {
       console.error('booking submit failed', err);
-      if (btn) { btn.textContent = 'Send failed — please email hello@purebaric.com'; btn.disabled = false; }
+      if (btn) { btn.textContent = 'Send failed, please email hello@purebaric.com'; btn.disabled = false; }
     }
   });
 }
@@ -429,7 +429,7 @@ if (bookingFlow && bookingUnavailable) {
         bookingUnavailable.style.display = 'block';
         const detail = document.getElementById('booking-unavailable-detail');
         if (detail) {
-          detail.textContent = `All ${data.total} chambers are out on rental right now. Join the waitlist — we'll notify you the moment a chamber opens up. Holds are first-come, first-served.`;
+          detail.textContent = `All ${data.total} chambers are out on rental right now. Join the waitlist, we'll notify you the moment a chamber opens up. Holds are first-come, first-served.`;
         }
       }
     })

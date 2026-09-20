@@ -50,7 +50,7 @@ exports.handler = async (event, context) => {
         return json(400, { error: "startDate must be <= endDate" });
       }
 
-      // Conflict detection — unless caller explicitly overrides
+      // Conflict detection, unless caller explicitly overrides
       if (!body.overrideConflict) {
         const conflict = await findRentalConflict({
           chamberId: body.chamberId,
@@ -108,7 +108,7 @@ exports.handler = async (event, context) => {
           if (conflict) {
             return json(409, {
               error: "rental_conflict",
-              message: `Conflict with existing rental ${conflict.startDate} → ${conflict.endDate} (${conflict.renter?.name || "—"})`,
+              message: `Conflict with existing rental ${conflict.startDate} → ${conflict.endDate} (${conflict.renter?.name || ", "})`,
               conflict,
             });
           }

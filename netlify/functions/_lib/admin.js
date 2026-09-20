@@ -26,9 +26,9 @@ function parseBody(event) {
 }
 
 // Pull the resource id (and optional sub-action) from a path like:
-//   /api/admin/chambers/abc-123          (original request — most common)
+//   /api/admin/chambers/abc-123          (original request, most common)
 //   /api/admin/waitlist/abc-123/convert
-//   /.netlify/functions/admin-chambers/abc-123  (rewritten — fallback)
+//   /.netlify/functions/admin-chambers/abc-123  (rewritten, fallback)
 // Pass the bare segment name ("chambers", "rentals", "bookings", "waitlist", "customers").
 function parsePathSegments(event, segmentName) {
   const path = event.path || "";

@@ -30,7 +30,7 @@ exports.handler = async (event, context) => {
       return json(200, { waitlist: entries });
     }
 
-    // POST /:id/hold  — offer-hold a chamber to this entry
+    // POST /:id/hold, offer-hold a chamber to this entry
     if (method === "POST" && id && action === "hold") {
       const body = parseBody(event);
       if (!body.chamberId) return json(400, { error: "chamberId required" });
@@ -54,7 +54,7 @@ exports.handler = async (event, context) => {
       return json(200, { entry: updated });
     }
 
-    // POST /:id/convert — mark converted (rentalId optional, for linking)
+    // POST /:id/convert, mark converted (rentalId optional, for linking)
     if (method === "POST" && id && action === "convert") {
       const body = parseBody(event);
       const updated = await updateWaitlistEntry(id, {

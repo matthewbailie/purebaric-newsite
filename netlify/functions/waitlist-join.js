@@ -18,7 +18,7 @@ exports.handler = async (event) => {
   try {
     const body = parseBody(event);
 
-    // Honeypot — silently accept and drop
+    // Honeypot, silently accept and drop
     if (body["bot-field"]) {
       return { statusCode: 200, body: JSON.stringify({ ok: true }) };
     }
@@ -56,7 +56,7 @@ exports.handler = async (event) => {
       preferredStartDate: (body["preferred-start"] || body.preferredStartDate || body.earliest_start || "").trim(),
     });
 
-    // Await the admin notification — Lambda freezes pending I/O on return, so
+    // Await the admin notification, Lambda freezes pending I/O on return, so
     // fire-and-forget .catch() patterns lose the in-flight request before Resend
     // receives it. Errors are caught so they don't fail the user's submission.
     let adminEmailResult = null;

@@ -22,7 +22,7 @@ function store(name) {
   // Prefer Netlify's automatic Blobs context (no token, never expires). This
   // site is deployed manually, where auto-context is often NOT injected, so we
   // fall back to explicit siteID + token from env vars. Keep NETLIFY_API_TOKEN
-  // valid — an expired token is what caused the 401 Blobs errors.
+  // valid, an expired token is what caused the 401 Blobs errors.
   try {
     return getStore(name);
   } catch (e) {
@@ -369,7 +369,7 @@ async function listCustomers() {
     return map.get(key);
   }
 
-  // Seed from manually-created customers first — these are the source of truth for name/phone/address/notes/tags
+  // Seed from manually-created customers first, these are the source of truth for name/phone/address/notes/tags
   for (const m of manualCustomers) {
     const c = ensure(m.email);
     if (!c) continue;

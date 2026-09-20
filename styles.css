@@ -1,5 +1,5 @@
 /* ============================================
-   PUREBARIC — Modern Wellness Design System
+   PUREBARIC, Modern Wellness Design System
    ============================================ */
 
 :root {
@@ -12,7 +12,7 @@
   --terracotta-deep: #8f5538;
   --moss: #6b7c5e;
   --moss-deep: #4a5a40;
-  --stone: #3a3530;       /* darker than original #5a544a — AAA on cream */
+  --stone: #3a3530;       /* darker than original #5a544a, AAA on cream */
   --stone-muted: #5a544a; /* original tone retained for fine print / secondary labels */
   --charcoal: #221e1a;
   --ink: #1a1f1a; /* matches the dark green/ink in the logo */
@@ -393,7 +393,7 @@ a { color: inherit; text-decoration: none; transition: opacity 0.2s ease, color 
   color: var(--stone);
 }
 
-/* Hero image — full chamber in-frame (no crop) */
+/* Hero image, full chamber in-frame (no crop) */
 .hero-image {
   position: relative;
   aspect-ratio: 5 / 4;
@@ -822,7 +822,7 @@ body.lightbox-open { overflow: hidden; }
   flex-shrink: 0;
 }
 
-/* Featured-large layout (desktop) — 5 items, asymmetric */
+/* Featured-large layout (desktop), 5 items, asymmetric */
 .gallery-item-1 { grid-column: span 7; grid-row: span 4; }
 .gallery-item-2 { grid-column: span 5; grid-row: span 2; }
 .gallery-item-3 { grid-column: span 5; grid-row: span 2; }
@@ -1436,7 +1436,7 @@ label.checkbox-item input[type="checkbox"],
 }
 
 @media (max-width: 640px) {
-  /* Tighten section spacing for mobile — defaults are tuned for desktop */
+  /* Tighten section spacing for mobile, defaults are tuned for desktop */
   :root {
     --space-xl: 2.5rem;
     --space-lg: 1.5rem;
@@ -2466,7 +2466,7 @@ label.checkbox-item input[type="checkbox"],
   .uc-protocol { grid-template-columns: 1fr; }
 }
 
-/* ===== CHAMBERS PAGE — tighter section spacing =====
+/* ===== CHAMBERS PAGE, tighter section spacing =====
    The default --space-xl section padding makes the chambers page feel sparse
    because the page-header, chamber-feature, and gallery stack three full
    section-paddings on top of each other. Override per-section here. */
