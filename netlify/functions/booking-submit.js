@@ -8,7 +8,24 @@ const {
   notifyAdminBooking,
   notifyCustomerChamberAvailable,
   notifyCustomerWaitlistAdded,
+  notifyAdminOutOfArea,
 } = require("./_lib/email");
+
+// ───────── Delivery service area (ZIP gating) ─────────
+// Served counties (Wasatch Front + Park City): Salt Lake, Utah, Davis, Weber,
+// Summit, Wasatch, Tooele. 840xx/841xx cover most; 844xx = Ogden/Weber; the
+// explicit set covers served Utah-County (Provo area) + Weber ZIPs in 846xx/842xx.
+// Owner: to change the delivery area, edit this rule (mirror it in book.html + index.html).
+const SERVED_ZIP_EXTRA = new Set([
+  "84201","84244",
+  "84601","84602","84603","84604","84605","84606",
+  "84626","84633","84651","84653","84660","84663","84664",
+]);
+function servedZip(zip) {
+  if (!/^\d{5}$/.test(zip)) return false;
+  if (/^(840|841|844)\d\d$/.test(zip)) return true;
+  return SERVED_ZIP_EXTRA.has(zip);
+}
 
 function parseBody(event) {
   if (!event.body) return {};
@@ -49,10 +66,13 @@ exports.handler = async (event) => {
       };
     }
 
+    const zip = (body.zip || body.zip_code || "").trim();
+    const outOfArea = zip !== "" && !servedZip(zip);
+
     const booking = await createBooking({
       firstName, lastName, email,
       phone: (body.phone || body.customer_phone || "").trim(),
-      zip: (body.zip || body.zip_code || "").trim(),
+      zip,
       streetAddress: (body["street-address"] || "").trim(),
       city: (body.city || "").trim(),
       state: (body.state || "").trim(),
@@ -63,7 +83,35 @@ exports.handler = async (event) => {
       medicalScreeningFlags: (body["medical-screening-flags"] || "none").trim(),
       consentMedical: bool(body["consent-medical"]),
       consentTerms: bool(body["consent-terms"]),
+      outOfArea,
     });
+
+    // ─── Out-of-area: do NOT send the customer a reservation confirmation and do
+    //     NOT route to the waitlist. Log it and alert the admin so they can follow up. ───
+    if (outOfArea) {
+      let adminEmail = null;
+      try {
+        await notifyAdminOutOfArea(booking);
+        adminEmail = "sent";
+      } catch (err) {
+        console.error("admin out-of-area notify failed", err);
+        adminEmail = `failed: ${err.message}`;
+      }
+      return {
+        statusCode: 200,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ok: true,
+          success: true,
+          outOfArea: true,
+          id: booking.id,
+          booking_number: booking.id.slice(0, 8).toUpperCase(),
+          message:
+            "Thanks. Your delivery ZIP is outside our current service area, so we haven't scheduled a delivery, but we've logged your request and our team will reach out to see if we can help.",
+          emailResults: { admin: adminEmail },
+        }),
+      };
+    }
 
     // ─── Auto-routing: chamber available → notify customer; else → waitlist + notify ───
     const routing = { autoNotified: null, linkedWaitlistId: null };

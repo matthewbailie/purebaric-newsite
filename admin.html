@@ -1118,12 +1118,16 @@
       } else if (b.autoNotified === 'waitlist') {
         routingBadge = `<div class="renter-line" style="color:#6b5326;">📩 Notified: added to waitlist</div>`;
       }
+      const outOfAreaBadge = b.outOfArea
+        ? `<div class="renter-line"><span style="display:inline-block;background:#f4e7df;color:#9a4f3a;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;padding:2px 8px;border-radius:999px;">⚠ Out of area · no auto-email sent</span></div>`
+        : '';
       return `
-      <tr>
+      <tr${b.outOfArea ? ' style="background:#fbf3ec;"' : ''}>
         <td>${escape(created)}</td>
         <td><strong>${escape(b.firstName + ' ' + (b.lastName || ''))}</strong>
           <div class="renter-line">${escape(b.email)}${b.phone ? ' · ' + escape(b.phone) : ''}</div>
           <div class="renter-line">${escape(address || ', ')}</div>
+          ${outOfAreaBadge}
           ${routingBadge}
         </td>
         <td>${escape(b.startDate || ', ')} · ${escape(b.rentalLength || ', ')}<div class="renter-line">${escape((b.reason || '').slice(0, 120))}</div>${flags}</td>

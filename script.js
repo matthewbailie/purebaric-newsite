@@ -236,7 +236,9 @@ if (zipForm) {
       result.innerHTML = "We currently serve Utah only. Want to know when we expand? <a href=\"/waitlist?reason=out-of-area\" style=\"color:inherit;text-decoration:underline;\">Join the out-of-area list →</a>";
       result.classList.add('zip-no');
     }
-    track('zip_check', { zip: zip, tier: zipTier });
+    // Privacy: send only the categorical result, never the ZIP itself.
+    var saResult = (zipTier === 'tier1' || zipTier === 'tier2') ? 'eligible' : 'unsupported';
+    track('service_area_check', { result: saResult });
   });
 }
 
@@ -403,7 +405,8 @@ if (bookingForm) {
       
       const rentalValueMap = { '1 month': 729, '2 months': 1318, '6 months': 3474, '1 year': 6348 };
       const conversionValue = rentalValueMap[formData.get('rental-length')] || 729;
-      track('booking_submit', {
+      track('booking_request_submit', {
+        source: 'page_modal',
         routing: json.autoNotified || 'unknown',
         rental_length: formData.get('rental-length') || '',
         value: conversionValue,
@@ -457,9 +460,11 @@ if (bookingFlow && bookingUnavailable) {
   function handleConsent(choice) {
     localStorage.setItem('purebaric_cookie_consent', choice);
     banner.hidden = true;
-    
-    // Optional: if declined, you could disable tracking scripts here
-    // if (choice === 'declined') { disableAnalytics(); }
+    if (choice === 'accepted') {
+      if (typeof window.loadPurebaricAnalytics === 'function') window.loadPurebaricAnalytics();
+    } else if (typeof window.declinePurebaricAnalytics === 'function') {
+      window.declinePurebaricAnalytics();
+    }
     track('cookie_consent', { status: choice });
   }
 

@@ -32,6 +32,9 @@
 .result{display:none;margin-bottom:18px;padding:16px 18px;border-radius:12px;font-weight:600;font-size:15px;line-height:1.5}
 .result.ok{display:block;background:var(--ok-bg);color:var(--ok);border:1px solid #cfe0b0}
 .result.err{display:block;background:#fbeae5;color:#9a4f3a;border:1px solid #eccdc3}
+.result.warn{display:block;background:#f4e7df;color:#7a4a1e;border:1px solid #e6cdbb}
+.zipnote{font-size:12.5px;margin-top:6px;line-height:1.5}
+.zipnote.ok{color:#5c7a34}.zipnote.warn{color:#9a4f3a}
 /* summary card */
 .book-side-label{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600;margin-bottom:10px}
 .book{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;position:sticky;top:88px}
@@ -63,6 +66,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   .frm .row2{grid-template-columns:1fr}
 }
 </style>
+  <script src="/analytics.js"></script>
 </head><body>
 <header>
   <div class="wrap nav">
@@ -111,7 +115,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
         </div>
         <div class="row2">
           <div class="fg"><label>City <span class="req">*</span></label><input type="text" id="ccity" name="city" placeholder="Lehi" required></div>
-          <div class="fg"><label>Delivery ZIP <span class="req">*</span></label><input type="text" id="zip" name="zip_code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="84043" required></div>
+          <div class="fg"><label>Delivery ZIP <span class="req">*</span></label><input type="text" id="zip" name="zip_code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="84043" required><div id="zipNote" class="zipnote" hidden></div></div>
         </div>
         <div class="fg"><label>Preferred start date</label><input type="date" id="cdate" name="preferred_date"></div>
         <div class="fg"><label>Notes (optional)</label><textarea id="cnotes" name="notes" placeholder="Ground floor setup, stairs, morning delivery preference..."></textarea></div>
@@ -198,6 +202,23 @@ function recalc(){
   if(pp<=0){w.classList.add('hide');}
   else{w.classList.remove('hide');document.getElementById('badge').textContent='Save '+pp+'%';document.getElementById('save').textContent=money(BASE-r)+'/mo off';}
 }
+/* delivery service area (ZIP) - mirror of the server-side rule in booking-submit.js */
+var ZIP_EXTRA={"84201":1,"84244":1,"84601":1,"84602":1,"84603":1,"84604":1,"84605":1,"84606":1,"84626":1,"84633":1,"84651":1,"84653":1,"84660":1,"84663":1,"84664":1};
+function servedZip(z){return /^(840|841|844)\d\d$/.test(z)||!!ZIP_EXTRA[z];}
+function checkZip(){
+  var z=document.getElementById('zip').value.trim();var n=document.getElementById('zipNote');
+  if(!/^\d{5}$/.test(z)){n.hidden=true;return;}
+  if(servedZip(z)){n.hidden=false;n.className='zipnote ok';n.textContent='✓ We deliver to '+z+'.';}
+  else{n.hidden=false;n.className='zipnote warn';n.textContent=z+' is outside our current delivery area. You can still submit and our team will reach out if we can help.';}
+}
+document.getElementById('zip').addEventListener('input',checkZip);
+
+/* analytics: plan choice, service-area result, form start (no PII) */
+document.getElementById('zip').addEventListener('change',function(){var z=this.value.trim();if(!/^\d{5}$/.test(z))return;trackPurebaricEvent('service_area_check',{result:servedZip(z)?'eligible':'unsupported',rental_months:+document.getElementById('mo').value});});
+document.getElementById('mo').addEventListener('change',function(){var mm=+this.value,rr=rate(mm);trackPurebaricEvent('select_rental_plan',{chamber_id:'soft_shell_1_5_ata',rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD'});});
+var bookingFormStarted=false;
+document.getElementById('resForm').addEventListener('focusin',function(){if(bookingFormStarted)return;bookingFormStarted=true;trackPurebaricEvent('booking_form_start',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:+document.getElementById('mo').value||1,source:'book_page'});});
+
 /* carry over homepage selection */
 (function(){
   var q=new URLSearchParams(location.search);
@@ -205,7 +226,7 @@ function recalc(){
   if(m>=1&&m<=12)document.getElementById('mo').value=m;
   var z=q.get('zip');
   if(z&&/^\d{3,5}$/.test(z))document.getElementById('zip').value=z;
-  recalc();
+  recalc();checkZip();
 })();
 
 document.getElementById('resForm').addEventListener('submit',function(e){
@@ -233,18 +254,26 @@ document.getElementById('resForm').addEventListener('submit',function(e){
    .then(function(r){return r.json().catch(function(){return {};});})
    .then(function(j){
      btn.disabled=false;btn.innerHTML=orig;
-     if(j&&(j.success||j.ok)){
+     if(j&&j.outOfArea){
+       res.className='result warn';
+       res.textContent=j.message||"Thanks. Your ZIP is outside our current delivery area, so we haven't scheduled a delivery, but we've logged your request and our team will reach out to see if we can help.";
+       f.reset();document.getElementById('mo').value=m;recalc();document.getElementById('zipNote').hidden=true;
+       window.scrollTo({top:0,behavior:'smooth'});
+     }else if(j&&(j.success||j.ok)){
+       trackPurebaricEvent('booking_request_submit',{chamber_id:String(document.getElementById('ch').value),rental_months:m,estimated_total:total,currency:'USD',source:'book_page'});
        res.className='result ok';
        res.innerHTML='Reservation received'+(j.booking_number?(' ('+j.booking_number+')'):'')+'. '+(j.message||"Our team will contact you shortly to confirm delivery.");
-       f.reset();document.getElementById('mo').value=m;recalc();
+       f.reset();document.getElementById('mo').value=m;recalc();document.getElementById('zipNote').hidden=true;
        window.scrollTo({top:0,behavior:'smooth'});
      }else{
+       trackPurebaricEvent('booking_request_error',{error_type:'api_rejected'});
        res.className='result err';
        res.textContent=(j&&j.message)||'Something went wrong. Please try again, or email hello@purebaric.com.';
      }
    })
    .catch(function(){
      btn.disabled=false;btn.innerHTML=orig;
+     trackPurebaricEvent('booking_request_error',{error_type:'network_error'});
      res.className='result err';
      res.textContent='Network error. Please try again, or email hello@purebaric.com.';
    });

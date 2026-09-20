@@ -90,7 +90,8 @@
     <!-- Main Custom CSS -->
     <link rel="stylesheet" href="/styles.css">
     
-    </head>
+      <script src="/analytics.js"></script>
+</head>
 <body>
 
 <a href="#main" class="skip-link">Skip to content</a>
@@ -525,6 +526,13 @@ $(document).ready(function() {
         if (response.success) {
           toastr.success(response.message, 'Added to Waitlist!');
           resultDiv.html('✓ ' + response.message).slideDown();
+          if (typeof window.track === 'function') {
+            window.track('waitlist_join', {
+              rental_length: (document.querySelector('#waitlistForm [name="rental_length"]') || {}).value || 'unspecified',
+              urgency: (document.querySelector('#waitlistForm [name="urgency"]') || {}).value || 'unspecified',
+              marketing_opt_in: !!(document.querySelector('#waitlistForm [name="opt_in_updates"]') || {}).checked
+            });
+          }
           form[0].reset();
         } else {
           toastr.error(response.message || 'Something went wrong.', 'Error');

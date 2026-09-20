@@ -217,6 +217,7 @@ async function updateWaitlistEntry(id, patch) {
 //   streetAddress, city, state,
 //   startDate, rentalLength, reason, priorExperience,
 //   medicalScreeningFlags, consentMedical, consentTerms,
+//   outOfArea (true = ZIP outside the delivery area; no customer email sent),
 //   adminNotes, convertedRentalId, createdAt, updatedAt
 // }
 
