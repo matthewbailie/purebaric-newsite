@@ -308,12 +308,12 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
           <select id="ch"><option>Soft-Shell 1.5 ATA</option><option disabled>1.5 ATA Sitting Chamber, Coming soon (Late Oct 2026)</option></select></div>
         <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol">3 months</span></div>
           <input type="range" min="1" max="12" step="1" value="3" id="mo" oninput="recalc('')" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
-        <div class="field"><label>Delivery ZIP</label><input value="84043" aria-label="Delivery ZIP"></div>
+        <div class="field"><label>Delivery ZIP</label><input value="84043" id="zip" aria-label="Delivery ZIP"></div>
         <div class="brow"><span id="bd">$659 × 3 months</span><span id="sub">$1,977</span></div>
         <div class="brow"><span>You save</span><span class="amt" id="tot">$210</span></div>
         <div class="brow"><span>Delivery, install &amp; training</span><span class="amt">Included</span></div>
         <div class="total"><span>Due today</span><span>$0</span></div>
-        <a class="btn btn-primary" href="/book">Request reservation</a>
+        <a class="btn btn-primary" href="/book" onclick="return goBook('')">Request reservation</a>
         <div class="fine">No charges upfront · we confirm delivery to your ZIP</div>
       </div>
     </aside>
@@ -370,10 +370,10 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
     <div class="svwrap" id="svw2"><div class="sv1"><span class="pill1" id="badge2">Save 10%</span><span class="txt1" id="save2">$70/mo off</span></div></div>
     <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol2">3 months</span></div>
       <input type="range" min="1" max="12" step="1" value="3" id="mo2" oninput="recalc('2')" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
-    <div class="field"><label>Delivery ZIP</label><input value="84043" aria-label="Delivery ZIP"></div>
+    <div class="field"><label>Delivery ZIP</label><input value="84043" id="zip2" aria-label="Delivery ZIP"></div>
     <div class="brow"><span id="bd2">$659 × 3 months</span><span id="sub2">$1,977</span></div>
     <div class="brow"><span>You save</span><span class="amt" id="tot2">$210</span></div>
-    <a class="btn btn-primary" href="/book" style="width:100%;margin-top:16px;padding:14px;font-size:16px;text-align:center">Request reservation</a>
+    <a class="btn btn-primary" href="/book" onclick="return goBook('2')" style="width:100%;margin-top:16px;padding:14px;font-size:16px;text-align:center">Request reservation</a>
   </div>
 </div>
 
@@ -424,6 +424,7 @@ function recalc(s){s=s||'';
 function openSheet(){document.getElementById('sheet').classList.add('open');document.getElementById('scrim').classList.add('open')}
 function closeSheet(){document.getElementById('sheet').classList.remove('open');document.getElementById('scrim').classList.remove('open')}
 function toggleMenu(){var m=document.getElementById('mobileMenu'),b=document.querySelector('.nav-toggle');var open=m.classList.toggle('open');b.setAttribute('aria-expanded',open)}
+function goBook(s){s=s||'';var m=+document.getElementById('mo'+s).value;var zEl=document.getElementById('zip'+s);var z=zEl?zEl.value.trim():'';location.href='/book?months='+m+(z?('&zip='+encodeURIComponent(z)):'');return false;}
 
 /* cookie consent */
 (function(){try{if(!localStorage.getItem('pb_cookie'))document.getElementById('cookie').hidden=false;}catch(e){}})();

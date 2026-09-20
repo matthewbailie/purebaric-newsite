@@ -69,9 +69,11 @@ h2{letter-spacing:-.01em}
 .gal figcaption{position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,.92);font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px}
 
 /* ── cta band ── */
-.cta-band{background:var(--terra-bg);border-radius:16px;padding:44px;text-align:center}
+.cta-band{background:var(--terra-bg);border-radius:16px;overflow:hidden;display:flex;align-items:stretch;text-align:left}
+.cta-img{width:38%;max-width:340px;flex:none;object-fit:cover;display:block}
+.cta-text{flex:1;padding:38px 40px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
 .cta-band h2{font-size:26px;font-weight:800;margin-bottom:8px}
-.cta-band p{color:#5f544d;max-width:520px;margin:0 auto 18px}
+.cta-band p{color:#5f544d;max-width:520px;margin:0 0 18px}
 
 /* ── footer ── */
 .footer{background:var(--ink);color:#e8ddd2;padding:48px 0 28px}
@@ -100,7 +102,7 @@ h2{letter-spacing:-.01em}
   .two-col{grid-template-columns:1fr;gap:26px}
   .soon-card{grid-template-columns:1fr}.soon-card img{min-height:200px}
   .gal{grid-template-columns:1fr 1fr}
-  .cta-band{padding:32px 22px}
+  .cta-band{flex-direction:column}.cta-img{width:100%;max-width:none;height:180px}.cta-text{padding:28px 22px}
   .cookie-in{flex-direction:column;align-items:stretch;text-align:center}
   .foot-grid{grid-template-columns:1fr 1fr}.foot-brand{grid-column:1/-1}
 }
