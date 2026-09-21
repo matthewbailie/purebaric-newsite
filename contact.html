@@ -102,16 +102,16 @@
         <p hidden><label>Do not fill this out <input name="bot-field" id="cBot" tabindex="-1" autocomplete="off"></label></p>
 
         <div class="row2">
-          <div class="fg"><label>Name <span class="req">*</span></label><input type="text" id="cName" name="name" required></div>
-          <div class="fg"><label>Email <span class="req">*</span></label><input type="email" id="cEmail" name="email" required></div>
+          <div class="fg"><label for="cName">Name <span class="req">*</span></label><input type="text" id="cName" name="name" autocomplete="name" required></div>
+          <div class="fg"><label for="cEmail">Email <span class="req">*</span></label><input type="email" id="cEmail" name="email" autocomplete="email" required></div>
         </div>
-        <div class="fg"><label>Phone (optional)</label><input type="tel" id="cPhone" name="phone" placeholder="(801) 555-0192"></div>
-        <div class="fg"><label>What's this about? <span class="req">*</span></label>
+        <div class="fg"><label for="cPhone">Phone (optional)</label><input type="tel" id="cPhone" name="phone" autocomplete="tel" placeholder="(801) 555-0192"></div>
+        <div class="fg"><label for="cTopic">What's this about? <span class="req">*</span></label>
           <select id="cTopic" name="topic" required>
             <option value="">Select a topic</option>
             <option>Question about a rental</option>
             <option>Service area inquiry</option>
-            <option>Medical / contraindication question</option>
+            <option>Safety information / physician-clearance process</option>
             <option>Custom or extended rental</option>
             <option>Existing rental support</option>
             <option>Practitioner referral program</option>
@@ -119,8 +119,9 @@
             <option>Other</option>
           </select>
         </div>
-        <div class="fg"><label>Your message <span class="req">*</span></label><textarea id="cMsg" name="message" required placeholder="Tell us what you're thinking about, what you'd like to know, or how we can help."></textarea></div>
+        <div class="fg"><label for="cMsg">Your message <span class="req">*</span></label><textarea id="cMsg" name="message" required placeholder="Tell us what you're thinking about, what you'd like to know, or how we can help."></textarea></div>
         <button type="submit" class="btn btn-primary submit" id="cSubmit">Send message</button>
+        <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.5">Purebaric can't provide personalized medical advice. Please don't include sensitive health details here, for medical questions, talk with your physician.</p>
       </form>
 
     </div>
@@ -138,7 +139,7 @@
       <div class="foot-col"><h5>Service</h5><ul>
         <li><a href="/how-it-works">How it works</a></li><li><a href="/chambers">Chambers</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/service-area">Service area</a></li><li><a href="/book">Reserve</a></li><li><a href="/waitlist">Waitlist</a></li></ul></div>
       <div class="foot-col"><h5>Company</h5><ul>
-        <li><a href="/about">About</a></li><li><a href="/faq">FAQ</a></li><li><a href="/contact">Contact</a></li><li><a href="/safety">Safety &amp; disclosures</a></li><li><a href="/terms">Terms</a></li></ul></div>
+        <li><a href="/about">About</a></li><li><a href="/faq">FAQ</a></li><li><a href="/contact">Contact</a></li><li><a href="/safety">Safety &amp; disclosures</a></li><li><a href="/terms">Terms</a></li><li><a href="/privacy">Privacy</a></li></ul></div>
       <div class="foot-col"><h5>Get in touch</h5><ul>
         <li><a href="tel:+18019010873">(801) 901-0873</a></li>
         <li><a href="mailto:hello@purebaric.com">hello@purebaric.com</a></li>
@@ -154,7 +155,7 @@
 
 <div class="cookie" id="cookie" hidden>
   <div class="wrap cookie-in">
-    <p>We use cookies to run this site and understand traffic. See our <a href="/terms">privacy policy</a>.</p>
+    <p>We use cookies to run this site and understand traffic. See our <a href="/privacy">privacy policy</a>.</p>
     <div class="cookie-btns"><button class="btn btn-ghost" onclick="cookieChoice(false)">Decline</button><button class="btn btn-primary" onclick="cookieChoice(true)">Accept</button></div>
   </div>
 </div>
@@ -163,7 +164,7 @@
 <script>
 /* prefill topic from ?topic= (e.g. service-area page links here) */
 (function(){
-  var map={'service-area':'Service area inquiry','rental':'Question about a rental','medical':'Medical / contraindication question','custom':'Custom or extended rental','support':'Existing rental support','practitioner':'Practitioner referral program'};
+  var map={'service-area':'Service area inquiry','rental':'Question about a rental','medical':'Safety information / physician-clearance process','custom':'Custom or extended rental','support':'Existing rental support','practitioner':'Practitioner referral program'};
   var t=new URLSearchParams(location.search).get('topic');
   if(t&&map[t]){var sel=document.getElementById('cTopic');sel.value=map[t];}
 })();

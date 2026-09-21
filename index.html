@@ -31,7 +31,7 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "MedicalBusiness",
+  "@type": "LocalBusiness",
   "@id": "#organization",
   "name": "Purebaric",
   "alternateName": "Purebaric Utah HBOT Rentals",
@@ -250,7 +250,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
         <h1>Hyperbaric rentals at home.</h1>
         <p>We handle delivery, setup, and support, so you can focus on your recovery. Unlimited daily sessions in your own home.</p>
         <div class="trustrow">
-          <span><span class="ck">✓</span> No charge upfront</span>
+          <span><span class="ck">✓</span> No charge to submit a request</span>
           <span><span class="ck">✓</span> Delivery, setup &amp; training included</span>
           <span><span class="ck">✓</span> Free cancellation up to 7 days before delivery</span>
         </div>
@@ -258,7 +258,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
       <section>
         <h2>How it works</h2><p class="lead">From reservation to your first session in days, not weeks.</p>
         <div class="steps">
-          <div class="step"><div class="n">1</div><b>Reserve</b><span>Pick your chamber and rental length. No charge upfront.</span></div>
+          <div class="step"><div class="n">1</div><b>Reserve</b><span>Pick your chamber and rental length. No charge to submit a request.</span></div>
           <div class="step"><div class="n">2</div><b>We deliver &amp; train</b><span>Our Utah team delivers, installs, pressure-tests, and trains you hands-on.</span></div>
           <div class="step"><div class="n">3</div><b>Use it daily</b><span>Unlimited sessions on your schedule. We handle support and pickup.</span></div>
         </div>
@@ -279,7 +279,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
         <div class="chambers">
           <div class="chamber">
             <img src="/images/chamber-side.jpg" alt="Soft-shell 1.5 ATA chamber">
-            <div class="b"><b>Soft-Shell 1.5 ATA</b><div class="price">from $529<small> /mo</small></div>
+            <div class="b"><b>Soft-Shell 1.5 ATA</b><div class="price">from $529<small> /mo · 12-mo rate</small></div>
               <ul><li>1.5 ATA operating pressure</li><li>99.9% O₂ concentrator + mask</li><li>Fits most bedrooms</li></ul>
               <a class="btn btn-primary" href="/book">Reserve</a></div>
           </div>
@@ -333,14 +333,14 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
           <select id="ch"><option>Soft-Shell 1.5 ATA</option><option disabled>1.5 ATA Sitting Chamber, Coming soon (Late Oct 2026)</option></select></div>
         <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol">3 months</span></div>
           <input type="range" min="1" max="12" step="1" value="3" id="mo" oninput="recalc('')" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
-        <div class="field"><label>Delivery ZIP</label><input value="84043" id="zip" aria-label="Delivery ZIP" oninput="checkZip('')"></div>
+        <div class="field"><label>Delivery ZIP</label><input placeholder="84043" id="zip" aria-label="Delivery ZIP" autocomplete="postal-code" inputmode="numeric" oninput="checkZip('')"></div>
         <div class="zipnote" id="zipNote" hidden></div>
         <div class="brow"><span id="bd">$659 × 3 months</span><span id="sub">$1,977</span></div>
         <div class="brow"><span>You save</span><span class="amt" id="tot">$210</span></div>
         <div class="brow"><span>Delivery, install &amp; training</span><span class="amt">Included</span></div>
         <div class="total"><span>Due today</span><span>$0</span></div>
         <a class="btn btn-primary" href="/book" onclick="return goBook('')">Request reservation</a>
-        <div class="fine">No charges upfront · we confirm delivery to your ZIP</div>
+        <div class="fine">Free to submit · we confirm availability before any deposit</div>
       </div>
     </aside>
   </div>
@@ -357,7 +357,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
     <a class="study" href="https://www.aspenmedcenter.com/wp-content/uploads/2025/01/HBOT-for-Autism.png" target="_blank" rel="noopener noreferrer"><span class="study-tag">Image</span><h3>HBOT for autism</h3><span class="rd">View chart →</span></a>
     <a class="study" href="https://pubmed.ncbi.nlm.nih.gov/39566051/" target="_blank" rel="noopener noreferrer"><span class="study-tag">PubMed</span><h3>Peer-reviewed HBOT study</h3><span class="rd">View on PubMed →</span></a>
   </div>
-  <p class="disc" style="padding:16px 0 0">Studies are hosted by third parties and provided for general education. They are not medical advice and do not represent outcomes guaranteed by Purebaric.</p>
+  <p class="disc" style="padding:16px 0 0">Studies are hosted by third parties and provided for general education. Many examine higher-pressure clinical hyperbaric therapy, which differs from the mild 1.3 to 1.5 ATA used at home, so their findings may not transfer. They are not medical advice and do not represent outcomes guaranteed by Purebaric.</p>
 </section></div></div>
 
 <div class="wrap"><div class="disc">Purebaric chambers are provided for general wellness and relaxation only. They are not medical devices and are not intended to diagnose, treat, cure, or prevent any disease. Consult your physician before use.</div></div>
@@ -373,7 +373,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
       <div class="foot-col"><h5>Service</h5><ul>
         <li><a href="/how-it-works">How it works</a></li><li><a href="/chambers">Chambers</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/service-area">Service area</a></li><li><a href="/book">Reserve</a></li><li><a href="/waitlist">Waitlist</a></li></ul></div>
       <div class="foot-col"><h5>Company</h5><ul>
-        <li><a href="/about">About</a></li><li><a href="/faq">FAQ</a></li><li><a href="/contact">Contact</a></li><li><a href="/safety">Safety &amp; disclosures</a></li><li><a href="/terms">Terms</a></li></ul></div>
+        <li><a href="/about">About</a></li><li><a href="/faq">FAQ</a></li><li><a href="/contact">Contact</a></li><li><a href="/safety">Safety &amp; disclosures</a></li><li><a href="/terms">Terms</a></li><li><a href="/privacy">Privacy</a></li></ul></div>
       <div class="foot-col"><h5>Get in touch</h5><ul>
         <li><a href="mailto:hello@purebaric.com">hello@purebaric.com</a></li>
         <li class="foot-muted" style="margin-top:12px">Mon–Sat, 8:00 AM – 6:00 PM MT</li>
@@ -396,7 +396,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
     <div class="svwrap open" id="svw2"><div class="sv1"><span class="pill1" id="badge2">Save 10%</span><span class="txt1" id="save2">$70/mo off</span></div></div>
     <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol2">3 months</span></div>
       <input type="range" min="1" max="12" step="1" value="3" id="mo2" oninput="recalc('2')" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
-    <div class="field"><label>Delivery ZIP</label><input value="84043" id="zip2" aria-label="Delivery ZIP" oninput="checkZip('2')"></div>
+    <div class="field"><label>Delivery ZIP</label><input placeholder="84043" id="zip2" aria-label="Delivery ZIP" autocomplete="postal-code" inputmode="numeric" oninput="checkZip('2')"></div>
     <div class="zipnote" id="zipNote2" hidden></div>
     <div class="brow"><span id="bd2">$659 × 3 months</span><span id="sub2">$1,977</span></div>
     <div class="brow"><span>You save</span><span class="amt" id="tot2">$210</span></div>
@@ -406,7 +406,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 
 <div class="cookie" id="cookie" hidden>
   <div class="wrap cookie-in">
-    <p>We use cookies to run this site and understand traffic. See our <a href="/terms">privacy policy</a>.</p>
+    <p>We use cookies to run this site and understand traffic. See our <a href="/privacy">privacy policy</a>.</p>
     <div class="cookie-btns"><button class="btn btn-ghost" onclick="cookieChoice(false)">Decline</button><button class="btn btn-primary" onclick="cookieChoice(true)">Accept</button></div>
   </div>
 </div>

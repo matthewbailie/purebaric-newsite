@@ -74,17 +74,17 @@
 
       <div class="divider"><h3>Your information</h3><p>How we reach you when a chamber opens up.</p></div>
       <div class="row2">
-        <div class="fg"><label>First name <span class="req">*</span></label><input type="text" name="first_name" id="wlFirst" required></div>
-        <div class="fg"><label>Last name <span class="req">*</span></label><input type="text" name="last_name" id="wlLast" required></div>
+        <div class="fg"><label for="wlFirst">First name <span class="req">*</span></label><input type="text" name="first_name" id="wlFirst" autocomplete="given-name" required></div>
+        <div class="fg"><label for="wlLast">Last name <span class="req">*</span></label><input type="text" name="last_name" id="wlLast" autocomplete="family-name" required></div>
       </div>
       <div class="row2">
-        <div class="fg"><label>Email <span class="req">*</span></label><input type="email" name="email" id="wlEmail" required></div>
-        <div class="fg"><label>Phone <span class="req">*</span></label><input type="tel" name="phone" id="wlPhone" required></div>
+        <div class="fg"><label for="wlEmail">Email <span class="req">*</span></label><input type="email" name="email" id="wlEmail" autocomplete="email" required></div>
+        <div class="fg"><label for="wlPhone">Phone <span class="req">*</span></label><input type="tel" name="phone" id="wlPhone" autocomplete="tel" required></div>
       </div>
-      <div class="fg"><label>City, state &amp; ZIP code <span class="req">*</span></label><input type="text" name="city_zip" id="wlCityZip" placeholder="e.g. Lehi, UT 84043" required><p class="helper">Helps us confirm we serve your area.</p></div>
+      <div class="fg"><label for="wlCityZip">City, state &amp; ZIP code <span class="req">*</span></label><input type="text" name="city_zip" id="wlCityZip" placeholder="e.g. Lehi, UT 84043" required><p class="helper">Helps us confirm we serve your area.</p></div>
 
       <div class="divider"><h3>Rental preferences</h3><p>Tells us what you're looking for so we can match you with the right opening.</p></div>
-      <div class="fg"><label>How long do you want to rent? <span class="req">*</span></label>
+      <div class="fg"><label for="wlLength">How long do you want to rent? <span class="req">*</span></label>
         <select name="rental_length" id="wlLength" required>
           <option value="">Select rental length</option>
           <option>1 month</option>
@@ -95,7 +95,7 @@
           <option>I'm flexible</option>
         </select>
       </div>
-      <div class="fg"><label>How soon do you ideally want to start? <span class="req">*</span></label>
+      <div class="fg"><label for="wlUrgency">How soon do you ideally want to start? <span class="req">*</span></label>
         <select name="urgency" id="wlUrgency" required>
           <option value="">Select urgency</option>
           <option>As soon as possible</option>
@@ -105,8 +105,8 @@
           <option>I'm planning ahead, flexible</option>
         </select>
       </div>
-      <div class="fg"><label>Earliest date you'd want to start</label><input type="date" name="earliest_start" id="wlDate"><p class="helper">Optional, if you have a specific date in mind.</p></div>
-      <div class="fg"><label>Anything we should know?</label><textarea name="notes" id="wlNotes" placeholder="Specific scheduling needs, questions, or context that would help us serve you better."></textarea></div>
+      <div class="fg"><label for="wlDate">Earliest date you'd want to start</label><input type="date" name="earliest_start" id="wlDate"><p class="helper">Optional, if you have a specific date in mind.</p></div>
+      <div class="fg"><label for="wlNotes">Anything we should know?</label><textarea name="notes" id="wlNotes" placeholder="Specific scheduling needs, questions, or context that would help us serve you better."></textarea></div>
 
       <label class="ck"><input type="checkbox" name="consent_no_guarantee" id="wlConsent" required> I understand that joining the waitlist does not guarantee a reservation, and that availability is offered on a first-come, first-served basis. <span class="req">*</span></label>
       <label class="ck"><input type="checkbox" name="opt_in_updates" value="yes" id="wlOptin"> I'd like to receive occasional updates about Purebaric (no spam, unsubscribe anytime).</label>
@@ -128,7 +128,7 @@
       <div class="foot-col"><h5>Service</h5><ul>
         <li><a href="/how-it-works">How it works</a></li><li><a href="/chambers">Chambers</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/service-area">Service area</a></li><li><a href="/book">Reserve</a></li><li><a href="/waitlist">Waitlist</a></li></ul></div>
       <div class="foot-col"><h5>Company</h5><ul>
-        <li><a href="/about">About</a></li><li><a href="/faq">FAQ</a></li><li><a href="/contact">Contact</a></li><li><a href="/safety">Safety &amp; disclosures</a></li><li><a href="/terms">Terms</a></li></ul></div>
+        <li><a href="/about">About</a></li><li><a href="/faq">FAQ</a></li><li><a href="/contact">Contact</a></li><li><a href="/safety">Safety &amp; disclosures</a></li><li><a href="/terms">Terms</a></li><li><a href="/privacy">Privacy</a></li></ul></div>
       <div class="foot-col"><h5>Get in touch</h5><ul>
         <li><a href="tel:+18019010873">(801) 901-0873</a></li>
         <li><a href="mailto:hello@purebaric.com">hello@purebaric.com</a></li>
@@ -144,7 +144,7 @@
 
 <div class="cookie" id="cookie" hidden>
   <div class="wrap cookie-in">
-    <p>We use cookies to run this site and understand traffic. See our <a href="/terms">privacy policy</a>.</p>
+    <p>We use cookies to run this site and understand traffic. See our <a href="/privacy">privacy policy</a>.</p>
     <div class="cookie-btns"><button class="btn btn-ghost" onclick="cookieChoice(false)">Decline</button><button class="btn btn-primary" onclick="cookieChoice(true)">Accept</button></div>
   </div>
 </div>
