@@ -2,6 +2,12 @@
   publish = "."
   functions = "netlify/functions"
 
+# ───────── Caching: images change rarely, cache them for a week ─────────
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
 # ───────── Internal docs (never served publicly) ─────────
 [[redirects]]
   from = "/_internal/*"

@@ -32,27 +32,42 @@
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "@id": "#organization",
+  "@id": "https://purebaric.com/#business",
   "name": "Purebaric",
   "alternateName": "Purebaric Utah HBOT Rentals",
   "url": "https://purebaric.com/",
   "logo": "https://purebaric.com/images/logo.png",
   "image": "https://purebaric.com/images/chamber-hero.jpg",
-  "description": "Rent a 1.5 ATA mild hyperbaric oxygen therapy chamber in Utah. Delivered and set up directly in your home in Park City & Salt Lake City.",
+  "description": "Rent a 1.5 ATA mild hyperbaric oxygen therapy chamber in Utah. Delivered, installed, and serviced in your home across the Wasatch Front and Utah Valley.",
   "email": "hello@purebaric.com",
+  "telephone": "+1-801-901-0873",
   "priceRange": "$$$",
   "address": {
     "@type": "PostalAddress",
-    "addressLocality": "Park City",
+    "addressLocality": "Salt Lake City",
     "addressRegion": "UT",
-    "postalCode": "84060",
     "addressCountry": "US"
   },
-  "geo": { "@type": "GeoCoordinates", "latitude": 40.6461, "longitude": -111.498 },
-  "areaServed": ["Park City","Salt Lake City","Lehi","Provo","Draper","Sandy","Utah"]
+  "geo": { "@type": "GeoCoordinates", "latitude": 40.7608, "longitude": -111.891 },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    "opens": "08:00",
+    "closes": "18:00"
+  }],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+1-801-901-0873",
+    "email": "hello@purebaric.com",
+    "contactType": "customer service",
+    "areaServed": "US-UT",
+    "availableLanguage": "en"
+  },
+  "areaServed": ["Salt Lake County","Utah County","Davis County","Weber County","Summit County","Wasatch County","Tooele County","Salt Lake City","Park City","Provo","Orem","Lehi","Draper","Sandy","Ogden","Layton","Heber City","Tooele"]
 }
 </script>
 
+<link rel="preload" as="image" href="/images/chamber-living.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -244,10 +259,10 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 
 <div class="wrap">
   <div class="hero">
-    <img class="slide active" src="/images/chamber-living.webp" alt="Purebaric hyperbaric chamber set up in a Utah home">
-    <img class="slide" src="/images/chamber-hero.jpg" alt="Purebaric hyperbaric chamber with oxygen concentrator">
-    <img class="slide" src="/images/chamber-room.webp" alt="Purebaric hyperbaric chamber set up in a Utah bedroom">
-    <img class="slide" src="/images/chamber-side.jpg" alt="Purebaric hyperbaric chamber set up at home">
+    <img class="slide active" src="/images/chamber-living.webp" width="1672" height="941" fetchpriority="high" alt="Purebaric hyperbaric chamber set up in a Utah home">
+    <img class="slide" src="/images/chamber-hero.jpg" width="1800" height="1013" loading="lazy" alt="Purebaric hyperbaric chamber with oxygen concentrator">
+    <img class="slide" src="/images/chamber-room.webp" width="1672" height="941" loading="lazy" alt="Purebaric hyperbaric chamber set up in a Utah bedroom">
+    <img class="slide" src="/images/chamber-side.jpg" width="1800" height="1013" loading="lazy" alt="Purebaric hyperbaric chamber set up at home">
     <div class="hero-dots" id="heroDots" aria-label="Hero photos"></div>
     <button class="gallery-pill" onclick="lbOpen(0)">▦ View all 4 photos</button>
   </div>
@@ -282,13 +297,13 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
         <h2>Soft-Shell 1.5 ATA mild hyperbaric chambers</h2><p class="lead">Available now as a lying chamber, with an upright sitting chamber coming soon.</p>
         <div class="chambers">
           <div class="chamber">
-            <img src="/images/chamber-side.jpg" alt="Soft-shell 1.5 ATA chamber">
+            <img src="/images/chamber-side.jpg" width="1800" height="1013" loading="lazy" alt="Soft-shell 1.5 ATA chamber">
             <div class="b"><b>1.5 ATA Lying Chamber</b><div class="price">from $529<small> /mo · 12-month rate</small></div>
               <ul><li>1.5 ATA operating pressure</li><li>95 to 99.9% O₂ concentrator + mask</li><li>Fits most bedrooms</li></ul>
               <a class="btn btn-primary" href="/book">Reserve</a></div>
           </div>
           <div class="chamber soon">
-            <div class="imgwrap"><img src="/images/chamber-hero.jpg" alt="1.5 ATA sitting chamber (coming soon)"><span class="soon-badge">Coming soon · Late Oct 2026</span></div>
+            <div class="imgwrap"><img src="/images/chamber-hero.jpg" width="1800" height="1013" loading="lazy" alt="1.5 ATA sitting chamber (coming soon)"><span class="soon-badge">Coming soon · Late Oct 2026</span></div>
             <div class="b"><b>1.5 ATA Sitting Chamber</b><div class="price" style="color:var(--muted)">Coming soon</div>
               <ul><li>Upright, seated design</li><li>1.5 ATA mild pressure</li><li>Easier entry &amp; exit</li></ul>
               <a class="waitlink" href="/waitlist">Join the waitlist →</a></div>
