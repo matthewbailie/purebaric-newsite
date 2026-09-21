@@ -26,7 +26,12 @@
   });
 
   window.loadPurebaricAnalytics = function () {
-    gtag('consent', 'update', { analytics_storage: 'granted' });
+    gtag('consent', 'update', {
+      analytics_storage: 'granted',
+      ad_storage: 'granted',
+      ad_user_data: 'granted',
+      ad_personalization: 'denied'
+    });
     if (!READY || window.purebaricAnalyticsLoaded) return;
     window.purebaricAnalyticsLoaded = true;
     gtag('js', new Date());
@@ -42,7 +47,12 @@
   };
 
   window.declinePurebaricAnalytics = function () {
-    gtag('consent', 'update', { analytics_storage: 'denied' });
+    gtag('consent', 'update', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    });
   };
 
   // Explicit, safe event helper. Never pass a form, FormData, response, or free text.

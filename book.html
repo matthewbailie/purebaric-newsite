@@ -207,7 +207,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 
 <div class="cookie" id="cookie" hidden>
   <div class="wrap cookie-in">
-    <p>We use cookies to run this site and understand traffic. See our <a href="/privacy">privacy policy</a>.</p>
+    <p>We use optional analytics and advertising-measurement cookies to understand traffic and measure ad performance. We do not use them for personalized ads. See our <a href="/privacy">privacy policy</a>.</p>
     <div class="cookie-btns"><button class="btn btn-ghost" onclick="cookieChoice(false)">Decline</button><button class="btn btn-primary" onclick="cookieChoice(true)">Accept</button></div>
   </div>
 </div>
@@ -294,7 +294,9 @@ document.getElementById('resForm').addEventListener('submit',function(e){
        f.reset();document.getElementById('mo').value=m;recalc();document.getElementById('zipNote').hidden=true;
        window.scrollTo({top:0,behavior:'smooth'});
      }else if(j&&(j.success||j.ok)){
-       window.trackPurebaricEvent?.('booking_request_submit',{chamber_id:String(document.getElementById('ch').value),rental_months:m,estimated_total:total,currency:'USD',source:'book_page'});
+       var _conv={chamber_id:String(document.getElementById('ch').value),rental_months:m,estimated_total:total,currency:'USD',source:'book_page'};
+       window.trackPurebaricEvent?.('booking_submit',_conv);
+       window.trackPurebaricEvent?.('booking_request_submit',_conv);
        res.className='result ok';
        res.innerHTML='Reservation received'+(j.booking_number?(' ('+j.booking_number+')'):'')+'. '+(j.message||"Our team will contact you shortly to confirm delivery.");
        f.reset();document.getElementById('mo').value=m;recalc();document.getElementById('zipNote').hidden=true;
