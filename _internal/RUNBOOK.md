@@ -2,7 +2,7 @@
 
 A complete handoff for anyone (human or AI agent) running and maintaining **purebaric.com**: where it's hosted, how it's built, the services involved, the email/SMS automation, logins, and how to ship changes safely.
 
-_Last updated: 2026-09-20._
+_Last updated: 2026-09-21._
 
 > ⚠️ **This file contains NO passwords, tokens, or API keys — on purpose.**
 > Secrets live in the owner's password manager and in the Netlify dashboard
@@ -21,7 +21,7 @@ _Last updated: 2026-09-20._
 - **Domain:** purebaric.com, registered at **Namecheap**, DNS on **Netlify DNS**.
 - **Email:** outbound via **Resend**; inbound `@purebaric.com` forwarded via **ImprovMX**.
 - **SMS lead alerts:** optional, via the phone carrier's free email-to-text gateway (set one env var to turn on).
-- **Analytics:** GA4, consent-gated.
+- **Analytics/SEO:** GA4, consent-gated (analytics + Google Ads **measurement** on after consent; personalized ads/remarketing off). `robots.txt` + `sitemap.xml` + JSON-LD structured data present.
 - **Source:** `~/projects/purebaric-newsite` (local git; **no remote** — commits + Netlify deploys are the record).
 - **Ship a change:** edit → `netlify deploy` (preview) → `netlify deploy --prod` → `git commit`.
 
@@ -156,7 +156,10 @@ purebaric-newsite/
 ├── pb-metrics.js              (consent-gated GA4 loader — see §9)
 ├── build/assets/app-*.css|js  (legacy Tailwind/Vite bundle used only by teal pages)
 ├── images/                    (chamber photos, logos, hero carousel images, favicon)
-├── netlify.toml               (/api/* → functions, /_internal/* → 404, hourly cron)
+├── robots.txt                 (allows all; disallows /admin + /_internal; points to sitemap)
+├── sitemap.xml                (all public pages — UPDATE when you add/remove a page, then resubmit in Search Console)
+├── pb-metrics.js              (consent-gated GA4 + Google Ads consent — see §9)
+├── netlify.toml               (/api/* → functions, /_internal/* → 404, hourly cron, /images/* cache header)
 ├── _internal/                 (RUNBOOK.md, SITE-EVALUATION.md — NOT served publicly)
 └── netlify/functions/
     ├── availability.js         (public: how many chambers free today)
@@ -228,13 +231,32 @@ The functions accept the frontend field names plus aliases (`customer_name`, `zi
 
 ---
 
-## 9. Analytics (GA4)
+## 9. Analytics & advertising measurement (GA4 + Google Ads)
 
 - Property **"Purebaric Website"**: account `408850169`, property `555169638`, stream `15813569788`, **Measurement ID `G-Q1X04YRWP1`**. Do **not** reuse the old Nerd United ID `G-9FK4XB9FDX`.
-- Loaded + consent-gated by **`/pb-metrics.js`** (in the `<head>` of every public page; `/admin` excluded). It is deliberately **not** named `analytics.js` (ad/privacy blockers block that filename). The Measurement ID lives once, as `GA_ID` in `pb-metrics.js`.
-- **Consent:** analytics only load after the visitor clicks Accept on the cookie banner (warm banner writes `pb_cookie`; the few legacy pages write `purebaric_cookie_consent`). Default is denied. All tracking calls are optional (`window.trackPurebaricEvent?.(...)`) so a blocked script never breaks a form.
-- **Events (no PII):** `select_rental_plan`, `service_area_check` (result only, never the ZIP), `booking_form_start`, `booking_request_submit` (primary conversion), `booking_request_error`, `contact_submit`, `waitlist_join`.
-- **Deferred (needs Stripe):** `qualify_lead`, `begin_checkout`, `purchase`, `refund` via the GA4 Measurement Protocol from server code — not built (no checkout yet). Keep any MP secret server-side only.
+- Loaded + consent-gated by **`/pb-metrics.js`** (in the `<head>` of every public page; `/admin` excluded). It is deliberately **not** named `analytics.js` (ad/privacy blockers block that filename). The Measurement ID lives once, as `GA_ID` in `pb-metrics.js`. All tracking calls are optional (`window.trackPurebaricEvent?.(...)`) so a blocked/late script never breaks a form.
+
+**Consent mode v2 (all set in `pb-metrics.js`) — the money is in the details here:**
+- **Default** (top of the script): all four signals denied — `analytics_storage`, `ad_storage`, `ad_user_data`, `ad_personalization` — plus `wait_for_update:500`.
+- **Accept** (`loadPurebaricAnalytics`): grants `analytics_storage`, `ad_storage`, `ad_user_data`; keeps `ad_personalization` **denied**. Also configs GA with `allow_google_signals:false` + `allow_ad_personalization_signals:false`.
+- **Decline** (`declinePurebaricAnalytics`): denies all four.
+- **Net effect:** after Accept, analytics **and Google Ads conversion measurement/attribution (gclid)** work, but **personalized advertising / remarketing stays OFF**. This is the fix for the earlier "0% ads-consent" problem that was blocking Ads click attribution. If the owner ever asks for remarketing audiences, `ad_personalization` is the switch — but leave it denied unless explicitly asked.
+- Consent choice is stored in `localStorage`: warm banner writes `pb_cookie` (`accept`/`decline`); a few legacy pages write `purebaric_cookie_consent` (`accepted`). The cookie-banner text (all public pages) and the `/privacy` "Analytics and cookies" section already describe this ("optional analytics and advertising-measurement cookies … not for personalized ads"); keep all three in sync if you change the behavior.
+
+**Events (NEVER pass PII — only allowlisted scalar values, never a form/FormData/API response/ZIP/free text):** `select_rental_plan`, `service_area_check` (result only, never the ZIP), `booking_form_start`, `booking_submit` **+** `booking_request_submit` (fired together on booking success — see below), `booking_request_error`, `contact_submit`, `waitlist_join`.
+
+**Google Ads conversion (the one that matters):**
+- Google Ads has **one** booking conversion (Primary). **Do NOT create a second booking conversion in Google Ads — it double-counts leads.**
+- The Ads conversion is keyed to the GA4 event **`booking_submit`**, but the site historically fired **`booking_request_submit`**. To bridge that without changing the Ads config, **`book.html` now fires BOTH events** on booking success (only `booking_submit` is imported into Ads, so there is no double-count).
+- **OWNER TO CONFIRM** in GA4 → Admin → **Key events**: which event is marked as the key event / imported into Ads. If it is `booking_submit`, nothing more to do. If it is actually `booking_request_submit`, the redundant `booking_submit` line in `book.html` can be removed. Verify with GA4 **DebugView** (one test reservation should show both events + one `page_view`).
+- GA4 must stay **linked to Google Ads** (GA4 → Admin → Product links → Google Ads); that link carries the conversion + consent/gclid signals.
+
+**Deferred (needs Stripe):** `qualify_lead`, `begin_checkout`, `purchase`, `refund` via the GA4 Measurement Protocol from server code — not built (no checkout yet). Keep any MP secret server-side only.
+
+### SEO & structured data
+- **`robots.txt`** (root) allows all, disallows `/admin` + `/_internal/`, and points to the sitemap. **`sitemap.xml`** (root) lists every public page — **update it whenever you add or remove a public page**, then re-submit it in Google Search Console.
+- **Structured data (JSON-LD):** homepage carries an enriched `LocalBusiness` (`@id` `https://purebaric.com/#business`) with telephone, opening hours, contactPoint, geo, and areaServed. **NAP is standardized to Salt Lake City, UT** (it used to say Park City — keep it Salt Lake City everywhere: footer, schema, and any Google Business Profile). `/faq` has `FAQPage`; `/pricing` has `Service` + `OfferCatalog` (the 4 rental tiers, `provider` `@id` the business); both blog posts have `Article`. All `canonical` + `og:url` are absolute `https://purebaric.com/...`. Validate any new JSON-LD in Google's Rich Results Test before deploying, and keep prices in the OfferCatalog in sync with §10.
+- Page titles ≤ ~60 chars, meta descriptions ≤ ~160. `/images/*` is cached one week via a `netlify.toml` `[[headers]]` block; the first hero slide is preloaded (`fetchpriority=high`) and the other images are `loading="lazy"` with explicit width/height.
 
 ---
 
@@ -271,6 +293,7 @@ The functions accept the frontend field names plus aliases (`customer_name`, `zi
 - **SMS not arriving** → confirm `ADMIN_SMS_GATEWAY` is set to the right `number@gateway`, that you redeployed after setting it, and check the carrier isn't spam-filtering (try Twilio if persistent).
 - **A form submit fails** → confirm the `fetch`/`<form action>` points at the right `/api/*` endpoint and the function accepts the field names (§8).
 - **A function change didn't take effect** → redeploy with `--skip-functions-cache`.
+- **`netlify deploy` returns "403 Forbidden," or `netlify login` returns "504 Gateway Time-out"** → this is almost always a Netlify platform incident, not your credentials (reads like `netlify status` can still work while deploy-create 403s). Check https://www.netlifystatus.com/, wait, and retry. If the CLI got logged out, re-run `netlify login` and complete the browser Authorize, confirm with `netlify status`, then deploy. To skip the browser flow entirely, deploy with a token: `NETLIFY_AUTH_TOKEN=<personal-access-token> netlify deploy --prod --dir .` (owner-run; never put the token in the repo). Last resort: drag-and-drop the folder in the Netlify dashboard → Deploys. This happened on 2026-09-21 and cleared on its own after re-auth.
 
 ---
 
@@ -294,6 +317,9 @@ This is a wellness rental business, **not a medical provider** ("not a medical d
 
 ## 15. Known open follow-ups / owner tasks
 
+- **Confirm the Ads key event (do this first):** in GA4 → Admin → Key events, verify whether `booking_submit` or `booking_request_submit` is the event imported into the Google Ads conversion, then reconcile `book.html` if needed (see §9). Run one test reservation through GA4 DebugView to confirm.
+- **Submit `sitemap.xml` in Google Search Console:** verify the domain (DNS TXT) and submit `https://purebaric.com/sitemap.xml`. Re-submit whenever pages are added/removed. Not yet done.
+- **Claim a Google Business Profile** (and Bing Places / Apple Business Connect) as a **service-area** business — NAP must match the site exactly: Salt Lake City, UT · (801) 901-0873 · Mon–Sat 8:00 AM–6:00 PM MT. Not yet done.
 - **Activate SMS:** set `ADMIN_SMS_GATEWAY` (see §7c) and redeploy.
 - **Blog authority (owner-supplied):** a named human author + qualified reviewer, per-claim citations/DOIs.
 - **Concrete product proof (owner-supplied):** real chamber specs (manufacturer/model/dimensions/weight/noise/power/concentrator), delivery/setup photos, the founder's real origin story, authentic customer reviews.
