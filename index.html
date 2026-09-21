@@ -79,7 +79,12 @@ header{position:sticky;top:0;background:rgba(247,242,234,.92);backdrop-filter:bl
 .mobile-menu a.mm-cta{border-bottom:none;margin-top:12px;text-align:center}
 .mobile-menu.open{display:flex}
 .hero{position:relative;border-radius:16px;overflow:hidden;margin-top:22px;height:400px}
-.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hero .slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .8s ease}
+.hero .slide.active{opacity:1}
+.hero-dots{position:absolute;left:16px;bottom:16px;display:flex;gap:7px;z-index:2}
+.hero-dots button{width:8px;height:8px;border-radius:999px;border:none;background:rgba(255,255,255,.55);cursor:pointer;padding:0;transition:width .3s ease,background .3s ease}
+.hero-dots button.on{background:#fff;width:22px}
+@media(prefers-reduced-motion:reduce){.hero .slide{transition:none}}
 .gallery-pill{position:absolute;right:16px;bottom:16px;background:rgba(255,255,255,.92);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;border:none;font-family:inherit}
 .hero-below{display:block;padding:0 0 10px}
 .hero-below .eyebrow2{display:inline-flex;gap:8px;align-items:center;background:var(--cream2);color:var(--terra-d);padding:6px 13px;border-radius:999px;font-size:12px;font-weight:700}
@@ -239,8 +244,11 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 
 <div class="wrap">
   <div class="hero">
-    <img src="/images/chamber-side.jpg" alt="Purebaric hyperbaric chamber set up at home">
-    <button class="gallery-pill" onclick="lbOpen(0)">▦ View all 2 photos</button>
+    <img class="slide active" src="/images/chamber-room.webp" alt="Purebaric hyperbaric chamber set up in a Utah bedroom">
+    <img class="slide" src="/images/chamber-side.jpg" alt="Purebaric hyperbaric chamber set up at home">
+    <img class="slide" src="/images/chamber-hero.jpg" alt="Purebaric hyperbaric chamber with oxygen concentrator">
+    <div class="hero-dots" id="heroDots" aria-label="Hero photos"></div>
+    <button class="gallery-pill" onclick="lbOpen(0)">▦ View all 3 photos</button>
   </div>
 
   <div class="layout">
@@ -453,7 +461,7 @@ function checkZip(s){s=s||'';var el=document.getElementById('zip'+s),n=document.
 function cookieChoice(accept){try{localStorage.setItem('pb_cookie',accept?'accept':'decline');}catch(e){}document.getElementById('cookie').hidden=true;if(accept){window.loadPurebaricAnalytics&&window.loadPurebaricAnalytics();}else{window.declinePurebaricAnalytics&&window.declinePurebaricAnalytics();}}
 
 /* photo lightbox */
-var LBI=['/images/chamber-hero.jpg','/images/chamber-side.jpg'];
+var LBI=['/images/chamber-room.webp','/images/chamber-side.jpg','/images/chamber-hero.jpg'];
 var lbi=0;
 function lbShow(){document.getElementById('lbImg').src=LBI[lbi];document.getElementById('lbCount').textContent=(lbi+1)+' / '+LBI.length;}
 function lbOpen(i){lbi=i||0;lbShow();document.getElementById('lb').hidden=false;}
@@ -461,6 +469,20 @@ function lbClose(){document.getElementById('lb').hidden=true;}
 function lbGo(d,e){if(e)e.stopPropagation();lbi=(lbi+d+LBI.length)%LBI.length;lbShow();}
 function lbBackdrop(e){if(e.target && e.target.id==='lb')lbClose();}
 document.addEventListener('keydown',function(e){var lb=document.getElementById('lb');if(lb.hidden)return;if(e.key==='Escape')lbClose();else if(e.key==='ArrowLeft')lbGo(-1);else if(e.key==='ArrowRight')lbGo(1);});
+
+/* hero carousel (auto crossfade + dots; pauses for reduced motion) */
+(function(){
+  var slides=document.querySelectorAll('.hero .slide');
+  var dots=document.getElementById('heroDots');
+  if(slides.length<2||!dots)return;
+  var idx=0,timer=null;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  slides.forEach(function(s,i){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Show photo '+(i+1));if(i===0)b.className='on';b.addEventListener('click',function(){go(i);restart();});dots.appendChild(b);});
+  function go(i){idx=(i+slides.length)%slides.length;slides.forEach(function(s,j){s.classList.toggle('active',j===idx);});dots.querySelectorAll('button').forEach(function(d,j){d.classList.toggle('on',j===idx);});}
+  function start(){if(reduce)return;timer=setInterval(function(){go(idx+1);},5000);}
+  function restart(){if(timer)clearInterval(timer);start();}
+  start();
+})();
 
 ['','2'].forEach(function(s){var moEl=document.getElementById('mo'+s);if(moEl)moEl.addEventListener('change',function(){var mm=+this.value,rr=rate(mm);if(window.trackPurebaricEvent)trackPurebaricEvent('select_rental_plan',{chamber_id:'soft_shell_1_5_ata',rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD'});});var zEl=document.getElementById('zip'+s);if(zEl)zEl.addEventListener('change',function(){var z=this.value.trim();if(!/^\d{5}$/.test(z))return;if(window.trackPurebaricEvent)trackPurebaricEvent('service_area_check',{result:servedZip(z)?'eligible':'unsupported',rental_months:+document.getElementById('mo'+s).value});});});
 recalc('');recalc('2');checkZip('');checkZip('2');
