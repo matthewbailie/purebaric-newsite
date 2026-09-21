@@ -245,9 +245,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 <div class="wrap">
   <div class="hero">
     <img class="slide active" src="/images/chamber-living.webp" alt="Purebaric hyperbaric chamber set up in a Utah home">
+    <img class="slide" src="/images/chamber-hero.jpg" alt="Purebaric hyperbaric chamber with oxygen concentrator">
     <img class="slide" src="/images/chamber-room.webp" alt="Purebaric hyperbaric chamber set up in a Utah bedroom">
     <img class="slide" src="/images/chamber-side.jpg" alt="Purebaric hyperbaric chamber set up at home">
-    <img class="slide" src="/images/chamber-hero.jpg" alt="Purebaric hyperbaric chamber with oxygen concentrator">
     <div class="hero-dots" id="heroDots" aria-label="Hero photos"></div>
     <button class="gallery-pill" onclick="lbOpen(0)">▦ View all 4 photos</button>
   </div>
@@ -462,7 +462,7 @@ function checkZip(s){s=s||'';var el=document.getElementById('zip'+s),n=document.
 function cookieChoice(accept){try{localStorage.setItem('pb_cookie',accept?'accept':'decline');}catch(e){}document.getElementById('cookie').hidden=true;if(accept){window.loadPurebaricAnalytics&&window.loadPurebaricAnalytics();}else{window.declinePurebaricAnalytics&&window.declinePurebaricAnalytics();}}
 
 /* photo lightbox */
-var LBI=['/images/chamber-living.webp','/images/chamber-room.webp','/images/chamber-side.jpg','/images/chamber-hero.jpg'];
+var LBI=['/images/chamber-living.webp','/images/chamber-hero.jpg','/images/chamber-room.webp','/images/chamber-side.jpg'];
 var lbi=0;
 function lbShow(){document.getElementById('lbImg').src=LBI[lbi];document.getElementById('lbCount').textContent=(lbi+1)+' / '+LBI.length;}
 function lbOpen(i){lbi=i||0;lbShow();document.getElementById('lb').hidden=false;}
