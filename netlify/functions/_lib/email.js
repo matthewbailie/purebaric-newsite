@@ -247,6 +247,25 @@ async function notifyAdminOutOfArea(b) {
   return send({ to: ADMIN_NOTIFY, subject: `Out-of-area request: ${name} (ZIP ${b.zip || "?"})`, html });
 }
 
+// Admin-facing SMS via a carrier email-to-text gateway (free, reuses Resend).
+// Inert until ADMIN_SMS_GATEWAY is set (e.g. "8015551234@vtext.com"). Keep the
+// message short, carrier gateways cap each segment near 160 characters.
+async function notifyAdminSms(b, { outOfArea } = {}) {
+  const to = (process.env.ADMIN_SMS_GATEWAY || "").trim();
+  if (!to) return { skipped: "ADMIN_SMS_GATEWAY not set" };
+  const name = `${b.firstName || ""} ${b.lastName || ""}`.trim() || b.name || "New lead";
+  const parts = [name];
+  if (b.phone) parts.push(b.phone);
+  if (b.zip) parts.push(`ZIP ${b.zip}`);
+  if (b.rentalLength) parts.push(b.rentalLength);
+  const detail = parts.join(", ");
+  const subject = outOfArea ? "Purebaric out-of-area lead" : "New Purebaric lead";
+  const text = outOfArea
+    ? `${detail}. Outside service area, no auto-email sent.`
+    : `${detail}. Check email or the admin portal to follow up.`;
+  return send({ to, subject, text, html: `<p>${escapeHtml(text)}</p>` });
+}
+
 module.exports = {
   send,
   notifyAdminWaitlistJoin,
@@ -255,4 +274,5 @@ module.exports = {
   notifyCustomerChamberAvailable,
   notifyCustomerWaitlistAdded,
   notifyAdminOutOfArea,
+  notifyAdminSms,
 };

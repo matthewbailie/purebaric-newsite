@@ -9,6 +9,7 @@ const {
   notifyCustomerChamberAvailable,
   notifyCustomerWaitlistAdded,
   notifyAdminOutOfArea,
+  notifyAdminSms,
 } = require("./_lib/email");
 
 // ───────── Delivery service area (ZIP gating) ─────────
@@ -97,6 +98,7 @@ exports.handler = async (event) => {
         console.error("admin out-of-area notify failed", err);
         adminEmail = `failed: ${err.message}`;
       }
+      try { await notifyAdminSms(booking, { outOfArea: true }); } catch (err) { console.error("admin sms failed", err); }
       return {
         statusCode: 200,
         headers: { "Content-Type": "application/json" },
@@ -169,6 +171,7 @@ exports.handler = async (event) => {
       console.error("admin notify failed", err);
       emailResults.admin = `failed: ${err.message}`;
     }
+    try { await notifyAdminSms(booking); } catch (err) { console.error("admin sms failed", err); }
 
     return {
       statusCode: 200,
