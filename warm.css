@@ -27,6 +27,7 @@ header{position:sticky;top:0;background:rgba(247,242,234,.92);backdrop-filter:bl
 
 /* ── generic typography / sections ── */
 .eyebrow2{display:inline-flex;gap:8px;align-items:center;background:var(--cream2);color:var(--terra-d);padding:6px 13px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.02em}
+.page-hero .eyebrow2{background:transparent;padding:0;border-radius:0}
 .page-hero{background:var(--cream2);border-bottom:1px solid var(--line);padding:52px 0}
 .page-hero h1{font-size:40px;font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:14px 0 12px;max-width:760px}
 .page-hero p{font-size:17px;color:#5f544d;max-width:660px}
