@@ -208,6 +208,8 @@
 
   <div id="adminApp" hidden>
 
+    <div id="loadError" hidden style="margin:0 0 1rem;padding:0.85rem 1.1rem;border-radius:12px;background:#fbe9e2;border:1px solid #e6c3b4;color:#82402f;font-size:0.9rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;"></div>
+
     <div class="stat-row">
       <button type="button" class="stat-block" data-jump-tab="chambers"><div class="stat-label">Active chambers</div><div class="stat-val" id="statActive"></div></button>
       <button type="button" class="stat-block" data-jump-tab="chambers"><div class="stat-label">Available today</div><div class="stat-val" id="statAvailable"></div></button>
@@ -438,31 +440,43 @@
   // ───────── Auth token helper ─────────
   // Fetch a fresh JWT, tolerating a corrupted/expired stored token. If it can't
   // be refreshed, sign the user out and prompt re-login instead of silently 401ing.
-  async function getAuthToken(user) {
+  async function getAuthToken(user, forceRefresh = false) {
     try {
-      return await user.jwt();
+      return await user.jwt(forceRefresh);
     } catch (e) {
       try {
         return await user.jwt(true); // force refresh
       } catch (e2) {
         try { await window.netlifyIdentity.logout(); } catch (_) {}
         toast('Your session expired, please sign in again.', true);
-        throw new Error('session expired');
+        const err = new Error('session expired');
+        err.status = 401;
+        throw err;
       }
     }
   }
 
   // ───────── API helper ─────────
-  async function api(path, opts = {}) {
+  // On a 401 the stored Identity token has usually gone stale. Force one token
+  // refresh and retry before treating it as a real failure, so a signed-in
+  // admin auto-recovers instead of silently seeing empty tabs.
+  async function api(path, opts = {}, _retried = false) {
     const user = window.netlifyIdentity.currentUser();
     const headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
     if (user) {
-      headers.Authorization = `Bearer ${await getAuthToken(user)}`;
+      headers.Authorization = `Bearer ${await getAuthToken(user, _retried)}`;
     }
     const resp = await fetch(path, { ...opts, headers });
+    if (resp.status === 401 && user && !_retried) {
+      return api(path, opts, true);
+    }
     const text = await resp.text();
     const json = text ? JSON.parse(text) : {};
-    if (!resp.ok) throw new Error(json.error || `HTTP ${resp.status}`);
+    if (!resp.ok) {
+      const err = new Error(json.error || `HTTP ${resp.status}`);
+      err.status = resp.status;
+      throw err;
+    }
     return json;
   }
 
@@ -512,9 +526,32 @@
   let _bookings = [];
   let _customers = [];
 
+  const loadErrorEl = document.getElementById('loadError');
+  function showLoadError(html) { loadErrorEl.innerHTML = html; loadErrorEl.hidden = false; }
+  function clearLoadError() { loadErrorEl.hidden = true; loadErrorEl.innerHTML = ''; }
+
   async function loadAll() {
-    await Promise.all([loadChambers(), loadRentals(), loadWaitlist(), loadBookings()]);
+    clearLoadError();
+    // Load each section independently: one failing call must not blank the rest,
+    // and we still paint whatever succeeded.
+    const results = await Promise.allSettled([
+      loadChambers(), loadRentals(), loadWaitlist(), loadBookings()
+    ]);
     paintStats();
+    const failures = results.filter(r => r.status === 'rejected').map(r => r.reason || {});
+    if (!failures.length) return;
+    if (failures.some(e => e.status === 401)) {
+      showLoadError(
+        `<span>Your admin session expired, so data couldn't load. Your chambers and requests are safe on the server, just sign back in.</span>` +
+        `<button class="btn btn-primary btn-sm" onclick="netlifyIdentity.logout()">Sign out &amp; back in</button>`
+      );
+    } else {
+      const msg = failures[0].message || 'unknown error';
+      showLoadError(
+        `<span>Some data couldn't load (${escape(msg)}). This is usually temporary.</span>` +
+        `<button class="btn btn-ghost btn-sm" onclick="loadAll()">Retry</button>`
+      );
+    }
   }
 
   function paintStats() {
