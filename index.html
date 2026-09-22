@@ -367,22 +367,28 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 
 <div class="reviews-band" id="reviewsBand" hidden><div class="wrap"><section style="border-top:none">
   <style>
-    .reviews-band .rv-carousel{position:relative;margin-top:8px;max-width:760px}
-    .reviews-band .rv-viewport{overflow:hidden}
-    .reviews-band .rv-track{display:flex;transition:transform .5s ease}
-    .reviews-band .rv-slide{flex:0 0 100%;min-width:100%;box-sizing:border-box;padding:2px}
-    .reviews-band .rv-c{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 28px;height:100%}
-    .reviews-band .rv-c .q{color:var(--ink);font-size:17px;line-height:1.65}
-    .reviews-band .rv-c .w{margin-top:14px;font-size:14px;font-weight:700;color:var(--terra-d)}
-    .reviews-band .rv-c .w .l{font-weight:500;color:var(--muted)}
-    .reviews-band .rv-dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
-    .reviews-band .rv-dots button{width:9px;height:9px;border-radius:50%;border:none;background:var(--line);cursor:pointer;padding:0}
-    .reviews-band .rv-dots button.on{background:var(--terra)}
+    .reviews-band .rv-carousel{margin-top:10px}
+    .reviews-band .rv-scroller{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;padding:4px 2px 8px;scrollbar-width:none}
+    .reviews-band .rv-scroller::-webkit-scrollbar{display:none}
+    .reviews-band .rv-card{flex:0 0 calc((100% - 32px)/3);scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 26px;min-width:0}
+    .reviews-band .rv-q{color:var(--ink);font-size:15px;line-height:1.62}
+    .reviews-band .rv-w{margin-top:12px;font-size:13.5px;font-weight:700;color:var(--terra-d)}
+    .reviews-band .rv-w .l{font-weight:500;color:var(--muted)}
+    .reviews-band .rv-carousel[data-count="1"] .rv-card{flex-basis:min(100%,560px)}
+    .reviews-band .rv-carousel[data-count="2"] .rv-card{flex-basis:calc((100% - 16px)/2)}
+    .reviews-band .rv-controls{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px}
+    .reviews-band .rv-arrow{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+    .reviews-band .rv-arrow:hover{background:var(--cream2)}
+    .reviews-band .rv-dots{display:flex;gap:8px}
+    .reviews-band .rv-dots button{width:9px;height:9px;border-radius:50%;border:none;background:var(--line);cursor:pointer;padding:0;transition:background .3s,width .3s}
+    .reviews-band .rv-dots button.on{background:var(--terra);width:22px;border-radius:999px}
+    @media(max-width:1100px){.reviews-band .rv-card{flex-basis:calc((100% - 16px)/2)}}
+    @media(max-width:820px){.reviews-band .rv-card{flex-basis:82%}}
   </style>
   <h2>What renters say</h2><p class="lead">Real experiences from Purebaric renters across Utah.</p>
   <div class="rv-carousel" id="rvCarousel">
-    <div class="rv-viewport"><div class="rv-track" id="rvTrack"></div></div>
-    <div class="rv-dots" id="rvDots"></div>
+    <div class="rv-scroller" id="rvScroller"></div>
+    <div class="rv-controls" id="rvControls" hidden><button class="rv-arrow" id="rvPrev" type="button" aria-label="Previous review">‹</button><div class="rv-dots" id="rvDots"></div><button class="rv-arrow" id="rvNext" type="button" aria-label="Next review">›</button></div>
   </div>
   <div style="margin-top:20px"><a class="btn btn-ghost" href="/reviews">Read all reviews &amp; share yours →</a></div>
 </section></div></div>
@@ -523,26 +529,53 @@ document.addEventListener('keydown',function(e){var lb=document.getElementById('
 recalc('');recalc('2');checkZip('');checkZip('2');
 window.addEventListener('load',function(){recalc('');recalc('2');});
 
-/* published reviews carousel, section stays hidden until there's at least one */
+/* published reviews carousel: multi-card horizontal scroll, gentle auto-advance
+   that switches to manual the moment the visitor taps/swipes. Hidden until 1+ published. */
 (function(){
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   fetch('/api/reviews').then(function(r){return r.json();}).then(function(j){
     var reviews=(j&&j.reviews)||[];
-    if(!reviews.length)return; // keep the section hidden until the first is published
-    var track=document.getElementById('rvTrack'),dots=document.getElementById('rvDots');
-    track.innerHTML=reviews.map(function(rv){
+    if(!reviews.length)return; // stay hidden until the first review is published
+    var band=document.getElementById('reviewsBand'),carousel=document.getElementById('rvCarousel'),
+        scroller=document.getElementById('rvScroller'),controls=document.getElementById('rvControls'),
+        dotsEl=document.getElementById('rvDots');
+    carousel.setAttribute('data-count',reviews.length);
+    scroller.innerHTML=reviews.map(function(rv){
       var loc=rv.city?(' <span class="l">· '+esc(rv.city)+'</span>'):'';
-      return '<div class="rv-slide"><div class="rv-c"><div class="q">'+esc(rv.text).replace(/\n/g,'<br>')+'</div>'
-        +'<div class="w">'+esc(rv.firstName)+' '+esc(rv.lastInitial)+'.'+loc+'</div></div></div>';
+      return '<div class="rv-card"><div class="rv-q">'+esc(rv.text).replace(/\n/g,'<br>')+'</div><div class="rv-w">'+esc(rv.firstName)+' '+esc(rv.lastInitial)+'.'+loc+'</div></div>';
     }).join('');
-    document.getElementById('reviewsBand').hidden=false;
-    var n=reviews.length,idx=0,timer=null;
+    band.hidden=false;
+
+    var cards=scroller.querySelectorAll('.rv-card');
     var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-    function go(i){idx=(i+n)%n;track.style.transform='translateX(-'+(idx*100)+'%)';[].forEach.call(dots.children,function(d,j){d.classList.toggle('on',j===idx);});}
-    function start(){if(reduce||n<2)return;timer=setInterval(function(){go(idx+1);},6000);}
-    function restart(){if(timer)clearInterval(timer);start();}
-    if(n>1){for(var i=0;i<n;i++){(function(i){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Show review '+(i+1));if(i===0)b.className='on';b.addEventListener('click',function(){go(i);restart();});dots.appendChild(b);})(i);}}
-    go(0);start();
+    var timer=null,manual=false,dots=[];
+    function stepPx(){return cards.length>1?(cards[1].getBoundingClientRect().left-cards[0].getBoundingClientRect().left):0;}
+    function overflowing(){return scroller.scrollWidth-scroller.clientWidth>4;}
+    function maxIndex(){var s=stepPx();return s?Math.round((scroller.scrollWidth-scroller.clientWidth)/s):0;}
+    function activeIndex(){var s=stepPx();return s?Math.max(0,Math.min(maxIndex(),Math.round(scroller.scrollLeft/s))):0;}
+    function scrollToIndex(i){var s=stepPx();scroller.scrollTo({left:Math.max(0,i)*s,behavior:'smooth'});}
+    function syncDots(){var a=activeIndex();dots.forEach(function(d,i){d.classList.toggle('on',i===a);});}
+    function buildControls(){
+      dotsEl.innerHTML='';dots=[];
+      scroller.style.justifyContent=overflowing()?'flex-start':'center';
+      if(!overflowing()){controls.hidden=true;return;}
+      controls.hidden=false;
+      var count=maxIndex()+1;
+      for(var i=0;i<count;i++){(function(i){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Go to review set '+(i+1));b.addEventListener('click',function(){goManual();scrollToIndex(i);});dotsEl.appendChild(b);dots.push(b);})(i);}
+      syncDots();
+    }
+    function auto(){if(reduce||manual||!overflowing())return;var i=activeIndex();scrollToIndex(i>=maxIndex()?0:i+1);}
+    function startAuto(){stopTimer();if(reduce||manual||!overflowing())return;timer=setInterval(auto,5500);}
+    function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
+    function goManual(){manual=true;stopTimer();}
+    document.getElementById('rvPrev').addEventListener('click',function(){goManual();var i=activeIndex();scrollToIndex(i<=0?maxIndex():i-1);});
+    document.getElementById('rvNext').addEventListener('click',function(){goManual();var i=activeIndex();scrollToIndex(i>=maxIndex()?0:i+1);});
+    scroller.addEventListener('pointerdown',goManual,{passive:true});
+    scroller.addEventListener('touchstart',goManual,{passive:true});
+    scroller.addEventListener('wheel',function(e){if(Math.abs(e.deltaX)>Math.abs(e.deltaY))goManual();},{passive:true});
+    scroller.addEventListener('scroll',syncDots,{passive:true});
+    var rz;window.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(function(){buildControls();if(!manual)startAuto();},200);});
+    buildControls();startAuto();
   }).catch(function(){/* leave hidden on error */});
 })();
 </script>

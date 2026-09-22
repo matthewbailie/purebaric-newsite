@@ -17,7 +17,9 @@ exports.handler = async () => {
       statusCode: 200,
       headers: {
         "Content-Type": "application/json",
-        "Cache-Control": "public, max-age=60",
+        // No caching: a review deleted or unpublished in admin must disappear
+        // from the homepage and /reviews on the next load, not up to a minute later.
+        "Cache-Control": "no-store",
       },
       body: JSON.stringify({ reviews }),
     };
