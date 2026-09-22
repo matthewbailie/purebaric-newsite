@@ -1370,6 +1370,10 @@
     const rows = _reviews.map(r => {
       const created = new Date(r.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       const who = `${escape(r.firstName)} ${escape(r.lastInitial)}.${r.city ? ' · ' + escape(r.city) : ''}`;
+      const RV_LIMIT = 160;
+      const rvFull = r.text || '';
+      const rvTrunc = rvFull.length > RV_LIMIT;
+      const rvShown = rvTrunc ? escape(rvFull.slice(0, RV_LIMIT).replace(/\s+\S*$/, '')) + '…' : escape(rvFull);
       const actions = [];
       if (r.status !== 'published') actions.push(`<button class="btn btn-primary btn-sm" onclick='setReviewStatus(${JSON.stringify(r.id)}, "published")'>Publish</button>`);
       if (r.status === 'published') actions.push(`<button class="btn btn-ghost btn-sm" onclick='setReviewStatus(${JSON.stringify(r.id)}, "pending")'>Unpublish</button>`);
@@ -1380,7 +1384,7 @@
       <tr>
         <td>${escape(created)}</td>
         <td><strong>${who}</strong></td>
-        <td style="max-width:420px;white-space:normal;">${escape(r.text)}</td>
+        <td style="max-width:420px;white-space:normal;">${rvShown}${rvTrunc ? ` <button class="btn btn-ghost btn-sm" onclick='viewReview(${JSON.stringify(r.id)})'>See full review</button>` : ''}</td>
         <td><span class="pill pill-${r.status}">${r.status}</span></td>
         <td><div class="row-actions">${actions.join('')}</div></td>
       </tr>`;
@@ -1429,6 +1433,13 @@
     if (!confirm('Delete this review permanently?')) return;
     try { await api(`/api/admin/reviews/${id}`, { method: 'DELETE' }); toast('Review deleted'); await loadAll(); }
     catch (err) { toast(err.message, true); }
+  }
+
+  function viewReview(id) {
+    const r = _reviews.find(x => x.id === id);
+    if (!r) return;
+    const who = `${escape(r.firstName)} ${escape(r.lastInitial)}.${r.city ? ' · ' + escape(r.city) : ''}`;
+    openModal(`Review, ${r.firstName} ${r.lastInitial}.`, `<div class="modal-row"><strong>${who}</strong></div><div style="white-space:pre-wrap;line-height:1.6;margin-top:6px;">${escape(r.text)}</div>`);
   }
 
   function escape(s) {

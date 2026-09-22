@@ -26,6 +26,16 @@
 .rv-card .quote::after{content:"\201D"}
 .rv-card .who{margin-top:12px;font-size:14px;font-weight:700;color:var(--terra-d)}
 .rv-card .who .loc{font-weight:500;color:var(--muted)}
+.rv-card .rv-more{margin-top:10px;background:none;border:none;padding:0;color:var(--terra-d);font-weight:600;font-size:14px;cursor:pointer;font-family:inherit}
+.rv-card .rv-more:hover{text-decoration:underline}
+.rv-modal{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(43,35,32,.55)}
+.rv-modal[hidden]{display:none}
+.rv-modal-box{background:var(--card);border:1px solid var(--line);border-radius:16px;max-width:560px;width:100%;max-height:80vh;overflow:auto;padding:30px 32px;position:relative}
+.rv-modal-x{position:absolute;top:10px;right:14px;background:none;border:none;font-size:26px;line-height:1;color:var(--muted);cursor:pointer;padding:4px;font-family:inherit}
+.rv-modal-q{color:var(--ink);font-size:16px;line-height:1.7;white-space:pre-wrap}
+.rv-modal-q::before{content:"\201C"}.rv-modal-q::after{content:"\201D"}
+.rv-modal-w{margin-top:16px;font-size:14px;font-weight:700;color:var(--terra-d)}
+.rv-modal-w .loc{font-weight:500;color:var(--muted)}
 .rv-empty{color:var(--muted);font-size:15px;background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:24px}
 /* form */
 .frm .fg{margin-bottom:16px}
@@ -133,6 +143,14 @@
   </div>
 </div>
 
+<div class="rv-modal" id="rvModal" hidden>
+  <div class="rv-modal-box" role="dialog" aria-modal="true" aria-label="Full review">
+    <button class="rv-modal-x" onclick="rvModalClose()" aria-label="Close">×</button>
+    <div class="rv-modal-q" id="rvModalQ"></div>
+    <div class="rv-modal-w" id="rvModalW"></div>
+  </div>
+</div>
+
 <script src="/warm.js"></script>
 <script>
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
@@ -140,16 +158,30 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return
 /* Load published reviews */
 (function(){
   var list=document.getElementById('rvList'),empty=document.getElementById('rvEmpty');
+  var RV_LIMIT=240;
   fetch('/api/reviews').then(function(r){return r.json();}).then(function(j){
     var reviews=(j&&j.reviews)||[];
     if(!reviews.length){empty.textContent="No reviews yet, be the first to share your experience.";return;}
-    list.innerHTML=reviews.map(function(rv){
+    list.innerHTML=reviews.map(function(rv,i){
       var loc=rv.city?(' <span class="loc">· '+esc(rv.city)+'</span>'):'';
-      return '<div class="rv-card"><div class="quote">'+esc(rv.text).replace(/\n/g,'<br>')+'</div>'
+      var full=rv.text||'',trunc=full.length>RV_LIMIT;
+      var shown=trunc?full.slice(0,RV_LIMIT).replace(/\s+\S*$/,'')+'…':full;
+      return '<div class="rv-card"><div class="quote">'+esc(shown).replace(/\n/g,'<br>')+'</div>'
+        +(trunc?'<button type="button" class="rv-more" data-i="'+i+'">See full review</button>':'')
         +'<div class="who">'+esc(rv.firstName)+' '+esc(rv.lastInitial)+'.'+loc+'</div></div>';
     }).join('');
+    list.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.rv-more');if(b)openReviewModal(reviews[+b.getAttribute('data-i')]);});
   }).catch(function(){empty.textContent="Couldn't load reviews right now.";});
 })();
+function openReviewModal(rv){
+  if(!rv)return;
+  var loc=rv.city?(' <span class="loc">· '+esc(rv.city)+'</span>'):'';
+  document.getElementById('rvModalQ').innerHTML=esc(rv.text||'').replace(/\n/g,'<br>');
+  document.getElementById('rvModalW').innerHTML=esc(rv.firstName)+' '+esc(rv.lastInitial)+'.'+loc;
+  document.getElementById('rvModal').hidden=false;
+}
+function rvModalClose(){document.getElementById('rvModal').hidden=true;}
+(function(){var m=document.getElementById('rvModal');m.addEventListener('click',function(e){if(e.target===m)rvModalClose();});document.addEventListener('keydown',function(e){if(e.key==='Escape')rvModalClose();});})();
 
 /* Submit a review */
 document.getElementById('reviewForm').addEventListener('submit',function(e){
