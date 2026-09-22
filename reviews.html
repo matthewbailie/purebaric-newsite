@@ -19,22 +19,23 @@
 <link rel="stylesheet" href="/warm.css">
 <style>
 .rv-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:44px;align-items:start}
-.rv-list{display:flex;flex-direction:column;gap:16px}
-.rv-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
-.rv-card .quote{color:var(--ink);font-size:16px;line-height:1.6}
-.rv-card .quote::before{content:"\201C"}
-.rv-card .quote::after{content:"\201D"}
-.rv-card .who{margin-top:12px;font-size:14px;font-weight:700;color:var(--terra-d)}
-.rv-card .who .loc{font-weight:500;color:var(--muted)}
-.rv-card .rv-more{margin-top:10px;background:none;border:none;padding:0;color:var(--terra-d);font-weight:600;font-size:14px;cursor:pointer;font-family:inherit}
+.rv-list{display:flex;flex-direction:column;gap:18px}
+.rv-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 28px;box-shadow:0 2px 10px rgba(43,35,32,.05)}
+.rv-card::before{content:"\201C";font-family:Georgia,'Times New Roman',serif;font-size:46px;line-height:.5;color:var(--terra);opacity:.32;display:block;margin-bottom:8px}
+.rv-card .quote{color:var(--ink);font-size:17px;line-height:1.65;font-weight:500}
+.rv-card .rv-more{margin-top:12px;background:none;border:none;padding:0;color:var(--terra-d);font-weight:600;font-size:14px;cursor:pointer;font-family:inherit}
 .rv-card .rv-more:hover{text-decoration:underline}
+.rv-card .rv-meta{display:flex;align-items:center;gap:12px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+.rv-card .rv-avatar{flex:none;width:40px;height:40px;border-radius:50%;background:var(--terra-bg);color:var(--terra-d);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;text-transform:uppercase}
+.rv-card .rv-name{display:block;font-size:14px;font-weight:700;color:var(--ink)}
+.rv-card .rv-sub{display:block;font-size:12.5px;color:var(--muted);margin-top:1px}
 .rv-modal{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(43,35,32,.55)}
 .rv-modal[hidden]{display:none}
-.rv-modal-box{background:var(--card);border:1px solid var(--line);border-radius:16px;max-width:560px;width:100%;max-height:80vh;overflow:auto;padding:30px 32px;position:relative}
+.rv-modal-box{background:var(--card);border:1px solid var(--line);border-radius:16px;max-width:560px;width:100%;max-height:80vh;overflow:auto;padding:34px 34px 30px;position:relative}
+.rv-modal-box::before{content:"\201C";font-family:Georgia,'Times New Roman',serif;font-size:54px;line-height:.5;color:var(--terra);opacity:.32;display:block;margin-bottom:10px}
 .rv-modal-x{position:absolute;top:10px;right:14px;background:none;border:none;font-size:26px;line-height:1;color:var(--muted);cursor:pointer;padding:4px;font-family:inherit}
-.rv-modal-q{color:var(--ink);font-size:16px;line-height:1.7;white-space:pre-wrap}
-.rv-modal-q::before{content:"\201C"}.rv-modal-q::after{content:"\201D"}
-.rv-modal-w{margin-top:16px;font-size:14px;font-weight:700;color:var(--terra-d)}
+.rv-modal-q{color:var(--ink);font-size:16px;line-height:1.7;white-space:pre-wrap;font-weight:500}
+.rv-modal-w{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-size:13.5px;font-weight:700;color:var(--ink)}
 .rv-modal-w .loc{font-weight:500;color:var(--muted)}
 .rv-empty{color:var(--muted);font-size:15px;background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:24px}
 /* form */
@@ -156,6 +157,9 @@
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 
 /* Load published reviews */
+function rvYM(iso){try{return new Date(iso).toLocaleDateString('en-US',{month:'long',year:'numeric'});}catch(e){return '';}}
+function rvSubLine(rv){return [rv.city?esc(rv.city):'',rvYM(rv.createdAt)].filter(Boolean).join(' · ');}
+function rvInitials(rv){return esc(((rv.firstName||'').charAt(0)+(rv.lastInitial||'')));}
 (function(){
   var list=document.getElementById('rvList'),empty=document.getElementById('rvEmpty');
   var RV_LIMIT=240;
@@ -163,21 +167,20 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return
     var reviews=(j&&j.reviews)||[];
     if(!reviews.length){empty.textContent="No reviews yet, be the first to share your experience.";return;}
     list.innerHTML=reviews.map(function(rv,i){
-      var loc=rv.city?(' <span class="loc">· '+esc(rv.city)+'</span>'):'';
       var full=rv.text||'',trunc=full.length>RV_LIMIT;
       var shown=trunc?full.slice(0,RV_LIMIT).replace(/\s+\S*$/,'')+'…':full;
       return '<div class="rv-card"><div class="quote">'+esc(shown).replace(/\n/g,'<br>')+'</div>'
         +(trunc?'<button type="button" class="rv-more" data-i="'+i+'">See full review</button>':'')
-        +'<div class="who">'+esc(rv.firstName)+' '+esc(rv.lastInitial)+'.'+loc+'</div></div>';
+        +'<div class="rv-meta"><span class="rv-avatar">'+rvInitials(rv)+'</span><span><span class="rv-name">'+esc(rv.firstName)+' '+esc(rv.lastInitial)+'.</span><span class="rv-sub">'+rvSubLine(rv)+'</span></span></div></div>';
     }).join('');
     list.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.rv-more');if(b)openReviewModal(reviews[+b.getAttribute('data-i')]);});
   }).catch(function(){empty.textContent="Couldn't load reviews right now.";});
 })();
 function openReviewModal(rv){
   if(!rv)return;
-  var loc=rv.city?(' <span class="loc">· '+esc(rv.city)+'</span>'):'';
+  var sub=rvSubLine(rv);
   document.getElementById('rvModalQ').innerHTML=esc(rv.text||'').replace(/\n/g,'<br>');
-  document.getElementById('rvModalW').innerHTML=esc(rv.firstName)+' '+esc(rv.lastInitial)+'.'+loc;
+  document.getElementById('rvModalW').innerHTML=esc(rv.firstName)+' '+esc(rv.lastInitial)+'.'+(sub?' <span class="loc">· '+sub+'</span>':'');
   document.getElementById('rvModal').hidden=false;
 }
 function rvModalClose(){document.getElementById('rvModal').hidden=true;}

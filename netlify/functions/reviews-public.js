@@ -11,6 +11,7 @@ exports.handler = async () => {
       lastInitial: r.lastInitial,
       city: r.city || "",
       text: r.text,
+      createdAt: r.createdAt,
       publishedAt: r.publishedAt,
     }));
     return {

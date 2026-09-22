@@ -462,8 +462,12 @@
       try {
         return await user.jwt(true); // force refresh
       } catch (e2) {
-        try { await window.netlifyIdentity.logout(); } catch (_) {}
-        toast('Your session expired, please sign in again.', true);
+        // Do NOT force a logout here. Netlify refresh tokens are long-lived, so a
+        // transient refresh hiccup shouldn't end the session, that aggressive
+        // logout was what kept booting you back to the sign-in screen. Keep the
+        // session (currentUser stays), surface a banner, and let the proactive
+        // refresh or the next call recover on its own.
+        showSessionExpired();
         const err = new Error('session expired');
         err.status = 401;
         throw err;
@@ -1384,7 +1388,7 @@
       <tr>
         <td>${escape(created)}</td>
         <td><strong>${who}</strong></td>
-        <td style="max-width:420px;white-space:normal;">${rvShown}${rvTrunc ? ` <button class="btn btn-ghost btn-sm" onclick='viewReview(${JSON.stringify(r.id)})'>See full review</button>` : ''}</td>
+        <td style="max-width:420px;white-space:normal;"><em style="color:#4a423c;">&#8220;${rvShown}&#8221;</em>${rvTrunc ? ` <button class="btn btn-ghost btn-sm" onclick='viewReview(${JSON.stringify(r.id)})'>See full review</button>` : ''}</td>
         <td><span class="pill pill-${r.status}">${r.status}</span></td>
         <td><div class="row-actions">${actions.join('')}</div></td>
       </tr>`;

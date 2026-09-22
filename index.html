@@ -367,35 +367,37 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 
 <div class="reviews-band" id="reviewsBand" hidden><div class="wrap"><section style="border-top:none">
   <style>
-    .reviews-band .rv-carousel{margin-top:10px}
-    .reviews-band .rv-scroller{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;padding:4px 2px 8px;scrollbar-width:none}
+    .reviews-band{border-top:1px solid var(--line)}
+    .reviews-band .rv-carousel{margin-top:16px}
+    .reviews-band .rv-scroller{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;padding:6px 3px 10px;scrollbar-width:none}
     .reviews-band .rv-scroller::-webkit-scrollbar{display:none}
-    .reviews-band .rv-card{flex:0 0 calc((100% - 32px)/3);scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 26px;min-width:0}
-    .reviews-band .rv-q{color:var(--ink);font-size:15px;line-height:1.62}
-    .reviews-band .rv-q::before{content:"\201C"}
-    .reviews-band .rv-q::after{content:"\201D"}
-    .reviews-band .rv-w{margin-top:12px;font-size:13.5px;font-weight:700;color:var(--terra-d)}
-    .reviews-band .rv-w .l{font-weight:500;color:var(--muted)}
-    .reviews-band .rv-more{margin-top:10px;background:none;border:none;padding:0;color:var(--terra-d);font-weight:600;font-size:13.5px;cursor:pointer;font-family:inherit}
+    .reviews-band .rv-card{flex:0 0 calc((100% - 36px)/3);scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 28px;min-width:0;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(43,35,32,.05)}
+    .reviews-band .rv-card::before{content:"\201C";font-family:Georgia,'Times New Roman',serif;font-size:46px;line-height:.5;color:var(--terra);opacity:.32;margin-bottom:10px}
+    .reviews-band .rv-q{color:var(--ink);font-size:16px;line-height:1.65;font-weight:500;flex:1}
+    .reviews-band .rv-more{margin-top:12px;align-self:flex-start;background:none;border:none;padding:0;color:var(--terra-d);font-weight:600;font-size:13.5px;cursor:pointer;font-family:inherit}
     .reviews-band .rv-more:hover{text-decoration:underline}
+    .reviews-band .rv-meta{display:flex;align-items:center;gap:12px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+    .reviews-band .rv-avatar{flex:none;width:40px;height:40px;border-radius:50%;background:var(--terra-bg);color:var(--terra-d);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;text-transform:uppercase}
+    .reviews-band .rv-name{display:block;font-size:14px;font-weight:700;color:var(--ink)}
+    .reviews-band .rv-sub{display:block;font-size:12.5px;color:var(--muted);margin-top:1px}
     .rv-modal{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(43,35,32,.55)}
     .rv-modal[hidden]{display:none}
-    .rv-modal-box{background:var(--card);border:1px solid var(--line);border-radius:16px;max-width:560px;width:100%;max-height:80vh;overflow:auto;padding:30px 32px;position:relative}
+    .rv-modal-box{background:var(--card);border:1px solid var(--line);border-radius:16px;max-width:560px;width:100%;max-height:80vh;overflow:auto;padding:34px 34px 30px;position:relative}
+    .rv-modal-box::before{content:"\201C";font-family:Georgia,'Times New Roman',serif;font-size:54px;line-height:.5;color:var(--terra);opacity:.32;display:block;margin-bottom:10px}
     .rv-modal-x{position:absolute;top:10px;right:14px;background:none;border:none;font-size:26px;line-height:1;color:var(--muted);cursor:pointer;padding:4px;font-family:inherit}
-    .rv-modal-q{color:var(--ink);font-size:16px;line-height:1.7;white-space:pre-wrap}
-    .rv-modal-q::before{content:"\201C"}.rv-modal-q::after{content:"\201D"}
-    .rv-modal-w{margin-top:16px;font-size:14px;font-weight:700;color:var(--terra-d)}
+    .rv-modal-q{color:var(--ink);font-size:16px;line-height:1.7;white-space:pre-wrap;font-weight:500}
+    .rv-modal-w{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-size:13.5px;font-weight:700;color:var(--ink)}
     .rv-modal-w .l{font-weight:500;color:var(--muted)}
     .reviews-band .rv-carousel[data-count="1"] .rv-card{flex-basis:min(100%,560px)}
-    .reviews-band .rv-carousel[data-count="2"] .rv-card{flex-basis:calc((100% - 16px)/2)}
-    .reviews-band .rv-controls{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px}
-    .reviews-band .rv-arrow{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+    .reviews-band .rv-carousel[data-count="2"] .rv-card{flex-basis:calc((100% - 18px)/2)}
+    .reviews-band .rv-controls{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:18px}
+    .reviews-band .rv-arrow{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;font-family:inherit}
     .reviews-band .rv-arrow:hover{background:var(--cream2)}
     .reviews-band .rv-dots{display:flex;gap:8px}
     .reviews-band .rv-dots button{width:9px;height:9px;border-radius:50%;border:none;background:var(--line);cursor:pointer;padding:0;transition:background .3s,width .3s}
     .reviews-band .rv-dots button.on{background:var(--terra);width:22px;border-radius:999px}
-    @media(max-width:1100px){.reviews-band .rv-card{flex-basis:calc((100% - 16px)/2)}}
-    @media(max-width:820px){.reviews-band .rv-card{flex-basis:82%}}
+    @media(max-width:1100px){.reviews-band .rv-card{flex-basis:calc((100% - 18px)/2)}}
+    @media(max-width:820px){.reviews-band .rv-card{flex-basis:84%}}
   </style>
   <h2>What renters say</h2><p class="lead">Real experiences from Purebaric renters across Utah.</p>
   <div class="rv-carousel" id="rvCarousel">
@@ -561,18 +563,20 @@ window.addEventListener('load',function(){recalc('');recalc('2');});
         dotsEl=document.getElementById('rvDots');
     carousel.setAttribute('data-count',reviews.length);
     var RV_LIMIT=220;
+    function rvYM(iso){try{return new Date(iso).toLocaleDateString('en-US',{month:'long',year:'numeric'});}catch(e){return '';}}
+    function rvSub(rv){return [rv.city?esc(rv.city):'',rvYM(rv.createdAt)].filter(Boolean).join(' · ');}
+    function rvInitials(rv){return esc(((rv.firstName||'').charAt(0)+(rv.lastInitial||'')));}
     scroller.innerHTML=reviews.map(function(rv,i){
-      var loc=rv.city?(' <span class="l">· '+esc(rv.city)+'</span>'):'';
       var full=rv.text||'',trunc=full.length>RV_LIMIT;
       var shown=trunc?full.slice(0,RV_LIMIT).replace(/\s+\S*$/,'')+'…':full;
       return '<div class="rv-card"><div class="rv-q">'+esc(shown).replace(/\n/g,'<br>')+'</div>'
         +(trunc?'<button type="button" class="rv-more" data-i="'+i+'">See full review</button>':'')
-        +'<div class="rv-w">'+esc(rv.firstName)+' '+esc(rv.lastInitial)+'.'+loc+'</div></div>';
+        +'<div class="rv-meta"><span class="rv-avatar">'+rvInitials(rv)+'</span><span><span class="rv-name">'+esc(rv.firstName)+' '+esc(rv.lastInitial)+'.</span><span class="rv-sub">'+rvSub(rv)+'</span></span></div></div>';
     }).join('');
     band.hidden=false;
     // full-review popup
     var rvModal=document.getElementById('rvModal');
-    function rvModalOpen(rv){var loc=rv.city?(' <span class="l">· '+esc(rv.city)+'</span>'):'';document.getElementById('rvModalQ').innerHTML=esc(rv.text||'').replace(/\n/g,'<br>');document.getElementById('rvModalW').innerHTML=esc(rv.firstName)+' '+esc(rv.lastInitial)+'.'+loc;rvModal.hidden=false;}
+    function rvModalOpen(rv){var sub=rvSub(rv);document.getElementById('rvModalQ').innerHTML=esc(rv.text||'').replace(/\n/g,'<br>');document.getElementById('rvModalW').innerHTML=esc(rv.firstName)+' '+esc(rv.lastInitial)+'.'+(sub?' <span class="l">· '+sub+'</span>':'');rvModal.hidden=false;}
     window.rvModalClose=function(){rvModal.hidden=true;};
     scroller.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.rv-more');if(b)rvModalOpen(reviews[+b.getAttribute('data-i')]);});
     rvModal.addEventListener('click',function(e){if(e.target===rvModal)rvModal.hidden=true;});
