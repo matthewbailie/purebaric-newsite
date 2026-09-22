@@ -223,6 +223,7 @@
       <button class="tab-btn" data-tab="bookings">Rental requests</button>
       <button class="tab-btn" data-tab="waitlist">Waitlist</button>
       <button class="tab-btn" data-tab="customers">Customers</button>
+      <button class="tab-btn" data-tab="reviews">Reviews</button>
     </div>
 
     <!-- ───── Chambers ───── -->
@@ -398,6 +399,20 @@
       <div id="customersList"></div>
     </section>
 
+    <!-- ───── Reviews ───── -->
+    <section class="tab-panel" data-panel="reviews">
+      <div class="panel-actions">
+        <h2>Reviews</h2>
+        <select id="reviewStatusFilter" style="padding: 0.4rem 0.7rem;">
+          <option value="">All statuses</option>
+          <option value="pending">Pending</option>
+          <option value="published">Published</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+      <div id="reviewsList"></div>
+    </section>
+
   </div>
 </div>
 
@@ -525,6 +540,7 @@
   let _waitlist = [];
   let _bookings = [];
   let _customers = [];
+  let _reviews = [];
 
   const loadErrorEl = document.getElementById('loadError');
   function showLoadError(html) { loadErrorEl.innerHTML = html; loadErrorEl.hidden = false; }
@@ -541,7 +557,7 @@
     // Load each section independently: one failing call must not blank the rest,
     // and we still paint whatever succeeded.
     const results = await Promise.allSettled([
-      loadChambers(), loadRentals(), loadWaitlist(), loadBookings()
+      loadChambers(), loadRentals(), loadWaitlist(), loadBookings(), loadReviews()
     ]);
     paintStats();
     const failures = results.filter(r => r.status === 'rejected').map(r => r.reason || {});
@@ -1328,6 +1344,90 @@
   async function deleteBooking(id) {
     if (!confirm('Delete this rental request? This cannot be undone.')) return;
     try { await api(`/api/admin/bookings/${id}`, { method: 'DELETE' }); toast('Deleted'); await loadAll(); }
+    catch (err) { toast(err.message, true); }
+  }
+
+  // ─── Reviews ───
+  async function loadReviews() {
+    const status = document.getElementById('reviewStatusFilter').value;
+    const qs = status ? `?status=${status}` : '';
+    const data = await api(`/api/admin/reviews${qs}`);
+    _reviews = data.reviews;
+    renderReviews();
+  }
+  document.getElementById('reviewStatusFilter').addEventListener('change', loadReviews);
+
+  function renderReviews() {
+    const list = document.getElementById('reviewsList');
+    if (!_reviews.length) {
+      list.innerHTML = `<div class="empty-state">No reviews yet. When someone submits one at <strong>/reviews</strong>, it shows here for you to publish.</div>`;
+      return;
+    }
+    const pending = _reviews.filter(r => r.status === 'pending').length;
+    const banner = pending
+      ? `<div class="renter-line" style="margin-bottom:12px;color:#82402f;"><strong>${pending}</strong> review${pending > 1 ? 's' : ''} awaiting your approval.</div>`
+      : '';
+    const rows = _reviews.map(r => {
+      const created = new Date(r.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const who = `${escape(r.firstName)} ${escape(r.lastInitial)}.${r.city ? ' · ' + escape(r.city) : ''}`;
+      const actions = [];
+      if (r.status !== 'published') actions.push(`<button class="btn btn-primary btn-sm" onclick='setReviewStatus(${JSON.stringify(r.id)}, "published")'>Publish</button>`);
+      if (r.status === 'published') actions.push(`<button class="btn btn-ghost btn-sm" onclick='setReviewStatus(${JSON.stringify(r.id)}, "pending")'>Unpublish</button>`);
+      if (r.status !== 'rejected') actions.push(`<button class="btn btn-ghost btn-sm" onclick='setReviewStatus(${JSON.stringify(r.id)}, "rejected")'>Reject</button>`);
+      actions.push(`<button class="btn btn-ghost btn-sm" onclick='editReview(${JSON.stringify(r.id)})'>Edit</button>`);
+      actions.push(`<button class="btn btn-ghost btn-sm" style="color:#82402f;" onclick='deleteReview(${JSON.stringify(r.id)})'>Delete</button>`);
+      return `
+      <tr>
+        <td>${escape(created)}</td>
+        <td><strong>${who}</strong></td>
+        <td style="max-width:420px;white-space:normal;">${escape(r.text)}</td>
+        <td><span class="pill pill-${r.status}">${r.status}</span></td>
+        <td><div class="row-actions">${actions.join('')}</div></td>
+      </tr>`;
+    }).join('');
+    list.innerHTML = banner + `<div class="table-wrap"><table class="data-table"><thead><tr><th>Received</th><th>Reviewer</th><th>Review</th><th>Status</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+
+  async function setReviewStatus(id, status) {
+    try {
+      await api(`/api/admin/reviews/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
+      toast(status === 'published' ? 'Review published, now live on the site' : status === 'rejected' ? 'Review rejected' : 'Review unpublished');
+      await loadAll();
+    } catch (err) { toast(err.message, true); }
+  }
+
+  function editReview(id) {
+    const r = _reviews.find(x => x.id === id);
+    if (!r) return;
+    const body = `
+      <div class="modal-row"><strong>First name</strong><div><input id="rvFirst" value="${escape(r.firstName)}" style="width:100%;padding:0.5rem;"></div></div>
+      <div class="modal-row"><strong>Last initial</strong><div><input id="rvInitial" maxlength="1" value="${escape(r.lastInitial)}" style="width:80px;padding:0.5rem;"></div></div>
+      <div class="modal-row"><strong>City</strong><div><input id="rvCity" value="${escape(r.city || '')}" style="width:100%;padding:0.5rem;"></div></div>
+      <div class="modal-section"><h4>Review text</h4><textarea id="rvText" style="width:100%;min-height:140px;">${escape(r.text)}</textarea></div>
+      <div class="modal-actions">
+        <button class="btn btn-primary btn-sm" onclick='saveReview(${JSON.stringify(r.id)})'>Save changes</button>
+      </div>`;
+    openModal(`Review, ${r.firstName} ${r.lastInitial}.`, body);
+  }
+
+  async function saveReview(id) {
+    const patch = {
+      firstName: document.getElementById('rvFirst').value,
+      lastInitial: document.getElementById('rvInitial').value,
+      city: document.getElementById('rvCity').value,
+      text: document.getElementById('rvText').value,
+    };
+    try {
+      await api(`/api/admin/reviews/${id}`, { method: 'PATCH', body: JSON.stringify(patch) });
+      toast('Review saved');
+      closeModal();
+      await loadAll();
+    } catch (err) { toast(err.message, true); }
+  }
+
+  async function deleteReview(id) {
+    if (!confirm('Delete this review permanently?')) return;
+    try { await api(`/api/admin/reviews/${id}`, { method: 'DELETE' }); toast('Review deleted'); await loadAll(); }
     catch (err) { toast(err.message, true); }
   }
 

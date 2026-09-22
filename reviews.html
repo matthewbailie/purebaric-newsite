@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reviews, Purebaric Hyperbaric Chamber Rentals in Utah</title>
+<meta name="description" content="What Purebaric renters say about at-home mild hyperbaric chamber rentals in Utah. Read reviews, or share your own experience.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://purebaric.com/reviews">
+<link rel="icon" href="/images/favicon.ico">
+<link rel="apple-touch-icon" href="/images/logo.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Reviews, Purebaric Hyperbaric Chamber Rentals in Utah">
+<meta property="og:description" content="What Purebaric renters say, and a place to share your own experience.">
+<meta property="og:url" content="https://purebaric.com/reviews">
+<meta property="og:image" content="https://purebaric.com/images/chamber-hero.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/warm.css">
+<style>
+.rv-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:44px;align-items:start}
+.rv-list{display:flex;flex-direction:column;gap:16px}
+.rv-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+.rv-card .quote{color:var(--ink);font-size:16px;line-height:1.6}
+.rv-card .who{margin-top:12px;font-size:14px;font-weight:700;color:var(--terra-d)}
+.rv-card .who .loc{font-weight:500;color:var(--muted)}
+.rv-empty{color:var(--muted);font-size:15px;background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:24px}
+/* form */
+.frm .fg{margin-bottom:16px}
+.frm label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.frm input,.frm textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:11px 12px;font-family:inherit;font-size:15px;background:#fff;color:var(--ink)}
+.frm input:focus,.frm textarea:focus{outline:none;border-color:var(--terra)}
+.frm textarea{min-height:130px;resize:vertical}
+.frm .row2{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+.req{color:var(--terra)}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#5f544d;line-height:1.5;margin:2px 0 16px}
+.consent input{width:auto;margin-top:3px}
+.submit{width:100%;margin-top:6px;padding:15px;font-size:16px;text-align:center}
+.formwrap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px;position:sticky;top:96px}
+.result{display:none;margin-bottom:18px;padding:16px 18px;border-radius:12px;font-weight:600;font-size:15px;line-height:1.5}
+.result.ok{display:block;background:var(--ok-bg);color:var(--ok);border:1px solid #cfe0b0}
+.result.err{display:block;background:#fbeae5;color:#9a4f3a;border:1px solid #eccdc3}
+@media(max-width:820px){.rv-grid{grid-template-columns:1fr;gap:28px}.frm .row2{grid-template-columns:1fr}.formwrap{position:static}}
+</style>
+  <script src="/pb-metrics.js"></script>
+</head><body>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><img class="brand-logo" src="/images/logo.png" alt="Purebaric"></a>
+    <nav class="nav-links">
+      <a href="/how-it-works">How it works</a><a href="/chambers">Chambers</a><a href="/pricing">Pricing</a><a href="/about">About</a><a href="/faq">FAQ</a><a href="/contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="/book">Reserve a chamber</a>
+    </div>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu">
+    <a href="/how-it-works">How it works</a><a href="/chambers">Chambers</a><a href="/pricing">Pricing</a><a href="/about">About</a><a href="/faq">FAQ</a><a href="/contact">Contact</a>
+    <a class="btn btn-primary mm-cta" href="/book">Reserve a chamber</a>
+  </nav>
+</header>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow2">Reviews</span>
+    <h1>What renters say</h1>
+    <p>Real experiences from people who've rented a Purebaric chamber for their home. If you've rented from us, I'd be grateful if you shared yours.</p>
+  </div>
+</section>
+
+<section class="section" style="border-top:none">
+  <div class="wrap">
+    <div class="rv-grid">
+
+      <div>
+        <div class="rv-list" id="rvList" aria-live="polite">
+          <div class="rv-empty" id="rvEmpty">Loading reviews…</div>
+        </div>
+      </div>
+
+      <form id="reviewForm" class="frm formwrap" novalidate>
+        <h3 style="font-size:19px;font-weight:700;margin-bottom:16px">Write a review</h3>
+        <div class="result" id="rResult" role="status" aria-live="polite"></div>
+        <p hidden><label>Do not fill this out <input name="bot-field" id="rBot" tabindex="-1" autocomplete="off"></label></p>
+
+        <div class="row2">
+          <div class="fg"><label for="rFirst">First name <span class="req">*</span></label><input type="text" id="rFirst" name="firstName" autocomplete="given-name" maxlength="40" required></div>
+          <div class="fg"><label for="rInitial">Last initial <span class="req">*</span></label><input type="text" id="rInitial" name="lastInitial" maxlength="1" placeholder="M" required></div>
+        </div>
+        <div class="fg"><label for="rCity">City (optional)</label><input type="text" id="rCity" name="city" maxlength="60" placeholder="Salt Lake City"></div>
+        <div class="fg"><label for="rText">Your review <span class="req">*</span></label><textarea id="rText" name="text" maxlength="1500" required placeholder="What was your experience like, delivery, setup, using the chamber, support?"></textarea></div>
+        <label class="consent"><input type="checkbox" id="rConsent" required> I'm okay with Purebaric sharing my review (first name, last initial, and city) on their website.</label>
+        <button type="submit" class="btn btn-primary submit" id="rSubmit">Submit review</button>
+        <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.5">Reviews are checked before they're posted. Please keep it to your own experience, no sensitive health details.</p>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img class="foot-logo" src="/images/logo-cream.png" alt="Purebaric">
+        <p class="foot-tag">Hyperbaric chamber rentals, delivered across Utah.</p>
+        <p class="foot-desc">Professional-grade mild hyperbaric oxygen therapy brought to your home, delivery, setup, and support included, for less than the cost of a single month at a clinic.</p>
+      </div>
+      <div class="foot-col"><h5>Service</h5><ul>
+        <li><a href="/how-it-works">How it works</a></li><li><a href="/chambers">Chambers</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/service-area">Service area</a></li><li><a href="/book">Reserve</a></li><li><a href="/waitlist">Waitlist</a></li></ul></div>
+      <div class="foot-col"><h5>Company</h5><ul>
+        <li><a href="/about">About</a></li><li><a href="/reviews">Reviews</a></li><li><a href="/faq">FAQ</a></li><li><a href="/contact">Contact</a></li><li><a href="/safety">Safety &amp; disclosures</a></li><li><a href="/terms">Terms</a></li><li><a href="/privacy">Privacy</a></li></ul></div>
+      <div class="foot-col"><h5>Get in touch</h5><ul>
+        <li><a href="tel:+18019010873">(801) 901-0873</a></li>
+        <li><a href="mailto:hello@purebaric.com">hello@purebaric.com</a></li>
+        <li class="foot-muted" style="margin-top:12px">Mon–Sat, 8:00 AM – 6:00 PM MT</li>
+        <li class="foot-muted">Salt Lake City, UT</li></ul></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Purebaric. All rights reserved.</span>
+      <span class="foot-disc">Provided for general wellness and relaxation only. Not a medical device; not intended to diagnose, treat, cure, or prevent any disease. Consult your physician before use.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="cookie" id="cookie" hidden>
+  <div class="wrap cookie-in">
+    <p>We use optional analytics and advertising-measurement cookies to understand traffic and measure ad performance. We do not use them for personalized ads. See our <a href="/privacy">privacy policy</a>.</p>
+    <div class="cookie-btns"><button class="btn btn-ghost" onclick="cookieChoice(false)">Decline</button><button class="btn btn-primary" onclick="cookieChoice(true)">Accept</button></div>
+  </div>
+</div>
+
+<script src="/warm.js"></script>
+<script>
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+/* Load published reviews */
+(function(){
+  var list=document.getElementById('rvList'),empty=document.getElementById('rvEmpty');
+  fetch('/api/reviews').then(function(r){return r.json();}).then(function(j){
+    var reviews=(j&&j.reviews)||[];
+    if(!reviews.length){empty.textContent="No reviews yet, be the first to share your experience.";return;}
+    list.innerHTML=reviews.map(function(rv){
+      var loc=rv.city?(' <span class="loc">· '+esc(rv.city)+'</span>'):'';
+      return '<div class="rv-card"><div class="quote">'+esc(rv.text).replace(/\n/g,'<br>')+'</div>'
+        +'<div class="who">'+esc(rv.firstName)+' '+esc(rv.lastInitial)+'.'+loc+'</div></div>';
+    }).join('');
+  }).catch(function(){empty.textContent="Couldn't load reviews right now.";});
+})();
+
+/* Submit a review */
+document.getElementById('reviewForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  var f=e.target,btn=document.getElementById('rSubmit'),res=document.getElementById('rResult');
+  if(document.getElementById('rBot').value)return;
+  if(!f.checkValidity()){f.reportValidity();return;}
+  var data=new URLSearchParams();
+  data.set('firstName',document.getElementById('rFirst').value);
+  data.set('lastInitial',document.getElementById('rInitial').value);
+  data.set('city',document.getElementById('rCity').value);
+  data.set('text',document.getElementById('rText').value);
+  var orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='Submitting...';
+  fetch('/api/reviews-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
+   .then(function(r){return r.json().catch(function(){return {};});})
+   .then(function(j){
+     btn.disabled=false;btn.innerHTML=orig;
+     if(j&&(j.ok||j.success)){
+       window.trackPurebaricEvent?.('review_submit',{has_city:!!document.getElementById('rCity').value});
+       res.className='result ok';
+       res.textContent=(j.message)||"Thanks for sharing. We'll post it after a quick review.";
+       f.reset();
+       window.scrollTo({top:0,behavior:'smooth'});
+     }else{
+       res.className='result err';
+       res.textContent=(j&&j.error)||'Something went wrong. Please try again, or email hello@purebaric.com.';
+     }
+   })
+   .catch(function(){
+     btn.disabled=false;btn.innerHTML=orig;
+     res.className='result err';
+     res.textContent='Network error. Please try again, or email hello@purebaric.com.';
+   });
+});
+</script>
+</body></html>

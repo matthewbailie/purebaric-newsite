@@ -266,8 +266,22 @@ async function notifyAdminSms(b, { outOfArea } = {}) {
   return send({ to, subject, text, html: `<p>${escapeHtml(text)}</p>` });
 }
 
+// Admin-facing: a visitor submitted a review. It stays pending until published.
+async function notifyAdminReview(review) {
+  const who = `${review.firstName || ""} ${review.lastInitial || ""}`.trim() || "Someone";
+  const where = review.city ? ` from ${review.city}` : "";
+  const html = wrap(`
+    <p style="margin:0 0 16px;"><strong style="color:#2b2320;">New review submitted</strong></p>
+    <p style="margin:0 0 16px;">${escapeHtml(who)}${escapeHtml(where)}</p>
+    <p style="margin:0 0 16px; padding:14px 16px; background:#f6efe4; border:1px solid #e6dccd; border-radius:8px; color:#2b2320;">${escapeHtml(review.text || "-").replace(/\n/g, "<br>")}</p>
+    <p style="margin:0;">It won't appear on the site until you publish it. <a href="https://purebaric.com/admin.html" style="color:#b8654d;">Review in admin →</a></p>
+  `);
+  return send({ to: ADMIN_NOTIFY, subject: `New review: ${who}`, html });
+}
+
 module.exports = {
   send,
+  notifyAdminReview,
   notifyAdminWaitlistJoin,
   notifyWaitlistChamberAvailable,
   notifyAdminBooking,

@@ -8,6 +8,7 @@ const STORES = {
   waivers: "waivers",
   bookings: "bookings",
   customers: "customers",
+  reviews: "reviews",
 };
 
 function newId() {
@@ -420,6 +421,48 @@ async function listCustomers() {
   );
 }
 
+// ───────── Reviews / testimonials ─────────
+// shape: { id, firstName, lastInitial, city, text,
+//   status: "pending"|"published"|"rejected", createdAt, publishedAt }
+// Submitted "pending"; only "published" reviews are shown on the public site.
+
+async function listReviews({ status } = {}) {
+  const all = await listAll(STORES.reviews);
+  let filtered = all;
+  if (status) filtered = filtered.filter((r) => r.status === status);
+  return filtered.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+async function listPublishedReviews() {
+  const all = await listAll(STORES.reviews);
+  return all
+    .filter((r) => r.status === "published")
+    .sort((a, b) =>
+      (b.publishedAt || b.createdAt).localeCompare(a.publishedAt || a.createdAt)
+    );
+}
+
+async function createReview(data) {
+  const r = {
+    id: newId(),
+    firstName: (data.firstName || "").trim().slice(0, 40),
+    lastInitial: (data.lastInitial || "").trim().slice(0, 1).toUpperCase(),
+    city: (data.city || "").trim().slice(0, 60),
+    text: (data.text || "").trim().slice(0, 1500),
+    status: "pending",
+    createdAt: nowIso(),
+    publishedAt: null,
+  };
+  return putOne(STORES.reviews, r);
+}
+
+async function updateReview(id, patch) {
+  const existing = await getOne(STORES.reviews, id);
+  if (!existing) return null;
+  const updated = { ...existing, ...patch, id };
+  return putOne(STORES.reviews, updated);
+}
+
 // ───────── Waivers (binary blob storage) ─────────
 
 async function saveWaiver(rentalId, buffer, contentType) {
@@ -460,6 +503,10 @@ module.exports = {
   listManualCustomers,
   createManualCustomer,
   updateManualCustomer,
+  listReviews,
+  listPublishedReviews,
+  createReview,
+  updateReview,
   countAvailableToday,
   nextAvailableByChamber,
   saveWaiver,

@@ -36,6 +36,16 @@
   to = "/.netlify/functions/contact-submit"
   status = 200
 
+[[redirects]]
+  from = "/api/reviews-submit"
+  to = "/.netlify/functions/reviews-submit"
+  status = 200
+
+[[redirects]]
+  from = "/api/reviews"
+  to = "/.netlify/functions/reviews-public"
+  status = 200
+
 # ───────── Admin API (base path + sub-paths) ─────────
 [[redirects]]
   from = "/api/admin/chambers"
@@ -89,6 +99,15 @@
 [[redirects]]
   from = "/api/admin/waiver/*"
   to = "/.netlify/functions/admin-waiver/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/reviews"
+  to = "/.netlify/functions/admin-reviews"
+  status = 200
+[[redirects]]
+  from = "/api/admin/reviews/*"
+  to = "/.netlify/functions/admin-reviews/:splat"
   status = 200
 
 # ───────── Scheduled function ─────────

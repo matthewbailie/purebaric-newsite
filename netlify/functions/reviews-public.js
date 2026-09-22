@@ -1,0 +1,32 @@
+const { listPublishedReviews } = require("./_lib/storage");
+
+// Public, unauthenticated: returns only PUBLISHED reviews, with just the fields
+// safe to show on the site (no status, no internal timestamps beyond publish).
+exports.handler = async () => {
+  try {
+    const all = await listPublishedReviews();
+    const reviews = all.map((r) => ({
+      id: r.id,
+      firstName: r.firstName,
+      lastInitial: r.lastInitial,
+      city: r.city || "",
+      text: r.text,
+      publishedAt: r.publishedAt,
+    }));
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "public, max-age=60",
+      },
+      body: JSON.stringify({ reviews }),
+    };
+  } catch (err) {
+    console.error("reviews-public error", err);
+    return {
+      statusCode: 500,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ error: err.message || "reviews_failed" }),
+    };
+  }
+};
