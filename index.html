@@ -372,6 +372,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
     .reviews-band .rv-scroller::-webkit-scrollbar{display:none}
     .reviews-band .rv-card{flex:0 0 calc((100% - 32px)/3);scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 26px;min-width:0}
     .reviews-band .rv-q{color:var(--ink);font-size:15px;line-height:1.62}
+    .reviews-band .rv-q::before{content:"\201C"}
+    .reviews-band .rv-q::after{content:"\201D"}
     .reviews-band .rv-w{margin-top:12px;font-size:13.5px;font-weight:700;color:var(--terra-d)}
     .reviews-band .rv-w .l{font-weight:500;color:var(--muted)}
     .reviews-band .rv-carousel[data-count="1"] .rv-card{flex-basis:min(100%,560px)}
