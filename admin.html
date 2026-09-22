@@ -529,6 +529,12 @@
   const loadErrorEl = document.getElementById('loadError');
   function showLoadError(html) { loadErrorEl.innerHTML = html; loadErrorEl.hidden = false; }
   function clearLoadError() { loadErrorEl.hidden = true; loadErrorEl.innerHTML = ''; }
+  function showSessionExpired() {
+    showLoadError(
+      `<span>Your admin session expired, so data couldn't load. Your chambers and requests are safe on the server, just sign back in.</span>` +
+      `<button class="btn btn-primary btn-sm" onclick="netlifyIdentity.logout()">Sign out &amp; back in</button>`
+    );
+  }
 
   async function loadAll() {
     clearLoadError();
@@ -541,10 +547,7 @@
     const failures = results.filter(r => r.status === 'rejected').map(r => r.reason || {});
     if (!failures.length) return;
     if (failures.some(e => e.status === 401)) {
-      showLoadError(
-        `<span>Your admin session expired, so data couldn't load. Your chambers and requests are safe on the server, just sign back in.</span>` +
-        `<button class="btn btn-primary btn-sm" onclick="netlifyIdentity.logout()">Sign out &amp; back in</button>`
-      );
+      showSessionExpired();
     } else {
       const msg = failures[0].message || 'unknown error';
       showLoadError(
@@ -553,6 +556,36 @@
       );
     }
   }
+
+  // ───────── Keep the session fresh (proactive) ─────────
+  // Identity access tokens live ~1h. A long-idle admin tab (backgrounded, where
+  // browsers throttle timers) can wake with an expired token. Proactively force
+  // a refresh whenever the tab regains focus and on a periodic timer, so calls
+  // rarely 401 at all. The 401-retry in api() stays as the backstop. If the
+  // refresh token itself is dead, surface the sign-in banner immediately rather
+  // than waiting for the next click.
+  let _refreshing = false;
+  let _lastRefresh = 0;
+  async function refreshSession() {
+    const user = window.netlifyIdentity.currentUser();
+    if (!user || _refreshing) return;
+    if (Date.now() - _lastRefresh < 5 * 60 * 1000) return; // throttle: at most every 5 min
+    _refreshing = true;
+    try {
+      await user.jwt(true);
+      _lastRefresh = Date.now();
+      if (!loadErrorEl.hidden) { clearLoadError(); loadAll(); } // recovered — repaint
+    } catch (_) {
+      showSessionExpired();
+    } finally {
+      _refreshing = false;
+    }
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') refreshSession();
+  });
+  window.addEventListener('focus', refreshSession);
+  setInterval(refreshSession, 40 * 60 * 1000); // 40 min < 60 min token life
 
   function paintStats() {
     const active = _chambers.filter(c => c.status === 'active').length;
