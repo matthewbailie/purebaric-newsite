@@ -247,20 +247,23 @@ Customer testimonials with a moderation gate. **No star ratings** by design — 
 - Property **"Purebaric Website"**: account `408850169`, property `555169638`, stream `15813569788`, **Measurement ID `G-Q1X04YRWP1`**. Do **not** reuse the old Nerd United ID `G-9FK4XB9FDX`.
 - Loaded + consent-gated by **`/pb-metrics.js`** (in the `<head>` of every public page; `/admin` excluded). It is deliberately **not** named `analytics.js` (ad/privacy blockers block that filename). The Measurement ID lives once, as `GA_ID` in `pb-metrics.js`. All tracking calls are optional (`window.trackPurebaricEvent?.(...)`) so a blocked/late script never breaks a form.
 
-**Consent mode v2 (all set in `pb-metrics.js`) — the money is in the details here:**
-- **Default** (top of the script): all four signals denied — `analytics_storage`, `ad_storage`, `ad_user_data`, `ad_personalization` — plus `wait_for_update:500`.
-- **Accept** (`loadPurebaricAnalytics`): grants `analytics_storage`, `ad_storage`, `ad_user_data`; keeps `ad_personalization` **denied**. Also configs GA with `allow_google_signals:false` + `allow_ad_personalization_signals:false`.
-- **Decline** (`declinePurebaricAnalytics`): denies all four.
-- **Net effect:** after Accept, analytics **and Google Ads conversion measurement/attribution (gclid)** work, but **personalized advertising / remarketing stays OFF**. This is the fix for the earlier "0% ads-consent" problem that was blocking Ads click attribution. If the owner ever asks for remarketing audiences, `ad_personalization` is the switch — but leave it denied unless explicitly asked.
-- Consent choice is stored in `localStorage`: warm banner writes `pb_cookie` (`accept`/`decline`); a few legacy pages write `purebaric_cookie_consent` (`accepted`). The cookie-banner text (all public pages) and the `/privacy` "Analytics and cookies" section already describe this ("optional analytics and advertising-measurement cookies … not for personalized ads"); keep all three in sync if you change the behavior.
+**Consent mode v2 — OPT-OUT (US-only), set in `pb-metrics.js`. Updated 2026-09-22:**
+- Purebaric operates/advertises only in Utah (US), not the EEA, so this is **opt-out**, not opt-in.
+- **Default** (top of the script): `analytics_storage`, `ad_storage`, `ad_user_data` = **granted**; `ad_personalization` = **denied**. GA4 **loads on page load** (so `page_view` + `gclid` are captured and conversions attribute). This is the fix for the earlier "0% ads-consent / conversion tracking incomplete" problem (the old code denied by default and only loaded after Accept, so most visitors were never measured).
+- **Returning decliner:** if `localStorage.pb_cookie === 'decline'` (or teal `purebaric_cookie_consent === 'declined'`), the default is denied and GA does **not** load.
+- **Accept** (`loadPurebaricAnalytics`): re-grants the three measurement signals (personalization stays denied) and ensures the tag is loaded.
+- **Decline** (`declinePurebaricAnalytics`): denies all four and remembers it (`pb_cookie='decline'`).
+- If Purebaric ever advertises **outside Utah/into the EEA**, switch to region-aware consent (deny-by-default there) before expanding. `ad_personalization` stays denied unless the owner enables remarketing.
+- The cookie banner remains as an opt-out + transparency control; `/privacy` "Analytics and cookies" describes the opt-out model. Keep banner text + privacy + this file in sync.
 
-**Events (NEVER pass PII — only allowlisted scalar values, never a form/FormData/API response/ZIP/free text):** `select_rental_plan`, `service_area_check` (result only, never the ZIP), `booking_form_start`, `booking_submit` **+** `booking_request_submit` (fired together on booking success — see below), `booking_request_error`, `contact_submit`, `waitlist_join`.
+**Events (NEVER pass PII — only allowlisted scalar values, never a form/FormData/API response/ZIP/free text):** `select_rental_plan`, `service_area_check` (result only, never the ZIP), `booking_form_start`, `booking_request_submit` (the single canonical conversion, fired once on confirmed success), `booking_request_error`, `contact_submit`, `waitlist_join`.
 
 **Google Ads conversion (the one that matters):**
-- Google Ads has **one** booking conversion (Primary). **Do NOT create a second booking conversion in Google Ads — it double-counts leads.**
-- The Ads conversion is keyed to the GA4 event **`booking_submit`**, but the site historically fired **`booking_request_submit`**. To bridge that without changing the Ads config, **`book.html` now fires BOTH events** on booking success (only `booking_submit` is imported into Ads, so there is no double-count).
-- **OWNER TO CONFIRM** in GA4 → Admin → **Key events**: which event is marked as the key event / imported into Ads. If it is `booking_submit`, nothing more to do. If it is actually `booking_request_submit`, the redundant `booking_submit` line in `book.html` can be removed. Verify with GA4 **DebugView** (one test reservation should show both events + one `page_view`).
-- GA4 must stay **linked to Google Ads** (GA4 → Admin → Product links → Google Ads); that link carries the conversion + consent/gclid signals.
+- **Canonical event: `booking_request_submit`** — the ONE reservation conversion. As of 2026-09-22 the redundant `booking_submit` is **removed**; `book.html` fires only `booking_request_submit`, exactly once, guarded by a `_submitting` flag (no double-count on double-click/re-entry), and **only after the backend accepts** (never on validation/API/network failure or out-of-area).
+- Payload is non-identifying only: `form_name`, sanitized `page_location` (path, no query), `chamber_id`, `rental_months`, `estimated_total`, `currency`, `source`. No name/email/phone/city/ZIP/notes. The delivery ZIP is passed homepage→`/book` via `sessionStorage` (`pb_zip`), never the URL, so it never reaches GA.
+- Google Ads has **one** booking conversion, **"Booking Request Submitted (GA4)"** (Primary), imported from the GA4 key event `booking_request_submit`. **Do NOT create a second booking conversion — it double-counts.**
+- **OWNER TO CONFIRM (needs GA4/Ads access):** `booking_request_submit` is a GA4 **key event**; `booking_submit` is NOT also a key event; the Ads conversion imports `booking_request_submit` and is Primary + in the campaign's Conversions column; the Google-hosted lead-form conversion is Secondary/excluded. Verify one labeled test in **DebugView**.
+- GA4 must stay **linked to Google Ads** (Admin → Product links). The link is active: the GA4 tag auto-loads the linked Ads tag `AW-18178623665` (seen in the network as `google.com/ccm/collect`), which is Google's doing, not our code.
 
 **Deferred (needs Stripe):** `qualify_lead`, `begin_checkout`, `purchase`, `refund` via the GA4 Measurement Protocol from server code — not built (no checkout yet). Keep any MP secret server-side only.
 

@@ -257,16 +257,21 @@ document.getElementById('resForm').addEventListener('focusin',function(){if(book
   var q=new URLSearchParams(location.search);
   var m=parseInt(q.get('months'),10);
   if(m>=1&&m<=12)document.getElementById('mo').value=m;
-  var z=q.get('zip');
+  // ZIP is passed via sessionStorage (never the URL) so a delivery ZIP is never
+  // placed in a URL/query string that analytics would capture.
+  var z='';try{z=sessionStorage.getItem('pb_zip')||'';}catch(e){}
   if(z&&/^\d{3,5}$/.test(z))document.getElementById('zip').value=z;
   recalc();checkZip();
 })();
 
+var _submitting=false; // idempotency guard: blocks double-clicks / re-entry for one submission
 document.getElementById('resForm').addEventListener('submit',function(e){
   e.preventDefault();
+  if(_submitting)return;
   var f=e.target,btn=document.getElementById('submitBtn'),res=document.getElementById('resResult');
   if(document.getElementById('botField').value)return;
   if(!f.checkValidity()){f.reportValidity();return;}
+  _submitting=true;
   var m=+document.getElementById('mo').value,r=rate(m),p=pct(m),total=r*m,save=(BASE-r)*m;
   var months=mos(m);
   var plan='Selected plan: Soft-Shell 1.5 ATA, '+months+' rental at $'+r+'/mo'+(p>0?(' (save '+p+'%, $'+save.toLocaleString()+' total off)'):'')+'. Est. rental total '+money(total)+'. Delivery ZIP '+document.getElementById('zip').value+'.';
@@ -287,16 +292,25 @@ document.getElementById('resForm').addEventListener('submit',function(e){
   fetch('/api/booking-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
    .then(function(r){return r.json().catch(function(){return {};});})
    .then(function(j){
-     btn.disabled=false;btn.innerHTML=orig;
+     _submitting=false;btn.disabled=false;btn.innerHTML=orig;
      if(j&&j.outOfArea){
+       // Out-of-area is NOT a confirmed reservation, so no conversion fires.
        res.className='result warn';
        res.textContent=j.message||"Thanks. Your ZIP is outside our current delivery area, so we haven't scheduled a delivery, but we've logged your request and our team will reach out to see if we can help.";
        f.reset();document.getElementById('mo').value=m;recalc();document.getElementById('zipNote').hidden=true;
        window.scrollTo({top:0,behavior:'smooth'});
      }else if(j&&(j.success||j.ok)){
-       var _conv={chamber_id:String(document.getElementById('ch').value),rental_months:m,estimated_total:total,currency:'USD',source:'book_page'};
-       window.trackPurebaricEvent?.('booking_submit',_conv);
-       window.trackPurebaricEvent?.('booking_request_submit',_conv);
+       // Single canonical conversion, fired exactly once, only after the backend
+       // accepted the reservation. Payload is non-identifying only.
+       window.trackPurebaricEvent?.('booking_request_submit',{
+         form_name:'reservation_request',
+         page_location:location.origin+location.pathname,
+         chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),
+         rental_months:m,
+         estimated_total:total,
+         currency:'USD',
+         source:'book_page'
+       });
        res.className='result ok';
        res.innerHTML='Reservation received'+(j.booking_number?(' ('+j.booking_number+')'):'')+'. '+(j.message||"Our team will contact you shortly to confirm delivery.");
        f.reset();document.getElementById('mo').value=m;recalc();document.getElementById('zipNote').hidden=true;
@@ -308,7 +322,7 @@ document.getElementById('resForm').addEventListener('submit',function(e){
      }
    })
    .catch(function(){
-     btn.disabled=false;btn.innerHTML=orig;
+     _submitting=false;btn.disabled=false;btn.innerHTML=orig;
      window.trackPurebaricEvent?.('booking_request_error',{error_type:'network_error'});
      res.className='result err';
      res.textContent='Network error. Please try again, or email hello@purebaric.com.';
