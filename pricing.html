@@ -106,31 +106,31 @@
     <div class="tiers">
       <div class="tier">
         <div class="len">1 month</div>
-        <div class="amt">$729<small> /mo</small></div>
+        <div class="amt"><span id="tierAmt1">$729</span><small> /mo</small></div>
         <div class="save none">Standard rate</div>
         <div class="note">Great for trying it out or a short protocol.</div>
         <a class="btn btn-ghost" href="/book?months=1">Reserve →</a>
       </div>
       <div class="tier">
         <div class="len">2–3 months</div>
-        <div class="amt">$659<small> /mo</small></div>
-        <div class="save">Save 10%</div>
-        <div class="note">$70/mo off the 1-month rate.</div>
+        <div class="amt"><span id="tierAmt3">$659</span><small> /mo</small></div>
+        <div class="save" id="tierSave3">Save 10%</div>
+        <div class="note" id="tierNote3">$70/mo off the 1-month rate.</div>
         <a class="btn btn-ghost" href="/book?months=3">Reserve →</a>
       </div>
       <div class="tier">
         <div class="len">4–11 months</div>
-        <div class="amt">$579<small> /mo</small></div>
-        <div class="save">Save 21%</div>
-        <div class="note">$150/mo off, our most popular range.</div>
+        <div class="amt"><span id="tierAmt6">$579</span><small> /mo</small></div>
+        <div class="save" id="tierSave6">Save 21%</div>
+        <div class="note" id="tierNote6">$150/mo off, our most popular range.</div>
         <a class="btn btn-primary" href="/book?months=6">Reserve →</a>
       </div>
       <div class="tier best">
         <span class="best-tag">Best value</span>
         <div class="len">12 months</div>
-        <div class="amt">$529<small> /mo</small></div>
-        <div class="save">Save 27%</div>
-        <div class="note">$200/mo off, about $6,348 for a full year of unlimited daily use.</div>
+        <div class="amt"><span id="tierAmt12">$529</span><small> /mo</small></div>
+        <div class="save" id="tierSave12">Save 27%</div>
+        <div class="note" id="tierNote12">$200/mo off, about $6,348 for a full year of unlimited daily use.</div>
         <a class="btn btn-primary" href="/book?months=12">Reserve →</a>
       </div>
     </div>
@@ -149,8 +149,8 @@
     <div class="math">
       <div class="side"><div class="tag">Typical Utah hyperbaric clinic</div><div class="big">$80–$150</div><div class="sub">per mild (1.3 ATA) session, drop-in</div>
         <ul><li>Drive to the clinic</li><li>Stick to their hours</li><li>High cost per visit, limited use</li><li>40-session protocol: $3,200–$6,000</li></ul></div>
-      <div class="side win"><div class="tag">Purebaric at home</div><div class="big">~$17<small style="font-size:14px;color:var(--muted);font-weight:500"> /session</small></div><div class="sub">at 1-year rate, unlimited daily use</div>
-        <ul><li>1.5 ATA chamber in your home</li><li>Session whenever you want</li><li>Unlimited daily use</li><li>1-year rental: $6,348 total</li></ul></div>
+      <div class="side win"><div class="tag">Purebaric at home</div><div class="big">~$<span id="cmpSession">17</span><small style="font-size:14px;color:var(--muted);font-weight:500"> /session</small></div><div class="sub">at 1-year rate, unlimited daily use</div>
+        <ul><li>1.5 ATA chamber in your home</li><li>Session whenever you want</li><li>Unlimited daily use</li><li>1-year rental: $<span id="cmpAnnual">6,348</span> total</li></ul></div>
     </div>
     <p class="finep">Clinic pricing references public Utah and national rates for mild hyperbaric (1.3 ATA) sessions at wellness clinics. Medical hard-chamber HBOT centers charge $300–$400 per session. Per-session math for Purebaric assumes daily use across the rental term.</p>
   </div>
@@ -217,4 +217,23 @@
 </div>
 
 <script src="/warm.js"></script>
+<script>
+/* live pricing: reflect the admin-managed rate table on the tiers + comparison */
+(function(){
+  var PF={1:729,2:659,3:659,4:579,5:579,6:579,7:579,8:579,9:579,10:579,11:579,12:529};
+  function apply(P){
+    function r(m){return P[m]||PF[m];}
+    var p1=r(1),p3=r(3),p6=r(6),p12=r(12);
+    function off(p){return Math.round((p1-p)/p1*100);}
+    function set(id,t){var e=document.getElementById(id);if(e)e.textContent=t;}
+    set('tierAmt1','$'+p1);set('tierAmt3','$'+p3);set('tierAmt6','$'+p6);set('tierAmt12','$'+p12);
+    set('tierSave3','Save '+off(p3)+'%');set('tierSave6','Save '+off(p6)+'%');set('tierSave12','Save '+off(p12)+'%');
+    set('tierNote3','$'+(p1-p3)+'/mo off the 1-month rate.');
+    set('tierNote6','$'+(p1-p6)+'/mo off, our most popular range.');
+    set('tierNote12','$'+(p1-p12)+'/mo off, about $'+(p12*12).toLocaleString()+' for a full year of unlimited daily use.');
+    set('cmpSession',String(Math.round(p12*12/365)));set('cmpAnnual',(p12*12).toLocaleString());
+  }
+  fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){if(j&&j.months)apply(j.months);}).catch(function(){});
+})();
+</script>
 </body></html>

@@ -224,6 +224,7 @@
       <button class="tab-btn" data-tab="waitlist">Waitlist</button>
       <button class="tab-btn" data-tab="customers">Customers</button>
       <button class="tab-btn" data-tab="reviews">Reviews</button>
+      <button class="tab-btn" data-tab="pricing">Pricing</button>
     </div>
 
     <!-- ───── Chambers ───── -->
@@ -413,6 +414,16 @@
       <div id="reviewsList"></div>
     </section>
 
+    <!-- ───── Pricing ───── -->
+    <section class="tab-panel" data-panel="pricing">
+      <div class="panel-actions">
+        <h2>Pricing</h2>
+        <button class="btn btn-primary btn-sm" onclick="savePricing()">Save pricing</button>
+      </div>
+      <p class="renter-line" style="margin:0 0 16px;">Monthly rate for each rental length. Saving updates the website's pricing and calculators and the rate that auto-fills on new rentals.</p>
+      <div id="pricingGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px 24px;max-width:720px;"></div>
+    </section>
+
   </div>
 </div>
 
@@ -545,6 +556,8 @@
   let _bookings = [];
   let _customers = [];
   let _reviews = [];
+  let _pricing = {};
+  const PRICING_FALLBACK = {1:729,2:659,3:659,4:579,5:579,6:579,7:579,8:579,9:579,10:579,11:579,12:529};
 
   const loadErrorEl = document.getElementById('loadError');
   function showLoadError(html) { loadErrorEl.innerHTML = html; loadErrorEl.hidden = false; }
@@ -561,7 +574,7 @@
     // Load each section independently: one failing call must not blank the rest,
     // and we still paint whatever succeeded.
     const results = await Promise.allSettled([
-      loadChambers(), loadRentals(), loadWaitlist(), loadBookings(), loadReviews()
+      loadChambers(), loadRentals(), loadWaitlist(), loadBookings(), loadReviews(), loadPricing()
     ]);
     paintStats();
     const failures = results.filter(r => r.status === 'rejected').map(r => r.reason || {});
@@ -839,6 +852,7 @@
       paymentDate: r.paymentDate, paymentMethod: r.paymentMethod,
       notes: r.notes,
     });
+    updateRentalRate(); // reflect the length-based rate from the dates
   }
 
   // Custom fetch wrapper that surfaces 409 conflict details for rental save
@@ -1305,7 +1319,7 @@
     toggleForm('rentalForm', {
       chamberId: '', status: 'scheduled',
       startDate: start, endDate,
-      monthlyRate: 729,
+      monthlyRate: rateForMonths(months || 1),
       'renter-name': `${b.firstName} ${b.lastName || ''}`.trim(),
       'renter-email': b.email, 'renter-phone': b.phone,
       'renter-street': b.streetAddress, 'renter-city': b.city,
@@ -1446,6 +1460,72 @@
     const who = `${escape(r.firstName)} ${escape(r.lastInitial)}.${r.city ? ' · ' + escape(r.city) : ''}`;
     openModal(`Review, ${r.firstName} ${r.lastInitial}.`, `<div class="modal-row"><strong>${who}</strong></div><div style="white-space:pre-wrap;line-height:1.6;margin-top:6px;">${escape(r.text)}</div>`);
   }
+
+  // ─── Pricing ───
+  async function loadPricing() {
+    const data = await api('/api/admin/pricing');
+    _pricing = data.months || {};
+    renderPricing();
+  }
+  function rateForMonths(m) {
+    m = Math.max(1, Math.min(12, parseInt(m, 10) || 1));
+    return Number(_pricing[m]) || PRICING_FALLBACK[m];
+  }
+  function renderPricing() {
+    const grid = document.getElementById('pricingGrid');
+    if (!grid) return;
+    let html = '';
+    for (let m = 1; m <= 12; m++) {
+      const label = m + ' month' + (m > 1 ? 's' : '');
+      const val = _pricing[m] != null ? _pricing[m] : PRICING_FALLBACK[m];
+      html += `<label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#5f544d;">
+        <span style="width:74px;">${label}</span>
+        <span>$</span><input type="number" id="pm-${m}" min="0" step="1" value="${val}" style="width:100px;padding:7px 9px;border:1px solid var(--line,#e6dccd);border-radius:8px;font-family:inherit;">
+        <span style="color:#9a8f85;">/mo</span></label>`;
+    }
+    grid.innerHTML = html;
+  }
+  async function savePricing() {
+    const months = {};
+    for (let m = 1; m <= 12; m++) {
+      const el = document.getElementById('pm-' + m);
+      const v = el ? parseInt(el.value, 10) : NaN;
+      if (v > 0) months[m] = v;
+    }
+    try {
+      const data = await api('/api/admin/pricing', { method: 'PUT', body: JSON.stringify({ months }) });
+      _pricing = data.months || months;
+      renderPricing();
+      toast('Pricing saved, live on the site');
+    } catch (err) { toast(err.message, true); }
+  }
+
+  // Rental length in months from an inclusive date span (endDate = start + N months - 1 day).
+  function monthsBetweenDates(start, end) {
+    if (!start || !end) return 0;
+    const s = new Date(start + 'T00:00:00');
+    const e = new Date(end + 'T00:00:00');
+    e.setDate(e.getDate() + 1); // stored endDate is inclusive
+    let months = (e.getFullYear() - s.getFullYear()) * 12 + (e.getMonth() - s.getMonth());
+    if (e.getDate() < s.getDate()) months -= 1;
+    return Math.max(1, Math.min(12, months));
+  }
+  // Auto-fill the rental form's monthly rate from its dates + the pricing table.
+  function updateRentalRate() {
+    const form = document.getElementById('rentalFormEl');
+    if (!form) return;
+    const s = form.querySelector('[name="startDate"]').value;
+    const e = form.querySelector('[name="endDate"]').value;
+    const rateEl = form.querySelector('[name="monthlyRate"]');
+    if (s && e && rateEl) rateEl.value = rateForMonths(monthsBetweenDates(s, e));
+  }
+  (function () {
+    const form = document.getElementById('rentalFormEl');
+    if (form) {
+      form.querySelector('[name="startDate"]').addEventListener('change', updateRentalRate);
+      form.querySelector('[name="endDate"]').addEventListener('change', updateRentalRate);
+    }
+  })();
 
   function escape(s) {
     return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));

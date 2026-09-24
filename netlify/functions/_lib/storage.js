@@ -9,6 +9,15 @@ const STORES = {
   bookings: "bookings",
   customers: "customers",
   reviews: "reviews",
+  settings: "settings",
+};
+
+// Monthly rate per rental length (1-12 months). Editable in the admin (Pricing
+// tab) and read by the whole site via /api/pricing. Defaults match the historic
+// tiered rate() (1mo 729, 2-3mo 659, 4-11mo 579, 12mo 529).
+const DEFAULT_PRICING = {
+  1: 729, 2: 659, 3: 659, 4: 579, 5: 579, 6: 579,
+  7: 579, 8: 579, 9: 579, 10: 579, 11: 579, 12: 529,
 };
 
 function newId() {
@@ -463,6 +472,29 @@ async function updateReview(id, patch) {
   return putOne(STORES.reviews, updated);
 }
 
+// ───────── Pricing (settings) ─────────
+// One blob at settings/pricing: { months: { "1": 729, ... "12": 529 } }.
+
+function normalizePricing(months) {
+  const out = {};
+  for (let m = 1; m <= 12; m++) {
+    const v = Number(months && months[m]);
+    out[m] = Number.isFinite(v) && v > 0 ? Math.round(v) : DEFAULT_PRICING[m];
+  }
+  return out;
+}
+
+async function getPricing() {
+  const doc = await getOne(STORES.settings, "pricing");
+  return normalizePricing(doc && doc.months);
+}
+
+async function setPricing(months) {
+  const clean = normalizePricing(months);
+  await store(STORES.settings).setJSON("pricing", { id: "pricing", months: clean, updatedAt: nowIso() });
+  return clean;
+}
+
 // ───────── Waivers (binary blob storage) ─────────
 
 async function saveWaiver(rentalId, buffer, contentType) {
@@ -507,6 +539,9 @@ module.exports = {
   listPublishedReviews,
   createReview,
   updateReview,
+  DEFAULT_PRICING,
+  getPricing,
+  setPricing,
   countAvailableToday,
   nextAvailableByChamber,
   saveWaiver,

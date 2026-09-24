@@ -214,15 +214,17 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 
 <script src="/warm.js"></script>
 <script>
-var BASE=729;
+var PB_PF={1:729,2:659,3:659,4:579,5:579,6:579,7:579,8:579,9:579,10:579,11:579,12:529};
+var PB_PRICING=Object.assign({},PB_PF);
 function money(n){return '$'+n.toLocaleString()}
-function rate(m){return m<=1?729:m<=3?659:m<=11?579:529}
+function rate(m){m=Math.max(1,Math.min(12,parseInt(m,10)||1));return PB_PRICING[m]||PB_PF[m];}
+var BASE=rate(1);
 function pct(m){return Math.round((BASE-rate(m))/BASE*100)}
 function mos(m){return m+' month'+(m>1?'s':'')}
 function recalc(){
   var m=+document.getElementById('mo').value,r=rate(m),pp=pct(m);
   document.getElementById('pr').textContent='$'+r;
-  document.getElementById('strike').style.display=r<BASE?'inline':'none';
+  var strikeEl=document.getElementById('strike');strikeEl.textContent='$'+BASE;strikeEl.style.display=r<BASE?'inline':'none';
   document.getElementById('mol').textContent=mos(m);
   var mp=document.getElementById('mpr');if(mp)mp.textContent='$'+r;
   var mm2=document.getElementById('mmo');if(mm2)mm2.textContent=mos(m);
@@ -263,6 +265,9 @@ document.getElementById('resForm').addEventListener('focusin',function(){if(book
   if(z&&/^\d{3,5}$/.test(z))document.getElementById('zip').value=z;
   recalc();checkZip();
 })();
+
+/* live pricing so the calculator matches the admin-managed rates */
+fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){if(j&&j.months){PB_PRICING=j.months;BASE=rate(1);recalc();}}).catch(function(){});
 
 var _submitting=false; // idempotency guard: blocks double-clicks / re-entry for one submission
 document.getElementById('resForm').addEventListener('submit',function(e){

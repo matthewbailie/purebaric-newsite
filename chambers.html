@@ -53,7 +53,7 @@
       <div class="feature-text">
         <h2>Purebaric Soft-Shell 1.5 ATA</h2>
         <p>A professional-grade mild hyperbaric oxygen chamber built for comfortable home recovery, athletic performance, and cognitive clarity. Delivered, installed, and serviced by our Utah team.</p>
-        <div class="feat-price">from $529<small> /mo · 12-month rate</small></div>
+        <div class="feat-price">from <span id="fromPrice">$529</span><small> /mo · 12-month rate</small></div>
         <ul class="spec-list">
           <li><span class="spec-label">Operating pressure</span> <span class="spec-value">1.5 ATA</span></li>
           <li><span class="spec-label">Oxygen concentration</span> <span class="spec-value">95 to 99.9% via mask</span></li>
@@ -136,4 +136,11 @@
 </div>
 
 <script src="/warm.js"></script>
+<script>
+/* live pricing: "from $X" reflects the 12-month rate in the admin pricing table */
+fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){
+  var p12=(j&&j.months&&j.months[12])||529, el=document.getElementById('fromPrice');
+  if(el)el.textContent='$'+p12;
+}).catch(function(){});
+</script>
 </body></html>

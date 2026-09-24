@@ -46,6 +46,11 @@
   to = "/.netlify/functions/reviews-public"
   status = 200
 
+[[redirects]]
+  from = "/api/pricing"
+  to = "/.netlify/functions/pricing-public"
+  status = 200
+
 # ───────── Admin API (base path + sub-paths) ─────────
 [[redirects]]
   from = "/api/admin/chambers"
@@ -108,6 +113,11 @@
 [[redirects]]
   from = "/api/admin/reviews/*"
   to = "/.netlify/functions/admin-reviews/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/pricing"
+  to = "/.netlify/functions/admin-pricing"
   status = 200
 
 # ───────── Scheduled function ─────────
