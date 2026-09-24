@@ -104,6 +104,7 @@ Values live only in Netlify. Env-var changes require a redeploy to take effect f
 | `NETLIFY_API_TOKEN` | **Yes** | Lets the Functions reach Netlify Blobs. Must be a Netlify **Personal Access Token set to "No expiration."** An expired token is what causes Blobs 401 errors (see §11). (`NETLIFY_AUTH_TOKEN` is accepted as a fallback name.) |
 | `NETLIFY_SITE_ID` | **Yes** | The site ID above, used for Blobs. (`SITE_ID` accepted as a fallback name.) |
 | `ADMIN_SMS_GATEWAY` | Optional | Turns on the SMS lead alert. Value = `<10-digit-cell>@<carrier-gateway>` (see §7). If unset, no texts send — everything else is unaffected. |
+| `GA4_API_SECRET` | Optional | Turns on server-side GA4 conversions (`booking_request_submit`, `rental_confirmed`). Measurement Protocol secret from GA4 → Admin → Data Streams → the web stream → Measurement Protocol API secrets. If unset, those conversions are not sent — the site is otherwise unaffected. |
 
 ---
 
@@ -296,6 +297,19 @@ Customer testimonials with a moderation gate. **No star ratings** by design — 
 **Delivery area / email routing:** a new in-area reservation routes by *effective* availability = available chambers minus untriaged (`new`) requests: enough capacity → "chamber available" email; chambers exist but spoken for by earlier untriaged requests → "pending availability" email (`notifyCustomerPendingAvailability`, admin badge "pending availability (triage)"); zero chambers → waitlist email. See `booking-submit.js`.
 
 **Delivery ZIP gate** — `servedZip()` rule (served if ZIP matches `840xx`/`841xx`/`844xx`, or is in the explicit `SERVED_ZIP_EXTRA` Provo/Weber set). Counties: Salt Lake, Utah, Davis, Weber, Summit, Wasatch, Tooele. **Mirrored in 4 places that must stay in sync:** `netlify/functions/booking-submit.js` (authoritative), `book.html`, `index.html`, and `service-area.html`. If the counties change, also update the homepage "Where we deliver" SVG map + city lists and the `service-area.html` cards.
+
+---
+
+## 10a. Chamber types & machine sets (inventory model, added 2026-09-23)
+
+A rentable **chamber type** is the pair (**ATA rating**, **posture** lying/sitting). Physical chambers stay individual records (each shows on the rental calendar); each now carries `ata` + `posture` (legacy records are backfilled from the `model` string on read). A **machine set** (oxygen enricher + pressurizer + AC) is required to run a chamber; sets are a **fungible pool counted per ATA** (the owner has fewer sets than chambers). A style is **offerable** for a window only when both a chamber of that type **and** a compatible machine set (exact ATA match) are free.
+
+- **Owner setup (admin → Chambers tab):**
+  1. Edit each chamber and set its **ATA rating** + **Posture**.
+  2. In **"Machine sets & availability"**, enter how many sets you own per ATA (e.g. `1.5 ATA → 6`, `2.0 ATA → 2`) and **Save**. The chips above show, per type, offerable now / chambers free / sets free.
+- **Opt-in / safe default:** an ATA with **no configured count is unconstrained** — until counts are entered, availability equals chamber availability and the booking flow is unchanged.
+- **Where it lives:** pure math in `netlify/functions/_lib/inventory.js` (unit tests in `test/inventory.test.js`); pool stored in the `settings` Blobs store key `machineSets` (`{sets:[{ata,count}]}`); admin CRUD at `/api/admin/machinesets`; per-type availability at `GET /api/availability` (`byType[]`). Rentals reserve a `machineSetAta` (defaults to the chamber's ATA); admin rental create/edit is blocked with a `machineset_conflict` (override-able) when the pool for that ATA is full in the window.
+- **Booking page:** `book.html` populates the chamber-style dropdown from `/api/availability`, flagging styles that can't be fulfilled now (still selectable — they route to the waitlist). The chosen style is saved on the booking (`requestedType`) and shown in the admin bookings list.
 
 ---
 
