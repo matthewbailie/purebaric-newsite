@@ -2098,7 +2098,7 @@
           <td>${(r.events || []).map(e => escape(e)).join(', ') || '—'}</td>
           <td>${r.ok ? '<span class="pill pill-paid">Sent</span>' : '<span class="pill pill-unpaid">Failed</span> ' + escape(r.error || '')}</td>
         </tr>`).join('')
-      }</tbody></table></div><p class="renter-line" style="margin-top:8px;">"Sent" means it left our server successfully. For texts, carrier email-to-text can still be delayed or dropped by the carrier even when sent — check the phone. If a text never arrives but shows Sent, the carrier is filtering it.</p>`;
+      }</tbody></table></div><p class="renter-line" style="margin-top:8px;">Text method: <strong>${escape(data.smsMethod || 'carrier email-to-text')}</strong>. "Sent" means it left our server. ${data.smsMethod === 'twilio' ? 'Twilio delivers reliably — if it shows Sent you should get the text.' : 'With free carrier email-to-text, a text can still be dropped by the carrier even when it shows Sent (common on Verizon). For reliable texts, switch to Twilio.'}</p>`;
     } catch (err) { el.innerHTML = `<div class="empty-state">Test failed: ${escape(err.message)}</div>`; }
   }
   function rateForMonths(m) {

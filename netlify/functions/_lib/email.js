@@ -1,4 +1,5 @@
 const { Resend } = require("resend");
+const { smsEnabled, sendSms } = require("./sms");
 
 const FROM = "Purebaric <noreply@purebaric.com>";
 const REPLY_TO = "hello@purebaric.com";
@@ -274,36 +275,44 @@ async function notifyAdminOutOfArea(b, to) {
   return send({ to: adminTo(to), subject: `Out-of-area request: ${name} (ZIP ${b.zip || "?"})`, html });
 }
 
-// Admin-facing SMS via carrier email-to-text gateways (free, reuses Resend).
-// Recipients come from the admin Notifications config (resolved by the caller and
-// passed as `to`); the legacy ADMIN_SMS_GATEWAY env var, if set, is also included
-// for reservation alerts. Inert when there are no recipients. Keep the message
-// short, carrier gateways cap each segment near 160 characters.
-async function notifyAdminSms(b, { outOfArea, to } = {}) {
-  const recipients = new Set(Array.isArray(to) ? to : to ? [to] : []);
+// Deliver an admin text. Prefers Twilio (reliable) when configured, using the raw
+// `numbers`; otherwise falls back to free carrier email-to-text via Resend, using
+// the `gateways` (+ the legacy ADMIN_SMS_GATEWAY env, if set). Keep it short —
+// SMS caps near 160 characters per segment. Returns a status object.
+async function deliverAdminSms({ numbers, gateways, text, subject }) {
+  if (smsEnabled()) {
+    const nums = [...new Set((numbers || []).filter(Boolean))];
+    if (!nums.length) return { skipped: "no sms recipients" };
+    const results = await Promise.allSettled(nums.map((n) => sendSms(n, text)));
+    const failed = results.filter((r) => r.status === "rejected" || (r.value && r.value.sent === false));
+    if (failed.length) console.error("twilio sms failures", failed.map((f) => (f.reason && f.reason.message) || (f.value && f.value.reason)));
+    return { via: "twilio", sent: nums.length - failed.length, failed: failed.length };
+  }
+  const recips = new Set((gateways || []).filter(Boolean));
   const legacy = (process.env.ADMIN_SMS_GATEWAY || "").trim();
-  if (legacy) recipients.add(legacy);
-  if (!recipients.size) return { skipped: "no sms recipients" };
+  if (legacy) recips.add(legacy);
+  if (!recips.size) return { skipped: "no sms recipients" };
+  await send({ to: [...recips], subject: subject || "Purebaric", text, html: `<p>${escapeHtml(text)}</p>` });
+  return { via: "email-to-text", sent: recips.size };
+}
+
+async function notifyAdminSms(b, { outOfArea, gateways, numbers } = {}) {
   const name = `${b.firstName || ""} ${b.lastName || ""}`.trim() || b.name || "New lead";
   const parts = [name];
   if (b.phone) parts.push(b.phone);
   if (b.zip) parts.push(`ZIP ${b.zip}`);
   if (b.rentalLength) parts.push(b.rentalLength);
   const detail = parts.join(", ");
-  const subject = outOfArea ? "Purebaric out-of-area lead" : "New Purebaric lead";
   const text = outOfArea
     ? `${detail}. Outside service area, no auto-email sent.`
     : `${detail}. Check email or the admin portal to follow up.`;
-  return send({ to: [...recipients], subject, text, html: `<p>${escapeHtml(text)}</p>` });
+  return deliverAdminSms({ numbers, gateways, text, subject: outOfArea ? "Purebaric out-of-area lead" : "New Purebaric lead" });
 }
 
-// Admin-facing SMS: a visitor submitted a review. Recipients from the caller.
-async function notifyAdminReviewSms(review, to) {
-  const recipients = Array.isArray(to) ? to : to ? [to] : [];
-  if (!recipients.length) return { skipped: "no sms recipients" };
+async function notifyAdminReviewSms(review, { gateways, numbers } = {}) {
   const who = `${review.firstName || ""} ${review.lastInitial || ""}`.trim() || "Someone";
   const text = `New Purebaric review from ${who}. Approve it in the admin portal to publish.`;
-  return send({ to: recipients, subject: "New Purebaric review", text, html: `<p>${escapeHtml(text)}</p>` });
+  return deliverAdminSms({ numbers, gateways, text, subject: "New Purebaric review" });
 }
 
 // Admin-facing: a visitor submitted a review. It stays pending until published.
@@ -331,4 +340,5 @@ module.exports = {
   notifyAdminOutOfArea,
   notifyAdminSms,
   notifyAdminReviewSms,
+  deliverAdminSms,
 };

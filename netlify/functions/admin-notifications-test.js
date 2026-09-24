@@ -1,6 +1,7 @@
 const { getNotifications } = require("./_lib/storage");
 const { gatewayAddress } = require("./_lib/notifications");
 const { send } = require("./_lib/email");
+const { smsEnabled, sendSms } = require("./_lib/sms");
 const { requireAuth, json } = require("./_lib/admin");
 
 // POST /api/admin/notifications-test — sends a test email to each configured
@@ -38,26 +39,27 @@ exports.handler = async (event, context) => {
       results.push({ kind: "email", label: r.label || "", target: maskEmail(r.email), events: r.events, ok, error });
     }
 
+    const twilio = smsEnabled();
     for (const r of cfg.sms) {
       let ok = false, error = null;
-      const addr = gatewayAddress(r.number, r.carrier);
-      if (!addr) {
-        error = "Could not build a carrier address — check the number and carrier.";
-      } else {
+      const text = "Purebaric test text. If you got this, SMS alerts are working.";
+      if (twilio) {
         try {
-          await send({
-            to: addr,
-            subject: "Purebaric",
-            text: "Purebaric test text. If you got this, SMS alerts are working.",
-            html: "<p>Purebaric test text.</p>",
-          });
-          ok = true;
+          const res = await sendSms(r.number, text);
+          if (res.sent) ok = true; else error = res.reason || "not sent";
         } catch (e) { error = e.message; }
+      } else {
+        const addr = gatewayAddress(r.number, r.carrier);
+        if (!addr) { error = "Could not build a carrier address — check the number and carrier."; }
+        else {
+          try { await send({ to: addr, subject: "Purebaric", text, html: "<p>Purebaric test text.</p>" }); ok = true; }
+          catch (e) { error = e.message; }
+        }
       }
-      results.push({ kind: "sms", label: r.label || "", target: maskNumber(r.number) + " (" + r.carrier + ")", events: r.events, ok, error });
+      results.push({ kind: "sms", via: twilio ? "twilio" : "carrier email-to-text", label: r.label || "", target: maskNumber(r.number) + (twilio ? "" : " (" + r.carrier + ")"), events: r.events, ok, error });
     }
 
-    return json(200, { results, emailCount: cfg.emails.length, smsCount: cfg.sms.length });
+    return json(200, { results, emailCount: cfg.emails.length, smsCount: cfg.sms.length, smsMethod: twilio ? "twilio" : "carrier email-to-text" });
   } catch (err) {
     console.error("admin-notifications-test error", err);
     return json(500, { error: err.message || "internal_error" });

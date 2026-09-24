@@ -1,6 +1,6 @@
 const { createReview, getNotifications } = require("./_lib/storage");
 const { notifyAdminReview, notifyAdminReviewSms } = require("./_lib/email");
-const { smsForEvent, emailsForEvent } = require("./_lib/notifications");
+const { smsForEvent, smsNumbersForEvent, emailsForEvent } = require("./_lib/notifications");
 
 function parseBody(event) {
   if (!event.body) return {};
@@ -57,13 +57,14 @@ exports.handler = async (event) => {
       console.error("admin review notify failed", err);
       adminEmail = `failed: ${err.message}`;
     }
-    // Privacy-safe SMS status (counts only, never the number) for diagnostics.
-    const smsTo = smsForEvent(notifCfg, "review");
-    let adminSms = smsTo.length ? "attempted" : "no_recipients";
+    // Privacy-safe SMS status (counts/method only, never the number) for diagnostics.
+    const gateways = smsForEvent(notifCfg, "review");
+    const numbers = smsNumbersForEvent(notifCfg, "review");
+    let adminSms = numbers.length ? "attempted" : "no_recipients";
     try {
-      if (smsTo.length) {
-        await notifyAdminReviewSms(review, smsTo);
-        adminSms = `sent:${smsTo.length}`;
+      if (numbers.length) {
+        const r = await notifyAdminReviewSms(review, { gateways, numbers });
+        adminSms = `${r.via || "sent"}:${r.sent != null ? r.sent : numbers.length}${r.failed ? `(failed ${r.failed})` : ""}`;
       }
     } catch (err) {
       console.error("admin review sms failed", err);

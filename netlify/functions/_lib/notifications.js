@@ -83,7 +83,8 @@ function emailsForEvent(config, eventKey) {
   return out;
 }
 
-// SMS gateway addresses subscribed to an event (de-duped).
+// SMS gateway addresses subscribed to an event (de-duped). For free carrier
+// email-to-text.
 function smsForEvent(config, eventKey) {
   const { sms } = normalizeNotifications(config);
   const out = [];
@@ -91,6 +92,17 @@ function smsForEvent(config, eventKey) {
     if (!r.events.includes(eventKey)) continue;
     const addr = gatewayAddress(r.number, r.carrier);
     if (addr && !out.includes(addr)) out.push(addr);
+  }
+  return out;
+}
+
+// Raw 10-digit numbers subscribed to an event (de-duped). For Twilio.
+function smsNumbersForEvent(config, eventKey) {
+  const { sms } = normalizeNotifications(config);
+  const out = [];
+  for (const r of sms) {
+    if (!r.events.includes(eventKey)) continue;
+    if (r.number && !out.includes(r.number)) out.push(r.number);
   }
   return out;
 }
@@ -104,6 +116,7 @@ module.exports = {
   normalizeNotifications,
   emailsForEvent,
   smsForEvent,
+  smsNumbersForEvent,
   // Back-compat alias (SMS).
   recipientsForEvent: smsForEvent,
 };
