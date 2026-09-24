@@ -1701,11 +1701,20 @@
 
   function renderBookings() {
     const list = document.getElementById('bookingsList');
-    if (!_bookings.length) {
-      list.innerHTML = `<div class="empty-state">No rental requests yet.</div>`;
+    // The active queue shows only open requests. Once a request is converted to
+    // a rental (or rejected) it's resolved and drops out of the list, unless the
+    // owner explicitly filters to that status.
+    const filter = document.getElementById('bookingStatusFilter').value;
+    const visible = filter
+      ? _bookings
+      : _bookings.filter(b => b.status !== 'converted' && b.status !== 'rejected');
+    if (!visible.length) {
+      list.innerHTML = `<div class="empty-state">${filter
+        ? 'No rental requests with this status.'
+        : 'No open rental requests. Converted and rejected requests are hidden — pick a status above to see them.'}</div>`;
       return;
     }
-    const rows = _bookings.map(b => {
+    const rows = visible.map(b => {
       const created = new Date(b.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       const flags = (b.medicalScreeningFlags && b.medicalScreeningFlags !== 'none')
         ? `<div class="renter-line" style="color:#82402f;"><strong>Flags:</strong> ${escape(b.medicalScreeningFlags)}</div>` : '';

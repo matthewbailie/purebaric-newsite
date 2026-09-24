@@ -1,4 +1,4 @@
-const { listRentals, createRental, updateRental, findRentalConflict, store, STORES } = require("./_lib/storage");
+const { listRentals, createRental, updateRental, findRentalConflict, listBookings, updateBooking, store, STORES } = require("./_lib/storage");
 const { requireAuth, parseBody, parsePathSegments, json } = require("./_lib/admin");
 
 function buildRenter(body) {
@@ -94,7 +94,26 @@ exports.handler = async (event, context) => {
       };
       buildPaymentPatch(body, rentalData);
       const rental = await createRental(rentalData);
-      return json(201, { rental });
+
+      // Auto-link the originating request so a fulfilled booking doesn't linger
+      // in the "Rental requests" queue when the rental is created directly (not
+      // via the request's "→ Rental" button). Only when exactly one still-open
+      // booking matches the renter email (mirrors the reconcile-by-email
+      // fallback in admin-bookings). The explicit convert flow still PATCHes the
+      // booking itself, which is where GA4 conversion analytics fire.
+      let linkedBookingId = null;
+      const renterEmail = rentalData.renter.email.trim().toLowerCase();
+      if (renterEmail) {
+        const open = ["new", "contacted", "approved"];
+        const matches = (await listBookings()).filter(
+          (b) => open.includes(b.status) && (b.email || "").trim().toLowerCase() === renterEmail
+        );
+        if (matches.length === 1) {
+          await updateBooking(matches[0].id, { status: "converted", convertedRentalId: rental.id });
+          linkedBookingId = matches[0].id;
+        }
+      }
+      return json(201, { rental, linkedBookingId });
     }
 
     if (method === "PATCH" && id) {
