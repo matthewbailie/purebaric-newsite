@@ -611,7 +611,7 @@
     const active = _chambers.filter(c => c.status === 'active').length;
     const today = new Date().toISOString().slice(0, 10);
     const busy = new Set(_rentals
-      .filter(r => (r.status === 'scheduled' || r.status === 'active') && r.startDate <= today && r.endDate >= today)
+      .filter(r => (r.status === 'scheduled' || r.status === 'active') && r.endDate >= today)
       .map(r => r.chamberId));
     const available = _chambers.filter(c => c.status === 'active' && !busy.has(c.id)).length;
     const queued = _waitlist.filter(w => w.status === 'queued' || w.status === 'hold').length;
@@ -642,22 +642,6 @@
     if (e.key === 'Escape') closeModal();
   });
 
-  function nextAvailableForChamber(chamberId) {
-    const today = new Date().toISOString().slice(0, 10);
-    const upcoming = _rentals
-      .filter(r => r.chamberId === chamberId && (r.status === 'scheduled' || r.status === 'active'))
-      .filter(r => r.endDate >= today)
-      .sort((a, b) => a.startDate.localeCompare(b.startDate));
-    if (!upcoming.length) return today;
-    let cursor = today;
-    for (const r of upcoming) {
-      if (r.startDate > cursor) break;
-      const dayAfter = new Date(new Date(r.endDate).getTime() + 86400000).toISOString().slice(0, 10);
-      if (dayAfter > cursor) cursor = dayAfter;
-    }
-    return cursor;
-  }
-
   // ─── Chambers ───
   async function loadChambers() {
     const includeArchived = document.getElementById('showArchived').checked;
@@ -666,6 +650,14 @@
     renderChambers();
     populateChamberSelect();
   }
+  // Format a YYYY-MM-DD date as local (avoids the new Date('YYYY-MM-DD') UTC
+  // parse that shifts the displayed day back by one in western timezones).
+  function fmtDate(iso) {
+    if (!iso) return '';
+    const p = String(iso).slice(0, 10).split('-');
+    return new Date(+p[0], +p[1] - 1, +p[2]).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
   function renderChambers() {
     const list = document.getElementById('chambersList');
     if (!_chambers.length) {
@@ -690,18 +682,23 @@
       } else if (activeRental) {
         opState = 'rented'; opLabel = 'Rented';
         const renter = activeRental.renter?.name || ', ';
-        const endDate = new Date(activeRental.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const endDate = fmtDate(activeRental.endDate);
         availability = `<span class="renter-line">${escape(renter)} · free <strong>${escape(endDate)}</strong></span>`;
       } else {
-        const next = nextAvailableForChamber(c.id);
-        if (next === today) {
+        // No rental covers today. Surface the next upcoming scheduled/active
+        // rental so a committed chamber never reads as plainly "Available".
+        const upcomingRental = _rentals
+          .filter(r => r.chamberId === c.id && (r.status === 'scheduled' || r.status === 'active') && r.startDate > today && r.endDate >= today)
+          .sort((a, b) => a.startDate.localeCompare(b.startDate))[0];
+        if (upcomingRental) {
+          opState = 'scheduled'; opLabel = 'Scheduled';
+          const renter = upcomingRental.renter?.name || ', ';
+          const start = fmtDate(upcomingRental.startDate);
+          const end = fmtDate(upcomingRental.endDate);
+          availability = `<span class="renter-line">${escape(renter)} · <strong>${escape(start)} → ${escape(end)}</strong></span>`;
+        } else {
           opState = 'available'; opLabel = 'Available';
           availability = '<span class="renter-line">Free now</span>';
-        } else {
-          // No active rental today but scheduled in future
-          opState = 'available'; opLabel = 'Available';
-          const date = new Date(next).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-          availability = `<span class="renter-line">Next booked from <strong>${escape(date)}</strong></span>`;
         }
       }
       const statusActions = [];
