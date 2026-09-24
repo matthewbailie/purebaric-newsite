@@ -64,7 +64,7 @@
   .admin-sidebar { width: 236px; flex: 0 0 236px; background: var(--cream); border-right: 1px solid var(--line); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow-y: auto; z-index: 40; }
   .sidebar-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; padding: 1.35rem 1.25rem 1.1rem; }
   .sidebar-brand .brand-logo { height: 26px; width: auto; display: block; }
-  .sidebar-brand .brand-admin-tag { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--stone-muted); font-weight: 600; }
+  .sidebar-brand .brand-admin-tag { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--stone-muted); font-weight: 600; margin-left: 44px; }
   .sidebar-close { margin-left: auto; display: none; background: none; border: none; font-size: 1.6rem; line-height: 1; color: var(--stone-muted); cursor: pointer; padding: 0 0.25rem; }
   .sidebar-nav { display: flex; flex-direction: column; padding: 0.5rem 0.6rem; gap: 2px; flex: 1; }
   .sidebar-foot { padding: 1rem 1.25rem; border-top: 1px solid var(--line); font-size: 0.8rem; color: var(--stone-muted); line-height: 1.5; }
@@ -1260,7 +1260,7 @@
         ? `${payStatus} · $${r.paidAmount}`
         : payStatus;
       return `
-      <tr>
+      <tr style="cursor:pointer;" onclick='rentalRowClick(event, ${JSON.stringify(r.id)})'>
         <td><strong>${escape(chamber ? chamber.name : '(deleted chamber)')}</strong></td>
         <td>${escape(renter.name || ', ')}<div class="renter-line">${escape(renter.email || '')}${renter.phone ? ' · ' + escape(renter.phone) : ''}</div></td>
         <td>${escape(r.startDate)} → ${escape(r.endDate)}</td>
@@ -1272,6 +1272,7 @@
             : `<label class="btn btn-ghost btn-sm" style="cursor: pointer;">Attach waiver<input type="file" accept="application/pdf,image/*" style="display:none;" onchange="uploadWaiver(event, '${r.id}')"></label>`}</td>
         <td>
           <div class="row-actions">
+            <button class="btn btn-ghost btn-sm" onclick='viewRentalDetails(${JSON.stringify(r.id)})'>Details</button>
             <button class="btn btn-ghost btn-sm" onclick='editRental(${JSON.stringify(r.id)})'>Edit</button>
             ${r.status !== 'cancelled' && r.status !== 'completed' ? `<button class="btn btn-ghost btn-sm" onclick='cancelRental(${JSON.stringify(r.id)})'>Cancel</button>` : ''}
             <button class="btn btn-ghost btn-sm" style="color:#82402f;" onclick='deleteRental(${JSON.stringify(r.id)})'>Delete</button>
@@ -1281,6 +1282,55 @@
     }).join('');
     list.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Chamber</th><th>Renter</th><th>Dates</th><th>Rate</th><th>Status</th><th>Payment</th><th>Waiver</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
     if (typeof renderCalendar === 'function') renderCalendar();
+  }
+
+  // Open full details when a rental row is clicked, but let the action buttons,
+  // links, and the waiver file input do their own thing.
+  function rentalRowClick(e, id) {
+    if (e.target.closest('button, a, label, input, select')) return;
+    viewRentalDetails(id);
+  }
+
+  function viewRentalDetails(id) {
+    const r = _rentals.find(x => x.id === id);
+    if (!r) return;
+    const renter = r.renter || {};
+    const addr = renter.address || {};
+    const chamber = _chambers.find(c => c.id === r.chamberId);
+    const machine = (_machines || []).find(m => m.id === r.machineId);
+    const address = [addr.street, addr.city, addr.state, addr.zip].filter(Boolean).join(', ') || ', ';
+    const days = Math.round((new Date(r.endDate) - new Date(r.startDate)) / 86400000) + 1;
+    const months = Math.max(1, Math.round(days / 30.44));
+    const estTotal = (r.monthlyRate || 0) * months;
+    const payStatus = r.paymentStatus || 'unpaid';
+    const payParts = [payStatus];
+    if (r.paidAmount) payParts.push(`$${Number(r.paidAmount).toLocaleString()} paid`);
+    if (r.paymentMethod) payParts.push(escape(r.paymentMethod));
+    if (r.paymentDate) payParts.push(`on ${escape(r.paymentDate)}`);
+    const waiverHtml = r.waiverFileKey
+      ? `<a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color: var(--terracotta);">View attached waiver</a>`
+      : 'Not attached yet';
+    const body = `
+      <div class="modal-row"><strong>Status</strong><div><span class="pill pill-${r.status}">${r.status}</span></div></div>
+      <div class="modal-row"><strong>Chamber</strong><div>${escape(chamber ? chamber.name : '(deleted chamber)')}${chamber && chamber.style ? ` · ${escape(chamber.style)}` : ''}</div></div>
+      <div class="modal-row"><strong>Machine</strong><div>${machine ? escape(machine.name) : '(none assigned)'}</div></div>
+      <div class="modal-row"><strong>Contact</strong><div>${escape(renter.name || ', ')}<br>${escape(renter.email || ', ')}<br>${escape(renter.phone || ', ')}</div></div>
+      <div class="modal-row"><strong>Delivery address</strong><div>${escape(address)}</div></div>
+      <div class="modal-row"><strong>Dates</strong><div>${escape(r.startDate)} → ${escape(r.endDate)} <span style="color:var(--stone-muted);">(≈ ${months} month${months > 1 ? 's' : ''}, ${days} days)</span></div></div>
+      <div class="modal-row"><strong>Rate</strong><div>$${(r.monthlyRate || 0).toLocaleString()}/mo · est. total $${estTotal.toLocaleString()}</div></div>
+      <div class="modal-row"><strong>Payment</strong><div><span class="pill pill-${payStatus}">${escape(payParts.join(' · '))}</span></div></div>
+      <div class="modal-row"><strong>Waiver</strong><div>${waiverHtml}</div></div>
+      ${r.createdAt ? `<div class="modal-row"><strong>Created</strong><div>${new Date(r.createdAt).toLocaleString()}</div></div>` : ''}
+      <div class="modal-section">
+        <h4>Notes</h4>
+        <div style="white-space:pre-wrap;color:#4a423c;font-size:0.9rem;">${escape(r.notes || 'No notes.')}</div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary btn-sm" onclick='closeModal(); editRental(${JSON.stringify(r.id)})'>Edit rental</button>
+        ${renter.email ? `<a href="mailto:${escape(renter.email)}" class="btn btn-ghost btn-sm">Email renter</a>` : ''}
+        ${renter.phone ? `<a href="tel:${escape(renter.phone)}" class="btn btn-ghost btn-sm">Call</a>` : ''}
+      </div>`;
+    openModal(`Rental · ${renter.name || (chamber ? chamber.name : 'details')}`, body);
   }
 
   function editRental(id) {
