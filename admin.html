@@ -561,9 +561,14 @@
     <section class="tab-panel" data-panel="notifications">
       <div class="panel-actions">
         <h2>Notifications</h2>
-        <button class="btn btn-primary btn-sm" onclick="saveNotifications()">Save notifications</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-sm" onclick="sendTestNotifications()">Send test</button>
+          <button class="btn btn-primary btn-sm" onclick="saveNotifications()">Save notifications</button>
+        </div>
       </div>
-      <p class="renter-line" style="margin:0 0 20px;max-width:780px;">Register who gets alerted for each event. Add one or more <strong>email addresses</strong> and/or <strong>phone numbers</strong>, and check which events each should receive: a new reservation request from inside the service area, one from outside it, or a new review. Email is sent normally; texts are sent free through the carrier's email-to-text gateway (standard carrier rates may apply on the receiving phone; if texts stop, re-check the carrier).</p>
+      <p class="renter-line" style="margin:0 0 12px;max-width:780px;">Register who gets alerted for each event. Add one or more <strong>email addresses</strong> and/or <strong>phone numbers</strong>, and check which events each should receive: a new reservation request from inside the service area, one from outside it, or a new review. Email is sent normally; texts are sent free through the carrier's email-to-text gateway (standard carrier rates may apply on the receiving phone; if texts stop, re-check the carrier).</p>
+      <p class="renter-line" style="margin:0 0 18px;max-width:780px;"><strong>Save first, then Send test</strong> to fire a real email + text to everyone on file and see per-recipient results below.</p>
+      <div id="notifTestResults" style="margin-bottom:16px;"></div>
 
       <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Email notifications</h3>
       <div id="notifEmailList"></div>
@@ -2078,6 +2083,23 @@
       toast(skipped ? 'Saved. Some rows were skipped (need a valid email/number and at least one event).' : 'Notifications saved');
       await loadNotifications();
     } catch (err) { toast(err.message, true); }
+  }
+  async function sendTestNotifications() {
+    const el = document.getElementById('notifTestResults');
+    el.innerHTML = '<span class="renter-line">Sending test notifications…</span>';
+    try {
+      const data = await api('/api/admin/notifications-test', { method: 'POST', body: '{}' });
+      const rows = (data.results || []);
+      if (!rows.length) { el.innerHTML = '<div class="empty-state">No saved recipients to test. Add a number/email and Save first.</div>'; return; }
+      el.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Channel</th><th>Recipient</th><th>Events</th><th>Result</th></tr></thead><tbody>${
+        rows.map(r => `<tr>
+          <td>${r.kind === 'sms' ? 'Text' : 'Email'}</td>
+          <td>${escape(r.target)}${r.label ? ' · ' + escape(r.label) : ''}</td>
+          <td>${(r.events || []).map(e => escape(e)).join(', ') || '—'}</td>
+          <td>${r.ok ? '<span class="pill pill-paid">Sent</span>' : '<span class="pill pill-unpaid">Failed</span> ' + escape(r.error || '')}</td>
+        </tr>`).join('')
+      }</tbody></table></div><p class="renter-line" style="margin-top:8px;">"Sent" means it left our server successfully. For texts, carrier email-to-text can still be delayed or dropped by the carrier even when sent — check the phone. If a text never arrives but shows Sent, the carrier is filtering it.</p>`;
+    } catch (err) { el.innerHTML = `<div class="empty-state">Test failed: ${escape(err.message)}</div>`; }
   }
   function rateForMonths(m) {
     m = Math.max(1, Math.min(12, parseInt(m, 10) || 1));

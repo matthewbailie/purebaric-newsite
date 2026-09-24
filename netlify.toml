@@ -151,6 +151,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/admin/notifications-test"
+  to = "/.netlify/functions/admin-notifications-test"
+  status = 200
+
+[[redirects]]
   from = "/api/admin/stripe-link"
   to = "/.netlify/functions/admin-stripe-link"
   status = 200

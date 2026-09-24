@@ -57,10 +57,17 @@ exports.handler = async (event) => {
       console.error("admin review notify failed", err);
       adminEmail = `failed: ${err.message}`;
     }
+    // Privacy-safe SMS status (counts only, never the number) for diagnostics.
+    const smsTo = smsForEvent(notifCfg, "review");
+    let adminSms = smsTo.length ? "attempted" : "no_recipients";
     try {
-      await notifyAdminReviewSms(review, smsForEvent(notifCfg, "review"));
+      if (smsTo.length) {
+        await notifyAdminReviewSms(review, smsTo);
+        adminSms = `sent:${smsTo.length}`;
+      }
     } catch (err) {
       console.error("admin review sms failed", err);
+      adminSms = "failed";
     }
 
     return {
@@ -72,6 +79,7 @@ exports.handler = async (event) => {
         id: review.id,
         message: "Thanks for sharing. Your review has been submitted, we'll post it after a quick review.",
         adminEmail,
+        adminSms,
       }),
     };
   } catch (err) {
