@@ -601,6 +601,14 @@
       <h3 style="font-size:16px;font-weight:700;margin:24px 0 4px;">Text (SMS) notifications</h3>
       <div id="notifSmsList"></div>
       <button type="button" class="btn btn-ghost btn-sm" onclick="addNotifySms()" style="margin-top:4px;">+ Add phone number</button>
+      <div class="sms-consent" style="max-width:780px;margin:12px 0 0;padding:12px 14px;border:1px solid var(--line,#e6dccd);border-radius:10px;background:var(--card,#fffdf9);">
+        <p class="renter-line" style="margin:0;">By saving this mobile number, you consent to receive transactional Purebaric reservation-request and review-submission alerts. Message frequency varies based on website activity. Message and data rates may apply. Reply STOP to opt out or HELP for help.</p>
+        <p class="renter-line" style="margin:8px 0 0;">
+          <a href="https://purebaric.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+          &nbsp;·&nbsp;
+          <a href="https://purebaric.com/terms#sms-terms" target="_blank" rel="noopener">SMS Terms</a>
+        </p>
+      </div>
 
       <h3 style="font-size:16px;font-weight:700;margin:30px 0 4px;">Text delivery (Twilio) — recommended for reliable texts</h3>
       <p class="renter-line" style="margin:0 0 12px;max-width:780px;">Free carrier email-to-text is unreliable (often dropped by the carrier). Connect Twilio for texts that actually deliver. When these three are set, every text goes through Twilio instead. <strong>Setup:</strong> create a Twilio account, buy an SMS-capable phone number (~$1.15/mo), then from the Twilio console copy your Account SID and Auth Token. Keys are stored securely and the token is never shown again after saving.</p>
