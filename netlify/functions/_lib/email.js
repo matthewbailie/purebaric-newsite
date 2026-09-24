@@ -74,7 +74,7 @@ function wrap(bodyHtml) {
           <tr>
             <td style="background:#2b2320; padding:22px 40px; text-align:center;">
               <a href="https://purebaric.com" style="display:inline-block;">
-                <img src="https://purebaric.com/images/logo-cream.png?v=2" alt="Purebaric" width="150" style="display:inline-block; height:auto; max-width:150px; border:0; outline:none; text-decoration:none;" />
+                <img src="https://purebaric.com/images/logo-cream.png?v=3" alt="Purebaric" width="220" style="display:inline-block; height:auto; max-width:220px; border:0; outline:none; text-decoration:none;" />
               </a>
             </td>
           </tr>

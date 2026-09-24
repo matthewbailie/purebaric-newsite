@@ -63,9 +63,9 @@
   .admin-shell { display: flex; min-height: 100vh; align-items: stretch; }
   .admin-sidebar { width: 236px; flex: 0 0 236px; background: var(--cream); border-right: 1px solid var(--line); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow-y: auto; z-index: 40; }
   .sidebar-brand { display: flex; align-items: center; gap: 0.65rem; padding: 1.35rem 1.25rem 1.1rem; }
-  .sidebar-brand .brand-mark { width: 30px; height: 30px; flex: none; color: var(--ink); }
-  .sidebar-brand .brand-text { font-family: var(--font-display); font-size: 1.12rem; line-height: 1.05; color: var(--ink); font-weight: 600; }
-  .sidebar-brand .brand-text small { display: block; font-family: inherit; font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone-muted); font-weight: 600; margin-top: 2px; }
+  .sidebar-brand .brand-mark { width: 40px; height: 40px; flex: none; color: var(--ink); }
+  .sidebar-brand .brand-text { font-family: var(--font-display); font-size: 1.55rem; line-height: 1.0; color: var(--ink); font-weight: 600; }
+  .sidebar-brand .brand-text small { display: block; font-family: inherit; font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--stone-muted); font-weight: 600; margin-top: 3px; }
   .sidebar-close { margin-left: auto; display: none; background: none; border: none; font-size: 1.6rem; line-height: 1; color: var(--stone-muted); cursor: pointer; padding: 0 0.25rem; }
   .sidebar-nav { display: flex; flex-direction: column; padding: 0.5rem 0.6rem; gap: 2px; flex: 1; }
   .sidebar-foot { padding: 1rem 1.25rem; border-top: 1px solid var(--line); font-size: 0.8rem; color: var(--stone-muted); line-height: 1.5; }
@@ -214,7 +214,7 @@
 <div class="admin-shell" id="adminShell">
   <aside class="admin-sidebar" id="adminSidebar">
     <div class="sidebar-brand">
-      <svg class="brand-mark" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><circle cx="32" cy="29" r="17.5"/><line x1="8" y1="39" x2="56" y2="39"/></svg>
+      <svg class="brand-mark" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><circle cx="32" cy="31" r="20"/><line x1="5" y1="44" x2="59" y2="44"/></svg>
       <span class="brand-text">Purebaric<small>Admin</small></span>
       <button class="sidebar-close" aria-label="Close menu" onclick="closeNav()">&times;</button>
     </div>

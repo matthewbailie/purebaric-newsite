@@ -58,8 +58,20 @@
 .txt1{font-size:14px;color:var(--ok);font-weight:500}
 .selrow{margin-top:16px}
 .selrow label{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;display:block;margin-bottom:6px}
-.selrow select{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-family:inherit;font-size:15px;font-weight:600;background:#fff;color:#2b2320}
-.selrow select option{color:#2b2320;background:#fff;font-weight:500}
+/* custom chamber dropdown (native option styling is unreadable for disabled/unavailable items) */
+.cdd{position:relative}
+.cdd-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:8px;padding:11px 12px;background:#fff;color:#2b2320;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;text-align:left}
+.cdd-btn:focus-visible{outline:2px solid var(--terra);outline-offset:1px}
+.cdd-caret{width:12px;height:8px;color:var(--muted);flex:none;transition:transform .15s}
+.cdd.open .cdd-caret{transform:rotate(180deg)}
+.cdd-list{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:30;margin:0;padding:6px;list-style:none;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 30px rgba(20,18,15,.17);max-height:300px;overflow:auto}
+.cdd-opt{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border-radius:7px;cursor:pointer;font-size:15px;font-weight:500;color:#2b2320;line-height:1.3}
+.cdd-opt:hover,.cdd-opt.focus{background:var(--cream2)}
+.cdd-opt[aria-selected="true"]{font-weight:700;background:var(--cream2)}
+.cdd-opt.out{color:#6f635b}
+.cdd-badge{font-size:11px;font-weight:700;letter-spacing:.02em;padding:2px 9px;border-radius:999px;white-space:nowrap;flex:none}
+.cdd-badge.ok{background:var(--ok-bg);color:var(--ok)}
+.cdd-badge.no{background:#f4e7df;color:#9a4f3a}
 .slider-block{margin:20px 0 4px}
 .slider-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .slider-head label{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600}
@@ -87,7 +99,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 </head><body>
 <header>
   <div class="wrap nav">
-    <a class="brand" href="/"><img class="brand-logo" src="/images/logo.png?v=2" alt="Purebaric"></a>
+    <a class="brand" href="/"><img class="brand-logo" src="/images/logo.png?v=3" alt="Purebaric"></a>
     <nav class="nav-links">
       <a href="/how-it-works">How it works</a><a href="/chambers">Chambers</a><a href="/pricing">Pricing</a><a href="/about">About</a><a href="/reviews">Reviews</a><a href="/faq">FAQ</a><a href="/contact">Contact</a>
     </nav>
@@ -158,7 +170,11 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
           <div class="ptop"><span class="price" id="pr">$659</span><span class="permo">/mo</span><span class="strike" id="strike">$729</span></div>
           <div class="svwrap" id="svw"><div class="sv1"><span class="pill1" id="badge">Save 10%</span><span class="txt1" id="save">$70/mo off</span></div></div>
           <div class="selrow"><label>Chamber</label>
-            <select id="ch" name="chamber_id"><option value="1">Soft-Shell 1.5 ATA</option></select></div>
+            <input type="hidden" id="ch" name="chamber_id" value="">
+            <div class="cdd" id="chDD">
+              <button type="button" class="cdd-btn" id="chDDBtn" aria-haspopup="listbox" aria-expanded="false"><span id="chDDLabel">Soft-Shell 1.5 ATA</span><svg class="cdd-caret" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+              <ul class="cdd-list" id="chDDList" role="listbox" hidden></ul>
+            </div></div>
           <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol">3 months</span></div>
             <input type="range" min="1" max="12" step="1" value="3" id="mo" oninput="recalc()" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
           <div class="brow"><span id="bd">$659 × 3 months</span><span id="sub">$1,977</span></div>
@@ -186,7 +202,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <img class="foot-logo" src="/images/logo-cream.png?v=2" alt="Purebaric">
+        <img class="foot-logo" src="/images/logo-cream.png?v=3" alt="Purebaric">
         <p class="foot-tag">Hyperbaric chamber rentals, delivered across Utah.</p>
         <p class="foot-desc">Professional-grade mild hyperbaric oxygen therapy brought to your home, delivery, setup, and support included, for less than the cost of a single month at a clinic.</p>
       </div>
@@ -272,21 +288,41 @@ document.getElementById('resForm').addEventListener('focusin',function(){if(book
 /* live pricing so the calculator matches the admin-managed rates */
 fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){if(j&&j.months){PB_PRICING=j.months;BASE=rate(1);recalc();}}).catch(function(){});
 
-/* live availability: offer chamber styles and flag any that can't be fulfilled
-   right now. Submitting stays a request, so unavailable styles remain selectable
-   (they route to the waitlist server-side); we just surface the status. Falls
-   back to the default option if the endpoint is unavailable. */
-fetch('/api/availability').then(function(r){return r.json();}).then(function(j){
-  if(!j||!Array.isArray(j.byType)||!j.byType.length)return;
-  var sel=document.getElementById('ch');
-  sel.innerHTML=j.byType.map(function(t){
-    var label=(t.label||'Chamber')+' chamber';
-    var out=(t.available|0)<=0;
-    return '<option value="'+label+'"'+(out?' data-out="1"':'')+'>'+label+(out?' — currently unavailable':'')+'</option>';
-  }).join('');
-  var firstAvail=j.byType.filter(function(t){return (t.available|0)>0;})[0];
-  if(firstAvail)sel.value=(firstAvail.label||'Chamber')+' chamber';
-}).catch(function(){});
+/* Custom chamber dropdown. Options come from live availability; unavailable
+   styles stay selectable (they route to the waitlist server-side) but are shown
+   with a readable muted style + an "Unavailable" badge instead of the browser's
+   illegible disabled-option grey. */
+(function(){
+  var hidden=document.getElementById('ch'), dd=document.getElementById('chDD'),
+      btn=document.getElementById('chDDBtn'), labelEl=document.getElementById('chDDLabel'),
+      listEl=document.getElementById('chDDList');
+  if(!dd) return;
+  var options=[{value:'Soft-Shell 1.5 ATA',label:'Soft-Shell 1.5 ATA',out:false}]; // fallback
+  function setValue(v,text){ hidden.value=v; labelEl.textContent=text; }
+  function render(){
+    listEl.innerHTML=options.map(function(o,i){
+      var sel=hidden.value===o.value;
+      var badge=o.out?'<span class="cdd-badge no">Unavailable</span>':'<span class="cdd-badge ok">Available</span>';
+      return '<li class="cdd-opt'+(o.out?' out':'')+'" role="option" data-i="'+i+'" aria-selected="'+sel+'"><span>'+o.label+'</span>'+badge+'</li>';
+    }).join('');
+  }
+  function open(){ render(); listEl.hidden=false; dd.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
+  function close(){ listEl.hidden=true; dd.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+  btn.addEventListener('click',function(){ listEl.hidden?open():close(); });
+  listEl.addEventListener('click',function(e){ var li=e.target.closest('.cdd-opt'); if(!li)return; var o=options[+li.dataset.i]; setValue(o.value,o.label); close(); btn.focus(); });
+  document.addEventListener('click',function(e){ if(!dd.contains(e.target)) close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+  // seed with the fallback so the form works before/without the availability fetch
+  setValue(options[0].value, options[0].label);
+
+  fetch('/api/availability').then(function(r){return r.json();}).then(function(j){
+    if(!j||!Array.isArray(j.byType)||!j.byType.length) return;
+    options=j.byType.map(function(t){ var lbl=(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:(t.available|0)<=0}; });
+    var firstAvail=options.filter(function(o){return !o.out;})[0] || options[0];
+    setValue(firstAvail.value, firstAvail.label);
+    if(!listEl.hidden) render();
+  }).catch(function(){});
+})();
 
 var _submitting=false; // idempotency guard: blocks double-clicks / re-entry for one submission
 document.getElementById('resForm').addEventListener('submit',async function(e){
