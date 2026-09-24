@@ -3,11 +3,13 @@ const {
   updateBooking,
   createWaitlistEntry,
   countAvailableToday,
+  listBookings,
 } = require("./_lib/storage");
 const {
   notifyAdminBooking,
   notifyCustomerChamberAvailable,
   notifyCustomerWaitlistAdded,
+  notifyCustomerPendingAvailability,
   notifyAdminOutOfArea,
   notifyAdminSms,
 } = require("./_lib/email");
@@ -121,7 +123,12 @@ exports.handler = async (event) => {
 
     try {
       const { available } = await countAvailableToday();
-      if (available > 0) {
+      // Untriaged demand = bookings still "new" (includes the one just created).
+      // A chamber is only genuinely free for this request if available capacity
+      // exceeds the pending requests ahead of it.
+      const pending = (await listBookings({ status: "new" })).length;
+
+      if (pending <= available) {
         routing.autoNotified = "available";
         await updateBooking(booking.id, { autoNotified: "available" });
         // Await the email, Lambda freezes pending I/O on return, so fire-and-forget
@@ -133,8 +140,21 @@ exports.handler = async (event) => {
           console.error("customer 'available' notify failed", err);
           emailResults.customer = `failed: ${err.message}`;
         }
+      } else if (available > 0) {
+        // Chambers exist physically but are already spoken for by earlier
+        // untriaged requests. Don't promise availability or waitlist; just
+        // tell the customer we'll follow up, and flag it for triage.
+        routing.autoNotified = "pending";
+        await updateBooking(booking.id, { autoNotified: "pending" });
+        try {
+          await notifyCustomerPendingAvailability(booking);
+          emailResults.customer = "sent";
+        } catch (err) {
+          console.error("customer 'pending' notify failed", err);
+          emailResults.customer = `failed: ${err.message}`;
+        }
       } else {
-        // Add to waitlist
+        // No chambers available at all → waitlist
         const waitlistEntry = await createWaitlistEntry({
           name: `${booking.firstName} ${booking.lastName || ""}`.trim(),
           email: booking.email,

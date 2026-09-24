@@ -1202,6 +1202,8 @@
       let routingBadge = '';
       if (b.autoNotified === 'available') {
         routingBadge = `<div class="renter-line" style="color:#3d5a26;">📩 Notified: chamber available</div>`;
+      } else if (b.autoNotified === 'pending') {
+        routingBadge = `<div class="renter-line" style="color:#82402f;">📩 Notified: pending availability (triage)</div>`;
       } else if (b.autoNotified === 'waitlist') {
         routingBadge = `<div class="renter-line" style="color:#6b5326;">📩 Notified: added to waitlist</div>`;
       }
@@ -1250,6 +1252,8 @@
     let autoRoutingHtml = '';
     if (b.autoNotified === 'available') {
       autoRoutingHtml = `<div class="modal-row"><strong>Auto-routing</strong><div style="color:#3d5a26;"><strong>📩 Chamber available</strong>customer was emailed: "We will be in contact shortly to arrange delivery."</div></div>`;
+    } else if (b.autoNotified === 'pending') {
+      autoRoutingHtml = `<div class="modal-row"><strong>Auto-routing</strong><div style="color:#82402f;"><strong>📩 Pending availability</strong>chambers are spoken for by earlier untriaged requests, so none was auto-assigned. Customer was emailed that we'll contact them shortly. Triage needed.</div></div>`;
     } else if (b.autoNotified === 'waitlist') {
       const linkText = b.linkedWaitlistId ? `Linked to waitlist entry <code>${escape(b.linkedWaitlistId.slice(0, 8))}…</code>` : '';
       autoRoutingHtml = `<div class="modal-row"><strong>Auto-routing</strong><div style="color:#6b5326;"><strong>📩 Added to waitlist</strong>customer was emailed about it. ${linkText}</div></div>`;

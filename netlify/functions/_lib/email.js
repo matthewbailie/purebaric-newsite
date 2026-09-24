@@ -196,6 +196,23 @@ async function notifyCustomerWaitlistAdded(booking) {
   });
 }
 
+// Customer-facing: chambers exist physically, but they're already spoken for by
+// earlier untriaged requests, so we don't promise availability, just a follow-up.
+async function notifyCustomerPendingAvailability(booking) {
+  const first = (booking.firstName || "there").split(" ")[0];
+  const html = wrap(`
+    <p style="margin:0 0 16px;">Hi ${escapeHtml(first)},</p>
+    <p style="margin:0 0 16px;">Thanks for your reservation request. We're confirming chamber availability right now and <strong style="color:#2b2320;">will contact you shortly</strong> about next steps.</p>
+    <p style="margin:0;">If you have any questions in the meantime, reply to this email or call us at <a href="tel:+18019010873" style="color:#b8654d;">(801) 901-0873</a>.</p>
+    ${signoff()}
+  `);
+  return send({
+    to: booking.email,
+    subject: "Purebaric, we'll be in touch shortly about your reservation",
+    html,
+  });
+}
+
 async function notifyAdminBooking(b, routing = {}) {
   const name = `${b.firstName || ""} ${b.lastName || ""}`.trim();
   const flags = b.medicalScreeningFlags && b.medicalScreeningFlags !== "none"
@@ -205,10 +222,13 @@ async function notifyAdminBooking(b, routing = {}) {
   let routingBlock = "";
   if (routing.autoNotified === "available") {
     routingBlock = `<p style="padding:12px 14px; background:#ebf2da; color:#4a5d24; border-radius:8px; margin:0 0 16px;"><strong>Auto-routed: chamber available.</strong><br>Customer was emailed that we'll be in contact shortly to arrange delivery. Action: reach out to confirm.</p>`;
+  } else if (routing.autoNotified === "pending") {
+    routingBlock = `<p style="padding:12px 14px; background:#f4e7df; color:#7a4a1e; border-radius:8px; margin:0 0 16px;"><strong>Auto-routed: pending availability.</strong><br>Chambers exist but are already spoken for by earlier untriaged requests, so no chamber was auto-assigned. Customer was emailed that we'll contact them shortly. Action: triage and confirm.</p>`;
   } else if (routing.autoNotified === "waitlist") {
     routingBlock = `<p style="padding:12px 14px; background:#f4e7df; color:#7a4a1e; border-radius:8px; margin:0 0 16px;"><strong>Auto-routed: no chambers available.</strong><br>Customer was added to the waitlist and emailed about it. Linked waitlist id: <code>${or(routing.linkedWaitlistId)}</code></p>`;
   }
   const subjectTag = routing.autoNotified === "available" ? " [chamber available]" :
+                     routing.autoNotified === "pending" ? " [pending availability]" :
                      routing.autoNotified === "waitlist" ? " [to waitlist]" : "";
   const html = wrap(`
     <p style="margin:0 0 16px;"><strong style="color:#2b2320;">New booking request</strong></p>
@@ -287,6 +307,7 @@ module.exports = {
   notifyAdminBooking,
   notifyCustomerChamberAvailable,
   notifyCustomerWaitlistAdded,
+  notifyCustomerPendingAvailability,
   notifyAdminOutOfArea,
   notifyAdminSms,
 };
