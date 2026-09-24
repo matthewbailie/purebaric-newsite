@@ -120,6 +120,11 @@
   to = "/.netlify/functions/admin-pricing"
   status = 200
 
+[[redirects]]
+  from = "/api/admin/machinesets"
+  to = "/.netlify/functions/admin-machinesets"
+  status = 200
+
 # ───────── Scheduled function ─────────
 # Auto-expires waitlist holds and transitions rentals by date. Runs hourly.
 [functions."expire-holds"]

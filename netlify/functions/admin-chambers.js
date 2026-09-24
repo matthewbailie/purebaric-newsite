@@ -26,6 +26,8 @@ exports.handler = async (event, context) => {
       const chamber = await createChamber({
         name: body.name.trim(),
         model: body.model || undefined,
+        ata: typeof body.ata !== "undefined" ? body.ata : undefined,
+        posture: typeof body.posture !== "undefined" ? body.posture : undefined,
         notes: body.notes || "",
       });
       return json(201, { chamber });
@@ -36,6 +38,8 @@ exports.handler = async (event, context) => {
       const patch = {};
       if (typeof body.name === "string") patch.name = body.name.trim();
       if (typeof body.model === "string") patch.model = body.model;
+      if (typeof body.ata !== "undefined") patch.ata = body.ata;
+      if (typeof body.posture !== "undefined") patch.posture = body.posture;
       if (typeof body.notes === "string") patch.notes = body.notes;
       if (["active", "maintenance", "archived"].includes(body.status)) {
         patch.status = body.status;

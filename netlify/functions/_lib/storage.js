@@ -1,5 +1,6 @@
 const { getStore } = require("@netlify/blobs");
 const crypto = require("crypto");
+const inventory = require("./inventory");
 
 const STORES = {
   chambers: "chambers",
@@ -68,21 +69,36 @@ async function deleteOne(storeName, id) {
 }
 
 // ───────── Chambers ─────────
-// shape: { id, name, model, status: "active"|"maintenance"|"archived", notes, createdAt, archivedAt }
-// "active" = rentable, "maintenance" = temporarily out of service, "archived" = soft-deleted
+// shape: { id, name, model, ata (number), posture: "lying"|"sitting",
+//   status: "active"|"maintenance"|"archived", notes, createdAt, archivedAt }
+// "active" = rentable, "maintenance" = temporarily out of service, "archived" = soft-deleted.
+// ata/posture are the structured "chamber type"; legacy records without them are
+// backfilled on read from the model string.
+
+function withChamberType(c) {
+  return { ...c, ata: inventory.inferAta(c), posture: inventory.inferPosture(c) };
+}
 
 async function listChambers({ includeArchived = false } = {}) {
   const all = await listAll(STORES.chambers);
   return all
     .filter((c) => includeArchived || c.status !== "archived")
+    .map(withChamberType)
     .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
 }
 
-async function createChamber({ name, model = "Purebaric 1.5 ATA", notes = "" }) {
+async function getChamber(id) {
+  const c = await getOne(STORES.chambers, id);
+  return c ? withChamberType(c) : null;
+}
+
+async function createChamber({ name, model = "Purebaric 1.5 ATA", ata, posture, notes = "" }) {
   const c = {
     id: newId(),
     name,
     model,
+    ata: inventory.normalizeAta(ata != null ? ata : inventory.inferAta({ model })),
+    posture: inventory.normalizePosture(posture != null ? posture : inventory.inferPosture({ model })),
     status: "active",
     notes,
     createdAt: nowIso(),
@@ -95,6 +111,8 @@ async function updateChamber(id, patch) {
   const existing = await getOne(STORES.chambers, id);
   if (!existing) return null;
   const updated = { ...existing, ...patch, id };
+  if (patch.ata != null) updated.ata = inventory.normalizeAta(patch.ata);
+  if (patch.posture != null) updated.posture = inventory.normalizePosture(patch.posture);
   return putOne(STORES.chambers, updated);
 }
 
@@ -267,19 +285,68 @@ async function updateBooking(id, patch) {
   return putOne(STORES.bookings, updated);
 }
 
+// ───────── Machine sets (settings) ─────────
+// One blob at settings/machineSets: { sets: [{ ata, count }, ...] }. A fungible
+// pool counted per ATA rating. Empty/unset = unconstrained (feature is opt-in;
+// the booking flow behaves exactly as before until the owner enters counts).
+
+async function getMachineSets() {
+  const doc = await getOne(STORES.settings, "machineSets");
+  return Array.isArray(doc && doc.sets) ? doc.sets : [];
+}
+
+async function setMachineSets(sets) {
+  const clean = (Array.isArray(sets) ? sets : [])
+    .map((s) => ({ ata: Number(s.ata), count: Math.max(0, Math.floor(Number(s.count) || 0)) }))
+    .filter((s) => Number.isFinite(s.ata) && s.ata > 0)
+    .sort((a, b) => a.ata - b.ata);
+  await store(STORES.settings).setJSON("machineSets", { id: "machineSets", sets: clean, updatedAt: nowIso() });
+  return clean;
+}
+
 // ───────── Availability ─────────
 
 async function countAvailableToday() {
   const today = new Date().toISOString().slice(0, 10);
-  const [chambers, activeRentals] = await Promise.all([
+  const [chambers, rentals, machineSets] = await Promise.all([
     listChambers(),
-    listRentals({ activeOn: today }),
+    listAll(STORES.rentals),
+    getMachineSets(),
   ]);
-  // Chamber is "available" only if active (not maintenance/archived) AND not busy today
-  const busyIds = new Set(activeRentals.map((r) => r.chamberId));
-  const rentable = chambers.filter((c) => c.status === "active");
-  const available = rentable.filter((c) => !busyIds.has(c.id));
-  return { available: available.length, total: rentable.length, busyIds: [...busyIds] };
+  const busyIds = new Set(
+    rentals
+      .filter((r) => inventory.rentalOccupiesWindow(r, today, today))
+      .map((r) => r.chamberId)
+  );
+  const total = chambers.filter((c) => c.status === "active").length;
+  const available = inventory.computeAvailableCount(chambers, rentals, machineSets, today, today);
+  return { available, total, busyIds: [...busyIds] };
+}
+
+// Per chamber-type availability for a date window (defaults to today). Used by
+// the admin availability view and the public booking form.
+async function availabilityByType({ startDate, endDate } = {}) {
+  const today = new Date().toISOString().slice(0, 10);
+  const start = startDate || today;
+  const end = endDate || start;
+  const [chambers, rentals, machineSets] = await Promise.all([
+    listChambers(),
+    listAll(STORES.rentals),
+    getMachineSets(),
+  ]);
+  return inventory.computeAvailabilityByType(chambers, rentals, machineSets, start, end);
+}
+
+// True when assigning one more rental of this ATA would oversubscribe the machine
+// -set pool across the window. Used to guard admin rental creation/edits.
+async function machineSetPoolFull({ ata, startDate, endDate, excludeRentalId } = {}) {
+  const [chambers, rentals, machineSets] = await Promise.all([
+    listChambers(),
+    listAll(STORES.rentals),
+    getMachineSets(),
+  ]);
+  const chambersById = new Map(chambers.map((c) => [c.id, c]));
+  return inventory.machineSetPoolFull(ata, machineSets, rentals, chambersById, startDate, endDate, excludeRentalId);
 }
 
 // Returns next-available date for each chamber (or null = available now).
@@ -526,6 +593,7 @@ module.exports = {
   nowIso,
   store,
   listChambers,
+  getChamber,
   createChamber,
   updateChamber,
   archiveChamber,
@@ -553,7 +621,11 @@ module.exports = {
   DEFAULT_PRICING,
   getPricing,
   setPricing,
+  getMachineSets,
+  setMachineSets,
   countAvailableToday,
+  availabilityByType,
+  machineSetPoolFull,
   nextAvailableByChamber,
   saveWaiver,
   getWaiver,
