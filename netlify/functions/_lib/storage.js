@@ -1,6 +1,7 @@
 const { getStore } = require("@netlify/blobs");
 const crypto = require("crypto");
 const inventory = require("./inventory");
+const serviceArea = require("./servicearea");
 
 const STORES = {
   chambers: "chambers",
@@ -301,6 +302,24 @@ async function setMachineSets(sets) {
     .filter((s) => Number.isFinite(s.ata) && s.ata > 0)
     .sort((a, b) => a.ata - b.ata);
   await store(STORES.settings).setJSON("machineSets", { id: "machineSets", sets: clean, updatedAt: nowIso() });
+  return clean;
+}
+
+// ───────── Service area (settings) ─────────
+// One blob at settings/serviceArea: { prefixes: [...], zips: [...] }. Admin-managed
+// delivery ZIP rule. Unset = the historic default (mirrors the old hardcoded gate).
+
+async function getServiceArea() {
+  const doc = await getOne(STORES.settings, "serviceArea");
+  if (!doc || (!Array.isArray(doc.prefixes) && !Array.isArray(doc.zips))) {
+    return { ...serviceArea.DEFAULT_SERVICE_AREA };
+  }
+  return serviceArea.normalizeServiceArea(doc);
+}
+
+async function setServiceArea(area) {
+  const clean = serviceArea.normalizeServiceArea(area);
+  await store(STORES.settings).setJSON("serviceArea", { id: "serviceArea", ...clean, updatedAt: nowIso() });
   return clean;
 }
 
@@ -623,6 +642,8 @@ module.exports = {
   setPricing,
   getMachineSets,
   setMachineSets,
+  getServiceArea,
+  setServiceArea,
   countAvailableToday,
   availabilityByType,
   machineSetPoolFull,

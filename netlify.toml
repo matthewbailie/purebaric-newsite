@@ -51,6 +51,11 @@
   to = "/.netlify/functions/pricing-public"
   status = 200
 
+[[redirects]]
+  from = "/api/service-area"
+  to = "/.netlify/functions/service-area-public"
+  status = 200
+
 # ───────── Admin API (base path + sub-paths) ─────────
 [[redirects]]
   from = "/api/admin/chambers"
@@ -123,6 +128,11 @@
 [[redirects]]
   from = "/api/admin/machinesets"
   to = "/.netlify/functions/admin-machinesets"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/service-area"
+  to = "/.netlify/functions/admin-service-area"
   status = 200
 
 # ───────── Scheduled function ─────────

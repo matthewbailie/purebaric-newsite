@@ -517,8 +517,9 @@ function openSheet(){document.getElementById('sheet').classList.add('open');docu
 function closeSheet(){document.getElementById('sheet').classList.remove('open');document.getElementById('scrim').classList.remove('open')}
 function toggleMenu(){var m=document.getElementById('mobileMenu'),b=document.querySelector('.nav-toggle');var open=m.classList.toggle('open');b.setAttribute('aria-expanded',open)}
 function goBook(s){s=s||'';var m=+document.getElementById('mo'+s).value;var zEl=document.getElementById('zip'+s);var z=zEl?zEl.value.trim():'';try{if(z)sessionStorage.setItem('pb_zip',z);}catch(e){}location.href='/book?months='+m;return false;}
-var ZIP_EXTRA={"84201":1,"84244":1,"84601":1,"84602":1,"84603":1,"84604":1,"84605":1,"84606":1,"84626":1,"84633":1,"84651":1,"84653":1,"84660":1,"84663":1,"84664":1};
-function servedZip(z){return /^(840|841|844)\d\d$/.test(z)||!!ZIP_EXTRA[z];}
+var PB_AREA={prefixes:["840","841","844"],zips:["84201","84244","84601","84602","84603","84604","84605","84606","84626","84633","84651","84653","84660","84663","84664"]};
+function servedZip(z){z=String(z||'').trim();if(!/^\d{5}$/.test(z))return false;for(var i=0;i<PB_AREA.prefixes.length;i++){if(z.indexOf(PB_AREA.prefixes[i])===0)return true;}return PB_AREA.zips.indexOf(z)>=0;}
+fetch('/api/service-area').then(function(r){return r.json();}).then(function(j){if(j&&(j.prefixes||j.zips)){PB_AREA={prefixes:j.prefixes||[],zips:j.zips||[]};checkZip('');checkZip('2');}}).catch(function(){});
 function checkZip(s){s=s||'';var el=document.getElementById('zip'+s),n=document.getElementById('zipNote'+s);if(!el||!n)return;var z=el.value.trim();if(!/^\d{5}$/.test(z)){n.hidden=true;return;}if(servedZip(z)){n.hidden=false;n.className='zipnote ok';n.textContent='✓ We deliver to '+z+'.';}else{n.hidden=false;n.className='zipnote warn';n.textContent=z+' is outside our delivery area. You can still request, we\'ll reach out if we can help.';}}
 
 /* cookie consent */

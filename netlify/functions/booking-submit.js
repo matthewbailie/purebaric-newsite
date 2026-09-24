@@ -4,7 +4,9 @@ const {
   createWaitlistEntry,
   countAvailableToday,
   listBookings,
+  getServiceArea,
 } = require("./_lib/storage");
+const { zipServed } = require("./_lib/servicearea");
 const {
   notifyAdminBooking,
   notifyCustomerChamberAvailable,
@@ -20,20 +22,9 @@ const {
 } = require("./_lib/analytics");
 
 // ───────── Delivery service area (ZIP gating) ─────────
-// Served counties (Wasatch Front + Park City): Salt Lake, Utah, Davis, Weber,
-// Summit, Wasatch, Tooele. 840xx/841xx cover most; 844xx = Ogden/Weber; the
-// explicit set covers served Utah-County (Provo area) + Weber ZIPs in 846xx/842xx.
-// Owner: to change the delivery area, edit this rule (mirror it in book.html + index.html).
-const SERVED_ZIP_EXTRA = new Set([
-  "84201","84244",
-  "84601","84602","84603","84604","84605","84606",
-  "84626","84633","84651","84653","84660","84663","84664",
-]);
-function servedZip(zip) {
-  if (!/^\d{5}$/.test(zip)) return false;
-  if (/^(840|841|844)\d\d$/.test(zip)) return true;
-  return SERVED_ZIP_EXTRA.has(zip);
-}
+// The rule is admin-managed (settings/serviceArea, edited in the Service Area
+// tab) and served at /api/service-area. Defaults mirror the historic gate
+// (840xx/841xx/844xx + Provo/Weber additions). See _lib/servicearea.js.
 
 function parseBody(event) {
   if (!event.body) return {};
@@ -75,7 +66,8 @@ exports.handler = async (event) => {
     }
 
     const zip = (body.zip || body.zip_code || "").trim();
-    const outOfArea = zip !== "" && !servedZip(zip);
+    const area = await getServiceArea();
+    const outOfArea = zip !== "" && !zipServed(zip, area);
 
     const analyticsConsent = typeof body.analytics_consent === "undefined"
       ? null
