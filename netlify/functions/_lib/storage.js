@@ -2,6 +2,7 @@ const { getStore } = require("@netlify/blobs");
 const crypto = require("crypto");
 const inventory = require("./inventory");
 const serviceArea = require("./servicearea");
+const notifications = require("./notifications");
 
 const STORES = {
   chambers: "chambers",
@@ -320,6 +321,21 @@ async function getServiceArea() {
 async function setServiceArea(area) {
   const clean = serviceArea.normalizeServiceArea(area);
   await store(STORES.settings).setJSON("serviceArea", { id: "serviceArea", ...clean, updatedAt: nowIso() });
+  return clean;
+}
+
+// ───────── Notifications (settings) ─────────
+// One blob at settings/notifications: { recipients: [{ id, label, number, carrier, events }] }.
+// Admin-managed SMS recipients (free carrier email-to-text). Default = none.
+
+async function getNotifications() {
+  const doc = await getOne(STORES.settings, "notifications");
+  return notifications.normalizeNotifications(doc || {});
+}
+
+async function setNotifications(config) {
+  const clean = notifications.normalizeNotifications(config);
+  await store(STORES.settings).setJSON("notifications", { id: "notifications", ...clean, updatedAt: nowIso() });
   return clean;
 }
 
@@ -644,6 +660,8 @@ module.exports = {
   setMachineSets,
   getServiceArea,
   setServiceArea,
+  getNotifications,
+  setNotifications,
   countAvailableToday,
   availabilityByType,
   machineSetPoolFull,

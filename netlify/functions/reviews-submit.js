@@ -1,5 +1,6 @@
-const { createReview } = require("./_lib/storage");
-const { notifyAdminReview } = require("./_lib/email");
+const { createReview, getNotifications } = require("./_lib/storage");
+const { notifyAdminReview, notifyAdminReviewSms } = require("./_lib/email");
+const { recipientsForEvent } = require("./_lib/notifications");
 
 function parseBody(event) {
   if (!event.body) return {};
@@ -54,6 +55,12 @@ exports.handler = async (event) => {
     } catch (err) {
       console.error("admin review notify failed", err);
       adminEmail = `failed: ${err.message}`;
+    }
+    try {
+      const notifCfg = await getNotifications();
+      await notifyAdminReviewSms(review, recipientsForEvent(notifCfg, "review"));
+    } catch (err) {
+      console.error("admin review sms failed", err);
     }
 
     return {

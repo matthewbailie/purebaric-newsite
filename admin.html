@@ -226,6 +226,7 @@
       <button class="tab-btn" data-tab="reviews">Reviews</button>
       <button class="tab-btn" data-tab="pricing">Pricing</button>
       <button class="tab-btn" data-tab="servicearea">Service Area</button>
+      <button class="tab-btn" data-tab="notifications">Notifications</button>
     </div>
 
     <!-- ───── Chambers ───── -->
@@ -504,6 +505,25 @@
       </style>
     </section>
 
+    <section class="tab-panel" data-panel="notifications">
+      <div class="panel-actions">
+        <h2>Notifications</h2>
+        <button class="btn btn-primary btn-sm" onclick="saveNotifications()">Save notifications</button>
+      </div>
+      <p class="renter-line" style="margin:0 0 16px;max-width:760px;">Free text alerts via your carrier's email-to-text gateway. Add a phone number, pick the carrier, and choose which events send that number a text. Standard carrier message rates may apply on the receiving phone. If texts stop arriving, re-check the carrier (carriers occasionally change gateways).</p>
+      <div id="notifList"></div>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="addNotifyRecipient()" style="margin-top:6px;">+ Add phone number</button>
+      <style>
+        .nt-card{border:1px solid var(--line,#e6dccd);border-radius:10px;padding:12px 14px;margin-bottom:12px;background:var(--card,#fffdf9);max-width:760px;}
+        .nt-top{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:10px;}
+        .nt-top label{display:block;font-size:12px;font-weight:600;color:var(--stone-muted,#6f635b);margin-bottom:3px;}
+        .nt-top input,.nt-top select{padding:6px 8px;border:1px solid var(--line,#e6dccd);border-radius:8px;font-size:13px;}
+        .nt-events{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;}
+        .nt-events label{display:inline-flex;align-items:center;gap:5px;font-weight:500;}
+        .nt-remove{margin-left:auto;}
+      </style>
+    </section>
+
   </div>
 </div>
 
@@ -654,7 +674,7 @@
     // Load each section independently: one failing call must not blank the rest,
     // and we still paint whatever succeeded.
     const results = await Promise.allSettled([
-      loadChambers(), loadRentals(), loadWaitlist(), loadBookings(), loadReviews(), loadPricing(), loadMachineSets(), loadServiceArea()
+      loadChambers(), loadRentals(), loadWaitlist(), loadBookings(), loadReviews(), loadPricing(), loadMachineSets(), loadServiceArea(), loadNotifications()
     ]);
     paintStats();
     const failures = results.filter(r => r.status === 'rejected').map(r => r.reason || {});
@@ -1782,6 +1802,65 @@
       await api('/api/admin/service-area', { method: 'PUT', body: JSON.stringify(_serviceArea) });
       toast('Service area saved');
       await loadServiceArea();
+    } catch (err) { toast(err.message, true); }
+  }
+
+  // ───────── Notifications (free SMS via carrier email-to-text) ─────────
+  let _notify = { recipients: [] };
+  const CARRIER_LABELS = { verizon:'Verizon', att:'AT&T', tmobile:'T-Mobile', sprint:'Sprint', googlefi:'Google Fi', uscellular:'US Cellular', cricket:'Cricket', boost:'Boost', metropcs:'Metro by T-Mobile', virgin:'Virgin Mobile', xfinity:'Xfinity Mobile' };
+  const NOTIFY_EVENTS = [
+    { key:'reservation_in', label:'Reservation request (in area)' },
+    { key:'reservation_out', label:'Reservation request (out of area)' },
+    { key:'review', label:'New review' },
+  ];
+  async function loadNotifications() {
+    const data = await api('/api/admin/notifications');
+    _notify = { recipients: (data.recipients || []).map(r => ({ label:r.label||'', number:r.number||'', carrier:r.carrier||'verizon', events:r.events||[] })) };
+    renderNotifications();
+  }
+  function renderNotifications() {
+    const el = document.getElementById('notifList');
+    if (!el) return;
+    if (!_notify.recipients.length) {
+      el.innerHTML = '<div class="empty-state">No numbers yet. Click <strong>+ Add phone number</strong> to get texts for new requests or reviews.</div>';
+      return;
+    }
+    const carrierOpts = Object.keys(CARRIER_LABELS).map(k => `<option value="${k}">${escape(CARRIER_LABELS[k])}</option>`).join('');
+    el.innerHTML = _notify.recipients.map((r, i) => `
+      <div class="nt-card" data-i="${i}">
+        <div class="nt-top">
+          <div><label>Label (optional)</label><input class="nt-label" value="${escape(r.label)}" placeholder="e.g. Matthew" style="width:150px;"></div>
+          <div><label>Mobile number</label><input class="nt-number" value="${escape(r.number)}" inputmode="tel" placeholder="801 555 1234" style="width:150px;"></div>
+          <div><label>Carrier</label><select class="nt-carrier">${carrierOpts}</select></div>
+          <button type="button" class="btn btn-ghost btn-sm nt-remove" onclick="removeNotifyRecipient(${i})">Remove</button>
+        </div>
+        <div class="nt-events">
+          ${NOTIFY_EVENTS.map(ev => `<label><input type="checkbox" class="nt-ev" value="${ev.key}" ${r.events.includes(ev.key)?'checked':''}> ${escape(ev.label)}</label>`).join('')}
+        </div>
+      </div>`).join('');
+    // Set carrier selects (value attr on option won't preselect reliably via innerHTML).
+    el.querySelectorAll('.nt-card').forEach((card, i) => {
+      card.querySelector('.nt-carrier').value = _notify.recipients[i].carrier || 'verizon';
+    });
+  }
+  function readNotifyCards() {
+    return [...document.querySelectorAll('#notifList .nt-card')].map(card => ({
+      label: card.querySelector('.nt-label').value.trim(),
+      number: card.querySelector('.nt-number').value.trim(),
+      carrier: card.querySelector('.nt-carrier').value,
+      events: [...card.querySelectorAll('.nt-ev:checked')].map(c => c.value),
+    }));
+  }
+  function addNotifyRecipient() { _notify.recipients = readNotifyCards().concat({ label:'', number:'', carrier:'verizon', events:['reservation_in'] }); renderNotifications(); }
+  function removeNotifyRecipient(i) { _notify.recipients = readNotifyCards().filter((_, idx) => idx !== i); renderNotifications(); }
+  async function saveNotifications() {
+    const recipients = readNotifyCards();
+    // Warn on rows the server will drop (need a valid 10-digit number + >=1 event).
+    const dropped = recipients.filter(r => (r.number.replace(/\D/g,'').replace(/^1(?=\d{10}$)/,'').length !== 10) || !r.events.length);
+    try {
+      await api('/api/admin/notifications', { method: 'PUT', body: JSON.stringify({ recipients }) });
+      toast(dropped.length ? 'Saved. Some rows were skipped (need a valid number and at least one event).' : 'Notifications saved');
+      await loadNotifications();
     } catch (err) { toast(err.message, true); }
   }
   function rateForMonths(m) {

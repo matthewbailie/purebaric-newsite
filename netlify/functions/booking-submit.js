@@ -5,8 +5,10 @@ const {
   countAvailableToday,
   listBookings,
   getServiceArea,
+  getNotifications,
 } = require("./_lib/storage");
 const { zipServed } = require("./_lib/servicearea");
+const { recipientsForEvent } = require("./_lib/notifications");
 const {
   notifyAdminBooking,
   notifyCustomerChamberAvailable,
@@ -68,6 +70,7 @@ exports.handler = async (event) => {
     const zip = (body.zip || body.zip_code || "").trim();
     const area = await getServiceArea();
     const outOfArea = zip !== "" && !zipServed(zip, area);
+    const notifCfg = await getNotifications();
 
     const analyticsConsent = typeof body.analytics_consent === "undefined"
       ? null
@@ -106,7 +109,7 @@ exports.handler = async (event) => {
         console.error("admin out-of-area notify failed", err);
         adminEmail = `failed: ${err.message}`;
       }
-      try { await notifyAdminSms(booking, { outOfArea: true }); } catch (err) { console.error("admin sms failed", err); }
+      try { await notifyAdminSms(booking, { outOfArea: true, to: recipientsForEvent(notifCfg, "reservation_out") }); } catch (err) { console.error("admin sms failed", err); }
       return {
         statusCode: 200,
         headers: { "Content-Type": "application/json" },
@@ -197,7 +200,7 @@ exports.handler = async (event) => {
       console.error("admin notify failed", err);
       emailResults.admin = `failed: ${err.message}`;
     }
-    try { await notifyAdminSms(booking); } catch (err) { console.error("admin sms failed", err); }
+    try { await notifyAdminSms(booking, { to: recipientsForEvent(notifCfg, "reservation_in") }); } catch (err) { console.error("admin sms failed", err); }
 
     // Send the accepted reservation event from the backend so a successful API
     // response and the analytics event cannot drift apart or double-count.

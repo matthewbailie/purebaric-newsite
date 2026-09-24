@@ -135,6 +135,11 @@
   to = "/.netlify/functions/admin-service-area"
   status = 200
 
+[[redirects]]
+  from = "/api/admin/notifications"
+  to = "/.netlify/functions/admin-notifications"
+  status = 200
+
 # ───────── Scheduled function ─────────
 # Auto-expires waitlist holds and transitions rentals by date. Runs hourly.
 [functions."expire-holds"]

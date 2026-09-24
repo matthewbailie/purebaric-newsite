@@ -267,12 +267,16 @@ async function notifyAdminOutOfArea(b) {
   return send({ to: ADMIN_NOTIFY, subject: `Out-of-area request: ${name} (ZIP ${b.zip || "?"})`, html });
 }
 
-// Admin-facing SMS via a carrier email-to-text gateway (free, reuses Resend).
-// Inert until ADMIN_SMS_GATEWAY is set (e.g. "8015551234@vtext.com"). Keep the
-// message short, carrier gateways cap each segment near 160 characters.
-async function notifyAdminSms(b, { outOfArea } = {}) {
-  const to = (process.env.ADMIN_SMS_GATEWAY || "").trim();
-  if (!to) return { skipped: "ADMIN_SMS_GATEWAY not set" };
+// Admin-facing SMS via carrier email-to-text gateways (free, reuses Resend).
+// Recipients come from the admin Notifications config (resolved by the caller and
+// passed as `to`); the legacy ADMIN_SMS_GATEWAY env var, if set, is also included
+// for reservation alerts. Inert when there are no recipients. Keep the message
+// short, carrier gateways cap each segment near 160 characters.
+async function notifyAdminSms(b, { outOfArea, to } = {}) {
+  const recipients = new Set(Array.isArray(to) ? to : to ? [to] : []);
+  const legacy = (process.env.ADMIN_SMS_GATEWAY || "").trim();
+  if (legacy) recipients.add(legacy);
+  if (!recipients.size) return { skipped: "no sms recipients" };
   const name = `${b.firstName || ""} ${b.lastName || ""}`.trim() || b.name || "New lead";
   const parts = [name];
   if (b.phone) parts.push(b.phone);
@@ -283,7 +287,16 @@ async function notifyAdminSms(b, { outOfArea } = {}) {
   const text = outOfArea
     ? `${detail}. Outside service area, no auto-email sent.`
     : `${detail}. Check email or the admin portal to follow up.`;
-  return send({ to, subject, text, html: `<p>${escapeHtml(text)}</p>` });
+  return send({ to: [...recipients], subject, text, html: `<p>${escapeHtml(text)}</p>` });
+}
+
+// Admin-facing SMS: a visitor submitted a review. Recipients from the caller.
+async function notifyAdminReviewSms(review, to) {
+  const recipients = Array.isArray(to) ? to : to ? [to] : [];
+  if (!recipients.length) return { skipped: "no sms recipients" };
+  const who = `${review.firstName || ""} ${review.lastInitial || ""}`.trim() || "Someone";
+  const text = `New Purebaric review from ${who}. Approve it in the admin portal to publish.`;
+  return send({ to: recipients, subject: "New Purebaric review", text, html: `<p>${escapeHtml(text)}</p>` });
 }
 
 // Admin-facing: a visitor submitted a review. It stays pending until published.
@@ -310,4 +323,5 @@ module.exports = {
   notifyCustomerPendingAvailability,
   notifyAdminOutOfArea,
   notifyAdminSms,
+  notifyAdminReviewSms,
 };
