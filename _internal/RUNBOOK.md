@@ -259,8 +259,8 @@ Customer testimonials with a moderation gate. **No star ratings** by design — 
 **Events (NEVER pass PII — only allowlisted scalar values, never a form/FormData/API response/ZIP/free text):** `select_rental_plan`, `service_area_check` (result only, never the ZIP), `booking_form_start`, `booking_request_submit` (accepted reservation request), `close_convert_lead` (admin created/linked the scheduled rental), `booking_request_error`, `contact_submit`, `waitlist_join`.
 
 **Google Ads conversion stages:**
-- `booking_request_submit` is the accepted lead. It is sent once by `booking-submit.js` after the backend accepts an in-area request. Keep it as a **Secondary** Google Ads conversion for observation.
-- `close_convert_lead` is the primary business conversion. It is Google's recommended event for a qualified lead that becomes a customer. It is sent once when the admin links the request to the exact scheduled rental and marks it converted. Import this key event into Google Ads and make it **Primary** for bidding.
+- `booking_request_submit` is the accepted lead. It is sent once by `booking-submit.js` after the backend accepts an in-area request. Keep it **Primary** in Google Ads while confirmed-rental volume is still low so bidding has enough feedback.
+- `close_convert_lead` is the completed-rental outcome. It is Google's recommended event for a qualified lead that becomes a customer and includes the confirmed rental value. It is sent once when the admin links the request to the exact scheduled rental and marks it converted. Keep it **Secondary** for observation until it has accumulated at least 2–3 conversion cycles and approximately 10–15 confirmed rentals in a recent 30-day period. Then switch it to Primary and move `booking_request_submit` to Secondary.
 - `/pb-metrics.js` captures anonymous GA `client_id` + `session_id` at form submission and stores them on the private booking record. The later server-side event reuses those identifiers so GA4 can connect the offline confirmation to the original web/ad journey. No name/email/phone/address/ZIP/notes are sent to GA.
 - Both conversion events are sent from the backend through GA4 Measurement Protocol. Set `GA4_API_SECRET` in Netlify (server-only); `GA4_MEASUREMENT_ID` is optional because the code defaults to `G-Q1X04YRWP1`.
 - The admin flow carries `sourceBookingId` into the rental form, links the exact returned rental ID, and records an analytics status on the booking for idempotency. A visitor opt-out is honored; missing attribution on older records is reported without fabricating a conversion.
@@ -339,7 +339,7 @@ This is a wellness rental business, **not a medical provider** ("not a medical d
 
 ## 15. Known open follow-ups / owner tasks
 
-- **Finish the Ads conversion switch:** confirm `close_convert_lead` is a GA4 key event, import it into Google Ads as Primary, and move `booking_request_submit` to Secondary. Run one labeled end-to-end test through the public reservation form and admin conversion flow.
+- **Validate the staged Ads conversion setup:** keep `booking_request_submit` Primary and `close_convert_lead` Secondary while completed-rental volume is low. Run one labeled end-to-end test through the public reservation form and admin conversion flow. After 2–3 conversion cycles and approximately 10–15 confirmed rentals in a recent 30-day period, make `close_convert_lead` Primary and move `booking_request_submit` to Secondary.
 - **Submit `sitemap.xml` in Google Search Console:** verify the domain (DNS TXT) and submit `https://purebaric.com/sitemap.xml`. Re-submit whenever pages are added/removed. Not yet done.
 - **Claim a Google Business Profile** (and Bing Places / Apple Business Connect) as a **service-area** business — NAP must match the site exactly: Salt Lake City, UT · (801) 901-0873 · Mon–Sat 8:00 AM–6:00 PM MT. Not yet done.
 - **Activate SMS:** set `ADMIN_SMS_GATEWAY` (see §7c) and redeploy.
