@@ -87,9 +87,10 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .msum{display:none}
 @media(max-width:900px){
   .book-layout{grid-template-columns:1fr;gap:26px}
-  .book-main{order:1}.book-side{order:2}.book-sticky{position:static}
+  .book-main{order:2}.book-side{order:1}.book-sticky{position:static}
   .frm .row2{grid-template-columns:1fr}
-  .msum{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:18px}
+  /* Full reservation module (price/chamber/length) now sits on top, so the compact bar is redundant. */
+  .msum{display:none}
   .msum .mp{font-size:19px;font-weight:800}.msum .mp small{font-size:13px;color:var(--muted);font-weight:500}
   .msum .mterm{font-size:13px;color:var(--muted)}
   .msum a{font-size:13px;font-weight:700;color:var(--terra-d);text-decoration:underline;white-space:nowrap}
@@ -151,7 +152,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
         <div class="fg"><label for="cnotes">Notes (optional)</label><textarea id="cnotes" name="notes" placeholder="Ground floor setup, stairs, morning delivery preference..."></textarea></div>
 
         <div class="screen">
-          <label class="ck"><input type="checkbox" id="ackReq" required> I understand this is a reservation request, not a confirmed booking. Purebaric will confirm availability, my delivery date, and billing with me before anything is scheduled or charged. I've reviewed the <a href="/safety" target="_blank" rel="noopener">safety information</a> and have no known contraindications, or I've discussed use with my physician. <span class="req">*</span></label>
+          <label class="ck"><input type="checkbox" id="ackReq" required> I understand this is a reservation request, not a confirmed booking. I've reviewed the <a href="/safety" target="_blank" rel="noopener">safety information</a> and have no known contraindications, or I've discussed use with my physician. <span class="req">*</span></label>
         </div>
 
         <button type="submit" class="btn btn-primary submit" id="submitBtn">Request reservation →</button>
@@ -172,7 +173,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
           <div class="selrow"><label>Chamber</label>
             <input type="hidden" id="ch" name="chamber_id" value="">
             <div class="cdd" id="chDD">
-              <button type="button" class="cdd-btn" id="chDDBtn" aria-haspopup="listbox" aria-expanded="false"><span id="chDDLabel">Soft-Shell 1.5 ATA</span><svg class="cdd-caret" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+              <button type="button" class="cdd-btn" id="chDDBtn" aria-haspopup="listbox" aria-expanded="false"><span id="chDDLabel">1.5 ATA Lying chamber</span><svg class="cdd-caret" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
               <ul class="cdd-list" id="chDDList" role="listbox" hidden></ul>
             </div></div>
           <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol">3 months</span></div>
@@ -297,7 +298,7 @@ fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){if(j&
       btn=document.getElementById('chDDBtn'), labelEl=document.getElementById('chDDLabel'),
       listEl=document.getElementById('chDDList');
   if(!dd) return;
-  var options=[{value:'Soft-Shell 1.5 ATA',label:'Soft-Shell 1.5 ATA',out:false}]; // fallback
+  var options=[{value:'1.5 ATA Lying chamber',label:'1.5 ATA Lying chamber',out:false}]; // fallback
   function setValue(v,text){ hidden.value=v; labelEl.textContent=text; }
   function render(){
     listEl.innerHTML=options.map(function(o,i){
@@ -317,7 +318,7 @@ fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){if(j&
 
   fetch('/api/availability').then(function(r){return r.json();}).then(function(j){
     if(!j||!Array.isArray(j.byType)||!j.byType.length) return;
-    options=j.byType.map(function(t){ var lbl=(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:(t.available|0)<=0}; });
+    options=j.byType.map(function(t){ var lbl='1.5 ATA '+(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:(t.available|0)<=0}; });
     var firstAvail=options.filter(function(o){return !o.out;})[0] || options[0];
     setValue(firstAvail.value, firstAvail.label);
     if(!listEl.hidden) render();
