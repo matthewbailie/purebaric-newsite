@@ -135,7 +135,7 @@
   .toast.show { opacity: 1; transform: translateY(0); }
   .toast.err { background: #82402f; }
   .renter-line { font-size: 0.85rem; color: var(--stone-muted); }
-  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
   .modal-backdrop { position: fixed; inset: 0; background: rgba(20, 18, 15, 0.45); display: none; align-items: center; justify-content: center; z-index: 9998; padding: 1rem; }
   .modal-backdrop.open { display: flex; }
   .modal { background: var(--cream); border-radius: 4px; max-width: 640px; width: 100%; max-height: 86vh; overflow-y: auto; padding: 2rem; box-shadow: 0 12px 36px rgba(0,0,0,0.18); }
@@ -219,7 +219,8 @@
       <button class="sidebar-close" aria-label="Close menu" onclick="closeNav()">&times;</button>
     </div>
     <nav class="sidebar-nav" id="sidebarNav" aria-label="Admin sections">
-      <button class="tab-btn active" data-tab="chambers">Chambers</button>
+      <button class="tab-btn active" data-tab="home">Home</button>
+      <button class="tab-btn" data-tab="chambers">Chambers</button>
       <button class="tab-btn" data-tab="rentals">Rentals</button>
       <button class="tab-btn" data-tab="bookings">Rental requests</button>
       <button class="tab-btn" data-tab="waitlist">Waitlist</button>
@@ -236,7 +237,7 @@
   <main class="admin-main">
     <div class="admin-topbar">
       <button class="nav-toggle-btn" aria-label="Open menu" onclick="openNav()">&#9776;</button>
-      <span class="topbar-title" id="topbarTitle">Chambers</span>
+      <span class="topbar-title" id="topbarTitle">Home</span>
     </div>
 
   <div id="loginGate" class="login-card" hidden>
@@ -249,15 +250,20 @@
 
     <div id="loadError" hidden style="margin:0 0 1rem;padding:0.85rem 1.1rem;border-radius:12px;background:#fbe9e2;border:1px solid #e6c3b4;color:#82402f;font-size:0.9rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;"></div>
 
-    <div class="stat-row">
-      <button type="button" class="stat-block" data-jump-tab="chambers"><div class="stat-label">Active chambers</div><div class="stat-val" id="statActive"></div></button>
-      <button type="button" class="stat-block" data-jump-tab="chambers"><div class="stat-label">Available today</div><div class="stat-val" id="statAvailable"></div></button>
-      <button type="button" class="stat-block" data-jump-tab="bookings"><div class="stat-label">New rental requests</div><div class="stat-val" id="statBookings"></div></button>
-      <button type="button" class="stat-block" data-jump-tab="waitlist"><div class="stat-label">Waitlist queued</div><div class="stat-val" id="statWaitlist"></div></button>
-    </div>
+    <!-- ───── Home / dashboard ───── -->
+    <section class="tab-panel active" data-panel="home">
+      <div class="panel-actions"><h2>Overview</h2></div>
+      <div class="stat-row">
+        <button type="button" class="stat-block" data-jump-tab="chambers"><div class="stat-label">Active chambers</div><div class="stat-val" id="statActive"></div></button>
+        <button type="button" class="stat-block" data-jump-tab="chambers"><div class="stat-label">Bookable now</div><div class="stat-val" id="statAvailable"></div></button>
+        <button type="button" class="stat-block" data-jump-tab="bookings"><div class="stat-label">New rental requests</div><div class="stat-val" id="statBookings"></div></button>
+        <button type="button" class="stat-block" data-jump-tab="waitlist"><div class="stat-label">Waitlist queued</div><div class="stat-val" id="statWaitlist"></div></button>
+        <button type="button" class="stat-block" data-jump-tab="reviews"><div class="stat-label">Pending reviews</div><div class="stat-val" id="statReviews"></div></button>
+      </div>
+    </section>
 
     <!-- ───── Chambers ───── -->
-    <section class="tab-panel active" data-panel="chambers">
+    <section class="tab-panel" data-panel="chambers">
       <div class="panel-actions">
         <h2>Chambers</h2>
         <div>
@@ -833,22 +839,25 @@
   setInterval(refreshSession, 40 * 60 * 1000); // 40 min < 60 min token life
 
   function paintStats() {
-    const active = _chambers.filter(c => c.status === 'active').length;
     const today = new Date().toISOString().slice(0, 10);
-    const busy = new Set(_rentals
+    // A unit is committed if it has a current/upcoming scheduled or active rental.
+    const committed = (key) => new Set(_rentals
       .filter(r => (r.status === 'scheduled' || r.status === 'active') && r.endDate >= today)
-      .map(r => r.chamberId));
-    const available = _chambers.filter(c => c.status === 'active' && !busy.has(c.id)).length;
+      .map(r => r[key]));
+    const committedC = committed('chamberId');
+    const committedM = committed('machineId');
+    const active = _chambers.filter(c => c.status === 'active').length;
+    const freeChambers = _chambers.filter(c => c.status === 'active' && !committedC.has(c.id)).length;
+    const freeMachines = (_machines || []).filter(m => m.status === 'active' && !committedM.has(m.id)).length;
+    const available = Math.min(freeChambers, freeMachines); // bookable = free chamber AND free machine
     const queued = _waitlist.filter(w => w.status === 'queued' || w.status === 'hold').length;
     const newBookings = _bookings.filter(b => b.status === 'new').length;
-    const unpaid = _rentals.filter(r =>
-      (r.status === 'scheduled' || r.status === 'active') &&
-      (r.paymentStatus === 'unpaid' || r.paymentStatus === 'partial' || !r.paymentStatus)
-    ).length;
+    const pendingReviews = (_reviews || []).filter(r => r.status === 'pending').length;
     document.getElementById('statActive').textContent = active;
     document.getElementById('statAvailable').textContent = available;
     document.getElementById('statWaitlist').textContent = queued;
     document.getElementById('statBookings').textContent = newBookings;
+    const rv = document.getElementById('statReviews'); if (rv) rv.textContent = pendingReviews;
   }
 
   // Modal helpers

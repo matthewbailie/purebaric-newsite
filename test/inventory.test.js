@@ -2,7 +2,6 @@ const { test } = require("node:test");
 const assert = require("node:assert/strict");
 const {
   unitState,
-  freeUnits,
   computeAvailableCount,
   computeAvailabilityByStyle,
   unitPoolFull,
@@ -33,31 +32,30 @@ test("unitState reflects manual status, current, upcoming, and free", () => {
   assert.equal(unitState(machines[0], rentals, "machineId", today).state, "inuse");    // m1 in use now
 });
 
-test("availability by style shares the machine pool and caps by it", () => {
+test("scheduled and in-use units are not bookable (shared machine pool)", () => {
   const rentals = [
-    { id: "r1", chamberId: "c1", machineId: "m1", status: "active", startDate: "2026-09-01", endDate: "2026-12-01" },
+    { id: "r1", chamberId: "c1", machineId: "m1", status: "active", startDate: "2026-09-01", endDate: "2026-12-01" },     // in use now
+    { id: "r2", chamberId: "c2", machineId: "m2", status: "scheduled", startDate: "2026-11-01", endDate: "2026-12-01" },  // upcoming
   ];
-  const byStyle = computeAvailabilityByStyle(chambers, machines, rentals, "2026-10-01", "2026-10-01");
+  const byStyle = computeAvailabilityByStyle(chambers, machines, rentals, "2026-10-01");
   const lying = byStyle.find((s) => s.style === "lying");
   const sitting = byStyle.find((s) => s.style === "sitting");
   assert.equal(lying.totalChambers, 2);   // c1,c2 (c4 maintenance excluded)
-  assert.equal(lying.freeChambers, 1);     // c1 busy
-  assert.equal(lying.freeMachines, 1);     // m1 busy, m2 free
-  assert.equal(lying.available, 1);        // min(1 chamber, 1 machine)
-  assert.equal(sitting.freeChambers, 1);
-  assert.equal(sitting.freeMachines, 1);   // same shared machine pool
+  assert.equal(lying.freeChambers, 0);    // c1 in-use, c2 scheduled -> neither bookable
+  assert.equal(lying.freeMachines, 0);    // m1 in-use, m2 scheduled -> 0 machines bookable
+  assert.equal(lying.available, 0);
+  assert.equal(sitting.freeChambers, 1);  // c3 available
+  assert.equal(sitting.available, 0);     // but no bookable machine -> min = 0
 });
 
-test("bookable count is the min of free chambers and free machines", () => {
-  // 3 active chambers free, 2 machines free -> 2 bookable.
-  assert.equal(computeAvailableCount(chambers, machines, [], "2026-10-01", "2026-10-01"), 2);
-  // Take both machines -> 0 bookable even though chambers are free.
+test("bookable count excludes scheduled/in-use units", () => {
+  // No rentals: 3 chambers, 2 machines bookable -> min = 2.
+  assert.equal(computeAvailableCount(chambers, machines, [], "2026-10-01"), 2);
+  // One upcoming (scheduled) rental commits c1 + m1 -> chambers c2,c3 (2), machines m2 (1) -> min = 1.
   const rentals = [
-    { id: "r1", chamberId: "c1", machineId: "m1", status: "active", startDate: "2026-09-01", endDate: "2026-12-01" },
-    { id: "r2", chamberId: "c2", machineId: "m2", status: "active", startDate: "2026-09-01", endDate: "2026-12-01" },
+    { id: "r1", chamberId: "c1", machineId: "m1", status: "scheduled", startDate: "2026-11-01", endDate: "2026-12-01" },
   ];
-  // c1,c2 busy, c3 free, c4 maintenance -> 1 free chamber; both machines busy -> 0 machines free -> min = 0.
-  assert.equal(computeAvailableCount(chambers, machines, rentals, "2026-10-01", "2026-10-01"), 0);
+  assert.equal(computeAvailableCount(chambers, machines, rentals, "2026-10-01"), 1);
 });
 
 test("unitPoolFull detects when every active machine is booked", () => {

@@ -47,33 +47,33 @@ function unitState(unit, rentals, unitKey, today) {
 }
 
 // Active units of a kind that are free across [startDate, endDate].
-function freeUnits(units, rentals, unitKey, startDate, endDate) {
-  const busy = new Set(
-    (rentals || []).filter((r) => rentalOccupiesWindow(r, startDate, endDate)).map((r) => r[unitKey])
-  );
-  return (units || []).filter((u) => u.status === "active" && !busy.has(u.id));
+// A unit is "bookable now" only when it's active AND has no scheduled/active
+// rental commitment. A scheduled (upcoming) rental makes it unavailable, matching
+// the state shown in the admin lists (a SCHEDULED chamber is not bookable).
+function bookableUnits(units, rentals, unitKey, today) {
+  const day = today || new Date().toISOString().slice(0, 10);
+  return (units || []).filter((u) => unitState(u, rentals, unitKey, day).state === "available");
 }
 
-// Bookable count for a window = min(free chambers, free machines): a rental needs both.
-function computeAvailableCount(chambers, machines, rentals, startDate, endDate) {
-  const fc = freeUnits(chambers, rentals, "chamberId", startDate, endDate).length;
-  const fm = freeUnits(machines, rentals, "machineId", startDate, endDate).length;
+// Bookable count now = min(bookable chambers, bookable machines): a rental needs both.
+function computeAvailableCount(chambers, machines, rentals, today) {
+  const fc = bookableUnits(chambers, rentals, "chamberId", today).length;
+  const fm = bookableUnits(machines, rentals, "machineId", today).length;
   return Math.min(fc, fm);
 }
 
-// Availability by chamber style for a window. Machines are a shared pool across
-// styles. Returns [{ style, label, totalChambers, freeChambers, totalMachines,
-// freeMachines, available }] for styles that have at least one active chamber.
-function computeAvailabilityByStyle(chambers, machines, rentals, startDate, endDate) {
-  const busyChambers = new Set(
-    (rentals || []).filter((r) => rentalOccupiesWindow(r, startDate, endDate)).map((r) => r.chamberId)
-  );
-  const freeMachines = freeUnits(machines, rentals, "machineId", startDate, endDate).length;
+// Availability by chamber style. A scheduled or in-use unit is NOT bookable.
+// Machines are a shared pool across styles. Returns [{ style, label,
+// totalChambers, freeChambers, totalMachines, freeMachines, available }] for
+// styles that have at least one active chamber.
+function computeAvailabilityByStyle(chambers, machines, rentals, today) {
+  const day = today || new Date().toISOString().slice(0, 10);
+  const freeMachines = bookableUnits(machines, rentals, "machineId", day).length;
   const totalMachines = (machines || []).filter((m) => m.status === "active").length;
   return ["lying", "sitting"]
     .map((style) => {
       const of = (chambers || []).filter((c) => c.status === "active" && chamberStyleOf(c) === style);
-      const free = of.filter((c) => !busyChambers.has(c.id)).length;
+      const free = of.filter((c) => unitState(c, rentals, "chamberId", day).state === "available").length;
       return {
         style,
         label: styleLabel(style),
@@ -106,7 +106,7 @@ module.exports = {
   styleLabel,
   chamberStyleOf,
   unitState,
-  freeUnits,
+  bookableUnits,
   computeAvailableCount,
   computeAvailabilityByStyle,
   unitPoolFull,
