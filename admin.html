@@ -254,6 +254,22 @@
       </div>
 
       <div id="chambersList"></div>
+      <style>
+        .cal{border:1px solid var(--line,#e6dccd);border-radius:12px;overflow:hidden;background:var(--card,#fffdf9);}
+        .cal-row{display:flex;align-items:stretch;border-top:1px solid var(--line,#e6dccd);min-height:42px;}
+        .cal-row.cal-headrow{border-top:none;background:#faf6ef;}
+        .cal-name{flex:0 0 100px;padding:8px 12px;font-size:13px;font-weight:700;display:flex;align-items:center;border-right:1px solid var(--line,#e6dccd);}
+        .cal-track{position:relative;flex:1;background:repeating-linear-gradient(to right,transparent,transparent calc(100%/12 - 1px),var(--line,#efe7db) calc(100%/12 - 1px),var(--line,#efe7db) calc(100%/12));}
+        .cal-head{display:flex;}
+        .cal-mh{flex:1;text-align:center;font-size:11px;font-weight:600;color:var(--muted,#6f635b);padding:9px 0;text-transform:uppercase;letter-spacing:.03em;}
+        .cal-bar{position:absolute;top:6px;bottom:6px;border-radius:6px;display:flex;align-items:center;padding:0 8px;overflow:hidden;font-size:11px;font-weight:600;color:#fff;white-space:nowrap;}
+        .cal-bar.scheduled{background:#5b7fa6;}
+        .cal-bar.active{background:#5c7a34;}
+        .cal-bar span{overflow:hidden;text-overflow:ellipsis;}
+        .cal-today{position:absolute;top:0;bottom:0;width:2px;background:var(--terracotta,#b8654d);z-index:2;pointer-events:none;}
+        @media(max-width:700px){.cal-name{flex-basis:66px;font-size:12px;}.cal-mh{font-size:9px;}}
+      </style>
+      <div id="chamberCalendar" style="margin-top:34px;"></div>
     </section>
 
     <!-- ───── Rentals ───── -->
@@ -739,6 +755,50 @@
       </tr>`;
     }).join('');
     list.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Chamber</th><th>State</th><th>Detail</th><th>Notes</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    renderCalendar();
+  }
+
+  // Rolling 12-month rental timeline. Window = start of this month + 12 months,
+  // so it advances automatically each day.
+  function renderCalendar() {
+    const el = document.getElementById('chamberCalendar');
+    if (!el) return;
+    const chambers = _chambers.filter(c => c.status !== 'archived');
+    if (!chambers.length) { el.innerHTML = ''; return; }
+    const now = new Date();
+    const winStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const winEnd = new Date(winStart.getFullYear(), winStart.getMonth() + 12, 1);
+    const span = winEnd - winStart;
+    const todayPct = Math.max(0, Math.min(100, (now - winStart) / span * 100));
+    let headCells = '';
+    for (let i = 0; i < 12; i++) {
+      const d = new Date(winStart.getFullYear(), winStart.getMonth() + i, 1);
+      const y = d.getMonth() === 0 ? ` '${String(d.getFullYear()).slice(2)}` : '';
+      headCells += `<div class="cal-mh">${d.toLocaleDateString('en-US', { month: 'short' })}${y}</div>`;
+    }
+    const rowsHtml = chambers.map(c => {
+      const bars = _rentals
+        .filter(r => r.chamberId === c.id && (r.status === 'scheduled' || r.status === 'active'))
+        .map(r => {
+          const s = new Date(r.startDate + 'T00:00:00');
+          const e = new Date(r.endDate + 'T00:00:00'); e.setDate(e.getDate() + 1); // inclusive end
+          if (e <= winStart || s >= winEnd) return '';
+          const left = Math.max(0, (s - winStart) / span * 100);
+          const right = Math.min(100, (e - winStart) / span * 100);
+          const w = Math.max(0.6, right - left);
+          const name = (r.renter && r.renter.name) ? r.renter.name : 'Rental';
+          const title = `${name} · ${fmtDate(r.startDate)} → ${fmtDate(r.endDate)} (${r.status})`;
+          return `<div class="cal-bar ${r.status === 'active' ? 'active' : 'scheduled'}" style="left:${left}%;width:${w}%;" title="${escape(title)}"><span>${escape(name)}</span></div>`;
+        }).join('');
+      return `<div class="cal-row"><div class="cal-name">${escape(c.name)}</div><div class="cal-track">${bars}<div class="cal-today" style="left:${todayPct}%;"></div></div></div>`;
+    }).join('');
+    el.innerHTML = `
+      <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Rental calendar</h3>
+      <div class="renter-line" style="margin-bottom:12px;">Rolling 12 months from this month. <span style="color:#5b7fa6;font-weight:700;">Blue</span> = scheduled, <span style="color:#5c7a34;font-weight:700;">green</span> = active. The red line is today.</div>
+      <div class="cal">
+        <div class="cal-row cal-headrow"><div class="cal-name"></div><div class="cal-track cal-head">${headCells}<div class="cal-today" style="left:${todayPct}%;"></div></div></div>
+        ${rowsHtml}
+      </div>`;
   }
 
   async function setChamberStatus(id, status) {
@@ -835,6 +895,7 @@
       </tr>`;
     }).join('');
     list.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Chamber</th><th>Renter</th><th>Dates</th><th>Rate</th><th>Status</th><th>Payment</th><th>Waiver</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    if (typeof renderCalendar === 'function') renderCalendar();
   }
 
   function editRental(id) {
