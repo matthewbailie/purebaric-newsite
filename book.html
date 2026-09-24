@@ -250,7 +250,7 @@ document.getElementById('zip').addEventListener('input',checkZip);
 
 /* analytics: plan choice, service-area result, form start (no PII) */
 document.getElementById('zip').addEventListener('change',function(){var z=this.value.trim();if(!/^\d{5}$/.test(z))return;window.trackPurebaricEvent?.('service_area_check',{result:servedZip(z)?'eligible':'unsupported',rental_months:+document.getElementById('mo').value});});
-document.getElementById('mo').addEventListener('change',function(){var mm=+this.value,rr=rate(mm);window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:'soft_shell_1_5_ata',rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD'});});
+document.getElementById('mo').addEventListener('change',function(){var mm=+this.value,rr=rate(mm);window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD'});});
 var bookingFormStarted=false;
 document.getElementById('resForm').addEventListener('focusin',function(){if(bookingFormStarted)return;bookingFormStarted=true;window.trackPurebaricEvent?.('booking_form_start',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:+document.getElementById('mo').value||1,source:'book_page'});});
 
@@ -268,6 +268,22 @@ document.getElementById('resForm').addEventListener('focusin',function(){if(book
 
 /* live pricing so the calculator matches the admin-managed rates */
 fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){if(j&&j.months){PB_PRICING=j.months;BASE=rate(1);recalc();}}).catch(function(){});
+
+/* live availability: offer chamber styles and flag any that can't be fulfilled
+   right now. Submitting stays a request, so unavailable styles remain selectable
+   (they route to the waitlist server-side); we just surface the status. Falls
+   back to the default option if the endpoint is unavailable. */
+fetch('/api/availability').then(function(r){return r.json();}).then(function(j){
+  if(!j||!Array.isArray(j.byType)||!j.byType.length)return;
+  var sel=document.getElementById('ch');
+  sel.innerHTML=j.byType.map(function(t){
+    var label=t.label||(t.ata+' ATA '+t.posture);
+    var out=(t.available|0)<=0;
+    return '<option value="'+label+'"'+(out?' data-out="1"':'')+'>'+label+(out?' — currently unavailable':'')+'</option>';
+  }).join('');
+  var firstAvail=j.byType.filter(function(t){return (t.available|0)>0;})[0];
+  if(firstAvail)sel.value=firstAvail.label||(firstAvail.ata+' ATA '+firstAvail.posture);
+}).catch(function(){});
 
 var _submitting=false; // idempotency guard: blocks double-clicks / re-entry for one submission
 document.getElementById('resForm').addEventListener('submit',async function(e){

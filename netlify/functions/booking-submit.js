@@ -89,6 +89,7 @@ exports.handler = async (event) => {
       state: (body.state || "").trim(),
       startDate: (body["start-date"] || body.preferred_date || "").trim(),
       rentalLength: (body["rental-length"] || body.rental_duration || "").trim(),
+      requestedType: (body.chamber_id || body.chamber_type || "").trim(),
       reason: (body.reason || body.notes || "").trim(),
       priorExperience: (body["prior-experience"] || "").trim(),
       medicalScreeningFlags: (body["medical-screening-flags"] || "none").trim(),

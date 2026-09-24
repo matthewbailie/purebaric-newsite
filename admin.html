@@ -245,6 +245,12 @@
             <div class="form-group"><label>Name<span class="req">*</span></label><input name="name" required placeholder="e.g. Chamber 1"></div>
             <div class="form-group"><label>Model</label><input name="model" placeholder="Purebaric 1.5 ATA"></div>
           </div>
+          <div class="form-row">
+            <div class="form-group"><label>ATA rating</label>
+              <select name="ata"><option value="1.3">1.3 ATA</option><option value="1.5" selected>1.5 ATA</option><option value="2">2.0 ATA</option></select></div>
+            <div class="form-group"><label>Posture</label>
+              <select name="posture"><option value="lying" selected>Lying</option><option value="sitting">Sitting</option></select></div>
+          </div>
           <div class="form-group"><label>Notes</label><textarea name="notes" rows="2"></textarea></div>
           <div class="form-buttons">
             <button type="submit" class="btn btn-primary btn-sm">Save</button>
@@ -253,8 +259,24 @@
         </form>
       </div>
 
+      <div class="form-card" id="machineSetsPanel" style="display:block;margin-bottom:16px;">
+        <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Machine sets &amp; availability</h3>
+        <div class="renter-line" style="margin-bottom:12px;">A machine set (oxygen enricher + pressurizer + AC) is required to run a chamber. Enter how many you own per ATA rating. A chamber style is only offerable when a matching chamber <em>and</em> a matching machine set are both free. Leave a rating blank to leave it unconstrained.</div>
+        <div id="availabilityByType" style="margin-bottom:14px;"></div>
+        <div id="machineSetsEditor"></div>
+      </div>
+
       <div id="chambersList"></div>
       <style>
+        #availabilityByType{display:flex;flex-wrap:wrap;gap:8px;}
+        .avail-chip{border:1px solid var(--line,#e6dccd);border-radius:10px;padding:8px 12px;background:var(--card,#fffdf9);font-size:12px;min-width:120px;}
+        .avail-chip .at-label{font-weight:700;font-size:13px;}
+        .avail-chip .at-num{font-weight:700;}
+        .avail-chip.at-out{border-color:#c9a24a;background:#fdf7e8;}
+        .avail-chip.at-zero{border-color:#c47b6e;background:#fbeeeb;}
+        .ms-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+        .ms-row select,.ms-row input{padding:6px 8px;border:1px solid var(--line,#e6dccd);border-radius:8px;font-size:13px;}
+        .ms-row input{width:90px;}
         .cal{border:1px solid var(--line,#e6dccd);border-radius:12px;overflow:hidden;background:var(--card,#fffdf9);}
         .cal-row{display:flex;align-items:stretch;border-top:1px solid var(--line,#e6dccd);min-height:42px;}
         .cal-row.cal-headrow{border-top:none;background:#faf6ef;}
@@ -591,7 +613,7 @@
     // Load each section independently: one failing call must not blank the rest,
     // and we still paint whatever succeeded.
     const results = await Promise.allSettled([
-      loadChambers(), loadRentals(), loadWaitlist(), loadBookings(), loadReviews(), loadPricing()
+      loadChambers(), loadRentals(), loadWaitlist(), loadBookings(), loadReviews(), loadPricing(), loadMachineSets()
     ]);
     paintStats();
     const failures = results.filter(r => r.status === 'rejected').map(r => r.reason || {});
@@ -680,6 +702,80 @@
     renderChambers();
     populateChamberSelect();
   }
+
+  // ───────── Machine sets & per-type availability ─────────
+  let _machineSets = [];
+  const ATA_OPTIONS = ['1.3', '1.5', '2'];
+  function ataLabel(a) { return (Number(a) === 2 ? '2.0' : String(a)) + ' ATA'; }
+
+  async function loadMachineSets() {
+    const data = await api('/api/admin/machinesets');
+    _machineSets = data.sets || [];
+    renderAvailability(data.byType || []);
+    renderMachineSetsEditor();
+  }
+
+  function renderAvailability(byType) {
+    const el = document.getElementById('availabilityByType');
+    if (!el) return;
+    if (!byType.length) {
+      el.innerHTML = '<span class="renter-line">Add chambers to see availability by type.</span>';
+      return;
+    }
+    el.innerHTML = byType.map(t => {
+      const constrained = t.setsConfigured;
+      const cls = t.available === 0 ? 'at-zero' : (constrained && t.available < t.freeChambers ? 'at-out' : '');
+      const sets = constrained ? `${t.freeSets} set${t.freeSets === 1 ? '' : 's'} free` : 'sets: n/a';
+      return `<div class="avail-chip ${cls}">
+        <div class="at-label">${escape(ataLabel(t.ata))} · ${escape(t.posture)}</div>
+        <div><span class="at-num">${t.available}</span> offerable now</div>
+        <div class="renter-line">${t.freeChambers}/${t.totalChambers} chambers free · ${escape(sets)}</div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderMachineSetsEditor() {
+    const el = document.getElementById('machineSetsEditor');
+    if (!el) return;
+    const rows = (_machineSets.length ? _machineSets : [{ ata: '1.5', count: '' }]).map((s, i) => `
+      <div class="ms-row" data-i="${i}">
+        <select class="ms-ata">${ATA_OPTIONS.map(a => `<option value="${a}" ${Number(a) === Number(s.ata) ? 'selected' : ''}>${ataLabel(a)}</option>`).join('')}</select>
+        <input class="ms-count" type="number" min="0" step="1" value="${s.count === '' ? '' : Number(s.count)}" placeholder="count">
+        <button type="button" class="btn btn-ghost btn-sm" onclick="removeMachineSetRow(${i})">Remove</button>
+      </div>`).join('');
+    el.innerHTML = `${rows}
+      <div style="margin-top:6px;">
+        <button type="button" class="btn btn-ghost btn-sm" onclick="addMachineSetRow()">+ Add rating</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="saveMachineSets()">Save machine sets</button>
+      </div>`;
+  }
+
+  function readMachineSetRows() {
+    return [...document.querySelectorAll('#machineSetsEditor .ms-row')].map(row => ({
+      ata: row.querySelector('.ms-ata').value,
+      count: row.querySelector('.ms-count').value,
+    }));
+  }
+  function addMachineSetRow() { _machineSets = readMachineSetRows().concat({ ata: '2', count: '' }); renderMachineSetsEditor(); }
+  function removeMachineSetRow(i) { _machineSets = readMachineSetRows().filter((_, idx) => idx !== i); renderMachineSetsEditor(); }
+
+  async function saveMachineSets() {
+    // Merge duplicate ratings and drop blank counts (blank = unconstrained).
+    const merged = {};
+    for (const r of readMachineSetRows()) {
+      if (r.count === '' || r.count == null) continue;
+      const ata = Number(r.ata); const count = Math.max(0, Math.floor(Number(r.count) || 0));
+      if (!Number.isFinite(ata) || ata <= 0) continue;
+      merged[ata] = (merged[ata] || 0) + count;
+    }
+    const sets = Object.entries(merged).map(([ata, count]) => ({ ata: Number(ata), count }));
+    try {
+      await api('/api/admin/machinesets', { method: 'PUT', body: JSON.stringify({ sets }) });
+      toast('Machine sets saved');
+      await loadMachineSets();
+      paintStats();
+    } catch (err) { toast(err.message, true); }
+  }
   // Format a YYYY-MM-DD date as local (avoids the new Date('YYYY-MM-DD') UTC
   // parse that shifts the displayed day back by one in western timezones).
   function fmtDate(iso) {
@@ -743,7 +839,7 @@
       }
       return `
       <tr>
-        <td><strong>${escape(c.name)}</strong><div class="renter-line">${escape(c.model || '')}</div></td>
+        <td><strong>${escape(c.name)}</strong><div class="renter-line">${escape(String(c.ata))} ATA · ${escape(c.posture || 'lying')}${c.model ? ' · ' + escape(c.model) : ''}</div></td>
         <td><span class="pill pill-${opState}">${opLabel}</span></td>
         <td>${availability}</td>
         <td>${escape(c.notes || '')}</td>
@@ -814,7 +910,7 @@
   function editChamber(id) {
     const c = _chambers.find(x => x.id === id);
     if (!c) return;
-    toggleForm('chamberForm', { id: c.id, name: c.name, model: c.model, notes: c.notes });
+    toggleForm('chamberForm', { id: c.id, name: c.name, model: c.model, ata: String(c.ata), posture: c.posture || 'lying', notes: c.notes });
   }
 
   async function submitChamber(e) {
@@ -924,8 +1020,8 @@
     if (user) headers.Authorization = `Bearer ${await getAuthToken(user)}`;
     const resp = await fetch(path, { method, headers, body: JSON.stringify(payload) });
     const json = resp.headers.get('content-type')?.includes('json') ? await resp.json() : {};
-    if (resp.status === 409 && json.error === 'rental_conflict') {
-      if (confirm(`${json.message || 'Rental conflict detected'}\n\nOverride and save anyway?`)) {
+    if (resp.status === 409 && (json.error === 'rental_conflict' || json.error === 'machineset_conflict')) {
+      if (confirm(`${json.message || 'Scheduling conflict detected'}\n\nOverride and save anyway?`)) {
         return postRentalWithConflictHandling(path, method, { ...payload, overrideConflict: true });
       }
       throw new Error('cancelled');
@@ -1311,7 +1407,7 @@
           ${outOfAreaBadge}
           ${routingBadge}
         </td>
-        <td>${escape(b.startDate || ', ')} · ${escape(b.rentalLength || ', ')}<div class="renter-line">${escape((b.reason || '').slice(0, 120))}</div>${flags}</td>
+        <td>${escape(b.startDate || ', ')} · ${escape(b.rentalLength || ', ')}${/ata/i.test(b.requestedType || '') ? `<div class="renter-line">Style: ${escape(b.requestedType)}</div>` : ''}<div class="renter-line">${escape((b.reason || '').slice(0, 120))}</div>${flags}</td>
         <td><select class="booking-status-sel" data-id="${b.id}" style="padding: 0.3rem 0.5rem; font-size: 0.85rem;">${statusOptions}</select></td>
         <td>
           <div class="row-actions">
