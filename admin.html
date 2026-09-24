@@ -369,6 +369,15 @@
             <div class="form-group"><label>Payment date</label><input type="date" name="paymentDate"></div>
           </div>
           <div class="form-group"><label>Payment method</label><input name="paymentMethod" placeholder="Stripe, check, cash, Venmo, etc."></div>
+          <div class="form-group" id="stripeLinkRow" style="display:none;">
+            <label>Stripe payment link</label>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <button type="button" class="btn btn-ghost btn-sm" onclick="createStripeLink()">Create / refresh link</button>
+              <a id="stripeLinkUrl" href="#" target="_blank" rel="noopener" style="display:none;font-size:13px;word-break:break-all;"></a>
+              <button type="button" id="stripeLinkCopy" class="btn btn-ghost btn-sm" style="display:none;" onclick="copyStripeLink()">Copy</button>
+            </div>
+            <div class="renter-line" id="stripeLinkNote">Uses the Monthly rate above as the amount. When the customer pays, this rental is auto-marked paid — no manual matching.</div>
+          </div>
           <div class="form-group"><label>Internal notes</label><textarea name="notes" rows="2" placeholder="Anything to remember about this rental, extensions, complaints, special handling…"></textarea></div>
           <div class="form-buttons">
             <button type="submit" class="btn btn-primary btn-sm">Save</button>
@@ -647,6 +656,7 @@
         title.textContent = title.textContent.replace(/^New /, 'Edit ');
       }
     }
+    if (id === 'rentalForm' && typeof syncStripeRow === 'function') syncStripeRow();
   }
 
   // ───────── State + render ─────────
@@ -1139,6 +1149,48 @@
       notes: r.notes,
     });
     updateRentalRate(); // reflect the length-based rate from the dates
+  }
+
+  // ───────── Stripe payment link (per rental) ─────────
+  // Show the link controls only when editing a saved rental; surface any existing link.
+  function syncStripeRow() {
+    const row = document.getElementById('stripeLinkRow');
+    if (!row) return;
+    const form = document.getElementById('rentalFormEl');
+    const id = form.querySelector('input[name="id"]').value;
+    if (!id) { row.style.display = 'none'; return; }
+    row.style.display = 'block';
+    const rental = _rentals.find(x => x.id === id);
+    showStripeLink(rental && rental.stripePaymentUrl);
+  }
+  function showStripeLink(url) {
+    const a = document.getElementById('stripeLinkUrl');
+    const copyBtn = document.getElementById('stripeLinkCopy');
+    if (url) {
+      a.href = url; a.textContent = url; a.style.display = 'inline';
+      copyBtn.style.display = 'inline-block';
+    } else {
+      a.style.display = 'none'; copyBtn.style.display = 'none';
+    }
+  }
+  async function createStripeLink() {
+    const form = document.getElementById('rentalFormEl');
+    const id = form.querySelector('input[name="id"]').value;
+    if (!id) { toast('Save the rental first, then create a link.', true); return; }
+    const amount = Number(form.querySelector('[name="monthlyRate"]').value) || 0;
+    if (amount <= 0) { toast('Set the Monthly rate (amount) first.', true); return; }
+    try {
+      const res = await api('/api/admin/stripe-link', { method: 'POST', body: JSON.stringify({ rentalId: id, amount }) });
+      showStripeLink(res.url);
+      toast('Payment link created');
+      await loadRentals();
+    } catch (err) {
+      toast(err.message === 'stripe_not_configured' ? 'Stripe isn\'t configured yet (add keys in Netlify).' : err.message, true);
+    }
+  }
+  function copyStripeLink() {
+    const url = document.getElementById('stripeLinkUrl').href;
+    if (url) navigator.clipboard?.writeText(url).then(() => toast('Link copied')).catch(() => {});
   }
 
   // Custom fetch wrapper that surfaces 409 conflict details for rental save

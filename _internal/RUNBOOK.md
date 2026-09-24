@@ -105,6 +105,8 @@ Values live only in Netlify. Env-var changes require a redeploy to take effect f
 | `NETLIFY_SITE_ID` | **Yes** | The site ID above, used for Blobs. (`SITE_ID` accepted as a fallback name.) |
 | `ADMIN_SMS_GATEWAY` | Optional | Turns on the SMS lead alert. Value = `<10-digit-cell>@<carrier-gateway>` (see §7). If unset, no texts send — everything else is unaffected. |
 | `GA4_API_SECRET` | Optional | Turns on server-side GA4 conversions (`booking_request_submit`, `rental_confirmed`). Measurement Protocol secret from GA4 → Admin → Data Streams → the web stream → Measurement Protocol API secrets. If unset, those conversions are not sent — the site is otherwise unaffected. |
+| `STRIPE_SECRET_KEY` | Optional | Turns on Stripe payment links. Stripe → Developers → API keys → Secret key (`sk_test_…` to trial, `sk_live_…` for real charges). If unset, the "Create link" button reports Stripe isn't configured. |
+| `STRIPE_WEBHOOK_SECRET` | Optional | Verifies the payment webhook so paid rentals auto-reconcile. Stripe → Developers → Webhooks → add endpoint `https://purebaric.com/api/stripe-webhook` (events: `payment_intent.succeeded`, `checkout.session.completed`) → copy the Signing secret (`whsec_…`). Required for auto-reconciliation. |
 
 ---
 
