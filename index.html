@@ -8,6 +8,7 @@
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Purebaric Team">
 <link rel="canonical" href="https://purebaric.com/">
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
 <link rel="icon" href="/images/favicon.ico">
 <link rel="apple-touch-icon" href="/images/logo.png">
 
@@ -298,7 +299,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
         <div class="chambers">
           <div class="chamber">
             <img src="/images/chamber-side.jpg" width="1800" height="1013" loading="lazy" alt="Soft-shell 1.5 ATA chamber">
-            <div class="b"><b>1.5 ATA Lying Chamber</b><div class="price">from <span id="fromPrice">$529</span><small> /mo · 12-month rate</small></div>
+            <div class="b"><b>1.5 ATA Lying Chamber</b><div class="price"><span id="fromPrice">$729</span><small> /mo · rent longer, save more</small></div>
               <ul><li>1.5 ATA operating pressure</li><li>95 to 99.9% O₂ concentrator + mask</li><li>Fits most bedrooms</li></ul>
               <a class="btn btn-primary" href="/book">Reserve</a></div>
           </div>
@@ -559,7 +560,7 @@ window.addEventListener('load',function(){recalc('');recalc('2');});
 function applyStaticPrices(){
   var a12=rate(12),annual=a12*12,sess=Math.round(annual/365),el;
   ['strike','strike2'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='$'+rate(1);});
-  if(el=document.getElementById('fromPrice'))el.textContent='$'+a12;
+  if(el=document.getElementById('fromPrice'))el.textContent='$'+rate(1);
   if(el=document.getElementById('cmpSession'))el.textContent=sess;
   if(el=document.getElementById('cmpAnnual'))el.textContent=annual.toLocaleString();
   if(el=document.querySelector('.mb-price'))el.innerHTML='$'+rate(+document.getElementById('mo').value||3)+'<small> /mo</small>';
