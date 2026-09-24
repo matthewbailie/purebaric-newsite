@@ -200,11 +200,14 @@ When someone submits `/book` (or `/api/booking-submit`):
 - **Contact** (`contact-submit.js`): emails the admin (subject includes the topic). Contact messages are **emailed, not stored** in Blobs.
 - **Scheduled** (`expire-holds.js`): runs hourly (`netlify.toml` cron `0 * * * *`) to release expired holds / advance rental states by date.
 
-### 7c. SMS notifications (free carrier email-to-text) — admin-managed (2026-09-23)
+### 7c. Notifications — email + SMS recipients, admin-managed (2026-09-23)
 
-Free text alerts to the owner, sent by **emailing the recipient's carrier SMS gateway through Resend** (`<10-digit-number>@<carrier-gateway>`). No Twilio, no per-message cost. Fully configured in the portal — **no env var required** to turn it on.
+All owner-facing alerts are configured in the admin **Notifications** tab. You can register **one or more email addresses** and **one or more phone numbers**, and choose, per recipient, which **events** it receives. Everything about who-gets-what lives on this one tab — **no env var required**.
 
-**How it's configured:** admin **Notifications** tab → add one or more phone numbers. Each recipient has a label (optional), a **mobile number**, a **carrier**, and a set of **events** it subscribes to. Multiple numbers are supported, and different numbers can get different events (e.g. one number for reservations, another for reviews).
+- **Email** is sent via Resend. If no email recipient is configured for an event, it falls back to the default admin address `matthewbailie@gmail.com` (`ADMIN_NOTIFY` in `email.js`) so alerts never silently stop.
+- **SMS** is sent free by emailing the recipient's carrier SMS gateway through Resend (`<10-digit-number>@<carrier-gateway>`). No Twilio, no per-message cost. Inert until a number is added.
+
+**How it's configured:** Notifications tab → **Email notifications** (label + email + events) and **Text (SMS) notifications** (label + mobile number + carrier + events) sections, each with add/remove. Multiple recipients of either kind are supported, and different recipients can get different events (e.g. reviews to one address, reservations to another).
 
 **Events a recipient can subscribe to:**
 | Event key | Fires when | Sent from |
@@ -214,11 +217,12 @@ Free text alerts to the owner, sent by **emailing the recipient's carrier SMS ga
 | `review` | A visitor submits a **review** | `reviews-submit.js` |
 
 **Where it lives (for a future maintainer):**
-- **Config store:** `settings` Blobs store, key `notifications` = `{ recipients: [{ id, label, number, carrier, events: [...] }] }`. Empty by default (no texts until the owner adds a number).
-- **Pure routing + carrier map:** `netlify/functions/_lib/notifications.js` (`CARRIER_GATEWAYS`, `EVENTS`, `normalizeNumber`, `gatewayAddress`, `recipientsForEvent`). Unit tests in `test/notifications.test.js`.
+- **Config store:** `settings` Blobs store, key `notifications` = `{ emails: [{ id, label, email, events }], sms: [{ id, label, number, carrier, events }] }`. Empty by default. (The legacy shape `{ recipients: [...] }` is still read as `sms`.)
+- **Pure routing + carrier map:** `netlify/functions/_lib/notifications.js` (`CARRIER_GATEWAYS`, `EVENTS`, `normalizeNumber`, `normalizeEmail`, `gatewayAddress`, `emailsForEvent`, `smsForEvent`; `recipientsForEvent` is a back-compat alias of `smsForEvent`). Unit tests in `test/notifications.test.js`.
 - **Storage helpers:** `getNotifications` / `setNotifications` in `_lib/storage.js` (normalize + persist).
-- **Admin API:** `GET/PUT /api/admin/notifications` (`admin-notifications.js`, auth). GET also returns the carrier + event lists for the UI.
-- **Send:** `notifyAdminSms(booking, { outOfArea, to })` and `notifyAdminReviewSms(review, to)` in `_lib/email.js`. Callers resolve `to` with `recipientsForEvent(config, eventKey)` and pass the resolved gateway addresses. All sends are wrapped in try/catch — an SMS failure never blocks the submission.
+- **Admin API:** `GET/PUT /api/admin/notifications` (`admin-notifications.js`, auth). GET also returns the carrier + event lists for the UI. PUT body: `{ emails, sms }`.
+- **Email send:** `notifyAdminBooking(b, routing, to)` / `notifyAdminOutOfArea(b, to)` / `notifyAdminReview(review, to)` in `_lib/email.js`. Callers pass `emailsForEvent(config, eventKey)`; each falls back to `ADMIN_NOTIFY` when the list is empty (`adminTo()` helper).
+- **SMS send:** `notifyAdminSms(booking, { outOfArea, to })` and `notifyAdminReviewSms(review, to)` in `_lib/email.js`. Callers pass `smsForEvent(config, eventKey)` (resolved gateway addresses). All sends are wrapped in try/catch — a notification failure never blocks the submission.
 - **Legacy fallback:** if the old `ADMIN_SMS_GATEWAY` env var is set, that address is **also** texted on reservation alerts (belt-and-suspenders; not needed once portal recipients exist).
 
 **Carrier gateways** (the dropdown maps a carrier to the domain appended to the number):

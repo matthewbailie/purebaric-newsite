@@ -8,7 +8,7 @@ const {
   getNotifications,
 } = require("./_lib/storage");
 const { zipServed } = require("./_lib/servicearea");
-const { recipientsForEvent } = require("./_lib/notifications");
+const { smsForEvent, emailsForEvent } = require("./_lib/notifications");
 const {
   notifyAdminBooking,
   notifyCustomerChamberAvailable,
@@ -103,13 +103,13 @@ exports.handler = async (event) => {
     if (outOfArea) {
       let adminEmail = null;
       try {
-        await notifyAdminOutOfArea(booking);
+        await notifyAdminOutOfArea(booking, emailsForEvent(notifCfg, "reservation_out"));
         adminEmail = "sent";
       } catch (err) {
         console.error("admin out-of-area notify failed", err);
         adminEmail = `failed: ${err.message}`;
       }
-      try { await notifyAdminSms(booking, { outOfArea: true, to: recipientsForEvent(notifCfg, "reservation_out") }); } catch (err) { console.error("admin sms failed", err); }
+      try { await notifyAdminSms(booking, { outOfArea: true, to: smsForEvent(notifCfg, "reservation_out") }); } catch (err) { console.error("admin sms failed", err); }
       return {
         statusCode: 200,
         headers: { "Content-Type": "application/json" },
@@ -194,13 +194,13 @@ exports.handler = async (event) => {
 
     // Admin notification, runs regardless of routing outcome
     try {
-      await notifyAdminBooking(booking, routing);
+      await notifyAdminBooking(booking, routing, emailsForEvent(notifCfg, "reservation_in"));
       emailResults.admin = "sent";
     } catch (err) {
       console.error("admin notify failed", err);
       emailResults.admin = `failed: ${err.message}`;
     }
-    try { await notifyAdminSms(booking, { to: recipientsForEvent(notifCfg, "reservation_in") }); } catch (err) { console.error("admin sms failed", err); }
+    try { await notifyAdminSms(booking, { to: smsForEvent(notifCfg, "reservation_in") }); } catch (err) { console.error("admin sms failed", err); }
 
     // Send the accepted reservation event from the backend so a successful API
     // response and the analytics event cannot drift apart or double-count.

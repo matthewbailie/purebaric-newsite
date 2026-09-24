@@ -1,6 +1,6 @@
 const { createReview, getNotifications } = require("./_lib/storage");
 const { notifyAdminReview, notifyAdminReviewSms } = require("./_lib/email");
-const { recipientsForEvent } = require("./_lib/notifications");
+const { smsForEvent, emailsForEvent } = require("./_lib/notifications");
 
 function parseBody(event) {
   if (!event.body) return {};
@@ -46,19 +46,19 @@ exports.handler = async (event) => {
 
     const review = await createReview({ firstName, lastInitial, city, text });
 
-    // Await the admin notification, Lambda freezes pending I/O on return.
+    // Await the admin notifications, Lambda freezes pending I/O on return.
     // Errors are caught so a mail hiccup never fails the visitor's submission.
+    const notifCfg = await getNotifications();
     let adminEmail = null;
     try {
-      await notifyAdminReview(review);
+      await notifyAdminReview(review, emailsForEvent(notifCfg, "review"));
       adminEmail = "sent";
     } catch (err) {
       console.error("admin review notify failed", err);
       adminEmail = `failed: ${err.message}`;
     }
     try {
-      const notifCfg = await getNotifications();
-      await notifyAdminReviewSms(review, recipientsForEvent(notifCfg, "review"));
+      await notifyAdminReviewSms(review, smsForEvent(notifCfg, "review"));
     } catch (err) {
       console.error("admin review sms failed", err);
     }

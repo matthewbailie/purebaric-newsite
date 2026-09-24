@@ -213,7 +213,14 @@ async function notifyCustomerPendingAvailability(booking) {
   });
 }
 
-async function notifyAdminBooking(b, routing = {}) {
+// Admin recipient list for a given event: the configured emails, or the default
+// admin address when none are configured (so alerts never silently stop).
+function adminTo(to) {
+  const list = (Array.isArray(to) ? to : to ? [to] : []).filter(Boolean);
+  return list.length ? list : [ADMIN_NOTIFY];
+}
+
+async function notifyAdminBooking(b, routing = {}, to) {
   const name = `${b.firstName || ""} ${b.lastName || ""}`.trim();
   const flags = b.medicalScreeningFlags && b.medicalScreeningFlags !== "none"
     ? `<strong style="color:#9a4f3a;">${escapeHtml(b.medicalScreeningFlags)}</strong>`
@@ -244,12 +251,12 @@ async function notifyAdminBooking(b, routing = {}) {
     <p style="margin:0 0 16px;"><strong style="color:#2b2320;">Safety screening flags:</strong> ${flags}</p>
     <p style="margin:0;"><a href="https://purebaric.com/admin.html" style="color:#b8654d;">View in admin →</a></p>
   `);
-  return send({ to: ADMIN_NOTIFY, subject: `Booking request: ${name}${subjectTag}`, html });
+  return send({ to: adminTo(to), subject: `Booking request: ${name}${subjectTag}`, html });
 }
 
 // Admin-facing: a request came in for a ZIP outside the delivery area.
 // The customer is NOT sent a confirmation; the admin decides whether to follow up.
-async function notifyAdminOutOfArea(b) {
+async function notifyAdminOutOfArea(b, to) {
   const name = `${b.firstName || ""} ${b.lastName || ""}`.trim() || "-";
   const address = [b.streetAddress, b.city, b.state, b.zip].filter(Boolean).join(", ") || "-";
   const html = wrap(`
@@ -264,7 +271,7 @@ async function notifyAdminOutOfArea(b) {
     Notes: ${escapeHtml(b.reason || "-").replace(/\n/g, "<br>")}</p>
     <p style="margin:0;"><a href="https://purebaric.com/admin.html" style="color:#b8654d;">View in admin →</a></p>
   `);
-  return send({ to: ADMIN_NOTIFY, subject: `Out-of-area request: ${name} (ZIP ${b.zip || "?"})`, html });
+  return send({ to: adminTo(to), subject: `Out-of-area request: ${name} (ZIP ${b.zip || "?"})`, html });
 }
 
 // Admin-facing SMS via carrier email-to-text gateways (free, reuses Resend).
@@ -300,7 +307,7 @@ async function notifyAdminReviewSms(review, to) {
 }
 
 // Admin-facing: a visitor submitted a review. It stays pending until published.
-async function notifyAdminReview(review) {
+async function notifyAdminReview(review, to) {
   const who = `${review.firstName || ""} ${review.lastInitial || ""}`.trim() || "Someone";
   const where = review.city ? ` from ${review.city}` : "";
   const html = wrap(`
@@ -309,7 +316,7 @@ async function notifyAdminReview(review) {
     <p style="margin:0 0 16px; padding:14px 16px; background:#f6efe4; border:1px solid #e6dccd; border-radius:8px; color:#2b2320;">${escapeHtml(review.text || "-").replace(/\n/g, "<br>")}</p>
     <p style="margin:0;">It won't appear on the site until you publish it. <a href="https://purebaric.com/admin.html" style="color:#b8654d;">Review in admin →</a></p>
   `);
-  return send({ to: ADMIN_NOTIFY, subject: `New review: ${who}`, html });
+  return send({ to: adminTo(to), subject: `New review: ${who}`, html });
 }
 
 module.exports = {

@@ -16,7 +16,7 @@ exports.handler = async (event, context) => {
     }
     if (method === "PUT" || method === "POST") {
       const body = parseBody(event);
-      const saved = await setNotifications({ recipients: body.recipients });
+      const saved = await setNotifications({ emails: body.emails, sms: body.sms || body.recipients });
       return json(200, saved);
     }
     return json(405, { error: "method_not_allowed" });
