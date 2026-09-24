@@ -6,6 +6,7 @@ const {
   listBookings,
   getServiceArea,
   getNotifications,
+  getTwilioConfig,
 } = require("./_lib/storage");
 const { zipServed } = require("./_lib/servicearea");
 const { smsForEvent, smsNumbersForEvent, emailsForEvent } = require("./_lib/notifications");
@@ -71,6 +72,7 @@ exports.handler = async (event) => {
     const area = await getServiceArea();
     const outOfArea = zip !== "" && !zipServed(zip, area);
     const notifCfg = await getNotifications();
+    const twilio = await getTwilioConfig();
 
     const analyticsConsent = typeof body.analytics_consent === "undefined"
       ? null
@@ -109,7 +111,7 @@ exports.handler = async (event) => {
         console.error("admin out-of-area notify failed", err);
         adminEmail = `failed: ${err.message}`;
       }
-      try { await notifyAdminSms(booking, { outOfArea: true, gateways: smsForEvent(notifCfg, "reservation_out"), numbers: smsNumbersForEvent(notifCfg, "reservation_out") }); } catch (err) { console.error("admin sms failed", err); }
+      try { await notifyAdminSms(booking, { outOfArea: true, gateways: smsForEvent(notifCfg, "reservation_out"), numbers: smsNumbersForEvent(notifCfg, "reservation_out"), twilio }); } catch (err) { console.error("admin sms failed", err); }
       return {
         statusCode: 200,
         headers: { "Content-Type": "application/json" },
@@ -200,7 +202,7 @@ exports.handler = async (event) => {
       console.error("admin notify failed", err);
       emailResults.admin = `failed: ${err.message}`;
     }
-    try { await notifyAdminSms(booking, { gateways: smsForEvent(notifCfg, "reservation_in"), numbers: smsNumbersForEvent(notifCfg, "reservation_in") }); } catch (err) { console.error("admin sms failed", err); }
+    try { await notifyAdminSms(booking, { gateways: smsForEvent(notifCfg, "reservation_in"), numbers: smsNumbersForEvent(notifCfg, "reservation_in"), twilio }); } catch (err) { console.error("admin sms failed", err); }
 
     // Send the accepted reservation event from the backend so a successful API
     // response and the analytics event cannot drift apart or double-count.

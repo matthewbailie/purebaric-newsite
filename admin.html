@@ -225,7 +225,7 @@
       <button class="tab-btn" data-tab="waitlist">Waitlist</button>
       <button class="tab-btn" data-tab="customers">Customers</button>
       <button class="tab-btn" data-tab="reviews">Reviews</button>
-      <button class="tab-btn" data-tab="pricing">Pricing</button>
+      <button class="tab-btn" data-tab="pricing">Pricing &amp; Payments</button>
       <button class="tab-btn" data-tab="servicearea">Service Area</button>
       <button class="tab-btn" data-tab="notifications">Notifications</button>
     </nav>
@@ -283,6 +283,15 @@
         </form>
       </div>
 
+      <div id="availabilityByStyle" style="margin-bottom:22px;"></div>
+
+      <h3 class="inv-heading">Chambers</h3>
+      <div id="chambersList"></div>
+
+      <div class="inv-head-row">
+        <h3 class="inv-heading" style="margin:0;">Machines</h3>
+        <button class="btn btn-primary btn-sm" onclick="toggleForm('machineForm')">+ Add machine</button>
+      </div>
       <div class="form-card" id="machineForm">
         <h3 id="machineFormTitle">New machine</h3>
         <form id="machineFormEl" onsubmit="return submitMachine(event)">
@@ -296,16 +305,6 @@
             <button type="button" class="btn btn-ghost btn-sm" onclick="toggleForm('machineForm')">Cancel</button>
           </div>
         </form>
-      </div>
-
-      <div id="availabilityByStyle" style="margin-bottom:22px;"></div>
-
-      <h3 class="inv-heading">Chambers</h3>
-      <div id="chambersList"></div>
-
-      <div class="inv-head-row">
-        <h3 class="inv-heading" style="margin:0;">Machines</h3>
-        <button class="btn btn-primary btn-sm" onclick="toggleForm('machineForm')">+ Add machine</button>
       </div>
       <div id="machinesList"></div>
       <style>
@@ -525,11 +524,26 @@
     <!-- ───── Pricing ───── -->
     <section class="tab-panel" data-panel="pricing">
       <div class="panel-actions">
-        <h2>Pricing</h2>
+        <h2>Pricing &amp; Payments</h2>
         <button class="btn btn-primary btn-sm" onclick="savePricing()">Save pricing</button>
       </div>
       <p class="renter-line" style="margin:0 0 16px;">Monthly rate for each rental length. Saving updates the website's pricing and calculators and the rate that auto-fills on new rentals.</p>
       <div id="pricingGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px 24px;max-width:720px;"></div>
+
+      <h3 class="inv-heading" style="margin-top:34px;">Payments (Stripe)</h3>
+      <p class="renter-line" style="margin:0 0 12px;max-width:760px;">Connect Stripe so a rental's payment link is generated in the portal and paid rentals auto-reconcile. Keys are stored securely and never shown again after saving. <strong>Setup:</strong> in your Stripe dashboard, copy the <em>Secret key</em> (Developers → API keys), and add a webhook endpoint at <code>https://purebaric.com/api/stripe-webhook</code> (events <code>payment_intent.succeeded</code>, <code>checkout.session.completed</code>) then copy its <em>Signing secret</em>.</p>
+      <div id="stripeStatus" class="renter-line" style="margin-bottom:12px;"></div>
+      <div class="keyform">
+        <div class="keyrow"><label>Secret key</label><input id="stripeSecret" type="password" autocomplete="off" placeholder="sk_live_… or sk_test_…"></div>
+        <div class="keyrow"><label>Webhook signing secret</label><input id="stripeWebhook" type="password" autocomplete="off" placeholder="whsec_…"></div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="saveStripeConfig()">Save Stripe keys</button>
+      </div>
+      <style>
+        .keyform{max-width:560px;}
+        .keyrow{margin-bottom:12px;}
+        .keyrow label{display:block;font-size:12px;font-weight:600;color:var(--stone-muted,#6f635b);margin-bottom:4px;}
+        .keyrow input{width:100%;padding:9px 11px;border:1px solid var(--line,#e6dccd);border-radius:8px;font-size:14px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;}
+      </style>
     </section>
 
     <section class="tab-panel" data-panel="servicearea">
@@ -581,7 +595,20 @@
       <h3 style="font-size:16px;font-weight:700;margin:24px 0 4px;">Text (SMS) notifications</h3>
       <div id="notifSmsList"></div>
       <button type="button" class="btn btn-ghost btn-sm" onclick="addNotifySms()" style="margin-top:4px;">+ Add phone number</button>
+
+      <h3 style="font-size:16px;font-weight:700;margin:30px 0 4px;">Text delivery (Twilio) — recommended for reliable texts</h3>
+      <p class="renter-line" style="margin:0 0 12px;max-width:780px;">Free carrier email-to-text is unreliable (often dropped by the carrier). Connect Twilio for texts that actually deliver. When these three are set, every text goes through Twilio instead. <strong>Setup:</strong> create a Twilio account, buy an SMS-capable phone number (~$1.15/mo), then from the Twilio console copy your Account SID and Auth Token. Keys are stored securely and the token is never shown again after saving.</p>
+      <div id="twilioStatus" class="renter-line" style="margin-bottom:12px;"></div>
+      <div class="keyform" style="max-width:560px;">
+        <div class="keyrow"><label>Account SID</label><input id="twSid" autocomplete="off" placeholder="AC…"></div>
+        <div class="keyrow"><label>Auth Token</label><input id="twToken" type="password" autocomplete="off" placeholder="your Twilio auth token"></div>
+        <div class="keyrow"><label>From number (your Twilio number, E.164)</label><input id="twFrom" autocomplete="off" placeholder="+18015550123"></div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="saveTwilioConfig()">Save Twilio keys</button>
+      </div>
       <style>
+        .keyform .keyrow{margin-bottom:12px;}
+        .keyform .keyrow label{display:block;font-size:12px;font-weight:600;color:var(--stone-muted,#6f635b);margin-bottom:4px;}
+        .keyform .keyrow input{width:100%;padding:9px 11px;border:1px solid var(--line,#e6dccd);border-radius:8px;font-size:14px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;}
         .nt-card{border:1px solid var(--line,#e6dccd);border-radius:10px;padding:12px 14px;margin-bottom:12px;background:var(--card,#fffdf9);max-width:780px;}
         .nt-top{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:10px;}
         .nt-top label{display:block;font-size:12px;font-weight:600;color:var(--stone-muted,#6f635b);margin-bottom:3px;}
@@ -754,7 +781,7 @@
     // Load each section independently: one failing call must not blank the rest,
     // and we still paint whatever succeeded.
     const results = await Promise.allSettled([
-      loadChambers(), loadRentals(), loadWaitlist(), loadBookings(), loadReviews(), loadPricing(), loadMachines(), loadServiceArea(), loadNotifications()
+      loadChambers(), loadRentals(), loadWaitlist(), loadBookings(), loadReviews(), loadPricing(), loadMachines(), loadServiceArea(), loadNotifications(), loadTwilioConfig(), loadStripeConfig()
     ]);
     paintStats();
     // Repaint inventory now that chambers, machines, and rentals are all loaded,
@@ -1964,6 +1991,41 @@
       toast('Service area saved');
       await loadServiceArea();
     } catch (err) { toast(err.message, true); }
+  }
+
+  // ───────── Integration keys: Twilio (SMS) + Stripe (payments) ─────────
+  async function loadTwilioConfig() {
+    var s = document.getElementById('twilioStatus'); if (!s) return;
+    try {
+      const c = await api('/api/admin/twilio');
+      document.getElementById('twSid').value = c.accountSid || '';
+      document.getElementById('twFrom').value = c.fromNumber || '';
+      document.getElementById('twToken').placeholder = c.hasToken ? '•••••••• saved — leave blank to keep' : 'your Twilio auth token';
+      s.innerHTML = c.source === 'stored' ? '<strong style="color:#3d5a26;">Twilio active</strong> — texts go through Twilio (portal keys).'
+        : c.source === 'env' ? '<strong style="color:#3d5a26;">Twilio active</strong> — texts go through Twilio (Netlify env).'
+        : 'Not connected — texts currently use free carrier email-to-text (unreliable).';
+    } catch (e) { s.textContent = ''; }
+  }
+  async function saveTwilioConfig() {
+    const body = { accountSid: document.getElementById('twSid').value.trim(), authToken: document.getElementById('twToken').value, fromNumber: document.getElementById('twFrom').value.trim() };
+    try { await api('/api/admin/twilio', { method:'PUT', body: JSON.stringify(body) }); toast('Twilio keys saved'); document.getElementById('twToken').value=''; await loadTwilioConfig(); }
+    catch (err) { toast(err.message, true); }
+  }
+  async function loadStripeConfig() {
+    var s = document.getElementById('stripeStatus'); if (!s) return;
+    try {
+      const c = await api('/api/admin/stripe-config');
+      document.getElementById('stripeSecret').placeholder = c.hasSecret ? '•••••••• saved — leave blank to keep' : 'sk_live_… or sk_test_…';
+      document.getElementById('stripeWebhook').placeholder = c.hasWebhook ? '•••••••• saved — leave blank to keep' : 'whsec_…';
+      s.innerHTML = c.hasSecret
+        ? '<strong style="color:#3d5a26;">Stripe connected</strong> — ' + (c.mode || 'unknown') + ' mode' + (c.hasWebhook ? ', webhook set' : ', <strong style="color:#9a4f3a;">webhook missing</strong>') + '.'
+        : 'Not connected — payment links are disabled until you add your secret key.';
+    } catch (e) { s.textContent = ''; }
+  }
+  async function saveStripeConfig() {
+    const body = { secretKey: document.getElementById('stripeSecret').value.trim(), webhookSecret: document.getElementById('stripeWebhook').value.trim() };
+    try { await api('/api/admin/stripe-config', { method:'PUT', body: JSON.stringify(body) }); toast('Stripe keys saved'); document.getElementById('stripeSecret').value=''; document.getElementById('stripeWebhook').value=''; await loadStripeConfig(); }
+    catch (err) { toast(err.message, true); }
   }
 
   // ───────── Notifications (email + free SMS via carrier email-to-text) ─────────

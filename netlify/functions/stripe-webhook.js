@@ -1,12 +1,13 @@
-const { getRental, updateRental } = require("./_lib/storage");
-const { stripeClient } = require("./_lib/stripe");
+const { getRental, updateRental, getStripeConfig } = require("./_lib/storage");
+const { stripeClientFrom } = require("./_lib/stripe");
 
 // POST /api/stripe-webhook — Stripe payment events. Verifies the signature with
-// STRIPE_WEBHOOK_SECRET, then auto-reconciles the rental identified by the
+// the webhook secret, then auto-reconciles the rental identified by the
 // rental_id metadata set when the payment link was created.
 exports.handler = async (event) => {
-  const stripe = stripeClient();
-  const secret = (process.env.STRIPE_WEBHOOK_SECRET || "").trim();
+  const cfg = await getStripeConfig();
+  const stripe = stripeClientFrom(cfg);
+  const secret = (cfg.webhookSecret || "").trim();
   if (!stripe || !secret) return { statusCode: 503, body: "stripe not configured" };
 
   const sig = event.headers["stripe-signature"] || event.headers["Stripe-Signature"];

@@ -1,7 +1,7 @@
-const { getNotifications } = require("./_lib/storage");
+const { getNotifications, getTwilioConfig } = require("./_lib/storage");
 const { gatewayAddress } = require("./_lib/notifications");
 const { send } = require("./_lib/email");
-const { smsEnabled, sendSms } = require("./_lib/sms");
+const { isComplete, sendSms } = require("./_lib/sms");
 const { requireAuth, json } = require("./_lib/admin");
 
 // POST /api/admin/notifications-test — sends a test email to each configured
@@ -39,13 +39,14 @@ exports.handler = async (event, context) => {
       results.push({ kind: "email", label: r.label || "", target: maskEmail(r.email), events: r.events, ok, error });
     }
 
-    const twilio = smsEnabled();
+    const twilioCfg = await getTwilioConfig();
+    const useTwilio = isComplete(twilioCfg);
     for (const r of cfg.sms) {
       let ok = false, error = null;
       const text = "Purebaric test text. If you got this, SMS alerts are working.";
-      if (twilio) {
+      if (useTwilio) {
         try {
-          const res = await sendSms(r.number, text);
+          const res = await sendSms(r.number, text, twilioCfg);
           if (res.sent) ok = true; else error = res.reason || "not sent";
         } catch (e) { error = e.message; }
       } else {
@@ -56,10 +57,10 @@ exports.handler = async (event, context) => {
           catch (e) { error = e.message; }
         }
       }
-      results.push({ kind: "sms", via: twilio ? "twilio" : "carrier email-to-text", label: r.label || "", target: maskNumber(r.number) + (twilio ? "" : " (" + r.carrier + ")"), events: r.events, ok, error });
+      results.push({ kind: "sms", via: useTwilio ? "twilio" : "carrier email-to-text", label: r.label || "", target: maskNumber(r.number) + (useTwilio ? "" : " (" + r.carrier + ")"), events: r.events, ok, error });
     }
 
-    return json(200, { results, emailCount: cfg.emails.length, smsCount: cfg.sms.length, smsMethod: twilio ? "twilio" : "carrier email-to-text" });
+    return json(200, { results, emailCount: cfg.emails.length, smsCount: cfg.sms.length, smsMethod: useTwilio ? "twilio" : "carrier email-to-text" });
   } catch (err) {
     console.error("admin-notifications-test error", err);
     return json(500, { error: err.message || "internal_error" });

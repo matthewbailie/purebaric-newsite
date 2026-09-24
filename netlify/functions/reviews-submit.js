@@ -1,4 +1,4 @@
-const { createReview, getNotifications } = require("./_lib/storage");
+const { createReview, getNotifications, getTwilioConfig } = require("./_lib/storage");
 const { notifyAdminReview, notifyAdminReviewSms } = require("./_lib/email");
 const { smsForEvent, smsNumbersForEvent, emailsForEvent } = require("./_lib/notifications");
 
@@ -63,7 +63,8 @@ exports.handler = async (event) => {
     let adminSms = numbers.length ? "attempted" : "no_recipients";
     try {
       if (numbers.length) {
-        const r = await notifyAdminReviewSms(review, { gateways, numbers });
+        const twilio = await getTwilioConfig();
+        const r = await notifyAdminReviewSms(review, { gateways, numbers, twilio });
         adminSms = `${r.via || "sent"}:${r.sent != null ? r.sent : numbers.length}${r.failed ? `(failed ${r.failed})` : ""}`;
       }
     } catch (err) {

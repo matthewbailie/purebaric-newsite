@@ -156,6 +156,16 @@
   status = 200
 
 [[redirects]]
+  from = "/api/admin/twilio"
+  to = "/.netlify/functions/admin-twilio"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/stripe-config"
+  to = "/.netlify/functions/admin-stripe-config"
+  status = 200
+
+[[redirects]]
   from = "/api/admin/stripe-link"
   to = "/.netlify/functions/admin-stripe-link"
   status = 200

@@ -3,6 +3,8 @@ const crypto = require("crypto");
 const inventory = require("./inventory");
 const serviceArea = require("./servicearea");
 const notifications = require("./notifications");
+const sms = require("./sms");
+const stripeLib = require("./stripe");
 
 const STORES = {
   chambers: "chambers",
@@ -357,6 +359,59 @@ async function setNotifications(config) {
   return clean;
 }
 
+// ───────── Integration keys (settings) — Twilio + Stripe ─────────
+// Secrets stored at settings/twilio and settings/stripe, editable in the admin.
+// Portal config wins when complete; otherwise env vars are used. Getters here
+// return the FULL config (secrets included) for internal use only — admin
+// endpoints must mask before returning to the browser.
+
+async function getTwilioConfig() {
+  const doc = (await getOne(STORES.settings, "twilio")) || {};
+  const stored = {
+    accountSid: (doc.accountSid || "").trim(),
+    authToken: (doc.authToken || "").trim(),
+    fromNumber: (doc.fromNumber || "").trim(),
+  };
+  if (sms.isComplete(stored)) return { ...stored, source: "stored" };
+  const env = sms.twilioConfigFromEnv();
+  if (env) return { ...env, source: "env" };
+  return { ...stored, source: sms.isComplete(stored) ? "stored" : "none" };
+}
+
+async function setTwilioConfig(cfg) {
+  const prev = (await getOne(STORES.settings, "twilio")) || {};
+  const clean = {
+    accountSid: (cfg.accountSid || "").trim(),
+    // Keep the existing token when the field is left blank (never re-typed).
+    authToken: (cfg.authToken || "").trim() || (prev.authToken || ""),
+    fromNumber: (cfg.fromNumber || "").trim(),
+  };
+  await store(STORES.settings).setJSON("twilio", { id: "twilio", ...clean, updatedAt: nowIso() });
+  return { ok: true };
+}
+
+async function getStripeConfig() {
+  const doc = (await getOne(STORES.settings, "stripe")) || {};
+  const stored = {
+    secretKey: (doc.secretKey || "").trim(),
+    webhookSecret: (doc.webhookSecret || "").trim(),
+  };
+  if (stored.secretKey) return { ...stored, source: "stored" };
+  const env = stripeLib.stripeSecretFromEnv();
+  if (env.secretKey) return { ...env, source: "env" };
+  return { ...stored, source: "none" };
+}
+
+async function setStripeConfig(cfg) {
+  const prev = (await getOne(STORES.settings, "stripe")) || {};
+  const clean = {
+    secretKey: (cfg.secretKey || "").trim() || (prev.secretKey || ""),
+    webhookSecret: (cfg.webhookSecret || "").trim() || (prev.webhookSecret || ""),
+  };
+  await store(STORES.settings).setJSON("stripe", { id: "stripe", ...clean, updatedAt: nowIso() });
+  return { ok: true };
+}
+
 // ───────── Availability ─────────
 
 async function inventoryInputs() {
@@ -678,6 +733,10 @@ module.exports = {
   setServiceArea,
   getNotifications,
   setNotifications,
+  getTwilioConfig,
+  setTwilioConfig,
+  getStripeConfig,
+  setStripeConfig,
   countAvailableToday,
   availabilityByType,
   unitPoolFull,

@@ -1,20 +1,21 @@
-// Stripe client helper. Returns null when STRIPE_SECRET_KEY is unset so the
-// feature stays inert (endpoints report "not configured") until the owner adds
-// keys in Netlify. The stripe package is required lazily for the same reason.
+// Stripe client helper. The config (secret key + webhook secret) is resolved by
+// storage.getStripeConfig() (portal settings first, else env vars) and passed
+// in. Returns null when no secret key is set so the feature stays inert. The
+// stripe package is required lazily so it's only loaded when actually used.
 
-let cached = null;
+function stripeSecretFromEnv() {
+  return {
+    secretKey: (process.env.STRIPE_SECRET_KEY || "").trim(),
+    webhookSecret: (process.env.STRIPE_WEBHOOK_SECRET || "").trim(),
+  };
+}
 
-function stripeClient() {
-  const key = (process.env.STRIPE_SECRET_KEY || "").trim();
+// cfg: { secretKey }. Returns a Stripe client or null.
+function stripeClientFrom(cfg) {
+  const key = ((cfg && cfg.secretKey) || "").trim();
   if (!key) return null;
-  if (cached) return cached;
   const Stripe = require("stripe");
-  cached = new Stripe(key, { apiVersion: "2024-06-20" });
-  return cached;
+  return new Stripe(key, { apiVersion: "2024-06-20" });
 }
 
-function isTestKey() {
-  return (process.env.STRIPE_SECRET_KEY || "").startsWith("sk_test_");
-}
-
-module.exports = { stripeClient, isTestKey };
+module.exports = { stripeSecretFromEnv, stripeClientFrom };

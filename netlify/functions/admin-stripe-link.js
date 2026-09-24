@@ -1,5 +1,5 @@
-const { getRental, updateRental } = require("./_lib/storage");
-const { stripeClient } = require("./_lib/stripe");
+const { getRental, updateRental, getStripeConfig } = require("./_lib/storage");
+const { stripeClientFrom } = require("./_lib/stripe");
 const { requireAuth, parseBody, json } = require("./_lib/admin");
 
 // POST /api/admin/stripe-link  body { rentalId, amount? (dollars) }
@@ -10,9 +10,9 @@ exports.handler = async (event, context) => {
   if (authErr) return authErr;
   if (event.httpMethod !== "POST") return json(405, { error: "method_not_allowed" });
 
-  const stripe = stripeClient();
+  const stripe = stripeClientFrom(await getStripeConfig());
   if (!stripe) {
-    return json(503, { error: "stripe_not_configured", message: "Set STRIPE_SECRET_KEY in Netlify to enable Stripe payments." });
+    return json(503, { error: "stripe_not_configured", message: "Add your Stripe secret key in admin → Pricing & Payments (or Netlify env)." });
   }
 
   try {

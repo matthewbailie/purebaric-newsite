@@ -1,5 +1,5 @@
 const { Resend } = require("resend");
-const { smsEnabled, sendSms } = require("./sms");
+const { isComplete, sendSms } = require("./sms");
 
 const FROM = "Purebaric <noreply@purebaric.com>";
 const REPLY_TO = "hello@purebaric.com";
@@ -279,11 +279,11 @@ async function notifyAdminOutOfArea(b, to) {
 // `numbers`; otherwise falls back to free carrier email-to-text via Resend, using
 // the `gateways` (+ the legacy ADMIN_SMS_GATEWAY env, if set). Keep it short —
 // SMS caps near 160 characters per segment. Returns a status object.
-async function deliverAdminSms({ numbers, gateways, text, subject }) {
-  if (smsEnabled()) {
+async function deliverAdminSms({ numbers, gateways, text, subject, twilio }) {
+  if (isComplete(twilio)) {
     const nums = [...new Set((numbers || []).filter(Boolean))];
     if (!nums.length) return { skipped: "no sms recipients" };
-    const results = await Promise.allSettled(nums.map((n) => sendSms(n, text)));
+    const results = await Promise.allSettled(nums.map((n) => sendSms(n, text, twilio)));
     const failed = results.filter((r) => r.status === "rejected" || (r.value && r.value.sent === false));
     if (failed.length) console.error("twilio sms failures", failed.map((f) => (f.reason && f.reason.message) || (f.value && f.value.reason)));
     return { via: "twilio", sent: nums.length - failed.length, failed: failed.length };
@@ -296,7 +296,7 @@ async function deliverAdminSms({ numbers, gateways, text, subject }) {
   return { via: "email-to-text", sent: recips.size };
 }
 
-async function notifyAdminSms(b, { outOfArea, gateways, numbers } = {}) {
+async function notifyAdminSms(b, { outOfArea, gateways, numbers, twilio } = {}) {
   const name = `${b.firstName || ""} ${b.lastName || ""}`.trim() || b.name || "New lead";
   const parts = [name];
   if (b.phone) parts.push(b.phone);
@@ -306,13 +306,13 @@ async function notifyAdminSms(b, { outOfArea, gateways, numbers } = {}) {
   const text = outOfArea
     ? `${detail}. Outside service area, no auto-email sent.`
     : `${detail}. Check email or the admin portal to follow up.`;
-  return deliverAdminSms({ numbers, gateways, text, subject: outOfArea ? "Purebaric out-of-area lead" : "New Purebaric lead" });
+  return deliverAdminSms({ numbers, gateways, text, subject: outOfArea ? "Purebaric out-of-area lead" : "New Purebaric lead", twilio });
 }
 
-async function notifyAdminReviewSms(review, { gateways, numbers } = {}) {
+async function notifyAdminReviewSms(review, { gateways, numbers, twilio } = {}) {
   const who = `${review.firstName || ""} ${review.lastInitial || ""}`.trim() || "Someone";
   const text = `New Purebaric review from ${who}. Approve it in the admin portal to publish.`;
-  return deliverAdminSms({ numbers, gateways, text, subject: "New Purebaric review" });
+  return deliverAdminSms({ numbers, gateways, text, subject: "New Purebaric review", twilio });
 }
 
 // Admin-facing: a visitor submitted a review. It stays pending until published.
