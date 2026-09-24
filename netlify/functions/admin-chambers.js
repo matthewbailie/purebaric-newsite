@@ -25,7 +25,7 @@ exports.handler = async (event, context) => {
       if (!body.name) return json(400, { error: "name required" });
       const chamber = await createChamber({
         name: body.name.trim(),
-        chamberTypeId: body.chamberTypeId || null,
+        style: body.style || "lying",
         notes: body.notes || "",
       });
       return json(201, { chamber });
@@ -35,7 +35,7 @@ exports.handler = async (event, context) => {
       const body = parseBody(event);
       const patch = {};
       if (typeof body.name === "string") patch.name = body.name.trim();
-      if (typeof body.chamberTypeId !== "undefined") patch.chamberTypeId = body.chamberTypeId || null;
+      if (typeof body.style !== "undefined") patch.style = body.style;
       if (typeof body.notes === "string") patch.notes = body.notes;
       if (["active", "maintenance", "archived"].includes(body.status)) {
         patch.status = body.status;

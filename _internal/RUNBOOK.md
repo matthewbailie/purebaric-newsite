@@ -329,21 +329,20 @@ Customer testimonials with a moderation gate. **No star ratings** by design — 
 
 ---
 
-## 10a. Machine types, chamber types & availability (inventory model, reworked 2026-09-25)
+## 10a. Chambers, machines & availability (inventory model, reworked 2026-09-24)
 
-Three concepts, all managed on the admin **Chambers** tab:
+Individual units, both managed on the admin **Chambers** tab. No "types" or pools.
 
-- **Machine type** — a named machine set (oxygen enricher + pressurizer + AC), freeform label + how many you own. `{ id, label, count }`; `count: null` = no limit. Stored at `settings/machineTypes`.
-- **Chamber type** — a named chamber style (e.g. "1.5 ATA lying"), freeform label + the **machine type it requires** (explicit pick). `{ id, label, machineTypeId }`. Stored at `settings/chamberTypes`.
-- **Chamber** — a physical named unit (PB-001…), assigned a `chamberTypeId`. Stays on the rental calendar and rental records.
+- **Chamber** — a named unit (PB-001…): `{ id, name, style: "lying"|"sitting", status: "active"|"maintenance"|"archived", notes }`. Store `chambers`.
+- **Machine** — a named unit (M-001…): `{ id, name, status: "active"|"maintenance"|"archived", notes }`. Store `machines`. A machine = oxygen enricher + pressurizer + AC. Any machine can run any chamber.
+- **Rental** — reserves **one chamber and one machine**: `chamberId` + `machineId`. The owner picks each by number on the rental form.
 
-A chamber type is **offerable** in a window when a chamber of that type is free **AND** a machine set of its required machine type is free. Machine sets are counted **per machine type and shared** by every chamber type that uses them, so the pool is never double-counted (this replaced the old per-ATA pool that double-counted across postures).
+**Live state is derived, not stored.** For a chamber or machine, `unitState()` returns: `archived`/`maintenance` (manual status wins), else `inuse` (a scheduled/active rental covers today), `scheduled` (an upcoming rental), or `available`. Both the Chambers list and Machines list show this, so a rental going scheduled→active flips both its chamber and machine on the tab. **Bookable today** = min(free active chambers, free active machines) — a rental needs both.
 
-- **Owner setup (admin → Chambers tab):** define **Machine types** (label + count), define **Chamber types** (label + required machine type), then **Add/Edit chamber** and pick its chamber type. "Availability right now" shows, per chamber type: offerable / chambers free / machine sets free (named).
-- **Reservations:** the rental form has a **Machine set** dropdown that defaults to the chamber type's required machine type and can be overridden. Rentals store `machineTypeId`. Admin create/edit is blocked with `machineset_conflict` (override-able) when that machine type's pool is full for the window.
-- **Migration / safe default:** when `machineTypes`/`chamberTypes` are unset, they are **derived deterministically** from existing chambers' legacy `ata`/`posture` (ids `mt_<ata>`, `ct_<ata>_<posture>`) and the legacy `settings/machineSets` pool — so nothing breaks before the owner edits them. A machine type with no count is unconstrained.
-- **Where it lives:** pure math + migration derivation in `netlify/functions/_lib/inventory.js` (tests in `test/inventory.test.js`); storage getters/setters + `machineTypeForChamber`/`machineTypePoolFull` in `_lib/storage.js`; admin CRUD at `/api/admin/machine-types` and `/api/admin/chamber-types`; per-chamber-type availability at `GET /api/availability` (`byType[]`, each `{ id, label, machineTypeLabel, totalChambers, freeChambers, freeSets, available }`).
-- **Booking page:** `book.html` populates the chamber dropdown from `/api/availability` `byType` (by `label`/`available`), flagging types that can't be fulfilled now (still selectable — they route to the waitlist). The chosen type label is saved on the booking (`requestedType`).
+- **Owner setup (admin → Chambers tab):** **+ Add chamber** (name + style) and **+ Add machine** (name). Each unit has row actions: Edit, To maintenance / Return to service, Archive. "Availability right now" shows per style: bookable now, chambers free, machines free (machines are shared across styles).
+- **Reservations:** the rental form has a **Chamber** dropdown and a **Machine** dropdown (both by number). Rentals store `chamberId` + `machineId`. Create/edit is blocked with `rental_conflict` (chamber double-book) or `machine_conflict` (machine double-book), both override-able.
+- **Where it lives:** pure math in `netlify/functions/_lib/inventory.js` (`unitState`, `computeAvailabilityByStyle`, `computeAvailableCount`, `unitPoolFull`; tests in `test/inventory.test.js`). Storage: chamber + machine CRUD in `_lib/storage.js`; `findRentalConflict({chamberId|machineId,...})` guards both. Endpoints: `/api/admin/chambers`, `/api/admin/machines`, `/api/admin/rentals` (with `machineId`). `GET /api/availability` returns `{ available, total, byType }` where `byType[]` is per style `{ style, label, totalChambers, freeChambers, totalMachines, freeMachines, available }`.
+- **Booking page:** `book.html` populates the chamber dropdown from `/api/availability` `byType` (by style `label` + `available`), flagging styles that can't be fulfilled now (still selectable — they route to the waitlist). The chosen style is saved on the booking (`requestedType`).
 
 ---
 

@@ -1,12 +1,5 @@
-const { listRentals, createRental, updateRental, findRentalConflict, machineTypeForChamber, machineTypePoolFull, store, STORES } = require("./_lib/storage");
+const { listRentals, createRental, updateRental, findRentalConflict, store, STORES } = require("./_lib/storage");
 const { requireAuth, parseBody, parsePathSegments, json } = require("./_lib/admin");
-
-// Which machine type (machine set) this rental draws from: an explicit pick,
-// else the machine type required by the assigned chamber's chamber type.
-async function resolveMachineTypeId(body, chamberId) {
-  if (body && body.machineTypeId) return body.machineTypeId;
-  return chamberId ? await machineTypeForChamber(chamberId) : null;
-}
 
 function buildRenter(body) {
   return {
@@ -57,47 +50,45 @@ exports.handler = async (event, context) => {
         return json(400, { error: "startDate must be <= endDate" });
       }
 
-      // Conflict detection, unless caller explicitly overrides
+      const machineId = body.machineId || null;
+
+      // Conflict detection (chamber double-book, then the specific machine),
+      // unless the caller explicitly overrides.
       if (!body.overrideConflict) {
-        const conflict = await findRentalConflict({
+        const chamberConflict = await findRentalConflict({
           chamberId: body.chamberId,
           startDate: body.startDate,
           endDate: body.endDate,
         });
-        if (conflict) {
+        if (chamberConflict) {
           return json(409, {
             error: "rental_conflict",
-            message: `Chamber already booked ${conflict.startDate} → ${conflict.endDate} by ${conflict.renter?.name || "another renter"}`,
-            conflict,
+            message: `Chamber already booked ${chamberConflict.startDate} → ${chamberConflict.endDate} by ${chamberConflict.renter?.name || "another renter"}`,
+            conflict: chamberConflict,
           });
         }
-      }
-
-      const machineTypeId = await resolveMachineTypeId(body, body.chamberId);
-
-      // Machine-set pool guard: a chamber is only rentable when a machine set of
-      // its type is also free for the window. Skipped when the type is
-      // unconstrained (no count) or when the caller overrides.
-      if (machineTypeId && !body.overrideConflict) {
-        const full = await machineTypePoolFull({
-          machineTypeId,
-          startDate: body.startDate,
-          endDate: body.endDate,
-        });
-        if (full) {
-          return json(409, {
-            error: "machineset_conflict",
-            message: `No machine set of the required type is free ${body.startDate} → ${body.endDate}. All sets in that pool are already assigned for this window.`,
+        if (machineId) {
+          const machineConflict = await findRentalConflict({
+            machineId,
+            startDate: body.startDate,
+            endDate: body.endDate,
           });
+          if (machineConflict) {
+            return json(409, {
+              error: "machine_conflict",
+              message: `That machine is already assigned ${machineConflict.startDate} → ${machineConflict.endDate} (${machineConflict.renter?.name || "another rental"}). Pick a different machine.`,
+              conflict: machineConflict,
+            });
+          }
         }
       }
 
       const rentalData = {
         chamberId: body.chamberId,
+        machineId,
         startDate: body.startDate,
         endDate: body.endDate,
         monthlyRate: Number(body.monthlyRate) || 0,
-        machineTypeId,
         renter: buildRenter(body),
         notes: body.notes || "",
       };
@@ -117,21 +108,14 @@ exports.handler = async (event, context) => {
       if (typeof body.monthlyRate !== "undefined") patch.monthlyRate = Number(body.monthlyRate) || 0;
       if (typeof body.notes === "string") patch.notes = body.notes;
       if (typeof body.chamberId === "string") patch.chamberId = body.chamberId;
+      if (typeof body.machineId !== "undefined") patch.machineId = body.machineId || null;
       if (body.renterName || body.renterEmail || body.renterPhone || body["renter-name"]) {
         patch.renter = buildRenter(body);
       }
       buildPaymentPatch(body, patch);
 
-      // Machine set: an explicit pick wins; otherwise a chamber change re-defaults
-      // it to the machine type the new chamber's type requires.
-      if (typeof body.machineTypeId !== "undefined") {
-        patch.machineTypeId = body.machineTypeId || null;
-      } else if (patch.chamberId) {
-        patch.machineTypeId = await resolveMachineTypeId(body, patch.chamberId);
-      }
-
-      // Conflict detection on date/chamber changes
-      if ((patch.startDate || patch.endDate || patch.chamberId || typeof body.machineTypeId !== "undefined") && !body.overrideConflict) {
+      // Conflict detection on date / chamber / machine changes
+      if ((patch.startDate || patch.endDate || patch.chamberId || typeof body.machineId !== "undefined") && !body.overrideConflict) {
         const merged = { ...(await listRentals()).find((r) => r.id === id), ...patch };
         if (merged.chamberId && merged.startDate && merged.endDate) {
           const conflict = await findRentalConflict({
@@ -147,17 +131,17 @@ exports.handler = async (event, context) => {
               conflict,
             });
           }
-          if (merged.machineTypeId) {
-            const full = await machineTypePoolFull({
-              machineTypeId: merged.machineTypeId,
+          if (merged.machineId) {
+            const machineConflict = await findRentalConflict({
+              machineId: merged.machineId,
               startDate: merged.startDate,
               endDate: merged.endDate,
               excludeRentalId: id,
             });
-            if (full) {
+            if (machineConflict) {
               return json(409, {
-                error: "machineset_conflict",
-                message: `No machine set of the required type is free ${merged.startDate} → ${merged.endDate}. All sets in that pool are already assigned for this window.`,
+                error: "machine_conflict",
+                message: `That machine is already assigned ${machineConflict.startDate} → ${machineConflict.endDate} (${machineConflict.renter?.name || "another rental"}). Pick a different machine.`,
               });
             }
           }

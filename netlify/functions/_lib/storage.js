@@ -6,6 +6,7 @@ const notifications = require("./notifications");
 
 const STORES = {
   chambers: "chambers",
+  machines: "machines",
   rentals: "rentals",
   waitlist: "waitlist",
   waivers: "waivers",
@@ -72,34 +73,33 @@ async function deleteOne(storeName, id) {
 
 // ───────── Chambers ─────────
 // shape: { id, name, model, ata (number), posture: "lying"|"sitting",
-//   status: "active"|"maintenance"|"archived", notes, createdAt, archivedAt }
+//   style: "lying"|"sitting", status: "active"|"maintenance"|"archived",
+//   notes, createdAt, archivedAt }
 // "active" = rentable, "maintenance" = temporarily out of service, "archived" = soft-deleted.
-// ata/posture are the structured "chamber type"; legacy records without them are
-// backfilled on read from the model string.
+// Live state (available/scheduled/inuse) is derived from rentals, not stored.
 
-function withChamberType(c) {
-  // chamberTypeId is authoritative; ata/posture kept for legacy display + migration.
-  return { ...c, ata: inventory.inferAta(c), posture: inventory.inferPosture(c), chamberTypeId: inventory.chamberTypeIdOf(c) };
+function withStyle(c) {
+  return { ...c, style: inventory.chamberStyleOf(c) };
 }
 
 async function listChambers({ includeArchived = false } = {}) {
   const all = await listAll(STORES.chambers);
   return all
     .filter((c) => includeArchived || c.status !== "archived")
-    .map(withChamberType)
+    .map(withStyle)
     .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
 }
 
 async function getChamber(id) {
   const c = await getOne(STORES.chambers, id);
-  return c ? withChamberType(c) : null;
+  return c ? withStyle(c) : null;
 }
 
-async function createChamber({ name, chamberTypeId, notes = "" }) {
+async function createChamber({ name, style, notes = "" }) {
   const c = {
     id: newId(),
     name,
-    chamberTypeId: chamberTypeId || null,
+    style: inventory.normalizeStyle(style),
     status: "active",
     notes,
     createdAt: nowIso(),
@@ -112,12 +112,49 @@ async function updateChamber(id, patch) {
   const existing = await getOne(STORES.chambers, id);
   if (!existing) return null;
   const updated = { ...existing, ...patch, id };
-  if (typeof patch.chamberTypeId !== "undefined") updated.chamberTypeId = patch.chamberTypeId || null;
+  if (typeof patch.style !== "undefined") updated.style = inventory.normalizeStyle(patch.style);
   return putOne(STORES.chambers, updated);
 }
 
 async function archiveChamber(id) {
   return updateChamber(id, { status: "archived", archivedAt: nowIso() });
+}
+
+// ───────── Machines ─────────
+// shape: { id, name, status: "active"|"maintenance"|"archived", notes, createdAt, archivedAt }
+// A machine = oxygen enricher + pressurizer + AC. A rental reserves one machine.
+
+async function listMachines({ includeArchived = false } = {}) {
+  const all = await listAll(STORES.machines);
+  return all
+    .filter((m) => includeArchived || m.status !== "archived")
+    .sort((a, b) => (a.name || "").localeCompare(b.name || "", undefined, { numeric: true }));
+}
+
+async function getMachine(id) {
+  return getOne(STORES.machines, id);
+}
+
+async function createMachine({ name, notes = "" }) {
+  const m = {
+    id: newId(),
+    name,
+    status: "active",
+    notes,
+    createdAt: nowIso(),
+    archivedAt: null,
+  };
+  return putOne(STORES.machines, m);
+}
+
+async function updateMachine(id, patch) {
+  const existing = await getOne(STORES.machines, id);
+  if (!existing) return null;
+  return putOne(STORES.machines, { ...existing, ...patch, id });
+}
+
+async function archiveMachine(id) {
+  return updateMachine(id, { status: "archived", archivedAt: nowIso() });
 }
 
 // ───────── Rentals ─────────
@@ -166,15 +203,17 @@ async function getRental(id) {
   return getOne(STORES.rentals, id);
 }
 
-// Returns the overlapping rental if {startDate, endDate, chamberId} would conflict,
-// otherwise null. Cancelled/completed rentals are ignored.
-async function findRentalConflict({ chamberId, startDate, endDate, excludeRentalId }) {
-  if (!chamberId || !startDate || !endDate) return null;
-  const all = await listRentals({ chamberId });
+// Returns the overlapping rental that would double-book the same chamber (or,
+// when machineId is given, the same machine) over the window, else null.
+// Cancelled/completed rentals are ignored.
+async function findRentalConflict({ chamberId, machineId, startDate, endDate, excludeRentalId }) {
+  if ((!chamberId && !machineId) || !startDate || !endDate) return null;
+  const all = await listAll(STORES.rentals);
   return (
     all.find((r) =>
       r.id !== excludeRentalId &&
       (r.status === "scheduled" || r.status === "active") &&
+      (chamberId ? r.chamberId === chamberId : r.machineId === machineId) &&
       r.startDate <= endDate &&
       r.endDate >= startDate
     ) || null
@@ -285,45 +324,6 @@ async function updateBooking(id, patch) {
   return putOne(STORES.bookings, updated);
 }
 
-// ───────── Machine types & chamber types (settings) ─────────
-// settings/machineTypes: { types: [{ id, label, count }] }  count null = unlimited.
-// settings/chamberTypes: { types: [{ id, label, machineTypeId }] }.
-// When unset, both are derived deterministically from existing chambers (and the
-// legacy settings/machineSets pool) so nothing breaks before the owner edits them.
-
-async function getMachineTypes() {
-  const doc = await getOne(STORES.settings, "machineTypes");
-  if (doc && Array.isArray(doc.types)) return inventory.normalizeMachineTypes(doc.types);
-  const [legacy, chambers] = await Promise.all([getOne(STORES.settings, "machineSets"), listChambers()]);
-  return inventory.deriveMachineTypes(legacy && legacy.sets, chambers);
-}
-
-async function setMachineTypes(types) {
-  const clean = inventory.normalizeMachineTypes(types).map((t) => ({ ...t, id: t.id || newId() }));
-  await store(STORES.settings).setJSON("machineTypes", { id: "machineTypes", types: clean, updatedAt: nowIso() });
-  return clean;
-}
-
-async function getChamberTypes() {
-  const doc = await getOne(STORES.settings, "chamberTypes");
-  if (doc && Array.isArray(doc.types)) return inventory.normalizeChamberTypes(doc.types);
-  return inventory.deriveChamberTypes(await listChambers());
-}
-
-async function setChamberTypes(types) {
-  const clean = inventory.normalizeChamberTypes(types).map((t) => ({ ...t, id: t.id || newId() }));
-  await store(STORES.settings).setJSON("chamberTypes", { id: "chamberTypes", types: clean, updatedAt: nowIso() });
-  return clean;
-}
-
-// The machine type a chamber requires (via its chamber type).
-async function machineTypeForChamber(chamberId) {
-  const [chamber, chamberTypes] = await Promise.all([getChamber(chamberId), getChamberTypes()]);
-  if (!chamber) return null;
-  const ct = chamberTypes.find((t) => t.id === inventory.chamberTypeIdOf(chamber));
-  return ct ? ct.machineTypeId : inventory.legacyMachineTypeId(inventory.inferAta(chamber));
-}
-
 // ───────── Service area (settings) ─────────
 // One blob at settings/serviceArea: { prefixes: [...], zips: [...] }. Admin-managed
 // delivery ZIP rule. Unset = the historic default (mirrors the old hardcoded gate).
@@ -360,41 +360,41 @@ async function setNotifications(config) {
 // ───────── Availability ─────────
 
 async function inventoryInputs() {
-  const [chamberTypes, machineTypes, chambers, rentals] = await Promise.all([
-    getChamberTypes(),
-    getMachineTypes(),
+  const [chambers, machines, rentals] = await Promise.all([
     listChambers(),
+    listMachines(),
     listAll(STORES.rentals),
   ]);
-  return { chamberTypes, machineTypes, chambers, rentals };
+  return { chambers, machines, rentals };
 }
 
 async function countAvailableToday() {
   const today = new Date().toISOString().slice(0, 10);
-  const { chamberTypes, machineTypes, chambers, rentals } = await inventoryInputs();
+  const { chambers, machines, rentals } = await inventoryInputs();
   const busyIds = new Set(
     rentals.filter((r) => inventory.rentalOccupiesWindow(r, today, today)).map((r) => r.chamberId)
   );
   const total = chambers.filter((c) => c.status === "active").length;
-  const available = inventory.computeAvailableCount(chamberTypes, machineTypes, chambers, rentals, today, today);
+  const available = inventory.computeAvailableCount(chambers, machines, rentals, today, today);
   return { available, total, busyIds: [...busyIds] };
 }
 
-// Per chamber-type availability for a date window (defaults to today). Used by
-// the admin availability view and the public booking form.
+// Per chamber-style availability for a date window (defaults to today). Used by
+// the public booking form.
 async function availabilityByType({ startDate, endDate } = {}) {
   const today = new Date().toISOString().slice(0, 10);
   const start = startDate || today;
   const end = endDate || start;
-  const { chamberTypes, machineTypes, chambers, rentals } = await inventoryInputs();
-  return inventory.computeAvailabilityByType(chamberTypes, machineTypes, chambers, rentals, start, end);
+  const { chambers, machines, rentals } = await inventoryInputs();
+  return inventory.computeAvailabilityByStyle(chambers, machines, rentals, start, end);
 }
 
-// True when assigning one more rental drawing this machine type would oversubscribe
-// its pool across the window. Used to guard admin rental creation/edits.
-async function machineTypePoolFull({ machineTypeId, startDate, endDate, excludeRentalId } = {}) {
-  const { chamberTypes, machineTypes, chambers, rentals } = await inventoryInputs();
-  return inventory.machineTypePoolFull(machineTypeId, machineTypes, chamberTypes, chambers, rentals, startDate, endDate, excludeRentalId);
+// True when every active unit of a kind ("chamberId" | "machineId") is booked
+// across the window. Used to warn on admin rental create/edit.
+async function unitPoolFull({ kind, startDate, endDate, excludeRentalId } = {}) {
+  const { chambers, machines, rentals } = await inventoryInputs();
+  const units = kind === "machineId" ? machines : chambers;
+  return inventory.unitPoolFull(units, rentals, kind, startDate, endDate, excludeRentalId);
 }
 
 // Returns next-available date for each chamber (or null = available now).
@@ -645,6 +645,11 @@ module.exports = {
   createChamber,
   updateChamber,
   archiveChamber,
+  listMachines,
+  getMachine,
+  createMachine,
+  updateMachine,
+  archiveMachine,
   listRentals,
   getRental,
   createRental,
@@ -669,18 +674,13 @@ module.exports = {
   DEFAULT_PRICING,
   getPricing,
   setPricing,
-  getMachineTypes,
-  setMachineTypes,
-  getChamberTypes,
-  setChamberTypes,
-  machineTypeForChamber,
   getServiceArea,
   setServiceArea,
   getNotifications,
   setNotifications,
   countAvailableToday,
   availabilityByType,
-  machineTypePoolFull,
+  unitPoolFull,
   nextAvailableByChamber,
   saveWaiver,
   getWaiver,

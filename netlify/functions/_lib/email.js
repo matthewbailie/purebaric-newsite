@@ -153,7 +153,7 @@ async function notifyWaitlistChamberAvailable(entry, chamber) {
   const expires = new Date(entry.holdExpiresAt).toLocaleString("en-US", { timeZone: "America/Denver", dateStyle: "long", timeStyle: "short" });
   const html = wrap(`
     <p style="margin:0 0 16px;">Hi ${escapeHtml(entry.name.split(" ")[0])},</p>
-    <p style="margin:0 0 16px;">Good news, a chamber just opened up. We're holding <strong style="color:#2b2320;">${escapeHtml(chamber.name)}</strong> (${escapeHtml(chamber.model)}) for you until <strong style="color:#2b2320;">${expires} Mountain Time</strong>.</p>
+    <p style="margin:0 0 16px;">Good news, a chamber just opened up. We're holding <strong style="color:#2b2320;">${escapeHtml(chamber.name)}</strong>${chamber.style ? ` (${escapeHtml(chamber.style)} chamber)` : ""} for you until <strong style="color:#2b2320;">${expires} Mountain Time</strong>.</p>
     <p style="margin:0 0 16px;">To claim it, reply to this email or call us at <a href="tel:+18019010873" style="color:#b8654d;">(801) 901-0873</a> and we'll get you set up.</p>
     <p style="margin:0;">If we don't hear back by then, the chamber will roll to the next person on the list.</p>
     ${signoff()}

@@ -72,6 +72,15 @@
   status = 200
 
 [[redirects]]
+  from = "/api/admin/machines"
+  to = "/.netlify/functions/admin-machines"
+  status = 200
+[[redirects]]
+  from = "/api/admin/machines/*"
+  to = "/.netlify/functions/admin-machines/:splat"
+  status = 200
+
+[[redirects]]
   from = "/api/admin/rentals"
   to = "/.netlify/functions/admin-rentals"
   status = 200
@@ -130,15 +139,6 @@
   to = "/.netlify/functions/admin-pricing"
   status = 200
 
-[[redirects]]
-  from = "/api/admin/machine-types"
-  to = "/.netlify/functions/admin-machine-types"
-  status = 200
-
-[[redirects]]
-  from = "/api/admin/chamber-types"
-  to = "/.netlify/functions/admin-chamber-types"
-  status = 200
 
 [[redirects]]
   from = "/api/admin/service-area"

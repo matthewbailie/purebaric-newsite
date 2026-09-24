@@ -272,9 +272,8 @@
           <input type="hidden" name="id">
           <div class="form-row">
             <div class="form-group"><label>Name<span class="req">*</span></label><input name="name" required placeholder="e.g. Chamber 1"></div>
-            <div class="form-group"><label>Chamber type</label>
-              <select name="chamberTypeId" id="chamberTypeSelect"></select>
-              <div class="renter-line" style="margin-top:4px;">Define types below in <strong>Chamber types</strong>.</div></div>
+            <div class="form-group"><label>Style</label>
+              <select name="style"><option value="lying">Lying</option><option value="sitting">Sitting</option></select></div>
           </div>
           <div class="form-group"><label>Notes</label><textarea name="notes" rows="2"></textarea></div>
           <div class="form-buttons">
@@ -284,30 +283,35 @@
         </form>
       </div>
 
-      <div class="form-card" id="machineTypesPanel" style="display:block;margin-bottom:16px;">
-        <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Machine types</h3>
-        <div class="renter-line" style="margin-bottom:12px;max-width:760px;">A machine set = oxygen enricher + pressurizer + AC, required to run a chamber. Name each machine type and enter how many you own. Leave the count blank if you don't want to limit bookings by that machine type.</div>
-        <div id="machineTypesEditor"></div>
-        <div class="mt-actions"><button type="button" class="btn btn-ghost btn-sm" onclick="addMachineType()">+ Add machine type</button><button type="button" class="btn btn-primary btn-sm" onclick="saveMachineTypes()">Save machine types</button></div>
+      <div class="form-card" id="machineForm">
+        <h3 id="machineFormTitle">New machine</h3>
+        <form id="machineFormEl" onsubmit="return submitMachine(event)">
+          <input type="hidden" name="id">
+          <div class="form-row">
+            <div class="form-group"><label>Name<span class="req">*</span></label><input name="name" required placeholder="e.g. M-001"></div>
+            <div class="form-group"><label>Notes</label><input name="notes" placeholder="optional"></div>
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="toggleForm('machineForm')">Cancel</button>
+          </div>
+        </form>
       </div>
 
-      <div class="form-card" id="chamberTypesPanel" style="display:block;margin-bottom:16px;">
-        <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Chamber types</h3>
-        <div class="renter-line" style="margin-bottom:12px;max-width:760px;">Name each chamber style (e.g. "1.5 ATA lying") and pick the machine type it needs to run. Assign chambers to a type in the list below.</div>
-        <div id="chamberTypesEditor"></div>
-        <div class="mt-actions"><button type="button" class="btn btn-ghost btn-sm" onclick="addChamberType()">+ Add chamber type</button><button type="button" class="btn btn-primary btn-sm" onclick="saveChamberTypes()">Save chamber types</button></div>
-      </div>
+      <div id="availabilityByStyle" style="margin-bottom:22px;"></div>
 
-      <div class="form-card" id="availabilityPanel" style="display:block;margin-bottom:16px;">
-        <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Availability right now</h3>
-        <div class="renter-line" style="margin-bottom:12px;">Offerable = a chamber of that type is free AND a machine set it needs is free. The machine pool is shared by every chamber type that uses it.</div>
-        <div id="availabilityByType"></div>
-      </div>
-
+      <h3 class="inv-heading">Chambers</h3>
       <div id="chambersList"></div>
+
+      <div class="inv-head-row">
+        <h3 class="inv-heading" style="margin:0;">Machines</h3>
+        <button class="btn btn-primary btn-sm" onclick="toggleForm('machineForm')">+ Add machine</button>
+      </div>
+      <div id="machinesList"></div>
       <style>
-        .mt-actions{display:flex;gap:8px;margin-top:6px;}
-        #availabilityByType{display:flex;flex-wrap:wrap;gap:8px;}
+        .inv-heading{font-size:1.15rem;font-weight:700;margin:26px 0 12px;}
+        .inv-head-row{display:flex;justify-content:space-between;align-items:center;margin:34px 0 12px;flex-wrap:wrap;gap:10px;}
+        #availabilityByStyle{display:flex;flex-wrap:wrap;gap:8px;}
         .avail-chip{border:1px solid var(--line,#e6dccd);border-radius:10px;padding:8px 12px;background:var(--card,#fffdf9);font-size:12px;min-width:150px;}
         .avail-chip .at-label{font-weight:700;font-size:13px;}
         .avail-chip .at-num{font-weight:700;}
@@ -378,8 +382,8 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>Machine set</label><select name="machineTypeId" id="rentalMachineSelect"></select>
-              <div class="renter-line" style="margin-top:4px;">Defaults to what the chamber's type needs.</div></div>
+            <div class="form-group"><label>Machine</label><select name="machineId" id="rentalMachineSelect"></select>
+              <div class="renter-line" style="margin-top:4px;">Which machine unit runs this rental.</div></div>
             <div class="form-group"></div>
           </div>
           <div class="form-row triple">
@@ -750,9 +754,14 @@
     // Load each section independently: one failing call must not blank the rest,
     // and we still paint whatever succeeded.
     const results = await Promise.allSettled([
-      loadChambers(), loadRentals(), loadWaitlist(), loadBookings(), loadReviews(), loadPricing(), loadInventory(), loadServiceArea(), loadNotifications()
+      loadChambers(), loadRentals(), loadWaitlist(), loadBookings(), loadReviews(), loadPricing(), loadMachines(), loadServiceArea(), loadNotifications()
     ]);
     paintStats();
+    // Repaint inventory now that chambers, machines, and rentals are all loaded,
+    // so derived (available/scheduled/in-use) states reflect the rentals.
+    if (typeof renderChambers === 'function') renderChambers();
+    if (typeof renderMachines === 'function') renderMachines();
+    if (typeof loadAvailability === 'function') loadAvailability();
     const failures = results.filter(r => r.status === 'rejected').map(r => r.reason || {});
     if (!failures.length) return;
     if (failures.some(e => e.status === 401)) {
@@ -840,115 +849,96 @@
     populateChamberSelect();
   }
 
-  // ───────── Inventory: machine types, chamber types, availability ─────────
-  let _machineTypes = [];
-  let _chamberTypes = [];
-
-  async function loadInventory() {
-    const data = await api('/api/admin/chamber-types'); // returns machineTypes + byType too
-    _machineTypes = data.machineTypes || [];
-    _chamberTypes = data.types || [];
-    renderMachineTypes();
-    renderChamberTypes();
-    renderAvailability(data.byType || []);
-    populateChamberTypeSelect();
+  // ───────── Machines ─────────
+  let _machines = [];
+  async function loadMachines() {
+    const includeArchived = document.getElementById('showArchived') && document.getElementById('showArchived').checked;
+    const data = await api(`/api/admin/machines?includeArchived=${!!includeArchived}`);
+    _machines = data.machines || [];
+    renderMachines();
+    populateRentalMachineSelect();
   }
-  function chamberTypeLabelFor(c) {
-    const ct = _chamberTypes.find(t => t.id === c.chamberTypeId);
-    return ct ? ct.label : 'Unassigned';
+  async function loadAvailability() {
+    try { const d = await api('/api/availability'); renderAvailability(d.byType || []); } catch (e) { /* non-fatal */ }
   }
 
-  // ── Machine types editor ──
-  function renderMachineTypes() {
-    const el = document.getElementById('machineTypesEditor');
-    if (!el) return;
-    if (!_machineTypes.length) { el.innerHTML = '<div class="renter-line" style="margin-bottom:6px;">No machine types yet. Add one.</div>'; return; }
-    el.innerHTML = _machineTypes.map((m, i) => `
-      <div class="ms-row mt-row" data-i="${i}" data-id="${escape(m.id || '')}">
-        <div><label>Machine type</label><br><input class="ms-label" value="${escape(m.label)}" placeholder="e.g. 1.5 ATA"></div>
-        <div><label>How many you own</label><br><input class="ms-count" type="number" min="0" step="1" value="${m.count == null ? '' : Number(m.count)}" placeholder="blank = no limit"></div>
-        <button type="button" class="btn btn-ghost btn-sm" onclick="removeMachineType(${i})">Remove</button>
-      </div>`).join('');
+  // Derived operational state of a chamber/machine (unitKey = 'chamberId'|'machineId').
+  const STATE_PILL = { available: ['available', 'Available'], scheduled: ['scheduled', 'Scheduled'], inuse: ['rented', 'In use'], maintenance: ['maintenance', 'Maintenance'], archived: ['archived', 'Archived'] };
+  function unitOpState(id, unitKey) {
+    const today = new Date().toISOString().slice(0, 10);
+    const mine = _rentals.filter(r => r[unitKey] === id && (r.status === 'scheduled' || r.status === 'active'));
+    const cur = mine.find(r => r.startDate <= today && r.endDate >= today);
+    if (cur) return { state: 'inuse', rental: cur };
+    const up = mine.filter(r => r.startDate > today).sort((a, b) => a.startDate.localeCompare(b.startDate))[0];
+    if (up) return { state: 'scheduled', rental: up };
+    return { state: 'available', rental: null };
   }
-  function readMachineTypeRows() {
-    return [...document.querySelectorAll('#machineTypesEditor .mt-row')].map(row => ({
-      id: row.dataset.id || undefined,
-      label: row.querySelector('.ms-label').value.trim(),
-      count: row.querySelector('.ms-count').value,
-    }));
+  function unitDetail(op) {
+    if (!op.rental) return op.state === 'available' ? 'Free now' : '';
+    const r = op.rental, who = (r.renter && r.renter.name) || 'Rental';
+    return `${escape(who)} · ${escape(fmtDate(r.startDate))} → ${escape(fmtDate(r.endDate))}`;
   }
-  function addMachineType() { _machineTypes = readMachineTypeRows().concat({ label: '', count: '' }); renderMachineTypes(); }
-  function removeMachineType(i) { _machineTypes = readMachineTypeRows().filter((_, idx) => idx !== i); renderMachineTypes(); }
-  async function saveMachineTypes() {
-    const types = readMachineTypeRows().filter(t => t.label);
+  function unitStatusActions(u, kind) {
+    const fn = kind === 'machine' ? 'setMachineStatus' : 'setChamberStatus';
+    const arch = kind === 'machine' ? 'archiveMachineFn' : 'archiveChamberFn';
+    const out = [];
+    if (u.status === 'active') { out.push(`<button class="btn btn-ghost btn-sm" onclick='${fn}(${JSON.stringify(u.id)}, "maintenance")'>To maintenance</button>`); out.push(`<button class="btn btn-ghost btn-sm" onclick='${arch}(${JSON.stringify(u.id)})'>Archive</button>`); }
+    else if (u.status === 'maintenance') { out.push(`<button class="btn btn-ghost btn-sm" onclick='${fn}(${JSON.stringify(u.id)}, "active")'>Return to service</button>`); out.push(`<button class="btn btn-ghost btn-sm" onclick='${arch}(${JSON.stringify(u.id)})'>Archive</button>`); }
+    else { out.push(`<button class="btn btn-ghost btn-sm" onclick='${fn}(${JSON.stringify(u.id)}, "active")'>Restore</button>`); }
+    return out.join('');
+  }
+
+  function renderMachines() {
+    const list = document.getElementById('machinesList');
+    if (!list) return;
+    if (!_machines.length) { list.innerHTML = `<div class="empty-state">No machines yet. Click <strong>+ Add machine</strong> to add one.</div>`; return; }
+    const rows = _machines.map(m => {
+      const op = m.status === 'active' ? unitOpState(m.id, 'machineId') : { state: m.status, rental: null };
+      const [cls, label] = STATE_PILL[op.state] || STATE_PILL.available;
+      return `<tr>
+        <td><strong>${escape(m.name)}</strong>${m.notes ? `<div class="renter-line">${escape(m.notes)}</div>` : ''}</td>
+        <td><span class="pill pill-${cls}">${label}</span></td>
+        <td><span class="renter-line">${unitDetail(op)}</span></td>
+        <td><div class="row-actions"><button class="btn btn-ghost btn-sm" onclick='editMachine(${JSON.stringify(m.id)})'>Edit</button>${unitStatusActions(m, 'machine')}</div></td>
+      </tr>`;
+    }).join('');
+    list.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Machine</th><th>State</th><th>Detail</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+  function editMachine(id) {
+    const m = _machines.find(x => x.id === id); if (!m) return;
+    toggleForm('machineForm', { id: m.id, name: m.name, notes: m.notes });
+  }
+  async function submitMachine(e) {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target));
     try {
-      await api('/api/admin/machine-types', { method: 'PUT', body: JSON.stringify({ types }) });
-      toast('Machine types saved');
-      await loadInventory(); paintStats();
+      if (data.id) { const { id, ...patch } = data; await api(`/api/admin/machines/${id}`, { method: 'PATCH', body: JSON.stringify(patch) }); toast('Machine updated'); }
+      else { delete data.id; await api('/api/admin/machines', { method: 'POST', body: JSON.stringify(data) }); toast('Machine added'); }
+      toggleForm('machineForm'); await loadAll();
     } catch (err) { toast(err.message, true); }
+    return false;
+  }
+  async function setMachineStatus(id, status) {
+    try { await api(`/api/admin/machines/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) }); toast(`Machine set to ${status}`); await loadAll(); } catch (err) { toast(err.message, true); }
+  }
+  async function archiveMachineFn(id) {
+    if (!confirm('Archive this machine? It will no longer be assignable to rentals.')) return;
+    try { await api(`/api/admin/machines/${id}`, { method: 'DELETE' }); toast('Machine archived'); await loadAll(); } catch (err) { toast(err.message, true); }
   }
 
-  // ── Chamber types editor ──
-  function renderChamberTypes() {
-    const el = document.getElementById('chamberTypesEditor');
+  // ── Availability readout (per chamber style: free chambers AND a free machine) ──
+  function renderAvailability(byStyle) {
+    const el = document.getElementById('availabilityByStyle');
     if (!el) return;
-    if (!_chamberTypes.length) { el.innerHTML = '<div class="renter-line" style="margin-bottom:6px;">No chamber types yet. Add one.</div>'; return; }
-    const mtOpts = _machineTypes.map(m => `<option value="${escape(m.id)}">${escape(m.label)}</option>`).join('');
-    el.innerHTML = _chamberTypes.map((c, i) => `
-      <div class="ms-row ct-row" data-i="${i}" data-id="${escape(c.id || '')}">
-        <div><label>Chamber type</label><br><input class="ms-label" value="${escape(c.label)}" placeholder="e.g. 1.5 ATA lying"></div>
-        <div><label>Requires machine type</label><br><select class="ct-machine"><option value="">— none —</option>${mtOpts}</select></div>
-        <button type="button" class="btn btn-ghost btn-sm" onclick="removeChamberType(${i})">Remove</button>
-      </div>`).join('');
-    el.querySelectorAll('.ct-row').forEach((row, i) => { row.querySelector('.ct-machine').value = _chamberTypes[i].machineTypeId || ''; });
-  }
-  function readChamberTypeRows() {
-    return [...document.querySelectorAll('#chamberTypesEditor .ct-row')].map(row => ({
-      id: row.dataset.id || undefined,
-      label: row.querySelector('.ms-label').value.trim(),
-      machineTypeId: row.querySelector('.ct-machine').value || null,
-    }));
-  }
-  function addChamberType() { _chamberTypes = readChamberTypeRows().concat({ label: '', machineTypeId: '' }); renderChamberTypes(); }
-  function removeChamberType(i) { _chamberTypes = readChamberTypeRows().filter((_, idx) => idx !== i); renderChamberTypes(); }
-  async function saveChamberTypes() {
-    const types = readChamberTypeRows().filter(t => t.label);
-    try {
-      await api('/api/admin/chamber-types', { method: 'PUT', body: JSON.stringify({ types }) });
-      toast('Chamber types saved');
-      await loadInventory(); await loadChambers(); paintStats();
-    } catch (err) { toast(err.message, true); }
-  }
-
-  // ── Availability readout ──
-  function renderAvailability(byType) {
-    const el = document.getElementById('availabilityByType');
-    if (!el) return;
-    if (!byType.length) {
-      el.innerHTML = '<span class="renter-line">Define chamber types and add chambers to see availability.</span>';
-      return;
-    }
-    el.innerHTML = byType.map(t => {
-      const constrained = t.setsConfigured;
-      const cls = t.available === 0 ? 'at-zero' : (constrained && t.available < t.freeChambers ? 'at-out' : '');
-      const sets = t.machineTypeLabel
-        ? (constrained ? `${t.freeSets} ${escape(t.machineTypeLabel)} set${t.freeSets === 1 ? '' : 's'} free` : `${escape(t.machineTypeLabel)}: no limit`)
-        : 'no machine linked';
+    if (!byStyle || !byStyle.length) { el.innerHTML = '<span class="renter-line">Add chambers and machines to see availability.</span>'; return; }
+    el.innerHTML = byStyle.map(t => {
+      const cls = t.available === 0 ? 'at-zero' : (t.available < t.freeChambers ? 'at-out' : '');
       return `<div class="avail-chip ${cls}">
-        <div class="at-label">${escape(t.label)}</div>
-        <div><span class="at-num">${t.available}</span> offerable now</div>
-        <div class="renter-line">${t.freeChambers}/${t.totalChambers} chambers free · ${sets}</div>
+        <div class="at-label">${escape(t.label)} chambers</div>
+        <div><span class="at-num">${t.available}</span> bookable now</div>
+        <div class="renter-line">${t.freeChambers}/${t.totalChambers} chambers · ${t.freeMachines}/${t.totalMachines} machines free</div>
       </div>`;
     }).join('');
-  }
-
-  // ── Chamber-type dropdown in the Add/Edit chamber form ──
-  function populateChamberTypeSelect() {
-    const sel = document.getElementById('chamberTypeSelect');
-    if (!sel) return;
-    const cur = sel.value;
-    sel.innerHTML = '<option value="">— none —</option>' + _chamberTypes.map(c => `<option value="${escape(c.id)}">${escape(c.label)}</option>`).join('');
-    if (cur) sel.value = cur;
   }
   // Format a YYYY-MM-DD date as local (avoids the new Date('YYYY-MM-DD') UTC
   // parse that shifts the displayed day back by one in western timezones).
@@ -1013,7 +1003,7 @@
       }
       return `
       <tr>
-        <td><strong>${escape(c.name)}</strong><div class="renter-line">${escape(chamberTypeLabelFor(c))}</div></td>
+        <td><strong>${escape(c.name)}</strong><div class="renter-line">${escape((c.style || 'lying') === 'sitting' ? 'Sitting' : 'Lying')} chamber</div></td>
         <td><span class="pill pill-${opState}">${opLabel}</span></td>
         <td>${availability}</td>
         <td>${escape(c.notes || '')}</td>
@@ -1151,8 +1141,7 @@
   function editChamber(id) {
     const c = _chambers.find(x => x.id === id);
     if (!c) return;
-    populateChamberTypeSelect();
-    toggleForm('chamberForm', { id: c.id, name: c.name, chamberTypeId: c.chamberTypeId || '', notes: c.notes });
+    toggleForm('chamberForm', { id: c.id, name: c.name, style: c.style || 'lying', notes: c.notes });
   }
 
   async function submitChamber(e) {
@@ -1191,32 +1180,17 @@
     }).join('');
     if (cur) sel.value = cur;
     populateRentalMachineSelect();
-    // Default the machine set to what the chosen chamber's type needs (unless already set).
-    if (!sel._machineHooked) {
-      sel._machineHooked = true;
-      sel.addEventListener('change', () => setRentalMachineDefault());
-    }
   }
   function populateRentalMachineSelect() {
     const sel = document.getElementById('rentalMachineSelect');
     if (!sel) return;
     const cur = sel.value;
-    sel.innerHTML = '<option value="">— auto (from chamber type) —</option>' +
-      (_machineTypes || []).map(m => `<option value="${escape(m.id)}">${escape(m.label)}</option>`).join('');
+    const usable = (_machines || []).filter(m => m.status === 'active' || m.status === 'maintenance');
+    sel.innerHTML = '<option value="">Select a machine</option>' + usable.map(m => {
+      const label = m.status === 'maintenance' ? `${m.name} (in maintenance)` : m.name;
+      return `<option value="${m.id}">${escape(label)}</option>`;
+    }).join('');
     if (cur) sel.value = cur;
-  }
-  // Machine type a chamber requires, via its chamber type.
-  function machineTypeIdForChamberId(chamberId) {
-    const c = _chambers.find(x => x.id === chamberId);
-    if (!c) return '';
-    const ct = _chamberTypes.find(t => t.id === c.chamberTypeId);
-    return ct ? (ct.machineTypeId || '') : '';
-  }
-  function setRentalMachineDefault() {
-    const cSel = document.getElementById('rentalChamberSelect');
-    const mSel = document.getElementById('rentalMachineSelect');
-    if (!cSel || !mSel) return;
-    mSel.value = machineTypeIdForChamberId(cSel.value) || '';
   }
 
   // ─── Rentals ───
@@ -1272,7 +1246,7 @@
     populateChamberSelect();
     toggleForm('rentalForm', {
       id: r.id, chamberId: r.chamberId, status: r.status,
-      machineTypeId: r.machineTypeId || machineTypeIdForChamberId(r.chamberId) || '',
+      machineId: r.machineId || '',
       startDate: r.startDate, endDate: r.endDate, monthlyRate: r.monthlyRate,
       'renter-name': r.renter && r.renter.name, 'renter-email': r.renter && r.renter.email,
       'renter-phone': r.renter && r.renter.phone, 'renter-zip': r.renter && r.renter.address && r.renter.address.zip,
@@ -1335,7 +1309,7 @@
     if (user) headers.Authorization = `Bearer ${await getAuthToken(user)}`;
     const resp = await fetch(path, { method, headers, body: JSON.stringify(payload) });
     const json = resp.headers.get('content-type')?.includes('json') ? await resp.json() : {};
-    if (resp.status === 409 && (json.error === 'rental_conflict' || json.error === 'machineset_conflict')) {
+    if (resp.status === 409 && (json.error === 'rental_conflict' || json.error === 'machine_conflict')) {
       if (confirm(`${json.message || 'Scheduling conflict detected'}\n\nOverride and save anyway?`)) {
         return postRentalWithConflictHandling(path, method, { ...payload, overrideConflict: true });
       }

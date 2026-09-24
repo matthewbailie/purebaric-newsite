@@ -280,12 +280,12 @@ fetch('/api/availability').then(function(r){return r.json();}).then(function(j){
   if(!j||!Array.isArray(j.byType)||!j.byType.length)return;
   var sel=document.getElementById('ch');
   sel.innerHTML=j.byType.map(function(t){
-    var label=t.label||(t.ata+' ATA '+t.posture);
+    var label=(t.label||'Chamber')+' chamber';
     var out=(t.available|0)<=0;
     return '<option value="'+label+'"'+(out?' data-out="1"':'')+'>'+label+(out?' — currently unavailable':'')+'</option>';
   }).join('');
   var firstAvail=j.byType.filter(function(t){return (t.available|0)>0;})[0];
-  if(firstAvail)sel.value=firstAvail.label||(firstAvail.ata+' ATA '+firstAvail.posture);
+  if(firstAvail)sel.value=(firstAvail.label||'Chamber')+' chamber';
 }).catch(function(){});
 
 var _submitting=false; // idempotency guard: blocks double-clicks / re-entry for one submission
