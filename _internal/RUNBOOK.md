@@ -2,7 +2,7 @@
 
 A complete handoff for anyone (human or AI agent) running and maintaining **purebaric.com**: where it's hosted, how it's built, the services involved, the email/SMS automation, logins, and how to ship changes safely.
 
-_Last updated: 2026-09-21._
+_Last updated: 2026-09-23._
 
 > ⚠️ **This file contains NO passwords, tokens, or API keys — on purpose.**
 > Secrets live in the owner's password manager and in the Netlify dashboard
@@ -103,7 +103,7 @@ Values live only in Netlify. Env-var changes require a redeploy to take effect f
 | `RESEND_API_KEY` | **Yes** | Resend sending key. Without it, no email (or SMS) sends. |
 | `NETLIFY_API_TOKEN` | **Yes** | Lets the Functions reach Netlify Blobs. Must be a Netlify **Personal Access Token set to "No expiration."** An expired token is what causes Blobs 401 errors (see §11). (`NETLIFY_AUTH_TOKEN` is accepted as a fallback name.) |
 | `NETLIFY_SITE_ID` | **Yes** | The site ID above, used for Blobs. (`SITE_ID` accepted as a fallback name.) |
-| `ADMIN_SMS_GATEWAY` | Optional | Turns on the SMS lead alert. Value = `<10-digit-cell>@<carrier-gateway>` (see §7). If unset, no texts send — everything else is unaffected. |
+| `ADMIN_SMS_GATEWAY` | Optional (legacy) | Legacy single-number SMS fallback. SMS is now managed in the admin **Notifications** tab (§7c) — you normally leave this unset. If set, this address is also texted on reservation alerts. Value = `<10-digit-cell>@<carrier-gateway>`. |
 | `GA4_API_SECRET` | Optional | Turns on server-side GA4 conversions (`booking_request_submit`, `rental_confirmed`). Measurement Protocol secret from GA4 → Admin → Data Streams → the web stream → Measurement Protocol API secrets. If unset, those conversions are not sent — the site is otherwise unaffected. |
 | `STRIPE_SECRET_KEY` | Optional | Turns on Stripe payment links. Stripe → Developers → API keys → Secret key (`sk_test_…` to trial, `sk_live_…` for real charges). If unset, the "Create link" button reports Stripe isn't configured. |
 | `STRIPE_WEBHOOK_SECRET` | Optional | Verifies the payment webhook so paid rentals auto-reconcile. Stripe → Developers → Webhooks → add endpoint `https://purebaric.com/api/stripe-webhook` (events: `payment_intent.succeeded`, `checkout.session.completed`) → copy the Signing secret (`whsec_…`). Required for auto-reconciliation. |
@@ -190,9 +190,9 @@ All outbound messaging runs through **Resend** from `netlify/functions/_lib/emai
 ### 7a. Reservation lead (the main flow) — `booking-submit.js`
 When someone submits `/book` (or `/api/booking-submit`):
 1. The lead is saved to Blobs (`bookings`).
-2. **ZIP gate** (see §10): if the delivery ZIP is **outside** the service area → mark `outOfArea:true`, **do NOT email the customer**, **do NOT** add to waitlist; email the admin an "Out-of-area request" and (if enabled) text the admin. It shows in `/admin` with an "Out of area · no auto-email sent" badge.
+2. **ZIP gate** (see §10): if the delivery ZIP is **outside** the service area → mark `outOfArea:true`, **do NOT email the customer**, **do NOT** add to waitlist; email the admin an "Out-of-area request" and text any recipient subscribed to the `reservation_out` event (see §7c). It shows in `/admin` with an "Out of area · no auto-email sent" badge.
 3. If **in area**: auto-route — if a chamber is available today, email the customer a confirmation; otherwise add them to the waitlist and email the waitlist confirmation.
-4. **Always** email the admin a "Booking request" summary, and (if enabled) **text the admin**.
+4. **Always** email the admin a "Booking request" summary, and text any recipient subscribed to `reservation_in` (see §7c).
 5. Failures in email/SMS/routing are caught and logged — they never block the submission.
 
 ### 7b. Other flows
@@ -200,22 +200,44 @@ When someone submits `/book` (or `/api/booking-submit`):
 - **Contact** (`contact-submit.js`): emails the admin (subject includes the topic). Contact messages are **emailed, not stored** in Blobs.
 - **Scheduled** (`expire-holds.js`): runs hourly (`netlify.toml` cron `0 * * * *`) to release expired holds / advance rental states by date.
 
-### 7c. SMS lead alerts (carrier email-to-text) — how to turn on
-The admin gets a **text** on every reservation lead (normal + out-of-area) **in addition to** the email. It reuses Resend by emailing the phone carrier's SMS gateway, so it's free. The code (`notifyAdminSms` in `_lib/email.js`, called from `booking-submit.js`) is a **no-op until `ADMIN_SMS_GATEWAY` is set**.
+### 7c. SMS notifications (free carrier email-to-text) — admin-managed (2026-09-23)
 
-To activate: set the Netlify env var `ADMIN_SMS_GATEWAY` to `<10-digit-cell>@<carrier gateway>`, then redeploy. Common gateways:
+Free text alerts to the owner, sent by **emailing the recipient's carrier SMS gateway through Resend** (`<10-digit-number>@<carrier-gateway>`). No Twilio, no per-message cost. Fully configured in the portal — **no env var required** to turn it on.
 
-| Carrier | Gateway (append to the 10-digit number) |
+**How it's configured:** admin **Notifications** tab → add one or more phone numbers. Each recipient has a label (optional), a **mobile number**, a **carrier**, and a set of **events** it subscribes to. Multiple numbers are supported, and different numbers can get different events (e.g. one number for reservations, another for reviews).
+
+**Events a recipient can subscribe to:**
+| Event key | Fires when | Sent from |
+|---|---|---|
+| `reservation_in` | A reservation request from **inside** the service area | `booking-submit.js` |
+| `reservation_out` | A reservation request from **outside** the service area | `booking-submit.js` |
+| `review` | A visitor submits a **review** | `reviews-submit.js` |
+
+**Where it lives (for a future maintainer):**
+- **Config store:** `settings` Blobs store, key `notifications` = `{ recipients: [{ id, label, number, carrier, events: [...] }] }`. Empty by default (no texts until the owner adds a number).
+- **Pure routing + carrier map:** `netlify/functions/_lib/notifications.js` (`CARRIER_GATEWAYS`, `EVENTS`, `normalizeNumber`, `gatewayAddress`, `recipientsForEvent`). Unit tests in `test/notifications.test.js`.
+- **Storage helpers:** `getNotifications` / `setNotifications` in `_lib/storage.js` (normalize + persist).
+- **Admin API:** `GET/PUT /api/admin/notifications` (`admin-notifications.js`, auth). GET also returns the carrier + event lists for the UI.
+- **Send:** `notifyAdminSms(booking, { outOfArea, to })` and `notifyAdminReviewSms(review, to)` in `_lib/email.js`. Callers resolve `to` with `recipientsForEvent(config, eventKey)` and pass the resolved gateway addresses. All sends are wrapped in try/catch — an SMS failure never blocks the submission.
+- **Legacy fallback:** if the old `ADMIN_SMS_GATEWAY` env var is set, that address is **also** texted on reservation alerts (belt-and-suspenders; not needed once portal recipients exist).
+
+**Carrier gateways** (the dropdown maps a carrier to the domain appended to the number):
+
+| Carrier | Gateway |
 |---|---|
 | Verizon | `@vtext.com` |
-| T-Mobile / Metro / Mint | `@tmomail.net` |
+| T-Mobile / Metro | `@tmomail.net` |
 | AT&T / Cricket | `@txt.att.net` |
+| Sprint | `@messaging.sprintpcs.com` |
 | Google Fi | `@msg.fi.google.com` |
 | US Cellular | `@email.uscc.net` |
+| Boost | `@sms.myboostmobile.com` |
+| Virgin | `@vmobl.com` |
+| Xfinity Mobile | `@vtext.com` |
 
-Example: `8015551234@vtext.com`. Example text: _"New Purebaric lead: Jane Smith, (801) 555-1234, ZIP 84043, 6 months. Check email or the admin portal to follow up."_
+Example resolved address: `8015551234@vtext.com`. Example text: _"New Purebaric lead: Jane Smith, (801) 555-1234, ZIP 84043, 6 months. Check email or the admin portal to follow up."_ Review text: _"New Purebaric review from Jane S. Approve it in the admin portal to publish."_
 
-**Caveat / upgrade path:** carrier gateways are increasingly spam-filtered and some carriers are retiring them, so a text may occasionally be delayed or missed (the email always still sends). If it gets flaky, upgrade to **Twilio**: add `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM`, `ADMIN_SMS_TO` env vars and switch `notifyAdminSms` to Twilio's REST API (~$1.15/mo for a number + fractions of a cent per text).
+**Caveat / upgrade path:** carrier gateways are increasingly spam-filtered and some carriers are retiring them, so a text may occasionally be delayed or missed (**email always still sends**). If it gets flaky, upgrade to **Twilio**: add `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM` env vars and swap the send inside `notifyAdminSms` / `notifyAdminReviewSms` to Twilio's REST API (keep the same `recipientsForEvent` routing; ~$1.15/mo for a number + fractions of a cent per text).
 
 ### 7d. Email deliverability
 If customer confirmation emails don't arrive, check Resend: the sending domain `purebaric.com` must be verified (SPF/DKIM). Admin alerts generally work first because they go to a Gmail address.
@@ -237,7 +259,7 @@ The functions accept the frontend field names plus aliases (`customer_name`, `zi
 Customer testimonials with a moderation gate. **No star ratings** by design — testimonials read stronger than a sparse star average for a new, low-volume, trust-based service (revisit only if the owner asks; the store has no rating field).
 
 - **Store:** `reviews` Blobs store. Shape `{ id, firstName, lastInitial, city, text, status: "pending"|"published"|"rejected", createdAt, publishedAt }`. Helpers in `storage.js`: `listReviews`, `listPublishedReviews`, `createReview` (always `pending`), `updateReview`.
-- **Public submit:** `/reviews` page → `POST /api/reviews-submit` (`reviews-submit.js`). Fields: `firstName`, `lastInitial` (1 char), `city` (optional), `text`. Honeypot `bot-field`, length caps, emails the owner via `notifyAdminReview`. Every submission is saved **pending** — nothing is public until the owner publishes.
+- **Public submit:** `/reviews` page → `POST /api/reviews-submit` (`reviews-submit.js`). Fields: `firstName`, `lastInitial` (1 char), `city` (optional), `text`. Honeypot `bot-field`, length caps, emails the owner via `notifyAdminReview` **and texts any recipient subscribed to the `review` event** via `notifyAdminReviewSms` (see §7c). Every submission is saved **pending** — nothing is public until the owner publishes.
 - **Public read:** `GET /api/reviews` (`reviews-public.js`) returns **published only**, safe fields, 60s cache. The homepage "What renters say" band (`#reviewsBand` in `index.html`) fetches this and **stays hidden unless ≥1 published review**; `/reviews` lists them all.
 - **Moderate:** admin **Reviews** tab → `/api/admin/reviews` (`admin-reviews.js`, auth). Publish/unpublish/reject/edit/delete. Publishing stamps `publishedAt`; unpublish/reject clears it.
 - **Flow:** submit → `pending` (+owner email) → admin **Publish** → shows on `/reviews` + homepage. Reject or Delete for spam.
