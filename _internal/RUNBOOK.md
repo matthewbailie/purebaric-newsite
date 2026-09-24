@@ -285,7 +285,13 @@ Customer testimonials with a moderation gate. **No star ratings** by design — 
 | 4–11 months | $579 | Save 21% |
 | 12 months | $529 | Save 27% |
 
-**Change prices in all of:** the `rate(m)` function in the inline script of **`index.html`** and **`book.html`** (must match); the `.tiers` cards in **`pricing.html`**; and the "from $529 · 12-month rate" figures in `index.html` and `chambers.html`. Always show the 12-month qualifier next to any "from $529/mo".
+**Prices are admin-managed (2026-09-23).** Rates are now **per rental length (1–12 months)**, edited in the **admin → Pricing tab**, stored in the `settings` Blobs store (key `pricing`), and served at **`GET /api/pricing`** (`{months:{1..12}}`; admin CRUD at `/api/admin/pricing`). Defaults match the table above. The table above expands per-length as 1:729, 2-3:659, 4-11:579, 12:529.
+
+- **Website reads it live:** `index.html` + `book.html` calculators call `/api/pricing` and use `rate(m)=table[m]` (baked-in fallback if the fetch fails); `pricing.html` tier cards/savings/annual and the `from $X` figures on `index.html`/`chambers.html` update via the same fetch. The `PB_PF` fallback objects and the pricing-page inline `PF` mirror the defaults — keep them in sync if defaults change.
+- **Admin rentals:** the rental form's Monthly rate **auto-fills** from the rental length × the pricing table (`updateRentalRate` on date change and on edit-open; booking→rental conversion uses `rateForMonths`). This replaced the old hardcoded `729`.
+- **Not auto-updated (static, edit by hand if defaults change a lot):** page `<title>`/meta descriptions, the pricing-page **JSON-LD** offers, and the clinic-comparison numbers ($80–$150, 40-session protocol).
+
+**Delivery area / email routing:** a new in-area reservation routes by *effective* availability = available chambers minus untriaged (`new`) requests: enough capacity → "chamber available" email; chambers exist but spoken for by earlier untriaged requests → "pending availability" email (`notifyCustomerPendingAvailability`, admin badge "pending availability (triage)"); zero chambers → waitlist email. See `booking-submit.js`.
 
 **Delivery ZIP gate** — `servedZip()` rule (served if ZIP matches `840xx`/`841xx`/`844xx`, or is in the explicit `SERVED_ZIP_EXTRA` Provo/Weber set). Counties: Salt Lake, Utah, Davis, Weber, Summit, Wasatch, Tooele. **Mirrored in 4 places that must stay in sync:** `netlify/functions/booking-submit.js` (authoritative), `book.html`, `index.html`, and `service-area.html`. If the counties change, also update the homepage "Where we deliver" SVG map + city lists and the `service-area.html` cards.
 
