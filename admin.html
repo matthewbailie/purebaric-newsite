@@ -289,6 +289,16 @@
         .cal-bar.active{background:#5c7a34;}
         .cal-bar span{overflow:hidden;text-overflow:ellipsis;}
         .cal-today{position:absolute;top:0;bottom:0;width:2px;background:var(--terracotta,#b8654d);z-index:2;pointer-events:none;}
+        .cal-bar{cursor:pointer;}
+        .cal-wrap{position:relative;}
+        .cal-today-marker{position:absolute;top:3px;transform:translateX(-50%);background:var(--terracotta,#b8654d);color:#fff;font-size:9px;font-weight:700;letter-spacing:.02em;padding:1px 6px;border-radius:6px;white-space:nowrap;z-index:3;pointer-events:none;}
+        .cal-today-marker:after{content:"";position:absolute;left:50%;bottom:-4px;transform:translateX(-50%);border-left:4px solid transparent;border-right:4px solid transparent;border-top:4px solid var(--terracotta,#b8654d);}
+        .cal-hover-line{position:absolute;top:0;bottom:0;width:1px;background:#6f635b;opacity:.7;z-index:4;pointer-events:none;}
+        .cal-hover-date{position:absolute;top:-21px;transform:translateX(-50%);background:#3d352f;color:#fff;font-size:10px;font-weight:600;padding:2px 6px;border-radius:5px;white-space:nowrap;z-index:5;pointer-events:none;}
+        .cal-popup{position:absolute;z-index:6;background:var(--card,#fffdf9);border:1px solid var(--line,#e6dccd);border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.16);padding:9px 26px 9px 11px;font-size:12px;min-width:150px;}
+        .cal-popup .cp-name{font-weight:700;margin-bottom:3px;}
+        .cal-popup .cp-dates{color:#5f544d;}
+        .cal-popup .cp-close{position:absolute;top:4px;right:8px;cursor:pointer;color:var(--muted,#8a7d70);font-weight:700;line-height:1;}
         @media(max-width:700px){.cal-name{flex-basis:66px;font-size:12px;}.cal-mh{font-size:9px;}}
       </style>
       <div id="chamberCalendar" style="margin-top:34px;"></div>
@@ -884,18 +894,85 @@
           const right = Math.min(100, (e - winStart) / span * 100);
           const w = Math.max(0.6, right - left);
           const name = (r.renter && r.renter.name) ? r.renter.name : 'Rental';
-          const title = `${name} · ${fmtDate(r.startDate)} → ${fmtDate(r.endDate)} (${r.status})`;
-          return `<div class="cal-bar ${r.status === 'active' ? 'active' : 'scheduled'}" style="left:${left}%;width:${w}%;" title="${escape(title)}"><span>${escape(name)}</span></div>`;
+          return `<div class="cal-bar ${r.status === 'active' ? 'active' : 'scheduled'}" style="left:${left}%;width:${w}%;"
+            data-name="${escape(name)}" data-start="${escape(fmtDate(r.startDate))}" data-end="${escape(fmtDate(r.endDate))}" data-status="${escape(r.status)}" data-chamber="${escape(c.name)}"><span>${escape(name)}</span></div>`;
         }).join('');
       return `<div class="cal-row"><div class="cal-name">${escape(c.name)}</div><div class="cal-track">${bars}<div class="cal-today" style="left:${todayPct}%;"></div></div></div>`;
     }).join('');
     el.innerHTML = `
       <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Rental calendar</h3>
-      <div class="renter-line" style="margin-bottom:12px;">Rolling 12 months from this month. <span style="color:#5b7fa6;font-weight:700;">Blue</span> = scheduled, <span style="color:#5c7a34;font-weight:700;">green</span> = active. The red line is today.</div>
-      <div class="cal">
-        <div class="cal-row cal-headrow"><div class="cal-name"></div><div class="cal-track cal-head">${headCells}<div class="cal-today" style="left:${todayPct}%;"></div></div></div>
-        ${rowsHtml}
+      <div class="renter-line" style="margin-bottom:12px;">Rolling 12 months from this month. <span style="color:#5b7fa6;font-weight:700;">Blue</span> = scheduled, <span style="color:#5c7a34;font-weight:700;">green</span> = active. The orange line is today. Hover for a date, click a rental for its dates.</div>
+      <div class="cal-wrap">
+        <div class="cal">
+          <div class="cal-row cal-headrow"><div class="cal-name"></div><div class="cal-track cal-head">${headCells}<div class="cal-today" style="left:${todayPct}%;"></div><div class="cal-today-marker" style="left:${todayPct}%;">Today</div></div></div>
+          ${rowsHtml}
+        </div>
+        <div class="cal-hover-line" hidden></div>
+        <div class="cal-hover-date" hidden></div>
+        <div class="cal-popup" hidden></div>
       </div>`;
+    wireCalendarInteractions(el, winStart, span);
+  }
+
+  // Hover readout (vertical line + date under the cursor) and click-to-inspect
+  // popups for the rental calendar. Re-wired on every render (nodes are new).
+  function wireCalendarInteractions(el, winStart, span) {
+    const wrap = el.querySelector('.cal-wrap');
+    const line = el.querySelector('.cal-hover-line');
+    const dateLbl = el.querySelector('.cal-hover-date');
+    const popup = el.querySelector('.cal-popup');
+    if (!wrap || !line) return;
+    // Measure timeline geometry from the header track: it always has layout width
+    // (month cells), whereas data-row tracks contain only absolutely-positioned
+    // bars and can report zero width. Both span the same horizontal extent.
+    const geomTrack = () => (el.querySelector('.cal-head') || el.querySelector('.cal-track'));
+
+    function hideHover() { line.hidden = true; dateLbl.hidden = true; }
+    wrap.addEventListener('mousemove', (e) => {
+      const track = geomTrack(); if (!track) return;
+      const tr = track.getBoundingClientRect();
+      const wr = wrap.getBoundingClientRect();
+      if (e.clientX < tr.left || e.clientX > tr.right) { hideHover(); return; }
+      const frac = (e.clientX - tr.left) / tr.width;
+      const d = new Date(winStart.getTime() + frac * span);
+      const x = e.clientX - wr.left;
+      line.style.left = x + 'px'; line.hidden = false;
+      dateLbl.style.left = x + 'px';
+      dateLbl.textContent = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      dateLbl.hidden = false;
+    });
+    wrap.addEventListener('mouseleave', hideHover);
+
+    function showPopup(bar) {
+      const wr = wrap.getBoundingClientRect();
+      const br = bar.getBoundingClientRect();
+      popup.innerHTML =
+        `<span class="cp-close" title="Close">×</span>` +
+        `<div class="cp-name">${escape(bar.dataset.name)} · ${escape(bar.dataset.chamber)}</div>` +
+        `<div class="cp-dates">${escape(bar.dataset.start)} → ${escape(bar.dataset.end)}</div>` +
+        `<div class="renter-line" style="margin-top:2px;text-transform:capitalize;">${escape(bar.dataset.status)}</div>`;
+      popup.hidden = false;
+      // Default below the bar; flip above if it would overflow the wrapper bottom.
+      let top = br.bottom - wr.top + 5;
+      if (top + popup.offsetHeight > wrap.offsetHeight) top = br.top - wr.top - popup.offsetHeight - 5;
+      let left = br.left - wr.left;
+      left = Math.max(0, Math.min(left, wrap.offsetWidth - popup.offsetWidth));
+      popup.style.top = top + 'px';
+      popup.style.left = left + 'px';
+      // Arm an outside-click dismiss for this open (deferred so the opening
+      // click doesn't immediately close it).
+      setTimeout(() => {
+        document.addEventListener('click', function onDoc(ev) {
+          if (popup.contains(ev.target)) return;
+          popup.hidden = true;
+          document.removeEventListener('click', onDoc);
+        });
+      }, 0);
+    }
+    el.querySelectorAll('.cal-bar').forEach((bar) => {
+      bar.addEventListener('click', (e) => { e.stopPropagation(); showPopup(bar); });
+    });
+    popup.addEventListener('click', (e) => { if (e.target.classList.contains('cp-close')) popup.hidden = true; });
   }
 
   async function setChamberStatus(id, status) {
