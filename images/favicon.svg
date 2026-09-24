@@ -3,8 +3,8 @@
     .mark { stroke: #2b2320; }
     @media (prefers-color-scheme: dark) { .mark { stroke: #f3ead9; } }
   </style>
-  <g class="mark" fill="none" stroke-width="3" stroke-linecap="round">
-    <circle cx="32" cy="29" r="17.5"/>
-    <line x1="8" y1="39" x2="56" y2="39"/>
+  <g class="mark" fill="none" stroke-width="3.2" stroke-linecap="round">
+    <circle cx="32" cy="31" r="20"/>
+    <line x1="5" y1="44" x2="59" y2="44"/>
   </g>
 </svg>
