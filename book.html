@@ -270,7 +270,7 @@ document.getElementById('resForm').addEventListener('focusin',function(){if(book
 fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){if(j&&j.months){PB_PRICING=j.months;BASE=rate(1);recalc();}}).catch(function(){});
 
 var _submitting=false; // idempotency guard: blocks double-clicks / re-entry for one submission
-document.getElementById('resForm').addEventListener('submit',function(e){
+document.getElementById('resForm').addEventListener('submit',async function(e){
   e.preventDefault();
   if(_submitting)return;
   var f=e.target,btn=document.getElementById('submitBtn'),res=document.getElementById('resResult');
@@ -293,6 +293,12 @@ document.getElementById('resForm').addEventListener('submit',function(e){
   data.set('zip_code',document.getElementById('zip').value);
   data.set('preferred_date',document.getElementById('cdate').value);
   data.set('notes',full);
+  var analyticsContext=window.getPurebaricAnalyticsContext
+    ? await window.getPurebaricAnalyticsContext()
+    : {consentGranted:false};
+  data.set('analytics_consent',analyticsContext.consentGranted?'true':'false');
+  if(analyticsContext.clientId)data.set('analytics_client_id',analyticsContext.clientId);
+  if(analyticsContext.sessionId)data.set('analytics_session_id',analyticsContext.sessionId);
   var orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='Submitting...';
   fetch('/api/booking-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
    .then(function(r){return r.json().catch(function(){return {};});})
@@ -305,17 +311,8 @@ document.getElementById('resForm').addEventListener('submit',function(e){
        f.reset();document.getElementById('mo').value=m;recalc();document.getElementById('zipNote').hidden=true;
        window.scrollTo({top:0,behavior:'smooth'});
      }else if(j&&(j.success||j.ok)){
-       // Single canonical conversion, fired exactly once, only after the backend
-       // accepted the reservation. Payload is non-identifying only.
-       window.trackPurebaricEvent?.('booking_request_submit',{
-         form_name:'reservation_request',
-         page_location:location.origin+location.pathname,
-         chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),
-         rental_months:m,
-         estimated_total:total,
-         currency:'USD',
-         source:'book_page'
-       });
+       // The backend records the canonical booking_request_submit event once,
+       // after accepting the request, using this visitor's anonymous GA context.
        res.className='result ok';
        res.innerHTML='Reservation received'+(j.booking_number?(' ('+j.booking_number+')'):'')+'. '+(j.message||"Our team will contact you shortly to confirm delivery.");
        f.reset();document.getElementById('mo').value=m;recalc();document.getElementById('zipNote').hidden=true;

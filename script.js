@@ -374,6 +374,13 @@ if (bookingForm) {
     
     if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
     try {
+      const analyticsContext = window.getPurebaricAnalyticsContext
+        ? await window.getPurebaricAnalyticsContext()
+        : { consentGranted: false };
+      formData.set('analytics_consent', analyticsContext.consentGranted ? 'true' : 'false');
+      if (analyticsContext.clientId) formData.set('analytics_client_id', analyticsContext.clientId);
+      if (analyticsContext.sessionId) formData.set('analytics_session_id', analyticsContext.sessionId);
+
       const resp = await fetch(bookingForm.action || '/api/booking-submit', {
         method: 'POST',
         body: formData,
@@ -403,15 +410,8 @@ if (bookingForm) {
         btn.style.color = '#ffffff';
       }
       
-      const rentalValueMap = { '1 month': 729, '2 months': 1318, '6 months': 3474, '1 year': 6348 };
-      const conversionValue = rentalValueMap[formData.get('rental-length')] || 729;
-      track('booking_request_submit', {
-        source: 'page_modal',
-        routing: json.autoNotified || 'unknown',
-        rental_length: formData.get('rental-length') || '',
-        value: conversionValue,
-        currency: 'USD',
-      });
+      // The backend records booking_request_submit once after accepting the
+      // request, using the anonymous GA context sent with the form.
     } catch (err) {
       console.error('booking submit failed', err);
       if (btn) { btn.textContent = 'Send failed, please email hello@purebaric.com'; btn.disabled = false; }

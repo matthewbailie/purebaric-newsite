@@ -144,6 +144,10 @@ async function createRental(data) {
   return putOne(STORES.rentals, r);
 }
 
+async function getRental(id) {
+  return getOne(STORES.rentals, id);
+}
+
 // Returns the overlapping rental if {startDate, endDate, chamberId} would conflict,
 // otherwise null. Cancelled/completed rentals are ignored.
 async function findRentalConflict({ chamberId, startDate, endDate, excludeRentalId }) {
@@ -228,6 +232,7 @@ async function updateWaitlistEntry(id, patch) {
 //   startDate, rentalLength, reason, priorExperience,
 //   medicalScreeningFlags, consentMedical, consentTerms,
 //   outOfArea (true = ZIP outside the delivery area; no customer email sent),
+//   analytics: { consentGranted, clientId, sessionId, rentalConfirmedAt, rentalConfirmedEvent },
 //   adminNotes, convertedRentalId, createdAt, updatedAt
 // }
 
@@ -249,6 +254,10 @@ async function createBooking(data) {
     ...data,
   };
   return putOne(STORES.bookings, b);
+}
+
+async function getBooking(id) {
+  return getOne(STORES.bookings, id);
 }
 
 async function updateBooking(id, patch) {
@@ -521,6 +530,7 @@ module.exports = {
   updateChamber,
   archiveChamber,
   listRentals,
+  getRental,
   createRental,
   updateRental,
   findRentalConflict,
@@ -529,6 +539,7 @@ module.exports = {
   createWaitlistEntry,
   updateWaitlistEntry,
   listBookings,
+  getBooking,
   createBooking,
   updateBooking,
   listCustomers,

@@ -256,16 +256,18 @@ Customer testimonials with a moderation gate. **No star ratings** by design — 
 - If Purebaric ever advertises **outside Utah/into the EEA**, switch to region-aware consent (deny-by-default there) before expanding. `ad_personalization` stays denied unless the owner enables remarketing.
 - The cookie banner remains as an opt-out + transparency control; `/privacy` "Analytics and cookies" describes the opt-out model. Keep banner text + privacy + this file in sync.
 
-**Events (NEVER pass PII — only allowlisted scalar values, never a form/FormData/API response/ZIP/free text):** `select_rental_plan`, `service_area_check` (result only, never the ZIP), `booking_form_start`, `booking_request_submit` (the single canonical conversion, fired once on confirmed success), `booking_request_error`, `contact_submit`, `waitlist_join`.
+**Events (NEVER pass PII — only allowlisted scalar values, never a form/FormData/API response/ZIP/free text):** `select_rental_plan`, `service_area_check` (result only, never the ZIP), `booking_form_start`, `booking_request_submit` (accepted reservation request), `close_convert_lead` (admin created/linked the scheduled rental), `booking_request_error`, `contact_submit`, `waitlist_join`.
 
-**Google Ads conversion (the one that matters):**
-- **Canonical event: `booking_request_submit`** — the ONE reservation conversion. As of 2026-09-22 the redundant `booking_submit` is **removed**; `book.html` fires only `booking_request_submit`, exactly once, guarded by a `_submitting` flag (no double-count on double-click/re-entry), and **only after the backend accepts** (never on validation/API/network failure or out-of-area).
-- Payload is non-identifying only: `form_name`, sanitized `page_location` (path, no query), `chamber_id`, `rental_months`, `estimated_total`, `currency`, `source`. No name/email/phone/city/ZIP/notes. The delivery ZIP is passed homepage→`/book` via `sessionStorage` (`pb_zip`), never the URL, so it never reaches GA.
-- Google Ads has **one** booking conversion, **"Booking Request Submitted (GA4)"** (Primary), imported from the GA4 key event `booking_request_submit`. **Do NOT create a second booking conversion — it double-counts.**
-- **OWNER TO CONFIRM (needs GA4/Ads access):** `booking_request_submit` is a GA4 **key event**; `booking_submit` is NOT also a key event; the Ads conversion imports `booking_request_submit` and is Primary + in the campaign's Conversions column; the Google-hosted lead-form conversion is Secondary/excluded. Verify one labeled test in **DebugView**.
+**Google Ads conversion stages:**
+- `booking_request_submit` is the accepted lead. It is sent once by `booking-submit.js` after the backend accepts an in-area request. Keep it as a **Secondary** Google Ads conversion for observation.
+- `close_convert_lead` is the primary business conversion. It is Google's recommended event for a qualified lead that becomes a customer. It is sent once when the admin links the request to the exact scheduled rental and marks it converted. Import this key event into Google Ads and make it **Primary** for bidding.
+- `/pb-metrics.js` captures anonymous GA `client_id` + `session_id` at form submission and stores them on the private booking record. The later server-side event reuses those identifiers so GA4 can connect the offline confirmation to the original web/ad journey. No name/email/phone/address/ZIP/notes are sent to GA.
+- Both conversion events are sent from the backend through GA4 Measurement Protocol. Set `GA4_API_SECRET` in Netlify (server-only); `GA4_MEASUREMENT_ID` is optional because the code defaults to `G-Q1X04YRWP1`.
+- The admin flow carries `sourceBookingId` into the rental form, links the exact returned rental ID, and records an analytics status on the booking for idempotency. A visitor opt-out is honored; missing attribution on older records is reported without fabricating a conversion.
+- `booking_submit` remains removed. Do not import it, and do not count both the request and confirmed rental as Primary.
 - GA4 must stay **linked to Google Ads** (Admin → Product links). The link is active: the GA4 tag auto-loads the linked Ads tag `AW-18178623665` (seen in the network as `google.com/ccm/collect`), which is Google's doing, not our code.
 
-**Deferred (needs Stripe):** `qualify_lead`, `begin_checkout`, `purchase`, `refund` via the GA4 Measurement Protocol from server code — not built (no checkout yet). Keep any MP secret server-side only.
+**Deferred (needs Stripe):** `begin_checkout`, `purchase`, `refund` — not built (no checkout yet). Keep the Measurement Protocol secret server-side only.
 
 ### SEO & structured data
 - **`robots.txt`** (root) allows all, disallows `/admin` + `/_internal/`, and points to the sitemap. **`sitemap.xml`** (root) lists every public page — **update it whenever you add or remove a public page**, then re-submit it in Google Search Console.
@@ -337,7 +339,7 @@ This is a wellness rental business, **not a medical provider** ("not a medical d
 
 ## 15. Known open follow-ups / owner tasks
 
-- **Confirm the Ads key event (do this first):** in GA4 → Admin → Key events, verify whether `booking_submit` or `booking_request_submit` is the event imported into the Google Ads conversion, then reconcile `book.html` if needed (see §9). Run one test reservation through GA4 DebugView to confirm.
+- **Finish the Ads conversion switch:** confirm `close_convert_lead` is a GA4 key event, import it into Google Ads as Primary, and move `booking_request_submit` to Secondary. Run one labeled end-to-end test through the public reservation form and admin conversion flow.
 - **Submit `sitemap.xml` in Google Search Console:** verify the domain (DNS TXT) and submit `https://purebaric.com/sitemap.xml`. Re-submit whenever pages are added/removed. Not yet done.
 - **Claim a Google Business Profile** (and Bing Places / Apple Business Connect) as a **service-area** business — NAP must match the site exactly: Salt Lake City, UT · (801) 901-0873 · Mon–Sat 8:00 AM–6:00 PM MT. Not yet done.
 - **Activate SMS:** set `ADMIN_SMS_GATEWAY` (see §7c) and redeploy.

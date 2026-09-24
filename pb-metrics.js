@@ -57,6 +57,7 @@
 
   // "Accept": ensure measurement is granted and the tag is loaded.
   window.loadPurebaricAnalytics = function () {
+    declined = false;
     try { localStorage.setItem('pb_cookie', 'accept'); } catch (e) {}
     gtag('consent', 'update', {
       analytics_storage: 'granted',
@@ -69,6 +70,7 @@
 
   // "Decline": opt out of all measurement, and remember it.
   window.declinePurebaricAnalytics = function () {
+    declined = true;
     try { localStorage.setItem('pb_cookie', 'decline'); } catch (e) {}
     gtag('consent', 'update', {
       analytics_storage: 'denied',
@@ -82,6 +84,38 @@
   window.trackPurebaricEvent = function (name, params) {
     if (typeof window.gtag !== 'function') return;
     window.gtag('event', name, params || {});
+  };
+
+  // Capture the anonymous GA identifiers needed to connect a later, offline
+  // rental confirmation to the visitor's original web/ad session. Never add
+  // contact, address, or health fields to this object.
+  window.getPurebaricAnalyticsContext = function () {
+    return new Promise(function (resolve) {
+      if (!READY || declined || typeof window.gtag !== 'function') {
+        resolve({ consentGranted: false });
+        return;
+      }
+
+      var context = { consentGranted: true };
+      var pending = 2;
+      var complete = false;
+      var timer = setTimeout(finish, 800);
+
+      function finish() {
+        if (complete) return;
+        complete = true;
+        clearTimeout(timer);
+        resolve(context);
+      }
+      function received(field, value) {
+        if (value != null) context[field] = String(value);
+        pending -= 1;
+        if (pending === 0) finish();
+      }
+
+      gtag('get', GA_ID, 'client_id', function (value) { received('clientId', value); });
+      gtag('get', GA_ID, 'session_id', function (value) { received('sessionId', value); });
+    });
   };
   // Back-compat alias used by the teal pages' script.js.
   if (typeof window.track !== 'function') window.track = window.trackPurebaricEvent;

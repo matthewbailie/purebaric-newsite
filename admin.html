@@ -292,6 +292,7 @@
         <h3 id="rentalFormTitle">New rental</h3>
         <form id="rentalFormEl" onsubmit="return submitRental(event)">
           <input type="hidden" name="id">
+          <input type="hidden" name="sourceBookingId">
           <div class="form-row">
             <div class="form-group"><label>Chamber<span class="req">*</span></label><select name="chamberId" id="rentalChamberSelect" required></select></div>
             <div class="form-group"><label>Status</label>
@@ -939,13 +940,29 @@
     const data = Object.fromEntries(new FormData(form));
     try {
       if (data.id) {
-        const { id, ...patch } = data;
+        const { id, sourceBookingId, ...patch } = data;
         await postRentalWithConflictHandling(`/api/admin/rentals/${id}`, 'PATCH', patch);
         toast('Rental updated');
       } else {
-        delete data.id;
-        await postRentalWithConflictHandling('/api/admin/rentals', 'POST', data);
-        toast('Rental created');
+        const { id, sourceBookingId, ...createData } = data;
+        const created = await postRentalWithConflictHandling('/api/admin/rentals', 'POST', createData);
+        if (sourceBookingId && created.rental?.id) {
+          const converted = await api(`/api/admin/bookings/${sourceBookingId}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ status: 'converted', convertedRentalId: created.rental.id }),
+          });
+          if (converted.analytics?.sent) {
+            toast('Rental created and GA4 conversion recorded');
+          } else if (converted.analytics?.reason === 'missing_client_id') {
+            toast('Rental created. This older request had no GA4 attribution ID.', true);
+          } else if (converted.analytics?.reason === 'analytics_opt_out') {
+            toast('Rental created. Analytics was skipped because the visitor opted out.');
+          } else {
+            toast('Rental created. GA4 conversion is pending configuration.', true);
+          }
+        } else {
+          toast('Rental created');
+        }
       }
       toggleForm('rentalForm');
       await loadAll();
@@ -1309,8 +1326,14 @@
     document.querySelectorAll('.booking-status-sel').forEach(sel => {
       sel.addEventListener('change', async (e) => {
         try {
-          await api(`/api/admin/bookings/${e.target.dataset.id}`, { method: 'PATCH', body: JSON.stringify({ status: e.target.value }) });
-          toast('Booking updated');
+          const result = await api(`/api/admin/bookings/${e.target.dataset.id}`, { method: 'PATCH', body: JSON.stringify({ status: e.target.value }) });
+          if (e.target.value === 'converted' && result.analytics?.sent) {
+            toast('Booking converted and GA4 conversion recorded');
+          } else if (e.target.value === 'converted' && result.analytics?.reason === 'missing_client_id') {
+            toast('Booking converted. This older request had no GA4 attribution ID.', true);
+          } else {
+            toast('Booking updated');
+          }
           await loadAll();
         } catch (err) { toast(err.message, true); }
       });
@@ -1378,6 +1401,7 @@
     const endDate = months ? addMonths(start, months) : start;
     document.querySelector('.tab-btn[data-tab="rentals"]').click();
     toggleForm('rentalForm', {
+      sourceBookingId: id,
       chamberId: '', status: 'scheduled',
       startDate: start, endDate,
       monthlyRate: rateForMonths(months || 1),
@@ -1388,23 +1412,7 @@
       paymentStatus: 'unpaid', paidAmount: 0,
       notes: `Converted from booking ${id}. Reason: ${b.reason || ', '}`,
     });
-    toast('Pick a chamber and Save to create the rental, booking will auto-mark converted');
-    // Hook the form so on success, also mark booking as converted
-    const form = document.getElementById('rentalFormEl');
-    const onceListener = async () => {
-      // After loadAll, find the most-recent rental for this renter and mark booking converted
-      setTimeout(async () => {
-        const found = _rentals.find(r => r.renter && r.renter.email === b.email);
-        if (found) {
-          try {
-            await api(`/api/admin/bookings/${id}`, { method: 'PATCH', body: JSON.stringify({ status: 'converted', convertedRentalId: found.id }) });
-            await loadAll();
-          } catch (e) { /* non-fatal */ }
-        }
-      }, 600);
-      form.removeEventListener('submit', onceListener);
-    };
-    form.addEventListener('submit', onceListener);
+    toast('Pick a chamber and Save; the exact booking will be linked and converted');
   }
 
   function parseRentalLengthMonths(s) {

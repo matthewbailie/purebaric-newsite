@@ -13,6 +13,11 @@ const {
   notifyAdminOutOfArea,
   notifyAdminSms,
 } = require("./_lib/email");
+const {
+  cleanClientId,
+  cleanSessionId,
+  sendBookingRequestSubmitted,
+} = require("./_lib/analytics");
 
 // ───────── Delivery service area (ZIP gating) ─────────
 // Served counties (Wasatch Front + Park City): Salt Lake, Utah, Davis, Weber,
@@ -72,6 +77,9 @@ exports.handler = async (event) => {
     const zip = (body.zip || body.zip_code || "").trim();
     const outOfArea = zip !== "" && !servedZip(zip);
 
+    const analyticsConsent = typeof body.analytics_consent === "undefined"
+      ? null
+      : bool(body.analytics_consent);
     const booking = await createBooking({
       firstName, lastName, email,
       phone: (body.phone || body.customer_phone || "").trim(),
@@ -87,6 +95,11 @@ exports.handler = async (event) => {
       consentMedical: bool(body["consent-medical"]),
       consentTerms: bool(body["consent-terms"]),
       outOfArea,
+      analytics: {
+        consentGranted: analyticsConsent,
+        clientId: cleanClientId(body.analytics_client_id),
+        sessionId: cleanSessionId(body.analytics_session_id),
+      },
     });
 
     // ─── Out-of-area: do NOT send the customer a reservation confirmation and do
@@ -192,6 +205,23 @@ exports.handler = async (event) => {
       emailResults.admin = `failed: ${err.message}`;
     }
     try { await notifyAdminSms(booking); } catch (err) { console.error("admin sms failed", err); }
+
+    // Send the accepted reservation event from the backend so a successful API
+    // response and the analytics event cannot drift apart or double-count.
+    try {
+      const analyticsResult = await sendBookingRequestSubmitted({ booking });
+      if (analyticsResult.sent) {
+        await updateBooking(booking.id, {
+          analytics: {
+            ...booking.analytics,
+            bookingRequestSubmittedAt: new Date().toISOString(),
+            bookingRequestSubmittedEvent: "booking_request_submit",
+          },
+        });
+      }
+    } catch (err) {
+      console.error("booking request analytics failed", err.message);
+    }
 
     return {
       statusCode: 200,
