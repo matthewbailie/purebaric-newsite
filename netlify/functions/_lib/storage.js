@@ -78,7 +78,8 @@ async function deleteOne(storeName, id) {
 // backfilled on read from the model string.
 
 function withChamberType(c) {
-  return { ...c, ata: inventory.inferAta(c), posture: inventory.inferPosture(c) };
+  // chamberTypeId is authoritative; ata/posture kept for legacy display + migration.
+  return { ...c, ata: inventory.inferAta(c), posture: inventory.inferPosture(c), chamberTypeId: inventory.chamberTypeIdOf(c) };
 }
 
 async function listChambers({ includeArchived = false } = {}) {
@@ -94,13 +95,11 @@ async function getChamber(id) {
   return c ? withChamberType(c) : null;
 }
 
-async function createChamber({ name, model = "Purebaric 1.5 ATA", ata, posture, notes = "" }) {
+async function createChamber({ name, chamberTypeId, notes = "" }) {
   const c = {
     id: newId(),
     name,
-    model,
-    ata: inventory.normalizeAta(ata != null ? ata : inventory.inferAta({ model })),
-    posture: inventory.normalizePosture(posture != null ? posture : inventory.inferPosture({ model })),
+    chamberTypeId: chamberTypeId || null,
     status: "active",
     notes,
     createdAt: nowIso(),
@@ -113,8 +112,7 @@ async function updateChamber(id, patch) {
   const existing = await getOne(STORES.chambers, id);
   if (!existing) return null;
   const updated = { ...existing, ...patch, id };
-  if (patch.ata != null) updated.ata = inventory.normalizeAta(patch.ata);
-  if (patch.posture != null) updated.posture = inventory.normalizePosture(patch.posture);
+  if (typeof patch.chamberTypeId !== "undefined") updated.chamberTypeId = patch.chamberTypeId || null;
   return putOne(STORES.chambers, updated);
 }
 
@@ -287,23 +285,43 @@ async function updateBooking(id, patch) {
   return putOne(STORES.bookings, updated);
 }
 
-// ───────── Machine sets (settings) ─────────
-// One blob at settings/machineSets: { sets: [{ ata, count }, ...] }. A fungible
-// pool counted per ATA rating. Empty/unset = unconstrained (feature is opt-in;
-// the booking flow behaves exactly as before until the owner enters counts).
+// ───────── Machine types & chamber types (settings) ─────────
+// settings/machineTypes: { types: [{ id, label, count }] }  count null = unlimited.
+// settings/chamberTypes: { types: [{ id, label, machineTypeId }] }.
+// When unset, both are derived deterministically from existing chambers (and the
+// legacy settings/machineSets pool) so nothing breaks before the owner edits them.
 
-async function getMachineSets() {
-  const doc = await getOne(STORES.settings, "machineSets");
-  return Array.isArray(doc && doc.sets) ? doc.sets : [];
+async function getMachineTypes() {
+  const doc = await getOne(STORES.settings, "machineTypes");
+  if (doc && Array.isArray(doc.types)) return inventory.normalizeMachineTypes(doc.types);
+  const [legacy, chambers] = await Promise.all([getOne(STORES.settings, "machineSets"), listChambers()]);
+  return inventory.deriveMachineTypes(legacy && legacy.sets, chambers);
 }
 
-async function setMachineSets(sets) {
-  const clean = (Array.isArray(sets) ? sets : [])
-    .map((s) => ({ ata: Number(s.ata), count: Math.max(0, Math.floor(Number(s.count) || 0)) }))
-    .filter((s) => Number.isFinite(s.ata) && s.ata > 0)
-    .sort((a, b) => a.ata - b.ata);
-  await store(STORES.settings).setJSON("machineSets", { id: "machineSets", sets: clean, updatedAt: nowIso() });
+async function setMachineTypes(types) {
+  const clean = inventory.normalizeMachineTypes(types).map((t) => ({ ...t, id: t.id || newId() }));
+  await store(STORES.settings).setJSON("machineTypes", { id: "machineTypes", types: clean, updatedAt: nowIso() });
   return clean;
+}
+
+async function getChamberTypes() {
+  const doc = await getOne(STORES.settings, "chamberTypes");
+  if (doc && Array.isArray(doc.types)) return inventory.normalizeChamberTypes(doc.types);
+  return inventory.deriveChamberTypes(await listChambers());
+}
+
+async function setChamberTypes(types) {
+  const clean = inventory.normalizeChamberTypes(types).map((t) => ({ ...t, id: t.id || newId() }));
+  await store(STORES.settings).setJSON("chamberTypes", { id: "chamberTypes", types: clean, updatedAt: nowIso() });
+  return clean;
+}
+
+// The machine type a chamber requires (via its chamber type).
+async function machineTypeForChamber(chamberId) {
+  const [chamber, chamberTypes] = await Promise.all([getChamber(chamberId), getChamberTypes()]);
+  if (!chamber) return null;
+  const ct = chamberTypes.find((t) => t.id === inventory.chamberTypeIdOf(chamber));
+  return ct ? ct.machineTypeId : inventory.legacyMachineTypeId(inventory.inferAta(chamber));
 }
 
 // ───────── Service area (settings) ─────────
@@ -341,20 +359,24 @@ async function setNotifications(config) {
 
 // ───────── Availability ─────────
 
-async function countAvailableToday() {
-  const today = new Date().toISOString().slice(0, 10);
-  const [chambers, rentals, machineSets] = await Promise.all([
+async function inventoryInputs() {
+  const [chamberTypes, machineTypes, chambers, rentals] = await Promise.all([
+    getChamberTypes(),
+    getMachineTypes(),
     listChambers(),
     listAll(STORES.rentals),
-    getMachineSets(),
   ]);
+  return { chamberTypes, machineTypes, chambers, rentals };
+}
+
+async function countAvailableToday() {
+  const today = new Date().toISOString().slice(0, 10);
+  const { chamberTypes, machineTypes, chambers, rentals } = await inventoryInputs();
   const busyIds = new Set(
-    rentals
-      .filter((r) => inventory.rentalOccupiesWindow(r, today, today))
-      .map((r) => r.chamberId)
+    rentals.filter((r) => inventory.rentalOccupiesWindow(r, today, today)).map((r) => r.chamberId)
   );
   const total = chambers.filter((c) => c.status === "active").length;
-  const available = inventory.computeAvailableCount(chambers, rentals, machineSets, today, today);
+  const available = inventory.computeAvailableCount(chamberTypes, machineTypes, chambers, rentals, today, today);
   return { available, total, busyIds: [...busyIds] };
 }
 
@@ -364,24 +386,15 @@ async function availabilityByType({ startDate, endDate } = {}) {
   const today = new Date().toISOString().slice(0, 10);
   const start = startDate || today;
   const end = endDate || start;
-  const [chambers, rentals, machineSets] = await Promise.all([
-    listChambers(),
-    listAll(STORES.rentals),
-    getMachineSets(),
-  ]);
-  return inventory.computeAvailabilityByType(chambers, rentals, machineSets, start, end);
+  const { chamberTypes, machineTypes, chambers, rentals } = await inventoryInputs();
+  return inventory.computeAvailabilityByType(chamberTypes, machineTypes, chambers, rentals, start, end);
 }
 
-// True when assigning one more rental of this ATA would oversubscribe the machine
-// -set pool across the window. Used to guard admin rental creation/edits.
-async function machineSetPoolFull({ ata, startDate, endDate, excludeRentalId } = {}) {
-  const [chambers, rentals, machineSets] = await Promise.all([
-    listChambers(),
-    listAll(STORES.rentals),
-    getMachineSets(),
-  ]);
-  const chambersById = new Map(chambers.map((c) => [c.id, c]));
-  return inventory.machineSetPoolFull(ata, machineSets, rentals, chambersById, startDate, endDate, excludeRentalId);
+// True when assigning one more rental drawing this machine type would oversubscribe
+// its pool across the window. Used to guard admin rental creation/edits.
+async function machineTypePoolFull({ machineTypeId, startDate, endDate, excludeRentalId } = {}) {
+  const { chamberTypes, machineTypes, chambers, rentals } = await inventoryInputs();
+  return inventory.machineTypePoolFull(machineTypeId, machineTypes, chamberTypes, chambers, rentals, startDate, endDate, excludeRentalId);
 }
 
 // Returns next-available date for each chamber (or null = available now).
@@ -656,15 +669,18 @@ module.exports = {
   DEFAULT_PRICING,
   getPricing,
   setPricing,
-  getMachineSets,
-  setMachineSets,
+  getMachineTypes,
+  setMachineTypes,
+  getChamberTypes,
+  setChamberTypes,
+  machineTypeForChamber,
   getServiceArea,
   setServiceArea,
   getNotifications,
   setNotifications,
   countAvailableToday,
   availabilityByType,
-  machineSetPoolFull,
+  machineTypePoolFull,
   nextAvailableByChamber,
   saveWaiver,
   getWaiver,

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="184" height="184" viewBox="62 58 184 184" role="img" aria-labelledby="title desc">
+  <title id="title">Purebaric symbol</title>
+  <desc id="desc">A circle intersected by a horizontal horizon line.</desc>
+  <g fill="none" stroke="#1a1f1a" stroke-width="13" stroke-linecap="round">
+    <circle cx="154" cy="150" r="62"/>
+    <line x1="72" y1="179.9" x2="236" y2="179.9"/>
+  </g>
+</svg>

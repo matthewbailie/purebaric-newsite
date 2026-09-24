@@ -328,16 +328,21 @@ Customer testimonials with a moderation gate. **No star ratings** by design — 
 
 ---
 
-## 10a. Chamber types & machine sets (inventory model, added 2026-09-23)
+## 10a. Machine types, chamber types & availability (inventory model, reworked 2026-09-25)
 
-A rentable **chamber type** is the pair (**ATA rating**, **posture** lying/sitting). Physical chambers stay individual records (each shows on the rental calendar); each now carries `ata` + `posture` (legacy records are backfilled from the `model` string on read). A **machine set** (oxygen enricher + pressurizer + AC) is required to run a chamber; sets are a **fungible pool counted per ATA** (the owner has fewer sets than chambers). A style is **offerable** for a window only when both a chamber of that type **and** a compatible machine set (exact ATA match) are free.
+Three concepts, all managed on the admin **Chambers** tab:
 
-- **Owner setup (admin → Chambers tab):**
-  1. Edit each chamber and set its **ATA rating** + **Posture**.
-  2. In **"Machine sets & availability"**, enter how many sets you own per ATA (e.g. `1.5 ATA → 6`, `2.0 ATA → 2`) and **Save**. The chips above show, per type, offerable now / chambers free / sets free.
-- **Opt-in / safe default:** an ATA with **no configured count is unconstrained** — until counts are entered, availability equals chamber availability and the booking flow is unchanged.
-- **Where it lives:** pure math in `netlify/functions/_lib/inventory.js` (unit tests in `test/inventory.test.js`); pool stored in the `settings` Blobs store key `machineSets` (`{sets:[{ata,count}]}`); admin CRUD at `/api/admin/machinesets`; per-type availability at `GET /api/availability` (`byType[]`). Rentals reserve a `machineSetAta` (defaults to the chamber's ATA); admin rental create/edit is blocked with a `machineset_conflict` (override-able) when the pool for that ATA is full in the window.
-- **Booking page:** `book.html` populates the chamber-style dropdown from `/api/availability`, flagging styles that can't be fulfilled now (still selectable — they route to the waitlist). The chosen style is saved on the booking (`requestedType`) and shown in the admin bookings list.
+- **Machine type** — a named machine set (oxygen enricher + pressurizer + AC), freeform label + how many you own. `{ id, label, count }`; `count: null` = no limit. Stored at `settings/machineTypes`.
+- **Chamber type** — a named chamber style (e.g. "1.5 ATA lying"), freeform label + the **machine type it requires** (explicit pick). `{ id, label, machineTypeId }`. Stored at `settings/chamberTypes`.
+- **Chamber** — a physical named unit (PB-001…), assigned a `chamberTypeId`. Stays on the rental calendar and rental records.
+
+A chamber type is **offerable** in a window when a chamber of that type is free **AND** a machine set of its required machine type is free. Machine sets are counted **per machine type and shared** by every chamber type that uses them, so the pool is never double-counted (this replaced the old per-ATA pool that double-counted across postures).
+
+- **Owner setup (admin → Chambers tab):** define **Machine types** (label + count), define **Chamber types** (label + required machine type), then **Add/Edit chamber** and pick its chamber type. "Availability right now" shows, per chamber type: offerable / chambers free / machine sets free (named).
+- **Reservations:** the rental form has a **Machine set** dropdown that defaults to the chamber type's required machine type and can be overridden. Rentals store `machineTypeId`. Admin create/edit is blocked with `machineset_conflict` (override-able) when that machine type's pool is full for the window.
+- **Migration / safe default:** when `machineTypes`/`chamberTypes` are unset, they are **derived deterministically** from existing chambers' legacy `ata`/`posture` (ids `mt_<ata>`, `ct_<ata>_<posture>`) and the legacy `settings/machineSets` pool — so nothing breaks before the owner edits them. A machine type with no count is unconstrained.
+- **Where it lives:** pure math + migration derivation in `netlify/functions/_lib/inventory.js` (tests in `test/inventory.test.js`); storage getters/setters + `machineTypeForChamber`/`machineTypePoolFull` in `_lib/storage.js`; admin CRUD at `/api/admin/machine-types` and `/api/admin/chamber-types`; per-chamber-type availability at `GET /api/availability` (`byType[]`, each `{ id, label, machineTypeLabel, totalChambers, freeChambers, freeSets, available }`).
+- **Booking page:** `book.html` populates the chamber dropdown from `/api/availability` `byType` (by `label`/`available`), flagging types that can't be fulfilled now (still selectable — they route to the waitlist). The chosen type label is saved on the booking (`requestedType`).
 
 ---
 

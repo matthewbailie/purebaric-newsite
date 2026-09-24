@@ -272,13 +272,9 @@
           <input type="hidden" name="id">
           <div class="form-row">
             <div class="form-group"><label>Name<span class="req">*</span></label><input name="name" required placeholder="e.g. Chamber 1"></div>
-            <div class="form-group"><label>Model</label><input name="model" placeholder="Purebaric 1.5 ATA"></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>ATA rating</label>
-              <select name="ata"><option value="1.3">1.3 ATA</option><option value="1.5" selected>1.5 ATA</option><option value="2">2.0 ATA</option></select></div>
-            <div class="form-group"><label>Posture</label>
-              <select name="posture"><option value="lying" selected>Lying</option><option value="sitting">Sitting</option></select></div>
+            <div class="form-group"><label>Chamber type</label>
+              <select name="chamberTypeId" id="chamberTypeSelect"></select>
+              <div class="renter-line" style="margin-top:4px;">Define types below in <strong>Chamber types</strong>.</div></div>
           </div>
           <div class="form-group"><label>Notes</label><textarea name="notes" rows="2"></textarea></div>
           <div class="form-buttons">
@@ -288,24 +284,40 @@
         </form>
       </div>
 
-      <div class="form-card" id="machineSetsPanel" style="display:block;margin-bottom:16px;">
-        <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Machine sets &amp; availability</h3>
-        <div class="renter-line" style="margin-bottom:12px;">A machine set (oxygen enricher + pressurizer + AC) is required to run a chamber. Enter how many you own per ATA rating. A chamber style is only offerable when a matching chamber <em>and</em> a matching machine set are both free. Leave a rating blank to leave it unconstrained.</div>
-        <div id="availabilityByType" style="margin-bottom:14px;"></div>
-        <div id="machineSetsEditor"></div>
+      <div class="form-card" id="machineTypesPanel" style="display:block;margin-bottom:16px;">
+        <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Machine types</h3>
+        <div class="renter-line" style="margin-bottom:12px;max-width:760px;">A machine set = oxygen enricher + pressurizer + AC, required to run a chamber. Name each machine type and enter how many you own. Leave the count blank if you don't want to limit bookings by that machine type.</div>
+        <div id="machineTypesEditor"></div>
+        <div class="mt-actions"><button type="button" class="btn btn-ghost btn-sm" onclick="addMachineType()">+ Add machine type</button><button type="button" class="btn btn-primary btn-sm" onclick="saveMachineTypes()">Save machine types</button></div>
+      </div>
+
+      <div class="form-card" id="chamberTypesPanel" style="display:block;margin-bottom:16px;">
+        <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Chamber types</h3>
+        <div class="renter-line" style="margin-bottom:12px;max-width:760px;">Name each chamber style (e.g. "1.5 ATA lying") and pick the machine type it needs to run. Assign chambers to a type in the list below.</div>
+        <div id="chamberTypesEditor"></div>
+        <div class="mt-actions"><button type="button" class="btn btn-ghost btn-sm" onclick="addChamberType()">+ Add chamber type</button><button type="button" class="btn btn-primary btn-sm" onclick="saveChamberTypes()">Save chamber types</button></div>
+      </div>
+
+      <div class="form-card" id="availabilityPanel" style="display:block;margin-bottom:16px;">
+        <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Availability right now</h3>
+        <div class="renter-line" style="margin-bottom:12px;">Offerable = a chamber of that type is free AND a machine set it needs is free. The machine pool is shared by every chamber type that uses it.</div>
+        <div id="availabilityByType"></div>
       </div>
 
       <div id="chambersList"></div>
       <style>
+        .mt-actions{display:flex;gap:8px;margin-top:6px;}
         #availabilityByType{display:flex;flex-wrap:wrap;gap:8px;}
-        .avail-chip{border:1px solid var(--line,#e6dccd);border-radius:10px;padding:8px 12px;background:var(--card,#fffdf9);font-size:12px;min-width:120px;}
+        .avail-chip{border:1px solid var(--line,#e6dccd);border-radius:10px;padding:8px 12px;background:var(--card,#fffdf9);font-size:12px;min-width:150px;}
         .avail-chip .at-label{font-weight:700;font-size:13px;}
         .avail-chip .at-num{font-weight:700;}
         .avail-chip.at-out{border-color:#c9a24a;background:#fdf7e8;}
         .avail-chip.at-zero{border-color:#c47b6e;background:#fbeeeb;}
-        .ms-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+        .ms-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+        .ms-row label{font-size:12px;font-weight:600;color:var(--stone-muted,#6f635b);}
         .ms-row select,.ms-row input{padding:6px 8px;border:1px solid var(--line,#e6dccd);border-radius:8px;font-size:13px;}
-        .ms-row input{width:90px;}
+        .ms-row .ms-count{width:90px;}
+        .ms-row .ms-label{width:180px;}
         .cal{border:1px solid var(--line,#e6dccd);border-radius:12px;overflow:hidden;background:var(--card,#fffdf9);}
         .cal-row{display:flex;align-items:stretch;border-top:1px solid var(--line,#e6dccd);min-height:42px;}
         .cal-row.cal-headrow{border-top:none;background:#faf6ef;}
@@ -364,6 +376,11 @@
                 <option value="cancelled">Cancelled</option>
               </select>
             </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Machine set</label><select name="machineTypeId" id="rentalMachineSelect"></select>
+              <div class="renter-line" style="margin-top:4px;">Defaults to what the chamber's type needs.</div></div>
+            <div class="form-group"></div>
           </div>
           <div class="form-row triple">
             <div class="form-group"><label>Start date<span class="req">*</span></label><input type="date" name="startDate" required></div>
@@ -728,7 +745,7 @@
     // Load each section independently: one failing call must not blank the rest,
     // and we still paint whatever succeeded.
     const results = await Promise.allSettled([
-      loadChambers(), loadRentals(), loadWaitlist(), loadBookings(), loadReviews(), loadPricing(), loadMachineSets(), loadServiceArea(), loadNotifications()
+      loadChambers(), loadRentals(), loadWaitlist(), loadBookings(), loadReviews(), loadPricing(), loadInventory(), loadServiceArea(), loadNotifications()
     ]);
     paintStats();
     const failures = results.filter(r => r.status === 'rejected').map(r => r.reason || {});
@@ -818,78 +835,115 @@
     populateChamberSelect();
   }
 
-  // ───────── Machine sets & per-type availability ─────────
-  let _machineSets = [];
-  const ATA_OPTIONS = ['1.3', '1.5', '2'];
-  function ataLabel(a) { return (Number(a) === 2 ? '2.0' : String(a)) + ' ATA'; }
+  // ───────── Inventory: machine types, chamber types, availability ─────────
+  let _machineTypes = [];
+  let _chamberTypes = [];
 
-  async function loadMachineSets() {
-    const data = await api('/api/admin/machinesets');
-    _machineSets = data.sets || [];
+  async function loadInventory() {
+    const data = await api('/api/admin/chamber-types'); // returns machineTypes + byType too
+    _machineTypes = data.machineTypes || [];
+    _chamberTypes = data.types || [];
+    renderMachineTypes();
+    renderChamberTypes();
     renderAvailability(data.byType || []);
-    renderMachineSetsEditor();
+    populateChamberTypeSelect();
+  }
+  function chamberTypeLabelFor(c) {
+    const ct = _chamberTypes.find(t => t.id === c.chamberTypeId);
+    return ct ? ct.label : 'Unassigned';
   }
 
+  // ── Machine types editor ──
+  function renderMachineTypes() {
+    const el = document.getElementById('machineTypesEditor');
+    if (!el) return;
+    if (!_machineTypes.length) { el.innerHTML = '<div class="renter-line" style="margin-bottom:6px;">No machine types yet. Add one.</div>'; return; }
+    el.innerHTML = _machineTypes.map((m, i) => `
+      <div class="ms-row mt-row" data-i="${i}" data-id="${escape(m.id || '')}">
+        <div><label>Machine type</label><br><input class="ms-label" value="${escape(m.label)}" placeholder="e.g. 1.5 ATA"></div>
+        <div><label>How many you own</label><br><input class="ms-count" type="number" min="0" step="1" value="${m.count == null ? '' : Number(m.count)}" placeholder="blank = no limit"></div>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="removeMachineType(${i})">Remove</button>
+      </div>`).join('');
+  }
+  function readMachineTypeRows() {
+    return [...document.querySelectorAll('#machineTypesEditor .mt-row')].map(row => ({
+      id: row.dataset.id || undefined,
+      label: row.querySelector('.ms-label').value.trim(),
+      count: row.querySelector('.ms-count').value,
+    }));
+  }
+  function addMachineType() { _machineTypes = readMachineTypeRows().concat({ label: '', count: '' }); renderMachineTypes(); }
+  function removeMachineType(i) { _machineTypes = readMachineTypeRows().filter((_, idx) => idx !== i); renderMachineTypes(); }
+  async function saveMachineTypes() {
+    const types = readMachineTypeRows().filter(t => t.label);
+    try {
+      await api('/api/admin/machine-types', { method: 'PUT', body: JSON.stringify({ types }) });
+      toast('Machine types saved');
+      await loadInventory(); paintStats();
+    } catch (err) { toast(err.message, true); }
+  }
+
+  // ── Chamber types editor ──
+  function renderChamberTypes() {
+    const el = document.getElementById('chamberTypesEditor');
+    if (!el) return;
+    if (!_chamberTypes.length) { el.innerHTML = '<div class="renter-line" style="margin-bottom:6px;">No chamber types yet. Add one.</div>'; return; }
+    const mtOpts = _machineTypes.map(m => `<option value="${escape(m.id)}">${escape(m.label)}</option>`).join('');
+    el.innerHTML = _chamberTypes.map((c, i) => `
+      <div class="ms-row ct-row" data-i="${i}" data-id="${escape(c.id || '')}">
+        <div><label>Chamber type</label><br><input class="ms-label" value="${escape(c.label)}" placeholder="e.g. 1.5 ATA lying"></div>
+        <div><label>Requires machine type</label><br><select class="ct-machine"><option value="">— none —</option>${mtOpts}</select></div>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="removeChamberType(${i})">Remove</button>
+      </div>`).join('');
+    el.querySelectorAll('.ct-row').forEach((row, i) => { row.querySelector('.ct-machine').value = _chamberTypes[i].machineTypeId || ''; });
+  }
+  function readChamberTypeRows() {
+    return [...document.querySelectorAll('#chamberTypesEditor .ct-row')].map(row => ({
+      id: row.dataset.id || undefined,
+      label: row.querySelector('.ms-label').value.trim(),
+      machineTypeId: row.querySelector('.ct-machine').value || null,
+    }));
+  }
+  function addChamberType() { _chamberTypes = readChamberTypeRows().concat({ label: '', machineTypeId: '' }); renderChamberTypes(); }
+  function removeChamberType(i) { _chamberTypes = readChamberTypeRows().filter((_, idx) => idx !== i); renderChamberTypes(); }
+  async function saveChamberTypes() {
+    const types = readChamberTypeRows().filter(t => t.label);
+    try {
+      await api('/api/admin/chamber-types', { method: 'PUT', body: JSON.stringify({ types }) });
+      toast('Chamber types saved');
+      await loadInventory(); await loadChambers(); paintStats();
+    } catch (err) { toast(err.message, true); }
+  }
+
+  // ── Availability readout ──
   function renderAvailability(byType) {
     const el = document.getElementById('availabilityByType');
     if (!el) return;
     if (!byType.length) {
-      el.innerHTML = '<span class="renter-line">Add chambers to see availability by type.</span>';
+      el.innerHTML = '<span class="renter-line">Define chamber types and add chambers to see availability.</span>';
       return;
     }
     el.innerHTML = byType.map(t => {
       const constrained = t.setsConfigured;
       const cls = t.available === 0 ? 'at-zero' : (constrained && t.available < t.freeChambers ? 'at-out' : '');
-      const sets = constrained ? `${t.freeSets} set${t.freeSets === 1 ? '' : 's'} free` : 'sets: n/a';
+      const sets = t.machineTypeLabel
+        ? (constrained ? `${t.freeSets} ${escape(t.machineTypeLabel)} set${t.freeSets === 1 ? '' : 's'} free` : `${escape(t.machineTypeLabel)}: no limit`)
+        : 'no machine linked';
       return `<div class="avail-chip ${cls}">
-        <div class="at-label">${escape(ataLabel(t.ata))} · ${escape(t.posture)}</div>
+        <div class="at-label">${escape(t.label)}</div>
         <div><span class="at-num">${t.available}</span> offerable now</div>
-        <div class="renter-line">${t.freeChambers}/${t.totalChambers} chambers free · ${escape(sets)}</div>
+        <div class="renter-line">${t.freeChambers}/${t.totalChambers} chambers free · ${sets}</div>
       </div>`;
     }).join('');
   }
 
-  function renderMachineSetsEditor() {
-    const el = document.getElementById('machineSetsEditor');
-    if (!el) return;
-    const rows = (_machineSets.length ? _machineSets : [{ ata: '1.5', count: '' }]).map((s, i) => `
-      <div class="ms-row" data-i="${i}">
-        <select class="ms-ata">${ATA_OPTIONS.map(a => `<option value="${a}" ${Number(a) === Number(s.ata) ? 'selected' : ''}>${ataLabel(a)}</option>`).join('')}</select>
-        <input class="ms-count" type="number" min="0" step="1" value="${s.count === '' ? '' : Number(s.count)}" placeholder="count">
-        <button type="button" class="btn btn-ghost btn-sm" onclick="removeMachineSetRow(${i})">Remove</button>
-      </div>`).join('');
-    el.innerHTML = `${rows}
-      <div style="margin-top:6px;">
-        <button type="button" class="btn btn-ghost btn-sm" onclick="addMachineSetRow()">+ Add rating</button>
-        <button type="button" class="btn btn-primary btn-sm" onclick="saveMachineSets()">Save machine sets</button>
-      </div>`;
-  }
-
-  function readMachineSetRows() {
-    return [...document.querySelectorAll('#machineSetsEditor .ms-row')].map(row => ({
-      ata: row.querySelector('.ms-ata').value,
-      count: row.querySelector('.ms-count').value,
-    }));
-  }
-  function addMachineSetRow() { _machineSets = readMachineSetRows().concat({ ata: '2', count: '' }); renderMachineSetsEditor(); }
-  function removeMachineSetRow(i) { _machineSets = readMachineSetRows().filter((_, idx) => idx !== i); renderMachineSetsEditor(); }
-
-  async function saveMachineSets() {
-    // Merge duplicate ratings and drop blank counts (blank = unconstrained).
-    const merged = {};
-    for (const r of readMachineSetRows()) {
-      if (r.count === '' || r.count == null) continue;
-      const ata = Number(r.ata); const count = Math.max(0, Math.floor(Number(r.count) || 0));
-      if (!Number.isFinite(ata) || ata <= 0) continue;
-      merged[ata] = (merged[ata] || 0) + count;
-    }
-    const sets = Object.entries(merged).map(([ata, count]) => ({ ata: Number(ata), count }));
-    try {
-      await api('/api/admin/machinesets', { method: 'PUT', body: JSON.stringify({ sets }) });
-      toast('Machine sets saved');
-      await loadMachineSets();
-      paintStats();
-    } catch (err) { toast(err.message, true); }
+  // ── Chamber-type dropdown in the Add/Edit chamber form ──
+  function populateChamberTypeSelect() {
+    const sel = document.getElementById('chamberTypeSelect');
+    if (!sel) return;
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">— none —</option>' + _chamberTypes.map(c => `<option value="${escape(c.id)}">${escape(c.label)}</option>`).join('');
+    if (cur) sel.value = cur;
   }
   // Format a YYYY-MM-DD date as local (avoids the new Date('YYYY-MM-DD') UTC
   // parse that shifts the displayed day back by one in western timezones).
@@ -954,7 +1008,7 @@
       }
       return `
       <tr>
-        <td><strong>${escape(c.name)}</strong><div class="renter-line">${escape(String(c.ata))} ATA · ${escape(c.posture || 'lying')}${c.model ? ' · ' + escape(c.model) : ''}</div></td>
+        <td><strong>${escape(c.name)}</strong><div class="renter-line">${escape(chamberTypeLabelFor(c))}</div></td>
         <td><span class="pill pill-${opState}">${opLabel}</span></td>
         <td>${availability}</td>
         <td>${escape(c.notes || '')}</td>
@@ -1092,7 +1146,8 @@
   function editChamber(id) {
     const c = _chambers.find(x => x.id === id);
     if (!c) return;
-    toggleForm('chamberForm', { id: c.id, name: c.name, model: c.model, ata: String(c.ata), posture: c.posture || 'lying', notes: c.notes });
+    populateChamberTypeSelect();
+    toggleForm('chamberForm', { id: c.id, name: c.name, chamberTypeId: c.chamberTypeId || '', notes: c.notes });
   }
 
   async function submitChamber(e) {
@@ -1124,10 +1179,39 @@
   function populateChamberSelect() {
     const sel = document.getElementById('rentalChamberSelect');
     const rentable = _chambers.filter(c => c.status === 'active' || c.status === 'maintenance');
+    const cur = sel.value;
     sel.innerHTML = '<option value="">Select a chamber</option>' + rentable.map(c => {
       const label = c.status === 'maintenance' ? `${c.name} (in maintenance)` : c.name;
       return `<option value="${c.id}">${escape(label)}</option>`;
     }).join('');
+    if (cur) sel.value = cur;
+    populateRentalMachineSelect();
+    // Default the machine set to what the chosen chamber's type needs (unless already set).
+    if (!sel._machineHooked) {
+      sel._machineHooked = true;
+      sel.addEventListener('change', () => setRentalMachineDefault());
+    }
+  }
+  function populateRentalMachineSelect() {
+    const sel = document.getElementById('rentalMachineSelect');
+    if (!sel) return;
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">— auto (from chamber type) —</option>' +
+      (_machineTypes || []).map(m => `<option value="${escape(m.id)}">${escape(m.label)}</option>`).join('');
+    if (cur) sel.value = cur;
+  }
+  // Machine type a chamber requires, via its chamber type.
+  function machineTypeIdForChamberId(chamberId) {
+    const c = _chambers.find(x => x.id === chamberId);
+    if (!c) return '';
+    const ct = _chamberTypes.find(t => t.id === c.chamberTypeId);
+    return ct ? (ct.machineTypeId || '') : '';
+  }
+  function setRentalMachineDefault() {
+    const cSel = document.getElementById('rentalChamberSelect');
+    const mSel = document.getElementById('rentalMachineSelect');
+    if (!cSel || !mSel) return;
+    mSel.value = machineTypeIdForChamberId(cSel.value) || '';
   }
 
   // ─── Rentals ───
@@ -1180,8 +1264,10 @@
   function editRental(id) {
     const r = _rentals.find(x => x.id === id);
     if (!r) return;
+    populateChamberSelect();
     toggleForm('rentalForm', {
       id: r.id, chamberId: r.chamberId, status: r.status,
+      machineTypeId: r.machineTypeId || machineTypeIdForChamberId(r.chamberId) || '',
       startDate: r.startDate, endDate: r.endDate, monthlyRate: r.monthlyRate,
       'renter-name': r.renter && r.renter.name, 'renter-email': r.renter && r.renter.email,
       'renter-phone': r.renter && r.renter.phone, 'renter-zip': r.renter && r.renter.address && r.renter.address.zip,

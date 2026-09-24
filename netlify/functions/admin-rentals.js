@@ -1,14 +1,11 @@
-const { listRentals, createRental, updateRental, findRentalConflict, getChamber, machineSetPoolFull, store, STORES } = require("./_lib/storage");
+const { listRentals, createRental, updateRental, findRentalConflict, machineTypeForChamber, machineTypePoolFull, store, STORES } = require("./_lib/storage");
 const { requireAuth, parseBody, parsePathSegments, json } = require("./_lib/admin");
 
-// Resolve which machine-set ATA pool a rental draws from: an explicit override,
-// else the assigned chamber's ATA rating.
-async function resolveMachineSetAta(body, chamberId) {
-  if (body && body.machineSetAta != null && body.machineSetAta !== "") {
-    return Number(body.machineSetAta);
-  }
-  const chamber = chamberId ? await getChamber(chamberId) : null;
-  return chamber ? Number(chamber.ata) : null;
+// Which machine type (machine set) this rental draws from: an explicit pick,
+// else the machine type required by the assigned chamber's chamber type.
+async function resolveMachineTypeId(body, chamberId) {
+  if (body && body.machineTypeId) return body.machineTypeId;
+  return chamberId ? await machineTypeForChamber(chamberId) : null;
 }
 
 function buildRenter(body) {
@@ -76,21 +73,21 @@ exports.handler = async (event, context) => {
         }
       }
 
-      const machineSetAta = await resolveMachineSetAta(body, body.chamberId);
+      const machineTypeId = await resolveMachineTypeId(body, body.chamberId);
 
-      // Machine-set pool guard: a chamber is only rentable when a compatible
-      // machine set is also free for the window. Skipped when unconfigured
-      // (opt-in) or when the caller overrides.
-      if (machineSetAta != null && !body.overrideConflict) {
-        const full = await machineSetPoolFull({
-          ata: machineSetAta,
+      // Machine-set pool guard: a chamber is only rentable when a machine set of
+      // its type is also free for the window. Skipped when the type is
+      // unconstrained (no count) or when the caller overrides.
+      if (machineTypeId && !body.overrideConflict) {
+        const full = await machineTypePoolFull({
+          machineTypeId,
           startDate: body.startDate,
           endDate: body.endDate,
         });
         if (full) {
           return json(409, {
             error: "machineset_conflict",
-            message: `No ${machineSetAta} ATA machine set is free ${body.startDate} → ${body.endDate}. All sets in that pool are already assigned for this window.`,
+            message: `No machine set of the required type is free ${body.startDate} → ${body.endDate}. All sets in that pool are already assigned for this window.`,
           });
         }
       }
@@ -100,7 +97,7 @@ exports.handler = async (event, context) => {
         startDate: body.startDate,
         endDate: body.endDate,
         monthlyRate: Number(body.monthlyRate) || 0,
-        machineSetAta,
+        machineTypeId,
         renter: buildRenter(body),
         notes: body.notes || "",
       };
@@ -125,13 +122,16 @@ exports.handler = async (event, context) => {
       }
       buildPaymentPatch(body, patch);
 
-      // When the chamber changes, the machine-set pool it draws from follows it.
-      if (patch.chamberId) {
-        patch.machineSetAta = await resolveMachineSetAta(body, patch.chamberId);
+      // Machine set: an explicit pick wins; otherwise a chamber change re-defaults
+      // it to the machine type the new chamber's type requires.
+      if (typeof body.machineTypeId !== "undefined") {
+        patch.machineTypeId = body.machineTypeId || null;
+      } else if (patch.chamberId) {
+        patch.machineTypeId = await resolveMachineTypeId(body, patch.chamberId);
       }
 
       // Conflict detection on date/chamber changes
-      if ((patch.startDate || patch.endDate || patch.chamberId) && !body.overrideConflict) {
+      if ((patch.startDate || patch.endDate || patch.chamberId || typeof body.machineTypeId !== "undefined") && !body.overrideConflict) {
         const merged = { ...(await listRentals()).find((r) => r.id === id), ...patch };
         if (merged.chamberId && merged.startDate && merged.endDate) {
           const conflict = await findRentalConflict({
@@ -147,9 +147,9 @@ exports.handler = async (event, context) => {
               conflict,
             });
           }
-          if (merged.machineSetAta != null) {
-            const full = await machineSetPoolFull({
-              ata: merged.machineSetAta,
+          if (merged.machineTypeId) {
+            const full = await machineTypePoolFull({
+              machineTypeId: merged.machineTypeId,
               startDate: merged.startDate,
               endDate: merged.endDate,
               excludeRentalId: id,
@@ -157,7 +157,7 @@ exports.handler = async (event, context) => {
             if (full) {
               return json(409, {
                 error: "machineset_conflict",
-                message: `No ${merged.machineSetAta} ATA machine set is free ${merged.startDate} → ${merged.endDate}. All sets in that pool are already assigned for this window.`,
+                message: `No machine set of the required type is free ${merged.startDate} → ${merged.endDate}. All sets in that pool are already assigned for this window.`,
               });
             }
           }

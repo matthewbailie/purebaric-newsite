@@ -3,84 +3,89 @@ const assert = require("node:assert/strict");
 const {
   computeAvailabilityByType,
   computeAvailableCount,
-  machineSetPoolFull,
-  inferAta,
-  inferPosture,
+  machineTypePoolFull,
+  deriveMachineTypes,
+  deriveChamberTypes,
+  chamberTypeIdOf,
 } = require("../netlify/functions/_lib/inventory");
 
+const machineTypes = [
+  { id: "mt15", label: "1.5 ATA", count: 2 },
+  { id: "mt20", label: "2.0 ATA", count: 5 },
+];
+const chamberTypes = [
+  { id: "lying15", label: "1.5 ATA lying", machineTypeId: "mt15" },
+  { id: "sitting15", label: "1.5 ATA sitting", machineTypeId: "mt15" },
+  { id: "lying20", label: "2.0 ATA lying", machineTypeId: "mt20" },
+];
 const chambers = [
-  { id: "c1", ata: 1.5, posture: "lying", status: "active" },
-  { id: "c2", ata: 1.5, posture: "lying", status: "active" },
-  { id: "c3", ata: 1.5, posture: "sitting", status: "active" },
-  { id: "c4", ata: 2.0, posture: "lying", status: "active" },
-  { id: "c5", ata: 2.0, posture: "lying", status: "maintenance" }, // not rentable
+  { id: "c1", chamberTypeId: "lying15", status: "active" },
+  { id: "c2", chamberTypeId: "lying15", status: "active" },
+  { id: "c3", chamberTypeId: "sitting15", status: "active" },
+  { id: "c4", chamberTypeId: "lying20", status: "active" },
+  { id: "c5", chamberTypeId: "lying20", status: "maintenance" }, // not rentable
 ];
 
-test("unconfigured machine sets leave availability equal to free chambers", () => {
-  const byType = computeAvailabilityByType(chambers, [], [], "2026-10-01", "2026-10-01");
-  const lying15 = byType.find((t) => t.ata === 1.5 && t.posture === "lying");
+test("byType reports free chambers and the shared machine pool per type", () => {
+  const byType = computeAvailabilityByType(chamberTypes, machineTypes, chambers, [], "2026-10-01", "2026-10-01");
+  const lying15 = byType.find((t) => t.id === "lying15");
   assert.equal(lying15.totalChambers, 2);
   assert.equal(lying15.freeChambers, 2);
+  assert.equal(lying15.machineTypeLabel, "1.5 ATA");
+  assert.equal(lying15.freeSets, 2);
+  assert.equal(lying15.available, 2);
+  const lying20 = byType.find((t) => t.id === "lying20");
+  assert.equal(lying20.totalChambers, 1); // maintenance chamber excluded
+});
+
+test("total available caps the shared 1.5 machine pool ONCE across postures (no double-count)", () => {
+  // 3 free 1.5 chambers (2 lying + 1 sitting) but only 2 machine sets → total 1.5 = 2.
+  const total = computeAvailableCount(chamberTypes, machineTypes, chambers, [], "2026-10-01", "2026-10-01");
+  // 1.5 pool: min(2 lying + 1 sitting = 3 chambers, 2 sets) = 2 ; 2.0: min(1, 5) = 1
+  assert.equal(total, 3);
+});
+
+test("a rental consumes a machine set from the shared pool for the window", () => {
+  const rentals = [
+    { id: "r1", chamberId: "c1", status: "active", startDate: "2026-09-01", endDate: "2026-12-01" },
+  ];
+  const byType = computeAvailabilityByType(chamberTypes, machineTypes, chambers, rentals, "2026-10-01", "2026-10-01");
+  const lying15 = byType.find((t) => t.id === "lying15");
+  const sitting15 = byType.find((t) => t.id === "sitting15");
+  assert.equal(lying15.freeChambers, 1); // c1 busy
+  assert.equal(lying15.freeSets, 1); // 2 - 1 used
+  assert.equal(sitting15.freeSets, 1); // same shared pool reflects the usage
+});
+
+test("machineTypePoolFull blocks a second rental when only one set exists", () => {
+  const oneSet = [{ id: "mt15", label: "1.5 ATA", count: 1 }];
+  const rentals = [
+    { id: "r1", chamberId: "c1", machineTypeId: "mt15", status: "scheduled", startDate: "2026-10-01", endDate: "2026-11-01" },
+  ];
+  assert.equal(machineTypePoolFull("mt15", oneSet, chamberTypes, chambers, rentals, "2026-10-15", "2026-10-20"), true);
+  assert.equal(machineTypePoolFull("mt15", oneSet, chamberTypes, chambers, rentals, "2026-10-15", "2026-10-20", "r1"), false); // editing that rental
+  assert.equal(machineTypePoolFull("mt15", oneSet, chamberTypes, chambers, rentals, "2026-12-05", "2026-12-10"), false); // no overlap
+});
+
+test("unlimited machine type (no count) leaves availability equal to free chambers", () => {
+  const noCount = [{ id: "mt15", label: "1.5 ATA", count: null }];
+  const byType = computeAvailabilityByType(chamberTypes, noCount, chambers, [], "2026-10-01", "2026-10-01");
+  const lying15 = byType.find((t) => t.id === "lying15");
   assert.equal(lying15.setsConfigured, false);
   assert.equal(lying15.freeSets, null);
   assert.equal(lying15.available, 2);
-  // Maintenance chamber excluded: only c4 counts for 2.0 lying.
-  const lying20 = byType.find((t) => t.ata === 2.0 && t.posture === "lying");
-  assert.equal(lying20.totalChambers, 1);
 });
 
-test("machine-set pool caps availability and is shared across postures of an ATA", () => {
-  const machineSets = [{ ata: 1.5, count: 1 }, { ata: 2.0, count: 5 }];
-  const byType = computeAvailabilityByType(chambers, [], machineSets, "2026-10-01", "2026-10-01");
-  const lying15 = byType.find((t) => t.ata === 1.5 && t.posture === "lying");
-  const sitting15 = byType.find((t) => t.ata === 1.5 && t.posture === "sitting");
-  // Only one 1.5 set exists: each posture individually shows 1 offerable...
-  assert.equal(lying15.available, 1);
-  assert.equal(sitting15.available, 1);
-  // ...but the shared pool caps total 1.5 availability at 1.
-  const total = computeAvailableCount(chambers, [], machineSets, "2026-10-01", "2026-10-01");
-  // 1.5 -> min(3 free chambers, 1 set) = 1 ; 2.0 -> min(1 free chamber, 5 sets) = 1
-  assert.equal(total, 2);
-});
-
-test("overlapping rentals consume chambers and machine sets for the window", () => {
-  const machineSets = [{ ata: 1.5, count: 2 }];
-  const rentals = [
-    { id: "r1", chamberId: "c1", machineSetAta: 1.5, status: "active", startDate: "2026-09-01", endDate: "2026-12-01" },
+test("migration derives machine + chamber types (with deterministic ids) from legacy chambers", () => {
+  const legacyChambers = [
+    { id: "p1", model: "Purebaric 1.5 ATA", ata: 1.5, posture: "lying", status: "active" },
+    { id: "p2", model: "Purebaric 2.0 ATA", ata: 2.0, posture: "sitting", status: "active" },
   ];
-  const byType = computeAvailabilityByType(chambers, rentals, machineSets, "2026-10-01", "2026-10-01");
-  const lying15 = byType.find((t) => t.ata === 1.5 && t.posture === "lying");
-  assert.equal(lying15.freeChambers, 1); // c1 busy, c2 free
-  assert.equal(lying15.freeSets, 1); // 2 configured - 1 in use
-});
-
-test("machineSetPoolFull blocks a second 1.5 rental when only one set exists", () => {
-  const machineSets = [{ ata: 1.5, count: 1 }];
-  const chambersById = new Map(chambers.map((c) => [c.id, c]));
-  const rentals = [
-    { id: "r1", chamberId: "c1", machineSetAta: 1.5, status: "scheduled", startDate: "2026-10-01", endDate: "2026-11-01" },
-  ];
-  assert.equal(
-    machineSetPoolFull(1.5, machineSets, rentals, chambersById, "2026-10-15", "2026-10-20"),
-    true
-  );
-  // Excluding the occupying rental (editing it) frees the pool.
-  assert.equal(
-    machineSetPoolFull(1.5, machineSets, rentals, chambersById, "2026-10-15", "2026-10-20", "r1"),
-    false
-  );
-  // A non-overlapping window is fine.
-  assert.equal(
-    machineSetPoolFull(1.5, machineSets, rentals, chambersById, "2026-12-01", "2026-12-05"),
-    false
-  );
-});
-
-test("legacy chambers infer ATA and posture from the model string", () => {
-  assert.equal(inferAta({ model: "Purebaric 2.0 ATA" }), 2.0);
-  assert.equal(inferAta({ model: "Soft-Shell 1.5 ATA" }), 1.5);
-  assert.equal(inferAta({ model: "no rating here" }), 1.5); // default
-  assert.equal(inferPosture({ model: "1.5 ATA sitting chamber" }), "sitting");
-  assert.equal(inferPosture({ model: "1.5 ATA" }), "lying"); // default
-  assert.equal(inferAta({ ata: 2.0 }), 2.0); // explicit wins
+  const mt = deriveMachineTypes([{ ata: 1.5, count: 3 }], legacyChambers);
+  assert.deepEqual(mt.find((m) => m.id === "mt_1.5"), { id: "mt_1.5", label: "1.5 ATA", count: 3 });
+  assert.equal(mt.find((m) => m.id === "mt_2").count, null); // derived from chamber, no count yet
+  const ct = deriveChamberTypes(legacyChambers);
+  assert.deepEqual(ct.find((t) => t.id === "ct_1.5_lying"), { id: "ct_1.5_lying", label: "1.5 ATA lying", machineTypeId: "mt_1.5" });
+  // a legacy chamber with no chamberTypeId resolves to its derived type id
+  assert.equal(chamberTypeIdOf(legacyChambers[0]), "ct_1.5_lying");
 });
