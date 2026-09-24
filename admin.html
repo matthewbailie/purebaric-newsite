@@ -59,17 +59,35 @@
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <style>
   body { background: var(--cream-warm); }
-  .admin-wrap { max-width: 1180px; margin: 0 auto; padding: 2rem 1.5rem 6rem; }
-  .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--line); }
-  .admin-header h1 { font-size: 2rem; margin: 0; }
+  /* ─── Shell + left sidebar navigation ─── */
+  .admin-shell { display: flex; min-height: 100vh; align-items: stretch; }
+  .admin-sidebar { width: 236px; flex: 0 0 236px; background: var(--cream); border-right: 1px solid var(--line); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow-y: auto; z-index: 40; }
+  .sidebar-brand { display: flex; align-items: center; gap: 0.65rem; padding: 1.35rem 1.25rem 1.1rem; }
+  .sidebar-brand .brand-mark { width: 30px; height: 30px; flex: none; color: var(--ink); }
+  .sidebar-brand .brand-text { font-family: var(--font-display); font-size: 1.12rem; line-height: 1.05; color: var(--ink); font-weight: 600; }
+  .sidebar-brand .brand-text small { display: block; font-family: inherit; font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone-muted); font-weight: 600; margin-top: 2px; }
+  .sidebar-close { margin-left: auto; display: none; background: none; border: none; font-size: 1.6rem; line-height: 1; color: var(--stone-muted); cursor: pointer; padding: 0 0.25rem; }
+  .sidebar-nav { display: flex; flex-direction: column; padding: 0.5rem 0.6rem; gap: 2px; flex: 1; }
+  .sidebar-foot { padding: 1rem 1.25rem; border-top: 1px solid var(--line); font-size: 0.8rem; color: var(--stone-muted); line-height: 1.5; }
+  .sidebar-foot button { background: none; border: none; color: var(--terracotta); cursor: pointer; font-family: inherit; font-size: 0.8rem; padding: 0; text-decoration: underline; }
+  .admin-main { flex: 1; min-width: 0; padding: 1.75rem 2rem 6rem; max-width: 1220px; }
+  .admin-topbar { display: none; align-items: center; gap: 0.8rem; margin-bottom: 1.25rem; }
+  .nav-toggle-btn { background: var(--cream); border: 1px solid var(--line); border-radius: 8px; width: 42px; height: 42px; font-size: 1.2rem; line-height: 1; cursor: pointer; color: var(--ink); flex: none; }
+  .topbar-title { font-family: var(--font-display); font-size: 1.3rem; color: var(--ink); }
+  .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(20,18,15,0.4); z-index: 39; }
+  /* Only show nav, user, and the mobile top bar once signed in. */
+  .admin-shell:not(.authed) .sidebar-nav,
+  .admin-shell:not(.authed) .sidebar-foot,
+  .admin-shell:not(.authed) .admin-topbar { display: none; }
   .admin-user { font-size: 0.85rem; color: var(--stone-muted); }
   .admin-user button { background: none; border: none; color: var(--terracotta); cursor: pointer; font-family: inherit; font-size: 0.85rem; padding: 0; text-decoration: underline; }
   .login-card { background: var(--cream); border: 1px solid var(--line); padding: 3rem; max-width: 480px; margin: 4rem auto; text-align: center; border-radius: 4px; }
   .login-card h2 { margin-bottom: 0.5rem; }
   .login-card p { color: var(--stone-muted); margin-bottom: 1.5rem; }
-  .tabs { display: flex; gap: 0.5rem; border-bottom: 1px solid var(--line); margin-bottom: 2rem; }
-  .tab-btn { background: none; border: none; padding: 0.85rem 1.25rem; font-family: inherit; font-size: 0.95rem; color: var(--stone-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
-  .tab-btn.active { color: var(--ink); border-bottom-color: var(--terracotta); font-weight: 600; }
+  .sidebar-nav .tab-btn { display: flex; align-items: center; width: 100%; text-align: left; background: none; border: none; border-left: 3px solid transparent; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 0.9rem; color: var(--stone-muted); padding: 0.62rem 0.85rem; transition: background 0.12s, color 0.12s; }
+  .sidebar-nav .tab-btn:hover { background: var(--cream-warm); color: var(--ink); }
+  .sidebar-nav .tab-btn.active { background: var(--cream-warm); color: var(--ink); font-weight: 600; border-left-color: var(--terracotta); }
+  .sidebar-nav .tab-btn:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 2px; }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
   /* The inline display:flex on #loadError would otherwise override [hidden]. */
@@ -117,7 +135,7 @@
   .toast.show { opacity: 1; transform: translateY(0); }
   .toast.err { background: #82402f; }
   .renter-line { font-size: 0.85rem; color: var(--stone-muted); }
-  .stat-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
   .modal-backdrop { position: fixed; inset: 0; background: rgba(20, 18, 15, 0.45); display: none; align-items: center; justify-content: center; z-index: 9998; padding: 1rem; }
   .modal-backdrop.open { display: flex; }
   .modal { background: var(--cream); border-radius: 4px; max-width: 640px; width: 100%; max-height: 86vh; overflow-y: auto; padding: 2rem; box-shadow: 0 12px 36px rgba(0,0,0,0.18); }
@@ -148,29 +166,25 @@
   /* ─── Mobile / responsive ─── */
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); }
   .table-wrap .data-table { border: none; min-width: 640px; }
+  /* Sidebar collapses to an off-canvas drawer with a top-bar hamburger. */
+  @media (max-width: 900px) {
+    .admin-sidebar { position: fixed; left: 0; top: 0; height: 100vh; width: 264px; flex-basis: 264px; transform: translateX(-100%); transition: transform 0.22s ease; box-shadow: 0 0 34px rgba(0,0,0,0.16); }
+    .admin-shell.nav-open .admin-sidebar { transform: none; }
+    .admin-shell.nav-open .sidebar-overlay { display: block; }
+    .sidebar-close { display: block; }
+    .admin-shell.authed .admin-topbar { display: flex; }
+    .admin-main { padding: 1.25rem 1rem 5rem; }
+  }
   @media (max-width: 1080px) {
     .stat-row { grid-template-columns: repeat(2, 1fr); }
     .customer-records { grid-template-columns: 1fr; }
   }
   @media (max-width: 720px) {
-    .admin-wrap { padding: 1.25rem 0.9rem 5rem; }
-    .admin-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-    .admin-header h1 { font-size: 1.5rem; }
     .admin-user { font-size: 0.8rem; }
     .stat-row { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
     .stat-block { padding: 0.85rem; }
     .stat-block .stat-val { font-size: 1.6rem; }
     .stat-block .stat-label { font-size: 0.68rem; }
-    .tabs {
-      overflow-x: auto;
-      flex-wrap: nowrap;
-      scrollbar-width: none;
-      margin-left: -0.9rem;
-      margin-right: -0.9rem;
-      padding: 0 0.9rem;
-    }
-    .tabs::-webkit-scrollbar { display: none; }
-    .tab-btn { padding: 0.7rem 1rem; font-size: 0.85rem; flex-shrink: 0; }
     .panel-actions { flex-direction: column; align-items: stretch; gap: 0.75rem; }
     .panel-actions h2 { font-size: 1.25rem; }
     .panel-actions > div { display: flex; flex-wrap: wrap; gap: 0.5rem; }
@@ -197,11 +211,33 @@
 <body>
 <div class="grain"></div>
 
-<div class="admin-wrap">
-  <div class="admin-header">
-    <h1>Purebaric admin</h1>
-    <div class="admin-user" id="adminUser"></div>
-  </div>
+<div class="admin-shell" id="adminShell">
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="sidebar-brand">
+      <svg class="brand-mark" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><circle cx="32" cy="29" r="17.5"/><line x1="8" y1="39" x2="56" y2="39"/></svg>
+      <span class="brand-text">Purebaric<small>Admin</small></span>
+      <button class="sidebar-close" aria-label="Close menu" onclick="closeNav()">&times;</button>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav" aria-label="Admin sections">
+      <button class="tab-btn active" data-tab="chambers">Chambers</button>
+      <button class="tab-btn" data-tab="rentals">Rentals</button>
+      <button class="tab-btn" data-tab="bookings">Rental requests</button>
+      <button class="tab-btn" data-tab="waitlist">Waitlist</button>
+      <button class="tab-btn" data-tab="customers">Customers</button>
+      <button class="tab-btn" data-tab="reviews">Reviews</button>
+      <button class="tab-btn" data-tab="pricing">Pricing</button>
+      <button class="tab-btn" data-tab="servicearea">Service Area</button>
+      <button class="tab-btn" data-tab="notifications">Notifications</button>
+    </nav>
+    <div class="sidebar-foot admin-user" id="adminUser"></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeNav()"></div>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <button class="nav-toggle-btn" aria-label="Open menu" onclick="openNav()">&#9776;</button>
+      <span class="topbar-title" id="topbarTitle">Chambers</span>
+    </div>
 
   <div id="loginGate" class="login-card" hidden>
     <h2>Sign in</h2>
@@ -218,18 +254,6 @@
       <button type="button" class="stat-block" data-jump-tab="chambers"><div class="stat-label">Available today</div><div class="stat-val" id="statAvailable"></div></button>
       <button type="button" class="stat-block" data-jump-tab="bookings"><div class="stat-label">New rental requests</div><div class="stat-val" id="statBookings"></div></button>
       <button type="button" class="stat-block" data-jump-tab="waitlist"><div class="stat-label">Waitlist queued</div><div class="stat-val" id="statWaitlist"></div></button>
-    </div>
-
-    <div class="tabs">
-      <button class="tab-btn active" data-tab="chambers">Chambers</button>
-      <button class="tab-btn" data-tab="rentals">Rentals</button>
-      <button class="tab-btn" data-tab="bookings">Rental requests</button>
-      <button class="tab-btn" data-tab="waitlist">Waitlist</button>
-      <button class="tab-btn" data-tab="customers">Customers</button>
-      <button class="tab-btn" data-tab="reviews">Reviews</button>
-      <button class="tab-btn" data-tab="pricing">Pricing</button>
-      <button class="tab-btn" data-tab="servicearea">Service Area</button>
-      <button class="tab-btn" data-tab="notifications">Notifications</button>
     </div>
 
     <!-- ───── Chambers ───── -->
@@ -542,8 +566,9 @@
       </style>
     </section>
 
-  </div>
-</div>
+  </div><!-- /#adminApp -->
+  </main>
+</div><!-- /.admin-shell -->
 
 <!-- Detail modal (used for bookings, waitlist details, customers) -->
 <div class="modal-backdrop" id="modalBackdrop">
@@ -569,17 +594,24 @@
     userEl.innerHTML = `Signed in as <strong>${user.email}</strong> · <button onclick="netlifyIdentity.logout()">Sign out</button>`;
   }
 
+  const shell = document.getElementById('adminShell');
+  function setAuthed(isAuthed) { shell.classList.toggle('authed', isAuthed); if (!isAuthed) closeNav(); }
+
   window.netlifyIdentity.on('init', user => {
-    if (user) { gate.hidden = true; app.hidden = false; paintUser(user); loadAll(); }
-    else { gate.hidden = false; app.hidden = true; paintUser(null); }
+    if (user) { gate.hidden = true; app.hidden = false; paintUser(user); setAuthed(true); loadAll(); }
+    else { gate.hidden = false; app.hidden = true; paintUser(null); setAuthed(false); }
   });
   window.netlifyIdentity.on('login', user => {
     netlifyIdentity.close();
-    gate.hidden = true; app.hidden = false; paintUser(user); loadAll();
+    gate.hidden = true; app.hidden = false; paintUser(user); setAuthed(true); loadAll();
   });
   window.netlifyIdentity.on('logout', () => {
-    gate.hidden = false; app.hidden = true; paintUser(null);
+    gate.hidden = false; app.hidden = true; paintUser(null); setAuthed(false);
   });
+
+  // ───────── Sidebar drawer (mobile) ─────────
+  function openNav() { document.getElementById('adminShell').classList.add('nav-open'); }
+  function closeNav() { document.getElementById('adminShell').classList.remove('nav-open'); }
 
   // ───────── Auth token helper ─────────
   // Fetch a fresh JWT, tolerating a corrupted/expired stored token. If it can't
@@ -642,6 +674,9 @@
       const tab = btn.dataset.tab;
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.dataset.panel === tab));
+      const title = document.getElementById('topbarTitle');
+      if (title) title.textContent = btn.textContent;
+      closeNav(); // collapse the drawer after choosing a section on mobile
     });
   });
 
