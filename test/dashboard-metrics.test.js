@@ -145,3 +145,18 @@ test("upcomingRenewals: weekly rentals renew every 7 days, month ends clamp, dea
   assert.deepEqual(at("2026-02-25", 5), ["2@2026-02-28"]);
   assert.deepEqual(at("2026-10-03", 7), ["1@2026-10-06"]);
 });
+
+test("upcomingPayments: renewals plus first payments starting in the window, soonest first", () => {
+  const rs = [
+    { id: "a", status: "active", startDate: "2026-06-10", endDate: "2026-12-09", monthlyRate: 500, rateType: "monthly", renter: { name: "Ann" } },
+    { id: "b", status: "scheduled", startDate: "2026-10-03", endDate: "2027-01-02", monthlyRate: 600, rateType: "monthly", renter: { name: "Bo" } },
+    { id: "c", status: "scheduled", startDate: "2026-10-20", endDate: "2027-01-19", monthlyRate: 700, rateType: "monthly", renter: { name: "Cy" } },
+    { id: "d", status: "cancelled", startDate: "2026-10-04", endDate: "2027-01-03", monthlyRate: 800, rateType: "monthly", renter: { name: "Di" } },
+    { id: "e", status: "completed", startDate: "2026-05-01", endDate: "2026-09-30", monthlyRate: 900, rateType: "monthly", renter: { name: "Ed" } },
+  ];
+  const list = M.upcomingPayments(rs, "2026-09-29", 7); // window 09-29 .. 10-06
+  assert.deepEqual(list.map((x) => `${x.rental.id}@${x.date}:${x.amount}:${x.first}`), ["b@2026-10-03:600:true"]);
+  const wider = M.upcomingPayments(rs, "2026-09-29", 14); // .. 10-13 picks up a's Oct 10 renewal
+  assert.deepEqual(wider.map((x) => `${x.rental.id}:${x.first}`), ["b:true", "a:false"]);
+  assert.deepEqual(M.upcomingPayments([], "2026-09-29", 7), []);
+});
