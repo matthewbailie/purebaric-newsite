@@ -7,7 +7,9 @@ const {
   getServiceArea,
   getNotifications,
   getTwilioConfig,
+  getPricing,
 } = require("./_lib/storage");
+const { monthsFromLength } = require("./_lib/followup");
 const { zipServed } = require("./_lib/servicearea");
 const { smsForEvent, smsNumbersForEvent, emailsForEvent } = require("./_lib/notifications");
 const {
@@ -194,6 +196,20 @@ exports.handler = async (event) => {
       console.error("auto-routing failed", err);
     }
 
+    // When a chamber is available the admin alerts carry a copy-and-paste
+    // follow-up text, which quotes the monthly rate for the requested length.
+    let followUp = null;
+    if (routing.autoNotified === "available") {
+      try {
+        const months = monthsFromLength(booking.rentalLength);
+        const pricing = months ? await getPricing() : null;
+        routing.monthlyRate = (pricing && pricing[months]) || null;
+      } catch (err) {
+        console.error("pricing lookup for follow-up failed", err);
+      }
+      followUp = { monthlyRate: routing.monthlyRate };
+    }
+
     // Admin notification, runs regardless of routing outcome
     try {
       await notifyAdminBooking(booking, routing, emailsForEvent(notifCfg, "reservation_in"));
@@ -202,7 +218,7 @@ exports.handler = async (event) => {
       console.error("admin notify failed", err);
       emailResults.admin = `failed: ${err.message}`;
     }
-    try { await notifyAdminSms(booking, { gateways: smsForEvent(notifCfg, "reservation_in"), numbers: smsNumbersForEvent(notifCfg, "reservation_in"), twilio }); } catch (err) { console.error("admin sms failed", err); }
+    try { await notifyAdminSms(booking, { gateways: smsForEvent(notifCfg, "reservation_in"), numbers: smsNumbersForEvent(notifCfg, "reservation_in"), twilio, followUp }); } catch (err) { console.error("admin sms failed", err); }
 
     // Send the accepted reservation event from the backend so a successful API
     // response and the analytics event cannot drift apart or double-count.

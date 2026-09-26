@@ -428,22 +428,28 @@
             <div class="form-group"></div>
           </div>
           <div class="form-group">
-            <label>Customer record</label>
+            <label>Customer record<span class="req">*</span></label>
+            <!-- The renter details are never typed into the rental itself: they come from the
+                 customer record and change only through Edit customer / Add customer. These
+                 hidden fields carry them into the saved rental. (type=text + hidden, not
+                 type=hidden: form.reset() only clears the former, and a reset must not leave
+                 the previous rental's renter behind.) -->
+            <input type="text" name="renter-name" hidden tabindex="-1" autocomplete="off">
+            <input type="text" name="renter-email" hidden tabindex="-1" autocomplete="off">
+            <input type="text" name="renter-phone" hidden tabindex="-1" autocomplete="off">
+            <input type="text" name="renter-zip" hidden tabindex="-1" autocomplete="off">
+            <input type="text" name="renter-street" hidden tabindex="-1" autocomplete="off">
+            <input type="text" name="renter-city" hidden tabindex="-1" autocomplete="off">
+            <input type="text" name="renter-state" hidden tabindex="-1" autocomplete="off">
             <div id="rentalCustomerSummary" class="renter-line">—</div>
+            <div id="rentalCustomerPick" style="display:none;margin-top:6px;">
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                <input type="email" id="rentalCustomerLookup" placeholder="Find an existing customer by email" autocomplete="off" style="flex:1;min-width:220px;">
+                <button type="button" class="btn btn-ghost btn-sm" onclick="addCustomerInline()">Add new customer</button>
+              </div>
+              <div id="rentalCustomerLookupMsg" class="renter-line" style="margin-top:4px;"></div>
+            </div>
             <div id="rentalCustomerFormAnchor"></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>Renter name<span class="req">*</span></label><input name="renter-name" required></div>
-            <div class="form-group"><label>Renter email<span class="req">*</span></label><input type="email" name="renter-email" required></div>
-          </div>
-          <div class="form-row">
-            <div class="form-group"><label>Renter phone</label><input type="tel" name="renter-phone"></div>
-            <div class="form-group"><label>ZIP</label><input name="renter-zip"></div>
-          </div>
-          <div class="form-row triple">
-            <div class="form-group"><label>Street</label><input name="renter-street"></div>
-            <div class="form-group"><label>City</label><input name="renter-city"></div>
-            <div class="form-group"><label>State</label><input name="renter-state" placeholder="UT"></div>
           </div>
           <div class="form-row">
             <div class="form-group"><label>Payment status</label>
@@ -1679,6 +1685,10 @@
     e.preventDefault();
     const form = e.target;
     const data = Object.fromEntries(new FormData(form));
+    if (!data['renter-name'] || !data['renter-email']) {
+      toast('Choose or add a customer for this rental first', true);
+      return false;
+    }
     try {
       if (data.id) {
         const { id, sourceBookingId, ...patch } = data;
@@ -1880,6 +1890,8 @@
     e.preventDefault();
     const form = e.target;
     const data = Object.fromEntries(new FormData(form));
+    // Opened from a rental's "Customer record" section? Checked before the form is moved back home below.
+    const fromRental = document.getElementById('rentalForm').contains(document.getElementById('customerForm'));
     try {
       if (data.id) {
         const { id, ...patch } = data;
@@ -1896,6 +1908,11 @@
       await loadCustomers();
       // If a rental is open with a "Customer record" section, refresh it so
       // the edit just saved shows up there immediately.
+      if (fromRental) {
+        // Saving from inside a rental is the one moment its renter details change: copy the saved customer in.
+        setRentalRenter({ name: data.name, email: (data.email || '').trim().toLowerCase(), phone: data.phone,
+          address: { street: data.street, city: data.city, state: data.state, zip: data.zip } });
+      }
       if (typeof refreshRentalCustomerSummary === 'function') refreshRentalCustomerSummary();
     } catch (err) { toast(err.message, true); }
     return false;
@@ -1929,24 +1946,62 @@
   }
 
   // ── Rental ↔ Customer link ──
-  // The rental form's "Customer record" section shows the customer derived
-  // for the current Renter email (matched the same way the Customers tab
-  // matches — by email), with an "Edit customer" action that expands the
-  // *actual* customer editor (#customerForm, moved in place) right there.
-  // Saving it there updates the real customer record, the same one the
-  // Customers tab shows — this is a live link, not a copy: the rental's own
-  // renter-name/email/phone/address fields stay a separate point-in-time
-  // snapshot of who they were when the rental was written up.
+  // A rental's renter details (name, email, phone, address) are never typed
+  // into the rental form. The "Customer record" section shows them, read-only,
+  // from the customer record matched by email (the same match the Customers tab
+  // uses), and they change only through that section's "Edit customer" /
+  // "Add customer" — which opens the real customer editor (#customerForm, moved
+  // in place). The rental keeps its own copy of the details in hidden renter-*
+  // fields (a point-in-time snapshot, so editing a customer later doesn't
+  // rewrite an old rental): a new rental copies the customer in, an existing
+  // one is only re-copied when the customer is saved from inside it.
   function editCustomerInline(email) {
     resetFormPosition('customerForm', 'rentalCustomerFormAnchor');
     editCustomer(email);
   }
+  function addCustomerInline() {
+    resetFormPosition('customerForm', 'rentalCustomerFormAnchor');
+    toggleForm('customerForm');
+  }
+  function rentalField(name) { return document.querySelector(`#rentalFormEl [name="${name}"]`); }
+  function getRentalRenter() {
+    const g = n => rentalField(n).value.trim();
+    return { name: g('renter-name'), email: g('renter-email').toLowerCase(), phone: g('renter-phone'),
+      address: { street: g('renter-street'), city: g('renter-city'), state: g('renter-state'), zip: g('renter-zip') } };
+  }
+  function setRentalRenter(r) {
+    const a = r.address || {};
+    const set = (n, v) => { rentalField(n).value = v || ''; };
+    set('renter-name', r.name); set('renter-email', r.email); set('renter-phone', r.phone);
+    set('renter-street', a.street); set('renter-city', a.city); set('renter-state', a.state); set('renter-zip', a.zip);
+  }
+  // Same address fallback as editCustomer(): the customer's own address, else
+  // the one on their most recent rental.
+  function customerAddress(c) {
+    const has = a => !!(a && (a.street || a.city || a.state || a.zip));
+    if (has(c.address)) return c.address;
+    const latest = [...(c.rentals || [])].sort((a, b) => (b.startDate || '').localeCompare(a.startDate || ''))[0];
+    return (latest && latest.renter && latest.renter.address) || {};
+  }
+  function customerDetailsHtml(name, email, phone, a) {
+    const line2 = [a.city, a.state, a.zip].filter(Boolean).join(', ');
+    const item = (label, val) => `<div><div style="font-size:12px;color:var(--stone-muted);">${label}</div>${val ? escape(val) : '—'}</div>`;
+    return `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 24px;margin:6px 0 10px;">
+      ${item('Name', name)}${item('Email', email)}${item('Phone', phone)}${item('Address', [a.street, line2].filter(Boolean).join(', '))}
+    </div>`;
+  }
   async function refreshRentalCustomerSummary() {
-    const emailField = document.querySelector('#rentalFormEl [name="renter-email"]');
     const summaryEl = document.getElementById('rentalCustomerSummary');
-    if (!emailField || !summaryEl) return;
-    const email = emailField.value.trim().toLowerCase();
-    if (!email) { summaryEl.textContent = 'Enter a renter email to look up their customer record.'; return; }
+    const pickEl = document.getElementById('rentalCustomerPick');
+    if (!rentalField('renter-email') || !summaryEl) return;
+    const isNew = !rentalField('id').value;
+    const snap = getRentalRenter();
+    const email = snap.email;
+    const showPick = show => {
+      pickEl.style.display = show ? '' : 'none';
+      if (show) { document.getElementById('rentalCustomerLookup').value = ''; document.getElementById('rentalCustomerLookupMsg').textContent = ''; }
+    };
+    if (!email) { summaryEl.textContent = 'No customer chosen yet.'; showPick(true); return; }
     let c = _customers.find(x => x.email === email);
     if (!c) {
       // Don't depend on the Customers tab having been visited this session —
@@ -1958,27 +2013,41 @@
           const idx = _customers.findIndex(x => x.email === c.email);
           if (idx >= 0) _customers[idx] = c; else _customers.push(c);
         }
-      } catch (e) { /* non-fatal — summary just won't resolve yet */ }
+      } catch (e) { /* non-fatal — falls through to the rental's own copy below */ }
     }
     if (!c) {
-      summaryEl.innerHTML = `No customer record yet for <strong>${escape(email)}</strong> — one is created automatically once this rental is saved.`;
+      summaryEl.innerHTML = `${customerDetailsHtml(snap.name, snap.email, snap.phone, snap.address)}<div>No customer record found for this email. Choose or add one below.</div>`;
+      showPick(true);
       return;
     }
-    const addr = [c.address && c.address.street, c.address && c.address.city, c.address && c.address.state, c.address && c.address.zip].filter(Boolean).join(', ');
+    const addr = customerAddress(c);
+    if (isNew) setRentalRenter({ name: c.name, email: c.email, phone: c.phone, address: addr });
     summaryEl.innerHTML = `
-      <strong>${escape(c.name || '(no name)')}</strong> · ${escape(c.email)}${c.phone ? ' · ' + escape(c.phone) : ''}
-      ${addr ? `<div>${escape(addr)}</div>` : ''}
-      <div style="margin-top:6px;"><button type="button" class="btn btn-ghost btn-sm" onclick='editCustomerInline(${JSON.stringify(c.email)})'>Edit customer</button></div>
+      ${customerDetailsHtml(c.name, c.email, c.phone, addr)}
+      <button type="button" class="btn btn-ghost btn-sm" onclick='editCustomerInline(${JSON.stringify(c.email)})'>Edit customer</button>
     `;
+    showPick(false);
   }
-  // Re-check as the admin edits the renter email (e.g. correcting a typo, or
-  // typing a brand-new renter's email on a fresh rental) — debounced like the
-  // Customers tab's own search box.
-  const _rentalCustomerLookupDebounced = (() => {
+  // Choose an existing customer for a rental that has none yet, by email.
+  async function pickRentalCustomer() {
+    const msg = document.getElementById('rentalCustomerLookupMsg');
+    const email = document.getElementById('rentalCustomerLookup').value.trim().toLowerCase();
+    if (!email.includes('@')) { msg.textContent = ''; return; }
+    try {
+      const data = await api(`/api/admin/customers?q=${encodeURIComponent(email)}`);
+      const c = (data.customers || []).find(x => x.email === email);
+      if (!c) { msg.textContent = 'No customer with that email yet. Use Add new customer.'; return; }
+      const idx = _customers.findIndex(x => x.email === c.email);
+      if (idx >= 0) _customers[idx] = c; else _customers.push(c);
+      setRentalRenter({ name: c.name, email: c.email, phone: c.phone, address: customerAddress(c) });
+      refreshRentalCustomerSummary();
+    } catch (e) { msg.textContent = 'Lookup failed. Try again.'; }
+  }
+  const _pickRentalCustomerDebounced = (() => {
     let t = null;
-    return () => { clearTimeout(t); t = setTimeout(refreshRentalCustomerSummary, 300); };
+    return () => { clearTimeout(t); t = setTimeout(pickRentalCustomer, 400); };
   })();
-  document.querySelector('#rentalFormEl [name="renter-email"]').addEventListener('input', _rentalCustomerLookupDebounced);
+  document.getElementById('rentalCustomerLookup').addEventListener('input', _pickRentalCustomerDebounced);
 
   // Lazy-load customers when the tab is clicked (data is derived; fresh on every visit)
   document.querySelector('.tab-btn[data-tab="customers"]').addEventListener('click', loadCustomers);

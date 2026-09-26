@@ -1,5 +1,6 @@
 const { Resend } = require("resend");
 const { isComplete, sendSms } = require("./sms");
+const { buildFollowUpText } = require("./followup");
 
 const FROM = "Purebaric <noreply@purebaric.com>";
 const REPLY_TO = "hello@purebaric.com";
@@ -235,12 +236,19 @@ async function notifyAdminBooking(b, routing = {}, to) {
   } else if (routing.autoNotified === "waitlist") {
     routingBlock = `<p style="padding:12px 14px; background:#f4e7df; color:#7a4a1e; border-radius:8px; margin:0 0 16px;"><strong>Auto-routed: no chambers available.</strong><br>Customer was added to the waitlist and emailed about it. Linked waitlist id: <code>${or(routing.linkedWaitlistId)}</code></p>`;
   }
+  // Only when a chamber is actually free — the message says "I have a chamber ready".
+  let followUpBlock = "";
+  if (routing.autoNotified === "available") {
+    const text = buildFollowUpText({ firstName: b.firstName, rentalLength: b.rentalLength, startDate: b.startDate, monthlyRate: routing.monthlyRate });
+    followUpBlock = `<div style="margin:0 0 16px; padding:12px 14px; background:#f6efe4; border:1px solid #e6dccd; border-radius:8px;"><p style="margin:0 0 8px; font-size:12px; color:#7a6f63;"><strong>Follow-up text to copy and send${name ? ` to ${escapeHtml(b.firstName || name)}` : ""}</strong></p><div style="white-space:pre-wrap; color:#2b2320;">${escapeHtml(text)}</div></div>`;
+  }
   const subjectTag = routing.autoNotified === "available" ? " [chamber available]" :
                      routing.autoNotified === "pending" ? " [pending availability]" :
                      routing.autoNotified === "waitlist" ? " [to waitlist]" : "";
   const html = wrap(`
     <p style="margin:0 0 16px;"><strong style="color:#2b2320;">New booking request</strong></p>
     ${routingBlock}
+    ${followUpBlock}
     <p style="margin:0 0 16px;">${escapeHtml(name)} &lt;${escapeHtml(b.email)}&gt;<br>
     Phone: ${or(b.phone)}<br>
     Delivery address: ${escapeHtml(address)}</p>
@@ -300,10 +308,18 @@ async function deliverAdminSms({ numbers, gateways, text, subject, twilio }) {
 // customer name, phone, address, email, ZIP, or notes ever appear in a text —
 // the admin follows the link and signs in to see details. Every message ends
 // with the required STOP/HELP compliance footer.
-async function notifyAdminSms(b, { outOfArea, gateways, numbers, twilio } = {}) {
-  const text = outOfArea
-    ? "Purebaric: A new out-of-area reservation request was received. Sign in to the Purebaric admin portal to review it. Reply STOP to opt out or HELP for help."
-    : "Purebaric: A new reservation request was received. Sign in to the Purebaric admin portal to review it. Reply STOP to opt out or HELP for help.";
+// `followUp` ({ monthlyRate }, passed only when a chamber is available) adds the
+// copy-and-paste follow-up text. It carries a "[NAME]" placeholder instead of the customer's name — admin
+// SMS never includes customer details (RUNBOOK §7f); the term, price and
+// delivery date aren't identifying.
+async function notifyAdminSms(b, { outOfArea, gateways, numbers, twilio, followUp } = {}) {
+  const lead = outOfArea
+    ? "Purebaric: A new out-of-area reservation request was received. Sign in to the Purebaric admin portal to review it."
+    : "Purebaric: A new reservation request was received. Sign in to the Purebaric admin portal to review it.";
+  const copyText = followUp
+    ? `\n\nFollow-up text to copy:\n${buildFollowUpText({ rentalLength: b.rentalLength, startDate: b.startDate, monthlyRate: followUp.monthlyRate })}`
+    : "";
+  const text = `${lead}${copyText}\n\nReply STOP to opt out or HELP for help.`;
   return deliverAdminSms({ numbers, gateways, text, subject: outOfArea ? "Purebaric out-of-area lead" : "New Purebaric lead", twilio });
 }
 

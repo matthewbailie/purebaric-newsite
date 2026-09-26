@@ -34,3 +34,17 @@
 **Context:** Identity's ~1h token kept signing the owner out of the admin portal.
 **Alternatives considered:** Removing Identity would leave no recovery path if every passkey device is lost; sliding session expiry would add a Blobs write to every authenticated request.
 **Status:** Confirmed
+
+## 2026-09-26 Include a copy-and-paste follow-up text in reservation alerts
+
+**Decision:** When a reservation request arrives and a chamber is available, the admin email and admin SMS include a ready-to-send follow-up message (term, monthly rate, delivery date). The email uses the customer's first name; the SMS uses a literal `[NAME]` placeholder.
+**Context:** The owner texts each customer from their own phone and was retyping the same message. Admin SMS must not carry customer identity (A2P 10DLC compliance, RUNBOOK §7f).
+**Alternatives considered:** Real names in the SMS would break the no-customer-details rule; email-only would miss the SMS alert the owner reads first.
+**Status:** Confirmed
+
+## 2026-09-26 Make renter details in a rental read-only, edited only via the customer record
+
+**Decision:** The rental form shows the customer record's name, email, phone and address read-only. Changes go through Edit customer or Add customer. The rental still stores its own snapshot of those details, refreshed only when the customer is saved from inside the rental (or when a new rental first picks a customer).
+**Context:** The same details could be typed in two places (the rental and the customer record) and drift apart.
+**Alternatives considered:** Always mirroring the live customer record into every saved rental would silently change a past rental's delivery address when a customer moves.
+**Status:** Confirmed
