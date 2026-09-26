@@ -20,3 +20,10 @@
 **Context:** A valid rental could display “deleted chamber” when its request completed before the inventory requests, even though the stored relationships were intact.
 **Alternatives considered:** Serializing all admin requests would remove the race but make the entire portal slower; changing stored rental IDs would corrupt valid data and would not address the rendering race.
 **Status:** Confirmed
+
+## 2026-09-26 Make GitHub the production deployment source
+
+**Decision:** Connect the existing Netlify site to `matthewbailie/purebaric-newsite`, deploy production from `main`, and require `npm test` to pass before Netlify publishes. Keep service credentials in Netlify and do not enable deploy previews with production credentials.
+**Context:** Manual folder deployments could publish uncommitted files and allowed production to drift from Git history.
+**Alternatives considered:** Continuing manual CLI deployments preserves the current workflow but does not guarantee that production matches a commit; creating a new Netlify site would risk the existing domain, Identity, environment, and stored data.
+**Status:** Confirmed
