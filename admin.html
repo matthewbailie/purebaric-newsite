@@ -414,6 +414,11 @@
             <div class="form-group"><label>Upfront amount paid ($)</label><input type="number" name="paidAmount" min="0" step="1"><div class="renter-line" style="margin-top:4px;">Use when the rental was paid in full upfront.</div></div>
             <div class="form-group"><label>Payment method</label><input name="paymentMethod" placeholder="Stripe, check, cash, Venmo, etc."></div>
           </div>
+          <div class="form-group">
+            <label>Customer record</label>
+            <div id="rentalCustomerSummary" class="renter-line">—</div>
+            <div id="rentalCustomerFormAnchor"></div>
+          </div>
           <div class="form-row">
             <div class="form-group"><label>Renter name<span class="req">*</span></label><input name="renter-name" required></div>
             <div class="form-group"><label>Renter email<span class="req">*</span></label><input type="email" name="renter-email" required></div>
@@ -496,10 +501,11 @@
         <h2>Customers</h2>
         <div style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
           <input type="search" id="customerSearch" placeholder="Search by name, email, phone…" style="padding: 0.5rem 0.85rem; min-width: 260px;">
-          <button class="btn btn-primary btn-sm" onclick="toggleForm('customerForm')">+ Add customer</button>
+          <button class="btn btn-primary btn-sm" onclick="openAddCustomer()">+ Add customer</button>
         </div>
       </div>
 
+      <div id="customerFormAnchor"></div>
       <div class="form-card" id="customerForm">
         <h3 id="customerFormTitle">New customer</h3>
         <form id="customerFormEl" onsubmit="return submitCustomer(event)">
@@ -521,7 +527,7 @@
           <div class="form-group"><label>Internal notes</label><textarea name="notes" rows="2" placeholder="Practitioner referrer, medical context, special handling…"></textarea></div>
           <div class="form-buttons">
             <button type="submit" class="btn btn-primary btn-sm">Save</button>
-            <button type="button" class="btn btn-ghost btn-sm" onclick="toggleForm('customerForm')">Cancel</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="cancelCustomerForm()">Cancel</button>
           </div>
         </form>
       </div>
@@ -774,7 +780,15 @@
   function toggleForm(id, prefill) {
     const card = document.getElementById(id);
     const isOpen = card.classList.contains('open');
-    document.querySelectorAll('.form-card').forEach(c => c.classList.remove('open'));
+    // Close every other open form (including this one, toggling it closed —
+    // unchanged from before), except a true ANCESTOR of this one (e.g.
+    // rentalForm when toggling customerForm nested inside its "Customer
+    // record" section) — closing an ancestor would hide the very form this
+    // one is embedded in.
+    document.querySelectorAll('.form-card').forEach(c => {
+      if (c !== card && c.contains(card)) return;
+      c.classList.remove('open');
+    });
     if (!isOpen) {
       card.classList.add('open');
       const form = card.querySelector('form');
@@ -1473,6 +1487,7 @@
     document.getElementById('rentalForm').classList.remove('open');
     populateChamberSelect();
     toggleForm('rentalForm');
+    refreshRentalCustomerSummary();
   }
   function cancelRentalForm() {
     resetFormPosition('rentalForm', 'rentalFormAnchor');
@@ -1498,6 +1513,7 @@
       notes: r.notes,
     });
     syncRentalTermControls();
+    refreshRentalCustomerSummary();
   }
 
   // ───────── Stripe payment link (per rental) ─────────
@@ -1740,6 +1756,16 @@
     }).join('');
   }
 
+  // "+ Add customer": always start from the Customers tab's own anchor —
+  // otherwise it could still be sitting wherever a rental's inline "Edit
+  // customer" last placed it.
+  function openAddCustomer() { resetFormPosition('customerForm', 'customerFormAnchor'); toggleForm('customerForm'); }
+  // Cancel returns the form home regardless of where it was opened from
+  // (Customers tab or embedded in a rental's "Customer record" section).
+  // Close it first (while still possibly nested — see toggleForm's ancestor
+  // check) *then* relocate, so cancelling out of a rental's inline customer
+  // editor doesn't also close the rental form it's embedded in.
+  function cancelCustomerForm() { toggleForm('customerForm'); resetFormPosition('customerForm', 'customerFormAnchor'); }
   async function submitCustomer(e) {
     e.preventDefault();
     const form = e.target;
@@ -1754,8 +1780,13 @@
         await api('/api/admin/customers', { method: 'POST', body: JSON.stringify(data) });
         toast('Customer added');
       }
+      // Close first (see cancelCustomerForm's comment for why), then relocate.
       toggleForm('customerForm');
+      resetFormPosition('customerForm', 'customerFormAnchor');
       await loadCustomers();
+      // If a rental is open with a "Customer record" section, refresh it so
+      // the edit just saved shows up there immediately.
+      if (typeof refreshRentalCustomerSummary === 'function') refreshRentalCustomerSummary();
     } catch (err) { toast(err.message, true); }
     return false;
   }
@@ -1786,6 +1817,58 @@
       notes: c.notes || '',
     });
   }
+
+  // ── Rental ↔ Customer link ──
+  // The rental form's "Customer record" section shows the customer derived
+  // for the current Renter email (matched the same way the Customers tab
+  // matches — by email), with an "Edit customer" action that expands the
+  // *actual* customer editor (#customerForm, moved in place) right there.
+  // Saving it there updates the real customer record, the same one the
+  // Customers tab shows — this is a live link, not a copy: the rental's own
+  // renter-name/email/phone/address fields stay a separate point-in-time
+  // snapshot of who they were when the rental was written up.
+  function editCustomerInline(email) {
+    resetFormPosition('customerForm', 'rentalCustomerFormAnchor');
+    editCustomer(email);
+  }
+  async function refreshRentalCustomerSummary() {
+    const emailField = document.querySelector('#rentalFormEl [name="renter-email"]');
+    const summaryEl = document.getElementById('rentalCustomerSummary');
+    if (!emailField || !summaryEl) return;
+    const email = emailField.value.trim().toLowerCase();
+    if (!email) { summaryEl.textContent = 'Enter a renter email to look up their customer record.'; return; }
+    let c = _customers.find(x => x.email === email);
+    if (!c) {
+      // Don't depend on the Customers tab having been visited this session —
+      // look this one email up directly.
+      try {
+        const data = await api(`/api/admin/customers?q=${encodeURIComponent(email)}`);
+        c = (data.customers || []).find(x => x.email === email);
+        if (c) {
+          const idx = _customers.findIndex(x => x.email === c.email);
+          if (idx >= 0) _customers[idx] = c; else _customers.push(c);
+        }
+      } catch (e) { /* non-fatal — summary just won't resolve yet */ }
+    }
+    if (!c) {
+      summaryEl.innerHTML = `No customer record yet for <strong>${escape(email)}</strong> — one is created automatically once this rental is saved.`;
+      return;
+    }
+    const addr = [c.address && c.address.street, c.address && c.address.city, c.address && c.address.state, c.address && c.address.zip].filter(Boolean).join(', ');
+    summaryEl.innerHTML = `
+      <strong>${escape(c.name || '(no name)')}</strong> · ${escape(c.email)}${c.phone ? ' · ' + escape(c.phone) : ''}
+      ${addr ? `<div>${escape(addr)}</div>` : ''}
+      <div style="margin-top:6px;"><button type="button" class="btn btn-ghost btn-sm" onclick='editCustomerInline(${JSON.stringify(c.email)})'>Edit customer</button></div>
+    `;
+  }
+  // Re-check as the admin edits the renter email (e.g. correcting a typo, or
+  // typing a brand-new renter's email on a fresh rental) — debounced like the
+  // Customers tab's own search box.
+  const _rentalCustomerLookupDebounced = (() => {
+    let t = null;
+    return () => { clearTimeout(t); t = setTimeout(refreshRentalCustomerSummary, 300); };
+  })();
+  document.querySelector('#rentalFormEl [name="renter-email"]').addEventListener('input', _rentalCustomerLookupDebounced);
 
   // Lazy-load customers when the tab is clicked (data is derived; fresh on every visit)
   document.querySelector('.tab-btn[data-tab="customers"]').addEventListener('click', loadCustomers);
@@ -1896,6 +1979,7 @@
       paymentStatus: 'unpaid', paidAmount: 0,
       notes: `Converted from waitlist ${id}. Reason: ${w.reason || ', '}`,
     });
+    refreshRentalCustomerSummary();
     toast('Pick a chamber + adjust dates, then Save, waitlist entry will auto-mark converted');
     const form = document.getElementById('rentalFormEl');
     const onceListener = async () => {
@@ -2087,6 +2171,7 @@
       paymentStatus: 'unpaid', paidAmount: 0,
       notes: `Converted from booking ${id}. Reason: ${b.reason || ', '}`,
     });
+    refreshRentalCustomerSummary();
     toast('Pick a chamber and Save; the exact booking will be linked and converted');
   }
 

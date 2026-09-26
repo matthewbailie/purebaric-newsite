@@ -505,10 +505,27 @@ async function listManualCustomers() {
   return listAll(STORES.customers);
 }
 
+// Upsert by email: a derived customer (one who only exists via their
+// rentals/bookings/waitlist so far, no manual record yet) gets a manual
+// record created the *first* time someone saves an edit for them. Without
+// this check, every such save would call createManualCustomer again and pile
+// up a fresh duplicate record per save, since the client only knows to PATCH
+// once a manualId already exists on the customer it fetched.
 async function createManualCustomer(data) {
+  const email = normalizeEmail(data.email);
+  const existing = (await listManualCustomers()).find((c) => normalizeEmail(c.email) === email);
+  if (existing) {
+    return updateManualCustomer(existing.id, {
+      name: data.name || "",
+      phone: data.phone || "",
+      address: data.address || { street: "", city: "", state: "", zip: "" },
+      notes: data.notes || "",
+      tags: data.tags || [],
+    });
+  }
   const c = {
     id: newId(),
-    email: normalizeEmail(data.email),
+    email,
     name: (data.name || "").trim(),
     phone: (data.phone || "").trim(),
     address: data.address || { street: "", city: "", state: "", zip: "" },
