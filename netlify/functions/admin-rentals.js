@@ -15,6 +15,15 @@ function buildRenter(body) {
   };
 }
 
+// Weekly billing is an admin-only, custom-arranged rate — never offered on
+// the public site (book.html only ever sends/knows about monthly pricing).
+// monthlyRate holds the dollar amount either way; rateType says which period
+// it's per. Unrecognized/missing values default to "monthly" for backward
+// compatibility with every rental created before this field existed.
+function cleanRateType(value) {
+  return value === "weekly" ? "weekly" : "monthly";
+}
+
 function buildPaymentPatch(body, patch) {
   if (body.paymentStatus && ["unpaid", "partial", "paid", "refunded"].includes(body.paymentStatus)) {
     patch.paymentStatus = body.paymentStatus;
@@ -89,6 +98,7 @@ exports.handler = async (event, context) => {
         startDate: body.startDate,
         endDate: body.endDate,
         monthlyRate: Number(body.monthlyRate) || 0,
+        rateType: cleanRateType(body.rateType),
         renter: buildRenter(body),
         notes: body.notes || "",
       };
@@ -125,6 +135,7 @@ exports.handler = async (event, context) => {
       if (body.startDate) patch.startDate = body.startDate;
       if (body.endDate) patch.endDate = body.endDate;
       if (typeof body.monthlyRate !== "undefined") patch.monthlyRate = Number(body.monthlyRate) || 0;
+      if (typeof body.rateType !== "undefined") patch.rateType = cleanRateType(body.rateType);
       if (typeof body.notes === "string") patch.notes = body.notes;
       if (typeof body.chamberId === "string") patch.chamberId = body.chamberId;
       if (typeof body.machineId !== "undefined") patch.machineId = body.machineId || null;

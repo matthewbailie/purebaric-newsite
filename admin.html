@@ -410,9 +410,19 @@
           </div>
           <div class="renter-line" id="rentalTermNote" style="margin-top:-8px;margin-bottom:14px;">Choose a month count to calculate the inclusive end date, or choose Custom end date and enter it directly. Calendar months include leap days naturally.</div>
           <div class="form-row triple">
-            <div class="form-group"><label>Monthly subscription rate ($/month)</label><input type="number" name="monthlyRate" min="0" step="1" placeholder="729"></div>
+            <div class="form-group"><label>Billing</label>
+              <select name="rateType" id="rentalRateType" onchange="onRateTypeChange()">
+                <option value="monthly">Monthly (public rate)</option>
+                <option value="weekly">Weekly (custom, admin-only)</option>
+              </select>
+              <div class="renter-line" style="margin-top:4px;">Weekly is for a custom-arranged rental only — never shown on the website.</div>
+            </div>
+            <div class="form-group"><label id="rentalRateLabel">Monthly subscription rate ($/month)</label><input type="number" name="monthlyRate" min="0" step="1" placeholder="729"></div>
             <div class="form-group"><label>Upfront amount paid ($)</label><input type="number" name="paidAmount" min="0" step="1"><div class="renter-line" style="margin-top:4px;">Use when the rental was paid in full upfront.</div></div>
+          </div>
+          <div class="form-row">
             <div class="form-group"><label>Payment method</label><input name="paymentMethod" placeholder="Stripe, check, cash, Venmo, etc."></div>
+            <div class="form-group"></div>
           </div>
           <div class="form-group">
             <label>Customer record</label>
@@ -1406,7 +1416,7 @@
         </td>
         <td>${escape(renter.name || ', ')}<div class="renter-line">${escape(renter.email || '')}${renter.phone ? ' · ' + escape(renter.phone) : ''}</div></td>
         <td>${escape(r.startDate)} → ${escape(r.endDate)}</td>
-        <td>$${r.monthlyRate || 0}/mo</td>
+        <td>$${r.monthlyRate || 0}/${r.rateType === 'weekly' ? 'wk' : 'mo'}</td>
         <td><span class="pill pill-${r.status}">${r.status}</span></td>
         <td><span class="pill pill-${payStatus}">${escape(paymentLabel)}</span></td>
         <td>${r.waiverFileKey
@@ -1445,8 +1455,11 @@
     const machine = (_machines || []).find(m => m.id === r.machineId);
     const address = [addr.street, addr.city, addr.state, addr.zip].filter(Boolean).join(', ') || ', ';
     const days = Math.round((new Date(r.endDate) - new Date(r.startDate)) / 86400000) + 1;
+    const isWeekly = r.rateType === 'weekly';
     const months = Math.max(1, Math.round(days / 30.44));
-    const estTotal = (r.monthlyRate || 0) * months;
+    const weeks = Math.max(1, Math.round(days / 7));
+    const periods = isWeekly ? weeks : months;
+    const estTotal = (r.monthlyRate || 0) * periods;
     const payStatus = r.paymentStatus || 'unpaid';
     const payParts = [payStatus];
     if (r.paidAmount) payParts.push(`$${Number(r.paidAmount).toLocaleString()} paid`);
@@ -1461,8 +1474,8 @@
       <div class="modal-row"><strong>Machine</strong><div>${machine ? escape(machine.name) : '(none assigned)'}</div></div>
       <div class="modal-row"><strong>Contact</strong><div>${escape(renter.name || ', ')}<br>${escape(renter.email || ', ')}<br>${escape(renter.phone || ', ')}</div></div>
       <div class="modal-row"><strong>Delivery address</strong><div>${escape(address)}</div></div>
-      <div class="modal-row"><strong>Dates</strong><div>${escape(r.startDate)} → ${escape(r.endDate)} <span style="color:var(--stone-muted);">(≈ ${months} month${months > 1 ? 's' : ''}, ${days} days)</span></div></div>
-      <div class="modal-row"><strong>Rate</strong><div>$${(r.monthlyRate || 0).toLocaleString()}/mo · est. total $${estTotal.toLocaleString()}</div></div>
+      <div class="modal-row"><strong>Dates</strong><div>${escape(r.startDate)} → ${escape(r.endDate)} <span style="color:var(--stone-muted);">(≈ ${isWeekly ? `${weeks} week${weeks > 1 ? 's' : ''}` : `${months} month${months > 1 ? 's' : ''}`}, ${days} days)</span></div></div>
+      <div class="modal-row"><strong>Rate</strong><div>$${(r.monthlyRate || 0).toLocaleString()}/${isWeekly ? 'wk' : 'mo'}${isWeekly ? ' <span style="color:var(--terracotta);">(custom weekly billing)</span>' : ''} · est. total $${estTotal.toLocaleString()}</div></div>
       <div class="modal-row"><strong>Payment</strong><div><span class="pill pill-${payStatus}">${escape(payParts.join(' · '))}</span></div></div>
       <div class="modal-row"><strong>Waiver</strong><div>${waiverHtml}</div></div>
       ${r.createdAt ? `<div class="modal-row"><strong>Created</strong><div>${new Date(r.createdAt).toLocaleString()}</div></div>` : ''}
@@ -1487,6 +1500,7 @@
     document.getElementById('rentalForm').classList.remove('open');
     populateChamberSelect();
     toggleForm('rentalForm');
+    onRateTypeChange(); // form.reset() inside toggleForm already defaults rateType to monthly; just resync the label
     refreshRentalCustomerSummary();
   }
   function cancelRentalForm() {
@@ -1502,6 +1516,7 @@
     toggleForm('rentalForm', {
       id: r.id, chamberId: r.chamberId, status: r.status,
       machineId: r.machineId || '',
+      rateType: r.rateType === 'weekly' ? 'weekly' : 'monthly',
       startDate: r.startDate, endDate: r.endDate, monthlyRate: r.monthlyRate,
       'renter-name': r.renter && r.renter.name, 'renter-email': r.renter && r.renter.email,
       'renter-phone': r.renter && r.renter.phone, 'renter-zip': r.renter && r.renter.address && r.renter.address.zip,
@@ -1513,6 +1528,7 @@
       notes: r.notes,
     });
     syncRentalTermControls();
+    onRateTypeChange();
     refreshRentalCustomerSummary();
   }
 
@@ -1665,6 +1681,12 @@
     const days = Math.round((new Date(r.endDate) - new Date(r.startDate)) / 86400000) + 1;
     return Math.max(1, Math.round(days / 30.44));
   }
+  // Same, in whole weeks — only meaningful for a custom weekly-billed rental
+  // (admin-only, see the rental form's Billing field; never on the site).
+  function rentalWeeks(r) {
+    const days = Math.round((new Date(r.endDate) - new Date(r.startDate)) / 86400000) + 1;
+    return Math.max(1, Math.round(days / 7));
+  }
   function renderCustomers() {
     const list = document.getElementById('customersList');
     if (!_customers.length) {
@@ -1678,19 +1700,22 @@
       const rentalList = c.rentals.length
         ? c.rentals.sort((a,b) => b.startDate.localeCompare(a.startDate)).map(r => {
             const ch = _chambers.find(x => x.id === r.chamberId);
-            const months = rentalMonths(r);
-            return `<li>${escape(r.startDate)} → ${escape(r.endDate)} · ${months} mo · ${escape(ch ? ch.name : ', ')} · <span class="pill pill-${r.status}" style="font-size:0.65rem;">${r.status}</span></li>`;
+            const period = r.rateType === 'weekly' ? `${rentalWeeks(r)} wk` : `${rentalMonths(r)} mo`;
+            return `<li>${escape(r.startDate)} → ${escape(r.endDate)} · ${period} · ${escape(ch ? ch.name : ', ')} · <span class="pill pill-${r.status}" style="font-size:0.65rem;">${r.status}</span></li>`;
           }).join('')
         : '<li style="color:var(--stone-muted);">None</li>';
-      // Loyalty/discount rollup: sum each counted rental's month-length (a
-      // customer's 2-month rental plus a later 6-month rental unlocks the
-      // 8-month rate), then look up that tier's *current* rate from the
-      // Pricing & Payments tab. Cancelled rentals don't count toward this.
+      // Loyalty/discount rollup: sum each counted *monthly-billed* rental's
+      // month-length (a customer's 2-month rental plus a later 6-month rental
+      // unlocks the 8-month rate), then look up that tier's *current* rate
+      // from the Pricing & Payments tab. Cancelled rentals, and custom
+      // weekly-billed rentals (a different, bespoke arrangement, not part of
+      // the public month-tier ladder), don't count toward this.
       const countedRentals = c.rentals.filter(r => r.status !== 'cancelled');
-      const totalMonths = countedRentals.reduce((sum, r) => sum + rentalMonths(r), 0);
+      const monthlyCountedRentals = countedRentals.filter(r => r.rateType !== 'weekly');
+      const totalMonths = monthlyCountedRentals.reduce((sum, r) => sum + rentalMonths(r), 0);
       const discountHtml = totalMonths
         ? `<div class="renter-line" style="margin:2px 0 8px;">
-             <strong>${totalMonths} month${totalMonths === 1 ? '' : 's'} total</strong>${countedRentals.length > 1 ? ` across ${countedRentals.length} rentals` : ''} ·
+             <strong>${totalMonths} month${totalMonths === 1 ? '' : 's'} total</strong>${monthlyCountedRentals.length > 1 ? ` across ${monthlyCountedRentals.length} rentals` : ''} ·
              <strong style="color:var(--terracotta);">max discount unlocked: ${Math.min(12, totalMonths)}-month rate ($${rateForMonths(totalMonths)}/mo)</strong>
            </div>`
         : '';
@@ -1704,13 +1729,14 @@
         const paid = Number(r.paidAmount) || 0;
         if (paid > 0) return sum + paid;
         if (r.status === 'cancelled') return sum;
-        return sum + (Number(r.monthlyRate) || 0) * rentalMonths(r);
+        const periods = r.rateType === 'weekly' ? rentalWeeks(r) : rentalMonths(r);
+        return sum + (Number(r.monthlyRate) || 0) * periods;
       }, 0);
       const isEstimated = lifetimePaid > 0 && countedRentals.some(r => !(Number(r.paidAmount) > 0));
       // Current rate: the rental actually running today, if any.
       const currentRental = c.rentals.find(r => r.status === 'active' && r.startDate <= today0 && r.endDate >= today0);
       const currentRateHtml = currentRental
-        ? `<div style="font-family: var(--font-display); font-size: 1.1rem; margin-top:0.35rem;">$${(Number(currentRental.monthlyRate) || 0).toLocaleString()}/mo</div><div class="renter-line">Current rate</div>`
+        ? `<div style="font-family: var(--font-display); font-size: 1.1rem; margin-top:0.35rem;">$${(Number(currentRental.monthlyRate) || 0).toLocaleString()}/${currentRental.rateType === 'weekly' ? 'wk' : 'mo'}</div><div class="renter-line">Current rate</div>`
         : '';
       const bookingList = c.bookings.length
         ? c.bookings.map(b => `<li>${new Date(b.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} · <span class="pill pill-${b.status}" style="font-size:0.65rem;">${b.status}</span></li>`).join('')
@@ -1979,6 +2005,7 @@
       paymentStatus: 'unpaid', paidAmount: 0,
       notes: `Converted from waitlist ${id}. Reason: ${w.reason || ', '}`,
     });
+    onRateTypeChange();
     refreshRentalCustomerSummary();
     toast('Pick a chamber + adjust dates, then Save, waitlist entry will auto-mark converted');
     const form = document.getElementById('rentalFormEl');
@@ -2171,6 +2198,7 @@
       paymentStatus: 'unpaid', paidAmount: 0,
       notes: `Converted from booking ${id}. Reason: ${b.reason || ', '}`,
     });
+    onRateTypeChange();
     refreshRentalCustomerSummary();
     toast('Pick a chamber and Save; the exact booking will be linked and converted');
   }
@@ -2585,10 +2613,32 @@
     if (e.getDate() < s.getDate()) months -= 1;
     return Math.max(1, Math.min(12, months));
   }
-  // Auto-fill the rental form's monthly rate from its dates + the pricing table.
+  // Rental length in whole weeks from an inclusive date span — used only for
+  // admin-set weekly-billed rentals (never exposed on the public site, which
+  // only ever offers month-based pricing).
+  function weeksBetweenDates(start, end) {
+    if (!start || !end) return 0;
+    const s = new Date(start + 'T00:00:00');
+    const e = new Date(end + 'T00:00:00');
+    const days = Math.round((e - s) / 86400000) + 1; // inclusive
+    return Math.max(1, Math.round(days / 7));
+  }
+  // Relabel the rate field for the selected billing period. Weekly is a
+  // custom, admin-only arrangement (see the field's own helper text) — its
+  // dollar amount is always entered by hand, never auto-filled from the
+  // public monthly pricing table (see the "monthly only" guards below).
+  function onRateTypeChange() {
+    const type = document.getElementById('rentalRateType').value;
+    const label = document.getElementById('rentalRateLabel');
+    if (!label) return;
+    label.textContent = type === 'weekly' ? 'Weekly rate ($/week)' : 'Monthly subscription rate ($/month)';
+  }
+  // Auto-fill the rental form's rate from its dates + the pricing table —
+  // monthly-billed rentals only; a weekly rate is always set by hand.
   function updateRentalRate() {
     const form = document.getElementById('rentalFormEl');
     if (!form) return;
+    if (form.querySelector('[name="rateType"]').value === 'weekly') return;
     const s = form.querySelector('[name="startDate"]').value;
     const e = form.querySelector('[name="endDate"]').value;
     const rateEl = form.querySelector('[name="monthlyRate"]');
@@ -2611,7 +2661,9 @@
     if (!start) return;
     const months = Number(term.value);
     form.querySelector('[name="endDate"]').value = addMonths(start, months);
-    form.querySelector('[name="monthlyRate"]').value = rateForMonths(months);
+    if (form.querySelector('[name="rateType"]').value !== 'weekly') {
+      form.querySelector('[name="monthlyRate"]').value = rateForMonths(months);
+    }
   }
   (function () {
     const form = document.getElementById('rentalFormEl');

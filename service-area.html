@@ -3,7 +3,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Delivery Service Area, Utah Hyperbaric Chamber Rentals</title>
-<meta name="description" content="Purebaric delivers and installs hyperbaric oxygen chambers across Salt Lake, Utah, Davis, Weber, Tooele, Summit, and Wasatch counties. Check your ZIP for delivery.">
+<meta name="description" content="Purebaric delivers and installs hyperbaric oxygen chambers across Salt Lake, Utah, Davis, Weber, Tooele, Summit, Wasatch, Morgan, Juab, and Sanpete counties. Check your ZIP for delivery.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://purebaric.com/service-area">
 <link rel="icon" type="image/svg+xml" href="/images/favicon.svg?v=2">
@@ -57,7 +57,7 @@
   <div class="wrap">
     <span class="eyebrow2">Service area</span>
     <h1>Delivering across Utah</h1>
-    <p>Free white-glove delivery, setup, and pickup throughout Utah's Wasatch Front and Utah Valley, about a two-hour radius. Check your ZIP below to confirm delivery to your address.</p>
+    <p>Free white-glove delivery, setup, and pickup throughout Utah's Wasatch Front, Utah Valley, and surrounding counties, roughly a 2.5-hour radius. Check your ZIP below to confirm delivery to your address.</p>
     <form class="zipcheck" id="zipCheckForm" autocomplete="off">
       <label for="zipInput">Check delivery to your ZIP</label>
       <div class="ziprow">
@@ -84,8 +84,11 @@
       <div class="area"><h3>Summit</h3><p>Park City, Coalville, Oakley. Mountain delivery confirmed at booking.</p></div>
       <div class="area"><h3>Wasatch</h3><p>Heber, Midway, Kamas and the Heber Valley.</p></div>
       <div class="area"><h3>Tooele</h3><p>Tooele, Grantsville, Stansbury Park.</p></div>
+      <div class="area"><h3>Morgan</h3><p>Morgan, Croydon.</p></div>
+      <div class="area"><h3>Juab</h3><p>Nephi, Mona, Levan, Eureka.</p></div>
+      <div class="area"><h3>Sanpete</h3><p>Manti, Ephraim, Mount Pleasant, Gunnison, Fairview.</p></div>
     </div>
-    <p class="section-head" style="margin-top:20px;color:var(--muted);font-size:13px;max-width:none">Serving ZIP codes across the 840, 841, and 844 prefixes plus select Utah County ZIPs. Not sure? Use the ZIP checker above or just ask, we're happy to confirm.</p>
+    <p class="section-head" style="margin-top:20px;color:var(--muted);font-size:13px;max-width:none">Serving ZIP codes across the 840, 841, and 844 prefixes, plus select ZIPs in Morgan, Juab, and Sanpete counties. Not sure? Use the ZIP checker above or just ask, we're happy to confirm.</p>
   </div>
 </section>
 
@@ -136,7 +139,7 @@
 
 <script src="/warm.js"></script>
 <script>
-var PB_AREA={prefixes:["840","841","844"],zips:["84201","84244","84601","84602","84603","84604","84605","84606","84626","84633","84651","84653","84660","84663","84664"]};
+var PB_AREA={prefixes:["840","841","844"],zips:["84201","84244","84601","84602","84603","84604","84605","84606","84626","84633","84651","84653","84660","84663","84664","84050","84018","84648","84645","84628","84639","84621","84623","84627","84629","84630","84642","84647","84667","84622","84632","84634","84643","84646","84662","84665"]};
 function servedZip(z){z=String(z||'').trim();if(!/^\d{5}$/.test(z))return false;for(var i=0;i<PB_AREA.prefixes.length;i++){if(z.indexOf(PB_AREA.prefixes[i])===0)return true;}return PB_AREA.zips.indexOf(z)>=0;}
 fetch('/api/service-area').then(function(r){return r.json();}).then(function(j){if(j&&(j.prefixes||j.zips)){PB_AREA={prefixes:j.prefixes||[],zips:j.zips||[]};}}).catch(function(){});
 document.getElementById('zipCheckForm').addEventListener('submit',function(e){

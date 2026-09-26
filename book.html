@@ -265,7 +265,7 @@ function recalc(){
   else{w.classList.remove('hide');document.getElementById('badge').textContent='Save '+pp+'%';document.getElementById('save').textContent=money(BASE-r)+'/mo off';}
 }
 /* delivery service area (ZIP) - mirror of the server-side rule in booking-submit.js */
-var PB_AREA={prefixes:["840","841","844"],zips:["84201","84244","84601","84602","84603","84604","84605","84606","84626","84633","84651","84653","84660","84663","84664"]};
+var PB_AREA={prefixes:["840","841","844"],zips:["84201","84244","84601","84602","84603","84604","84605","84606","84626","84633","84651","84653","84660","84663","84664","84050","84018","84648","84645","84628","84639","84621","84623","84627","84629","84630","84642","84647","84667","84622","84632","84634","84643","84646","84662","84665"]};
 function servedZip(z){z=String(z||'').trim();if(!/^\d{5}$/.test(z))return false;for(var i=0;i<PB_AREA.prefixes.length;i++){if(z.indexOf(PB_AREA.prefixes[i])===0)return true;}return PB_AREA.zips.indexOf(z)>=0;}
 fetch('/api/service-area').then(function(r){return r.json();}).then(function(j){if(j&&(j.prefixes||j.zips)){PB_AREA={prefixes:j.prefixes||[],zips:j.zips||[]};if(document.getElementById('zip').value)checkZip();}}).catch(function(){});
 function checkZip(){

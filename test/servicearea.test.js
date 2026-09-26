@@ -11,6 +11,15 @@ test("default area serves the historic prefixes and explicit ZIPs", () => {
   assert.equal(zipServed("", DEFAULT_SERVICE_AREA), false);
 });
 
+test("default area serves Morgan, Juab, and Sanpete counties (added 2026-09-26)", () => {
+  assert.equal(zipServed("84050", DEFAULT_SERVICE_AREA), true); // Morgan
+  assert.equal(zipServed("84018", DEFAULT_SERVICE_AREA), true); // Morgan
+  assert.equal(zipServed("84648", DEFAULT_SERVICE_AREA), true); // Juab (Nephi)
+  assert.equal(zipServed("84642", DEFAULT_SERVICE_AREA), true); // Sanpete (Manti)
+  assert.equal(zipServed("84627", DEFAULT_SERVICE_AREA), true); // Sanpete (Ephraim)
+  assert.equal(zipServed("84636", DEFAULT_SERVICE_AREA), false); // Tooele's Vernon, 846xx but NOT in our explicit list — must stay excluded
+});
+
 test("admin edits take effect: adding a ZIP and removing a prefix", () => {
   const area = { prefixes: ["841"], zips: ["90210"] };
   assert.equal(zipServed("90210", area), true); // added
