@@ -27,3 +27,10 @@
 **Context:** Manual folder deployments could publish uncommitted files and allowed production to drift from Git history.
 **Alternatives considered:** Continuing manual CLI deployments preserves the current workflow but does not guarantee that production matches a commit; creating a new Netlify site would risk the existing domain, Identity, environment, and stored data.
 **Status:** Confirmed
+
+## 2026-09-26 Add passkey sign-in to /admin alongside Netlify Identity
+
+**Decision:** Admin auth accepts either a Netlify Identity JWT or our own passkey (WebAuthn) session: a random 32-byte id in an HttpOnly `pb_admin_session` cookie, looked up in the `adminSessions` Blobs store, valid 90 days flat. Passkeys are discoverable/usernameless and platform-only (Face ID, Touch ID, Windows Hello). New devices can only be registered from an already-signed-in session. Netlify Identity stays as the bootstrap and recovery login.
+**Context:** Identity's ~1h token kept signing the owner out of the admin portal.
+**Alternatives considered:** Removing Identity would leave no recovery path if every passkey device is lost; sliding session expiry would add a Blobs write to every authenticated request.
+**Status:** Confirmed

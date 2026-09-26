@@ -9,7 +9,7 @@ function view(c) {
 }
 
 exports.handler = async (event, context) => {
-  const authErr = requireAuth(event, context);
+  const authErr = await requireAuth(event, context);
   if (authErr) return authErr;
   try {
     if (event.httpMethod === "GET") {

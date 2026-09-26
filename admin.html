@@ -57,6 +57,7 @@
   })();
 </script>
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script src="/vendor/simplewebauthn-browser.js"></script>
 <script type="text/javascript" src="/rental-dates.js"></script>
 <style>
   body { background: var(--cream-warm); }
@@ -245,7 +246,9 @@
   <div id="loginGate" class="login-card" hidden>
     <h2>Sign in</h2>
     <p>This area is restricted to Purebaric staff.</p>
-    <button class="btn btn-primary" onclick="netlifyIdentity.open()">Sign in</button>
+    <button class="btn btn-primary" id="passkeySignInBtn" onclick="signInWithPasskey()" hidden>Sign in with passkey</button>
+    <p id="passkeyMsg" style="margin:0.75rem 0 0;font-size:0.85rem;color:#82402f" hidden></p>
+    <p style="margin:1rem 0 0"><a href="#" id="passwordSignInLink" onclick="netlifyIdentity.open();return false;">Sign in with email &amp; password</a></p>
   </div>
 
   <div id="adminApp" hidden>
@@ -691,24 +694,105 @@
   const app = document.getElementById('adminApp');
   const userEl = document.getElementById('adminUser');
 
+  // A passkey login is a server-side session in an HttpOnly cookie, so the page
+  // can't read it; api() just sends the cookie. passkeySession only tracks which
+  // login the UI is showing (Identity login still works alongside it).
+  let passkeySession = false;
+
   function paintUser(user) {
-    if (!user) { userEl.innerHTML = ''; return; }
-    userEl.innerHTML = `Signed in as <strong>${user.email}</strong> · <button onclick="netlifyIdentity.logout()">Sign out</button>`;
+    if (!user && !passkeySession) { userEl.innerHTML = ''; return; }
+    const who = user ? `Signed in as <strong>${escape(user.email)}</strong>` : 'Signed in with passkey';
+    userEl.innerHTML = `${who} · <button onclick="openPasskeys()">Passkeys</button> · <button onclick="signOut()">Sign out</button>`;
+  }
+
+  async function signOut() {
+    try { await fetch('/api/auth/logout', { method: 'POST' }); } catch (_) {}
+    passkeySession = false;
+    if (window.netlifyIdentity.currentUser()) window.netlifyIdentity.logout(); // its 'logout' event repaints the gate
+    else showGate();
+  }
+
+  function showGate() {
+    gate.hidden = false; app.hidden = true; paintUser(null); setAuthed(false);
+    document.getElementById('passkeySignInBtn').hidden = !window.SimpleWebAuthnBrowser?.browserSupportsWebAuthn();
+  }
+  function showApp(user) {
+    gate.hidden = true; app.hidden = false; paintUser(user); setAuthed(true); loadAll();
+  }
+
+  // Any endpoint that requires auth answers 200 iff the passkey cookie is valid.
+  async function hasPasskeySession() {
+    try { return (await fetch('/api/admin/passkeys')).ok; } catch (_) { return false; }
+  }
+
+  async function signInWithPasskey() {
+    const msg = document.getElementById('passkeyMsg');
+    msg.hidden = true;
+    try {
+      const { options, nonce } = await (await fetch('/api/auth/login-options', { method: 'POST' })).json();
+      const response = await SimpleWebAuthnBrowser.startAuthentication({ optionsJSON: options });
+      const resp = await fetch('/api/auth/login-verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nonce, response }),
+      });
+      const json = await resp.json();
+      if (!resp.ok) throw new Error(json.message || json.error || `HTTP ${resp.status}`);
+      passkeySession = true;
+      showApp(null);
+    } catch (e) {
+      if (e.name === 'NotAllowedError') return; // user dismissed the prompt
+      msg.textContent = e.message || 'Passkey sign-in failed.';
+      msg.hidden = false;
+    }
+  }
+
+  async function openPasskeys() {
+    openModal('Passkeys', '<p>Loading…</p>');
+    try {
+      const { passkeys } = await api('/api/admin/passkeys');
+      const rows = passkeys.map(p => `<div class="modal-row"><strong>${escape(p.deviceLabel)}</strong><div>Added ${escape((p.createdAt || '').slice(0, 10))}${p.lastUsedAt ? ` · last used ${escape(p.lastUsedAt.slice(0, 10))}` : ''} <button class="btn btn-sm" onclick="removePasskey('${escape(p.id)}')">Remove</button></div></div>`).join('');
+      openModal('Passkeys',
+        `<p>Sign in with Face ID, Touch ID or Windows Hello. Add a passkey on each device you use.</p>` +
+        (rows || '<p><em>No passkeys registered yet.</em></p>') +
+        `<div style="margin-top:1rem"><input id="passkeyLabel" placeholder="Device name (e.g. MacBook)" style="margin-right:0.5rem"> <button class="btn btn-primary btn-sm" onclick="addPasskey()">Add this device</button></div>`);
+    } catch (e) { openModal('Passkeys', `<p>Couldn't load passkeys: ${escape(e.message)}</p>`); }
+  }
+
+  async function addPasskey() {
+    const deviceLabel = document.getElementById('passkeyLabel').value.trim();
+    try {
+      const { options, nonce } = await api('/api/admin/passkeys/register-options', { method: 'POST' });
+      const response = await SimpleWebAuthnBrowser.startRegistration({ optionsJSON: options });
+      await api('/api/admin/passkeys/register-verify', { method: 'POST', body: JSON.stringify({ nonce, response, deviceLabel }) });
+      toast('Passkey added');
+      openPasskeys();
+    } catch (e) {
+      if (e.name !== 'NotAllowedError') toast(e.message || 'Could not add passkey', true);
+    }
+  }
+
+  async function removePasskey(id) {
+    if (!confirm('Remove this passkey? That device will no longer be able to sign in with it.')) return;
+    try { await api('/api/admin/passkeys/' + encodeURIComponent(id), { method: 'DELETE' }); openPasskeys(); }
+    catch (e) { toast(e.message || 'Could not remove passkey', true); }
   }
 
   const shell = document.getElementById('adminShell');
   function setAuthed(isAuthed) { shell.classList.toggle('authed', isAuthed); if (!isAuthed) closeNav(); }
 
-  window.netlifyIdentity.on('init', user => {
-    if (user) { gate.hidden = true; app.hidden = false; paintUser(user); setAuthed(true); loadAll(); }
-    else { gate.hidden = false; app.hidden = true; paintUser(null); setAuthed(false); }
+  window.netlifyIdentity.on('init', async user => {
+    if (user) return showApp(user);
+    if (await hasPasskeySession()) { passkeySession = true; return showApp(null); }
+    showGate();
   });
   window.netlifyIdentity.on('login', user => {
     netlifyIdentity.close();
-    gate.hidden = true; app.hidden = false; paintUser(user); setAuthed(true); loadAll();
+    showApp(user);
   });
   window.netlifyIdentity.on('logout', () => {
-    gate.hidden = false; app.hidden = true; paintUser(null); setAuthed(false);
+    passkeySession = false;
+    showGate();
   });
 
   // ───────── Sidebar drawer (mobile) ─────────
@@ -869,7 +953,7 @@
   function showSessionExpired() {
     showLoadError(
       `<span>Your admin session expired, so data couldn't load. Your chambers and requests are safe on the server, just sign back in.</span>` +
-      `<button class="btn btn-primary btn-sm" onclick="netlifyIdentity.logout()">Sign out &amp; back in</button>`
+      `<button class="btn btn-primary btn-sm" onclick="signOut()">Sign out &amp; back in</button>`
     );
   }
 

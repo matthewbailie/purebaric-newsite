@@ -4,7 +4,7 @@ const { requireAuth, parseBody, json } = require("./_lib/admin");
 // GET  /api/admin/service-area -> { prefixes, zips }
 // PUT  /api/admin/service-area  body { prefixes:[...], zips:[...] } -> saved
 exports.handler = async (event, context) => {
-  const authErr = requireAuth(event, context);
+  const authErr = await requireAuth(event, context);
   if (authErr) return authErr;
 
   const method = event.httpMethod;

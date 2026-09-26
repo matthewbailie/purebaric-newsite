@@ -6,7 +6,7 @@ const { requireAuth, parseBody, json } = require("./_lib/admin");
 // Creates a Stripe Payment Link for the rental, tagged with rental_id so the
 // webhook can auto-reconcile payment. Returns { url }.
 exports.handler = async (event, context) => {
-  const authErr = requireAuth(event, context);
+  const authErr = await requireAuth(event, context);
   if (authErr) return authErr;
   if (event.httpMethod !== "POST") return json(405, { error: "method_not_allowed" });
 

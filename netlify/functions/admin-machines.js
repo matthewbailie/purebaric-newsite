@@ -7,7 +7,7 @@ const {
 const { requireAuth, parseBody, parsePathSegments, json } = require("./_lib/admin");
 
 exports.handler = async (event, context) => {
-  const authErr = requireAuth(event, context);
+  const authErr = await requireAuth(event, context);
   if (authErr) return authErr;
 
   const { id } = parsePathSegments(event, "machines");

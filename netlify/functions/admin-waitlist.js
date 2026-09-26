@@ -17,7 +17,7 @@ async function getChamber(id) {
 }
 
 exports.handler = async (event, context) => {
-  const authErr = requireAuth(event, context);
+  const authErr = await requireAuth(event, context);
   if (authErr) return authErr;
 
   const { id, action } = parsePathSegments(event, "waitlist");

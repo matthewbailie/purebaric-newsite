@@ -4,7 +4,7 @@ const { requireAuth, parseBody, json } = require("./_lib/admin");
 // POST: { rentalId, filename, contentType, dataBase64 }  → uploads & links waiver to rental.
 // GET ?rentalId=… → streams the file inline.
 exports.handler = async (event, context) => {
-  const authErr = requireAuth(event, context);
+  const authErr = await requireAuth(event, context);
   if (authErr) return authErr;
 
   const method = event.httpMethod;

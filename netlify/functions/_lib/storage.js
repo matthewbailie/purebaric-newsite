@@ -16,6 +16,10 @@ const STORES = {
   customers: "customers",
   reviews: "reviews",
   settings: "settings",
+  // Passkey admin auth (see _lib/passkeys.js, _lib/session.js).
+  passkeyCredentials: "passkeyCredentials",
+  adminSessions: "adminSessions",
+  authChallenges: "authChallenges",
 };
 
 // Monthly rate per rental length (1-12 months). Editable in the admin (Pricing
@@ -707,11 +711,58 @@ async function getWaiver(key) {
   return { blob, metadata: meta?.metadata };
 }
 
+// ───────── Passkey credentials + admin sessions (see _lib/passkeys.js, _lib/session.js) ─────────
+// One admin "account" — there's a single real owner — so these are keyed only
+// by their own id (credentialId / sessionId / challenge nonce), not by a user id.
+
+async function listPasskeyCredentials() {
+  return listAll(STORES.passkeyCredentials);
+}
+async function getPasskeyCredential(credentialId) {
+  return getOne(STORES.passkeyCredentials, credentialId);
+}
+async function putPasskeyCredential(cred) {
+  return putOne(STORES.passkeyCredentials, cred);
+}
+async function deletePasskeyCredential(credentialId) {
+  await store(STORES.passkeyCredentials).delete(credentialId);
+}
+
+async function getAuthChallenge(nonce) {
+  return getOne(STORES.authChallenges, nonce);
+}
+async function putAuthChallenge(nonce, challenge) {
+  await store(STORES.authChallenges).setJSON(nonce, { id: nonce, challenge, createdAt: nowIso() });
+}
+async function deleteAuthChallenge(nonce) {
+  await store(STORES.authChallenges).delete(nonce);
+}
+
+async function getAdminSession(sessionId) {
+  return getOne(STORES.adminSessions, sessionId);
+}
+async function putAdminSession(session) {
+  return putOne(STORES.adminSessions, session);
+}
+async function deleteAdminSession(sessionId) {
+  await store(STORES.adminSessions).delete(sessionId);
+}
+
 module.exports = {
   STORES,
   newId,
   nowIso,
   store,
+  listPasskeyCredentials,
+  getPasskeyCredential,
+  putPasskeyCredential,
+  deletePasskeyCredential,
+  getAuthChallenge,
+  putAuthChallenge,
+  deleteAuthChallenge,
+  getAdminSession,
+  putAdminSession,
+  deleteAdminSession,
   listChambers,
   getChamber,
   createChamber,

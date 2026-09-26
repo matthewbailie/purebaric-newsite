@@ -17,7 +17,7 @@ function maskNumber(n) {
 }
 
 exports.handler = async (event, context) => {
-  const authErr = requireAuth(event, context);
+  const authErr = await requireAuth(event, context);
   if (authErr) return authErr;
   if (event.httpMethod !== "POST") return json(405, { error: "method_not_allowed" });
 

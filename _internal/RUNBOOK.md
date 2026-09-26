@@ -55,7 +55,7 @@ _Last updated: 2026-09-26._
 |---|---|
 | Public pages | Static **HTML/CSS/JS** |
 | Backend / APIs | **Netlify Functions** (Node.js) in `netlify/functions/` |
-| Admin auth | **Netlify Identity** (login at `/admin`) |
+| Admin auth | **Netlify Identity** or **passkey** session (login at `/admin`, see §11) |
 | Data storage | **Netlify Blobs** (no external database) |
 | Outbound email | **Resend** |
 | Outbound SMS (optional) | Phone **carrier email-to-text gateway** (via Resend) |
@@ -215,8 +215,9 @@ purebaric-newsite/
     └── _lib/
         ├── storage.js          (all Netlify Blobs reads/writes)
         ├── email.js            (Resend send + email templates + SMS helper)
-        ├── admin.js            (requireAuth: needs a valid Identity login; adminEmail: the signed-in
+        ├── admin.js            (async requireAuth: needs a valid Identity login OR passkey session cookie; adminEmail: the signed-in
         │                        admin's email, for audit trails like SMS consent)
+        ├── passkeys.js         (WebAuthn options/verify wrappers, single-owner) + session.js (pb_admin_session cookie + record helpers) — see §11
         ├── notifications.js    (pure: carrier gateways, event routing, SMS consent model — see §7c/§7f)
         ├── inventory.js        (pure: chamber/machine derived state + availability math — see §10a)
         ├── servicearea.js      (pure: delivery-ZIP matching — see §10)
@@ -224,7 +225,7 @@ purebaric-newsite/
         └── stripe.js           (Stripe client construction from config)
 ```
 
-**Data (Netlify Blobs) stores:** `chambers`, `machines`, `rentals`, `bookings`, `waitlist`, `customers`, `reviews`, `waivers`, `settings` (keys: `notifications`, `pricing`, `serviceArea`, `twilio`, `stripe`). Manage contents through `/admin`. **Chambers/machines are physical inventory rows in Blobs, not code** — to add/retire a unit you edit it in `/admin`, not in the repo. Blobs is **one shared store across all deploys**, so a *preview* deploy that writes data writes to **live** data — use obviously-fake test data and delete it in `/admin` afterward.
+**Data (Netlify Blobs) stores:** `chambers`, `machines`, `rentals`, `bookings`, `waitlist`, `customers`, `reviews`, `waivers`, `settings`, `passkeyCredentials`, `adminSessions`, `authChallenges` (keys: `notifications`, `pricing`, `serviceArea`, `twilio`, `stripe`). Manage contents through `/admin`. **Chambers/machines are physical inventory rows in Blobs, not code** — to add/retire a unit you edit it in `/admin`, not in the repo. Blobs is **one shared store across all deploys**, so a *preview* deploy that writes data writes to **live** data — use obviously-fake test data and delete it in `/admin` afterward.
 
 ---
 
@@ -433,6 +434,7 @@ Individual units, both managed on the admin **Chambers** tab. No "types" or pool
 ## 11. Admin portal
 
 - URL **`/admin`** → **Netlify Identity** login. Any valid Identity user gets in (no role requirement — don't add role gating unless asked). Manage users in Netlify → site → **Identity**.
+- **Passkey sign-in (added 2026-09-26):** the `/admin` login gate also offers **"Sign in with passkey"** (Face ID / Touch ID / Windows Hello). `requireAuth` (`_lib/admin.js`, now `async` — every caller must `await` it) accepts a valid Identity JWT **or** a passkey session cookie (`pb_admin_session`, HttpOnly, 90 days flat, record in the `adminSessions` Blobs store; code in `_lib/session.js`, `auth-login-options|verify|logout.js`, routes `/api/auth/*` in `netlify.toml`). Passkeys are stored in `passkeyCredentials`; login challenges in `authChallenges` (5 min, one-time). **Registering a device:** sign in (first time: with email + password), click **Passkeys** in the sidebar footer → name the device → **Add this device**; repeat on each device. **Remove** a lost device from the same dialog (existing sessions from that device stay valid until expiry or Sign out). Netlify Identity is deliberately kept as the recovery path — don't remove it. Browser library is vendored at `vendor/simplewebauthn-browser.js` (`@simplewebauthn/server` handles the server side). WebAuthn RP ID is derived from the request host, so passkeys registered on `purebaric.com` don't work on a preview URL or localhost. Audit trails (e.g. SMS consent) record `passkey:<device name>` instead of an email for passkey sessions. Decision recorded in `DECISIONS.md`.
 - Reads/writes chambers, machines, rentals, bookings, waitlist, customers, reviews, waivers, and settings (pricing/service area/notifications/Twilio/Stripe) via the `/api/admin/*` functions (Blobs). Out-of-area leads appear here flagged.
 - **Almost the entire admin app is one file, `admin.html`** — static markup + a couple of inline `<script>` blocks, no build step, no framework. There is no bundler; edit it directly and reload. This is deliberate (matches the rest of the site) but means the file is large; use targeted `grep`/read-with-offset rather than reading it in one pass.
 - **Tabs (left sidebar):** Home (dashboard stat tiles), Chambers (chamber + machine inventory, availability, the 12-month rental calendar), Rentals, Rental requests (raw booking submissions from `/book`), Waitlist, Customers (derived view, see below), Reviews (moderation queue for `/reviews`), Pricing & Payments (per-month rate table + Stripe keys, §7e), Service Area (ZIP gate), Notifications (§7c/§7f).
