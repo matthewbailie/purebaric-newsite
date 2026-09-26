@@ -57,6 +57,7 @@
   })();
 </script>
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script type="text/javascript" src="/rental-dates.js"></script>
 <style>
   body { background: var(--cream-warm); }
   /* ─── Shell + left sidebar navigation ─── */
@@ -374,6 +375,7 @@
         </div>
       </div>
 
+      <div id="rentalFormAnchor"></div>
       <div class="form-card" id="rentalForm">
         <h3 id="rentalFormTitle">New rental</h3>
         <form id="rentalFormEl" onsubmit="return submitRental(event)">
@@ -397,8 +399,20 @@
           </div>
           <div class="form-row triple">
             <div class="form-group"><label>Start date<span class="req">*</span></label><input type="date" name="startDate" required></div>
+            <div class="form-group"><label>Rental length</label><select id="rentalTermMonths">
+              <option value="custom">Custom end date</option>
+              <option value="1">1 month</option><option value="2">2 months</option><option value="3">3 months</option>
+              <option value="4">4 months</option><option value="5">5 months</option><option value="6">6 months</option>
+              <option value="7">7 months</option><option value="8">8 months</option><option value="9">9 months</option>
+              <option value="10">10 months</option><option value="11">11 months</option><option value="12">12 months</option>
+            </select></div>
             <div class="form-group"><label>End date<span class="req">*</span></label><input type="date" name="endDate" required></div>
-            <div class="form-group"><label>Monthly rate ($)</label><input type="number" name="monthlyRate" min="0" step="1" placeholder="729"></div>
+          </div>
+          <div class="renter-line" id="rentalTermNote" style="margin-top:-8px;margin-bottom:14px;">Choose a month count to calculate the inclusive end date, or choose Custom end date and enter it directly. Calendar months include leap days naturally.</div>
+          <div class="form-row triple">
+            <div class="form-group"><label>Monthly subscription rate ($/month)</label><input type="number" name="monthlyRate" min="0" step="1" placeholder="729"></div>
+            <div class="form-group"><label>Upfront amount paid ($)</label><input type="number" name="paidAmount" min="0" step="1"><div class="renter-line" style="margin-top:4px;">Use when the rental was paid in full upfront.</div></div>
+            <div class="form-group"><label>Payment method</label><input name="paymentMethod" placeholder="Stripe, check, cash, Venmo, etc."></div>
           </div>
           <div class="form-row">
             <div class="form-group"><label>Renter name<span class="req">*</span></label><input name="renter-name" required></div>
@@ -413,7 +427,7 @@
             <div class="form-group"><label>City</label><input name="renter-city"></div>
             <div class="form-group"><label>State</label><input name="renter-state" placeholder="UT"></div>
           </div>
-          <div class="form-row triple">
+          <div class="form-row">
             <div class="form-group"><label>Payment status</label>
               <select name="paymentStatus">
                 <option value="unpaid">Unpaid</option>
@@ -422,10 +436,8 @@
                 <option value="refunded">Refunded</option>
               </select>
             </div>
-            <div class="form-group"><label>Paid amount ($)</label><input type="number" name="paidAmount" min="0" step="1"></div>
             <div class="form-group"><label>Payment date</label><input type="date" name="paymentDate"></div>
           </div>
-          <div class="form-group"><label>Payment method</label><input name="paymentMethod" placeholder="Stripe, check, cash, Venmo, etc."></div>
           <div class="form-group" id="stripeLinkRow" style="display:none;">
             <label>Stripe payment link</label>
             <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
@@ -438,7 +450,7 @@
           <div class="form-group"><label>Internal notes</label><textarea name="notes" rows="2" placeholder="Anything to remember about this rental, extensions, complaints, special handling…"></textarea></div>
           <div class="form-buttons">
             <button type="submit" class="btn btn-primary btn-sm">Save</button>
-            <button type="button" class="btn btn-ghost btn-sm" onclick="toggleForm('rentalForm')">Cancel</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="cancelRentalForm()">Cancel</button>
           </div>
         </form>
       </div>
@@ -774,7 +786,10 @@
         title.textContent = title.textContent.replace(/^New /, 'Edit ');
       }
     }
-    if (id === 'rentalForm' && typeof syncStripeRow === 'function') syncStripeRow();
+    if (id === 'rentalForm') {
+      if (typeof syncStripeRow === 'function') syncStripeRow();
+      if (typeof syncRentalTermControls === 'function') syncRentalTermControls();
+    }
   }
 
   // Move an editable-inline form (chamberForm/machineForm) into a wrapper <tr>
@@ -831,7 +846,7 @@
 
   async function loadAll() {
     clearLoadError();
-    // Any inline-positioned chamber/machine edit form must be moved back out
+    // Any inline-positioned edit form must be moved back out
     // of its table row *before* loadChambers()/loadMachines() below replace
     // that row's whole subtree via innerHTML — otherwise the form node (which
     // is currently living inside it) gets destroyed along with the old rows,
@@ -839,6 +854,7 @@
     if (typeof resetFormPosition === 'function') {
       resetFormPosition('chamberForm', 'chamberFormAnchor');
       resetFormPosition('machineForm', 'machineFormAnchor');
+      resetFormPosition('rentalForm', 'rentalFormAnchor');
     }
     // Load each section independently: one failing call must not blank the rest,
     // and we still paint whatever succeeded.
@@ -1326,6 +1342,13 @@
 
   function renderRentals() {
     const list = document.getElementById('rentalsList');
+    const rentalForm = document.getElementById('rentalForm');
+    const editingId = rentalForm.classList.contains('open')
+      ? rentalForm.querySelector('input[name="id"]').value
+      : '';
+    if (document.getElementById('rentalFormInlineRow')) {
+      resetFormPosition('rentalForm', 'rentalFormAnchor');
+    }
     if (!_rentals.length) {
       list.innerHTML = `<div class="empty-state">No rentals yet.</div>`;
       return;
@@ -1338,7 +1361,7 @@
         ? `${payStatus} · $${r.paidAmount}`
         : payStatus;
       return `
-      <tr style="cursor:pointer;" onclick='rentalRowClick(event, ${JSON.stringify(r.id)})'>
+      <tr data-id="${escape(r.id)}" style="cursor:pointer;" onclick='rentalRowClick(event, ${JSON.stringify(r.id)})'>
         <td><strong>${escape(chamber ? chamber.name : '(deleted chamber)')}</strong></td>
         <td>${escape(renter.name || ', ')}<div class="renter-line">${escape(renter.email || '')}${renter.phone ? ' · ' + escape(renter.phone) : ''}</div></td>
         <td>${escape(r.startDate)} → ${escape(r.endDate)}</td>
@@ -1359,6 +1382,9 @@
       </tr>`;
     }).join('');
     list.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Chamber</th><th>Renter</th><th>Dates</th><th>Rate</th><th>Status</th><th>Payment</th><th>Waiver</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    if (editingId) {
+      placeInlineForm('rentalForm', `#rentalsList tr[data-id="${CSS.escape(editingId)}"]`, 8);
+    }
     if (typeof renderCalendar === 'function') renderCalendar();
   }
 
@@ -1415,11 +1441,22 @@
   // otherwise it could still show whatever unit an earlier editRental() call
   // exempted from the availability filter (that exemption only applies to
   // that rental, not to a new one).
-  function openNewRental() { populateChamberSelect(); toggleForm('rentalForm'); }
+  function openNewRental() {
+    resetFormPosition('rentalForm', 'rentalFormAnchor');
+    document.getElementById('rentalForm').classList.remove('open');
+    populateChamberSelect();
+    toggleForm('rentalForm');
+  }
+  function cancelRentalForm() {
+    resetFormPosition('rentalForm', 'rentalFormAnchor');
+    toggleForm('rentalForm');
+  }
   function editRental(id) {
     const r = _rentals.find(x => x.id === id);
     if (!r) return;
     populateChamberSelect(r.chamberId, r.machineId);
+    document.getElementById('rentalForm').classList.remove('open');
+    placeInlineForm('rentalForm', `#rentalsList tr[data-id="${CSS.escape(id)}"]`, 8);
     toggleForm('rentalForm', {
       id: r.id, chamberId: r.chamberId, status: r.status,
       machineId: r.machineId || '',
@@ -1433,7 +1470,7 @@
       paymentDate: r.paymentDate, paymentMethod: r.paymentMethod,
       notes: r.notes,
     });
-    updateRentalRate(); // reflect the length-based rate from the dates
+    syncRentalTermControls();
   }
 
   // ───────── Stripe payment link (per rental) ─────────
@@ -1995,10 +2032,7 @@
     return /year|yr/i.test(m[2]) ? n * 12 : n;
   }
   function addMonths(isoDate, months) {
-    const d = new Date(isoDate);
-    d.setMonth(d.getMonth() + months);
-    d.setDate(d.getDate() - 1); // inclusive end date
-    return d.toISOString().slice(0, 10);
+    return window.PurebaricRentalDates.addCalendarMonthsInclusive(isoDate, months);
   }
 
   async function deleteBooking(id) {
@@ -2390,7 +2424,7 @@
     } catch (err) { toast(err.message, true); }
   }
 
-  // Rental length in months from an inclusive date span (endDate = start + N months - 1 day).
+  // Rental length in months from an inclusive date span (endDate = start + N calendar months - 1 day).
   function monthsBetweenDates(start, end) {
     if (!start || !end) return 0;
     const s = new Date(start + 'T00:00:00');
@@ -2409,11 +2443,39 @@
     const rateEl = form.querySelector('[name="monthlyRate"]');
     if (s && e && rateEl) rateEl.value = rateForMonths(monthsBetweenDates(s, e));
   }
+  function syncRentalTermControls() {
+    const form = document.getElementById('rentalFormEl');
+    const term = document.getElementById('rentalTermMonths');
+    if (!form || !term) return;
+    const start = form.querySelector('[name="startDate"]').value;
+    const end = form.querySelector('[name="endDate"]').value;
+    const exactMonths = window.PurebaricRentalDates.matchingCalendarMonths(start, end, 12);
+    term.value = exactMonths ? String(exactMonths) : 'custom';
+  }
+  function applyRentalTerm() {
+    const form = document.getElementById('rentalFormEl');
+    const term = document.getElementById('rentalTermMonths');
+    if (!form || !term || term.value === 'custom') return;
+    const start = form.querySelector('[name="startDate"]').value;
+    if (!start) return;
+    const months = Number(term.value);
+    form.querySelector('[name="endDate"]').value = addMonths(start, months);
+    form.querySelector('[name="monthlyRate"]').value = rateForMonths(months);
+  }
   (function () {
     const form = document.getElementById('rentalFormEl');
     if (form) {
-      form.querySelector('[name="startDate"]').addEventListener('change', updateRentalRate);
-      form.querySelector('[name="endDate"]').addEventListener('change', updateRentalRate);
+      const term = document.getElementById('rentalTermMonths');
+      form.querySelector('[name="startDate"]').addEventListener('change', () => {
+        if (term.value === 'custom') updateRentalRate(); else applyRentalTerm();
+      });
+      form.querySelector('[name="endDate"]').addEventListener('change', () => {
+        syncRentalTermControls();
+        updateRentalRate();
+      });
+      term.addEventListener('change', () => {
+        if (term.value !== 'custom') applyRentalTerm();
+      });
     }
   })();
 
