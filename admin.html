@@ -376,6 +376,8 @@
         </div>
       </div>
 
+      <div id="chamberCalendar" style="margin-bottom:26px;"></div>
+
       <div id="chamberFormAnchor"></div>
       <div class="form-card" id="chamberForm">
         <h3 id="chamberFormTitle">New chamber</h3>
@@ -458,7 +460,6 @@
         .cal-popup .cp-close{position:absolute;top:4px;right:8px;cursor:pointer;color:var(--muted,#8a7d70);font-weight:700;line-height:1;}
         @media(max-width:700px){.cal-name{flex-basis:66px;font-size:12px;}.cal-mh{font-size:9px;}}
       </style>
-      <div id="chamberCalendar" style="margin-top:34px;"></div>
     </section>
 
     <!-- ───── Rentals ───── -->
@@ -1477,13 +1478,21 @@
     renderCalendar();
   }
 
-  // Rolling 12-month rental timeline. Window = start of this month + 12 months,
-  // so it advances automatically each day.
+  // Rolling 12-month rental timeline, one row per MACHINE: a machine is what limits
+  // when a rental can happen (any machine can run any chamber), so each row shows
+  // when that machine is booked and, on each bar, which chamber it is paired with —
+  // e.g. M-003 running LC-003 now and SC-001 three months from now. Empty stretches
+  // are the machine's open availability. Window = start of this month + 12 months,
+  // so it advances automatically each day. Only scheduled (confirmed, future) and
+  // active rentals are drawn; a rental with no machine assigned gets its own row.
   function renderCalendar() {
     const el = document.getElementById('chamberCalendar');
     if (!el) return;
-    const chambers = _chambers.filter(c => c.status !== 'archived');
-    if (!chambers.length) { el.innerHTML = ''; return; }
+    const live = (_rentals || []).filter(r => (r.status === 'scheduled' || r.status === 'active') && r.startDate && r.endDate);
+    const machines = (_machines || []).filter(m => m.status !== 'archived' || live.some(r => r.machineId === m.id));
+    const unassigned = live.filter(r => !r.machineId || !(_machines || []).some(m => m.id === r.machineId));
+    if (!machines.length && !unassigned.length) { el.innerHTML = ''; return; }
+    machines.sort((x, y) => String(x.name).localeCompare(String(y.name), undefined, { numeric: true }));
     const now = new Date();
     const winStart = new Date(now.getFullYear(), now.getMonth(), 1);
     const winEnd = new Date(winStart.getFullYear(), winStart.getMonth() + 12, 1);
@@ -1495,35 +1504,34 @@
       const y = d.getMonth() === 0 ? ` '${String(d.getFullYear()).slice(2)}` : '';
       headCells += `<div class="cal-mh">${d.toLocaleDateString('en-US', { month: 'short' })}${y}</div>`;
     }
-    const todayStr = now.toISOString().slice(0, 10);
-    const rowsHtml = chambers.map(c => {
-      const chamberRentals = _rentals.filter(r => r.chamberId === c.id && (r.status === 'scheduled' || r.status === 'active'));
-      const bars = chamberRentals
-        .map(r => {
-          const s = new Date(r.startDate + 'T00:00:00');
-          const e = new Date(r.endDate + 'T00:00:00'); e.setDate(e.getDate() + 1); // inclusive end
-          if (e <= winStart || s >= winEnd) return '';
-          const left = Math.max(0, (s - winStart) / span * 100);
-          const right = Math.min(100, (e - winStart) / span * 100);
-          const w = Math.max(0.6, right - left);
-          const name = (r.renter && r.renter.name) ? r.renter.name : 'Rental';
-          return `<div class="cal-bar ${r.status === 'active' ? 'active' : 'scheduled'}" style="left:${left}%;width:${w}%;"
-            data-name="${escape(name)}" data-start="${escape(fmtDate(r.startDate))}" data-end="${escape(fmtDate(r.endDate))}" data-status="${escape(r.status)}" data-chamber="${escape(c.name)}"><span>${escape(name)}</span></div>`;
-        }).join('');
-      // Label the row with the machine tied to whichever rental is current right
-      // now, or, failing that, the soonest upcoming one — the same rental the
-      // green/blue bar nearest "today" represents.
-      const current = chamberRentals.find(r => r.startDate <= todayStr && r.endDate >= todayStr);
-      const next = current || chamberRentals
-        .filter(r => r.startDate > todayStr)
-        .sort((a, b) => a.startDate.localeCompare(b.startDate))[0];
-      const machine = next && next.machineId ? (_machines || []).find(m => m.id === next.machineId) : null;
-      const machineHtml = machine ? `<div class="cal-machine">${escape(machine.name)}</div>` : '';
-      return `<div class="cal-row"><div class="cal-name">${escape(c.name)}${machineHtml}</div><div class="cal-track">${bars}<div class="cal-today" style="left:${todayPct}%;"></div></div></div>`;
-    }).join('');
+    const LANE = 34;
+    // One row: its rentals laid out in lanes so any overlap stays visible instead of hiding a bar.
+    const rowHtml = (label, sub, rentals, machineName) => {
+      const drawn = rentals
+        .map(r => ({ r, s: new Date(r.startDate + 'T00:00:00'), e: new Date(new Date(r.endDate + 'T00:00:00').getTime() + 86400000) })) // inclusive end
+        .filter(x => x.e > winStart && x.s < winEnd)
+        .sort((x, y) => x.s - y.s);
+      const laneEnds = [];
+      const bars = drawn.map(({ r, s, e }) => {
+        let lane = laneEnds.findIndex(end => end <= s);
+        if (lane === -1) { lane = laneEnds.length; laneEnds.push(e); } else laneEnds[lane] = e;
+        const left = Math.max(0, (s - winStart) / span * 100);
+        const right = Math.min(100, (e - winStart) / span * 100);
+        const w = Math.max(0.6, right - left);
+        const chamber = (_chambers || []).find(c => c.id === r.chamberId);
+        const chamberName = chamber ? chamber.name : 'no chamber';
+        const name = (r.renter && r.renter.name) ? r.renter.name : 'Rental';
+        return `<div class="cal-bar ${r.status === 'active' ? 'active' : 'scheduled'}" style="left:${left}%;width:${w}%;top:${6 + lane * LANE}px;bottom:auto;height:${LANE - 6}px;"
+          data-name="${escape(name)}" data-start="${escape(fmtDate(r.startDate))}" data-end="${escape(fmtDate(r.endDate))}" data-status="${escape(r.status)}" data-chamber="${escape(chamberName)}" data-machine="${escape(machineName)}"><span>${escape(name)} · ${escape(chamberName)}</span></div>`;
+      }).join('');
+      const height = Math.max(1, laneEnds.length) * LANE + 8;
+      return `<div class="cal-row" style="min-height:${height}px;"><div class="cal-name">${escape(label)}${sub ? `<div class="cal-machine">${escape(sub)}</div>` : ''}</div><div class="cal-track">${bars}<div class="cal-today" style="left:${todayPct}%;"></div></div></div>`;
+    };
+    const rowsHtml = machines.map(m => rowHtml(m.name, m.status === 'maintenance' ? 'maintenance' : (m.status === 'archived' ? 'archived' : ''), live.filter(r => r.machineId === m.id), m.name)).join('')
+      + (unassigned.length ? rowHtml('No machine', 'unassigned', unassigned, 'not assigned') : '');
     el.innerHTML = `
       <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Rental calendar</h3>
-      <div class="renter-line" style="margin-bottom:12px;">Rolling 12 months from this month. <span style="color:#5b7fa6;font-weight:700;">Blue</span> = scheduled, <span style="color:#5c7a34;font-weight:700;">green</span> = active. The orange line is today. Hover for a date, click a rental for its dates.</div>
+      <div class="renter-line" style="margin-bottom:12px;">One row per machine, rolling 12 months from this month. Each bar shows the renter and the chamber the machine is paired with; empty space is when that machine is free. <span style="color:#5b7fa6;font-weight:700;">Blue</span> = scheduled (confirmed, upcoming), <span style="color:#5c7a34;font-weight:700;">green</span> = active. The orange line is today. Hover for a date, click a rental for its details.</div>
       <div class="cal-wrap">
         <div class="cal">
           <div class="cal-row cal-headrow"><div class="cal-name"></div><div class="cal-track cal-head">${headCells}<div class="cal-today" style="left:${todayPct}%;"></div><div class="cal-today-marker" style="left:${todayPct}%;">Today</div></div></div>
@@ -1570,7 +1578,8 @@
       const br = bar.getBoundingClientRect();
       popup.innerHTML =
         `<span class="cp-close" title="Close">×</span>` +
-        `<div class="cp-name">${escape(bar.dataset.name)} · ${escape(bar.dataset.chamber)}</div>` +
+        `<div class="cp-name">${escape(bar.dataset.name)}</div>` +
+        `<div class="renter-line">Chamber ${escape(bar.dataset.chamber)} · Machine ${escape(bar.dataset.machine)}</div>` +
         `<div class="cp-dates">${escape(bar.dataset.start)} → ${escape(bar.dataset.end)}</div>` +
         `<div class="renter-line" style="margin-top:2px;text-transform:capitalize;">${escape(bar.dataset.status)}</div>`;
       popup.hidden = false;
