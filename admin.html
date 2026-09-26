@@ -1624,6 +1624,12 @@
   })();
   document.getElementById('customerSearch').addEventListener('input', _customerSearchDebounced);
 
+  // Whole months spanned by one rental (inclusive), same rounding convention
+  // used in the rental details modal: ~30.44 days/month, minimum 1 month.
+  function rentalMonths(r) {
+    const days = Math.round((new Date(r.endDate) - new Date(r.startDate)) / 86400000) + 1;
+    return Math.max(1, Math.round(days / 30.44));
+  }
   function renderCustomers() {
     const list = document.getElementById('customersList');
     if (!_customers.length) {
@@ -1636,9 +1642,22 @@
       const rentalList = c.rentals.length
         ? c.rentals.sort((a,b) => b.startDate.localeCompare(a.startDate)).map(r => {
             const ch = _chambers.find(x => x.id === r.chamberId);
-            return `<li>${escape(r.startDate)} → ${escape(r.endDate)} · ${escape(ch ? ch.name : ', ')} · <span class="pill pill-${r.status}" style="font-size:0.65rem;">${r.status}</span></li>`;
+            const months = rentalMonths(r);
+            return `<li>${escape(r.startDate)} → ${escape(r.endDate)} · ${months} mo · ${escape(ch ? ch.name : ', ')} · <span class="pill pill-${r.status}" style="font-size:0.65rem;">${r.status}</span></li>`;
           }).join('')
         : '<li style="color:var(--stone-muted);">None</li>';
+      // Loyalty/discount rollup: sum each counted rental's month-length (a
+      // customer's 2-month rental plus a later 6-month rental unlocks the
+      // 8-month rate), then look up that tier's *current* rate from the
+      // Pricing & Payments tab. Cancelled rentals don't count toward this.
+      const countedRentals = c.rentals.filter(r => r.status !== 'cancelled');
+      const totalMonths = countedRentals.reduce((sum, r) => sum + rentalMonths(r), 0);
+      const discountHtml = totalMonths
+        ? `<div class="renter-line" style="margin:2px 0 8px;">
+             <strong>${totalMonths} month${totalMonths === 1 ? '' : 's'} total</strong>${countedRentals.length > 1 ? ` across ${countedRentals.length} rentals` : ''} ·
+             <strong style="color:var(--terracotta);">max discount unlocked: ${Math.min(12, totalMonths)}-month rate ($${rateForMonths(totalMonths)}/mo)</strong>
+           </div>`
+        : '';
       const bookingList = c.bookings.length
         ? c.bookings.map(b => `<li>${new Date(b.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} · <span class="pill pill-${b.status}" style="font-size:0.65rem;">${b.status}</span></li>`).join('')
         : '<li style="color:var(--stone-muted);">None</li>';
@@ -1673,7 +1692,7 @@
             <span>${c.rentals.length} rental${c.rentals.length === 1 ? '' : 's'} · ${c.bookings.length} rental request${c.bookings.length === 1 ? '' : 's'} · ${c.waitlist.length} waitlist</span>
           </div>
           <div class="customer-records">
-            <div class="customer-record-block"><strong>Rentals</strong><ul>${rentalList}</ul></div>
+            <div class="customer-record-block"><strong>Rentals</strong>${discountHtml}<ul>${rentalList}</ul></div>
             <div class="customer-record-block"><strong>Rental requests</strong><ul>${bookingList}</ul></div>
             <div class="customer-record-block"><strong>Waitlist</strong><ul>${waitlistList}</ul></div>
           </div>
