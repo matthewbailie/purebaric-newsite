@@ -739,7 +739,12 @@
     const text = await resp.text();
     const json = text ? JSON.parse(text) : {};
     if (!resp.ok) {
-      const err = new Error(json.error || `HTTP ${resp.status}`);
+      // Prefer the backend's human-readable `message` (when it sends one)
+      // over the bare error `code` — most endpoints only send a code, so this
+      // falls back to that unchanged; a few (like stripe-link) send both, and
+      // callers get the better text for free without special-casing codes.
+      const err = new Error(json.message || json.error || `HTTP ${resp.status}`);
+      err.code = json.error;
       err.status = resp.status;
       throw err;
     }
@@ -1529,7 +1534,7 @@
       toast('Payment link created');
       await loadRentals();
     } catch (err) {
-      toast(err.message === 'stripe_not_configured' ? 'Stripe isn\'t configured yet (add keys in Netlify).' : err.message, true);
+      toast(err.message, true);
     }
   }
   function copyStripeLink() {
