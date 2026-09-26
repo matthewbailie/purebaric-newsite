@@ -2150,13 +2150,14 @@
         : '';
       const notesBlock = c.notes
         ? `<div class="renter-line" style="margin-top:0.5rem;color:var(--terracotta);">📝 ${escape(c.notes)}</div>` : '';
-      const editButton = `<button class="btn btn-ghost btn-sm" onclick='editCustomer(${JSON.stringify(c.email)})'>Edit</button>`;
+      // Customer records are keyed by email, so someone with none on file (an older, historical renter) has no Edit.
+      const editButton = c.email ? `<button class="btn btn-ghost btn-sm" onclick='editCustomer(${JSON.stringify(c.email)})'>Edit</button>` : '<span class="renter-line">No email on file</span>';
       return `
         <div class="customer-card">
           <div class="customer-card-head">
             <div>
               <h4>${escape(c.name || '(no name)')} ${tagPills}</h4>
-              <div class="renter-line">${escape(c.email)}${c.phone ? ' · ' + escape(c.phone) : ''}</div>
+              <div class="renter-line">${escape(c.email || 'no email')}${c.phone ? ' · ' + escape(c.phone) : ''}</div>
               ${addressLine ? `<div class="renter-line">${escape(addressLine)}</div>` : ''}
               ${notesBlock}
             </div>

@@ -39,7 +39,16 @@
   function activeOn(r, day) {
     return isCounted(r) && day10(r.startDate) <= day && day10(r.endDate) >= day;
   }
-  const emailOf = (r) => String((r.renter && r.renter.email) || '').trim().toLowerCase() || `rental:${r.id}`;
+  // Mirrors renterKey in netlify/functions/_lib/customer-key.js: email, else phone, else name (else this rental alone).
+  const emailOf = (r) => {
+    const p = (r && r.renter) || {};
+    const email = String(p.email || '').trim().toLowerCase();
+    if (email) return email;
+    const digits = String(p.phone || '').replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
+    if (digits) return `phone:${digits}`;
+    const name = String(p.name || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    return name ? `name:${name}` : `rental:${r.id}`;
+  };
 
   function subscriberSet(rentals, day) {
     const set = new Set();

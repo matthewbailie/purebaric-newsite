@@ -1,4 +1,5 @@
 const { getStore } = require("@netlify/blobs");
+const { renterKey } = require("./customer-key");
 const crypto = require("crypto");
 const inventory = require("./inventory");
 const serviceArea = require("./servicearea");
@@ -557,12 +558,15 @@ async function listCustomers() {
     listAll(STORES.customers),
   ]);
   const map = new Map();
-  function ensure(email) {
-    const key = normalizeEmail(email);
+  // `key` groups a person's records; it is their email when they have one (rentals may fall back to
+  // phone or name, see customer-key.js), and `email` is '' for someone with no email on file.
+  function ensure(email, keyOverride) {
+    const key = keyOverride || normalizeEmail(email);
     if (!key) return null;
     if (!map.has(key)) {
       map.set(key, {
-        email: key,
+        key,
+        email: normalizeEmail(email) || "",
         manualId: null,
         name: "",
         phone: "",
@@ -598,7 +602,7 @@ async function listCustomers() {
     if (!c.lastActivity || iso > c.lastActivity) c.lastActivity = iso;
   }
   for (const r of rentals) {
-    const c = ensure(r.renter && r.renter.email);
+    const c = ensure(r.renter && r.renter.email, renterKey(r.renter));
     if (!c) continue;
     c.rentals.push(r);
     if (r.renter) {
