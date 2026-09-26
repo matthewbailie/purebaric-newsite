@@ -48,3 +48,10 @@
 **Context:** The same details could be typed in two places (the rental and the customer record) and drift apart.
 **Alternatives considered:** Always mirroring the live customer record into every saved rental would silently change a past rental's delivery address when a customer moves.
 **Status:** Confirmed
+
+## 2026-09-26 Compute Home-tab revenue metrics in the browser from existing data
+
+**Decision:** The admin Home tab derives MRR, subscribers, average price, trends and health metrics client-side from the rentals, bookings and chambers already loaded, using month-end snapshots. Charts are dependency-free SVG. Definitions live in one tested module.
+**Context:** There is no billing ledger yet (Stripe isn't configured), so revenue is derived from rental terms and rates.
+**Alternatives considered:** A server-side metrics endpoint would add an API and storage for data the page already has; a charting library would add a CDN dependency to the admin page.
+**Status:** Confirmed

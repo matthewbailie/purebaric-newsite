@@ -59,6 +59,8 @@
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script src="/vendor/simplewebauthn-browser.js"></script>
 <script type="text/javascript" src="/rental-dates.js"></script>
+<script src="/dashboard-metrics.js"></script>
+<script src="/dashboard-charts.js"></script>
 <style>
   body { background: var(--cream-warm); }
   /* ─── Shell + left sidebar navigation ─── */
@@ -170,11 +172,68 @@
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); }
   .table-wrap .data-table { border: none; min-width: 640px; }
   /* Sidebar collapses to an off-canvas drawer with a top-bar hamburger. */
+  /* ─── Home: revenue KPIs + charts ─── */
+  .kpi-row { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .kpi { background: var(--cream); border: 1px solid var(--line); padding: 1.25rem; }
+  .kpi-label { font-size: 0.75rem; color: var(--stone-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .kpi-val { font-family: var(--font-display); font-size: 2rem; color: var(--ink); line-height: 1.1; margin-top: 0.3rem; }
+  .kpi.kpi-lead .kpi-val { font-size: 3.25rem; }
+  .kpi-sub { font-size: 0.82rem; color: var(--stone-muted); margin-top: 0.4rem; line-height: 1.4; }
+  .delta-up { color: var(--moss-deep); font-weight: 600; }
+  .delta-down { color: #9a3b2a; font-weight: 600; }
+  .health-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+  .health-row .kpi-val { font-size: 1.7rem; }
+  .viz { --viz-now: var(--terracotta); --viz-prev: #8a8378; }
+  .viz-card { background: var(--cream); border: 1px solid var(--line); padding: 1rem 1.25rem 0.75rem; min-width: 0; }
+  .viz-card h3 { font-size: 1rem; margin: 0; }
+  .viz-note { font-size: 0.8rem; color: var(--stone-muted); margin: 0.15rem 0 0; min-height: 1.1em; }
+  .viz-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+  .viz-legend { display: flex; gap: 1rem; font-size: 0.8rem; color: var(--stone-muted); margin: 0.4rem 0 0.1rem; }
+  .viz-legend:empty { display: none; }
+  .viz-plot { position: relative; }
+  .viz-svg { display: block; width: 100%; overflow: visible; }
+  .viz-svg:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 2px; }
+  .viz-grid { stroke: var(--line); stroke-width: 1; }
+  .viz-axis { fill: var(--stone-muted); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+  .viz-line { fill: none; stroke: var(--viz-now); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .viz-line.prev { stroke: var(--viz-prev); stroke-dasharray: 5 4; }
+  .viz-end { fill: var(--viz-now); stroke: var(--cream); stroke-width: 2; }
+  .viz-end.prev { fill: var(--viz-prev); }
+  .viz-endlabel { fill: var(--ink); font-size: 12px; font-weight: 600; }
+  .viz-crossline { stroke: var(--stone-muted); stroke-width: 1; }
+  .viz-hit { cursor: crosshair; touch-action: pan-y; }
+  .viz-tip-key { display: inline-block; width: 16px; height: 0; border-top: 2px solid var(--viz-now); vertical-align: middle; margin-right: 6px; }
+  .viz-tip-key.prev { border-top-style: dashed; border-top-color: var(--viz-prev); }
+  .viz-legend-item { display: inline-flex; align-items: center; }
+  .viz-tip { position: absolute; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 0.5rem 0.7rem; font-size: 0.8rem; pointer-events: none; box-shadow: 0 4px 14px rgba(26,31,26,0.12); white-space: nowrap; z-index: 2; }
+  .viz-tip-head { color: var(--stone-muted); margin-bottom: 0.2rem; }
+  .viz-tip-row strong { color: var(--ink); font-weight: 600; margin-right: 0.4rem; }
+  .viz-tip-name { color: var(--stone-muted); }
+  .viz-table { margin-top: 1rem; }
+  .viz-table summary { cursor: pointer; font-size: 0.85rem; color: var(--stone-muted); padding: 0.4rem 0; }
+  .viz-table td, .viz-table th { font-variant-numeric: tabular-nums; white-space: nowrap; }
   @media (max-width: 900px) {
-    .admin-sidebar { position: fixed; left: 0; top: 0; height: 100vh; width: 264px; flex-basis: 264px; transform: translateX(-100%); transition: transform 0.22s ease; box-shadow: 0 0 34px rgba(0,0,0,0.16); }
+    .kpi-row { grid-template-columns: repeat(3, 1fr); }
+    .kpi.kpi-lead { grid-column: 1 / -1; }
+    .viz-grid-2 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .kpi-row { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    .kpi:last-child { grid-column: 1 / -1; }
+    .kpi { padding: 0.9rem; }
+    .kpi.kpi-lead .kpi-val { font-size: 3rem; }
+    .kpi-val { font-size: 1.6rem; }
+    .viz-card { padding: 0.85rem 0.75rem 0.6rem; }
+  }
+  @media (max-width: 900px) {
+    /* 100vh is taller than the visible area on phones (browser toolbars), which pushed the
+       account/Passkeys/Sign out footer off-screen. dvh tracks the visible height, and the
+       footer stays pinned to the bottom of the drawer even when the nav needs to scroll. */
+    .admin-sidebar { position: fixed; left: 0; top: 0; height: 100vh; height: 100dvh; width: 264px; flex-basis: 264px; transform: translateX(-100%); transition: transform 0.22s ease; box-shadow: 0 0 34px rgba(0,0,0,0.16); }
     .admin-shell.nav-open .admin-sidebar { transform: none; }
     .admin-shell.nav-open .sidebar-overlay { display: block; }
     .sidebar-close { display: block; }
+    .sidebar-foot { position: sticky; bottom: 0; background: var(--cream); padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); }
     .admin-shell.authed .admin-topbar { display: flex; }
     .admin-main { padding: 1.25rem 1rem 5rem; }
   }
@@ -258,6 +317,7 @@
     <!-- ───── Home / dashboard ───── -->
     <section class="tab-panel active" data-panel="home">
       <div class="panel-actions"><h2>Overview</h2></div>
+      <h3 class="inv-heading" style="margin-top:0">Operations</h3>
       <div class="stat-row">
         <button type="button" class="stat-block" data-jump-tab="chambers"><div class="stat-label">Active chambers</div><div class="stat-val" id="statActive"></div></button>
         <button type="button" class="stat-block" data-jump-tab="chambers"><div class="stat-label">Bookable now</div><div class="stat-val" id="statAvailable"></div></button>
@@ -265,6 +325,39 @@
         <button type="button" class="stat-block" data-jump-tab="waitlist"><div class="stat-label">Waitlist queued</div><div class="stat-val" id="statWaitlist"></div></button>
         <button type="button" class="stat-block" data-jump-tab="reviews"><div class="stat-label">Pending reviews</div><div class="stat-val" id="statReviews"></div></button>
       </div>
+
+      <h3 class="inv-heading">Revenue</h3>
+      <div class="kpi-row">
+        <div class="kpi kpi-lead"><div class="kpi-label">Monthly recurring revenue</div><div class="kpi-val" id="kpiMrr"></div><div class="kpi-sub" id="kpiMrrSub"></div></div>
+        <div class="kpi"><div class="kpi-label">Active subscribers</div><div class="kpi-val" id="kpiSubs"></div><div class="kpi-sub" id="kpiSubsSub"></div></div>
+        <div class="kpi"><div class="kpi-label">Average monthly price</div><div class="kpi-val" id="kpiAvg"></div><div class="kpi-sub" id="kpiAvgSub"></div></div>
+        <div class="kpi"><div class="kpi-label">Annual run rate</div><div class="kpi-val" id="kpiArr"></div><div class="kpi-sub">Monthly recurring revenue &times; 12</div></div>
+      </div>
+      <div class="viz-card viz">
+        <h3>Monthly recurring revenue</h3>
+        <p class="viz-note" data-note="mrr"></p>
+        <div id="chartMrr"></div>
+      </div>
+      <div class="viz-grid-2">
+        <div class="viz-card viz">
+          <h3>Active subscribers</h3>
+          <p class="viz-note" data-note="subs"></p>
+          <div id="chartSubs"></div>
+        </div>
+        <div class="viz-card viz">
+          <h3>Average monthly price per chamber</h3>
+          <p class="viz-note" data-note="avg"></p>
+          <div id="chartAvg"></div>
+        </div>
+      </div>
+      <details class="viz-table">
+        <summary>View the monthly numbers as a table</summary>
+        <div style="overflow-x:auto"><table class="data-table" id="monthlyTable"></table></div>
+      </details>
+      <p class="renter-line" style="margin:0.6rem 0 0;">Each month shows the position at month end (today, for the current month). Cancelled rentals are excluded. Weekly-billed rentals are converted to a monthly amount.</p>
+
+      <h3 class="inv-heading">Business health</h3>
+      <div class="health-row" id="healthRow"></div>
     </section>
 
     <!-- ───── Chambers ───── -->
@@ -1058,6 +1151,81 @@
     document.getElementById('statWaitlist').textContent = queued;
     document.getElementById('statBookings').textContent = newBookings;
     const rv = document.getElementById('statReviews'); if (rv) rv.textContent = pendingReviews;
+    renderDashboard();
+  }
+
+  // ─── Home: revenue metrics + charts (definitions in dashboard-metrics.js) ───
+  const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const money = n => n == null ? '—' : '$' + Math.round(n).toLocaleString('en-US');
+  const setText = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+  function localToday() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+  function deltaHtml(diff, label) {
+    if (!diff) return `No change ${label}`;
+    return `<span class="${diff > 0 ? 'delta-up' : 'delta-down'}">${diff > 0 ? '▲ +' : '▼ −'}${money(Math.abs(diff))}</span> ${label}`;
+  }
+  function renderDashboard() {
+    const M = window.PurebaricMetrics, C = window.PurebaricCharts;
+    if (!M || !C || !document.getElementById('kpiMrr')) return;
+    const today = localToday();
+    const year = Number(today.slice(0, 4));
+    const monthIdx = Number(today.slice(5, 7)) - 1;
+    const o = M.overview({ rentals: _rentals || [], bookings: _bookings || [], chambers: _chambers || [], today });
+    const cur = M.yearSeries(_rentals || [], year, today);
+    const prev = M.yearSeries(_rentals || [], year - 1, today);
+    const hasPrev = M.seriesHasActivity(prev);
+
+    setText('kpiMrr', money(o.mrr));
+    const prevMonthName = MONTH_NAMES[(monthIdx + 11) % 12];
+    let sub = deltaHtml(o.mrrChangeMonth, `since end of ${prevMonthName}`);
+    if (o.yearAgo.mrr > 0) {
+      const pct = Math.round(((o.mrr - o.yearAgo.mrr) / o.yearAgo.mrr) * 100);
+      sub += ` · ${pct >= 0 ? '+' : '−'}${Math.abs(pct)}% vs ${MONTH_NAMES[monthIdx]} ${year - 1}`;
+    }
+    document.getElementById('kpiMrrSub').innerHTML = sub;
+    setText('kpiSubs', o.subscribers);
+    setText('kpiSubsSub', `${o.newSubscribers} new · ${o.lostSubscribers} lost this month`);
+    setText('kpiAvg', money(o.avgPrice));
+    setText('kpiAvgSub', o.activeRentals ? `Across ${o.activeRentals} active rental${o.activeRentals === 1 ? '' : 's'}` : 'No active rentals');
+    setText('kpiArr', money(o.arr));
+
+    const noPrevNote = !M.seriesHasActivity(cur) ? `No rentals in ${year} yet.` : hasPrev ? '' : `No ${year - 1} rentals on record yet, so there's no prior-year line.`;
+    ['mrr', 'subs', 'avg'].forEach(k => { document.querySelector(`[data-note="${k}"]`).textContent = noPrevNote; });
+    const axisMoney = n => n >= 1000 ? '$' + (n / 1000) + 'k' : '$' + n;
+    // Months before a year's first rental are "no data" (a gap), not a zero — the business
+    // hadn't started yet — so the line begins where the first rental does.
+    const values = (points, key) => {
+      const first = points.findIndex(p => p && p.rentals > 0);
+      return points.map((p, i) => p && first !== -1 && i >= first ? p[key] : null);
+    };
+    const build = (key, format, axisFormat, what) => {
+      const series = [{ label: String(year), values: values(cur, key) }];
+      if (hasPrev) series.push({ label: String(year - 1), values: values(prev, key) });
+      const last = series[0].values.filter(v => v != null).pop();
+      return { series, format, axisFormat, ariaLabel: `${what} by month, ${year}${hasPrev ? ` compared with ${year - 1}` : ''}. Latest: ${last == null ? 'no data' : format(last)}.` };
+    };
+    C.lineChart(document.getElementById('chartMrr'), build('mrr', money, axisMoney, 'Monthly recurring revenue'));
+    C.lineChart(document.getElementById('chartSubs'), build('subscribers', String, String, 'Active subscribers'));
+    C.lineChart(document.getElementById('chartAvg'), build('avgPrice', money, axisMoney, 'Average monthly price per chamber'));
+
+    const cell = (p, key, f) => p && p[key] != null ? f(p[key]) : '—';
+    const short = MONTH_NAMES.map(n => n.slice(0, 3));
+    document.getElementById('monthlyTable').innerHTML =
+      `<thead><tr><th>Month</th><th>MRR ${year}</th><th>MRR ${year - 1}</th><th>Subscribers ${year}</th><th>Subscribers ${year - 1}</th><th>Avg price ${year}</th><th>Avg price ${year - 1}</th></tr></thead><tbody>` +
+      short.map((m, i) => `<tr><td>${m}</td><td>${cell(cur[i], 'mrr', money)}</td><td>${cell(prev[i], 'mrr', money)}</td><td>${cell(cur[i], 'subscribers', String)}</td><td>${cell(prev[i], 'subscribers', String)}</td><td>${cell(cur[i], 'avgPrice', money)}</td><td>${cell(prev[i], 'avgPrice', money)}</td></tr>`).join('') + '</tbody>';
+
+    const tiles = [
+      ['Chamber utilization', o.utilization.pct == null ? '—' : o.utilization.pct + '%', `${o.utilization.inUse} of ${o.utilization.activeChambers} active chambers rented today`],
+      ['Contracted revenue remaining', money(o.contractedRemaining), 'Rest of current and upcoming rental terms'],
+      ['Renewals due, next 30 days', String(o.renewalsDue.count), o.renewalsDue.count ? `${money(o.renewalsDue.mrr)}/mo up for renewal` : 'No rentals ending without a follow-on'],
+      ['Starting, next 30 days', String(o.startingSoon.count), o.startingSoon.count ? `${money(o.startingSoon.mrr)}/mo about to start` : 'No rentals scheduled to start'],
+      ['Request to rental, 90 days', o.conversion.pct == null ? '—' : o.conversion.pct + '%', `${o.conversion.converted} of ${o.conversion.requests} in-area requests became rentals`],
+      ['Average rental length', o.avgTermMonths == null ? '—' : o.avgTermMonths + ' mo', 'Monthly-billed rentals, excluding cancelled'],
+      ['Lifetime revenue (est.)', money(o.lifetimeRevenue), 'Same estimate as Lifetime paid on the Customers tab'],
+    ];
+    document.getElementById('healthRow').innerHTML = tiles.map(t => `<div class="kpi"><div class="kpi-label">${t[0]}</div><div class="kpi-val">${t[1]}</div><div class="kpi-sub">${t[2]}</div></div>`).join('');
   }
 
   // Modal helpers
