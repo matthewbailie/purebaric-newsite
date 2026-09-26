@@ -123,6 +123,8 @@
   .row-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
   .btn-sm { padding: 0.3rem 0.7rem; font-size: 0.78rem; min-height: auto; }
   .form-card { background: var(--cream); border: 1px solid var(--line); padding: 1.5rem; margin-bottom: 1.5rem; display: none; }
+  .inline-edit-row td { padding: 0; border-bottom: 1px solid var(--line); }
+  .inline-edit-row .form-card { margin-bottom: 0; border: none; border-top: 2px solid var(--terracotta, #b5654a); }
   .form-card.open { display: block; }
   .form-card h3 { margin: 0 0 1rem; font-size: 1.15rem; }
   .form-card .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -267,10 +269,11 @@
         <h2>Chambers</h2>
         <div>
           <label style="font-size: 0.85rem;"><input type="checkbox" id="showArchived"> Show archived</label>
-          <button class="btn btn-primary btn-sm" onclick="toggleForm('chamberForm')">+ Add chamber</button>
+          <button class="btn btn-primary btn-sm" onclick="openAddChamber()">+ Add chamber</button>
         </div>
       </div>
 
+      <div id="chamberFormAnchor"></div>
       <div class="form-card" id="chamberForm">
         <h3 id="chamberFormTitle">New chamber</h3>
         <form id="chamberFormEl" onsubmit="return submitChamber(event)">
@@ -283,7 +286,7 @@
           <div class="form-group"><label>Notes</label><textarea name="notes" rows="2"></textarea></div>
           <div class="form-buttons">
             <button type="submit" class="btn btn-primary btn-sm">Save</button>
-            <button type="button" class="btn btn-ghost btn-sm" onclick="toggleForm('chamberForm')">Cancel</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="cancelChamberForm()">Cancel</button>
           </div>
         </form>
       </div>
@@ -295,8 +298,9 @@
 
       <div class="inv-head-row">
         <h3 class="inv-heading" style="margin:0;">Machines</h3>
-        <button class="btn btn-primary btn-sm" onclick="toggleForm('machineForm')">+ Add machine</button>
+        <button class="btn btn-primary btn-sm" onclick="openAddMachine()">+ Add machine</button>
       </div>
+      <div id="machineFormAnchor"></div>
       <div class="form-card" id="machineForm">
         <h3 id="machineFormTitle">New machine</h3>
         <form id="machineFormEl" onsubmit="return submitMachine(event)">
@@ -307,7 +311,7 @@
           </div>
           <div class="form-buttons">
             <button type="submit" class="btn btn-primary btn-sm">Save</button>
-            <button type="button" class="btn btn-ghost btn-sm" onclick="toggleForm('machineForm')">Cancel</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="cancelMachineForm()">Cancel</button>
           </div>
         </form>
       </div>
@@ -329,7 +333,8 @@
         .cal{border:1px solid var(--line,#e6dccd);border-radius:12px;overflow:hidden;background:var(--card,#fffdf9);}
         .cal-row{display:flex;align-items:stretch;border-top:1px solid var(--line,#e6dccd);min-height:42px;}
         .cal-row.cal-headrow{border-top:none;background:#faf6ef;}
-        .cal-name{flex:0 0 100px;padding:8px 12px;font-size:13px;font-weight:700;display:flex;align-items:center;border-right:1px solid var(--line,#e6dccd);}
+        .cal-name{flex:0 0 100px;padding:8px 12px;font-size:13px;font-weight:700;display:flex;flex-direction:column;justify-content:center;gap:2px;border-right:1px solid var(--line,#e6dccd);}
+        .cal-name .cal-machine{font-size:11px;font-weight:600;color:var(--stone-muted,#6f635b);}
         .cal-track{position:relative;flex:1;background:repeating-linear-gradient(to right,transparent,transparent calc(100%/12 - 1px),var(--line,#efe7db) calc(100%/12 - 1px),var(--line,#efe7db) calc(100%/12));}
         .cal-head{display:flex;}
         .cal-mh{flex:1;text-align:center;font-size:11px;font-weight:600;color:var(--muted,#6f635b);padding:9px 0;text-transform:uppercase;letter-spacing:.03em;}
@@ -365,7 +370,7 @@
             <option value="completed">Completed</option>
             <option value="cancelled">Cancelled</option>
           </select>
-          <button class="btn btn-primary btn-sm" onclick="toggleForm('rentalForm')">+ New rental</button>
+          <button class="btn btn-primary btn-sm" onclick="openNewRental()">+ New rental</button>
         </div>
       </div>
 
@@ -772,6 +777,38 @@
     if (id === 'rentalForm' && typeof syncStripeRow === 'function') syncStripeRow();
   }
 
+  // Move an editable-inline form (chamberForm/machineForm) into a wrapper <tr>
+  // right after the row being edited, so it opens right there instead of at
+  // the top of the page. Reused on every edit click; any previous wrapper
+  // (from editing a different row) is torn down first.
+  function placeInlineForm(formId, rowSelector, colspan) {
+    const form = document.getElementById(formId);
+    const wrapId = formId + 'InlineRow';
+    const existingWrap = document.getElementById(wrapId);
+    const row = document.querySelector(rowSelector);
+    if (!row) { if (existingWrap) existingWrap.remove(); return; }
+    const tr = document.createElement('tr');
+    tr.id = wrapId;
+    tr.className = 'inline-edit-row';
+    const td = document.createElement('td');
+    td.colSpan = colspan;
+    td.appendChild(form); // moves the existing node, doesn't clone it
+    tr.appendChild(td);
+    row.insertAdjacentElement('afterend', tr);
+    if (existingWrap) existingWrap.remove();
+  }
+  // Return a form to its original spot above the list, for "+ Add" and Cancel.
+  function resetFormPosition(formId, anchorId) {
+    const wrap = document.getElementById(formId + 'InlineRow');
+    const form = document.getElementById(formId);
+    document.getElementById(anchorId).insertAdjacentElement('afterend', form);
+    if (wrap) wrap.remove();
+  }
+  function openAddChamber() { resetFormPosition('chamberForm', 'chamberFormAnchor'); toggleForm('chamberForm'); }
+  function openAddMachine() { resetFormPosition('machineForm', 'machineFormAnchor'); toggleForm('machineForm'); }
+  function cancelChamberForm() { resetFormPosition('chamberForm', 'chamberFormAnchor'); toggleForm('chamberForm'); }
+  function cancelMachineForm() { resetFormPosition('machineForm', 'machineFormAnchor'); toggleForm('machineForm'); }
+
   // ───────── State + render ─────────
   let _chambers = [];
   let _rentals = [];
@@ -794,6 +831,15 @@
 
   async function loadAll() {
     clearLoadError();
+    // Any inline-positioned chamber/machine edit form must be moved back out
+    // of its table row *before* loadChambers()/loadMachines() below replace
+    // that row's whole subtree via innerHTML — otherwise the form node (which
+    // is currently living inside it) gets destroyed along with the old rows,
+    // and every future "Edit"/"+ Add" click would silently do nothing.
+    if (typeof resetFormPosition === 'function') {
+      resetFormPosition('chamberForm', 'chamberFormAnchor');
+      resetFormPosition('machineForm', 'machineFormAnchor');
+    }
     // Load each section independently: one failing call must not blank the rest,
     // and we still paint whatever succeeded.
     const results = await Promise.allSettled([
@@ -804,6 +850,11 @@
     // so derived (available/scheduled/in-use) states reflect the rentals.
     if (typeof renderChambers === 'function') renderChambers();
     if (typeof renderMachines === 'function') renderMachines();
+    // Also rebuild the New/Edit Rental dropdowns now that _rentals has fully
+    // settled — loadChambers()/loadMachines() may have already populated them
+    // against a slightly stale _rentals snapshot (they run concurrently with
+    // loadRentals() above).
+    if (typeof populateChamberSelect === 'function') populateChamberSelect();
     if (typeof loadAvailability === 'function') loadAvailability();
     const failures = results.filter(r => r.status === 'rejected').map(r => r.reason || {});
     if (!failures.length) return;
@@ -941,7 +992,7 @@
     const rows = _machines.map(m => {
       const op = m.status === 'active' ? unitOpState(m.id, 'machineId') : { state: m.status, rental: null };
       const [cls, label] = STATE_PILL[op.state] || STATE_PILL.available;
-      return `<tr>
+      return `<tr data-id="${escape(m.id)}">
         <td><strong>${escape(m.name)}</strong>${m.notes ? `<div class="renter-line">${escape(m.notes)}</div>` : ''}</td>
         <td><span class="pill pill-${cls}">${label}</span></td>
         <td><span class="renter-line">${unitDetail(op)}</span></td>
@@ -952,6 +1003,7 @@
   }
   function editMachine(id) {
     const m = _machines.find(x => x.id === id); if (!m) return;
+    placeInlineForm('machineForm', `#machinesList tr[data-id="${id}"]`, 4);
     toggleForm('machineForm', { id: m.id, name: m.name, notes: m.notes });
   }
   async function submitMachine(e) {
@@ -1048,7 +1100,7 @@
         statusActions.push(`<button class="btn btn-ghost btn-sm" onclick='setChamberStatus(${JSON.stringify(c.id)}, "active")'>Restore</button>`);
       }
       return `
-      <tr>
+      <tr data-id="${escape(c.id)}">
         <td><strong>${escape(c.name)}</strong><div class="renter-line">${escape((c.style || 'lying') === 'sitting' ? 'Sitting' : 'Lying')} chamber</div></td>
         <td><span class="pill pill-${opState}">${opLabel}</span></td>
         <td>${availability}</td>
@@ -1083,9 +1135,10 @@
       const y = d.getMonth() === 0 ? ` '${String(d.getFullYear()).slice(2)}` : '';
       headCells += `<div class="cal-mh">${d.toLocaleDateString('en-US', { month: 'short' })}${y}</div>`;
     }
+    const todayStr = now.toISOString().slice(0, 10);
     const rowsHtml = chambers.map(c => {
-      const bars = _rentals
-        .filter(r => r.chamberId === c.id && (r.status === 'scheduled' || r.status === 'active'))
+      const chamberRentals = _rentals.filter(r => r.chamberId === c.id && (r.status === 'scheduled' || r.status === 'active'));
+      const bars = chamberRentals
         .map(r => {
           const s = new Date(r.startDate + 'T00:00:00');
           const e = new Date(r.endDate + 'T00:00:00'); e.setDate(e.getDate() + 1); // inclusive end
@@ -1097,7 +1150,16 @@
           return `<div class="cal-bar ${r.status === 'active' ? 'active' : 'scheduled'}" style="left:${left}%;width:${w}%;"
             data-name="${escape(name)}" data-start="${escape(fmtDate(r.startDate))}" data-end="${escape(fmtDate(r.endDate))}" data-status="${escape(r.status)}" data-chamber="${escape(c.name)}"><span>${escape(name)}</span></div>`;
         }).join('');
-      return `<div class="cal-row"><div class="cal-name">${escape(c.name)}</div><div class="cal-track">${bars}<div class="cal-today" style="left:${todayPct}%;"></div></div></div>`;
+      // Label the row with the machine tied to whichever rental is current right
+      // now, or, failing that, the soonest upcoming one — the same rental the
+      // green/blue bar nearest "today" represents.
+      const current = chamberRentals.find(r => r.startDate <= todayStr && r.endDate >= todayStr);
+      const next = current || chamberRentals
+        .filter(r => r.startDate > todayStr)
+        .sort((a, b) => a.startDate.localeCompare(b.startDate))[0];
+      const machine = next && next.machineId ? (_machines || []).find(m => m.id === next.machineId) : null;
+      const machineHtml = machine ? `<div class="cal-machine">${escape(machine.name)}</div>` : '';
+      return `<div class="cal-row"><div class="cal-name">${escape(c.name)}${machineHtml}</div><div class="cal-track">${bars}<div class="cal-today" style="left:${todayPct}%;"></div></div></div>`;
     }).join('');
     el.innerHTML = `
       <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Rental calendar</h3>
@@ -1187,6 +1249,7 @@
   function editChamber(id) {
     const c = _chambers.find(x => x.id === id);
     if (!c) return;
+    placeInlineForm('chamberForm', `#chambersList tr[data-id="${id}"]`, 5);
     toggleForm('chamberForm', { id: c.id, name: c.name, style: c.style || 'lying', notes: c.notes });
   }
 
@@ -1216,22 +1279,34 @@
     catch (err) { toast(err.message, true); }
   }
 
-  function populateChamberSelect() {
+  // keepChamberId/keepMachineId: when editing an existing rental, that rental's
+  // own currently-assigned unit must stay selectable even though it reads as
+  // committed (it's committed *to this rental*) — every other in-use/scheduled
+  // unit is hidden so the dropdown only ever offers genuinely free inventory.
+  function populateChamberSelect(keepChamberId, keepMachineId) {
     const sel = document.getElementById('rentalChamberSelect');
-    const rentable = _chambers.filter(c => c.status === 'active' || c.status === 'maintenance');
+    const rentable = _chambers.filter(c => {
+      if (c.status !== 'active' && c.status !== 'maintenance') return false;
+      if (keepChamberId && c.id === keepChamberId) return true;
+      return unitOpState(c.id, 'chamberId').state === 'available';
+    });
     const cur = sel.value;
     sel.innerHTML = '<option value="">Select a chamber</option>' + rentable.map(c => {
       const label = c.status === 'maintenance' ? `${c.name} (in maintenance)` : c.name;
       return `<option value="${c.id}">${escape(label)}</option>`;
     }).join('');
     if (cur) sel.value = cur;
-    populateRentalMachineSelect();
+    populateRentalMachineSelect(keepMachineId);
   }
-  function populateRentalMachineSelect() {
+  function populateRentalMachineSelect(keepMachineId) {
     const sel = document.getElementById('rentalMachineSelect');
     if (!sel) return;
     const cur = sel.value;
-    const usable = (_machines || []).filter(m => m.status === 'active' || m.status === 'maintenance');
+    const usable = (_machines || []).filter(m => {
+      if (m.status !== 'active' && m.status !== 'maintenance') return false;
+      if (keepMachineId && m.id === keepMachineId) return true;
+      return unitOpState(m.id, 'machineId').state === 'available';
+    });
     sel.innerHTML = '<option value="">Select a machine</option>' + usable.map(m => {
       const label = m.status === 'maintenance' ? `${m.name} (in maintenance)` : m.name;
       return `<option value="${m.id}">${escape(label)}</option>`;
@@ -1336,10 +1411,15 @@
     openModal(`Rental · ${renter.name || (chamber ? chamber.name : 'details')}`, body);
   }
 
+  // "+ New rental": always start from a clean, exception-free dropdown build —
+  // otherwise it could still show whatever unit an earlier editRental() call
+  // exempted from the availability filter (that exemption only applies to
+  // that rental, not to a new one).
+  function openNewRental() { populateChamberSelect(); toggleForm('rentalForm'); }
   function editRental(id) {
     const r = _rentals.find(x => x.id === id);
     if (!r) return;
-    populateChamberSelect();
+    populateChamberSelect(r.chamberId, r.machineId);
     toggleForm('rentalForm', {
       id: r.id, chamberId: r.chamberId, status: r.status,
       machineId: r.machineId || '',
@@ -1702,6 +1782,7 @@
     closeModal();
     const start = w.preferredStartDate || new Date().toISOString().slice(0, 10);
     document.querySelector('.tab-btn[data-tab="rentals"]').click();
+    populateChamberSelect(w.notifiedChamberId || undefined);
     toggleForm('rentalForm', {
       chamberId: w.notifiedChamberId || '',
       status: 'scheduled',
@@ -1890,6 +1971,7 @@
     const months = parseRentalLengthMonths(b.rentalLength);
     const endDate = months ? addMonths(start, months) : start;
     document.querySelector('.tab-btn[data-tab="rentals"]').click();
+    populateChamberSelect();
     toggleForm('rentalForm', {
       sourceBookingId: id,
       chamberId: '', status: 'scheduled',
