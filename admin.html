@@ -958,19 +958,27 @@
   });
 
   // ─── Chambers ───
+  // Always fetch the full set (including archived) — _chambers is the shared
+  // lookup used everywhere a rental's chamber gets resolved by id (Rentals
+  // tab, Customers tab, the calendar, the rental dropdowns). A chamber that's
+  // since been archived is still a real, valid chamber for a past rental to
+  // point at; only the Chambers tab's own list should ever hide it, and only
+  // as a display filter (see renderChambers), never by leaving it out of the
+  // lookup data entirely.
   async function loadChambers() {
-    const includeArchived = document.getElementById('showArchived').checked;
-    const data = await api(`/api/admin/chambers?includeArchived=${includeArchived}`);
+    const data = await api(`/api/admin/chambers?includeArchived=true`);
     _chambers = data.chambers;
     renderChambers();
     populateChamberSelect();
   }
 
   // ───────── Machines ─────────
+  // Same reasoning as loadChambers: always fetch the full set so _machines
+  // stays a complete lookup for rentals/customers/dropdowns; "Show archived"
+  // only filters what renderMachines() itself displays.
   let _machines = [];
   async function loadMachines() {
-    const includeArchived = document.getElementById('showArchived') && document.getElementById('showArchived').checked;
-    const data = await api(`/api/admin/machines?includeArchived=${!!includeArchived}`);
+    const data = await api(`/api/admin/machines?includeArchived=true`);
     _machines = data.machines || [];
     renderMachines();
     populateRentalMachineSelect();
@@ -1008,8 +1016,10 @@
   function renderMachines() {
     const list = document.getElementById('machinesList');
     if (!list) return;
-    if (!_machines.length) { list.innerHTML = `<div class="empty-state">No machines yet. Click <strong>+ Add machine</strong> to add one.</div>`; return; }
-    const rows = _machines.map(m => {
+    const showArchived = document.getElementById('showArchived') && document.getElementById('showArchived').checked;
+    const machines = _machines.filter(m => showArchived || m.status !== 'archived');
+    if (!machines.length) { list.innerHTML = `<div class="empty-state">No machines yet. Click <strong>+ Add machine</strong> to add one.</div>`; return; }
+    const rows = machines.map(m => {
       const op = m.status === 'active' ? unitOpState(m.id, 'machineId') : { state: m.status, rental: null };
       const [cls, label] = STATE_PILL[op.state] || STATE_PILL.available;
       return `<tr data-id="${escape(m.id)}">
@@ -1068,12 +1078,14 @@
 
   function renderChambers() {
     const list = document.getElementById('chambersList');
-    if (!_chambers.length) {
+    const showArchived = document.getElementById('showArchived').checked;
+    const chambers = _chambers.filter(c => showArchived || c.status !== 'archived');
+    if (!chambers.length) {
       list.innerHTML = `<div class="empty-state">No chambers yet. Click <strong>+ Add chamber</strong> to create one.</div>`;
       return;
     }
     const today = new Date().toISOString().slice(0, 10);
-    const rows = _chambers.map(c => {
+    const rows = chambers.map(c => {
       // Operational state, what the admin actually cares about at a glance
       const activeRental = _rentals.find(r =>
         r.chamberId === c.id &&
@@ -1264,7 +1276,9 @@
       await loadAll();
     } catch (err) { toast(err.message, true); }
   }
-  document.getElementById('showArchived').addEventListener('change', loadChambers);
+  // Both lists already hold the full (including archived) data — toggling
+  // this only changes what's displayed, no re-fetch needed.
+  document.getElementById('showArchived').addEventListener('change', () => { renderChambers(); renderMachines(); });
 
   function editChamber(id) {
     const c = _chambers.find(x => x.id === id);
