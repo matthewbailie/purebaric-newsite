@@ -1655,6 +1655,7 @@
       list.innerHTML = `<div class="empty-state">No customers yet. Click <strong>+ Add customer</strong> to create one, or they'll be auto-created when bookings/rentals/waitlist entries come in.</div>`;
       return;
     }
+    const today0 = new Date().toISOString().slice(0, 10);
     list.innerHTML = _customers.map(c => {
       const lastDate = c.lastActivity ? new Date(c.lastActivity).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : ', ';
       const firstDate = c.firstSeen ? new Date(c.firstSeen).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : ', ';
@@ -1676,6 +1677,24 @@
              <strong>${totalMonths} month${totalMonths === 1 ? '' : 's'} total</strong>${countedRentals.length > 1 ? ` across ${countedRentals.length} rentals` : ''} ·
              <strong style="color:var(--terracotta);">max discount unlocked: ${Math.min(12, totalMonths)}-month rate ($${rateForMonths(totalMonths)}/mo)</strong>
            </div>`
+        : '';
+      // "Lifetime paid": a specific paidAmount on file always wins (it's the
+      // real, admin-entered figure — including a partial payment). Absent
+      // that, a still-counted (non-cancelled) rental is assumed paid in full
+      // at its own agreed rate for its full term, since most rentals here run
+      // on recurring billing that isn't logged rate-by-rate. A cancelled
+      // rental with nothing recorded contributes $0 rather than a guess.
+      const lifetimePaid = c.rentals.reduce((sum, r) => {
+        const paid = Number(r.paidAmount) || 0;
+        if (paid > 0) return sum + paid;
+        if (r.status === 'cancelled') return sum;
+        return sum + (Number(r.monthlyRate) || 0) * rentalMonths(r);
+      }, 0);
+      const isEstimated = lifetimePaid > 0 && countedRentals.some(r => !(Number(r.paidAmount) > 0));
+      // Current rate: the rental actually running today, if any.
+      const currentRental = c.rentals.find(r => r.status === 'active' && r.startDate <= today0 && r.endDate >= today0);
+      const currentRateHtml = currentRental
+        ? `<div style="font-family: var(--font-display); font-size: 1.1rem; margin-top:0.35rem;">$${(Number(currentRental.monthlyRate) || 0).toLocaleString()}/mo</div><div class="renter-line">Current rate</div>`
         : '';
       const bookingList = c.bookings.length
         ? c.bookings.map(b => `<li>${new Date(b.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} · <span class="pill pill-${b.status}" style="font-size:0.65rem;">${b.status}</span></li>`).join('')
@@ -1700,8 +1719,9 @@
               ${notesBlock}
             </div>
             <div style="text-align:right;">
-              <div style="font-family: var(--font-display); font-size: 1.35rem;">$${c.totalPaid.toLocaleString()}</div>
-              <div class="renter-line">Lifetime paid</div>
+              <div style="font-family: var(--font-display); font-size: 1.35rem;">$${lifetimePaid.toLocaleString()}</div>
+              <div class="renter-line"${isEstimated ? ' title="Estimated from rate × rental length where no payment amount is on file; a recorded payment always overrides the estimate."' : ''}>Lifetime paid${isEstimated ? ' (est.)' : ''}</div>
+              ${currentRateHtml}
               <div style="margin-top:0.5rem;">${editButton}</div>
             </div>
           </div>
