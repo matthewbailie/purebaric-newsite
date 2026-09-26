@@ -14,7 +14,11 @@
 // the public evidence page.
 const { randomUUID } = require("crypto");
 
-const CONSENT_VERSION = "purebaric-sms-consent-v1";
+// v2 (2026-09-26): wording now also covers rental-ending reminders. Numbers that consented
+// under v1 keep receiving reservation/review alerts (what they agreed to) but must re-consent
+// to v2 before they get any event in EVENTS_NEEDING_CURRENT_CONSENT.
+const CONSENT_VERSION = "purebaric-sms-consent-v2";
+const EVENTS_NEEDING_CURRENT_CONSENT = ["rental_ending"];
 
 // SMS (not MMS) email-to-text gateways for major US carriers.
 const CARRIER_GATEWAYS = {
@@ -32,7 +36,7 @@ const CARRIER_GATEWAYS = {
 };
 
 // The events a recipient can subscribe to.
-const EVENTS = ["reservation_in", "reservation_out", "review"];
+const EVENTS = ["reservation_in", "reservation_out", "review", "rental_ending"];
 
 function normalizeNumber(value) {
   const digits = String(value || "").replace(/\D/g, "");
@@ -114,8 +118,11 @@ function emailsForEvent(config, eventKey) {
 // A number is eligible for SMS delivery only with affirmative, currently-active
 // consent — never send transactional texts to a number that hasn't opted in
 // (or that has since been disabled / opted out via STOP).
-function hasActiveConsent(r) {
-  return !!(r.consent && r.consent.given === true && r.consent.status === "enabled");
+function hasActiveConsent(r, eventKey) {
+  const active = !!(r.consent && r.consent.given === true && r.consent.status === "enabled");
+  if (!active) return false;
+  if (EVENTS_NEEDING_CURRENT_CONSENT.includes(eventKey)) return r.consent.version === CONSENT_VERSION;
+  return true;
 }
 
 // SMS gateway addresses subscribed to an event (de-duped). For free carrier
@@ -124,7 +131,7 @@ function smsForEvent(config, eventKey) {
   const { sms } = normalizeNotifications(config);
   const out = [];
   for (const r of sms) {
-    if (!r.events.includes(eventKey) || !hasActiveConsent(r)) continue;
+    if (!r.events.includes(eventKey) || !hasActiveConsent(r, eventKey)) continue;
     const addr = gatewayAddress(r.number, r.carrier);
     if (addr && !out.includes(addr)) out.push(addr);
   }
@@ -136,7 +143,7 @@ function smsNumbersForEvent(config, eventKey) {
   const { sms } = normalizeNotifications(config);
   const out = [];
   for (const r of sms) {
-    if (!r.events.includes(eventKey) || !hasActiveConsent(r)) continue;
+    if (!r.events.includes(eventKey) || !hasActiveConsent(r, eventKey)) continue;
     if (r.number && !out.includes(r.number)) out.push(r.number);
   }
   return out;
@@ -165,12 +172,20 @@ function stampSmsConsent(incomingSms, existingSms, who, now) {
       existing.find((p) => normalizeNumber(p.number) && normalizeNumber(p.number) === normalizeNumber(r.number));
     const checked = r.consentChecked === true;
     const sameNumberAlreadyActive =
-      checked && prev && hasActiveConsent(prev) && normalizeNumber(prev.number) === normalizeNumber(r.number);
+      checked && prev && hasActiveConsent(prev) && normalizeNumber(prev.number) === normalizeNumber(r.number)
+      && prev.consent.version === CONSENT_VERSION; // consent under older wording is renewed, not carried forward
+    // A number still on older wording shows an UNCHECKED box until the admin agrees to the new wording;
+    // saving other changes in the meantime must not switch off what they already agreed to. This flag can
+    // only preserve an existing active consent for the same number, never grant one.
+    const keepEarlier = !checked && r.keepEarlierConsent === true && prev && hasActiveConsent(prev)
+      && normalizeNumber(prev.number) === normalizeNumber(r.number);
 
     const consent = checked
       ? sameNumberAlreadyActive
         ? prev.consent
         : { given: true, at: nowIso, by: who, version: CONSENT_VERSION, status: "enabled" }
+      : keepEarlier
+      ? prev.consent
       : {
           given: false,
           at: (prev && prev.consent && prev.consent.at) || null,
@@ -179,7 +194,7 @@ function stampSmsConsent(incomingSms, existingSms, who, now) {
           status: "disabled",
         };
 
-    const { consentChecked, ...rest } = r;
+    const { consentChecked, keepEarlierConsent, ...rest } = r;
     return { ...rest, id: (prev && prev.id) || r.id, consent };
   });
 }

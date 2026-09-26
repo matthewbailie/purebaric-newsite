@@ -171,6 +171,11 @@
   to = "/.netlify/functions/admin-stripe-link"
   status = 200
 
+[[redirects]]
+  from = "/api/admin/stripe-cancel"
+  to = "/.netlify/functions/admin-stripe-cancel"
+  status = 200
+
 # ───────── Passkey sign-in (public login flow + admin device management) ─────────
 [[redirects]]
   from = "/api/auth/login-options"
@@ -200,3 +205,8 @@
 # Auto-expires waitlist holds and transitions rentals by date. Runs hourly.
 [functions."expire-holds"]
   schedule = "0 * * * *"
+
+# Weekly digest (email + text) of running rentals ending within the next 10 days.
+# Mondays at 15:00 UTC (9:00 AM Utah in summer, 8:00 AM in winter).
+[functions."rental-ending-notify"]
+  schedule = "0 15 * * 1"

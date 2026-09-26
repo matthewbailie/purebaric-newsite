@@ -321,7 +321,9 @@
     <!-- ───── Home / dashboard ───── -->
     <section class="tab-panel active" data-panel="home">
       <div class="panel-actions"><h2>Overview</h2></div>
-      <h3 class="inv-heading" style="margin-top:0">Operations</h3>
+      <h3 class="inv-heading" style="margin-top:0">Renewals in the next 7 days</h3>
+      <div id="renewalsList"></div>
+      <h3 class="inv-heading">Operations</h3>
       <div class="stat-row">
         <button type="button" class="stat-block" data-jump-tab="chambers"><div class="stat-label">Active chambers</div><div class="stat-val" id="statActive"></div></button>
         <button type="button" class="stat-block" data-jump-tab="chambers"><div class="stat-label">Bookable now</div><div class="stat-val" id="statAvailable"></div></button>
@@ -496,6 +498,10 @@
             <div class="form-group"><label>Machine</label><select name="machineId" id="rentalMachineSelect"></select>
               <div class="renter-line" style="margin-top:4px;">Which machine unit runs this rental.</div></div>
             <div class="form-group"></div>
+          </div>
+          <div class="form-group">
+            <label style="display:flex;align-items:center;gap:8px;font-weight:500;"><input type="checkbox" name="historical" id="rentalHistorical" style="width:auto;margin:0;" onchange="onRentalHistoricalChange()"> Historical rental</label>
+            <div class="renter-line" style="margin-top:4px;">A past rental you are recording after the fact. Unlocks every chamber and machine (in use, archived or in maintenance) so you can pick any unit for the record. Overlapping dates on the same unit are still flagged.</div>
           </div>
           <div class="form-row triple">
             <div class="form-group"><label>Start date<span class="req">*</span></label><input type="date" name="startDate" required></div>
@@ -728,7 +734,7 @@
           <button class="btn btn-primary btn-sm" onclick="saveNotifications()">Save notifications</button>
         </div>
       </div>
-      <p class="renter-line" style="margin:0 0 12px;max-width:780px;">Register who gets alerted for each event. Add one or more <strong>email addresses</strong> and/or <strong>phone numbers</strong>, and check which events each should receive: a new reservation request from inside the service area, one from outside it, or a new review. Email is sent normally; texts are sent free through the carrier's email-to-text gateway (standard carrier rates may apply on the receiving phone; if texts stop, re-check the carrier).</p>
+      <p class="renter-line" style="margin:0 0 12px;max-width:780px;">Register who gets alerted for each event. Add one or more <strong>email addresses</strong> and/or <strong>phone numbers</strong>, and check which events each should receive: a new reservation request from inside the service area, one from outside it, a new review, or a rental ending within a week. Email is sent normally; texts are sent free through the carrier's email-to-text gateway (standard carrier rates may apply on the receiving phone; if texts stop, re-check the carrier).</p>
       <p class="renter-line" style="margin:0 0 18px;max-width:780px;"><strong>Save first, then Send test</strong> to fire a real email + text to everyone on file and see per-recipient results below.</p>
       <div id="notifTestResults" style="margin-bottom:16px;"></div>
 
@@ -820,7 +826,7 @@
     document.getElementById('passkeySignInBtn').hidden = !window.SimpleWebAuthnBrowser?.browserSupportsWebAuthn();
   }
   function showApp(user) {
-    gate.hidden = true; app.hidden = false; paintUser(user); setAuthed(true); loadAll();
+    gate.hidden = true; app.hidden = false; paintUser(user); setAuthed(true); loadAll().then(openDeepLinks);
   }
 
   // Any endpoint that requires auth answers 200 iff the passkey cookie is valid.
@@ -1170,6 +1176,35 @@
     if (!diff) return `No change ${label}`;
     return `<span class="${diff > 0 ? 'delta-up' : 'delta-down'}">${diff > 0 ? '▲ +' : '▼ −'}${money(Math.abs(diff))}</span> ${label}`;
   }
+  // Home: charges due in the next 7 days (rules in dashboard-metrics.js upcomingRenewals).
+  function renderRenewals(M, today) {
+    const el = document.getElementById('renewalsList');
+    if (!el) return;
+    const amt = (n, r) => `$${Number(n).toLocaleString('en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 })}${r.rateType === 'weekly' ? '/wk' : ''}`;
+    const when = (date) => {
+      const n = Math.round((new Date(date) - new Date(today)) / 86400000);
+      return n === 0 ? 'today' : n === 1 ? 'tomorrow' : `in ${n} days`;
+    };
+    const list = M.upcomingRenewals(_rentals || [], today, 7);
+    if (!list.length) {
+      const next = M.upcomingRenewals(_rentals || [], today, 366)[0];
+      el.innerHTML = `<div class="renter-line">No renewals in the next 7 days.${next
+        ? ` Next: ${escape((next.rental.renter && next.rental.renter.name) || 'Rental')}, ${escape(fmtDate(next.date))}, ${amt(next.amount, next.rental)}.` : ''}</div>`;
+      return;
+    }
+    const rows = list.map(({ rental: r, date, amount }) => {
+      const chamber = _chambers.find(c => c.id === r.chamberId);
+      return `<tr><td><strong>${escape(fmtDate(date))}</strong><div class="renter-line">${when(date)}</div></td>
+        <td>${escape((r.renter && r.renter.name) || '—')}</td>
+        <td>${escape(chamber ? chamber.name : '—')}</td>
+        <td style="text-align:right;">${amt(amount, r)}</td></tr>`;
+    }).join('');
+    const total = list.reduce((s, x) => s + x.amount, 0);
+    el.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Renews</th><th>Renter</th><th>Chamber</th><th style="text-align:right;">Amount</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>
+      <div class="renter-line" style="margin-top:6px;">${list.length} renewal${list.length === 1 ? '' : 's'} · $${total.toLocaleString('en-US', { maximumFractionDigits: 2 })} due</div>`;
+  }
+
   function renderDashboard() {
     const M = window.PurebaricMetrics, C = window.PurebaricCharts;
     if (!M || !C || !document.getElementById('kpiMrr')) return;
@@ -1180,6 +1215,8 @@
     const cur = M.yearSeries(_rentals || [], year, today);
     const prev = M.yearSeries(_rentals || [], year - 1, today);
     const hasPrev = M.seriesHasActivity(prev);
+
+    renderRenewals(M, today);
 
     setText('kpiMrr', money(o.mrr));
     const prevMonthName = MONTH_NAMES[(monthIdx + 11) % 12];
@@ -1608,34 +1645,48 @@
   // own currently-assigned unit must stay selectable even though it reads as
   // committed (it's committed *to this rental*) — every other in-use/scheduled
   // unit is hidden so the dropdown only ever offers genuinely free inventory.
-  function populateChamberSelect(keepChamberId, keepMachineId) {
+  // historical: a past rental being recorded after the fact — every unit is
+  // offered (in use, archived, in maintenance), since today's availability says
+  // nothing about who had which unit then. Defaults to the open form's checkbox;
+  // editRental passes it explicitly because the form isn't open yet at that point.
+  function rentalIsHistorical() {
+    const cb = document.getElementById('rentalHistorical');
+    return !!(cb && cb.checked && document.getElementById('rentalForm').classList.contains('open'));
+  }
+  function onRentalHistoricalChange() { populateChamberSelect(); refreshRentalCustomerSummary(); }
+  function unitOptionLabel(u) {
+    if (u.status === 'maintenance') return `${u.name} (in maintenance)`;
+    if (u.status === 'archived' || u.archivedAt) return `${u.name} (archived)`;
+    return u.name;
+  }
+  function populateChamberSelect(keepChamberId, keepMachineId, historical = rentalIsHistorical()) {
     const sel = document.getElementById('rentalChamberSelect');
     const rentable = _chambers.filter(c => {
+      if (historical) return true;
       if (c.status !== 'active' && c.status !== 'maintenance') return false;
       if (keepChamberId && c.id === keepChamberId) return true;
       return unitOpState(c.id, 'chamberId').state === 'available';
     });
     const cur = sel.value;
-    sel.innerHTML = '<option value="">Select a chamber</option>' + rentable.map(c => {
-      const label = c.status === 'maintenance' ? `${c.name} (in maintenance)` : c.name;
-      return `<option value="${c.id}">${escape(label)}</option>`;
-    }).join('');
+    sel.innerHTML = '<option value="">Select a chamber</option>' + rentable.map(c =>
+      `<option value="${c.id}">${escape(unitOptionLabel(c))}</option>`
+    ).join('');
     if (cur) sel.value = cur;
-    populateRentalMachineSelect(keepMachineId);
+    populateRentalMachineSelect(keepMachineId, historical);
   }
-  function populateRentalMachineSelect(keepMachineId) {
+  function populateRentalMachineSelect(keepMachineId, historical = rentalIsHistorical()) {
     const sel = document.getElementById('rentalMachineSelect');
     if (!sel) return;
     const cur = sel.value;
     const usable = (_machines || []).filter(m => {
+      if (historical) return true;
       if (m.status !== 'active' && m.status !== 'maintenance') return false;
       if (keepMachineId && m.id === keepMachineId) return true;
       return unitOpState(m.id, 'machineId').state === 'available';
     });
-    sel.innerHTML = '<option value="">Select a machine</option>' + usable.map(m => {
-      const label = m.status === 'maintenance' ? `${m.name} (in maintenance)` : m.name;
-      return `<option value="${m.id}">${escape(label)}</option>`;
-    }).join('');
+    sel.innerHTML = '<option value="">Select a machine</option>' + usable.map(m =>
+      `<option value="${m.id}">${escape(unitOptionLabel(m))}</option>`
+    ).join('');
     if (cur) sel.value = cur;
   }
 
@@ -1732,6 +1783,7 @@
       : 'Not attached yet';
     const body = `
       <div class="modal-row"><strong>Status</strong><div><span class="pill pill-${r.status}">${r.status}</span></div></div>
+      ${r.historical ? '<div class="modal-row"><strong>Record</strong><div>Historical rental</div></div>' : ''}
       <div class="modal-row"><strong>Chamber</strong><div>${escape(chamber ? chamber.name : '(deleted chamber)')}${chamber && chamber.style ? ` · ${escape(chamber.style)}` : ''}</div></div>
       <div class="modal-row"><strong>Machine</strong><div>${machine ? escape(machine.name) : '(none assigned)'}</div></div>
       <div class="modal-row"><strong>Contact</strong><div>${escape(renter.name || ', ')}<br>${escape(renter.email || ', ')}<br>${escape(renter.phone || ', ')}</div></div>
@@ -1747,6 +1799,7 @@
       </div>
       <div class="modal-actions">
         <button class="btn btn-primary btn-sm" onclick='closeModal(); editRental(${JSON.stringify(r.id)})'>Edit rental</button>
+        ${r.status === 'active' || r.status === 'scheduled' ? `<button class="btn btn-ghost btn-sm" onclick='openStripeCancel(${JSON.stringify(r.id)})'>Cancel Stripe subscription</button>` : ''}
         ${renter.email ? `<a href="mailto:${escape(renter.email)}" class="btn btn-ghost btn-sm">Email renter</a>` : ''}
         ${renter.phone ? `<a href="tel:${escape(renter.phone)}" class="btn btn-ghost btn-sm">Call</a>` : ''}
       </div>`;
@@ -1772,7 +1825,7 @@
   function editRental(id) {
     const r = _rentals.find(x => x.id === id);
     if (!r) return;
-    populateChamberSelect(r.chamberId, r.machineId);
+    populateChamberSelect(r.chamberId, r.machineId, !!r.historical);
     document.getElementById('rentalForm').classList.remove('open');
     placeInlineForm('rentalForm', `#rentalsList tr[data-id="${CSS.escape(id)}"]`, 8);
     toggleForm('rentalForm', {
@@ -1789,9 +1842,74 @@
       paymentDate: r.paymentDate, paymentMethod: r.paymentMethod,
       notes: r.notes,
     });
+    // toggleForm's prefill sets .value, which can't tick a checkbox.
+    document.getElementById('rentalHistorical').checked = !!r.historical;
     syncRentalTermControls();
     onRateTypeChange();
     refreshRentalCustomerSummary();
+  }
+
+  // ───────── Cancel a rental's Stripe subscription ─────────
+  // Opened from a rental's details, or from the link in the "rental ending soon" email/text
+  // (/admin?cancelRental=<id>). Nothing changes until a subscription is picked AND confirmed;
+  // the server then stops it at the end of its current billing period (no further charges).
+  async function openStripeCancel(rentalId) {
+    const r = _rentals.find(x => x.id === rentalId);
+    if (!r) { toast('Rental not found', true); return; }
+    const head = `<div class="modal-row"><strong>Renter</strong><div>${escape((r.renter && r.renter.name) || '—')}</div></div>
+      <div class="modal-row"><strong>Rental ends</strong><div>${escape(r.endDate)}</div></div>`;
+    openModal('Cancel Stripe subscription', `${head}<p class="renter-line">Looking up Stripe subscriptions…</p>`);
+    try {
+      const { candidates } = await api('/api/admin/stripe-cancel', { method: 'POST', body: JSON.stringify({ rentalId }) });
+      const money = n => n == null ? '' : `$${Number(n).toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
+      const rows = candidates.map(c => `<div class="modal-row"><strong>${escape(c.customerName || c.customerEmail || 'Customer')}</strong><div>
+          ${escape(c.product || 'Subscription')} · ${money(c.amount)}${c.interval ? ' / ' + escape(c.interval) : ''} · ${escape(c.status)}${c.cancelAtPeriodEnd ? ' · already set to end' : ''}
+          <div class="renter-line">${escape(c.customerEmail)} · started ${escape(c.created)} · current period ends ${escape(c.currentPeriodEnd)}${c.matchesRate ? ' · matches this rental\'s rate' : ''}</div>
+          <button class="btn btn-primary btn-sm" style="margin-top:6px;" onclick='confirmStripeCancel(${JSON.stringify(rentalId)}, ${JSON.stringify(c.id)})'>Stop at end of billing period</button>
+        </div></div>`).join('');
+      document.getElementById('modalBody').innerHTML = `${head}
+        ${rows || '<p class="renter-line">No active Stripe subscription found for this renter\'s email or name. Paste the subscription ID from Stripe below.</p>'}
+        <div class="modal-section"><h4>Or enter a subscription ID</h4>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;"><input id="stripeCancelManual" placeholder="sub_…" style="flex:1;min-width:200px;">
+          <button class="btn btn-ghost btn-sm" onclick='confirmStripeCancel(${JSON.stringify(rentalId)}, document.getElementById("stripeCancelManual").value.trim())'>Stop at end of billing period</button></div>
+        </div>`;
+    } catch (err) {
+      document.getElementById('modalBody').innerHTML = `${head}<p class="renter-line" style="color:var(--terracotta);">${escape(err.message)}</p>`;
+    }
+  }
+  async function confirmStripeCancel(rentalId, subscriptionId) {
+    if (!subscriptionId) { toast('Choose or enter a subscription first', true); return; }
+    if (!confirm(`Stop Stripe subscription ${subscriptionId} at the end of its current billing period?\n\nNo further charges will be made. The customer keeps the time they've already paid for.`)) return;
+    try {
+      const res = await api('/api/admin/stripe-cancel', { method: 'POST', body: JSON.stringify({ rentalId, subscriptionId }) });
+      toast(`Stripe subscription will end${res.subscription.endsOn ? ' on ' + res.subscription.endsOn : ' at period end'}`);
+      closeModal();
+      await loadRentals();
+    } catch (err) { toast(err.message, true); }
+  }
+  // Links from the ending-soon email/text land here once signed in and loaded.
+  function openDeepLinks() {
+    const params = new URLSearchParams(location.search);
+    const id = params.get('cancelRental');
+    const ending = params.get('endingSoon');
+    if (!id && !ending) return;
+    history.replaceState(null, '', location.pathname);
+    const tab = document.querySelector('.tab-btn[data-tab="rentals"]');
+    if (tab) tab.click();
+    if (id) openStripeCancel(id); else openEndingSoon();
+  }
+  // The list the weekly alert's text links to: running rentals ending within 10 days, each with its cancel button.
+  function openEndingSoon() {
+    const list = window.PurebaricMetrics.endingSoon(_rentals || [], localToday(), 10);
+    const rows = list.map(r => {
+      const chamber = _chambers.find(c => c.id === r.chamberId);
+      const done = r.stripeCancelRequestedAt
+        ? `<span class="renter-line">Stripe cancellation requested ${escape(r.stripeCancelRequestedAt.slice(0, 10))}</span>`
+        : `<button class="btn btn-primary btn-sm" onclick='openStripeCancel(${JSON.stringify(r.id)})'>Cancel Stripe subscription</button>`;
+      return `<div class="modal-row"><strong>${escape((r.renter && r.renter.name) || '—')}</strong><div>Ends ${escape(fmtDate(r.endDate))} · ${escape(chamber ? chamber.name : '—')}
+        <div class="renter-line">${escape((r.renter && r.renter.email) || 'no email')} · ${escape((r.renter && r.renter.phone) || 'no phone')}</div>${done}</div></div>`;
+    }).join('');
+    openModal('Rentals ending in the next 10 days', rows || '<p class="renter-line">No rentals end in the next 10 days.</p>');
   }
 
   // ───────── Stripe payment link (per rental) ─────────
@@ -1857,8 +1975,10 @@
     e.preventDefault();
     const form = e.target;
     const data = Object.fromEntries(new FormData(form));
-    if (!data['renter-name'] || !data['renter-email']) {
-      toast('Choose or add a customer for this rental first', true);
+    data.historical = form.querySelector('[name="historical"]').checked; // unchecked boxes are absent from FormData; send false so an edit can clear it
+    // A historical rental only needs a name; older customers often have no email on file.
+    if (!data['renter-name'] || (!data['renter-email'] && !data.historical)) {
+      toast(data.historical ? 'Add the renter\'s name for this rental first' : 'Choose or add a customer for this rental first', true);
       return false;
     }
     try {
@@ -1970,18 +2090,23 @@
             return `<li>${escape(r.startDate)} → ${escape(r.endDate)} · ${period} · ${escape(ch ? ch.name : ', ')} · <span class="pill pill-${r.status}" style="font-size:0.65rem;">${r.status}</span></li>`;
           }).join('')
         : '<li style="color:var(--stone-muted);">None</li>';
-      // Loyalty/discount rollup: sum each counted *monthly-billed* rental's
+      // Loyalty/discount rollup: sum each counted monthly-billed rental's
       // month-length (a customer's 2-month rental plus a later 6-month rental
-      // unlocks the 8-month rate), then look up that tier's *current* rate
-      // from the Pricing & Payments tab. Cancelled rentals, and custom
-      // weekly-billed rentals (a different, bespoke arrangement, not part of
-      // the public month-tier ladder), don't count toward this.
+      // unlocks the 8-month rate). Custom weekly-billed rentals count too, by
+      // pooling ALL their weeks and converting to whole months (52/12 weeks per
+      // month, rounded down), so several short weekly stints add up. Then look
+      // up that tier's *current* rate from the Pricing & Payments tab. Cancelled
+      // rentals don't count toward this.
       const countedRentals = c.rentals.filter(r => r.status !== 'cancelled');
       const monthlyCountedRentals = countedRentals.filter(r => r.rateType !== 'weekly');
-      const totalMonths = monthlyCountedRentals.reduce((sum, r) => sum + rentalMonths(r), 0);
+      const weeklyCountedRentals = countedRentals.filter(r => r.rateType === 'weekly');
+      const weeklyWeeks = weeklyCountedRentals.reduce((sum, r) => sum + rentalWeeks(r), 0);
+      const weeklyMonths = Math.floor(weeklyWeeks * 12 / 52);
+      const totalMonths = monthlyCountedRentals.reduce((sum, r) => sum + rentalMonths(r), 0) + weeklyMonths;
+      const countedRentalCount = monthlyCountedRentals.length + weeklyCountedRentals.length;
       const discountHtml = totalMonths
         ? `<div class="renter-line" style="margin:2px 0 8px;">
-             <strong>${totalMonths} month${totalMonths === 1 ? '' : 's'} total</strong>${monthlyCountedRentals.length > 1 ? ` across ${monthlyCountedRentals.length} rentals` : ''} ·
+             <strong>${totalMonths} month${totalMonths === 1 ? '' : 's'} total</strong>${countedRentalCount > 1 ? ` across ${countedRentalCount} rentals` : ''}${weeklyWeeks ? ` (weekly billing: ${weeklyWeeks} weeks = ${weeklyMonths} full month${weeklyMonths === 1 ? '' : 's'})` : ''} ·
              <strong style="color:var(--terracotta);">max discount unlocked: ${Math.min(12, totalMonths)}-month rate ($${rateForMonths(totalMonths)}/mo)</strong>
            </div>`
         : '';
@@ -2051,7 +2176,7 @@
   // "+ Add customer": always start from the Customers tab's own anchor —
   // otherwise it could still be sitting wherever a rental's inline "Edit
   // customer" last placed it.
-  function openAddCustomer() { resetFormPosition('customerForm', 'customerFormAnchor'); toggleForm('customerForm'); }
+  function openAddCustomer() { resetFormPosition('customerForm', 'customerFormAnchor'); toggleForm('customerForm'); document.querySelector('#customerFormEl [name="email"]').required = true; }
   // Cancel returns the form home regardless of where it was opened from
   // (Customers tab or embedded in a rental's "Customer record" section).
   // Close it first (while still possibly nested — see toggleForm's ancestor
@@ -2064,8 +2189,13 @@
     const data = Object.fromEntries(new FormData(form));
     // Opened from a rental's "Customer record" section? Checked before the form is moved back home below.
     const fromRental = document.getElementById('rentalForm').contains(document.getElementById('customerForm'));
+    // No email: only possible for a new customer added from a historical rental. There is no
+    // customer record to save (customers are keyed by email), so the details go on the rental only.
+    const noEmail = fromRental && !data.id && !(data.email || '').trim() && rentalIsHistorical();
     try {
-      if (data.id) {
+      if (noEmail) {
+        toast('Renter added to this rental (no email, so no customer record)');
+      } else if (data.id) {
         const { id, ...patch } = data;
         await api(`/api/admin/customers/${id}`, { method: 'PATCH', body: JSON.stringify(patch) });
         toast('Customer updated');
@@ -2115,6 +2245,8 @@
       tags: (c.tags || []).join(', '),
       notes: c.notes || '',
     });
+    // Email is required to edit a customer; only a new customer added from a historical rental may omit it.
+    document.querySelector('#customerFormEl [name="email"]').required = true;
   }
 
   // ── Rental ↔ Customer link ──
@@ -2134,6 +2266,8 @@
   function addCustomerInline() {
     resetFormPosition('customerForm', 'rentalCustomerFormAnchor');
     toggleForm('customerForm');
+    // Historical rentals can be for someone with no email on file; everywhere else email stays required.
+    document.querySelector('#customerFormEl [name="email"]').required = !rentalIsHistorical();
   }
   function rentalField(name) { return document.querySelector(`#rentalFormEl [name="${name}"]`); }
   function getRentalRenter() {
@@ -2173,7 +2307,15 @@
       pickEl.style.display = show ? '' : 'none';
       if (show) { document.getElementById('rentalCustomerLookup').value = ''; document.getElementById('rentalCustomerLookupMsg').textContent = ''; }
     };
-    if (!email) { summaryEl.textContent = 'No customer chosen yet.'; showPick(true); return; }
+    if (!email) {
+      if (snap.name && rentalIsHistorical()) {
+        summaryEl.innerHTML = `${customerDetailsHtml(snap.name, '', snap.phone, snap.address)}<div>No email on file. A historical rental can be saved without one.</div>`;
+      } else {
+        summaryEl.textContent = 'No customer chosen yet.';
+      }
+      showPick(true);
+      return;
+    }
     let c = _customers.find(x => x.email === email);
     if (!c) {
       // Don't depend on the Customers tab having been visited this session —
@@ -2728,16 +2870,18 @@
 
   // ───────── Notifications (email + free SMS via carrier email-to-text) ─────────
   let _notify = { emails: [], sms: [] };
+  let _consentVersion = ''; // current consent wording version (from the server)
   const CARRIER_LABELS = { verizon:'Verizon', att:'AT&T', tmobile:'T-Mobile', sprint:'Sprint', googlefi:'Google Fi', uscellular:'US Cellular', cricket:'Cricket', boost:'Boost', metropcs:'Metro by T-Mobile', virgin:'Virgin Mobile', xfinity:'Xfinity Mobile' };
   const NOTIFY_EVENTS = [
     { key:'reservation_in', label:'Reservation request (in area)' },
     { key:'reservation_out', label:'Reservation request (out of area)' },
     { key:'review', label:'New review' },
+    { key:'rental_ending', label:'Weekly digest: rentals ending in the next 10 days' },
   ];
   function eventChecks(events) {
     return NOTIFY_EVENTS.map(ev => `<label><input type="checkbox" class="nt-ev" value="${ev.key}" ${events.includes(ev.key)?'checked':''}> ${escape(ev.label)}</label>`).join('');
   }
-  const SMS_CONSENT_TEXT = 'By checking this box, I agree to receive transactional SMS alerts from Purebaric about new reservation requests and review submissions. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. See our <a href="/terms#sms-terms" target="_blank" rel="noopener">Terms of Service</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.';
+  const SMS_CONSENT_TEXT = 'By checking this box, I agree to receive transactional SMS alerts from Purebaric about new reservation requests, review submissions, and rentals that are about to end. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. See our <a href="/terms#sms-terms" target="_blank" rel="noopener">Terms of Service</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.';
   function smsHasActiveConsent(r) { return !!(r.consent && r.consent.given && r.consent.status === 'enabled'); }
   function fmtConsentDate(iso) {
     if (!iso) return '';
@@ -2746,6 +2890,7 @@
   }
   async function loadNotifications() {
     const data = await api('/api/admin/notifications');
+    _consentVersion = data.consentVersion || '';
     _notify = {
       emails: (data.emails || []).map(r => ({ label:r.label||'', email:r.email||'', events:r.events||[] })),
       // consent is stamped server-side only (see admin-notifications.js); the
@@ -2783,10 +2928,20 @@
     const carrierOpts = Object.keys(CARRIER_LABELS).map(k => `<option value="${k}">${escape(CARRIER_LABELS[k])}</option>`).join('');
     el.innerHTML = _notify.sms.map((r, i) => {
       const active = smsHasActiveConsent(r);
+      // Consent given under older wording: still valid for what it covered, but the box starts
+      // unchecked so the admin affirmatively agrees to the new wording (rental-ending reminders).
+      const current = active && r.consent.version === _consentVersion;
+      const stale = active && !current;
       // The "Enable SMS notifications" button is a distinct, separate action
       // from the checkbox itself — it only becomes clickable once the admin
       // has affirmatively checked the (unchecked-by-default) box above it.
-      const statusHtml = active
+      const statusHtml = stale
+        ? `<div class="nt-consent-status nt-consent-off">
+             <div class="renter-line"><strong>Reservation and review texts are enabled</strong> (consent recorded ${escape(fmtConsentDate(r.consent.at))}). The consent wording now also covers rental-ending reminders. To receive those, check the box above and click Enable.</div>
+             <button type="button" class="btn btn-primary btn-sm nt-consent-enable-btn" disabled onclick="enableSmsConsent(${i})">Enable SMS notifications</button>
+             <button type="button" class="btn btn-ghost btn-sm" onclick="disableSmsConsent(${i})">Disable SMS notifications</button>
+           </div>`
+        : active
         ? `<div class="nt-consent-status nt-consent-on">
              <strong>SMS notifications enabled</strong>
              <div>Consent recorded on ${escape(fmtConsentDate(r.consent.at))}${r.consent.by ? ' by ' + escape(r.consent.by) : ''}. Message frequency varies. Reply STOP to opt out or HELP for help.</div>
@@ -2797,7 +2952,7 @@
              ${r.consent && r.consent.at ? `<div class="renter-line">SMS notifications are currently <strong>disabled</strong> for this number${r.consent.status === 'opted_out' ? ' (recipient replied STOP)' : ''}.</div>` : ''}
            </div>`;
       return `
-      <div class="nt-card nt-sms" data-i="${i}">
+      <div class="nt-card nt-sms" data-i="${i}" ${stale ? 'data-stale="1"' : ''}>
         <input type="hidden" class="nt-id" value="${escape(r.id || '')}">
         <div class="nt-top">
           <div><label>Label (optional)</label><input class="nt-label" value="${escape(r.label)}" placeholder="e.g. Matthew" style="width:150px;"></div>
@@ -2808,7 +2963,7 @@
         <div class="nt-events">${eventChecks(r.events)}</div>
         <div class="nt-consent">
           <label class="nt-consent-check">
-            <input type="checkbox" class="nt-consent-input" ${active ? 'checked' : ''}>
+            <input type="checkbox" class="nt-consent-input" ${current ? 'checked' : ''}>
             <span>${SMS_CONSENT_TEXT}</span>
           </label>
           ${statusHtml}
@@ -2836,6 +2991,8 @@
       // The only consent signal the client ever sends: is the box checked right
       // now? admin-notifications.js turns this into the real consent record.
       consentChecked: card.querySelector('.nt-consent-input').checked,
+      // Older-wording consent stays on while the box is unchecked, unless the admin pressed Disable.
+      keepEarlierConsent: card.dataset.stale === '1' && !card.querySelector('.nt-consent-input').checked && card.dataset.disable !== '1',
     }));
   }
   // Capture current field state into _notify before a re-render (add/remove).
@@ -2852,6 +3009,7 @@
     const card = document.querySelectorAll('#notifSmsList .nt-sms')[i];
     const box = card && card.querySelector('.nt-consent-input');
     if (box) box.checked = false;
+    if (card) card.dataset.disable = '1';
     saveNotifications();
   }
   // "Enable SMS notifications" button: only reachable once the admin has

@@ -1,6 +1,7 @@
 const { Resend } = require("resend");
 const { isComplete, sendSms } = require("./sms");
 const { buildFollowUpText } = require("./followup");
+const { daysUntil, cancelLink, endingSoonLink, shortDate, endingSmsText } = require("./rental-ending");
 
 const FROM = "Purebaric <noreply@purebaric.com>";
 const REPLY_TO = "hello@purebaric.com";
@@ -341,8 +342,47 @@ async function notifyAdminReview(review, to) {
   return send({ to: adminTo(to), subject: `New review: ${who}`, html });
 }
 
+// Admin-facing weekly digest: every running rental ending within the look-ahead window. Full renter
+// details are fine here (the email goes only to the admin); the SMS twin below is deliberately generic.
+async function notifyAdminEndingSoon(list, { to, today, days, chambers = [], machines = [] } = {}) {
+  const long = (iso) => new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+  const n = list.length;
+  const blocks = list.map((rental) => {
+    const renter = rental.renter || {};
+    const a = renter.address || {};
+    const address = [a.street, [a.city, a.state].filter(Boolean).join(", "), a.zip].filter(Boolean).join(" ") || "-";
+    const rate = `$${Number(rental.monthlyRate || 0).toLocaleString("en-US")}/${rental.rateType === "weekly" ? "week" : "month"}`;
+    const left = daysUntil(rental.endDate, today);
+    const when = left === 0 ? "today" : left === 1 ? "tomorrow" : `in ${left} days`;
+    const chamber = (chambers.find((c) => c.id === rental.chamberId) || {}).name;
+    const machine = (machines.find((m) => m.id === rental.machineId) || {}).name;
+    const action = rental.stripeCancelRequestedAt
+      ? `<p style="margin:0; font-size:13px; color:#4a5d24;">Stripe cancellation already requested (${escapeHtml(rental.stripeCancelRequestedAt.slice(0, 10))}).</p>`
+      : `<p style="margin:0;"><a href="${cancelLink(rental.id)}" style="display:inline-block; padding:10px 16px; background:#b8654d; color:#ffffff; text-decoration:none; border-radius:8px; font-weight:600;">Cancel Stripe subscription →</a></p>`;
+    return `<div style="margin:0 0 16px; padding:14px 16px; background:#fffdf9; border:1px solid #e6dccd; border-radius:8px;">
+      <p style="margin:0 0 8px;"><strong style="color:#2b2320;">${escapeHtml(renter.name || "Renter")}</strong> ends <strong>${escapeHtml(long(rental.endDate))}</strong> (${when})</p>
+      <p style="margin:0 0 10px;">Email: ${or(renter.email)}<br>Phone: ${or(renter.phone)}<br>Address: ${escapeHtml(address)}<br>
+      ${escapeHtml(rental.startDate)} to ${escapeHtml(rental.endDate)} at ${escapeHtml(rate)} · Chamber: ${or(chamber)} · Machine: ${or(machine)}</p>
+      ${action}
+    </div>`;
+  }).join("");
+  const html = wrap(`
+    <p style="margin:0 0 16px;"><strong style="color:#2b2320;">${n} rental${n === 1 ? "" : "s"} ending in the next ${days} days</strong></p>
+    ${blocks}
+    <p style="margin:0 0 16px; font-size:13px; color:#6f635b;">Each button opens the admin (sign in if asked) and asks you to confirm. Nothing is cancelled until you confirm, and the subscription is set to stop at the end of its current billing period. This digest is sent weekly.</p>
+    <p style="margin:0;"><a href="${endingSoonLink()}" style="color:#b8654d;">See all in admin →</a></p>
+  `);
+  return send({ to: adminTo(to), subject: `${n} rental${n === 1 ? "" : "s"} ending soon (first: ${shortDate(list[0].endDate)})`, html });
+}
+
+async function notifyAdminEndingSoonSms(list, { days, gateways, numbers, twilio } = {}) {
+  return deliverAdminSms({ numbers, gateways, text: endingSmsText(list, days), subject: "Purebaric rentals ending", twilio });
+}
+
 module.exports = {
   send,
+  notifyAdminEndingSoon,
+  notifyAdminEndingSoonSms,
   notifyAdminReview,
   notifyAdminWaitlistJoin,
   notifyWaitlistChamberAvailable,

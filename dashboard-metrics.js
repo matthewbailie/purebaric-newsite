@@ -88,6 +88,46 @@
   // Same estimate the Customers tab uses for "Lifetime paid": a recorded
   // paidAmount wins, otherwise a non-cancelled rental is assumed paid in full for
   // its whole term, a cancelled one with nothing recorded counts $0.
+  // start + k calendar months, clamped to the target month's last day (Jan 31 + 1 month = Feb 28).
+  function addMonthsClamped(isoDay, k) {
+    const [y, m, d] = isoDay.split('-').map(Number);
+    const idx = (m - 1) + k;
+    const year = y + Math.floor(idx / 12);
+    const month = ((idx % 12) + 12) % 12;
+    const lastDay = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+    return iso(Date.UTC(year, month, Math.min(d, lastDay)));
+  }
+
+  // Charges still to come in [today, today + days] for rentals still being billed.
+  // The first payment is at the start date, so renewals are the later billing dates: each monthly
+  // anniversary of the start (weekly rentals: every 7 days). A date after the rental's end is not a
+  // renewal, so the final period has none. Returns [{ rental, date, amount }] soonest first.
+  function upcomingRenewals(rentals, today, days = 7) {
+    const last = addDays(today, days);
+    const out = [];
+    (rentals || []).forEach((r) => {
+      if (!r || (r.status !== 'active' && r.status !== 'scheduled')) return;
+      const start = day10(r.startDate), end = day10(r.endDate);
+      if (!start || !end) return;
+      const weekly = r.rateType === 'weekly';
+      for (let k = 1; k <= 520; k += 1) {
+        const date = weekly ? addDays(start, 7 * k) : addMonthsClamped(start, k);
+        if (date > end || date > last) break;
+        if (date >= today) out.push({ rental: r, date, amount: Number(r.monthlyRate) || 0 });
+      }
+    });
+    return out.sort((a, b) => a.date.localeCompare(b.date) || String(a.rental.id).localeCompare(String(b.rental.id)));
+  }
+
+  // Running rentals whose last day is within `days` days from today, soonest first. Mirrors
+  // rentalsEndingSoon in netlify/functions/_lib/rental-ending.js (test/rental-ending.test.js keeps them equal).
+  function endingSoon(rentals, today, days = 10) {
+    const last = addDays(today, days);
+    return (rentals || [])
+      .filter((r) => r && (r.status === 'active' || r.status === 'scheduled') && day10(r.endDate) >= today && day10(r.endDate) <= last)
+      .sort((a, b) => day10(a.endDate).localeCompare(day10(b.endDate)) || String(a.id).localeCompare(String(b.id)));
+  }
+
   function lifetimePaid(r) {
     const paid = Number(r.paidAmount) || 0;
     if (paid > 0) return paid;
@@ -166,5 +206,5 @@
     };
   }
 
-  return { monthlyEquivalent, isCounted, activeOn, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid };
+  return { monthlyEquivalent, isCounted, activeOn, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon };
 });

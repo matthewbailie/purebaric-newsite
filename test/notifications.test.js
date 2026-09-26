@@ -150,3 +150,33 @@ test("emails and sms coexist in one config", () => {
   assert.deepEqual(emailsForEvent(cfg, "reservation_in"), ["owner@purebaric.com"]);
   assert.deepEqual(smsForEvent(cfg, "reservation_in"), ["8015551111@vtext.com"]);
 });
+
+const V1 = { given: true, at: "2026-09-01T00:00:00.000Z", by: "owner@purebaric.com", version: "purebaric-sms-consent-v1", status: "enabled" };
+
+test("rental-ending texts need consent under the current wording; older consent still covers reservation/review alerts", () => {
+  const cfg = { sms: [
+    { id: "a", number: "8015551111", carrier: "verizon", events: ["reservation_in", "rental_ending"], consent: V1 },
+    { id: "b", number: "8015552222", carrier: "verizon", events: ["reservation_in", "rental_ending"], consent: CONSENTED },
+  ] };
+  assert.deepEqual(smsNumbersForEvent(cfg, "reservation_in"), ["8015551111", "8015552222"]);
+  assert.deepEqual(smsNumbersForEvent(cfg, "rental_ending"), ["8015552222"]);
+});
+
+test("stampSmsConsent: older-wording consent is renewed (fresh stamp) when the box is checked, and kept while it is unchecked only if asked", () => {
+  const existing = [{ id: "a", number: "8015551111", carrier: "verizon", events: ["rental_ending"], consent: V1 }];
+  const base = { id: "a", number: "8015551111", carrier: "verizon", events: ["rental_ending"] };
+  const NOW = "2026-10-01T00:00:00.000Z";
+  // Agreeing to the new wording -> brand-new v2 consent event.
+  const renewed = stampSmsConsent([{ ...base, consentChecked: true }], existing, "owner@purebaric.com", NOW)[0].consent;
+  assert.equal(renewed.version, CONSENT_VERSION);
+  assert.equal(renewed.at, NOW);
+  // Saving other edits with the box still unchecked must not switch off the earlier consent...
+  const kept = stampSmsConsent([{ ...base, consentChecked: false, keepEarlierConsent: true }], existing, "x", NOW)[0];
+  assert.deepEqual(kept.consent, V1);
+  assert.equal(kept.keepEarlierConsent, undefined);
+  // ...but Disable (no flag) does switch it off,
+  assert.equal(stampSmsConsent([{ ...base, consentChecked: false }], existing, "x", NOW)[0].consent.status, "disabled");
+  // and the flag can never create consent that was not there, or carry it to a different number.
+  assert.equal(stampSmsConsent([{ ...base, id: "z", number: "8015559999", consentChecked: false, keepEarlierConsent: true }], existing, "x", NOW)[0].consent.given, false);
+  assert.equal(stampSmsConsent([{ ...base, number: "8015550000", consentChecked: false, keepEarlierConsent: true }], existing, "x", NOW)[0].consent.given, false);
+});

@@ -118,3 +118,30 @@ test("empty data gives zeros and nulls, not NaN", () => {
   assert.equal(o.utilization.pct, null);
   assert.equal(o.avgTermMonths, null);
 });
+
+test("upcomingRenewals: monthly anniversaries in the window, never the first payment or past the end", () => {
+  const rs = [
+    r(1, "a@x.com", "2026-08-25", "2026-11-24", 549),   // 3 months: renews Sep 25, Oct 25 only
+    r(2, "b@x.com", "2026-01-06", "2027-01-05", 529),   // renews on the 6th every month
+    r(3, "c@x.com", "2026-09-30", "2026-12-29", 500),   // starts inside the window: not a renewal
+  ];
+  const at = (today, days) => M.upcomingRenewals(rs, today, days).map((x) => `${x.rental.id}@${x.date}:${x.amount}`);
+  assert.deepEqual(at("2026-09-22", 7), ["1@2026-09-25:549"]);
+  assert.deepEqual(at("2026-10-01", 7), ["2@2026-10-06:529"]);
+  assert.deepEqual(at("2026-10-25", 0), ["1@2026-10-25:549"]);
+  assert.deepEqual(at("2026-11-20", 7), []); // Nov 25 is past rental 1's end; rental 2 renews Dec 6
+  assert.deepEqual(at("2026-09-26", 7), []);
+});
+
+test("upcomingRenewals: weekly rentals renew every 7 days, month ends clamp, dead rentals are skipped", () => {
+  const rs = [
+    r(1, "a@x.com", "2026-09-01", "2026-10-31", 164.75, { rateType: "weekly" }),
+    r(2, "b@x.com", "2026-01-31", "2026-12-30", 600),
+    r(3, "c@x.com", "2026-01-06", "2027-01-05", 529, { status: "cancelled" }),
+    r(4, "d@x.com", "2026-01-06", "2027-01-05", 529, { status: "completed" }),
+  ];
+  const at = (today, days) => M.upcomingRenewals(rs, today, days).map((x) => `${x.rental.id}@${x.date}`);
+  assert.deepEqual(at("2026-09-26", 7), ["1@2026-09-29", "2@2026-09-30"]); // Jan 31 anchor clamps to Sep 30
+  assert.deepEqual(at("2026-02-25", 5), ["2@2026-02-28"]);
+  assert.deepEqual(at("2026-10-03", 7), ["1@2026-10-06"]);
+});
