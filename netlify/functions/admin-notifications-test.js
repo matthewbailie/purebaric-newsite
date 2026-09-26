@@ -1,5 +1,5 @@
 const { getNotifications, getTwilioConfig } = require("./_lib/storage");
-const { gatewayAddress } = require("./_lib/notifications");
+const { gatewayAddress, hasActiveConsent } = require("./_lib/notifications");
 const { send } = require("./_lib/email");
 const { isComplete, sendSms } = require("./_lib/sms");
 const { requireAuth, json } = require("./_lib/admin");
@@ -44,6 +44,12 @@ exports.handler = async (event, context) => {
     for (const r of cfg.sms) {
       let ok = false, error = null;
       const text = "Purebaric test text. If you got this, SMS alerts are working.";
+      if (!hasActiveConsent(r)) {
+        // Never send — including a test message — to a number without active,
+        // affirmative consent (unchecked, disabled, or opted out via STOP).
+        results.push({ kind: "sms", via: useTwilio ? "twilio" : "carrier email-to-text", label: r.label || "", target: maskNumber(r.number) + (useTwilio ? "" : " (" + r.carrier + ")"), events: r.events, ok: false, error: "SMS consent not enabled for this number — check the consent box and save first." });
+        continue;
+      }
       if (useTwilio) {
         try {
           const res = await sendSms(r.number, text, twilioCfg);

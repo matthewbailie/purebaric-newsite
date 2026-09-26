@@ -296,22 +296,19 @@ async function deliverAdminSms({ numbers, gateways, text, subject, twilio }) {
   return { via: "email-to-text", sent: recips.size };
 }
 
+// Admin SMS alerts are transactional and privacy-conscious by design: no
+// customer name, phone, address, email, ZIP, or notes ever appear in a text —
+// the admin follows the link and signs in to see details. Every message ends
+// with the required STOP/HELP compliance footer.
 async function notifyAdminSms(b, { outOfArea, gateways, numbers, twilio } = {}) {
-  const name = `${b.firstName || ""} ${b.lastName || ""}`.trim() || b.name || "New lead";
-  const parts = [name];
-  if (b.phone) parts.push(b.phone);
-  if (b.zip) parts.push(`ZIP ${b.zip}`);
-  if (b.rentalLength) parts.push(b.rentalLength);
-  const detail = parts.join(", ");
   const text = outOfArea
-    ? `${detail}. Outside service area, no auto-email sent.`
-    : `${detail}. Check email or the admin portal to follow up.`;
+    ? "Purebaric: A new out-of-area reservation request was received. Sign in to the Purebaric admin portal to review it. Reply STOP to opt out or HELP for help."
+    : "Purebaric: A new reservation request was received. Sign in to the Purebaric admin portal to review it. Reply STOP to opt out or HELP for help.";
   return deliverAdminSms({ numbers, gateways, text, subject: outOfArea ? "Purebaric out-of-area lead" : "New Purebaric lead", twilio });
 }
 
 async function notifyAdminReviewSms(review, { gateways, numbers, twilio } = {}) {
-  const who = `${review.firstName || ""} ${review.lastInitial || ""}`.trim() || "Someone";
-  const text = `New Purebaric review from ${who}. Approve it in the admin portal to publish.`;
+  const text = "Purebaric: A new customer review was submitted. Sign in to the Purebaric admin portal to review it. Reply STOP to opt out or HELP for help.";
   return deliverAdminSms({ numbers, gateways, text, subject: "New Purebaric review", twilio });
 }
 

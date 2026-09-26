@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMS Notification Consent, Purebaric</title>
+<meta name="description" content="How an authorized Purebaric administrator opts in to transactional SMS alerts through the password-protected admin portal, with screenshots of the complete process.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://purebaric.com/sms-consent">
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg?v=2">
+<link rel="icon" href="/images/favicon.ico">
+<link rel="apple-touch-icon" href="/images/logo.png?v=3">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SMS Notification Consent, Purebaric">
+<meta property="og:description" content="How an authorized Purebaric administrator opts in to transactional SMS alerts through the password-protected admin portal.">
+<meta property="og:url" content="https://purebaric.com/sms-consent">
+<meta property="og:image" content="https://purebaric.com/images/chamber-hero.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/warm.css">
+<style>
+.legal{max-width:820px;margin:0 auto}
+.legal h2{font-size:20px;font-weight:700;margin:30px 0 10px}
+.legal p,.legal li{color:#5f544d;font-size:15px;line-height:1.65}
+.legal ul{list-style:none;margin:8px 0}
+.legal li{padding:5px 0 5px 20px;position:relative}
+.legal li:before{content:"–";position:absolute;left:0;color:var(--muted)}
+.legal ol{margin:10px 0 10px 22px;padding:0}
+.legal ol li{padding:4px 0;color:#5f544d;font-size:15px;line-height:1.65}
+.legal ol li:before{content:none}
+.legal a{color:var(--terra-d);text-decoration:underline}
+.legal .updated{font-size:13px;color:var(--muted)}
+.legal .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-top:18px;font-size:14px;color:#5f544d}
+.sms-shot{margin:22px 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);}
+.sms-shot img{display:block;width:100%;height:auto;}
+.sms-shot figcaption{padding:12px 16px;font-size:13px;color:var(--muted);border-top:1px solid var(--line);}
+</style>
+  <script src="/pb-metrics.js"></script>
+</head><body>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><img class="brand-logo" src="/images/logo.png?v=3" alt="Purebaric"></a>
+    <nav class="nav-links">
+      <a href="/how-it-works">How it works</a><a href="/chambers">Chambers</a><a href="/pricing">Pricing</a><a href="/about">About</a><a href="/reviews">Reviews</a><a href="/faq">FAQ</a><a href="/contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="/book">Reserve a chamber</a>
+    </div>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu">
+    <a href="/how-it-works">How it works</a><a href="/chambers">Chambers</a><a href="/pricing">Pricing</a><a href="/about">About</a><a href="/reviews">Reviews</a><a href="/faq">FAQ</a><a href="/contact">Contact</a>
+    <a class="btn btn-primary mm-cta" href="/book">Reserve a chamber</a>
+  </nav>
+</header>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow2">SMS Consent</span>
+    <h1>Purebaric SMS notification consent</h1>
+    <p>This page is public and requires no sign-in. It shows exactly how a Purebaric administrator opts in to text-message alerts, for anyone who needs to verify our SMS program.</p>
+  </div>
+</section>
+
+<section class="section" style="border-top:none">
+  <div class="wrap legal">
+    <p class="updated">Last updated: September 26, 2026</p>
+
+    <p>Purebaric sends transactional website-notification text messages only to the Purebaric owner or another authorized administrator. These notifications alert an administrator when the Purebaric website receives:</p>
+    <ul>
+      <li>A new reservation request</li>
+      <li>An out-of-area reservation request</li>
+      <li>A new customer review</li>
+    </ul>
+    <p><strong>Customers who submit these forms do not receive messages through this SMS program.</strong> Reservation requests and reviews are submitted by the general public; the text alerts described on this page go only to the administrator who enrolls their own number in the admin portal.</p>
+
+    <h2>How an administrator opts in</h2>
+    <ol>
+      <li>The administrator signs in to the password-protected Purebaric admin portal.</li>
+      <li>The administrator opens the Notifications page.</li>
+      <li>The administrator enters the mobile number that will receive alerts.</li>
+      <li>The administrator selects the notification categories they want to receive.</li>
+      <li>The administrator affirmatively checks an unchecked SMS-consent checkbox.</li>
+      <li>The administrator selects Enable SMS notifications or Save SMS settings.</li>
+    </ol>
+
+    <p>The consent disclosure shown before enrollment states:</p>
+    <div class="box">"By checking this box, I agree to receive transactional SMS alerts from Purebaric about new reservation requests and review submissions. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. See our Terms of Service and Privacy Policy."</div>
+
+    <p>SMS enrollment is optional. Administrators can continue using the Purebaric admin portal without enabling text notifications.</p>
+
+    <h2>What the opt-in process looks like</h2>
+    <p>The screenshots below are from the live admin portal. The administrator's mobile number is redacted; no Twilio credentials, tokens, or other secrets are ever shown or stored in this page.</p>
+
+    <figure class="sms-shot">
+      <img src="/images/sms-consent-optin.png" width="1000" height="780" alt="Admin Notifications page showing the redacted mobile-number field, the three notification categories (reservation request in area, reservation request out of area, new review), the SMS-consent checkbox unchecked with its full disclosure text and Terms of Service / Privacy Policy links, and a greyed-out, disabled Enable SMS notifications button beneath it.">
+      <figcaption>The Notifications page before enrollment: mobile number, notification categories, and the unchecked consent checkbox with its full disclosure. The "Enable SMS notifications" button stays disabled until the box is checked.</figcaption>
+    </figure>
+
+    <figure class="sms-shot">
+      <img src="/images/sms-consent-detail.png" width="1400" height="450" alt="Close-up of the redacted mobile-number field, notification-category checkboxes, the unchecked SMS-consent checkbox with its complete disclosure text and Terms of Service / Privacy Policy links, and the disabled Enable SMS notifications button.">
+      <figcaption>A closer look at the consent checkbox and full disclosure language, unchecked by default, with the disabled enable button directly below it.</figcaption>
+    </figure>
+
+    <figure class="sms-shot">
+      <img src="/images/sms-consent-enabled.png" width="1000" height="850" alt="Admin Notifications page after checking the consent box and selecting Enable SMS notifications, showing a green “SMS notifications enabled” confirmation with the consent timestamp and a redacted administrator identity, plus a Disable SMS notifications button.">
+      <figcaption>After the administrator checks the box and selects "Enable SMS notifications": a confirmation showing the consent timestamp, and a "Disable SMS notifications" button that stops delivery immediately.</figcaption>
+    </figure>
+
+    <h2>How to opt out</h2>
+    <p>An enrolled administrator can stop SMS notifications by:</p>
+    <ul>
+      <li>Replying <strong>STOP</strong> to a Purebaric text message; or</li>
+      <li>Disabling SMS notifications in the Purebaric admin portal.</li>
+    </ul>
+    <p>For assistance, reply <strong>HELP</strong> or contact <a href="mailto:hello@purebaric.com">hello@purebaric.com</a>.</p>
+    <p>Message frequency varies based on website activity. Message and data rates may apply.</p>
+
+    <p style="margin-top:26px;"><a href="/terms#sms-terms">Terms of Service</a> &nbsp;·&nbsp; <a href="/privacy">Privacy Policy</a></p>
+
+    <p class="updated" style="margin-top:22px">This page is provided for transparency and SMS-consent verification and is not legal advice.</p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img class="foot-logo" src="/images/logo-cream.png?v=3" alt="Purebaric">
+        <p class="foot-tag">Hyperbaric chamber rentals, delivered across Utah.</p>
+        <p class="foot-desc">Professional-grade mild hyperbaric oxygen therapy brought to your home, delivery, setup, and support included, for less than the cost of a single month at a clinic.</p>
+      </div>
+      <div class="foot-col"><h5>Service</h5><ul>
+        <li><a href="/how-it-works">How it works</a></li><li><a href="/chambers">Chambers</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/service-area">Service area</a></li><li><a href="/book">Reserve</a></li><li><a href="/waitlist">Waitlist</a></li></ul></div>
+      <div class="foot-col"><h5>Company</h5><ul>
+        <li><a href="/about">About</a></li><li><a href="/reviews">Reviews</a></li><li><a href="/faq">FAQ</a></li><li><a href="/contact">Contact</a></li><li><a href="/safety">Safety &amp; disclosures</a></li><li><a href="/terms">Terms</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/sms-consent">SMS Consent</a></li></ul></div>
+      <div class="foot-col"><h5>Get in touch</h5><ul>
+        <li><a href="tel:+18019010873">(801) 901-0873</a></li>
+        <li><a href="mailto:hello@purebaric.com">hello@purebaric.com</a></li>
+        <li class="foot-muted" style="margin-top:12px">Mon–Sat, 8:00 AM – 6:00 PM MT</li>
+        <li class="foot-muted">Salt Lake City, UT</li></ul></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Purebaric. All rights reserved.</span>
+      <span class="foot-disc">Provided for general wellness and relaxation only. Not a medical device; not intended to diagnose, treat, cure, or prevent any disease. Consult your physician before use.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="cookie" id="cookie" hidden>
+  <div class="wrap cookie-in">
+    <p>We use optional analytics and advertising-measurement cookies to understand traffic and measure ad performance. We do not use them for personalized ads. See our <a href="/privacy">privacy policy</a>.</p>
+    <div class="cookie-btns"><button class="btn btn-ghost" onclick="cookieChoice(false)">Decline</button><button class="btn btn-primary" onclick="cookieChoice(true)">Accept</button></div>
+  </div>
+</div>
+
+<script src="/warm.js"></script>
+</body></html>

@@ -598,16 +598,9 @@
       <button type="button" class="btn btn-ghost btn-sm" onclick="addNotifyEmail()" style="margin-top:4px;">+ Add email address</button>
 
       <h3 style="font-size:16px;font-weight:700;margin:24px 0 4px;">Text (SMS) notifications</h3>
+      <p class="renter-line" style="margin:0 0 12px;max-width:780px;">SMS is off by default for every number. To receive texts, check the consent box on that number's card below and save — the checkbox and full disclosure sit right above the field, per number, since consent is tied to the enrolled number, not the whole portal.</p>
       <div id="notifSmsList"></div>
       <button type="button" class="btn btn-ghost btn-sm" onclick="addNotifySms()" style="margin-top:4px;">+ Add phone number</button>
-      <div class="sms-consent" style="max-width:780px;margin:12px 0 0;padding:12px 14px;border:1px solid var(--line,#e6dccd);border-radius:10px;background:var(--card,#fffdf9);">
-        <p class="renter-line" style="margin:0;">By saving this mobile number, you consent to receive transactional Purebaric reservation-request and review-submission alerts. Message frequency varies based on website activity. Message and data rates may apply. Reply STOP to opt out or HELP for help.</p>
-        <p class="renter-line" style="margin:8px 0 0;">
-          <a href="https://purebaric.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>
-          &nbsp;·&nbsp;
-          <a href="https://purebaric.com/terms#sms-terms" target="_blank" rel="noopener">SMS Terms</a>
-        </p>
-      </div>
 
       <h3 style="font-size:16px;font-weight:700;margin:30px 0 4px;">Text delivery (Twilio) — recommended for reliable texts</h3>
       <p class="renter-line" style="margin:0 0 12px;max-width:780px;">Free carrier email-to-text is unreliable (often dropped by the carrier). Connect Twilio for texts that actually deliver. When these three are set, every text goes through Twilio instead. <strong>Setup:</strong> create a Twilio account, buy an SMS-capable phone number (~$1.15/mo), then from the Twilio console copy your Account SID and Auth Token. Keys are stored securely and the token is never shown again after saving.</p>
@@ -629,6 +622,16 @@
         .nt-events{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;}
         .nt-events label{display:inline-flex;align-items:center;gap:5px;font-weight:500;}
         .nt-remove{margin-left:auto;}
+        .nt-consent{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line,#e6dccd);}
+        .nt-consent-check{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;line-height:1.5;color:var(--stone-muted,#6f635b);cursor:pointer;}
+        .nt-consent-check input{margin-top:3px;flex:none;width:16px;height:16px;}
+        .nt-consent-check a{color:var(--terracotta);}
+        .nt-consent-status{margin-top:10px;padding:10px 12px;border-radius:8px;font-size:13px;}
+        .nt-consent-status.nt-consent-on{background:#eaf1e2;color:#3d5a26;}
+        .nt-consent-status.nt-consent-on div{margin:3px 0 8px;font-weight:400;color:#3d5a26;}
+        .nt-consent-status.nt-consent-off{background:none;padding:10px 0 0;}
+        .nt-consent-off .renter-line{margin-top:8px;}
+        .btn:disabled{opacity:.4;cursor:not-allowed;}
       </style>
     </section>
 
@@ -2114,11 +2117,21 @@
   function eventChecks(events) {
     return NOTIFY_EVENTS.map(ev => `<label><input type="checkbox" class="nt-ev" value="${ev.key}" ${events.includes(ev.key)?'checked':''}> ${escape(ev.label)}</label>`).join('');
   }
+  const SMS_CONSENT_TEXT = 'By checking this box, I agree to receive transactional SMS alerts from Purebaric about new reservation requests and review submissions. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. See our <a href="/terms#sms-terms" target="_blank" rel="noopener">Terms of Service</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.';
+  function smsHasActiveConsent(r) { return !!(r.consent && r.consent.given && r.consent.status === 'enabled'); }
+  function fmtConsentDate(iso) {
+    if (!iso) return '';
+    try { return new Date(iso).toLocaleString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit' }); }
+    catch { return iso; }
+  }
   async function loadNotifications() {
     const data = await api('/api/admin/notifications');
     _notify = {
       emails: (data.emails || []).map(r => ({ label:r.label||'', email:r.email||'', events:r.events||[] })),
-      sms: (data.sms || data.recipients || []).map(r => ({ label:r.label||'', number:r.number||'', carrier:r.carrier||'verizon', events:r.events||[] })),
+      // consent is stamped server-side only (see admin-notifications.js); the
+      // client never invents or edits the consent record itself, only whether
+      // the checkbox is checked right now (consentChecked, sent on save).
+      sms: (data.sms || data.recipients || []).map(r => ({ id:r.id||'', label:r.label||'', number:r.number||'', carrier:r.carrier||'verizon', events:r.events||[], consent:r.consent||null })),
     };
     renderNotifications();
   }
@@ -2148,8 +2161,24 @@
       return;
     }
     const carrierOpts = Object.keys(CARRIER_LABELS).map(k => `<option value="${k}">${escape(CARRIER_LABELS[k])}</option>`).join('');
-    el.innerHTML = _notify.sms.map((r, i) => `
+    el.innerHTML = _notify.sms.map((r, i) => {
+      const active = smsHasActiveConsent(r);
+      // The "Enable SMS notifications" button is a distinct, separate action
+      // from the checkbox itself — it only becomes clickable once the admin
+      // has affirmatively checked the (unchecked-by-default) box above it.
+      const statusHtml = active
+        ? `<div class="nt-consent-status nt-consent-on">
+             <strong>SMS notifications enabled</strong>
+             <div>Consent recorded on ${escape(fmtConsentDate(r.consent.at))}${r.consent.by ? ' by ' + escape(r.consent.by) : ''}. Message frequency varies. Reply STOP to opt out or HELP for help.</div>
+             <button type="button" class="btn btn-ghost btn-sm" onclick="disableSmsConsent(${i})">Disable SMS notifications</button>
+           </div>`
+        : `<div class="nt-consent-status nt-consent-off">
+             <button type="button" class="btn btn-primary btn-sm nt-consent-enable-btn" disabled onclick="enableSmsConsent(${i})">Enable SMS notifications</button>
+             ${r.consent && r.consent.at ? `<div class="renter-line">SMS notifications are currently <strong>disabled</strong> for this number${r.consent.status === 'opted_out' ? ' (recipient replied STOP)' : ''}.</div>` : ''}
+           </div>`;
+      return `
       <div class="nt-card nt-sms" data-i="${i}">
+        <input type="hidden" class="nt-id" value="${escape(r.id || '')}">
         <div class="nt-top">
           <div><label>Label (optional)</label><input class="nt-label" value="${escape(r.label)}" placeholder="e.g. Matthew" style="width:150px;"></div>
           <div><label>Mobile number</label><input class="nt-number" value="${escape(r.number)}" inputmode="tel" placeholder="801 555 1234" style="width:150px;"></div>
@@ -2157,7 +2186,15 @@
           <button type="button" class="btn btn-ghost btn-sm nt-remove" onclick="removeNotifySms(${i})">Remove</button>
         </div>
         <div class="nt-events">${eventChecks(r.events)}</div>
-      </div>`).join('');
+        <div class="nt-consent">
+          <label class="nt-consent-check">
+            <input type="checkbox" class="nt-consent-input" ${active ? 'checked' : ''}>
+            <span>${SMS_CONSENT_TEXT}</span>
+          </label>
+          ${statusHtml}
+        </div>
+      </div>`;
+    }).join('');
     el.querySelectorAll('.nt-sms').forEach((card, i) => {
       card.querySelector('.nt-carrier').value = _notify.sms[i].carrier || 'verizon';
     });
@@ -2171,18 +2208,44 @@
   }
   function readSmsCards() {
     return [...document.querySelectorAll('#notifSmsList .nt-sms')].map(card => ({
+      id: card.querySelector('.nt-id').value || undefined,
       label: card.querySelector('.nt-label').value.trim(),
       number: card.querySelector('.nt-number').value.trim(),
       carrier: card.querySelector('.nt-carrier').value,
       events: [...card.querySelectorAll('.nt-ev:checked')].map(c => c.value),
+      // The only consent signal the client ever sends: is the box checked right
+      // now? admin-notifications.js turns this into the real consent record.
+      consentChecked: card.querySelector('.nt-consent-input').checked,
     }));
   }
   // Capture current field state into _notify before a re-render (add/remove).
   function syncNotifyState() { _notify.emails = readEmailCards(); _notify.sms = readSmsCards(); }
   function addNotifyEmail() { syncNotifyState(); _notify.emails.push({ label:'', email:'', events:['reservation_in'] }); renderNotifications(); }
   function removeNotifyEmail(i) { syncNotifyState(); _notify.emails.splice(i, 1); renderNotifications(); }
-  function addNotifySms() { syncNotifyState(); _notify.sms.push({ label:'', number:'', carrier:'verizon', events:['reservation_in'] }); renderNotifications(); }
+  // New SMS rows always start with the consent checkbox unchecked — never
+  // preselected for a new or existing administrator.
+  function addNotifySms() { syncNotifyState(); _notify.sms.push({ label:'', number:'', carrier:'verizon', events:['reservation_in'], consent:null }); renderNotifications(); }
   function removeNotifySms(i) { syncNotifyState(); _notify.sms.splice(i, 1); renderNotifications(); }
+  // "Disable SMS notifications" button: uncheck the consent box for this row
+  // and save immediately, so SMS delivery to that number stops right away.
+  function disableSmsConsent(i) {
+    const card = document.querySelectorAll('#notifSmsList .nt-sms')[i];
+    const box = card && card.querySelector('.nt-consent-input');
+    if (box) box.checked = false;
+    saveNotifications();
+  }
+  // "Enable SMS notifications" button: only reachable once the admin has
+  // already checked the consent box themselves (see the delegated listener
+  // below), so checking the box and enabling are two distinct affirmative steps.
+  function enableSmsConsent(i) { saveNotifications(); }
+  // Delegated once on the (persistent) list container: live-toggles each row's
+  // Enable button as its own consent checkbox is checked/unchecked, without
+  // needing a full re-render.
+  document.getElementById('notifSmsList').addEventListener('change', (e) => {
+    if (!e.target.classList.contains('nt-consent-input')) return;
+    const btn = e.target.closest('.nt-sms')?.querySelector('.nt-consent-enable-btn');
+    if (btn) btn.disabled = !e.target.checked;
+  });
   async function saveNotifications() {
     syncNotifyState();
     const { emails, sms } = _notify;

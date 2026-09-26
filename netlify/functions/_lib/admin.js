@@ -11,6 +11,13 @@ function requireAuth(event, context) {
   return null;
 }
 
+// The signed-in admin's email, for audit trails (e.g. who gave SMS consent).
+// Only meaningful after requireAuth has confirmed a session exists.
+function adminEmail(context) {
+  const user = context.clientContext && context.clientContext.user;
+  return (user && user.email) || null;
+}
+
 function parseBody(event) {
   if (!event.body) return {};
   const contentType = (event.headers["content-type"] || event.headers["Content-Type"] || "").toLowerCase();
@@ -49,4 +56,4 @@ function json(statusCode, body) {
   };
 }
 
-module.exports = { requireAuth, parseBody, parsePathSegments, json };
+module.exports = { requireAuth, adminEmail, parseBody, parsePathSegments, json };
