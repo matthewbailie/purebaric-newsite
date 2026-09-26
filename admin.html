@@ -866,6 +866,10 @@
     // so derived (available/scheduled/in-use) states reflect the rentals.
     if (typeof renderChambers === 'function') renderChambers();
     if (typeof renderMachines === 'function') renderMachines();
+    // Rentals can finish loading before inventory. Repaint only after all three
+    // requests settle so valid chamber/machine assignments are never shown as
+    // deleted merely because their lookup data arrived later.
+    if (typeof renderRentals === 'function') renderRentals();
     // Also rebuild the New/Edit Rental dropdowns now that _rentals has fully
     // settled — loadChambers()/loadMachines() may have already populated them
     // against a slightly stale _rentals snapshot (they run concurrently with
@@ -1355,6 +1359,7 @@
     }
     const rows = _rentals.map(r => {
       const chamber = _chambers.find(c => c.id === r.chamberId);
+      const machine = (_machines || []).find(m => m.id === r.machineId);
       const renter = r.renter || {};
       const payStatus = r.paymentStatus || 'unpaid';
       const paymentLabel = r.paidAmount
@@ -1362,7 +1367,10 @@
         : payStatus;
       return `
       <tr data-id="${escape(r.id)}" style="cursor:pointer;" onclick='rentalRowClick(event, ${JSON.stringify(r.id)})'>
-        <td><strong>${escape(chamber ? chamber.name : '(deleted chamber)')}</strong></td>
+        <td>
+          <strong>${escape(chamber ? chamber.name : '(chamber unavailable)')}</strong>
+          <div class="renter-line">${escape(machine ? machine.name : '(no machine assigned)')}</div>
+        </td>
         <td>${escape(renter.name || ', ')}<div class="renter-line">${escape(renter.email || '')}${renter.phone ? ' · ' + escape(renter.phone) : ''}</div></td>
         <td>${escape(r.startDate)} → ${escape(r.endDate)}</td>
         <td>$${r.monthlyRate || 0}/mo</td>
@@ -1381,7 +1389,7 @@
         </td>
       </tr>`;
     }).join('');
-    list.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Chamber</th><th>Renter</th><th>Dates</th><th>Rate</th><th>Status</th><th>Payment</th><th>Waiver</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    list.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Chamber / machine</th><th>Renter</th><th>Dates</th><th>Rate</th><th>Status</th><th>Payment</th><th>Waiver</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
     if (editingId) {
       placeInlineForm('rentalForm', `#rentalsList tr[data-id="${CSS.escape(editingId)}"]`, 8);
     }

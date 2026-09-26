@@ -13,3 +13,10 @@
 **Context:** The rental editor needs predictable subscription-style terms while retaining a custom end-date option.
 **Alternatives considered:** Fixed 30-day blocks drift away from monthly subscription billing; raw JavaScript `setMonth()` can overflow dates such as January 31 into March.
 **Status:** Confirmed
+
+## 2026-09-26 Resolve rental inventory only after concurrent loads settle
+
+**Decision:** Keep the independent admin data requests concurrent, then repaint the rental grid after chambers, machines, and rentals have all settled. Show the chamber's visible ID followed by the machine's visible ID in the first rental-grid column.
+**Context:** A valid rental could display “deleted chamber” when its request completed before the inventory requests, even though the stored relationships were intact.
+**Alternatives considered:** Serializing all admin requests would remove the race but make the entire portal slower; changing stored rental IDs would corrupt valid data and would not address the rendering race.
+**Status:** Confirmed

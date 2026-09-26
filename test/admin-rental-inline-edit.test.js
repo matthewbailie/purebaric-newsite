@@ -25,3 +25,22 @@ test("rental form is returned to its anchor before list replacement", () => {
     /resetFormPosition\('rentalForm', 'rentalFormAnchor'\);\s*document\.getElementById\('rentalForm'\)\.classList\.remove\('open'\);\s*populateChamberSelect\(\);/
   );
 });
+
+test("rentals repaint after concurrent inventory loads settle", () => {
+  const settled = adminHtml.indexOf("const results = await Promise.allSettled");
+  const finalRentalRender = adminHtml.indexOf(
+    "if (typeof renderRentals === 'function') renderRentals();",
+    settled
+  );
+
+  assert.notEqual(settled, -1);
+  assert.ok(finalRentalRender > settled);
+});
+
+test("rental grid lists chamber followed by machine in the first column", () => {
+  assert.match(adminHtml, /<th>Chamber \/ machine<\/th>/);
+  assert.match(
+    adminHtml,
+    /<strong>\$\{escape\(chamber \? chamber\.name : '\(chamber unavailable\)'\)\}<\/strong>\s*<div class="renter-line">\$\{escape\(machine \? machine\.name : '\(no machine assigned\)'\)\}<\/div>/
+  );
+});
