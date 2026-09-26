@@ -119,18 +119,6 @@
     return out.sort((a, b) => a.date.localeCompare(b.date) || String(a.rental.id).localeCompare(String(b.rental.id)));
   }
 
-  // Every subscription payment expected in [today, today + days]: the renewals above plus the FIRST
-  // payment of any rental whose start date falls in the window (payment is collected once the chamber
-  // is set up, so the start date is the best estimate). Same shape as upcomingRenewals, plus `first`.
-  function upcomingPayments(rentals, today, days = 7) {
-    const last = addDays(today, days);
-    const firsts = (rentals || [])
-      .filter((r) => r && (r.status === 'active' || r.status === 'scheduled') && day10(r.startDate) >= today && day10(r.startDate) <= last && day10(r.endDate))
-      .map((r) => ({ rental: r, date: day10(r.startDate), amount: Number(r.monthlyRate) || 0, first: true }));
-    const renewals = upcomingRenewals(rentals, today, days).map((x) => ({ ...x, first: false }));
-    return [...firsts, ...renewals].sort((a, b) => a.date.localeCompare(b.date) || String(a.rental.id).localeCompare(String(b.rental.id)));
-  }
-
   // Running rentals whose last day is within `days` days from today, soonest first. Mirrors
   // rentalsEndingSoon in netlify/functions/_lib/rental-ending.js (test/rental-ending.test.js keeps them equal).
   function endingSoon(rentals, today, days = 10) {
@@ -218,5 +206,5 @@
     };
   }
 
-  return { monthlyEquivalent, isCounted, activeOn, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, upcomingPayments, endingSoon };
+  return { monthlyEquivalent, isCounted, activeOn, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon };
 });

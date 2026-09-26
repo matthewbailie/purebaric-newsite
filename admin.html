@@ -211,13 +211,6 @@
   .viz-tip-head { color: var(--stone-muted); margin-bottom: 0.2rem; }
   .viz-tip-row strong { color: var(--ink); font-weight: 600; margin-right: 0.4rem; }
   .viz-tip-name { color: var(--stone-muted); }
-  .pay-total { font-size: 0.95rem; color: var(--ink); margin: 0.4rem 0 0.6rem; }
-  .pay-row { display: grid; grid-template-columns: 12rem 1fr auto; gap: 0.75rem; align-items: baseline; padding: 0.55rem 0; border-top: 1px solid var(--line); font-size: 0.92rem; }
-  .pay-when strong { font-weight: 600; margin-right: 0.5rem; white-space: nowrap; }
-  .pay-when span { color: var(--stone-muted); font-size: 0.8rem; white-space: nowrap; }
-  .pay-who { min-width: 0; overflow-wrap: anywhere; }
-  .pay-tag { display: inline-block; margin-left: 0.5rem; padding: 0.05rem 0.5rem; border: 1px solid var(--line); border-radius: 999px; font-size: 0.72rem; color: var(--stone-muted); white-space: nowrap; }
-  .pay-amt { font-weight: 600; font-variant-numeric: tabular-nums; }
   .viz-table { margin-top: 1rem; }
   .viz-table summary { cursor: pointer; font-size: 0.85rem; color: var(--stone-muted); padding: 0.4rem 0; }
   .viz-table td, .viz-table th { font-variant-numeric: tabular-nums; white-space: nowrap; }
@@ -233,8 +226,6 @@
     .kpi.kpi-lead .kpi-val { font-size: 3rem; }
     .kpi-val { font-size: 1.6rem; }
     .viz-card { padding: 0.85rem 0.75rem 0.6rem; }
-    .pay-row { grid-template-columns: 1fr auto; row-gap: 0.15rem; }
-    .pay-when { grid-column: 1 / -1; }
   }
   @media (max-width: 900px) {
     /* 100vh is taller than the visible area on phones (browser toolbars), which pushed the
@@ -347,10 +338,6 @@
         <div class="kpi"><div class="kpi-label">Active subscribers</div><div class="kpi-val" id="kpiSubs"></div><div class="kpi-sub" id="kpiSubsSub"></div></div>
         <div class="kpi"><div class="kpi-label">Average monthly price</div><div class="kpi-val" id="kpiAvg"></div><div class="kpi-sub" id="kpiAvgSub"></div></div>
         <div class="kpi"><div class="kpi-label">Annual run rate</div><div class="kpi-val" id="kpiArr"></div><div class="kpi-sub">Monthly recurring revenue &times; 12</div></div>
-      </div>
-      <div class="viz-card" id="paymentsCard" style="margin-bottom:1rem;">
-        <h3>Upcoming subscription payments</h3>
-        <div id="paymentsList"></div>
       </div>
       <div class="viz-card viz">
         <h3>Monthly recurring revenue</h3>
@@ -1218,31 +1205,6 @@
       <div class="renter-line" style="margin-top:6px;">${list.length} renewal${list.length === 1 ? '' : 's'} · $${total.toLocaleString('en-US', { maximumFractionDigits: 2 })} due</div>`;
   }
 
-  // Home: subscription payments to be collected in the next 7 days (upcomingPayments in dashboard-metrics.js).
-  function renderPayments(M, today) {
-    const el = document.getElementById('paymentsList');
-    if (!el) return;
-    const amt = (n, r) => `$${Number(n).toLocaleString('en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 })}${r.rateType === 'weekly' ? '/wk' : ''}`;
-    const when = (date) => {
-      const n = Math.round((new Date(date) - new Date(today)) / 86400000);
-      return n === 0 ? 'today' : n === 1 ? 'tomorrow' : `in ${n} days`;
-    };
-    const name = (r) => escape((r.renter && r.renter.name) || 'Unnamed renter');
-    const list = M.upcomingPayments(_rentals || [], today, 7);
-    if (!list.length) {
-      const next = M.upcomingPayments(_rentals || [], today, 366)[0];
-      el.innerHTML = `<p class="viz-note" style="margin-top:0.35rem;">No subscription payments due in the next 7 days.${next
-        ? ` Next: ${name(next.rental)}, ${escape(fmtDate(next.date))}, ${amt(next.amount, next.rental)}.` : ''}</p>`;
-      return;
-    }
-    const total = list.reduce((s, x) => s + x.amount, 0);
-    el.innerHTML = `<div class="pay-total"><strong>${list.length}</strong> payment${list.length === 1 ? '' : 's'} · <strong>$${total.toLocaleString('en-US', { maximumFractionDigits: 2 })}</strong> to collect in the next 7 days</div>` +
-      list.map(({ rental: r, date, amount, first }) => `<div class="pay-row">
-        <div class="pay-when"><strong>${escape(fmtDate(date))}</strong><span>${when(date)}</span></div>
-        <div class="pay-who">${name(r)}${first ? '<span class="pay-tag">First payment</span>' : ''}</div>
-        <div class="pay-amt">${amt(amount, r)}</div></div>`).join('');
-  }
-
   function renderDashboard() {
     const M = window.PurebaricMetrics, C = window.PurebaricCharts;
     if (!M || !C || !document.getElementById('kpiMrr')) return;
@@ -1255,7 +1217,6 @@
     const hasPrev = M.seriesHasActivity(prev);
 
     renderRenewals(M, today);
-    renderPayments(M, today);
 
     setText('kpiMrr', money(o.mrr));
     const prevMonthName = MONTH_NAMES[(monthIdx + 11) % 12];
