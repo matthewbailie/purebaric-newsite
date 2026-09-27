@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const inventory = require("./inventory");
 const serviceArea = require("./servicearea");
 const notifications = require("./notifications");
+const layout = require("./layout");
 const sms = require("./sms");
 const stripeLib = require("./stripe");
 
@@ -715,6 +716,17 @@ async function getWaiver(key) {
   return { blob, metadata: meta?.metadata };
 }
 
+// ───────── Admin card layout (order of draggable cards per section) ─────────
+async function getAdminLayout() {
+  const doc = await getOne(STORES.settings, "adminLayout");
+  return layout.cleanLayout(doc && doc.orders);
+}
+async function setAdminLayout(orders) {
+  const clean = layout.cleanLayout(orders);
+  await store(STORES.settings).setJSON("adminLayout", { id: "adminLayout", orders: clean, updatedAt: nowIso() });
+  return clean;
+}
+
 // ───────── Passkey credentials + admin sessions (see _lib/passkeys.js, _lib/session.js) ─────────
 // One admin "account" — there's a single real owner — so these are keyed only
 // by their own id (credentialId / sessionId / challenge nonce), not by a user id.
@@ -761,6 +773,8 @@ module.exports = {
   getPasskeyCredential,
   putPasskeyCredential,
   deletePasskeyCredential,
+  getAdminLayout,
+  setAdminLayout,
   getAuthChallenge,
   putAuthChallenge,
   deleteAuthChallenge,

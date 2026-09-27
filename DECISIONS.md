@@ -55,3 +55,10 @@
 **Context:** There is no billing ledger yet (Stripe isn't configured), so revenue is derived from rental terms and rates.
 **Alternatives considered:** A server-side metrics endpoint would add an API and storage for data the page already has; a charting library would add a CDN dependency to the admin page.
 **Status:** Confirmed
+
+## 2026-09-26 Save the admin card order on the server; autosave notification events but never consent
+
+**Decision:** The order of draggable admin cards is saved per section in Blobs (`settings/adminLayout`) as soon as a card is dropped. Notification event checkboxes autosave, but SMS consent is only ever recorded by the explicit Enable action.
+**Context:** The owner uses the portal from both a phone and a computer, and asked for saves without clicking. Consent must stay a deliberate two-step action for A2P 10DLC compliance.
+**Alternatives considered:** Storing the order in the browser would not follow the owner between devices; autosaving the consent checkbox would record consent without the second affirmative step.
+**Status:** Confirmed

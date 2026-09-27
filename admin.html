@@ -59,6 +59,7 @@
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script src="/vendor/simplewebauthn-browser.js"></script>
 <script type="text/javascript" src="/rental-dates.js"></script>
+<script src="/admin-utils.js"></script>
 <script src="/dashboard-metrics.js"></script>
 <script src="/dashboard-charts.js"></script>
 <style>
@@ -195,6 +196,21 @@
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); }
   .table-wrap .data-table { border: none; min-width: 640px; }
   /* Sidebar collapses to an off-canvas drawer with a top-bar hamburger. */
+  /* ─── Drag-to-reorder cards (press and hold, then drag) ─── */
+  [data-sortable] > [data-card-key] { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+  [data-sortable] > .is-dragging { position: relative; z-index: 60; transform-origin: center; box-shadow: 0 14px 34px rgba(26,31,26,0.22); opacity: 0.96; cursor: grabbing; transition: none; }
+  [data-sortable].sorting > [data-card-key]:not(.is-dragging) { transition: transform 0.15s ease; }
+  [data-sortable].sorting { cursor: grabbing; }
+  .card-hold { outline: 2px solid var(--terracotta); outline-offset: 2px; }
+  /* ─── Live search + result lists ─── */
+  .pick-results { border: 1px solid var(--line); background: #fff; border-radius: 8px; margin-top: 6px; max-height: 260px; overflow-y: auto; }
+  .pick-results button { display: block; width: 100%; text-align: left; font: inherit; font-size: 0.9rem; padding: 0.6rem 0.8rem; border: 0; border-bottom: 1px solid var(--line); background: transparent; cursor: pointer; }
+  .pick-results button:last-child { border-bottom: 0; }
+  .pick-results button:hover, .pick-results button:focus-visible, .pick-results button.on { background: var(--cream-warm); outline: none; }
+  .pick-results .pick-sub { color: var(--stone-muted); font-size: 0.8rem; }
+  .pick-empty { padding: 0.7rem 0.8rem; font-size: 0.85rem; color: var(--stone-muted); }
+  .kpi.at-zero { border-color: #c47b6e; background: #fbeeeb; }
+  .tools-row { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
   /* ─── Home: revenue KPIs + charts ─── */
   .kpi-row { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
   .kpi-row.kpi-pair { grid-template-columns: 1fr 1fr; }
@@ -343,27 +359,28 @@
     <!-- ───── Home / dashboard ───── -->
     <section class="tab-panel active" data-panel="home">
       <div class="panel-actions"><h2>Overview</h2></div>
+      <p class="renter-line" style="margin:-0.8rem 0 1rem;">Press and hold a card, then drag it to reorder. The order saves automatically.</p>
       <h3 class="inv-heading" style="margin-top:0">Renewals in the next 7 days</h3>
       <div id="renewalsList"></div>
       <h3 class="inv-heading">Operations</h3>
-      <div class="stat-row">
-        <button type="button" class="stat-block" data-jump-tab="chambers"><div class="stat-label">Active chambers</div><div class="stat-val" id="statActive"></div></button>
-        <button type="button" class="stat-block" data-jump-tab="chambers"><div class="stat-label">Bookable now</div><div class="stat-val" id="statAvailable"></div></button>
-        <button type="button" class="stat-block" data-jump-tab="bookings"><div class="stat-label">New rental requests</div><div class="stat-val" id="statBookings"></div></button>
-        <button type="button" class="stat-block" data-jump-tab="waitlist"><div class="stat-label">Waitlist queued</div><div class="stat-val" id="statWaitlist"></div></button>
-        <button type="button" class="stat-block" data-jump-tab="reviews"><div class="stat-label">Pending reviews</div><div class="stat-val" id="statReviews"></div></button>
+      <div class="stat-row" data-sortable="home-operations">
+        <button type="button" class="stat-block" data-card-key="active-chambers" data-jump-tab="chambers"><div class="stat-label">Active chambers</div><div class="stat-val" id="statActive"></div></button>
+        <button type="button" class="stat-block" data-card-key="bookable-now" data-jump-tab="chambers"><div class="stat-label">Bookable now</div><div class="stat-val" id="statAvailable"></div></button>
+        <button type="button" class="stat-block" data-card-key="new-requests" data-jump-tab="bookings"><div class="stat-label">New rental requests</div><div class="stat-val" id="statBookings"></div></button>
+        <button type="button" class="stat-block" data-card-key="waitlist-queued" data-jump-tab="waitlist"><div class="stat-label">Waitlist queued</div><div class="stat-val" id="statWaitlist"></div></button>
+        <button type="button" class="stat-block" data-card-key="pending-reviews" data-jump-tab="reviews"><div class="stat-label">Pending reviews</div><div class="stat-val" id="statReviews"></div></button>
       </div>
 
       <h3 class="inv-heading">Revenue</h3>
-      <div class="kpi-row">
-        <div class="kpi kpi-lead"><div class="kpi-label">Monthly recurring revenue</div><div class="kpi-val" id="kpiMrr"></div><div class="kpi-sub" id="kpiMrrSub"></div></div>
-        <div class="kpi"><div class="kpi-label">Active subscribers</div><div class="kpi-val" id="kpiSubs"></div><div class="kpi-sub" id="kpiSubsSub"></div></div>
-        <div class="kpi"><div class="kpi-label">Average monthly price</div><div class="kpi-val" id="kpiAvg"></div><div class="kpi-sub" id="kpiAvgSub"></div></div>
-        <div class="kpi"><div class="kpi-label">Annual run rate</div><div class="kpi-val" id="kpiArr"></div><div class="kpi-sub">Monthly recurring revenue &times; 12</div></div>
+      <div class="kpi-row" data-sortable="home-revenue">
+        <div class="kpi kpi-lead" data-card-key="mrr"><div class="kpi-label">Monthly recurring revenue</div><div class="kpi-val" id="kpiMrr"></div><div class="kpi-sub" id="kpiMrrSub"></div></div>
+        <div class="kpi" data-card-key="subscribers"><div class="kpi-label">Active subscribers</div><div class="kpi-val" id="kpiSubs"></div><div class="kpi-sub" id="kpiSubsSub"></div></div>
+        <div class="kpi" data-card-key="avg-price"><div class="kpi-label">Average monthly price</div><div class="kpi-val" id="kpiAvg"></div><div class="kpi-sub" id="kpiAvgSub"></div></div>
+        <div class="kpi" data-card-key="arr"><div class="kpi-label">Annual run rate</div><div class="kpi-val" id="kpiArr"></div><div class="kpi-sub">Monthly recurring revenue &times; 12</div></div>
       </div>
-      <div class="kpi-row kpi-pair">
-        <div class="kpi"><div class="kpi-label">Avg revenue per rental &middot; last 12 months</div><div class="kpi-val" id="kpiRpr12"></div><div class="kpi-sub" id="kpiRpr12Sub"></div></div>
-        <div class="kpi"><div class="kpi-label">Avg revenue per rental &middot; rolling 30 days</div><div class="kpi-val" id="kpiRpr30"></div><div class="kpi-sub" id="kpiRpr30Sub"></div></div>
+      <div class="kpi-row kpi-pair" data-sortable="home-revenue-per-rental">
+        <div class="kpi" data-card-key="rpr-12"><div class="kpi-label">Avg revenue per rental &middot; last 12 months</div><div class="kpi-val" id="kpiRpr12"></div><div class="kpi-sub" id="kpiRpr12Sub"></div></div>
+        <div class="kpi" data-card-key="rpr-30"><div class="kpi-label">Avg revenue per rental &middot; rolling 30 days</div><div class="kpi-val" id="kpiRpr30"></div><div class="kpi-sub" id="kpiRpr30Sub"></div></div>
       </div>
       <p class="viz-note" style="margin:-0.4rem 0 1rem;">Revenue is each rental's rate spread over the days it ran (accrual, not cash received). The 12-month figure is total revenue divided by the rentals that ran in that time. The 30-day figure divides by the average number of rentals active during the 30 days, so it reads as a typical month per running rental and isn't pulled down by rentals that started or ended part-way through.</p>
       <div class="viz-card viz">
@@ -390,21 +407,26 @@
       <p class="renter-line" style="margin:0.6rem 0 0;">Each month shows the position at month end (today, for the current month). Cancelled rentals are excluded. Weekly-billed rentals are converted to a monthly amount.</p>
 
       <h3 class="inv-heading">Business health</h3>
-      <div class="health-row" id="healthRow"></div>
+      <div class="health-row" id="healthRow" data-sortable="home-health"></div>
     </section>
 
     <!-- ───── Chambers ───── -->
     <section class="tab-panel" data-panel="chambers">
       <div class="panel-actions">
         <h2>Chambers</h2>
-        <div>
-          <label style="font-size: 0.85rem;"><input type="checkbox" id="showArchived"> Show archived</label>
-          <button class="btn btn-primary btn-sm" onclick="openAddChamber()">+ Add chamber</button>
-        </div>
       </div>
 
       <div id="chamberCalendar" style="margin-bottom:26px;"></div>
 
+      <div id="availabilityByStyle" data-sortable="chambers-availability" style="margin-bottom:22px;"></div>
+
+      <div class="inv-head-row">
+        <h3 class="inv-heading" style="margin:0;">Chambers</h3>
+        <div class="tools-row">
+          <label style="font-size: 0.85rem;"><input type="checkbox" id="showArchived"> Show archived</label>
+          <button class="btn btn-primary btn-sm" onclick="openAddChamber()">+ Add chamber</button>
+        </div>
+      </div>
       <div id="chamberFormAnchor"></div>
       <div class="form-card" id="chamberForm">
         <h3 id="chamberFormTitle">New chamber</h3>
@@ -422,10 +444,6 @@
           </div>
         </form>
       </div>
-
-      <div id="availabilityByStyle" style="margin-bottom:22px;"></div>
-
-      <h3 class="inv-heading">Chambers</h3>
       <div id="chambersList"></div>
 
       <div class="inv-head-row">
@@ -451,7 +469,7 @@
       <style>
         .inv-heading{font-size:1.15rem;font-weight:700;margin:26px 0 12px;}
         .inv-head-row{display:flex;justify-content:space-between;align-items:center;margin:34px 0 12px;flex-wrap:wrap;gap:10px;}
-        #availabilityByStyle{display:flex;flex-wrap:wrap;gap:8px;}
+        #availabilityByStyle{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem;}
         .avail-chip{border:1px solid var(--line,#e6dccd);border-radius:10px;padding:8px 12px;background:var(--card,#fffdf9);font-size:12px;min-width:150px;}
         .avail-chip .at-label{font-weight:700;font-size:13px;}
         .avail-chip .at-num{font-weight:700;}
@@ -493,16 +511,16 @@
     <section class="tab-panel" data-panel="rentals">
       <div class="panel-actions">
         <h2>Rentals</h2>
-        <div>
-          <select id="rentalStatusFilter" style="padding: 0.4rem 0.7rem;">
-            <option value="">All statuses</option>
-            <option value="scheduled">Scheduled</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
+        <div class="tools-row">
+          <input type="search" id="rentalSearch" placeholder="Search by name, email, phone…" autocomplete="off" style="padding: 0.5rem 0.85rem; min-width: 260px;">
           <button class="btn btn-primary btn-sm" onclick="openNewRental()">+ New rental</button>
         </div>
+      </div>
+      <div class="seg" id="rentalFilter" role="group" aria-label="Show rentals">
+        <button type="button" data-f="active" onclick="setRentalFilter('active')">Active <span class="seg-n" id="rfActive"></span></button>
+        <button type="button" data-f="completed" onclick="setRentalFilter('completed')">Completed <span class="seg-n" id="rfCompleted"></span></button>
+        <button type="button" data-f="cancelled" onclick="setRentalFilter('cancelled')">Cancelled <span class="seg-n" id="rfCancelled"></span></button>
+        <button type="button" data-f="all" onclick="setRentalFilter('all')">All <span class="seg-n" id="rfAll"></span></button>
       </div>
 
       <div id="rentalFormAnchor"></div>
@@ -533,7 +551,8 @@
           </div>
           <div class="form-row triple">
             <div class="form-group"><label>Start date<span class="req">*</span></label><input type="date" name="startDate" required></div>
-            <div class="form-group"><label>Rental length</label><select id="rentalTermMonths">
+            <div class="form-group"><label>Rental length<span class="req">*</span></label><select id="rentalTermMonths" required>
+              <option value="">Choose…</option>
               <option value="custom">Custom end date</option>
               <option value="1">1 month</option><option value="2">2 months</option><option value="3">3 months</option>
               <option value="4">4 months</option><option value="5">5 months</option><option value="6">6 months</option>
@@ -542,12 +561,12 @@
             </select></div>
             <div class="form-group"><label>End date<span class="req">*</span></label><input type="date" name="endDate" required></div>
           </div>
-          <div class="renter-line" id="rentalTermNote" style="margin-top:-8px;margin-bottom:14px;">Choose a month count to calculate the inclusive end date, or choose Custom end date and enter it directly. Calendar months include leap days naturally.</div>
+          <div class="renter-line" id="rentalTermNote" style="margin-top:-8px;margin-bottom:14px;">Choose a rental length (required) to calculate the inclusive end date, or choose Custom end date and enter it directly. Calendar months include leap days naturally.</div>
           <div class="form-row triple">
             <div class="form-group"><label>Billing</label>
               <select name="rateType" id="rentalRateType" onchange="onRateTypeChange()">
                 <option value="monthly">Monthly (public rate)</option>
-                <option value="weekly">Weekly (custom, admin-only)</option>
+                <option value="weekly">Weekly (custom)</option>
               </select>
               <div class="renter-line" style="margin-top:4px;">Weekly is for a custom-arranged rental only — never shown on the website.</div>
             </div>
@@ -574,10 +593,11 @@
             <input type="text" name="renter-state" hidden tabindex="-1" autocomplete="off">
             <div id="rentalCustomerSummary" class="renter-line">—</div>
             <div id="rentalCustomerPick" style="display:none;margin-top:6px;">
-              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                <input type="email" id="rentalCustomerLookup" placeholder="Find an existing customer by email" autocomplete="off" style="flex:1;min-width:220px;">
+              <div class="tools-row">
+                <input type="search" id="rentalCustomerLookup" placeholder="Search customers by name, email, or phone" autocomplete="off" style="flex:1;min-width:220px;">
                 <button type="button" class="btn btn-ghost btn-sm" onclick="addCustomerInline()">Add new customer</button>
               </div>
+              <div id="rentalCustomerResults" class="pick-results" hidden></div>
               <div id="rentalCustomerLookupMsg" class="renter-line" style="margin-top:4px;"></div>
             </div>
             <div id="rentalCustomerFormAnchor"></div>
@@ -633,6 +653,8 @@
     <section class="tab-panel" data-panel="waitlist">
       <div class="panel-actions">
         <h2>Waitlist</h2>
+        <div class="tools-row">
+        <input type="search" id="waitlistSearch" placeholder="Search by name, email, phone…" autocomplete="off" style="padding: 0.5rem 0.85rem; min-width: 260px;">
         <select id="waitlistStatusFilter" style="padding: 0.4rem 0.7rem;">
           <option value="">All statuses</option>
           <option value="queued">Queued</option>
@@ -641,6 +663,7 @@
           <option value="converted">Converted</option>
           <option value="expired">Expired</option>
         </select>
+        </div>
       </div>
       <div id="waitlistList"></div>
     </section>
@@ -693,12 +716,15 @@
     <section class="tab-panel" data-panel="reviews">
       <div class="panel-actions">
         <h2>Reviews</h2>
+        <div class="tools-row">
+        <input type="search" id="reviewSearch" placeholder="Search by name, city, or text…" autocomplete="off" style="padding: 0.5rem 0.85rem; min-width: 260px;">
         <select id="reviewStatusFilter" style="padding: 0.4rem 0.7rem;">
           <option value="">All statuses</option>
           <option value="pending">Pending</option>
           <option value="published">Published</option>
           <option value="rejected">Rejected</option>
         </select>
+        </div>
       </div>
       <div id="reviewsList"></div>
     </section>
@@ -862,7 +888,7 @@
     document.getElementById('passkeySignInBtn').hidden = !window.SimpleWebAuthnBrowser?.browserSupportsWebAuthn();
   }
   function showApp(user) {
-    gate.hidden = true; app.hidden = false; paintUser(user); setAuthed(true); loadAll().then(openDeepLinks);
+    gate.hidden = true; app.hidden = false; paintUser(user); setAuthed(true); restoreTab(); loadAll().then(openDeepLinks);
   }
 
   // Any endpoint that requires auth answers 200 iff the passkey cookie is valid.
@@ -1020,6 +1046,7 @@
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.dataset.panel === tab));
       const title = document.getElementById('topbarTitle');
       if (title) title.textContent = btn.textContent;
+      try { history.replaceState(null, '', tab === 'home' ? location.pathname + location.search : '#' + tab); } catch (e) { /* not critical */ }
       closeNav(); // collapse the drawer after choosing a section on mobile
     });
   });
@@ -1125,7 +1152,7 @@
     // Load each section independently: one failing call must not blank the rest,
     // and we still paint whatever succeeded.
     const results = await Promise.allSettled([
-      loadChambers(), loadRentals(), loadWaitlist(), loadBookings(), loadReviews(), loadPricing(), loadMachines(), loadServiceArea(), loadNotifications(), loadTwilioConfig(), loadStripeConfig()
+      loadChambers(), loadRentals(), loadLayout(), loadWaitlist(), loadBookings(), loadReviews(), loadPricing(), loadMachines(), loadServiceArea(), loadNotifications(), loadTwilioConfig(), loadStripeConfig()
     ]);
     paintStats();
     // Repaint inventory now that chambers, machines, and rentals are all loaded,
@@ -1316,7 +1343,8 @@
       ['Average rental length', o.avgTermMonths == null ? '—' : o.avgTermMonths + ' mo', 'Monthly-billed rentals, excluding cancelled'],
       ['Lifetime revenue (est.)', money(o.lifetimeRevenue), 'Same estimate as Lifetime paid on the Customers tab'],
     ];
-    document.getElementById('healthRow').innerHTML = tiles.map(t => `<div class="kpi"><div class="kpi-label">${t[0]}</div><div class="kpi-val">${t[1]}</div><div class="kpi-sub">${t[2]}</div></div>`).join('');
+    document.getElementById('healthRow').innerHTML = tiles.map(t => `<div class="kpi" data-card-key="${cardKeyOf(t[0])}"><div class="kpi-label">${t[0]}</div><div class="kpi-val">${t[1]}</div><div class="kpi-sub">${t[2]}</div></div>`).join('');
+    applyLayoutTo(document.getElementById('healthRow'));
   }
 
   // Modal helpers
@@ -1437,14 +1465,21 @@
     const el = document.getElementById('availabilityByStyle');
     if (!el) return;
     if (!byStyle || !byStyle.length) { el.innerHTML = '<span class="renter-line">Add chambers and machines to see availability.</span>'; return; }
-    el.innerHTML = byStyle.map(t => {
-      const cls = t.available === 0 ? 'at-zero' : (t.available < t.freeChambers ? 'at-out' : '');
-      return `<div class="avail-chip ${cls}">
-        <div class="at-label">${escape(t.label)} chambers</div>
-        <div><span class="at-num">${t.available}</span> bookable now</div>
-        <div class="renter-line">${t.freeChambers}/${t.totalChambers} chambers · ${t.freeMachines}/${t.totalMachines} machines free</div>
-      </div>`;
-    }).join('');
+    const by = Object.fromEntries(byStyle.map(t => [t.style, t]));
+    const sum = k => byStyle.reduce((n, t) => n + t[k], 0);
+    const freeMachines = byStyle[0].freeMachines, totalMachines = byStyle[0].totalMachines;
+    const freeChambers = sum('freeChambers'), totalChambers = sum('totalChambers');
+    // A rental needs a chamber AND a machine, so the total that can be booked is limited by whichever runs out first.
+    const bookable = Math.min(freeChambers, freeMachines);
+    const card = (key, label, val, sub, warn) => `<div class="kpi${warn ? ' at-zero' : ''}" data-card-key="${key}"><div class="kpi-label">${label}</div><div class="kpi-val">${val}</div><div class="kpi-sub">${sub}</div></div>`;
+    const styleCard = (style, label) => {
+      const t = by[style] || { freeChambers: 0, totalChambers: 0 };
+      return card(style, `${label} chambers available`, t.freeChambers, `${t.freeChambers} of ${t.totalChambers} ${style} chambers free`, t.totalChambers > 0 && t.freeChambers === 0);
+    };
+    el.innerHTML =
+      card('bookable', 'Bookable now', bookable, `${freeMachines} of ${totalMachines} machines free · ${freeChambers} of ${totalChambers} chambers free`, bookable === 0) +
+      styleCard('lying', 'Lying') + styleCard('sitting', 'Sitting');
+    applyLayoutTo(el);
   }
   // Format a YYYY-MM-DD date as local (avoids the new Date('YYYY-MM-DD') UTC
   // parse that shifts the displayed day back by one in western timezones).
@@ -1750,13 +1785,24 @@
 
   // ─── Rentals ───
   async function loadRentals() {
-    const status = document.getElementById('rentalStatusFilter').value;
-    const qs = status ? `?status=${status}` : '';
-    const data = await api(`/api/admin/rentals${qs}`);
+    // Always the full list: the calendar, dashboard and customer views all read _rentals. The
+    // Active / Completed filter and the search only change what the Rentals list shows.
+    const data = await api('/api/admin/rentals');
     _rentals = data.rentals;
     renderRentals();
   }
-  document.getElementById('rentalStatusFilter').addEventListener('change', loadRentals);
+  // Active = running or confirmed and upcoming.
+  let _rentalFilter = 'active';
+  try { const f = localStorage.getItem('pb_rental_filter'); if (['active', 'completed', 'cancelled', 'all'].includes(f)) _rentalFilter = f; } catch (e) { /* storage blocked: default is fine */ }
+  function rentalMatchesFilter(r, f) {
+    return f === 'all' || (f === 'active' ? (r.status === 'active' || r.status === 'scheduled') : r.status === f);
+  }
+  function setRentalFilter(f) {
+    _rentalFilter = f;
+    try { localStorage.setItem('pb_rental_filter', f); } catch (e) { /* not critical */ }
+    renderRentals();
+  }
+  document.getElementById('rentalSearch').addEventListener('input', () => renderRentals());
 
   function renderRentals() {
     const list = document.getElementById('rentalsList');
@@ -1767,11 +1813,23 @@
     if (document.getElementById('rentalFormInlineRow')) {
       resetFormPosition('rentalForm', 'rentalFormAnchor');
     }
+    ['active', 'completed', 'cancelled', 'all'].forEach(f => {
+      const n = document.getElementById('rf' + f[0].toUpperCase() + f.slice(1));
+      if (n) n.textContent = _rentals.filter(r => rentalMatchesFilter(r, f)).length;
+    });
+    document.querySelectorAll('#rentalFilter button').forEach(b => b.classList.toggle('on', b.dataset.f === _rentalFilter));
     if (!_rentals.length) {
       list.innerHTML = `<div class="empty-state">No rentals yet.</div>`;
       return;
     }
-    const rows = _rentals.map(r => {
+    const rq = document.getElementById('rentalSearch').value;
+    // The rental being edited stays in the list so its inline form always has a row to sit under.
+    const visibleRentals = _rentals.filter(r => r.id === editingId || (rentalMatchesFilter(r, _rentalFilter) && window.PurebaricAdminUtils.matchesSearch(rq, [r.renter && r.renter.name, r.renter && r.renter.email, r.renter && r.renter.phone])));
+    if (!visibleRentals.length) {
+      list.innerHTML = `<div class="empty-state">No ${_rentalFilter === 'all' ? '' : _rentalFilter + ' '}rentals${rq.trim() ? ' match that search' : ' to show'}.${_rentalFilter !== 'all' ? ' Tap <strong>All</strong> to see every rental.' : ''}</div>`;
+      return;
+    }
+    const rows = visibleRentals.map(r => {
       const chamber = _chambers.find(c => c.id === r.chamberId);
       const machine = (_machines || []).find(m => m.id === r.machineId);
       const renter = r.renter || {};
@@ -1944,6 +2002,12 @@
       closeModal();
       await loadRentals();
     } catch (err) { toast(err.message, true); }
+  }
+  // After a refresh, go back to the tab that was open (its name is kept in the address bar, e.g. #chambers).
+  function restoreTab() {
+    const name = (location.hash || '').replace(/^#/, '');
+    const btn = name && [...document.querySelectorAll('.tab-btn')].find(b => b.dataset.tab === name);
+    if (btn && name !== 'home') btn.click();
   }
   // Links from the ending-soon email/text land here once signed in and loaded.
   function openDeepLinks() {
@@ -2459,7 +2523,7 @@
     const email = snap.email;
     const showPick = show => {
       pickEl.style.display = show ? '' : 'none';
-      if (show) { document.getElementById('rentalCustomerLookup').value = ''; document.getElementById('rentalCustomerLookupMsg').textContent = ''; }
+      if (show) { document.getElementById('rentalCustomerLookup').value = ''; document.getElementById('rentalCustomerLookupMsg').textContent = ''; document.getElementById('rentalCustomerResults').hidden = true; }
     };
     if (!email) {
       if (snap.name && rentalIsHistorical()) {
@@ -2496,26 +2560,57 @@
     `;
     showPick(false);
   }
-  // Choose an existing customer for a rental that has none yet, by email.
-  async function pickRentalCustomer() {
-    const msg = document.getElementById('rentalCustomerLookupMsg');
-    const email = document.getElementById('rentalCustomerLookup').value.trim().toLowerCase();
-    if (!email.includes('@')) { msg.textContent = ''; return; }
-    try {
-      const data = await api(`/api/admin/customers?q=${encodeURIComponent(email)}`);
-      const c = (data.customers || []).find(x => x.email === email);
-      if (!c) { msg.textContent = 'No customer with that email yet. Use Add new customer.'; return; }
-      const idx = _customers.findIndex(x => x.email === c.email);
-      if (idx >= 0) _customers[idx] = c; else _customers.push(c);
-      setRentalRenter({ name: c.name, email: c.email, phone: c.phone, address: customerAddress(c) });
-      refreshRentalCustomerSummary();
-    } catch (e) { msg.textContent = 'Lookup failed. Try again.'; }
+  // Choose an existing customer for a rental that has none yet: search by name, email or phone;
+  // matches appear as you type and a tap fills the rental in.
+  let _pickCustomers = null, _pickLoadedAt = 0;
+  async function loadPickCustomers() {
+    if (_pickCustomers && Date.now() - _pickLoadedAt < 30000) return _pickCustomers;
+    const data = await api('/api/admin/customers');
+    _pickCustomers = (data.customers || []).slice().sort((a, b) => String(a.name || '').localeCompare(String(b.name || '')));
+    _pickLoadedAt = Date.now();
+    return _pickCustomers;
   }
-  const _pickRentalCustomerDebounced = (() => {
-    let t = null;
-    return () => { clearTimeout(t); t = setTimeout(pickRentalCustomer, 400); };
+  function chooseRentalCustomer(email) {
+    const c = (_pickCustomers || []).find(x => x.email === email);
+    if (!c) return;
+    const idx = _customers.findIndex(x => x.email === c.email);
+    if (idx >= 0) _customers[idx] = c; else _customers.push(c);
+    setRentalRenter({ name: c.name, email: c.email, phone: c.phone, address: customerAddress(c) });
+    document.getElementById('rentalCustomerResults').hidden = true;
+    refreshRentalCustomerSummary();
+  }
+  async function searchRentalCustomers() {
+    const box = document.getElementById('rentalCustomerLookup');
+    const results = document.getElementById('rentalCustomerResults');
+    const msg = document.getElementById('rentalCustomerLookupMsg');
+    const q = box.value;
+    msg.textContent = '';
+    if (!q.trim()) { results.hidden = true; return; }
+    let all;
+    try { all = await loadPickCustomers(); } catch (e) { results.hidden = true; msg.textContent = 'Could not load customers. Try again.'; return; }
+    if (box.value !== q) return; // a newer keystroke is already being handled
+    const hits = all.filter(c => window.PurebaricAdminUtils.matchesSearch(q, [c.name, c.email, c.phone])).slice(0, 8);
+    results.hidden = false;
+    results.innerHTML = hits.length
+      ? hits.map(c => `<button type="button" data-email="${escape(c.email)}"><strong>${escape(c.name || '(no name)')}</strong><div class="pick-sub">${escape(c.email)}${c.phone ? ' · ' + escape(c.phone) : ''}</div></button>`).join('')
+      : '<div class="pick-empty">No customers match. Use Add new customer.</div>';
+  }
+  (function () {
+    const box = document.getElementById('rentalCustomerLookup');
+    const results = document.getElementById('rentalCustomerResults');
+    box.addEventListener('input', searchRentalCustomers);
+    box.addEventListener('focus', () => { loadPickCustomers().catch(() => {}); });
+    box.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); const first = results.querySelector('button'); if (first) chooseRentalCustomer(first.dataset.email); }
+      if (e.key === 'ArrowDown') { const first = results.querySelector('button'); if (first) { e.preventDefault(); first.focus(); } }
+    });
+    results.addEventListener('click', (e) => { const b = e.target.closest('button[data-email]'); if (b) chooseRentalCustomer(b.dataset.email); });
+    results.addEventListener('keydown', (e) => {
+      const b = e.target.closest('button'); if (!b) return;
+      if (e.key === 'ArrowDown' && b.nextElementSibling) { e.preventDefault(); b.nextElementSibling.focus(); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); (b.previousElementSibling || box).focus(); }
+    });
   })();
-  document.getElementById('rentalCustomerLookup').addEventListener('input', _pickRentalCustomerDebounced);
 
   // Lazy-load customers when the tab is clicked (data is derived; fresh on every visit)
   document.querySelector('.tab-btn[data-tab="customers"]').addEventListener('click', loadCustomers);
@@ -2539,6 +2634,7 @@
   }
   document.getElementById('waitlistStatusFilter').addEventListener('change', loadWaitlist);
 
+  document.getElementById('waitlistSearch').addEventListener('input', () => renderWaitlist());
   function renderWaitlist() {
     const list = document.getElementById('waitlistList');
     if (!_waitlist.length) {
@@ -2549,7 +2645,13 @@
     const queuedOrder = _waitlist.filter(w => w.status === 'queued').sort((a,b) => a.createdAt.localeCompare(b.createdAt));
     const positionMap = new Map(queuedOrder.map((w, i) => [w.id, i + 1]));
     const totalQueued = queuedOrder.length;
-    const rows = _waitlist.map(w => {
+    const wq = document.getElementById('waitlistSearch').value;
+    const shownWaitlist = _waitlist.filter(w => window.PurebaricAdminUtils.matchesSearch(wq, [w.name, w.email, w.phone]));
+    if (!shownWaitlist.length) {
+      list.innerHTML = `<div class="empty-state">No waitlist entries match that search.</div>`;
+      return;
+    }
+    const rows = shownWaitlist.map(w => {
       const created = new Date(w.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       const holdNote = w.status === 'hold' && w.holdExpiresAt
         ? `<div class="renter-line">Hold expires ${new Date(w.holdExpiresAt).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' })}</div>`
@@ -2851,6 +2953,7 @@
   }
   document.getElementById('reviewStatusFilter').addEventListener('change', loadReviews);
 
+  document.getElementById('reviewSearch').addEventListener('input', () => renderReviews());
   function renderReviews() {
     const list = document.getElementById('reviewsList');
     if (!_reviews.length) {
@@ -2861,7 +2964,13 @@
     const banner = pending
       ? `<div class="renter-line" style="margin-bottom:12px;color:#82402f;"><strong>${pending}</strong> review${pending > 1 ? 's' : ''} awaiting your approval.</div>`
       : '';
-    const rows = _reviews.map(r => {
+    const rvq = document.getElementById('reviewSearch').value;
+    const shownReviews = _reviews.filter(r => window.PurebaricAdminUtils.matchesSearch(rvq, [r.firstName, r.lastInitial, r.city, r.text]));
+    if (!shownReviews.length) {
+      list.innerHTML = banner + `<div class="empty-state">No reviews match that search.</div>`;
+      return;
+    }
+    const rows = shownReviews.map(r => {
       const created = new Date(r.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       const who = `${escape(r.firstName)} ${escape(r.lastInitial)}.${r.city ? ' · ' + escape(r.city) : ''}`;
       const RV_LIMIT = 160;
@@ -3178,6 +3287,28 @@
     const btn = e.target.closest('.nt-sms')?.querySelector('.nt-consent-enable-btn');
     if (btn) btn.disabled = !e.target.checked;
   });
+  // Ticking or unticking an event saves right away (the Save button still works). Only the event
+  // boxes autosave, and never the SMS consent box: consent is only ever recorded by the explicit
+  // Enable button, so an autosave sends consent as "on" only for a number that is already enabled.
+  // A recipient with no valid address/number or no event isn't saved (the server would drop them),
+  // so those wait for the Save button instead of being deleted by a stray click.
+  let _notifAutoTimer = null;
+  function autosaveNotifications() { clearTimeout(_notifAutoTimer); _notifAutoTimer = setTimeout(runNotificationsAutosave, 500); }
+  async function runNotificationsAutosave() {
+    const emails = readEmailCards();
+    const cards = [...document.querySelectorAll('#notifSmsList .nt-sms')];
+    const sms = readSmsCards().map((r, i) => ({ ...r, consentChecked: r.consentChecked && cards[i].querySelector('.nt-consent-input').defaultChecked }));
+    const badEmail = emails.some(r => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(r.email) || !r.events.length);
+    const badSms = sms.some(r => (r.number.replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '').length !== 10) || !r.events.length);
+    if (badEmail || badSms) { toast('Not saved yet: each recipient needs a valid address or number and at least one event.', true); return; }
+    try {
+      await api('/api/admin/notifications', { method: 'PUT', body: JSON.stringify({ emails, sms }) });
+      toast('Notifications saved');
+    } catch (err) { toast(err.message, true); }
+  }
+  ['notifEmailList', 'notifSmsList'].forEach(id => document.getElementById(id).addEventListener('change', (e) => {
+    if (e.target.classList && e.target.classList.contains('nt-ev')) autosaveNotifications();
+  }));
   async function saveNotifications() {
     syncNotifyState();
     const { emails, sms } = _notify;
@@ -3287,13 +3418,15 @@
     if (!form || !term) return;
     const start = form.querySelector('[name="startDate"]').value;
     const end = form.querySelector('[name="endDate"]').value;
+    // A brand-new rental (no dates yet) starts on "Choose…" — a length must be picked before saving.
+    if (!start && !end) { term.value = ''; return; }
     const exactMonths = window.PurebaricRentalDates.matchingCalendarMonths(start, end, 12);
     term.value = exactMonths ? String(exactMonths) : 'custom';
   }
   function applyRentalTerm() {
     const form = document.getElementById('rentalFormEl');
     const term = document.getElementById('rentalTermMonths');
-    if (!form || !term || term.value === 'custom') return;
+    if (!form || !term || !term.value || term.value === 'custom') return;
     const start = form.querySelector('[name="startDate"]').value;
     if (!start) return;
     const months = Number(term.value);
@@ -3307,16 +3440,143 @@
     if (form) {
       const term = document.getElementById('rentalTermMonths');
       form.querySelector('[name="startDate"]').addEventListener('change', () => {
-        if (term.value === 'custom') updateRentalRate(); else applyRentalTerm();
+        if (!term.value || term.value === 'custom') updateRentalRate(); else applyRentalTerm();
       });
       form.querySelector('[name="endDate"]').addEventListener('change', () => {
         syncRentalTermControls();
         updateRentalRate();
       });
       term.addEventListener('change', () => {
-        if (term.value !== 'custom') applyRentalTerm();
+        if (term.value && term.value !== 'custom') applyRentalTerm();
       });
     }
+  })();
+
+
+  // ───────── Drag-to-reorder cards ─────────
+  // Any container with data-sortable="<section id>" whose children carry data-card-key can be
+  // reordered by pressing and holding a card (mouse or finger) and dragging it. The new order is
+  // saved on the server as soon as the card is dropped, so it follows you between phone and
+  // computer. Containers that are re-rendered call applyLayoutTo() afterwards.
+  let _layout = {};
+  let _layoutSaveTimer = null;
+  const cardKeyOf = (label) => String(label).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
+  async function loadLayout() {
+    const data = await api('/api/admin/layout');
+    _layout = data.orders || {};
+    applyAllLayouts();
+  }
+  function applyLayoutTo(container) {
+    if (!container) return;
+    const keys = _layout[container.dataset.sortable];
+    if (!keys || !keys.length) return;
+    const cards = [...container.children].filter(c => c.dataset.cardKey);
+    window.PurebaricAdminUtils.orderByKeys(cards, keys, c => c.dataset.cardKey).forEach(c => container.appendChild(c));
+  }
+  function applyAllLayouts() { document.querySelectorAll('[data-sortable]').forEach(applyLayoutTo); }
+  function saveLayoutSoon() {
+    clearTimeout(_layoutSaveTimer);
+    _layoutSaveTimer = setTimeout(async () => {
+      try { await api('/api/admin/layout', { method: 'PUT', body: JSON.stringify({ orders: _layout }) }); }
+      catch (err) { toast("Couldn't save the card order. " + err.message, true); }
+    }, 300);
+  }
+
+  (function initSortable() {
+    const HOLD_MS = { mouse: 260, pen: 260, touch: 380 };
+    const MOVE_TOLERANCE = 10;
+    let st = null;          // { container, card, pointerId, type, x0, y0, timer, active, dx, dy }
+    let justDragged = false;
+
+    function cancelPending() { if (st) { clearTimeout(st.timer); st.card.classList.remove('card-hold'); } st = null; }
+
+    function center(el) { const r = el.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }
+    function place(x, y) {
+      // The card follows the pointer: clear its transform, measure where it naturally sits in the
+      // layout, then offset it so its centre stays under the pointer (minus where it was grabbed).
+      st.card.style.transform = 'none';
+      const c = center(st.card);
+      st.card.style.transform = `translate(${x - st.grabX - c.x}px, ${y - st.grabY - c.y}px) scale(1.03)`;
+    }
+    function reorder(x, y) {
+      const kids = [...st.container.children].filter(c => c.dataset.cardKey);
+      const over = kids.find(c => { if (c === st.card) return false; const r = c.getBoundingClientRect(); return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom; });
+      if (!over) return;
+      const r = over.getBoundingClientRect();
+      const dy = y - (r.top + r.height / 2), dx = x - (r.left + r.width / 2);
+      // Moving toward the front: swap once the pointer is in the front half of the card it is over;
+      // moving toward the back: once it is in the back half. The small overlap (12% of the width)
+      // means landing right in the middle still counts.
+      const vertical = Math.abs(dy) > r.height * 0.25, slack = r.width * 0.12;
+      if (kids.indexOf(over) < kids.indexOf(st.card)) { if (vertical ? dy <= 0 : dx <= slack) st.container.insertBefore(st.card, over); }
+      else if (vertical ? dy >= 0 : dx >= -slack) st.container.insertBefore(st.card, over.nextElementSibling);
+    }
+
+    function start() {
+      if (!st) return;
+      st.active = true;
+      st.card.classList.remove('card-hold');
+      st.card.classList.add('is-dragging');
+      st.container.classList.add('sorting');
+      const r = st.card.getBoundingClientRect();
+      st.grabX = st.x0 - (r.left + r.width / 2);
+      st.grabY = st.y0 - (r.top + r.height / 2);
+      try { st.container.setPointerCapture(st.pointerId); } catch (e) { /* not fatal */ }
+      if (navigator.vibrate) { try { navigator.vibrate(12); } catch (e) { /* ignore */ } }
+      place(st.x0, st.y0);
+    }
+
+    function end(cancelled) {
+      if (!st) return;
+      clearTimeout(st.timer);
+      const s = st;
+      st = null;
+      s.card.classList.remove('card-hold', 'is-dragging');
+      s.card.style.transform = '';
+      s.container.classList.remove('sorting');
+      if (!s.active) return;
+      justDragged = true;
+      setTimeout(() => { justDragged = false; }, 350);
+      if (cancelled) return;
+      const keys = [...s.container.children].map(c => c.dataset.cardKey).filter(Boolean);
+      const id = s.container.dataset.sortable;
+      if (JSON.stringify(_layout[id] || []) !== JSON.stringify(keys)) {
+        _layout[id] = keys;
+        saveLayoutSoon();
+      }
+    }
+
+    document.addEventListener('pointerdown', (e) => {
+      if (st || (e.pointerType === 'mouse' && e.button !== 0)) return;
+      const card = e.target.closest && e.target.closest('[data-sortable] > [data-card-key]');
+      if (!card || e.target.closest('input, select, textarea, a')) return;
+      const container = card.parentElement;
+      st = { container, card, pointerId: e.pointerId, type: e.pointerType || 'mouse', x0: e.clientX, y0: e.clientY, active: false };
+      st.timer = setTimeout(start, HOLD_MS[st.type] || 300);
+      card.classList.add('card-hold');
+    });
+    document.addEventListener('pointermove', (e) => {
+      if (!st || e.pointerId !== st.pointerId) return;
+      if (!st.active) {
+        if (Math.hypot(e.clientX - st.x0, e.clientY - st.y0) > MOVE_TOLERANCE) cancelPending();
+        return;
+      }
+      e.preventDefault();
+      reorder(e.clientX, e.clientY);
+      place(e.clientX, e.clientY);
+      // Scroll the page when dragging near the top or bottom edge.
+      if (e.clientY < 70) window.scrollBy(0, -14); else if (e.clientY > window.innerHeight - 70) window.scrollBy(0, 14);
+    });
+    document.addEventListener('pointerup', (e) => { if (st && e.pointerId === st.pointerId) end(false); });
+    document.addEventListener('pointercancel', (e) => { if (st && e.pointerId === st.pointerId) end(true); });
+    // While a card is being dragged, stop the page from scrolling under a finger or opening a context menu.
+    document.addEventListener('touchmove', (e) => { if (st && st.active) e.preventDefault(); }, { passive: false });
+    document.addEventListener('contextmenu', (e) => { if (st) e.preventDefault(); });
+    // A drag must not also count as a click on the card (the stat cards are links to other tabs).
+    document.addEventListener('click', (e) => {
+      if (justDragged && e.target.closest && e.target.closest('[data-sortable] > [data-card-key]')) { e.stopPropagation(); e.preventDefault(); justDragged = false; }
+    }, true);
+    document.addEventListener('dragstart', (e) => { if (st) e.preventDefault(); });
   })();
 
   function escape(s) {
@@ -3326,5 +3586,3 @@
 
 </body>
 </html>
-</parameter>
-</invoke>

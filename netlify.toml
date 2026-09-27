@@ -152,6 +152,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/admin/layout"
+  to = "/.netlify/functions/admin-layout"
+  status = 200
+
+[[redirects]]
   from = "/api/admin/notifications"
   to = "/.netlify/functions/admin-notifications"
   status = 200
