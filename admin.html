@@ -619,7 +619,9 @@
               <button type="button" class="btn btn-ghost btn-sm" onclick="createStripeLink()">Create / refresh link</button>
               <a id="stripeLinkUrl" href="#" target="_blank" rel="noopener" style="display:none;font-size:13px;word-break:break-all;"></a>
               <button type="button" id="stripeLinkCopy" class="btn btn-ghost btn-sm" style="display:none;" onclick="copyStripeLink()">Copy</button>
+              <button type="button" class="btn btn-ghost btn-sm" onclick="syncStripePayments()">Sync payments from Stripe</button>
             </div>
+            <div class="renter-line" id="stripeSyncNote" style="margin-top:4px;"></div>
             <div class="renter-line" id="stripeLinkNote">Uses the Monthly rate above as the amount. When the customer pays, this rental is auto-marked paid — no manual matching.</div>
           </div>
           <div class="form-group"><label>Internal notes</label><textarea name="notes" rows="2" placeholder="Anything to remember about this rental, extensions, complaints, special handling…"></textarea></div>
@@ -2070,6 +2072,27 @@
     } catch (err) {
       toast(err.message, true);
     }
+  }
+  // Re-total this rental's payments from Stripe: paid amount, status, last payment date.
+  async function syncStripePayments() {
+    const form = document.getElementById('rentalFormEl');
+    const id = form.querySelector('input[name="id"]').value;
+    const note = document.getElementById('stripeSyncNote');
+    if (!id) return;
+    note.textContent = 'Checking Stripe…';
+    try {
+      const res = await api('/api/admin/stripe-sync', { method: 'POST', body: JSON.stringify({ rentalId: id }) });
+      const r = res.rental, n = res.payments.length;
+      form.querySelector('[name="paidAmount"]').value = r.paidAmount || '';
+      form.querySelector('[name="paymentStatus"]').value = r.paymentStatus || 'unpaid';
+      form.querySelector('[name="paymentDate"]').value = r.paymentDate || '';
+      form.querySelector('[name="paymentMethod"]').value = r.paymentMethod || '';
+      note.textContent = n
+        ? `Stripe shows ${n} payment${n === 1 ? '' : 's'} totalling $${Number(res.total).toLocaleString('en-US')}. Marked ${r.paymentStatus}.`
+        : 'No payments found in Stripe for this rental (matched by its payment link and the renter email).';
+      toast('Payments synced from Stripe');
+      await loadRentals();
+    } catch (err) { note.textContent = ''; toast(err.message, true); }
   }
   function copyStripeLink() {
     const url = document.getElementById('stripeLinkUrl').href;

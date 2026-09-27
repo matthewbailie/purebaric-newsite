@@ -62,3 +62,10 @@
 **Context:** The owner uses the portal from both a phone and a computer, and asked for saves without clicking. Consent must stay a deliberate two-step action for A2P 10DLC compliance.
 **Alternatives considered:** Storing the order in the browser would not follow the owner between devices; autosaving the consent checkbox would record consent without the second affirmative step.
 **Status:** Confirmed
+
+## 2026-09-26 Total a rental's payments from Stripe's records, not from single webhook events
+
+**Decision:** On each payment or refund event (and on demand), the paid total, status and payment list for a rental are recomputed from Stripe's payment records for that rental, matched by rental_id tag or the renter's email.
+**Context:** The first webhook overwrote the paid amount with the latest single payment and ignored payments without a rental_id (subscription and dashboard payments), so monthly payments never added up.
+**Alternatives considered:** Adding each event's amount to the total would double-count replayed events and miss earlier payments; requiring a rental_id on every payment would exclude Stripe subscriptions.
+**Status:** Confirmed

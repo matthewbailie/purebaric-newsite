@@ -182,6 +182,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/admin/stripe-sync"
+  to = "/.netlify/functions/admin-stripe-sync"
+  status = 200
+
+[[redirects]]
   from = "/api/admin/stripe-cancel"
   to = "/.netlify/functions/admin-stripe-cancel"
   status = 200

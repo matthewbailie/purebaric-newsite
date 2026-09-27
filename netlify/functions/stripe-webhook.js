@@ -1,9 +1,11 @@
-const { getRental, updateRental, getStripeConfig } = require("./_lib/storage");
+const { getRental, updateRental, listRentals, getStripeConfig } = require("./_lib/storage");
 const { stripeClientFrom } = require("./_lib/stripe");
+const { syncRentalPayments, pickRental } = require("./_lib/stripe-sync");
 
-// POST /api/stripe-webhook — Stripe payment events. Verifies the signature with
-// the webhook secret, then auto-reconciles the rental identified by the
-// rental_id metadata set when the payment link was created.
+// POST /api/stripe-webhook — Stripe payment events. Verifies the signature with the webhook
+// secret, works out which rental the payment belongs to (the rental_id tag on payment links, else
+// the renter's email), then re-totals that rental's payments straight from Stripe. Because the
+// total is recomputed from Stripe every time, redelivered or replayed events are harmless.
 exports.handler = async (event) => {
   const cfg = await getStripeConfig();
   const stripe = stripeClientFrom(cfg);
@@ -21,20 +23,8 @@ exports.handler = async (event) => {
   }
 
   try {
-    if (evt.type === "payment_intent.succeeded") {
-      const pi = evt.data.object;
-      await applyPayment(pi.metadata && pi.metadata.rental_id, pi.amount_received || pi.amount, {
-        paymentIntentId: pi.id,
-      });
-    } else if (evt.type === "checkout.session.completed" || evt.type === "checkout.session.async_payment_succeeded") {
-      const session = evt.data.object;
-      if (session.payment_status === "paid") {
-        await applyPayment(session.metadata && session.metadata.rental_id, session.amount_total, {
-          sessionId: session.id,
-          paymentIntentId: session.payment_intent,
-        });
-      }
-    }
+    const hint = await paymentHint(stripe, evt);
+    if (hint) await reconcile(stripe, hint);
     return { statusCode: 200, body: JSON.stringify({ received: true }) };
   } catch (err) {
     console.error("stripe webhook handler error", err);
@@ -42,21 +32,38 @@ exports.handler = async (event) => {
   }
 };
 
-// Idempotent: marks the rental paid with the Stripe amount. Re-processing the
-// same payment (Stripe may deliver an event more than once) just re-sets it.
-async function applyPayment(rentalId, amountCents, refs = {}) {
-  if (!rentalId) return;
-  const rental = await getRental(rentalId);
+// Which rental (and renter email) does this event concern? null for events we don't act on.
+async function paymentHint(stripe, evt) {
+  const o = evt.data && evt.data.object;
+  if (!o) return null;
+  const emailOfCustomer = async (id) => {
+    if (!id) return "";
+    try { const c = await stripe.customers.retrieve(id); return (c && !c.deleted && c.email) || ""; } catch (err) { return ""; }
+  };
+  switch (evt.type) {
+    case "payment_intent.succeeded":
+      return { rentalId: o.metadata && o.metadata.rental_id, email: o.receipt_email || (await emailOfCustomer(o.customer)) };
+    case "charge.refunded":
+      return { rentalId: o.metadata && o.metadata.rental_id, email: (o.billing_details && o.billing_details.email) || o.receipt_email || (await emailOfCustomer(o.customer)) };
+    case "checkout.session.completed":
+    case "checkout.session.async_payment_succeeded":
+      if (o.payment_status !== "paid") return null;
+      return { rentalId: o.metadata && o.metadata.rental_id, email: (o.customer_details && o.customer_details.email) || o.customer_email || (await emailOfCustomer(o.customer)) };
+    case "invoice.paid":
+      return { rentalId: null, email: o.customer_email || (await emailOfCustomer(o.customer)) };
+    default:
+      return null;
+  }
+}
+
+async function reconcile(stripe, { rentalId, email }) {
+  const today = new Date().toISOString().slice(0, 10);
+  let rental = rentalId ? await getRental(rentalId) : null;
+  if (!rental && email) rental = pickRental(await listRentals({}), email, today);
   if (!rental) {
-    console.warn("stripe webhook: rental not found for", rentalId);
+    console.warn("stripe webhook: no rental matched", rentalId || "(no rental_id)", email ? "email on file" : "(no email)");
     return;
   }
-  await updateRental(rentalId, {
-    paymentStatus: "paid",
-    paidAmount: (Number(amountCents) || 0) / 100,
-    paymentDate: new Date().toISOString().slice(0, 10),
-    paymentMethod: "stripe",
-    stripeSessionId: refs.sessionId || rental.stripeSessionId || null,
-    stripePaymentIntentId: refs.paymentIntentId || rental.stripePaymentIntentId || null,
-  });
+  const { patch } = await syncRentalPayments(stripe, rental, today);
+  await updateRental(rental.id, patch);
 }
