@@ -5,7 +5,7 @@ const { daysUntil, cancelLink, endingSoonLink, shortDate, endingSmsText } = requ
 
 const FROM = "Purebaric <noreply@purebaric.com>";
 const REPLY_TO = "hello@purebaric.com";
-const ADMIN_NOTIFY = "matthewbailie@gmail.com";
+const ADMIN_NOTIFY = require("./owner").OWNER_EMAIL;
 
 function client() {
   const key = process.env.RESEND_API_KEY;

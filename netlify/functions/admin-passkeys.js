@@ -9,7 +9,7 @@ const {
   newId,
 } = require("./_lib/storage");
 const { buildRegistrationOptions, verifyRegistration, toStoredCredential } = require("./_lib/passkeys");
-const { requireAuth, parseBody, parsePathSegments, json } = require("./_lib/admin");
+const { requireAuth, sessionIdentity, parseBody, parsePathSegments, json } = require("./_lib/admin");
 
 const CHALLENGE_TTL_MS = 5 * 60 * 1000;
 
@@ -37,7 +37,8 @@ exports.handler = async (event, context) => {
       const list = creds
         .map((c) => ({ id: c.id, deviceLabel: c.deviceLabel, createdAt: c.createdAt, lastUsedAt: c.lastUsedAt }))
         .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
-      return json(200, { passkeys: list });
+      // `me`: who is signed in right now, so the admin can show the account name (also how a passkey login is detected).
+      return json(200, { passkeys: list, me: await sessionIdentity(event, context) });
     }
 
     if (method === "POST" && id === "register-options") {

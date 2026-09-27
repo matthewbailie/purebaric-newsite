@@ -10,6 +10,7 @@
 //     "signed out too often" — it isn't tied to Identity's short JWT life.
 const { getSessionIdFromEvent, sessionIsValid } = require("./session");
 const { getAdminSession } = require("./storage");
+const { OWNER_EMAIL } = require("./owner");
 
 async function requireAuth(event, context) {
   const identityUser = context.clientContext && context.clientContext.user;
@@ -40,6 +41,19 @@ async function adminEmail(event, context) {
     if (sessionIsValid(record) && record.deviceLabel) return `passkey:${record.deviceLabel}`;
   }
   return null;
+}
+
+// Who is signed in, for display in the admin ("Signed in as ..."). Identity logins have a real email; a passkey
+// session belongs to the single owner (see owner.js), plus the device it was created on.
+function identityFromSession(record) {
+  if (!sessionIsValid(record)) return null;
+  return { email: OWNER_EMAIL, deviceLabel: record.deviceLabel || null, via: "passkey" };
+}
+async function sessionIdentity(event, context) {
+  const user = context.clientContext && context.clientContext.user;
+  if (user && user.email) return { email: user.email, deviceLabel: null, via: "identity" };
+  const sessionId = getSessionIdFromEvent(event);
+  return sessionId ? identityFromSession(await getAdminSession(sessionId)) : null;
 }
 
 function parseBody(event) {
@@ -80,4 +94,4 @@ function json(statusCode, body) {
   };
 }
 
-module.exports = { requireAuth, adminEmail, parseBody, parsePathSegments, json };
+module.exports = { requireAuth, adminEmail, sessionIdentity, identityFromSession, parseBody, parsePathSegments, json };

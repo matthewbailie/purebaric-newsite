@@ -72,6 +72,7 @@
   .sidebar-close { margin-left: auto; display: none; background: none; border: none; font-size: 1.6rem; line-height: 1; color: var(--stone-muted); cursor: pointer; padding: 0 0.25rem; }
   .sidebar-nav { display: flex; flex-direction: column; padding: 0.5rem 0.6rem; gap: 2px; flex: 1; }
   .sidebar-foot { padding: 1rem 1.25rem; border-top: 1px solid var(--line); font-size: 0.8rem; color: var(--stone-muted); line-height: 1.5; }
+  #adminUser strong { overflow-wrap: anywhere; color: var(--ink, #2b2320); }
   .sidebar-foot button { background: none; border: none; color: var(--terracotta); cursor: pointer; font-family: inherit; font-size: 0.8rem; padding: 0; text-decoration: underline; }
   .admin-main { flex: 1; min-width: 0; padding: 1.75rem 2rem 6rem; max-width: 1220px; }
   .admin-topbar { display: none; align-items: center; gap: 0.55rem; margin-bottom: 1.25rem; }
@@ -832,11 +833,15 @@
   // can't read it; api() just sends the cookie. passkeySession only tracks which
   // login the UI is showing (Identity login still works alongside it).
   let passkeySession = false;
+  let passkeyMe = null; // { email, deviceLabel } of the passkey session, from the server
 
   function paintUser(user) {
     if (!user && !passkeySession) { userEl.innerHTML = ''; return; }
-    const who = user ? `Signed in as <strong>${escape(user.email)}</strong>` : 'Signed in with passkey';
-    userEl.innerHTML = `${who} · <button onclick="openPasskeys()">Passkeys</button> · <button onclick="signOut()">Sign out</button>`;
+    // Always name the account. A passkey session has no email of its own, so the server says whose it is (the owner) and which device.
+    const who = user
+      ? `<div>Signed in as <strong>${escape(user.email)}</strong></div>`
+      : `<div>Signed in as <strong>${escape((passkeyMe && passkeyMe.email) || 'admin')}</strong></div><div>via passkey${passkeyMe && passkeyMe.deviceLabel ? ' · ' + escape(passkeyMe.deviceLabel) : ''}</div>`;
+    userEl.innerHTML = `${who}<div style="margin-top:0.35rem;"><button onclick="openPasskeys()">Passkeys</button> · <button onclick="signOut()">Sign out</button></div>`;
   }
 
   async function signOut() {
@@ -855,8 +860,14 @@
   }
 
   // Any endpoint that requires auth answers 200 iff the passkey cookie is valid.
+  // Returns who the passkey session belongs to ({ email, deviceLabel }), or null when there is none.
   async function hasPasskeySession() {
-    try { return (await fetch('/api/admin/passkeys')).ok; } catch (_) { return false; }
+    try {
+      const r = await fetch('/api/admin/passkeys');
+      if (!r.ok) return null;
+      const j = await r.json();
+      return j.me || { email: '', deviceLabel: null };
+    } catch (_) { return null; }
   }
 
   async function signInWithPasskey() {
@@ -873,6 +884,7 @@
       const json = await resp.json();
       if (!resp.ok) throw new Error(json.message || json.error || `HTTP ${resp.status}`);
       passkeySession = true;
+      passkeyMe = await hasPasskeySession();
       showApp(null);
     } catch (e) {
       if (e.name === 'NotAllowedError') return; // user dismissed the prompt
@@ -917,7 +929,8 @@
 
   window.netlifyIdentity.on('init', async user => {
     if (user) return showApp(user);
-    if (await hasPasskeySession()) { passkeySession = true; return showApp(null); }
+    const me = await hasPasskeySession();
+    if (me) { passkeySession = true; passkeyMe = me; return showApp(null); }
     showGate();
   });
   window.netlifyIdentity.on('login', user => {

@@ -74,3 +74,12 @@ test("sessionIsValid checks expiry against 'now', not real wall-clock time", () 
   assert.equal(sessionIsValid(null, Date.now()), false);
   assert.equal(sessionIsValid({}, Date.now()), false);
 });
+
+test("a passkey session is shown as the owner's account plus its device", () => {
+  const { identityFromSession } = require("../netlify/functions/_lib/admin");
+  const { OWNER_EMAIL } = require("../netlify/functions/_lib/owner");
+  const future = new Date(Date.now() + 86400000).toISOString();
+  assert.deepEqual(identityFromSession({ expiresAt: future, deviceLabel: "Pixel" }), { email: OWNER_EMAIL, deviceLabel: "Pixel", via: "passkey" });
+  assert.equal(identityFromSession({ expiresAt: new Date(Date.now() - 1000).toISOString() }), null);
+  assert.equal(identityFromSession(null), null);
+});

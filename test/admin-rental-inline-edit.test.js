@@ -113,3 +113,9 @@ test("expanded customer card lists each fact once (name, paid, rate and totals l
   assert.ok(!/rental request\${c\.bookings/.test(body), "no repeated rental count line");
   assert.match(adminHtml, /details\.customer-card\[open\] \.cs-totals \{ display: none; \}/);
 });
+
+test("the signed-in account name is always shown (passkey sessions get it from the server)", () => {
+  assert.match(adminHtml, /Signed in as <strong>\$\{escape\(\(passkeyMe && passkeyMe\.email\) \|\| 'admin'\)\}<\/strong>/);
+  assert.ok(!/Signed in with passkey/.test(adminHtml));
+  assert.match(adminHtml, /passkeyMe = await hasPasskeySession\(\)/);
+});
