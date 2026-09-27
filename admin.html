@@ -197,6 +197,7 @@
   /* Sidebar collapses to an off-canvas drawer with a top-bar hamburger. */
   /* ─── Home: revenue KPIs + charts ─── */
   .kpi-row { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .kpi-row.kpi-pair { grid-template-columns: 1fr 1fr; }
   .kpi { background: var(--cream); border: 1px solid var(--line); padding: 1.25rem; }
   .kpi-label { font-size: 0.75rem; color: var(--stone-muted); text-transform: uppercase; letter-spacing: 0.05em; }
   .kpi-val { font-family: var(--font-display); font-size: 2rem; color: var(--ink); line-height: 1.1; margin-top: 0.3rem; }
@@ -360,6 +361,11 @@
         <div class="kpi"><div class="kpi-label">Average monthly price</div><div class="kpi-val" id="kpiAvg"></div><div class="kpi-sub" id="kpiAvgSub"></div></div>
         <div class="kpi"><div class="kpi-label">Annual run rate</div><div class="kpi-val" id="kpiArr"></div><div class="kpi-sub">Monthly recurring revenue &times; 12</div></div>
       </div>
+      <div class="kpi-row kpi-pair">
+        <div class="kpi"><div class="kpi-label">Avg revenue per rental &middot; last 12 months</div><div class="kpi-val" id="kpiRpr12"></div><div class="kpi-sub" id="kpiRpr12Sub"></div></div>
+        <div class="kpi"><div class="kpi-label">Avg revenue per rental &middot; rolling 30 days</div><div class="kpi-val" id="kpiRpr30"></div><div class="kpi-sub" id="kpiRpr30Sub"></div></div>
+      </div>
+      <p class="viz-note" style="margin:-0.4rem 0 1rem;">Revenue is each rental's rate spread over the days it ran (accrual, not cash received). A rental that ran only part of the period counts once, for the days it ran.</p>
       <div class="viz-card viz">
         <h3>Monthly recurring revenue</h3>
         <p class="viz-note" data-note="mrr"></p>
@@ -1269,6 +1275,10 @@
     setText('kpiAvg', money(o.avgPrice));
     setText('kpiAvgSub', o.activeRentals ? `Across ${o.activeRentals} active rental${o.activeRentals === 1 ? '' : 's'}` : 'No active rentals');
     setText('kpiArr', money(o.arr));
+    const rpr = M.revenuePerRental(_rentals || [], today);
+    const rprLine = (w) => w.rentals ? `${money(w.revenue)} recognized across ${w.rentals} rental${w.rentals === 1 ? '' : 's'}` : 'No rentals in this period';
+    setText('kpiRpr12', money(rpr.last12.perRental)); setText('kpiRpr12Sub', rprLine(rpr.last12));
+    setText('kpiRpr30', money(rpr.rolling30.perRental)); setText('kpiRpr30Sub', rprLine(rpr.rolling30));
 
     const noPrevNote = !M.seriesHasActivity(cur) ? `No rentals in ${year} yet.` : hasPrev ? '' : `No ${year - 1} rentals on record yet, so there's no prior-year line.`;
     ['mrr', 'subs', 'avg'].forEach(k => { document.querySelector(`[data-note="${k}"]`).textContent = noPrevNote; });

@@ -145,3 +145,22 @@ test("upcomingRenewals: weekly rentals renew every 7 days, month ends clamp, dea
   assert.deepEqual(at("2026-02-25", 5), ["2@2026-02-28"]);
   assert.deepEqual(at("2026-10-03", 7), ["1@2026-10-06"]);
 });
+
+test("revenuePerRental: recognized revenue in the window / rentals that ran in it", () => {
+  const rs = [
+    r(1, "a@x.com", "2026-01-01", "2026-12-31", 600),                      // runs the whole window
+    r(2, "b@x.com", "2026-09-16", "2026-10-15", 300),                      // only the last 15 days of a 30-day window (Sep 16-30)
+    r(3, "c@x.com", "2026-08-01", "2026-08-31", 500),                      // ended before the window
+    r(4, "d@x.com", "2026-09-01", "2026-09-30", 900, { status: "cancelled" }),
+    r(5, "e@x.com", "2026-09-10", "2026-10-09", 152.2, { rateType: "weekly" }),
+  ];
+  const w = M.revenuePerRental(rs, "2026-09-30").rolling30;             // window Sep 1 - Sep 30
+  const monthlyEq5 = 152.2 * (52 / 12);
+  const expected = 600 * 30 / 30.44 + 300 * 15 / 30.44 + monthlyEq5 * 21 / 30.44;
+  assert.equal(w.rentals, 3);
+  assert.ok(Math.abs(w.revenue - expected) < 0.01, `${w.revenue} vs ${expected}`);
+  assert.ok(Math.abs(w.perRental - expected / 3) < 0.01);
+  const y = M.revenuePerRental(rs, "2026-09-30").last12;                // 12 months adds rental 3 (31 days) and the rest
+  assert.equal(y.rentals, 4);
+  assert.equal(M.revenuePerRental([], "2026-09-30").last12.perRental, null);
+});

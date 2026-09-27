@@ -137,6 +137,29 @@
       .sort((a, b) => day10(a.endDate).localeCompare(day10(b.endDate)) || String(a.id).localeCompare(String(b.id)));
   }
 
+  // Average revenue per rental over a window: revenue recognized in the window / the rentals that ran in it.
+  // Recognized = each counting rental's monthly-equivalent rate spread over the days it ran inside the window
+  // (an accrual figure, not cash received). A rental that only ran part of the window counts once, for its days.
+  function revenueInWindow(rentals, from, to) {
+    let revenue = 0, count = 0;
+    (rentals || []).forEach((r) => {
+      if (!isCounted(r)) return;
+      const s = day10(r.startDate) > from ? day10(r.startDate) : from;
+      const e = day10(r.endDate) < to ? day10(r.endDate) : to;
+      if (s > e) return;
+      revenue += (monthlyEquivalent(r) * daysInclusive(s, e)) / DAYS_PER_MONTH;
+      count += 1;
+    });
+    return { revenue, rentals: count, perRental: count ? revenue / count : null };
+  }
+  // Rolling 30 days and the last 12 months, both ending today.
+  function revenuePerRental(rentals, today) {
+    return {
+      rolling30: revenueInWindow(rentals, addDays(today, -29), today),
+      last12: revenueInWindow(rentals, addDays(today, -364), today),
+    };
+  }
+
   function lifetimePaid(r) {
     const paid = Number(r.paidAmount) || 0;
     if (paid > 0) return paid;
@@ -215,5 +238,5 @@
     };
   }
 
-  return { monthlyEquivalent, isCounted, activeOn, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon };
+  return { monthlyEquivalent, isCounted, activeOn, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon, revenuePerRental };
 });
