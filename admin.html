@@ -174,6 +174,7 @@
   .cs-total { font-family: var(--font-display); font-size: 1.2rem; }
   .cs-chev { flex: none; width: 0.55rem; height: 0.55rem; border-right: 2px solid var(--stone-muted); border-bottom: 2px solid var(--stone-muted); transform: rotate(45deg); margin: 0 0.25rem 0.2rem 0.15rem; transition: transform 0.15s; }
   details.customer-card[open] > .customer-summary { border-bottom: 1px solid var(--line); }
+  details.customer-card[open] .cs-totals { display: none; }
   details.customer-card[open] .cs-chev { transform: rotate(-135deg); margin-bottom: -0.2rem; }
   .customer-body { padding: 1rem 1.25rem 1.1rem; }
   .customer-close { display: block; width: 100%; margin-top: 0.9rem; }
@@ -2185,8 +2186,8 @@
       const countedRentalCount = monthlyCountedRentals.length + weeklyCountedRentals.length;
       const discountHtml = totalMonths
         ? `<div class="renter-line" style="margin:2px 0 8px;">
-             <strong>${totalMonths} month${totalMonths === 1 ? '' : 's'} total</strong>${countedRentalCount > 1 ? ` across ${countedRentalCount} rentals` : ''}${weeklyWeeks ? ` (weekly billing: ${weeklyWeeks} weeks = ${weeklyMonths} full month${weeklyMonths === 1 ? '' : 's'})` : ''} ·
-             <strong style="color:var(--terracotta);">max discount unlocked: ${Math.min(12, totalMonths)}-month rate ($${rateForMonths(totalMonths)}/mo)</strong>
+             <div><strong>${totalMonths} month${totalMonths === 1 ? '' : 's'} total</strong>${countedRentalCount > 1 ? ` across ${countedRentalCount} rentals` : ''}${weeklyWeeks ? ` (weekly billing: ${weeklyWeeks} weeks = ${weeklyMonths} full month${weeklyMonths === 1 ? '' : 's'})` : ''}</div>
+             <div><strong style="color:var(--terracotta);">Max discount unlocked: ${Math.min(12, totalMonths)}-month rate ($${rateForMonths(totalMonths)}/mo)</strong></div>
            </div>`
         : '';
       // "Lifetime paid": a specific paidAmount on file always wins (it's the
@@ -2203,11 +2204,6 @@
         return sum + (Number(r.monthlyRate) || 0) * periods;
       }, 0);
       const isEstimated = lifetimePaid > 0 && countedRentals.some(r => !(Number(r.paidAmount) > 0));
-      // Current rate: the rental actually running today, if any.
-      const currentRental = c.rentals.find(r => r.status === 'active' && r.startDate <= today0 && r.endDate >= today0);
-      const currentRateHtml = currentRental
-        ? `<div style="font-family: var(--font-display); font-size: 1.1rem; margin-top:0.35rem;">$${(Number(currentRental.monthlyRate) || 0).toLocaleString()}/${currentRental.rateType === 'weekly' ? 'wk' : 'mo'}</div><div class="renter-line">Current rate</div>`
-        : '';
       const bookingList = c.bookings.length
         ? c.bookings.map(b => `<li>${new Date(b.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} · <span class="pill pill-${b.status}" style="font-size:0.65rem;">${b.status}</span></li>`).join('')
         : '<li style="color:var(--stone-muted);">None</li>';
@@ -2258,33 +2254,26 @@
             <div class="cs-main">
               <div class="cs-name">${escape(c.name || '(no name)')} ${tagPills}</div>
               <div class="cs-line">${statePill} ${stateLine}</div>
-              ${totalsLine ? `<div class="cs-line">${totalsLine}</div>` : ''}
+              ${totalsLine ? `<div class="cs-line cs-totals">${totalsLine}</div>` : ''}
             </div>
             <div class="cs-money">
               <div class="cs-total">$${lifetimePaid.toLocaleString()}</div>
-              <div class="renter-line">${isEstimated ? 'paid (est.)' : 'paid'}</div>
+              <div class="renter-line"${isEstimated ? ' title="Estimated from rate × rental length where no payment amount is on file; a recorded payment always overrides the estimate."' : ''}>${isEstimated ? 'paid (est.)' : 'paid'}</div>
             </div>
             <span class="cs-chev" aria-hidden="true"></span>
           </summary>
           <div class="customer-body">
             <div class="customer-card-head">
               <div>
-                <h4>${escape(c.name || '(no name)')}</h4>
                 <div class="renter-line">${escape(c.email || 'no email')}${c.phone ? ' · ' + escape(c.phone) : ''}</div>
                 ${addressLine ? `<div class="renter-line cust-address"><span class="cust-address-text">${escape(addressLine)}</span><button type="button" class="btn btn-ghost btn-sm" data-copy="${escape(addressLine)}" onclick="copyAddress(this)">Copy address</button></div>` : ''}
                 ${notesBlock}
               </div>
-              <div style="text-align:right;">
-                <div style="font-family: var(--font-display); font-size: 1.35rem;">$${lifetimePaid.toLocaleString()}</div>
-                <div class="renter-line"${isEstimated ? ' title="Estimated from rate × rental length where no payment amount is on file; a recorded payment always overrides the estimate."' : ''}>Lifetime paid${isEstimated ? ' (est.)' : ''}</div>
-                ${currentRateHtml}
-                <div style="margin-top:0.5rem;">${editButton}</div>
-              </div>
+              <div>${editButton}</div>
             </div>
             <div class="customer-meta">
               <span>First seen: <strong>${escape(firstDate)}</strong></span>
               <span>Last activity: <strong>${escape(lastDate)}</strong></span>
-              <span>${c.rentals.length} rental${c.rentals.length === 1 ? '' : 's'} · ${c.bookings.length} rental request${c.bookings.length === 1 ? '' : 's'} · ${c.waitlist.length} waitlist</span>
             </div>
             <div class="customer-records">
               <div class="customer-record-block"><strong>Rentals</strong>${discountHtml}<ul>${rentalList}</ul></div>

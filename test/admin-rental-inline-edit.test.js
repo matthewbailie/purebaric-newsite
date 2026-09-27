@@ -103,3 +103,13 @@ test("Customers tab: Active/All filter and a Copy address button", () => {
   assert.match(adminHtml, /data-copy="\$\{escape\(addressLine\)\}" onclick="copyAddress\(this\)"/);
   assert.match(adminHtml, /navigator\.clipboard\.writeText\(text\)/);
 });
+
+test("expanded customer card lists each fact once (name, paid, rate and totals live in the summary row)", () => {
+  const start = adminHtml.indexOf('<div class="customer-body">');
+  const body = adminHtml.slice(start, adminHtml.indexOf('</details>', start));
+  assert.ok(!/<h4>/.test(body), "no repeated name");
+  assert.ok(!/Lifetime paid/.test(body), "no repeated paid amount");
+  assert.ok(!/Current rate/.test(body), "no repeated rate");
+  assert.ok(!/rental request\${c\.bookings/.test(body), "no repeated rental count line");
+  assert.match(adminHtml, /details\.customer-card\[open\] \.cs-totals \{ display: none; \}/);
+});
