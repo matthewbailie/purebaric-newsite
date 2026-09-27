@@ -2144,7 +2144,9 @@
       const waitlistList = c.waitlist.length
         ? c.waitlist.map(w => `<li>${new Date(w.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} · <span class="pill pill-${w.status}" style="font-size:0.65rem;">${w.status}</span></li>`).join('')
         : '<li style="color:var(--stone-muted);">None</li>';
-      const addressLine = c.address ? [c.address.street, c.address.city, c.address.state, c.address.zip].filter(Boolean).join(', ') : '';
+      // The customer's own address, else the one on their most recent rental (same fallback as Edit).
+      const cardAddr = customerAddress(c);
+      const addressLine = [cardAddr.street, cardAddr.city, cardAddr.state, cardAddr.zip].filter(Boolean).join(', ');
       const tagPills = (c.tags && c.tags.length)
         ? c.tags.map(t => `<span class="pill" style="background:#e8e2d6;color:#6b6357;font-size:0.65rem;">${escape(t)}</span>`).join(' ')
         : '';
