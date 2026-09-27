@@ -111,7 +111,7 @@ test("expanded customer card lists each fact once (name, paid, rate and totals l
   assert.ok(!/Lifetime paid/.test(body), "no repeated paid amount");
   assert.ok(!/Current rate/.test(body), "no repeated rate");
   assert.ok(!/rental request\${c\.bookings/.test(body), "no repeated rental count line");
-  assert.match(adminHtml, /details\.customer-card\[open\] \.cs-totals \{ display: none; \}/);
+  assert.match(adminHtml, /details\.customer-card\[open\] \.cs-line \{ display: none; \}/);
 });
 
 test("the signed-in account name is always shown (passkey sessions get it from the server)", () => {
