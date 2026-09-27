@@ -137,20 +137,28 @@
       .sort((a, b) => day10(a.endDate).localeCompare(day10(b.endDate)) || String(a.id).localeCompare(String(b.id)));
   }
 
-  // Average revenue per rental over a window: revenue recognized in the window / the rentals that ran in it.
-  // Recognized = each counting rental's monthly-equivalent rate spread over the days it ran inside the window
-  // (an accrual figure, not cash received). A rental that only ran part of the window counts once, for its days.
+  // Revenue over a window, recognized as each counting rental's monthly-equivalent rate spread over the days it
+  // ran inside the window (an accrual figure, not cash received).
+  //  - perRental: revenue / the rentals that ran in the window (a rental that ran part of it counts once). Suits a
+  //    long window such as 12 months: "what did a rental bring in".
+  //  - perActive: revenue / the AVERAGE number of rentals active across the window (rental-days / window days).
+  //    Suits a short window such as 30 days: a typical month's revenue per running rental, not diluted by
+  //    rentals that started or ended part-way through.
   function revenueInWindow(rentals, from, to) {
-    let revenue = 0, count = 0;
+    let revenue = 0, count = 0, rentalDays = 0;
     (rentals || []).forEach((r) => {
       if (!isCounted(r)) return;
       const s = day10(r.startDate) > from ? day10(r.startDate) : from;
       const e = day10(r.endDate) < to ? day10(r.endDate) : to;
       if (s > e) return;
-      revenue += (monthlyEquivalent(r) * daysInclusive(s, e)) / DAYS_PER_MONTH;
+      const days = daysInclusive(s, e);
+      revenue += (monthlyEquivalent(r) * days) / DAYS_PER_MONTH;
+      rentalDays += days;
       count += 1;
     });
-    return { revenue, rentals: count, perRental: count ? revenue / count : null };
+    const windowDays = daysInclusive(from, to);
+    const avgActive = rentalDays / windowDays;
+    return { revenue, rentals: count, avgActive, perRental: count ? revenue / count : null, perActive: avgActive ? revenue / avgActive : null };
   }
   // Rolling 30 days and the last 12 months, both ending today.
   function revenuePerRental(rentals, today) {
