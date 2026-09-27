@@ -145,28 +145,3 @@ test("upcomingRenewals: weekly rentals renew every 7 days, month ends clamp, dea
   assert.deepEqual(at("2026-02-25", 5), ["2@2026-02-28"]);
   assert.deepEqual(at("2026-10-03", 7), ["1@2026-10-06"]);
 });
-
-test("revenuePerRental: revenue recognized in the window, per rental and per average active rental", () => {
-  const rs = [
-    r(1, "a@x.com", "2026-01-01", "2026-12-31", 600),                      // runs the whole window
-    r(2, "b@x.com", "2026-09-16", "2026-10-15", 300),                      // only Sep 16-30 of the window: 15 days
-    r(3, "c@x.com", "2026-08-01", "2026-08-31", 500),                      // ended before the window
-    r(4, "d@x.com", "2026-09-01", "2026-09-30", 900, { status: "cancelled" }),
-    r(5, "e@x.com", "2026-09-10", "2026-10-09", 152.2, { rateType: "weekly" }), // Sep 10-30: 21 days
-  ];
-  const w = M.revenuePerRental(rs, "2026-09-30").rolling30;             // window Sep 1 - Sep 30
-  const monthlyEq5 = 152.2 * (52 / 12);
-  const revenue = 600 * 30 / 30.44 + 300 * 15 / 30.44 + monthlyEq5 * 21 / 30.44;
-  const avgActive = (30 + 15 + 21) / 30;
-  assert.equal(w.rentals, 3);
-  assert.ok(Math.abs(w.revenue - revenue) < 0.01, `${w.revenue} vs ${revenue}`);
-  assert.ok(Math.abs(w.avgActive - avgActive) < 1e-9);
-  assert.ok(Math.abs(w.perRental - revenue / 3) < 0.01);
-  assert.ok(Math.abs(w.perActive - revenue / avgActive) < 0.01);
-  // A rental that ran the whole 30 days reads as ~its monthly rate per active rental, not diluted by partial ones.
-  const solo = M.revenuePerRental([r(9, "z@x.com", "2026-01-01", "2026-12-31", 529)], "2026-09-30").rolling30;
-  assert.ok(Math.abs(solo.perActive - 529 * 30 / 30.44 / 1) < 0.01);
-  assert.equal(M.revenuePerRental(rs, "2026-09-30").last12.rentals, 4);   // adds rental 3
-  assert.equal(M.revenuePerRental([], "2026-09-30").last12.perRental, null);
-  assert.equal(M.revenuePerRental([], "2026-09-30").rolling30.perActive, null);
-});

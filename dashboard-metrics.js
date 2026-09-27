@@ -137,37 +137,6 @@
       .sort((a, b) => day10(a.endDate).localeCompare(day10(b.endDate)) || String(a.id).localeCompare(String(b.id)));
   }
 
-  // Revenue over a window, recognized as each counting rental's monthly-equivalent rate spread over the days it
-  // ran inside the window (an accrual figure, not cash received).
-  //  - perRental: revenue / the rentals that ran in the window (a rental that ran part of it counts once). Suits a
-  //    long window such as 12 months: "what did a rental bring in".
-  //  - perActive: revenue / the AVERAGE number of rentals active across the window (rental-days / window days).
-  //    Suits a short window such as 30 days: a typical month's revenue per running rental, not diluted by
-  //    rentals that started or ended part-way through.
-  function revenueInWindow(rentals, from, to) {
-    let revenue = 0, count = 0, rentalDays = 0;
-    (rentals || []).forEach((r) => {
-      if (!isCounted(r)) return;
-      const s = day10(r.startDate) > from ? day10(r.startDate) : from;
-      const e = day10(r.endDate) < to ? day10(r.endDate) : to;
-      if (s > e) return;
-      const days = daysInclusive(s, e);
-      revenue += (monthlyEquivalent(r) * days) / DAYS_PER_MONTH;
-      rentalDays += days;
-      count += 1;
-    });
-    const windowDays = daysInclusive(from, to);
-    const avgActive = rentalDays / windowDays;
-    return { revenue, rentals: count, avgActive, perRental: count ? revenue / count : null, perActive: avgActive ? revenue / avgActive : null };
-  }
-  // Rolling 30 days and the last 12 months, both ending today.
-  function revenuePerRental(rentals, today) {
-    return {
-      rolling30: revenueInWindow(rentals, addDays(today, -29), today),
-      last12: revenueInWindow(rentals, addDays(today, -364), today),
-    };
-  }
-
   function lifetimePaid(r) {
     const paid = Number(r.paidAmount) || 0;
     if (paid > 0) return paid;
@@ -246,5 +215,5 @@
     };
   }
 
-  return { monthlyEquivalent, isCounted, activeOn, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon, revenuePerRental };
+  return { monthlyEquivalent, isCounted, activeOn, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon };
 });

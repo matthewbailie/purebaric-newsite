@@ -119,8 +119,3 @@ test("the signed-in account name is always shown (passkey sessions get it from t
   assert.ok(!/Signed in with passkey/.test(adminHtml));
   assert.match(adminHtml, /passkeyMe = await hasPasskeySession\(\)/);
 });
-
-test("Home shows average revenue per rental for the last 12 months and a rolling 30 days", () => {
-  assert.match(adminHtml, /id="kpiRpr12"[\s\S]*id="kpiRpr30"/);
-  assert.match(adminHtml, /M\.revenuePerRental\(_rentals \|\| \[\], today\)/);
-});

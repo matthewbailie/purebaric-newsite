@@ -220,7 +220,6 @@
   .tools-row { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
   /* ─── Home: revenue KPIs + charts ─── */
   .kpi-row { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-  .kpi-row.kpi-pair { grid-template-columns: 1fr 1fr; }
   .kpi { background: var(--cream); border: 1px solid var(--line); padding: 1.25rem; }
   .kpi-label { font-size: 0.75rem; color: var(--stone-muted); text-transform: uppercase; letter-spacing: 0.05em; }
   .kpi-val { font-family: var(--font-display); font-size: 2rem; color: var(--ink); line-height: 1.1; margin-top: 0.3rem; }
@@ -385,11 +384,6 @@
         <div class="kpi" data-card-key="avg-price"><div class="kpi-label">Average monthly price</div><div class="kpi-val" id="kpiAvg"></div><div class="kpi-sub" id="kpiAvgSub"></div></div>
         <div class="kpi" data-card-key="arr"><div class="kpi-label">Annual run rate</div><div class="kpi-val" id="kpiArr"></div><div class="kpi-sub">Monthly recurring revenue &times; 12</div></div>
       </div>
-      <div class="kpi-row kpi-pair" data-sortable="home-revenue-per-rental">
-        <div class="kpi" data-card-key="rpr-12"><div class="kpi-label">Avg revenue per rental &middot; last 12 months</div><div class="kpi-val" id="kpiRpr12"></div><div class="kpi-sub" id="kpiRpr12Sub"></div></div>
-        <div class="kpi" data-card-key="rpr-30"><div class="kpi-label">Avg revenue per rental &middot; rolling 30 days</div><div class="kpi-val" id="kpiRpr30"></div><div class="kpi-sub" id="kpiRpr30Sub"></div></div>
-      </div>
-      <p class="viz-note" style="margin:-0.4rem 0 1rem;">Revenue is each rental's rate spread over the days it ran (accrual, not cash received). The 12-month figure is total revenue divided by the rentals that ran in that time. The 30-day figure divides by the average number of rentals active during the 30 days, so it reads as a typical month per running rental and isn't pulled down by rentals that started or ended part-way through.</p>
       <div class="viz-card viz">
         <h3>Monthly recurring revenue</h3>
         <p class="viz-note" data-note="mrr"></p>
@@ -1311,12 +1305,6 @@
     setText('kpiAvg', money(o.avgPrice));
     setText('kpiAvgSub', o.activeRentals ? `Across ${o.activeRentals} active rental${o.activeRentals === 1 ? '' : 's'}` : 'No active rentals');
     setText('kpiArr', money(o.arr));
-    const rpr = M.revenuePerRental(_rentals || [], today);
-    const w12 = rpr.last12, w30 = rpr.rolling30;
-    setText('kpiRpr12', money(w12.perRental));
-    setText('kpiRpr12Sub', w12.rentals ? `${money(w12.revenue)} recognized across ${w12.rentals} rental${w12.rentals === 1 ? '' : 's'}` : 'No rentals in this period');
-    setText('kpiRpr30', money(w30.perActive));
-    setText('kpiRpr30Sub', w30.rentals ? `${money(w30.revenue)} recognized · ${w30.avgActive.toFixed(1)} rentals active on average` : 'No rentals in this period');
 
     const noPrevNote = !M.seriesHasActivity(cur) ? `No rentals in ${year} yet.` : hasPrev ? '' : `No ${year - 1} rentals on record yet, so there's no prior-year line.`;
     ['mrr', 'subs', 'avg'].forEach(k => { document.querySelector(`[data-note="${k}"]`).textContent = noPrevNote; });
