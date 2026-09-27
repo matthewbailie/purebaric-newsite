@@ -9,6 +9,11 @@
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
+[[headers]]
+  for = "/admin.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+
 # ───────── Internal docs (never served publicly) ─────────
 [[redirects]]
   from = "/_internal/*"
