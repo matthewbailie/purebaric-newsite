@@ -158,6 +158,19 @@
   .modal-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--line); flex-wrap: wrap; }
   .flag-warn { color: #82402f; font-weight: 600; }
   .customer-card { background: var(--cream); border: 1px solid var(--line); padding: 1.25rem; margin-bottom: 1rem; }
+  details.customer-card { padding: 0; }
+  .customer-summary { list-style: none; display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1rem; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .customer-summary::-webkit-details-marker { display: none; }
+  .cs-main { flex: 1; min-width: 0; }
+  .cs-name { font-weight: 600; font-size: 1.02rem; overflow-wrap: anywhere; }
+  .cs-line { font-size: 0.82rem; color: var(--stone-muted); margin-top: 0.2rem; line-height: 1.45; }
+  .cs-money { text-align: right; flex: none; }
+  .cs-total { font-family: var(--font-display); font-size: 1.2rem; }
+  .cs-chev { flex: none; width: 0.55rem; height: 0.55rem; border-right: 2px solid var(--stone-muted); border-bottom: 2px solid var(--stone-muted); transform: rotate(45deg); margin: 0 0.25rem 0.2rem 0.15rem; transition: transform 0.15s; }
+  details.customer-card[open] > .customer-summary { border-bottom: 1px solid var(--line); }
+  details.customer-card[open] .cs-chev { transform: rotate(-135deg); margin-bottom: -0.2rem; }
+  .customer-body { padding: 1rem 1.25rem 1.1rem; }
+  .customer-close { display: block; width: 100%; margin-top: 0.9rem; }
   .customer-card-head { display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.75rem; }
   .customer-card-head h4 { margin: 0; font-size: 1.05rem; }
   .customer-meta { display: flex; gap: 1.25rem; flex-wrap: wrap; font-size: 0.82rem; color: var(--stone-muted); margin-bottom: 0.75rem; }
@@ -2154,35 +2167,87 @@
         ? `<div class="renter-line" style="margin-top:0.5rem;color:var(--terracotta);">📝 ${escape(c.notes)}</div>` : '';
       // Customer records are keyed by email, so someone with none on file (an older, historical renter) has no Edit.
       const editButton = c.email ? `<button class="btn btn-ghost btn-sm" onclick='editCustomer(${JSON.stringify(c.email)})'>Edit</button>` : '<span class="renter-line">No email on file</span>';
+      // Collapsed summary: who, what they've paid, and where their rental stands. Tap to expand the full details.
+      const today1 = localToday();
+      const liveRentals = c.rentals.filter(r => r.status === 'active' || r.status === 'scheduled');
+      const running = liveRentals.find(r => r.startDate <= today1 && r.endDate >= today1);
+      const upcoming = liveRentals.filter(r => r.startDate > today1).sort((x, y) => x.startDate.localeCompare(y.startDate))[0];
+      const lastRental = [...c.rentals].sort((x, y) => y.endDate.localeCompare(x.endDate))[0];
+      const lengthOf = r => r.rateType === 'weekly' ? `${rentalWeeks(r)}-week` : `${rentalMonths(r)}-month`;
+      const rateOf = r => `$${(Number(r.monthlyRate) || 0).toLocaleString()}/${r.rateType === 'weekly' ? 'wk' : 'mo'}`;
+      const daysLeft = r => { const n = Math.round((new Date(r.endDate) - new Date(today1)) / 86400000); return n === 0 ? 'ends today' : n === 1 ? '1 day left' : `${n} days left`; };
+      let statePill = '', stateLine = '';
+      if (running) {
+        statePill = '<span class="pill pill-active" style="font-size:0.65rem;">Current</span>';
+        stateLine = `Ends ${escape(fmtDate(running.endDate))} (${daysLeft(running)}) · ${lengthOf(running)} rental · ${rateOf(running)}`;
+      } else if (upcoming) {
+        statePill = '<span class="pill pill-scheduled" style="font-size:0.65rem;">Upcoming</span>';
+        stateLine = `Starts ${escape(fmtDate(upcoming.startDate))} · ${lengthOf(upcoming)} rental · ${rateOf(upcoming)}`;
+      } else if (lastRental) {
+        statePill = '<span class="pill pill-completed" style="font-size:0.65rem;">Past</span>';
+        stateLine = `Last rental ended ${escape(fmtDate(lastRental.endDate))} · ${lengthOf(lastRental)}`;
+      } else {
+        statePill = '<span class="pill" style="font-size:0.65rem;background:#e8e2d6;color:#6b6357;">No rentals</span>';
+        stateLine = `${c.bookings.length} rental request${c.bookings.length === 1 ? '' : 's'} · ${c.waitlist.length} waitlist`;
+      }
+      const totalsLine = c.rentals.length
+        ? `${totalMonths ? totalMonths + ' month' + (totalMonths === 1 ? '' : 's') + ' total · ' : ''}${c.rentals.length} rental${c.rentals.length === 1 ? '' : 's'}`
+        : '';
       return `
-        <div class="customer-card">
-          <div class="customer-card-head">
-            <div>
-              <h4>${escape(c.name || '(no name)')} ${tagPills}</h4>
-              <div class="renter-line">${escape(c.email || 'no email')}${c.phone ? ' · ' + escape(c.phone) : ''}</div>
-              ${addressLine ? `<div class="renter-line">${escape(addressLine)}</div>` : ''}
-              ${notesBlock}
+        <details class="customer-card">
+          <summary class="customer-summary">
+            <div class="cs-main">
+              <div class="cs-name">${escape(c.name || '(no name)')} ${tagPills}</div>
+              <div class="cs-line">${statePill} ${stateLine}</div>
+              ${totalsLine ? `<div class="cs-line">${totalsLine}</div>` : ''}
             </div>
-            <div style="text-align:right;">
-              <div style="font-family: var(--font-display); font-size: 1.35rem;">$${lifetimePaid.toLocaleString()}</div>
-              <div class="renter-line"${isEstimated ? ' title="Estimated from rate × rental length where no payment amount is on file; a recorded payment always overrides the estimate."' : ''}>Lifetime paid${isEstimated ? ' (est.)' : ''}</div>
-              ${currentRateHtml}
-              <div style="margin-top:0.5rem;">${editButton}</div>
+            <div class="cs-money">
+              <div class="cs-total">$${lifetimePaid.toLocaleString()}</div>
+              <div class="renter-line">${isEstimated ? 'paid (est.)' : 'paid'}</div>
             </div>
+            <span class="cs-chev" aria-hidden="true"></span>
+          </summary>
+          <div class="customer-body">
+            <div class="customer-card-head">
+              <div>
+                <h4>${escape(c.name || '(no name)')}</h4>
+                <div class="renter-line">${escape(c.email || 'no email')}${c.phone ? ' · ' + escape(c.phone) : ''}</div>
+                ${addressLine ? `<div class="renter-line">${escape(addressLine)}</div>` : ''}
+                ${notesBlock}
+              </div>
+              <div style="text-align:right;">
+                <div style="font-family: var(--font-display); font-size: 1.35rem;">$${lifetimePaid.toLocaleString()}</div>
+                <div class="renter-line"${isEstimated ? ' title="Estimated from rate × rental length where no payment amount is on file; a recorded payment always overrides the estimate."' : ''}>Lifetime paid${isEstimated ? ' (est.)' : ''}</div>
+                ${currentRateHtml}
+                <div style="margin-top:0.5rem;">${editButton}</div>
+              </div>
+            </div>
+            <div class="customer-meta">
+              <span>First seen: <strong>${escape(firstDate)}</strong></span>
+              <span>Last activity: <strong>${escape(lastDate)}</strong></span>
+              <span>${c.rentals.length} rental${c.rentals.length === 1 ? '' : 's'} · ${c.bookings.length} rental request${c.bookings.length === 1 ? '' : 's'} · ${c.waitlist.length} waitlist</span>
+            </div>
+            <div class="customer-records">
+              <div class="customer-record-block"><strong>Rentals</strong>${discountHtml}<ul>${rentalList}</ul></div>
+              <div class="customer-record-block"><strong>Rental requests</strong><ul>${bookingList}</ul></div>
+              <div class="customer-record-block"><strong>Waitlist</strong><ul>${waitlistList}</ul></div>
+            </div>
+            <button type="button" class="btn btn-ghost btn-sm customer-close" onclick="closeCustomerCard(this)">Close</button>
           </div>
-          <div class="customer-meta">
-            <span>First seen: <strong>${escape(firstDate)}</strong></span>
-            <span>Last activity: <strong>${escape(lastDate)}</strong></span>
-            <span>${c.rentals.length} rental${c.rentals.length === 1 ? '' : 's'} · ${c.bookings.length} rental request${c.bookings.length === 1 ? '' : 's'} · ${c.waitlist.length} waitlist</span>
-          </div>
-          <div class="customer-records">
-            <div class="customer-record-block"><strong>Rentals</strong>${discountHtml}<ul>${rentalList}</ul></div>
-            <div class="customer-record-block"><strong>Rental requests</strong><ul>${bookingList}</ul></div>
-            <div class="customer-record-block"><strong>Waitlist</strong><ul>${waitlistList}</ul></div>
-          </div>
-        </div>
+        </details>
       `;
     }).join('');
+  }
+  // Only one customer is open at a time, so scrolling the list stays easy.
+  document.getElementById('customersList').addEventListener('toggle', (e) => {
+    if (!e.target.open) return;
+    document.querySelectorAll('#customersList details.customer-card[open]').forEach(d => { if (d !== e.target) d.open = false; });
+  }, true);
+  // Close returns to the customer's summary row so scrolling can carry on from there.
+  function closeCustomerCard(btn) {
+    const d = btn.closest('details');
+    d.open = false;
+    d.querySelector('summary').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
   // "+ Add customer": always start from the Customers tab's own anchor —

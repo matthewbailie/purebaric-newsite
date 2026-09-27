@@ -89,3 +89,10 @@ test("Stripe cancel: deep link from the alert opens a confirm-before-cancel flow
   assert.match(adminHtml, /key:'rental_ending'/);
   assert.match(adminHtml, /params\.get\('endingSoon'\)/);
 });
+
+test("Customers tab: compact tap-to-expand cards with a Close button", () => {
+  assert.match(adminHtml, /<details class="customer-card">\s*<summary class="customer-summary">/);
+  assert.match(adminHtml, /onclick="closeCustomerCard\(this\)"/);
+  // one open at a time
+  assert.match(adminHtml, /addEventListener\('toggle'[\s\S]*details\.customer-card\[open\]/);
+});
