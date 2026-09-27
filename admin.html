@@ -2102,7 +2102,19 @@
       return;
     }
     const today0 = new Date().toISOString().slice(0, 10);
-    list.innerHTML = _customers.map(c => {
+    // Current customers first (soonest-ending on top), then upcoming, then past (most recent first).
+    const ms = (iso) => new Date(iso + 'T00:00:00').getTime();
+    const rankOf = (c) => {
+      const live = c.rentals.filter(r => r.status === 'active' || r.status === 'scheduled');
+      const run = live.filter(r => r.startDate <= today0 && r.endDate >= today0).sort((x, y) => x.endDate.localeCompare(y.endDate))[0];
+      if (run) return [0, ms(run.endDate)];
+      const up = live.filter(r => r.startDate > today0).sort((x, y) => x.startDate.localeCompare(y.startDate))[0];
+      if (up) return [1, ms(up.startDate)];
+      const last = [...c.rentals].sort((x, y) => y.endDate.localeCompare(x.endDate))[0];
+      return last ? [2, -ms(last.endDate)] : [3, 0];
+    };
+    const sortedCustomers = [..._customers].sort((a, b) => { const x = rankOf(a), y = rankOf(b); return x[0] - y[0] || x[1] - y[1]; });
+    list.innerHTML = sortedCustomers.map(c => {
       const lastDate = c.lastActivity ? new Date(c.lastActivity).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : ', ';
       const firstDate = c.firstSeen ? new Date(c.firstSeen).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : ', ';
       const rentalList = c.rentals.length
@@ -2185,7 +2197,7 @@
         stateLine = `Starts ${escape(fmtDate(upcoming.startDate))} · ${lengthOf(upcoming)} rental · ${rateOf(upcoming)}`;
       } else if (lastRental) {
         statePill = '<span class="pill pill-completed" style="font-size:0.65rem;">Past</span>';
-        stateLine = `Last rental ended ${escape(fmtDate(lastRental.endDate))} · ${lengthOf(lastRental)}`;
+        stateLine = `Last rental ended ${escape(fmtDate(lastRental.endDate))} · ${lengthOf(lastRental)} rental`;
       } else {
         statePill = '<span class="pill" style="font-size:0.65rem;background:#e8e2d6;color:#6b6357;">No rentals</span>';
         stateLine = `${c.bookings.length} rental request${c.bookings.length === 1 ? '' : 's'} · ${c.waitlist.length} waitlist`;
