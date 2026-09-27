@@ -28,6 +28,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/stripe-webhook-thin"
+  to = "/.netlify/functions/stripe-webhook-thin"
+  status = 200
+
+[[redirects]]
   from = "/api/booking-submit"
   to = "/.netlify/functions/booking-submit"
   status = 200
