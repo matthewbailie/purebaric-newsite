@@ -96,3 +96,10 @@ test("Customers tab: compact tap-to-expand cards with a Close button", () => {
   // one open at a time
   assert.match(adminHtml, /addEventListener\('toggle'[\s\S]*details\.customer-card\[open\]/);
 });
+
+test("Customers tab: Active/All filter and a Copy address button", () => {
+  assert.match(adminHtml, /id="customerFilter"[\s\S]*data-f="active"[\s\S]*data-f="all"/);
+  assert.match(adminHtml, /const isActiveCustomer = \(c\) => rankOf\(c\)\[0\] <= 1;/); // current or upcoming
+  assert.match(adminHtml, /data-copy="\$\{escape\(addressLine\)\}" onclick="copyAddress\(this\)"/);
+  assert.match(adminHtml, /navigator\.clipboard\.writeText\(text\)/);
+});

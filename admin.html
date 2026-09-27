@@ -158,6 +158,12 @@
   .modal-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--line); flex-wrap: wrap; }
   .flag-warn { color: #82402f; font-weight: 600; }
   .customer-card { background: var(--cream); border: 1px solid var(--line); padding: 1.25rem; margin-bottom: 1rem; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; margin: 0 0 1rem; background: var(--cream); }
+  .seg button { font: inherit; font-size: 0.9rem; padding: 0.5rem 1.1rem; border: 0; background: transparent; color: var(--stone-muted); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .seg button.on { background: var(--ink, #2b2320); color: #fff; }
+  .seg-n { opacity: 0.7; font-size: 0.8em; margin-left: 0.15rem; }
+  .cust-address { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.15rem; }
+  .cust-address-text { user-select: text; -webkit-user-select: text; }
   details.customer-card { padding: 0; }
   .customer-summary { list-style: none; display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1rem; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .customer-summary::-webkit-details-marker { display: none; }
@@ -639,6 +645,10 @@
           <input type="search" id="customerSearch" placeholder="Search by name, email, phone…" style="padding: 0.5rem 0.85rem; min-width: 260px;">
           <button class="btn btn-primary btn-sm" onclick="openAddCustomer()">+ Add customer</button>
         </div>
+      </div>
+      <div class="seg" id="customerFilter" role="group" aria-label="Show customers">
+        <button type="button" data-f="active" onclick="setCustomerFilter('active')">Active <span class="seg-n" id="cfActive"></span></button>
+        <button type="button" data-f="all" onclick="setCustomerFilter('all')">All <span class="seg-n" id="cfAll"></span></button>
       </div>
 
       <div id="customerFormAnchor"></div>
@@ -2095,13 +2105,38 @@
     const days = Math.round((new Date(r.endDate) - new Date(r.startDate)) / 86400000) + 1;
     return Math.max(1, Math.round(days / 7));
   }
+  // Active = a current or upcoming rental. The choice is remembered on this device.
+  let _customerFilter = 'active';
+  try { if (localStorage.getItem('pb_customer_filter') === 'all') _customerFilter = 'all'; } catch (e) { /* storage blocked: default is fine */ }
+  function setCustomerFilter(f) {
+    _customerFilter = f === 'all' ? 'all' : 'active';
+    try { localStorage.setItem('pb_customer_filter', _customerFilter); } catch (e) { /* not critical */ }
+    renderCustomers();
+  }
+  // Copy the address for pasting elsewhere. Clipboard API first; older/locked-down browsers get a textarea fallback.
+  async function copyAddress(btn) {
+    const text = btn.dataset.copy || '';
+    try { await navigator.clipboard.writeText(text); }
+    catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (err) { /* nothing more to try */ }
+      ta.remove();
+    }
+    toast('Address copied');
+    const label = btn.textContent; btn.textContent = 'Copied ✓';
+    setTimeout(() => { btn.textContent = label; }, 1500);
+  }
   function renderCustomers() {
     const list = document.getElementById('customersList');
     if (!_customers.length) {
+      document.getElementById('cfActive').textContent = '0'; document.getElementById('cfAll').textContent = '0';
+      document.querySelectorAll('#customerFilter button').forEach(b => b.classList.toggle('on', b.dataset.f === _customerFilter));
       list.innerHTML = `<div class="empty-state">No customers yet. Click <strong>+ Add customer</strong> to create one, or they'll be auto-created when bookings/rentals/waitlist entries come in.</div>`;
       return;
     }
-    const today0 = new Date().toISOString().slice(0, 10);
+    const today0 = localToday();
     // Current customers first (soonest-ending on top), then upcoming, then past (most recent first).
     const ms = (iso) => new Date(iso + 'T00:00:00').getTime();
     const rankOf = (c) => {
@@ -2113,7 +2148,17 @@
       const last = [...c.rentals].sort((x, y) => y.endDate.localeCompare(x.endDate))[0];
       return last ? [2, -ms(last.endDate)] : [3, 0];
     };
-    const sortedCustomers = [..._customers].sort((a, b) => { const x = rankOf(a), y = rankOf(b); return x[0] - y[0] || x[1] - y[1]; });
+    const isActiveCustomer = (c) => rankOf(c)[0] <= 1;
+    const nActive = _customers.filter(isActiveCustomer).length;
+    document.getElementById('cfActive').textContent = nActive;
+    document.getElementById('cfAll').textContent = _customers.length;
+    document.querySelectorAll('#customerFilter button').forEach(b => b.classList.toggle('on', b.dataset.f === _customerFilter));
+    const visibleCustomers = _customerFilter === 'active' ? _customers.filter(isActiveCustomer) : _customers;
+    if (!visibleCustomers.length) {
+      list.innerHTML = `<div class="empty-state">No active customers${document.getElementById('customerSearch').value.trim() ? ' match that search' : ''}. Tap <strong>All</strong> to see everyone.</div>`;
+      return;
+    }
+    const sortedCustomers = [...visibleCustomers].sort((a, b) => { const x = rankOf(a), y = rankOf(b); return x[0] - y[0] || x[1] - y[1]; });
     list.innerHTML = sortedCustomers.map(c => {
       const lastDate = c.lastActivity ? new Date(c.lastActivity).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : ', ';
       const firstDate = c.firstSeen ? new Date(c.firstSeen).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : ', ';
@@ -2171,7 +2216,9 @@
         : '<li style="color:var(--stone-muted);">None</li>';
       // The customer's own address, else the one on their most recent rental (same fallback as Edit).
       const cardAddr = customerAddress(c);
-      const addressLine = [cardAddr.street, cardAddr.city, cardAddr.state, cardAddr.zip].filter(Boolean).join(', ');
+      // "358 W Serenity Ct, Vineyard, UT 84059": the form you would paste into a map or an address label.
+      const cityLine = [cardAddr.city, [cardAddr.state, cardAddr.zip].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+      const addressLine = [cardAddr.street, cityLine].filter(Boolean).join(', ');
       const tagPills = (c.tags && c.tags.length)
         ? c.tags.map(t => `<span class="pill" style="background:#e8e2d6;color:#6b6357;font-size:0.65rem;">${escape(t)}</span>`).join(' ')
         : '';
@@ -2224,7 +2271,7 @@
               <div>
                 <h4>${escape(c.name || '(no name)')}</h4>
                 <div class="renter-line">${escape(c.email || 'no email')}${c.phone ? ' · ' + escape(c.phone) : ''}</div>
-                ${addressLine ? `<div class="renter-line">${escape(addressLine)}</div>` : ''}
+                ${addressLine ? `<div class="renter-line cust-address"><span class="cust-address-text">${escape(addressLine)}</span><button type="button" class="btn btn-ghost btn-sm" data-copy="${escape(addressLine)}" onclick="copyAddress(this)">Copy address</button></div>` : ''}
                 ${notesBlock}
               </div>
               <div style="text-align:right;">
