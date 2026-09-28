@@ -120,6 +120,18 @@
   // Back-compat alias used by the teal pages' script.js.
   if (typeof window.track !== 'function') window.track = window.trackPurebaricEvent;
 
+  // Capture the ad click id Google appends to a Search/PMax ad's landing URL (?gclid=...), so a
+  // later reservation request can be tied back to the click that produced it. Session-scoped: it
+  // survives the visit (in case the click lands on the homepage, not /book) but not future visits,
+  // and never touches ad_storage/localStorage, so it needs no consent gate of its own.
+  try {
+    var gclid = new URLSearchParams(location.search).get('gclid');
+    if (gclid) sessionStorage.setItem('pb_gclid', gclid.slice(0, 100));
+  } catch (e) {}
+  window.getPurebaricGclid = function () {
+    try { return sessionStorage.getItem('pb_gclid') || ''; } catch (e) { return ''; }
+  };
+
   // Load GA on page load unless the visitor has opted out (opt-out model).
   if (!declined) configGA();
 })();

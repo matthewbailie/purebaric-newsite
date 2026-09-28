@@ -5,6 +5,7 @@ process.env.GA4_API_SECRET = "test-secret";
 const {
   cleanClientId,
   cleanSessionId,
+  cleanGclid,
   sendRentalConfirmed,
 } = require("../netlify/functions/_lib/analytics");
 
@@ -66,4 +67,13 @@ test("visitor opt-out prevents server-side analytics", async () => {
   });
   assert.deepEqual(result, { sent: false, reason: "analytics_opt_out" });
   assert.equal(called, false);
+});
+
+test("cleanGclid accepts Google's opaque click id and rejects anything else, capped at 100 chars", () => {
+  assert.equal(cleanGclid("Cj0KCQjw_ab-CD_efGHIJ"), "Cj0KCQjw_ab-CD_efGHIJ");
+  assert.equal(cleanGclid("has space"), "");
+  assert.equal(cleanGclid("<script>"), "");
+  assert.equal(cleanGclid(""), "");
+  assert.equal(cleanGclid(null), "");
+  assert.equal(cleanGclid("a".repeat(150)).length, 100);
 });

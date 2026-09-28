@@ -5,6 +5,13 @@ function cleanClientId(value) {
   return /^\d{1,20}\.\d{1,20}$/.test(clientId) ? clientId : null;
 }
 
+// A gclid is an opaque Google-assigned token, alphanumeric plus a few separator
+// characters; this only guards against someone pasting something else into the field.
+function cleanGclid(value) {
+  const gclid = String(value || "").trim().slice(0, 100);
+  return /^[A-Za-z0-9_.-]+$/.test(gclid) ? gclid : "";
+}
+
 function cleanSessionId(value) {
   const sessionId = String(value || "").trim();
   return /^\d{1,20}$/.test(sessionId) ? sessionId : null;
@@ -86,6 +93,7 @@ async function sendRentalConfirmed({ booking, rental }) {
 module.exports = {
   cleanClientId,
   cleanSessionId,
+  cleanGclid,
   sendBookingRequestSubmitted,
   sendRentalConfirmed,
 };

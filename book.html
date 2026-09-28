@@ -357,6 +357,7 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   data.set('zip_code',document.getElementById('zip').value);
   data.set('preferred_date',document.getElementById('cdate').value);
   data.set('notes',full);
+  data.set('gclid',window.getPurebaricGclid?window.getPurebaricGclid():'');
   var analyticsContext=window.getPurebaricAnalyticsContext
     ? await window.getPurebaricAnalyticsContext()
     : {consentGranted:false};

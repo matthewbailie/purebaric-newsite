@@ -10,6 +10,7 @@ const {
   getPricing,
 } = require("./_lib/storage");
 const { monthsFromLength } = require("./_lib/followup");
+const { cleanGclid } = require("./_lib/analytics");
 const { zipServed } = require("./_lib/servicearea");
 const { smsForEvent, smsNumbersForEvent, emailsForEvent } = require("./_lib/notifications");
 const {
@@ -95,6 +96,7 @@ exports.handler = async (event) => {
       consentMedical: bool(body["consent-medical"]),
       consentTerms: bool(body["consent-terms"]),
       outOfArea,
+      gclid: cleanGclid(body.gclid),
       analytics: {
         consentGranted: analyticsConsent,
         clientId: cleanClientId(body.analytics_client_id),

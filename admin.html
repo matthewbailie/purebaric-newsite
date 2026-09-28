@@ -2892,6 +2892,7 @@
       <div class="modal-row"><strong>Prior experience</strong><div>${escape(b.priorExperience || ', ')}</div></div>
       <div class="modal-row"><strong>Safety flags</strong><div>${flagsHtml}</div></div>
       <div class="modal-row"><strong>Consent</strong><div>Medical: ${b.consentMedical ? '✓' : '✗'} · Terms: ${b.consentTerms ? '✓' : '✗'}</div></div>
+      ${b.gclid ? `<div class="modal-row"><strong>Ad click ID</strong><div>${escape(b.gclid)} <span class="renter-line">(this request followed a Google Ads click)</span></div></div>` : ''}
       <div class="modal-row"><strong>Received</strong><div>${new Date(b.createdAt).toLocaleString()}</div></div>
       <div class="modal-section">
         <h4>Internal notes</h4>
