@@ -7,6 +7,7 @@ Lives under `_internal/`, so it is in git but never served on purebaric.com.
 |---|---|
 | `purebaric_facility_prospectus.pdf` | 4-page prospectus for business owners |
 | `purebaric_facility_partnership_pamphlet.pdf` | Double-sided trifold pamphlet |
+| `purebaric_beauty_client_pamphlet.pdf` | Client-facing trifold for a lash lounge's customers, with research summaries; an example of the marketing pamphlet we craft for a business |
 | `email_prospectus_template.html` | Branded email template that goes with the prospectus; replace `[First name]` before sending |
 | `email_prospectus_copy_for_gmail.html` | Same email with a "Copy email" button, for pasting into Gmail |
 | `purebaric_chamber_logo.svg` | Logo with "1.5 ATA CHAMBER" beneath, as printed on the chamber photos |

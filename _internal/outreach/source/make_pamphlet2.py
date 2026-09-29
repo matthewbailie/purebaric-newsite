@@ -122,6 +122,7 @@ y = bullets(2, y+6, [
   "**Installed and serviced** by Purebaric",
   "**Staff training and runbook** included",
   "**Template consent forms** for your intake",
+  "**Marketing pamphlet** crafted for your brand",
   "**No equipment to buy** or maintain",
 ], size=9.2, lh=4.3, gap=2.2)
 pdf.set_fill_color(*TERRA); pdf.rect(px(2), PH-10, W, 10, "F")
@@ -233,6 +234,7 @@ y = bullets(2, y+3.5, [
   "**Initial staff training.** Hands-on training with the chamber, so your team learns by running it.",
   "**Staff runbook.** A written runbook your staff can follow day to day and use to train new team members.",
   "**Template legal consent forms.** Ready-to-use client consent and waiver templates, so the chamber fits into your intake process from day one. Have your own counsel review them for your business.",
+  "**A marketing pamphlet for your brand.** We help you craft a client-facing pamphlet, in your brand, to sign up new clients.",
   "**Equipment service.** We service and maintain the chamber and machine.",
   "**Ongoing support.** Call or text with questions. If something is not working, we fix it.",
 ], size=8.6, lh=3.9, gap=1.7)

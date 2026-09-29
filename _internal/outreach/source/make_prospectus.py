@@ -90,7 +90,7 @@ y = 145
 pdf.set_xy(M,y); pdf.set_font("Georgia","B",25); pdf.set_text_color(*INK)
 pdf.multi_cell(CW, 10.2, "A New Revenue-Generating\nAmenity for Your Facility", align="L")
 y = para(pdf.get_y()+4, "Offer mild hyperbaric sessions to the members and clients you already serve. Purebaric installs the chamber, "
-  "trains your staff, supplies your consent forms, and services the equipment. You set your prices and keep the session revenue.",
+  "trains your staff, supplies your consent forms, helps you craft a marketing pamphlet for your brand, and services the equipment. You set your prices and keep the session revenue.",
   size=10.6, color=MUTED, lh=5.2)
 y += 8
 gap = 4
@@ -253,6 +253,7 @@ yr = bullets(yr+3.5, [
   "**Initial staff training.** Hands-on training with the chamber, so your team learns by running it.",
   "**Staff runbook.** A written runbook your staff can follow day to day and use to train new team members.",
   "**Template legal consent forms.** Ready-to-use client consent and waiver templates for your intake process.",
+  "**A marketing pamphlet for your brand.** We help you craft a client-facing pamphlet, in your brand, that explains the sessions and helps you sign up new clients.",
   "**Equipment service.** We service and maintain the chamber and machine.",
   "**Ongoing support.** Call or text with questions. If something is not working, we fix it.",
 ], x=xr, w=COL, size=9.1, lh=4.2, gap=1.6)
