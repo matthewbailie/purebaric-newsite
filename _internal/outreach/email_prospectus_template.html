@@ -1,15 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Copy email for Gmail</title>
-<style>
-body{margin:0;background:#efe7db;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#2b2320}
-.bar{position:sticky;top:0;z-index:2;background:#2b2320;color:#f7f2ea;padding:14px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.bar button{background:#b8654d;color:#fff;border:0;border-radius:8px;padding:12px 20px;font-size:15px;font-weight:700;cursor:pointer}
-.bar span{font-size:14px}
-</style></head>
-<body>
-<div class="bar"><button id="copy">Copy email</button><span id="msg">Then click in a new Gmail message and paste.</span></div>
-<div id="email">
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Purebaric business prospectus</title>
+</head>
+<body style="margin:0; padding:0; background:#efe7db; font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; color:#2b2320; line-height:1.6;">
+  <div style="display:none; font-size:1px; color:#efe7db; line-height:1px; max-height:0; max-width:0; overflow:hidden;">One chamber, an estimated $6,686 a month in net revenue. Prospectus attached.</div>
   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background:#efe7db;">
     <tr>
       <td align="center" style="padding:28px 12px;">
@@ -30,7 +27,7 @@ body{margin:0;background:#efe7db;font-family:-apple-system,'Segoe UI',Roboto,Hel
             <td style="padding:32px 40px 8px;">
               <p style="margin:0 0 8px; font-size:12px; letter-spacing:0.16em; text-transform:uppercase; font-weight:700; color:#9a4f3a;">Business prospectus</p>
               <h1 style="margin:0 0 18px; font-family:Georgia,'Times New Roman',serif; font-size:26px; line-height:1.25; font-weight:700; color:#2b2320;">A new revenue-generating amenity for your business</h1>
-              <p style="margin:0 0 16px; font-size:16px;">Hi Greg,</p>
+              <p style="margin:0 0 16px; font-size:16px;">Hi [First name],</p>
               <p style="margin:0 0 16px; font-size:16px;">Thanks for your interest in adding a Purebaric chamber to your business. Here is what one chamber can earn at moderate usage, an average of four sessions a day at $75 a session:</p>
             </td>
           </tr>
@@ -62,7 +59,7 @@ body{margin:0;background:#efe7db;font-family:-apple-system,'Segoe UI',Roboto,Hel
           </tr>
           <tr>
             <td style="padding:16px 40px 0;">
-              <p style="margin:0; font-size:16px;">We install the chamber, train your staff, and service the equipment. You set your prices and keep the session revenue. The full numbers are in the attached prospectus and pamphlet.</p>
+              <p style="margin:0; font-size:16px;">We install the chamber, train your staff, and service the equipment. You set your prices and keep the session revenue. The full numbers are in the attached business prospectus.</p>
             </td>
           </tr>
           <tr>
@@ -93,17 +90,5 @@ body{margin:0;background:#efe7db;font-family:-apple-system,'Segoe UI',Roboto,Hel
       </td>
     </tr>
   </table>
-</div>
-<script>
-document.getElementById('copy').onclick=async function(){
-  var el=document.getElementById('email'),msg=document.getElementById('msg'),ok=false;
-  try{
-    await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([el.innerHTML],{type:'text/html'}),'text/plain':new Blob([el.innerText],{type:'text/plain'})})]);ok=true;
-  }catch(e){
-    var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);
-    ok=document.execCommand('copy');s.removeAllRanges();
-  }
-  msg.textContent=ok?'Copied. Click in a new Gmail message and paste.':'Copy failed. Press Cmd+A, then Cmd+C instead.';
-};
-</script>
-</body></html>
+</body>
+</html>
