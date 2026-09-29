@@ -133,7 +133,7 @@ src_im = Image.open(B+"chamber-living-branded.jpg")
 ih = W * src_im.height / src_im.width
 img = crop(B+"chamber-living-branded.jpg", "b_cover.jpg", W, ih)
 pdf.image(img, x=px(2), y=cy+8, w=W, h=ih)
-pdf.set_xy(px(2)+M, cy+8+ih+10); pdf.set_font("Georgia","B",19); pdf.set_text_color(*TERRA_D)
+pdf.set_xy(px(2)+M, cy+8+ih+10); pdf.set_font("Georgia","B",19); pdf.set_text_color(*INK)
 pdf.multi_cell(CW, 7.9, "Beauty Rest,\nUnder Pressure", align="L")
 y = para(2, pdf.get_y()+4,
   "Hyperbaric oxygen sessions, now part of your beauty routine. Sixty quiet minutes for your skin and for you.",
