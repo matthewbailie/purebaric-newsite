@@ -438,36 +438,3 @@ if (bookingFlow && bookingUnavailable) {
     })
     .catch(() => { /* fail open: keep the booking form visible */ });
 }
-
-// Cookie Consent Logic
-(function initCookieConsent() {
-  const banner = document.getElementById('cookieConsentBanner');
-  const btnAccept = document.getElementById('cookieAcceptBtn');
-  const btnDecline = document.getElementById('cookieDeclineBtn');
-  
-  if (!banner || !btnAccept || !btnDecline) return;
-
-  const consentStatus = localStorage.getItem('purebaric_cookie_consent');
-  
-  // Show banner if no consent choice has been made yet
-  if (!consentStatus) {
-    // Slight delay so the slide-in animation is visible
-    setTimeout(() => {
-      banner.hidden = false;
-    }, 500);
-  }
-
-  function handleConsent(choice) {
-    localStorage.setItem('purebaric_cookie_consent', choice);
-    banner.hidden = true;
-    if (choice === 'accepted') {
-      if (typeof window.loadPurebaricAnalytics === 'function') window.loadPurebaricAnalytics();
-    } else if (typeof window.declinePurebaricAnalytics === 'function') {
-      window.declinePurebaricAnalytics();
-    }
-    track('cookie_consent', { status: choice });
-  }
-
-  btnAccept.addEventListener('click', () => handleConsent('accepted'));
-  btnDecline.addEventListener('click', () => handleConsent('declined'));
-})();

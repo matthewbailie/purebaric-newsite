@@ -221,12 +221,6 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .foot-bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:34px;padding-top:18px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:12px;color:#9d8f81}
 .foot-disc{max-width:560px}
 
-/* ── cookie banner ── */
-.cookie{position:fixed;left:0;right:0;bottom:0;z-index:80;background:var(--card);border-top:1px solid var(--line)}
-.cookie-in{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 24px}
-.cookie p{font-size:13px;color:var(--muted)}.cookie a{color:var(--terra-d);text-decoration:underline}
-.cookie-btns{display:flex;gap:10px;flex-shrink:0}
-.cookie .btn{padding:9px 16px;font-size:13px}
 
 /* ── lightbox ── */
 .lb{position:fixed;inset:0;z-index:90;background:rgba(26,20,15,.92);display:flex;align-items:center;justify-content:center}
@@ -244,7 +238,6 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   .layout{grid-template-columns:1fr;gap:0;padding:8px 0 0}aside{display:none}
   .specs,.chambers,.steps,.math,.articles{grid-template-columns:1fr}
   body{padding-bottom:80px}.mobilebar{display:flex}
-  .cookie{bottom:72px}.cookie-in{flex-direction:column;align-items:stretch;text-align:center}
   .foot-grid{grid-template-columns:1fr 1fr}.foot-brand{grid-column:1/-1}
 }
 </style>
@@ -487,13 +480,6 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   </div>
 </div>
 
-<div class="cookie" id="cookie" hidden>
-  <div class="wrap cookie-in">
-    <p>We use optional analytics and advertising-measurement cookies to understand traffic and measure ad performance. We do not use them for personalized ads. See our <a href="/privacy">privacy policy</a>.</p>
-    <div class="cookie-btns"><button class="btn btn-ghost" onclick="cookieChoice(false)">Decline</button><button class="btn btn-primary" onclick="cookieChoice(true)">Accept</button></div>
-  </div>
-</div>
-
 <div class="lb" id="lb" hidden onclick="lbBackdrop(event)">
   <button class="lb-x" onclick="lbClose()" aria-label="Close gallery">×</button>
   <button class="lb-nav lb-prev" onclick="lbGo(-1,event)" aria-label="Previous photo">‹</button>
@@ -547,9 +533,6 @@ function servedZip(z){z=String(z||'').trim();if(!/^\d{5}$/.test(z))return false;
 fetch('/api/service-area').then(function(r){return r.json();}).then(function(j){if(j&&(j.prefixes||j.zips)){PB_AREA={prefixes:j.prefixes||[],zips:j.zips||[]};checkZip('');checkZip('2');}}).catch(function(){});
 function checkZip(s){s=s||'';var el=document.getElementById('zip'+s),n=document.getElementById('zipNote'+s);if(!el||!n)return;var z=el.value.trim();if(!/^\d{5}$/.test(z)){n.hidden=true;return;}if(servedZip(z)){n.hidden=false;n.className='zipnote ok';n.textContent='✓ We deliver to '+z+'.';}else{n.hidden=false;n.className='zipnote warn';n.textContent=z+' is outside our delivery area. You can still request, we\'ll reach out if we can help.';}}
 
-/* cookie consent */
-(function(){try{if(!localStorage.getItem('pb_cookie'))document.getElementById('cookie').hidden=false;}catch(e){}})();
-function cookieChoice(accept){try{localStorage.setItem('pb_cookie',accept?'accept':'decline');}catch(e){}document.getElementById('cookie').hidden=true;if(accept){window.loadPurebaricAnalytics&&window.loadPurebaricAnalytics();}else{window.declinePurebaricAnalytics&&window.declinePurebaricAnalytics();}}
 
 /* photo lightbox */
 var LBI=['/images/chamber-living.webp','/images/chamber-hero.jpg','/images/chamber-room.webp','/images/chamber-side.jpg'];

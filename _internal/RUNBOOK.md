@@ -380,7 +380,7 @@ Customer testimonials with a moderation gate. **No star ratings** by design — 
 - **Accept** (`loadPurebaricAnalytics`): re-grants the three measurement signals (personalization stays denied) and ensures the tag is loaded.
 - **Decline** (`declinePurebaricAnalytics`): denies all four and remembers it (`pb_cookie='decline'`).
 - If Purebaric ever advertises **outside Utah/into the EEA**, switch to region-aware consent (deny-by-default there) before expanding. `ad_personalization` stays denied unless the owner enables remarketing.
-- The cookie banner remains as an opt-out + transparency control; `/privacy` "Analytics and cookies" describes the opt-out model. Keep banner text + privacy + this file in sync.
+- **Cookie banner removed 2026-09-28** (owner decision: US-only business). The opt-out control is now the "Turn off analytics on this device" button on `/privacy` ("Analytics and cookies"), which calls `declinePurebaricAnalytics`. Visitors who declined on the old banner stay opted out. Keep privacy + this file in sync.
 
 **Events (NEVER pass PII — only allowlisted scalar values, never a form/FormData/API response/ZIP/free text):** `select_rental_plan`, `service_area_check` (result only, never the ZIP), `booking_form_start`, `booking_request_submit` (accepted reservation request), `close_convert_lead` (admin created/linked the scheduled rental), `booking_request_error`, `contact_submit`, `waitlist_join`.
 
