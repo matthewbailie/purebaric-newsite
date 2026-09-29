@@ -114,6 +114,7 @@
             <option>Service area inquiry</option>
             <option>Safety information / physician-clearance process</option>
             <option>Custom or extended rental</option>
+            <option>Business rental</option>
             <option>Existing rental support</option>
             <option>Practitioner referral program</option>
             <option>Press or partnership</option>
@@ -138,7 +139,7 @@
         <p class="foot-desc">Professional-grade mild hyperbaric oxygen therapy brought to your home, delivery, setup, and support included, for less than the cost of a single month at a clinic.</p>
       </div>
       <div class="foot-col"><h5>Service</h5><ul>
-        <li><a href="/how-it-works">How it works</a></li><li><a href="/chambers">Chambers</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/service-area">Service area</a></li><li><a href="/book">Reserve</a></li><li><a href="/waitlist">Waitlist</a></li></ul></div>
+        <li><a href="/how-it-works">How it works</a></li><li><a href="/chambers">Chambers</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/service-area">Service area</a></li><li><a href="/business">For businesses</a></li><li><a href="/book">Reserve</a></li><li><a href="/waitlist">Waitlist</a></li></ul></div>
       <div class="foot-col"><h5>Company</h5><ul>
         <li><a href="/about">About</a></li><li><a href="/reviews">Reviews</a></li><li><a href="/faq">FAQ</a></li><li><a href="/contact">Contact</a></li><li><a href="/safety">Safety &amp; disclosures</a></li><li><a href="/terms">Terms</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/sms-consent">SMS Consent</a></li></ul></div>
       <div class="foot-col"><h5>Get in touch</h5><ul>
@@ -165,7 +166,7 @@
 <script>
 /* prefill topic from ?topic= (e.g. service-area page links here) */
 (function(){
-  var map={'service-area':'Service area inquiry','rental':'Question about a rental','medical':'Safety information / physician-clearance process','custom':'Custom or extended rental','support':'Existing rental support','practitioner':'Practitioner referral program'};
+  var map={'service-area':'Service area inquiry','rental':'Question about a rental','medical':'Safety information / physician-clearance process','custom':'Custom or extended rental','business':'Business rental','support':'Existing rental support','practitioner':'Practitioner referral program'};
   var t=new URLSearchParams(location.search).get('topic');
   if(t&&map[t]){var sel=document.getElementById('cTopic');sel.value=map[t];}
 })();
