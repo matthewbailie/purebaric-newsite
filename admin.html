@@ -3278,7 +3278,14 @@
     }));
   }
   // Capture current field state into _notify before a re-render (add/remove).
-  function syncNotifyState() { _notify.emails = readEmailCards(); _notify.sms = readSmsCards(); }
+  // The cards never carry the server's consent record (readSmsCards sends only consentChecked), so keep
+  // each row's existing record across a re-render; otherwise an enrolled number shows as unchecked
+  // after "+ Add phone number" and a later Save would switch its texts off.
+  function syncNotifyState() {
+    const prevSms = _notify.sms;
+    _notify.emails = readEmailCards();
+    _notify.sms = readSmsCards().map((r, i) => Object.assign(r, { consent: (prevSms[i] && prevSms[i].consent) || null }));
+  }
   function addNotifyEmail() { syncNotifyState(); _notify.emails.push({ label:'', email:'', events:['reservation_in'] }); renderNotifications(); }
   function removeNotifyEmail(i) { syncNotifyState(); _notify.emails.splice(i, 1); renderNotifications(); }
   // New SMS rows always start with the consent checkbox unchecked — never

@@ -66,7 +66,7 @@
 
 <section class="section" style="border-top:none">
   <div class="wrap legal">
-    <p class="updated">Last updated: September 26, 2026 (consent wording v2)</p>
+    <p class="updated">Last updated: September 29, 2026 (consent wording v2)</p>
 
     <p>Purebaric sends transactional website-notification text messages only to the Purebaric owner or another authorized administrator. These notifications alert an administrator when the Purebaric website receives:</p>
     <ul>
@@ -76,6 +76,15 @@
       <li>A weekly reminder that rentals are ending within the next 10 days (a count and the earliest end date, with a link to the admin portal; it contains no customer details)</li>
     </ul>
     <p><strong>Customers who submit these forms do not receive messages through this SMS program.</strong> Reservation requests and reviews are submitted by the general public; the text alerts described on this page go only to the administrator who enrolls their own number in the admin portal.</p>
+
+    <h2>Consent is optional, never forced, and never pre-selected</h2>
+    <ul>
+      <li>The SMS-consent checkbox is <strong>unchecked by default</strong> for every phone number, new or existing. The portal never pre-checks it.</li>
+      <li>Consenting to SMS is <strong>not a condition</strong> of using the admin portal, of any purchase, or of any Purebaric service. Every portal feature works with SMS turned off, and email notifications are available instead.</li>
+      <li>Enrolling takes <strong>two separate actions</strong>: the administrator checks the box, then selects the "Enable SMS notifications" button, which is disabled until the box is checked.</li>
+      <li>No message is sent to a number until its consent has been recorded. The date and time of consent, and who gave it, are stored with the number and shown in the portal.</li>
+      <li>Consent can be withdrawn at any time by replying STOP or by selecting "Disable SMS notifications" in the portal, which stops delivery immediately.</li>
+    </ul>
 
     <h2>How an administrator opts in</h2>
     <ol>
@@ -92,21 +101,28 @@
 
     <p>SMS enrollment is optional. Administrators can continue using the Purebaric admin portal without enabling text notifications.</p>
 
+    <h2>Sample messages</h2>
+    <p>Every message is a short alert telling the administrator to sign in to the admin portal. When a chamber is available, the reservation alert also carries a follow-up text template with a "[NAME]" placeholder, the rental length, monthly price, and delivery date. Messages never contain a customer's name, phone number, address, email, or other details.</p>
+    <div class="box">"Purebaric: A new reservation request was received. Sign in to the Purebaric admin portal to review it. Reply STOP to opt out or HELP for help."</div>
+    <div class="box">"Purebaric: A new out-of-area reservation request was received. Sign in to the Purebaric admin portal to review it. Reply STOP to opt out or HELP for help."</div>
+    <div class="box">"Purebaric: A new customer review was submitted. Sign in to the Purebaric admin portal to review it. Reply STOP to opt out or HELP for help."</div>
+    <div class="box">"Purebaric: 2 rentals end within the next 10 days (first: Oct 3). Review them or cancel Stripe subscriptions: https://purebaric.com/admin?endingSoon=1 Reply STOP to opt out or HELP for help."</div>
+
     <h2>What the opt-in process looks like</h2>
-    <p>The screenshots below are from the live admin portal. The administrator's mobile number is redacted; no Twilio credentials, tokens, or other secrets are ever shown or stored in this page.</p>
+    <p>The screenshots below are from the live admin portal, taken September 29, 2026. The administrator's real mobile number and email are redacted (the number shown in the first two images is a sample); no Twilio credentials, tokens, or other secrets are ever shown or stored in this page.</p>
 
     <figure class="sms-shot">
-      <img src="/images/sms-consent-optin.png" width="1000" height="780" alt="Admin Notifications page showing the redacted mobile-number field, the three notification categories (reservation request in area, reservation request out of area, new review), the SMS-consent checkbox unchecked with its full disclosure text and Terms of Service / Privacy Policy links, and a greyed-out, disabled Enable SMS notifications button beneath it.">
+      <img src="/images/sms-consent-optin.png?v=2" width="810" height="387" alt="Admin Notifications page showing a phone number card with the mobile-number field, the four notification categories, the SMS-consent checkbox unchecked by default with its full disclosure text and Terms of Service / Privacy Policy links, and a greyed-out, disabled Enable SMS notifications button beneath it.">
       <figcaption>The Notifications page before enrollment: mobile number, notification categories, and the unchecked consent checkbox with its full disclosure. The "Enable SMS notifications" button stays disabled until the box is checked.</figcaption>
     </figure>
 
     <figure class="sms-shot">
-      <img src="/images/sms-consent-detail.png" width="1400" height="450" alt="Close-up of the redacted mobile-number field, notification-category checkboxes, the unchecked SMS-consent checkbox with its complete disclosure text and Terms of Service / Privacy Policy links, and the disabled Enable SMS notifications button.">
+      <img src="/images/sms-consent-detail.png?v=2" width="1560" height="544" alt="Close-up of the mobile-number field, the notification-category checkboxes, the unchecked SMS-consent checkbox with its complete disclosure text and Terms of Service / Privacy Policy links, and the disabled Enable SMS notifications button.">
       <figcaption>A closer look at the consent checkbox and full disclosure language, unchecked by default, with the disabled enable button directly below it.</figcaption>
     </figure>
 
     <figure class="sms-shot">
-      <img src="/images/sms-consent-enabled.png" width="1000" height="850" alt="Admin Notifications page after checking the consent box and selecting Enable SMS notifications, showing a green “SMS notifications enabled” confirmation with the consent timestamp and a redacted administrator identity, plus a Disable SMS notifications button.">
+      <img src="/images/sms-consent-enabled.png?v=2" width="1060" height="510" alt="Admin Notifications page after checking the consent box and selecting Enable SMS notifications, showing a green “SMS notifications enabled” confirmation with the consent timestamp and a redacted mobile number, plus a Disable SMS notifications button.">
       <figcaption>After the administrator checks the box and selects "Enable SMS notifications": a confirmation showing the consent timestamp, and a "Disable SMS notifications" button that stops delivery immediately.</figcaption>
     </figure>
 
