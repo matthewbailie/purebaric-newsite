@@ -246,8 +246,13 @@ async function notifyAdminBooking(b, routing = {}, to) {
   const subjectTag = routing.autoNotified === "available" ? " [chamber available]" :
                      routing.autoNotified === "pending" ? " [pending availability]" :
                      routing.autoNotified === "waitlist" ? " [to waitlist]" : "";
+  const isBiz = b.rentalType === "business";
+  const bizBlock = isBiz
+    ? `<p style="padding:12px 14px; background:#2b2320; color:#f3ead9; border-radius:8px; margin:0 0 16px;"><strong>Business rental request</strong><br>Business: ${escapeHtml(b.businessName || "(not given)")}. Came in through the For Businesses page; the business rate and agreement apply, not the home plans.</p>`
+    : "";
   const html = wrap(`
-    <p style="margin:0 0 16px;"><strong style="color:#2b2320;">New booking request</strong></p>
+    <p style="margin:0 0 16px;"><strong style="color:#2b2320;">${isBiz ? "New business rental request" : "New booking request"}</strong></p>
+    ${bizBlock}
     ${routingBlock}
     ${followUpBlock}
     <p style="margin:0 0 16px;">${escapeHtml(name)} &lt;${escapeHtml(b.email)}&gt;<br>
@@ -261,7 +266,8 @@ async function notifyAdminBooking(b, routing = {}, to) {
     <p style="margin:0 0 16px;"><strong style="color:#2b2320;">Safety screening flags:</strong> ${flags}</p>
     <p style="margin:0;"><a href="https://purebaric.com/admin.html" style="color:#b8654d;">View in admin →</a></p>
   `);
-  return send({ to: adminTo(to), subject: `Booking request: ${name}${subjectTag}`, html });
+  const subjectWho = isBiz ? `${b.businessName || name} (business)` : name;
+  return send({ to: adminTo(to), subject: `${isBiz ? "Business rental request" : "Booking request"}: ${subjectWho}${subjectTag}`, html });
 }
 
 // Admin-facing: a request came in for a ZIP outside the delivery area.
@@ -270,7 +276,7 @@ async function notifyAdminOutOfArea(b, to) {
   const name = `${b.firstName || ""} ${b.lastName || ""}`.trim() || "-";
   const address = [b.streetAddress, b.city, b.state, b.zip].filter(Boolean).join(", ") || "-";
   const html = wrap(`
-    <p style="margin:0 0 16px;"><strong style="color:#2b2320;">Out-of-area request</strong></p>
+    <p style="margin:0 0 16px;"><strong style="color:#2b2320;">Out-of-area request${b.rentalType === "business" ? ` (business: ${escapeHtml(b.businessName || "not given")})` : ""}</strong></p>
     <p style="padding:12px 14px; background:#f4e7df; color:#7a4a1e; border-radius:8px; margin:0 0 16px;"><strong>ZIP ${or(b.zip)} is outside the delivery area.</strong><br>No confirmation was sent to the customer. Reach out only if you can serve this address.</p>
     <p style="margin:0 0 16px;">${escapeHtml(name)} &lt;${escapeHtml(b.email)}&gt;<br>
     Phone: ${or(b.phone)}<br>
@@ -314,9 +320,11 @@ async function deliverAdminSms({ numbers, gateways, text, subject, twilio }) {
 // SMS never includes customer details (RUNBOOK §7f); the term, price and
 // delivery date aren't identifying.
 async function notifyAdminSms(b, { outOfArea, gateways, numbers, twilio, followUp } = {}) {
+  // The type is not personal data, so it may appear in the text; the business name stays out, like every other detail.
+  const kind = b.rentalType === "business" ? "business rental request" : "reservation request";
   const lead = outOfArea
-    ? "Purebaric: A new out-of-area reservation request was received. Sign in to the Purebaric admin portal to review it."
-    : "Purebaric: A new reservation request was received. Sign in to the Purebaric admin portal to review it.";
+    ? `Purebaric: A new out-of-area ${kind} was received. Sign in to the Purebaric admin portal to review it.`
+    : `Purebaric: A new ${kind} was received. Sign in to the Purebaric admin portal to review it.`;
   const copyText = followUp
     ? `\n\nFollow-up text to copy:\n${buildFollowUpText({ rentalLength: b.rentalLength, startDate: b.startDate, monthlyRate: followUp.monthlyRate })}`
     : "";
@@ -360,7 +368,7 @@ async function notifyAdminEndingSoon(list, { to, today, days, chambers = [], mac
       ? `<p style="margin:0; font-size:13px; color:#4a5d24;">Stripe cancellation already requested (${escapeHtml(rental.stripeCancelRequestedAt.slice(0, 10))}).</p>`
       : `<p style="margin:0;"><a href="${cancelLink(rental.id)}" style="display:inline-block; padding:10px 16px; background:#b8654d; color:#ffffff; text-decoration:none; border-radius:8px; font-weight:600;">Cancel Stripe subscription →</a></p>`;
     return `<div style="margin:0 0 16px; padding:14px 16px; background:#fffdf9; border:1px solid #e6dccd; border-radius:8px;">
-      <p style="margin:0 0 8px;"><strong style="color:#2b2320;">${escapeHtml(renter.name || "Renter")}</strong> ends <strong>${escapeHtml(long(rental.endDate))}</strong> (${when})</p>
+      <p style="margin:0 0 8px;"><strong style="color:#2b2320;">${escapeHtml(renter.name || "Renter")}</strong>${rental.rentalType === "business" ? ` <span style="font-size:12px; color:#9a4f3a;">(business${rental.businessName ? ": " + escapeHtml(rental.businessName) : ""})</span>` : ""} ends <strong>${escapeHtml(long(rental.endDate))}</strong> (${when})</p>
       <p style="margin:0 0 10px;">Email: ${or(renter.email)}<br>Phone: ${or(renter.phone)}<br>Address: ${escapeHtml(address)}<br>
       ${escapeHtml(rental.startDate)} to ${escapeHtml(rental.endDate)} at ${escapeHtml(rate)} · Chamber: ${or(chamber)} · Machine: ${or(machine)}</p>
       ${action}

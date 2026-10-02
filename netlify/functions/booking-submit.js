@@ -11,6 +11,7 @@ const {
 } = require("./_lib/storage");
 const { monthsFromLength } = require("./_lib/followup");
 const { cleanGclid } = require("./_lib/analytics");
+const { cleanRentalType, cleanBusinessName } = require("./_lib/rental-type");
 const { zipServed } = require("./_lib/servicearea");
 const { smsForEvent, smsNumbersForEvent, emailsForEvent } = require("./_lib/notifications");
 const {
@@ -80,8 +81,11 @@ exports.handler = async (event) => {
     const analyticsConsent = typeof body.analytics_consent === "undefined"
       ? null
       : bool(body.analytics_consent);
+    const rentalType = cleanRentalType(body.rental_type);
     const booking = await createBooking({
       firstName, lastName, email,
+      rentalType,
+      businessName: rentalType === "business" ? cleanBusinessName(body.business_name) : "",
       phone: (body.phone || body.customer_phone || "").trim(),
       zip,
       streetAddress: (body["street-address"] || "").trim(),

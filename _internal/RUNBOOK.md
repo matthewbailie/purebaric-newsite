@@ -338,6 +338,14 @@ The code is complete and correct; nobody has entered Stripe credentials yet. **V
 
 ---
 
+### 7f2. Rental type: residential or business (added 2026-10-02)
+
+- Every rental and booking carries `rentalType` (`residential` | `business`, default residential; records older than this date have no field and read as residential) and, for business, `businessName`. Cleaners live in `_lib/rental-type.js` (tested in `test/rental-type.test.js`); `admin-rentals.js` and `admin-bookings.js` store them, `booking-submit.js` reads `rental_type` / `business_name` from the public form.
+- **Public side:** `/business` sends people to `/book?type=business`. In that mode `book.html` adds `body.biz`, shows the business banner and a required Business name field, hides the length slider and discount rows, shows the $979/mo + $500 setup summary, and submits `rental_type=business`, `business_name`, `rental-length=month to month`. Plain `/book` is unchanged.
+- **Admin side:** Rentals form has a Rental type select (business reveals Business name and defaults a new rental's rate to 979); a second filter row (All types / Residential / Business); rows and details show a Business pill and name; Edit and "→ Rental" from a request carry the type across. Rental requests show a Business badge and a "Rental type" details row. Customers get a Business pill on the card. Home's "Active subscribers" sub-line adds "· N business".
+- **Email/SMS:** admin booking email gets a business block and subject "Business rental request: <business> (business)"; out-of-area and ending-soon emails tag business rentals; the SMS lead says "business rental request" (no business name, per §7f).
+- Not done: separate business pricing in `/api/pricing`, a business-specific waiver upload slot (attach the business agreement in the same Waiver column), and dashboard revenue split by type.
+
 ### 7g. Weekly "rentals ending soon" digest + Stripe cancel (added 2026-09-26, reworked same day)
 
 - **Trigger:** `netlify/functions/rental-ending-notify.js`, a Netlify scheduled function (runs on Netlify, no one's computer needed): Mondays `0 15 * * 1` UTC (≈ 9 AM Utah in summer). It looks ahead **10 days** (`LOOKAHEAD_DAYS` in `_lib/rental-ending.js`, "a week and a half"; must stay > 7 so no rental slips between weekly runs) and sends **one digest email** plus **one text** listing every `active`/`scheduled` rental whose end date falls in that window. Nothing is sent when none end. It is a digest, not a once-per-rental alert: a rental can appear in two consecutive weeks (a natural reminder); no per-rental "sent" stamp. Rule + SMS wording are pure and tested in `test/rental-ending.test.js` (server `rentalsEndingSoon` and the client mirror `endingSoon` in `dashboard-metrics.js` are asserted equal).

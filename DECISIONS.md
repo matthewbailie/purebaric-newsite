@@ -69,3 +69,10 @@
 **Context:** The first webhook overwrote the paid amount with the latest single payment and ignored payments without a rental_id (subscription and dashboard payments), so monthly payments never added up.
 **Alternatives considered:** Adding each event's amount to the total would double-count replayed events and miss earlier payments; requiring a rental_id on every payment would exclude Stripe subscriptions.
 **Status:** Confirmed
+
+## Rental type on every rental and request (2026-10-02)
+
+**Decision:** Rentals and rental requests carry a `rentalType` of `residential` (default) or `business`, plus a `businessName` for business. The owner sets it in the admin; a request made from the For Businesses page (`/book?type=business`) arrives already marked business. Pricing, filters, badges and email subjects key off it.
+**Context:** Business placements (gyms, salons, clinics) run on a different rate, agreement and sales process than home rentals, and the owner wanted to tell them apart in the portal without asking home customers to self-classify.
+**Alternatives considered:** A separate "business rentals" tab (duplicates every rental feature); inferring business from the rate (fragile); a customer-level flag only (a business contact can also rent for home).
+**Status:** Confirmed

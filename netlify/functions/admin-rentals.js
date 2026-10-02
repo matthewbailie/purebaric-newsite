@@ -27,6 +27,8 @@ function cleanRateType(value) {
 // "Historical rental": a past rental recorded after the fact. Only a flag on the
 // record (it unlocks every chamber/machine in the admin form); it changes no
 // server-side rules, so date conflicts on a unit are still detected.
+const { cleanRentalType, cleanBusinessName } = require("./_lib/rental-type");
+
 function cleanHistorical(value) {
   return value === true || value === "true" || value === "on";
 }
@@ -109,6 +111,8 @@ exports.handler = async (event, context) => {
         renter: buildRenter(body),
         notes: body.notes || "",
         historical: cleanHistorical(body.historical),
+        rentalType: cleanRentalType(body.rentalType),
+        businessName: cleanRentalType(body.rentalType) === "business" ? cleanBusinessName(body.businessName) : "",
       };
       buildPaymentPatch(body, rentalData);
       const rental = await createRental(rentalData);
@@ -146,6 +150,10 @@ exports.handler = async (event, context) => {
       if (typeof body.rateType !== "undefined") patch.rateType = cleanRateType(body.rateType);
       if (typeof body.notes === "string") patch.notes = body.notes;
       if (typeof body.historical !== "undefined") patch.historical = cleanHistorical(body.historical);
+      if (typeof body.rentalType !== "undefined") {
+        patch.rentalType = cleanRentalType(body.rentalType);
+        patch.businessName = patch.rentalType === "business" ? cleanBusinessName(body.businessName) : "";
+      }
       if (typeof body.chamberId === "string") patch.chamberId = body.chamberId;
       if (typeof body.machineId !== "undefined") patch.machineId = body.machineId || null;
       if (body.renterName || body.renterEmail || body.renterPhone || body["renter-name"]) {

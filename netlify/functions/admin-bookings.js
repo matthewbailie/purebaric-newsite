@@ -7,6 +7,7 @@ const {
   store,
   STORES,
 } = require("./_lib/storage");
+const { cleanRentalType, cleanBusinessName } = require("./_lib/rental-type");
 const { requireAuth, parseBody, parsePathSegments, json } = require("./_lib/admin");
 const { sendRentalConfirmed } = require("./_lib/analytics");
 
@@ -33,6 +34,10 @@ exports.handler = async (event, context) => {
         patch.status = body.status;
       }
       if (typeof body.adminNotes === "string") patch.adminNotes = body.adminNotes;
+      if (typeof body.rentalType !== "undefined") {
+        patch.rentalType = cleanRentalType(body.rentalType);
+        patch.businessName = patch.rentalType === "business" ? cleanBusinessName(body.businessName) : "";
+      }
       if (typeof body.convertedRentalId === "string") patch.convertedRentalId = body.convertedRentalId;
       let analyticsResult = null;
 
