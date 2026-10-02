@@ -11,8 +11,8 @@ function runs(text, o = {}) {
   const parts = String(text).split(/(\*\*[^*]+\*\*)/g).filter(Boolean);
   return parts.map(s => s.startsWith("**") ? new TextRun({ text: s.slice(2, -2), bold: true, font: FONT, size: o.size ?? 22, color: o.color }) : new TextRun({ text: s, font: FONT, size: o.size ?? 22, bold: o.bold, italics: o.italics, color: o.color, allCaps: o.caps }));
 }
-const h1 = t => new Paragraph({ heading: HeadingLevel.HEADING_1, spacing: { before: 280, after: 120 }, children: [new TextRun({ text: t, bold: true, font: FONT, size: 26, color: TERRA })] });
-const h2 = t => new Paragraph({ heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 80 }, children: [new TextRun({ text: t, bold: true, font: FONT, size: 22, color: INK })] });
+const h1 = t => new Paragraph({ heading: HeadingLevel.HEADING_1, keepNext: true, spacing: { before: 280, after: 120 }, children: [new TextRun({ text: t, bold: true, font: FONT, size: 26, color: TERRA })] });
+const h2 = t => new Paragraph({ heading: HeadingLevel.HEADING_2, keepNext: true, spacing: { before: 200, after: 80 }, children: [new TextRun({ text: t, bold: true, font: FONT, size: 22, color: INK })] });
 const bullet = (t, lvl = 0) => new Paragraph({ numbering: { reference: "bullets", level: lvl }, spacing: { after: 80, line: 276 }, children: runs(t) });
 const num = (t) => new Paragraph({ numbering: { reference: "numbers", level: 0 }, spacing: { after: 80, line: 276 }, children: runs(t) });
 const caps = t => new Paragraph({ spacing: { after: 120, line: 276 }, children: [new TextRun({ text: t, font: FONT, size: 22, bold: true })] });
@@ -126,11 +126,12 @@ children.push(p("11.9 **Counterparts and electronic signatures.** This Agreement
 children.push(p("11.10 **Opportunity to review.** The Business confirms that it has read this Agreement, has had the opportunity to consult an attorney, understands that it is giving up legal rights including the right to sue the Released Parties for ordinary negligence, and signs voluntarily."));
 
 // ---------- Signatures ----------
+children.push(new Paragraph({ children: [new PageBreak()] }));
 children.push(h1("Signatures"));
 children.push(p("By signing below, each party agrees to this Agreement, including the Release of Liability in Section 8 and the Indemnification in Section 9."));
 children.push(...blank());
 const sigTable = new Table({ width: { size: 9360, type: WidthType.DXA }, columnWidths: [4680, 4680], borders: { top: { style: BorderStyle.NONE }, bottom: { style: BorderStyle.NONE }, left: { style: BorderStyle.NONE }, right: { style: BorderStyle.NONE }, insideHorizontal: { style: BorderStyle.NONE }, insideVertical: { style: BorderStyle.NONE } },
-  rows: [new TableRow({ children: [
+  rows: [new TableRow({ cantSplit: true, children: [
     new TableCell({ width: { size: 4680, type: WidthType.DXA }, margins: { right: 300 }, children: [
       new Paragraph({ spacing: { after: 300 }, children: [new TextRun({ text: "BUSINESS", bold: true, font: FONT, size: 22 })] }),
       line("Signature:", 4300), line("Name:", 4300), line("Title:", 4300), line("Date:", 4300)] }),
@@ -171,6 +172,7 @@ children.push(bullet("Certificate of insurance received:  ☐ Yes   ☐ To follo
 children.push(p("Business initials: ________     Purebaric initials: ________     Date: ______________"));
 
 // ---------- Exhibit B ----------
+children.push(new Paragraph({ children: [new PageBreak()] }));
 children.push(h1("Exhibit B: Required Client Consent"));
 children.push(p("Before a client's first session, the Business will have the client sign a consent form that contains at least the following. Purebaric supplies a template that meets these requirements; the Business may use its own form only if it contains each item."));
 children.push(num("A statement that the session is a general wellness and relaxation amenity, is not a medical treatment, and that no diagnosis, treatment, or cure is offered."));
@@ -182,6 +184,7 @@ children.push(num("Emergency contact information and an acknowledgment that staf
 children.push(num("For a client under 18, the signature of a parent or legal guardian who will be present during the session."));
 
 // ---------- Exhibit C ----------
+children.push(new Paragraph({ children: [new PageBreak()] }));
 children.push(h1("Exhibit C: Health Screening and Safety Rules"));
 children.push(h2("Conditions requiring written physician clearance before any session"));
 children.push(p("A client who reports any of the following may not use the chamber without written clearance from a licensed physician:", { color: MUTED }));
