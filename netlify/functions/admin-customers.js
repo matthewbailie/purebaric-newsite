@@ -33,7 +33,7 @@ exports.handler = async (event, context) => {
 
     if (method === "POST" && !id) {
       const body = parseBody(event);
-      if (!body.email) return json(400, { error: "email required" });
+      if (!String(body.name || "").trim() && !body.email && !body.phone) return json(400, { error: "a name, email, or phone is required" });
       const customer = await createManualCustomer({
         email: body.email,
         name: body.name || "",

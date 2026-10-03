@@ -519,7 +519,12 @@ async function listManualCustomers() {
 // once a manualId already exists on the customer it fetched.
 async function createManualCustomer(data) {
   const email = normalizeEmail(data.email);
-  const existing = (await listManualCustomers()).find((c) => normalizeEmail(c.email) === email);
+  const phone = String(data.phone || "").replace(/\D/g, "");
+  // Merge into an existing record only on a real match: same email, or (no email) same phone number.
+  const all = await listManualCustomers();
+  const existing = email
+    ? all.find((c) => normalizeEmail(c.email) === email)
+    : (phone ? all.find((c) => !normalizeEmail(c.email) && String(c.phone || "").replace(/\D/g, "") === phone) : null);
   if (existing) {
     return updateManualCustomer(existing.id, {
       name: data.name || "",
