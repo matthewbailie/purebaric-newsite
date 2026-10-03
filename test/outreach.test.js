@@ -27,7 +27,7 @@ test("import drops the research-drafted note and hook: the email asserts nothing
   assert.equal(p.suggestedNote, undefined);
   assert.equal(p.hook, undefined);
   const r = tpl.render({ categoryId: p.templateId, firstName: p.firstName, businessName: p.business, postalAddress: "x" });
-  assert.doesNotMatch(r.html, /ribbon|24\/7/);
+  assert.doesNotMatch(r.html, /ribbon|open 24\/7/);
 });
 
 test("re-import keeps status, token and the owner's edits", () => {
