@@ -873,6 +873,7 @@
 
       <div id="orSettingsCard" class="form-card open is-loading" style="display:block;max-width:820px;margin-bottom:18px;">
         <h3 style="font-size:16px;font-weight:700;margin:0 0 10px;">Sender settings</h3>
+        <div id="orSettingsLoading" class="renter-line" style="margin:0 0 12px;"><span class="or-spin"></span>Loading your saved settings…</div>
         <div class="keyform">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
             <div class="keyrow"><label>From name</label><input id="orFromName" autocomplete="off" placeholder="Matthew Bailie, Purebaric"></div>
@@ -906,8 +907,8 @@
       <style>
         .or-spin { display:inline-block; width:14px; height:14px; border:2px solid rgba(43,35,32,.2); border-top-color:var(--terracotta); border-radius:50%; animation:orspin .8s linear infinite; vertical-align:-2px; margin-right:6px; }
         @keyframes orspin { to { transform:rotate(360deg); } }
-        #orSettingsCard.is-loading input, #orSettingsCard.is-loading select, #orSettingsCard.is-loading button { opacity:.5; pointer-events:none; }
-        #orSettingsCard.is-loading h3::after { content:""; display:inline-block; width:14px; height:14px; margin-left:8px; border:2px solid rgba(43,35,32,.2); border-top-color:var(--terracotta); border-radius:50%; animation:orspin .8s linear infinite; vertical-align:-2px; }
+        #orSettingsCard.is-loading .keyform { filter:blur(3px); opacity:.55; pointer-events:none; user-select:none; }
+        #orSettingsCard:not(.is-loading) #orSettingsLoading { display:none; }
       </style>
       <div id="orStats" class="renter-line" style="margin:0 0 12px;"><span class="or-spin"></span>Loading outreach settings and prospects…</div>
 
