@@ -22,6 +22,10 @@
 .biz-hero{display:grid;grid-template-columns:1fr 1.2fr;gap:44px;align-items:center}
 .biz-hero img,.feature-img img{height:auto}
 .feature-img.soon img{filter:grayscale(.55) brightness(1.02) blur(14px);transform:scale(1.12)}
+.cta-band .cta-img{width:46%;max-width:none;height:auto;object-fit:fill;align-self:center}
+.chamber-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+@media(max-width:600px){.chamber-pair{grid-template-columns:1fr}}
+@media(max-width:820px){.cta-band .cta-img{width:100%;height:auto}}
 .biz-slides{position:relative;width:100%;aspect-ratio:1672/941;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
 .biz-slides .slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .8s ease}
 .biz-slides .slide.active{opacity:1}
@@ -104,7 +108,7 @@
       <p>Offer mild hyperbaric sessions to the members and clients you already serve. Purebaric installs the chamber, trains your staff, supplies your consent forms, helps you craft a marketing pamphlet for your brand, and services the equipment. You set your prices and keep the session revenue.</p>
       <div class="contact-cta">
         <h2>See if a chamber fits your business</h2>
-        <p>Book a free 15-minute call. We will talk you through your space, your clients, and the numbers for your business, with no obligation.</p>
+        <p>Call us and we will talk you through your space, your clients, and the numbers for your business, with no obligation.</p>
         <div class="btns">
           <a class="btn btn-primary" href="/book?type=business" onclick="window.trackPurebaricEvent?.('business_cta',{method:'request'})">Request a business rental</a>
           <a class="btn btn-ghost" href="tel:+18019010873" onclick="window.trackPurebaricEvent?.('business_cta',{method:'call'})">Call (801) 901-0873</a>
@@ -137,7 +141,7 @@
 <section class="section">
   <div class="wrap two-col">
     <div class="feature-text">
-      <span class="eyebrow2">The chamber</span>
+      <span class="eyebrow2">The chambers</span>
       <h2 style="margin-top:12px">What is a mild hyperbaric chamber?</h2>
       <p>A hyperbaric chamber is a sealed chamber in which the air pressure is raised above normal. A mild hyperbaric chamber is the soft-shell kind: the client lies down inside and the chamber pressurizes to <strong>1.5 ATA</strong>, about one and a half times normal air pressure.</p>
       <p>While inside, the client breathes <strong>95 to 99.9% oxygen</strong> through a mask.</p>
@@ -145,8 +149,10 @@
       <p>It is a wellness and recovery amenity, popular with athletes and active people.</p>
     </div>
     <div>
+      <div class="chamber-pair">
       <div class="feature-img"><img src="/images/chamber-side.jpg?v=2" width="1800" height="1013" loading="lazy" alt="Purebaric chamber with its machine beside it"><span class="spec-pill">1.5 ATA soft-shell chamber</span></div>
-      <div class="feature-img soon" style="margin-top:16px"><img src="/images/chamber-hero.jpg?v=2" width="1800" height="1013" loading="lazy" alt="1.5 ATA sitting chamber (coming soon)"><span class="soon-badge">Coming soon · Late Oct 2026</span><span class="spec-pill">1.5 ATA sitting chamber</span></div>
+      <div class="feature-img soon"><img src="/images/chamber-hero.jpg?v=2" width="1800" height="1013" loading="lazy" alt="1.5 ATA sitting chamber (coming soon)"><span class="soon-badge">Coming soon · Late Oct 2026</span><span class="spec-pill">1.5 ATA sitting chamber</span></div>
+      </div>
       <p class="renter-line" style="margin:10px 0 0;font-size:14px;color:var(--muted)">An upright, seated chamber at the same 1.5 ATA pressure, with easier entry and exit. <a href="/waitlist" style="color:var(--terra-d)">Join the waitlist →</a></p>
     </div>
   </div>
@@ -180,7 +186,7 @@
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow2">Your clients</span>
-      <h2>Who books sessions?</h2>
+      <h2>Why your existing customers will book sessions</h2>
       <p>A chamber earns the most where clients already pay for recovery and wellness. These are the businesses that fit, and the clients within them who typically book.</p>
     </div>
     <div class="cards">
@@ -196,10 +202,10 @@
 
 <section class="section">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head" style="max-width:none">
       <span class="eyebrow2">The numbers</span>
       <h2>What you can charge, and what you can expect to net</h2>
-      <p>Our estimates assume 60-minute sessions, open 6 days a week (26 days a month), at a blended $75 a session.</p>
+      <p>Our estimates assume 60-minute sessions, open 6 days a week (26 days a month), at an average $75 session.</p>
     </div>
     <div class="num-grid">
       <div>
@@ -236,7 +242,8 @@
     <div>
       <div class="section-head"><span class="eyebrow2">Getting started</span><h2>How it works</h2></div>
       <ol class="steps">
-        <li><strong>Talk with us.</strong> A short call about your space, clients, and goals.</li>
+        <li><strong>Submit a chamber reservation.</strong> Request a business rental online; there is no charge until we confirm.</li>
+        <li><strong>A quick call to align delivery</strong> and talk about your space, clients, and goals.</li>
         <li><strong>We deliver and install.</strong> We set up the chamber and machine at your business location.</li>
         <li><strong>We train your staff.</strong> Hands-on training so your team can run sessions with confidence.</li>
         <li><strong>You start selling sessions.</strong> Add it to your menu, packs, and memberships.</li>
@@ -275,10 +282,10 @@
 <section class="section">
   <div class="wrap">
     <div class="cta-band">
-      <img class="cta-img" src="/images/chamber-room.webp?v=2" loading="lazy" alt="Purebaric hyperbaric chamber">
+      <img class="cta-img" src="/images/chamber-clinic.webp" width="1672" height="941" loading="lazy" alt="Purebaric hyperbaric chamber in a physical therapy clinic">
       <div class="cta-text">
         <h2>See if a chamber fits your business</h2>
-        <p>Book a free 15-minute call. We will talk you through your space, your clients, and the numbers for your business, with no obligation. Call <a href="tel:+18019010873" style="font-weight:700">(801) 901-0873</a> or send us a message.</p>
+        <p>Call us and we will talk you through your space, your clients, and the numbers for your business, with no obligation. Call <a href="tel:+18019010873" style="font-weight:700">(801) 901-0873</a> or send us a message.</p>
         <a class="btn btn-primary" href="/book?type=business" onclick="window.trackPurebaricEvent?.('business_cta',{method:'request'})">Request a business rental →</a>
       </div>
     </div>
