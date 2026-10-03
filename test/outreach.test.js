@@ -44,6 +44,13 @@ test("sendBlocker refuses without postal address, email, template, or when alrea
   assert.equal(out.sendBlocker(out.markFailed(p, "boom"), settings), null, "a failed send may be retried");
 });
 
+test("a feed row with an initial status keeps it, and a customer is never sendable", () => {
+  const p = out.normalizeProspect({ business: "Rest Recovery Wellness (Ephraim)", industry: "Recovery studios and med spas", templateId: "recovery-studios-and-med-spas", city: "Ephraim", email: "", status: "customer" });
+  assert.equal(p.status, "customer");
+  assert.match(out.sendBlocker({ ...p, email: "x@y.com" }, out.cleanSettings({ postalAddress: "x" })), /status is customer/);
+  assert.equal(out.normalizeProspect({ business: "A", city: "B", status: "bogus" }).status, "new");
+});
+
 test("sentToday counts only today's real sends", () => {
   const now = new Date("2026-10-03T18:00:00Z");
   const ps = [{ sentAt: "2026-10-03T01:00:00Z" }, { sentAt: "2026-10-02T23:59:00Z" }, { sentAt: null }];

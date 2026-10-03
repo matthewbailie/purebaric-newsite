@@ -3713,8 +3713,8 @@
 
   // ───────── Outreach (business prospects) ─────────
   let _outreach = { prospects: [], stats: null, settings: null, templates: [], testRecipient: '' };
-  const OR_PILL = { new: 'pill-new', sent: 'pill-notified', bounced: 'pill-rejected', replied: 'pill-approved', interested: 'pill-approved', declined: 'pill-cancelled', unsubscribed: 'pill-archived', skipped: 'pill-expired', failed: 'pill-rejected' };
-  const OR_STATUSES = ['new', 'sent', 'bounced', 'replied', 'interested', 'declined', 'unsubscribed', 'skipped', 'failed'];
+  const OR_PILL = { new: 'pill-new', sent: 'pill-notified', bounced: 'pill-rejected', replied: 'pill-approved', interested: 'pill-approved', customer: 'pill-converted', declined: 'pill-cancelled', unsubscribed: 'pill-archived', skipped: 'pill-expired', failed: 'pill-rejected' };
+  const OR_STATUSES = ['new', 'sent', 'bounced', 'replied', 'interested', 'customer', 'declined', 'unsubscribed', 'skipped', 'failed'];
 
   async function loadOutreach() {
     const data = await api('/api/admin/outreach');
