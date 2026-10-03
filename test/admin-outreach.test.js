@@ -14,8 +14,7 @@ storage.store = (name) => ({
 });
 const email = require("../netlify/functions/_lib/email");
 const sent = [];
-let failNext = false;
-email.send = async (msg) => { if (failNext) { failNext = false; throw new Error("Resend API error [422]: bad address"); } sent.push(msg); return { data: { id: "re_" + sent.length } }; };
+email.send = async (msg) => { sent.push(msg); return { data: { id: "re_" + sent.length } }; };
 const admin = require("../netlify/functions/_lib/admin");
 admin.requireAuth = async () => null;
 admin.adminEmail = async () => "owner@test";
@@ -73,46 +72,47 @@ test("test send goes to the owner only, flagged as a test, even before the posta
   assert.equal(parse(await call("GET")).prospects.find(x => x.id === p.id).status, "new", "a test does not change status");
 });
 
-test("send is refused until the postal address is saved", async () => {
+test("manual and batch sends are refused without mailing or mutating prospect history", async () => {
   const p = ids.find(x => x.email);
-  const r = parse(await call("POST", "send", { ids: [p.id] }));
-  assert.equal(r.results[0].ok, false);
-  assert.match(r.results[0].reason, /postal address/);
-});
-
-test("send delivers from the configured sender with unsubscribe headers, marks sent, respects the cap", async () => {
-  const s = parse(await call("PUT", "settings", { postalAddress: "123 Main St, Lehi, UT 84043", dailyCap: 2, fromName: "Matthew Bailie, Purebaric" })).settings;
-  assert.equal(s.dailyCap, 2);
-  const three = ids.filter(x => x.email).slice(0, 3).map(x => x.id);
+  await call("PUT", "settings", { postalAddress: "123 Main St, Lehi, UT 84043", autoSend: true });
+  const original = mem.get("outreach/" + p.id);
   sent.length = 0;
-  const r = parse(await call("POST", "send", { ids: three }));
-  assert.deepEqual(r.results.map(x => x.ok), [true, true, false]);
-  assert.match(r.results[2].reason, /daily cap/);
-  assert.equal(sent.length, 2);
-  assert.equal(sent[0].from, "Matthew Bailie, Purebaric <hello@purebaric.com>");
-  assert.equal(sent[0].replyTo, "hello@purebaric.com");
-  assert.match(sent[0].headers["List-Unsubscribe"], /unsubscribe\?p=/);
-  assert.equal(sent[0].headers["List-Unsubscribe-Post"], "List-Unsubscribe=One-Click");
-  assert.doesNotMatch(sent[0].subject, /TEST/);
-  const after = parse(await call("GET")).prospects;
-  assert.equal(after.find(x => x.id === three[0]).status, "sent");
-  assert.equal(after.find(x => x.id === three[0]).resendId, "re_1");
-  assert.equal(after.find(x => x.id === three[2]).status, "new");
-  // already sent: skipped, not resent
-  const again = parse(await call("POST", "send", { ids: [three[0]] }));
-  assert.match(again.results[0].reason, /status is sent/);
+  for (const sub of ["send", "run"]) {
+    const r = await call("POST", sub, { ids: [p.id] });
+    assert.equal(r.statusCode, 403);
+    assert.equal(parse(r).error, "outreach_disabled");
+  }
+  assert.equal(sent.length, 0);
+  assert.equal(mem.get("outreach/" + p.id), original);
 });
 
-test("a failed send is recorded and can be retried", async () => {
-  await call("PUT", "settings", { postalAddress: "123 Main St, Lehi, UT 84043", dailyCap: 50 });
-  const p = ids.filter(x => x.email)[5];
-  failNext = true;
-  const r = parse(await call("POST", "send", { ids: [p.id] }));
-  assert.equal(r.results[0].ok, false);
-  assert.match(r.results[0].error, /Resend API error/);
-  assert.equal(parse(await call("GET")).prospects.find(x => x.id === p.id).status, "failed");
-  const r2 = parse(await call("POST", "send", { ids: [p.id] }));
-  assert.equal(r2.results[0].ok, true);
+test("stored auto-send cannot be enabled, including legacy true settings", async () => {
+  const saved = parse(await call("PUT", "settings", { autoSend: true })).settings;
+  assert.equal(saved.autoSend, false);
+  assert.equal(JSON.parse(mem.get("outreach/settings")).autoSend, false);
+  mem.set("outreach/settings", JSON.stringify({ ...saved, autoSend: true }));
+  assert.equal(parse(await call("GET")).settings.autoSend, false);
+});
+
+test("transport refuses cold sends and test sends to anyone except the owner", async () => {
+  const { deliver, getSettings } = require("../netlify/functions/_lib/outreach-io");
+  const p = ids.find(x => x.email);
+  sent.length = 0;
+  await assert.rejects(deliver(p, await getSettings(), p.email), /disabled/);
+  await assert.rejects(deliver(p, await getSettings(), "other@example.com", { isTest: true }), /disabled/);
+  assert.equal(sent.length, 0);
+});
+
+test("old scheduled handler is a no-op and the outreach schedule is removed", async () => {
+  sent.length = 0;
+  const r = parse(await require("../netlify/functions/outreach-daily").handler());
+  assert.equal(r.disabled, true);
+  assert.equal(r.sent, 0);
+  assert.equal(sent.length, 0);
+  const config = require("fs").readFileSync(path.join(__dirname, "../netlify.toml"), "utf8");
+  assert.doesNotMatch(config, /\[functions\."outreach-daily"\]/);
+  assert.match(config, /\[functions\."rental-ending-notify"\]/);
+  assert.match(config, /\[functions\."expire-holds"\]/);
 });
 
 test("PATCH edits survive a re-import; invalid status is a 400", async () => {
@@ -144,5 +144,5 @@ test("unsubscribe link marks the prospect, wrong token does nothing, one-click P
   assert.equal(JSON.parse(mem.get("outreach/" + q.id)).history.at(-1).via, "one-click");
   // unsubscribed prospects are never sent
   const r = parse(await call("POST", "send", { ids: [p.id] }));
-  assert.match(r.results[0].reason, /status is unsubscribed/);
+  assert.equal(r.error, "outreach_disabled");
 });

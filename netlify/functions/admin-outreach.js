@@ -5,8 +5,7 @@
 //   POST   /api/admin/outreach/import          -> upsert prospects from the bundled _internal/outreach/prospects.json
 //   POST   /api/admin/outreach/preview  {id}   -> { subject, html, text } for one prospect, or {templateId, firstName, businessName}
 //   POST   /api/admin/outreach/test     {id?, templateId?} -> sends that email to the owner's own inbox (never to the prospect)
-//   POST   /api/admin/outreach/send     {ids}  -> sends to each prospect (daily cap, sendable status, email present), returns per-id results
-//   POST   /api/admin/outreach/run             -> sends one automation batch now (see _lib/outreach-run.js)
+//   POST   /api/admin/outreach/send or /run    -> disabled; Resend prohibits cold outreach
 //   POST   /api/admin/outreach/sync            -> refreshes delivery state for recently sent emails from Resend (bounced, complained)
 //   PATCH  /api/admin/outreach/:id      {status|firstName|email|notes|templateId}
 //
@@ -15,16 +14,12 @@
 const fs = require("fs");
 const path = require("path");
 const { requireAuth, adminEmail, json, parseBody } = require("./_lib/admin");
-const { send } = require("./_lib/email");
 const { OWNER_EMAIL } = require("./_lib/owner");
 const tpl = require("./_lib/outreach-template");
 const out = require("./_lib/outreach");
 
 const io = require("./_lib/outreach-io");
 const { listProspects, getProspect, putProspect, getSettings, putSettings, deliver, renderFor } = io;
-const { runBatch, SUB_BATCH } = require("./_lib/outreach-run");
-
-const MAX_PER_CALL = 25;
 
 // Reads the feed bundled with the function (netlify.toml included_files). Falls back to the repo path in dev.
 function loadFeed() {
@@ -104,40 +99,8 @@ exports.handler = async (event, context) => {
       return json(200, { ok: true, to: OWNER_EMAIL, subject, resendId, postalAddressSet: !!settings.postalAddress });
     }
 
-    if (method === "POST" && sub === "send") {
-      const body = parseBody(event);
-      const ids = Array.isArray(body.ids) ? body.ids.slice(0, MAX_PER_CALL) : [];
-      if (!ids.length) return json(400, { error: "no_ids" });
-      const settings = await getSettings();
-      const all = await listProspects();
-      let remaining = settings.dailyCap - out.sentToday(all);
-      const by = await adminEmail(event, context);
-      const results = [];
-      for (const id of ids) {
-        const p = all.find(x => x.id === id);
-        const blocker = out.sendBlocker(p, settings);
-        if (blocker) { results.push({ id, ok: false, skipped: true, reason: blocker }); continue; }
-        if (remaining <= 0) { results.push({ id, ok: false, skipped: true, reason: `daily cap of ${settings.dailyCap} reached` }); continue; }
-        try {
-          const { resendId, subject } = await deliver(p, settings, p.email);
-          const sent = out.markSent(p, resendId, subject);
-          sent.history[sent.history.length - 1].by = by || "admin";
-          await putProspect(sent);
-          remaining--;
-          results.push({ id, ok: true, resendId, subject, to: p.email });
-        } catch (e) {
-          await putProspect(out.markFailed(p, e.message));
-          results.push({ id, ok: false, error: e.message });
-        }
-      }
-      return json(200, { results, sentToday: settings.dailyCap - remaining, dailyCap: settings.dailyCap });
-    }
-
-    // One automation batch right now (same selection, spacing and cap as the scheduled sender).
-    if (method === "POST" && sub === "run") {
-      const notify = ({ subject, text }) => send({ to: OWNER_EMAIL, subject, text, html: `<p>${text}</p>` });
-      const r = await runBatch({ ...io, notify }, { trigger: "manual", max: SUB_BATCH });
-      return json(200, r);
+    if (method === "POST" && (sub === "send" || sub === "run")) {
+      return json(403, { error: "outreach_disabled", message: "Prospect sending is disabled. Configure a provider that permits cold B2B outreach; do not use Resend." });
     }
 
     if (method === "POST" && sub === "sync") {

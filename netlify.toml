@@ -251,9 +251,5 @@
 [functions."rental-ending-notify"]
   schedule = "0 15 * * 1"
 
-# Business outreach sender: wakes every 10 minutes between 13:00 and 23:50 UTC (7 a.m. to 6 p.m. in Utah,
-# every day). The admin Outreach settings decide the days and start time it actually sends on, and it sends a
-# few emails per wake-up until the daily cap is reached. Only runs while "auto-send" is on.
-# Logic: netlify/functions/_lib/outreach-run.js
-[functions."outreach-daily"]
-  schedule = "*/10 13-23 * * *"
+# Business outreach scheduling is disabled. Resend prohibits cold outreach.
+# Customer notifications and the rental maintenance schedules above remain enabled.

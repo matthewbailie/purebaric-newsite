@@ -104,3 +104,17 @@
 **Context:** A pending, unpaid business rental was still scheduled but had a stored start date of October 3, so its $729 rate appeared in current MRR before the actual Monday start.
 **Alternatives considered:** Keying MRR to payment status would exclude valid active subscriptions that bill after delivery and would turn MRR into a cash-collected metric; relying on dates alone repeats the reported error when a planned date changes or activation has not happened.
 **Status:** Confirmed
+
+## 2026-10-03 Lazy-load non-dashboard admin data
+
+**Decision:** The admin portal loads only the operational data required by Home at startup. Customers, pricing integrations, service-area settings, notifications and Outreach load on first tab visit, with a shared per-panel loading overlay and counters for concurrent dependencies.
+**Context:** Home previously waited for every admin endpoint, including the large Outreach response and unrelated integration settings, before painting its metrics.
+**Alternatives considered:** A new aggregate dashboard endpoint would reduce request count but duplicate existing endpoint logic; continuing to preload every tab keeps navigation warm at the cost of the slowest possible initial Home render.
+**Status:** Confirmed
+
+## 2026-10-03 Disable Resend cold outreach and hand off a permitted provider workflow
+
+**Decision:** Remove the Netlify outreach schedule, make its handler a no-op, reject prospect send/run endpoints, force stored auto-send settings off, and restrict the outreach Resend transport to owner-requested preview tests. Preserve transactional notifications, history and opt-outs. Supply a private Markdown build brief for a separately approved provider; no subscription or new sending activated.
+**Context:** Resend prohibits unsolicited outreach regardless of volume. The owner requested shutdown and then asked for instructions for another agent rather than a new live provider connection.
+**Alternatives considered:** Only toggling the UI leaves stale settings/manual routes capable of sending; removing the shared Resend mailer would break customer notifications. This supersedes the earlier decision to use the site's mailer for business outreach.
+**Status:** Confirmed

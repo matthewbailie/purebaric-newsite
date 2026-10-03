@@ -2,6 +2,7 @@
 // scheduled sender (outreach-daily.js). Everything that touches Blobs, Resend or the templates lives here.
 const { store, nowIso } = require("./storage");
 const { send } = require("./email");
+const { OWNER_EMAIL } = require("./owner");
 const tpl = require("./outreach-template");
 const out = require("./outreach");
 
@@ -35,8 +36,8 @@ async function listProspects() {
 }
 async function getProspect(id) { return withRetry(() => store(STORE).get(id, { type: "json" }), `outreach read ${id}`); }
 async function putProspect(p) { await withRetry(() => store(STORE).setJSON(p.id, p), `outreach write ${p.id}`); return p; }
-async function getSettings() { return out.cleanSettings(await withRetry(() => store(STORE).get(SETTINGS_KEY, { type: "json" }), "outreach settings read")); }
-async function putSettings(s) { const clean = out.cleanSettings(s); await withRetry(() => store(STORE).setJSON(SETTINGS_KEY, { ...clean, updatedAt: nowIso() }), "outreach settings write"); return clean; }
+async function getSettings() { return out.cleanSettings({ ...(await withRetry(() => store(STORE).get(SETTINGS_KEY, { type: "json" }), "outreach settings read")), autoSend: false }); }
+async function putSettings(s) { const clean = out.cleanSettings({ ...s, autoSend: false }); await withRetry(() => store(STORE).setJSON(SETTINGS_KEY, { ...clean, updatedAt: nowIso() }), "outreach settings write"); return clean; }
 
 function unsubscribeUrl(p) {
   return `${SITE}/api/outreach/unsubscribe?p=${encodeURIComponent(p.id)}&t=${encodeURIComponent(p.unsubToken)}`;
@@ -58,6 +59,8 @@ function fromHeader(settings) {
 }
 
 async function deliver(p, settings, to, { isTest = false } = {}) {
+  // Enforce at the transport boundary, including callers outside the admin handler.
+  if (!isTest || to !== OWNER_EMAIL) throw new Error("Cold outreach through Resend is disabled. Only owner-requested tests are allowed.");
   const r = renderFor(p, settings);
   const headers = p.unsubToken ? {
     "List-Unsubscribe": `<${unsubscribeUrl(p)}>, <mailto:${settings.replyTo}?subject=unsubscribe>`,
