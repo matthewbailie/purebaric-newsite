@@ -44,7 +44,7 @@ const CATEGORIES = [
   {
     id: 'gyms-and-fitness',
     label: 'Gyms and fitness centers',
-    eyebrow: 'A new profit line for gyms',
+    eyebrow: 'A new profit line for your gym',
     subjects: [
       'A new revenue line for [Business name] that fits in a 4 x 8 ft corner',
       'Keep the recovery spend your members take across town',
@@ -58,7 +58,7 @@ const CATEGORIES = [
   {
     id: 'crossfit-and-performance',
     label: 'CrossFit and performance gyms',
-    eyebrow: 'A new profit line for performance gyms',
+    eyebrow: 'A new profit line for your gym',
     subjects: [
       'A new revenue line for [Business name] that fits in a 4 x 8 ft corner',
       'Revenue for [Business name] that is not memberships',
@@ -72,7 +72,7 @@ const CATEGORIES = [
   {
     id: 'sports-teams-and-athletics',
     label: 'Sports teams and athletic programs',
-    eyebrow: 'For athletic programs',
+    eyebrow: 'For your athletic program',
     subjects: [
       'A hyperbaric chamber in the [Business name] training room for $979 a month',
       'Stop sending athletes across town for hyperbaric sessions',
@@ -93,7 +93,7 @@ const CATEGORIES = [
   {
     id: 'recovery-studios-and-med-spas',
     label: 'Recovery studios and med spas',
-    eyebrow: 'A new profit line for recovery studios',
+    eyebrow: 'A new profit line for your studio',
     subjects: [
       'Hyperbaric on the [Business name] menu without buying a chamber',
       'A new revenue line for [Business name] that fits in a 4 x 8 ft corner',
@@ -107,7 +107,7 @@ const CATEGORIES = [
   {
     id: 'physical-therapy-and-sports-medicine',
     label: 'Physical therapy, chiropractic, and sports medicine',
-    eyebrow: 'A cash-pay line for clinics',
+    eyebrow: 'A cash-pay profit line for your clinic',
     subjects: [
       'A cash-pay wellness line for [Business name] in a 4 x 8 ft room',
       'A new revenue line for [Business name], no billing codes',
@@ -121,7 +121,7 @@ const CATEGORIES = [
   {
     id: 'salons-and-beauty',
     label: 'Salons and beauty studios',
-    eyebrow: 'A new profit line for salons',
+    eyebrow: 'A new profit line for your salon',
     subjects: [
       'A new revenue line for [Business name] that fits in a 4 x 8 ft corner',
       'Sixty quiet minutes your regulars would add to their appointment',
