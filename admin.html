@@ -3765,7 +3765,7 @@
         <td><strong>${escape(p.business)}</strong><div class="or-sub">${escape([p.city, p.county && p.county + ' Co.'].filter(Boolean).join(', '))}${p.website ? ` · <a href="https://${escape(p.website.replace(/^https?:\/\//, ''))}" target="_blank" rel="noopener" style="color:var(--terracotta);">site</a>` : ''}</div></td>
         <td><div>${greeting}</div><div class="or-sub">${p.owner ? escape(p.owner) + (p.ownerTitle ? ', ' + escape(p.ownerTitle) : '') + '<br>' : ''}${p.email ? `<span class="or-conf-${escape(p.emailConfidence || 'none')}">${escape(p.email)} (${escape(p.emailConfidence || '?')})</span>` : '<span class="or-conf-none">no email</span>'}${p.phone ? '<br>' + escape(p.phone) : ''}</div></td>
         <td class="or-sub">${escape(tmplLabel(p.templateId))}</td>
-        <td class="or-note">${p.personalNote ? escape(p.personalNote) : '<span class="or-sub">none</span>'}</td>
+        <td class="or-note">${p.personalNote ? escape(p.personalNote) : (p.suggestedNote ? '<span class="or-sub">none (suggestion to check)</span>' : '<span class="or-sub">none</span>')}</td>
         <td><span class="pill ${OR_PILL[p.status] || ''}">${escape(p.status)}</span>${p.sentAt ? `<div class="or-sub">${fmtDate(p.sentAt)}${p.lastEvent ? ' · ' + escape(p.lastEvent) : ''}</div>` : ''}${p.lastError ? `<div class="or-sub" style="color:#82402f;">${escape(p.lastError)}</div>` : ''}<div style="margin-top:4px;">${statusSel}</div></td>
         <td><div class="row-actions">
           <button class="btn btn-ghost btn-sm" onclick="previewOutreach('${p.id}')">Preview</button>
@@ -3808,8 +3808,9 @@
         <div><label>First name (blank = "Hi ${escape(p.business)} team,")</label><input id="orEditFirst" value="${escape(p.firstName)}"></div>
         <div><label>Email</label><input id="orEditEmail" value="${escape(p.email)}"></div>
       </div>
-      <div class="or-edit"><label>Personal note (one sentence after the greeting)</label><textarea id="orEditNote">${escape(p.personalNote)}</textarea>
-        ${p.hook ? `<div class="renter-line" style="margin-top:4px;"><strong>Research hook:</strong> ${escape(p.hook)}</div>` : ''}</div>
+      <div class="or-edit"><label>Personal note (one sentence after the greeting; sent only if you write it here)</label><textarea id="orEditNote">${escape(p.personalNote)}</textarea>
+        ${p.suggestedNote ? `<div class="renter-line" style="margin-top:4px;"><strong style="color:#9a4f3a;">Suggested note, unverified:</strong> ${escape(p.suggestedNote)} <button class="btn btn-ghost btn-sm" type="button" onclick="useSuggestedNote('${p.id}')">Use after checking it</button><div class="or-sub">Drafted by a research pass from public pages. Confirm it is true on their site or reviews before you use it.</div></div>` : ''}
+        ${p.hook ? `<div class="renter-line" style="margin-top:4px;"><strong>Research hook (unverified):</strong> ${escape(p.hook)}</div>` : ''}</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;">
         <button class="btn btn-ghost btn-sm" onclick="saveOutreachEdits('${p.id}')">Save and refresh preview</button>
         <button class="btn btn-ghost btn-sm" onclick="sendOutreachTest('${p.id}')">Send business outreach TEST to me</button>
@@ -3818,6 +3819,11 @@
       <div class="renter-line" style="margin-bottom:6px;"><strong>Subject:</strong> ${escape(r.subject)}</div>
       <iframe class="or-preview-frame" id="orPreviewFrame" title="Email preview"></iframe>`);
     document.getElementById('orPreviewFrame').srcdoc = r.html;
+  }
+
+  function useSuggestedNote(id) {
+    const p = _outreach.prospects.find(x => x.id === id);
+    if (p && p.suggestedNote) document.getElementById('orEditNote').value = p.suggestedNote;
   }
 
   async function saveOutreachEdits(id) {

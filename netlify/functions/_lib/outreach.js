@@ -72,7 +72,10 @@ function normalizeProspect(row, existing) {
     city: String(row.city || "").trim().slice(0, 80),
     zip: String(row.zip || "").trim().slice(0, 10),
     county: String(row.county || "").trim().slice(0, 40),
-    personalNote: String(row.personalNote || row.personal_note || "").trim().slice(0, 400),
+    // The feed's personal_note was drafted by a research pass from public sources and is NOT verified.
+    // It is kept as a suggestion for the owner to check; the sent note comes only from the owner's edit.
+    personalNote: "",
+    suggestedNote: String(row.personalNote || row.personal_note || "").trim().slice(0, 400),
     hook: String(row.hook || row.personal_note_hook || "").trim().slice(0, 600),
     notes: String(row.notes || "").trim().slice(0, 1500),
     status: "new",

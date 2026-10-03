@@ -135,8 +135,9 @@ exports.handler = async (event, context) => {
       let p = body.id ? await getProspect(body.id) : null;
       if (body.id && !p) return json(404, { error: "not_found" });
       if (!p) {
-        // a sample prospect for the chosen template, so links and layout can be checked before any import
-        p = { id: "test", business: body.businessName || "Sample Gym", firstName: body.firstName || "Jordan", personalNote: body.personalNote || "I saw you added a cold plunge room this spring and your reviews keep mentioning it.", templateId: body.templateId || "gyms-and-fitness", unsubToken: "test-token" };
+        // a placeholder prospect for the chosen template, so links and layout can be checked before any import.
+        // Bracketed placeholders only: nothing here may read like a fact about a real business.
+        p = { id: "test", business: body.businessName || "[Sample business]", firstName: body.firstName || "", personalNote: body.personalNote || "", templateId: body.templateId || "gyms-and-fitness", unsubToken: "test-token" };
       }
       if (!tpl.categoryById(p.templateId)) return json(400, { error: "no_template", message: "No email template for this industry." });
       const { resendId, subject } = await deliver(p, { ...settings, postalAddress: settings.postalAddress || "(postal address not set yet)" }, OWNER_EMAIL, { isTest: true });

@@ -62,12 +62,12 @@ iframe{width:100%;height:calc(100vh - 62px);border:0;display:block}
     <label for="cat">Industry</label>
     <select id="cat"></select>
     <label for="first">First name</label>
-    <input id="first" placeholder="Jordan" autocomplete="off">
+    <input id="first" placeholder="[First name]" autocomplete="off">
     <label for="biz">Business name</label>
-    <input id="biz" placeholder="Summit Strength" autocomplete="off">
+    <input id="biz" placeholder="[Business name]" autocomplete="off">
     <label for="note">Personal note (one sentence, optional)</label>
-    <textarea id="note" placeholder="I saw you added a cold plunge room this spring and your reviews keep mentioning it."></textarea>
-    <div class="hint">Something specific to them: a service they added, a team they train, a review you read, an expansion, a question they get asked. Leave blank to omit.</div>
+    <textarea id="note" placeholder="One sentence you know to be true about this business. Leave blank if you are not certain."></textarea>
+    <div class="hint">Only something you have seen yourself: their website, a review you read, a visit. Never a guess. Leave blank to omit.</div>
     <div class="subjects">
       <h2>Subject lines</h2>
       <div id="subjects"></div>

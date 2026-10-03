@@ -21,6 +21,13 @@ test("normalizeProspect derives the greeting name, lowercases the email, starts 
   assert.equal(p.templateId, "gyms-and-fitness");
 });
 
+test("import keeps the research-drafted note as a suggestion only; the sent note starts empty", () => {
+  const p = out.normalizeProspect({ ...row, personal_note: "Congrats on the ribbon cutting." });
+  assert.equal(p.personalNote, "");
+  assert.equal(p.suggestedNote, "Congrats on the ribbon cutting.");
+  assert.equal(p.hook, "open 24/7");
+});
+
 test("re-import keeps status, token and the owner's edits", () => {
   const first = out.normalizeProspect(row);
   const sent = out.markSent(first, "re_123");
@@ -110,7 +117,7 @@ test("render fills every token, escapes the business name, and carries the compl
 
 test("every category renders with a subject, no leftover tokens when fully personalized", () => {
   for (const c of tpl.CATEGORIES) {
-    const r = tpl.render({ categoryId: c.id, firstName: "Jordan", businessName: "Summit Strength", personalNote: "", postalAddress: "x" });
+    const r = tpl.render({ categoryId: c.id, firstName: "Pat", businessName: "Example Fitness", personalNote: "", postalAddress: "x" });
     assert.ok(r.subject.length > 10, c.id);
     assert.doesNotMatch(r.html, /\[(First name|Business name|Personal note)\]/, c.id);
     assert.doesNotMatch(r.text, /\[(First name|Business name|Personal note)\]/, c.id);
