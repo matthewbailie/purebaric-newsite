@@ -62,12 +62,9 @@ iframe{width:100%;height:calc(100vh - 62px);border:0;display:block}
     <label for="cat">Industry</label>
     <select id="cat"></select>
     <label for="first">First name</label>
-    <input id="first" placeholder="Jordan" autocomplete="off">
+    <input id="first" placeholder="[First name]" autocomplete="off">
     <label for="biz">Business name</label>
-    <input id="biz" placeholder="Summit Strength" autocomplete="off">
-    <label for="note">Personal note (one sentence, optional)</label>
-    <textarea id="note" placeholder="I saw you added a cold plunge room this spring and your reviews keep mentioning it."></textarea>
-    <div class="hint">Something specific to them: a service they added, a team they train, a review you read, an expansion, a question they get asked. Leave blank to omit.</div>
+    <input id="biz" placeholder="[Business name]" autocomplete="off">
     <div class="subjects">
       <h2>Subject lines</h2>
       <div id="subjects"></div>
@@ -81,14 +78,11 @@ iframe{width:100%;height:calc(100vh - 62px);border:0;display:block}
 var DATA=${data};
 var $=function(id){return document.getElementById(id)};
 var sel=$('cat');DATA.forEach(function(c,i){var o=document.createElement('option');o.value=i;o.textContent=c.label;sel.appendChild(o)});
-try{var saved=JSON.parse(localStorage.getItem('pb-outreach')||'{}');if(saved.cat!=null)sel.value=saved.cat;if(saved.first)$('first').value=saved.first;if(saved.biz)$('biz').value=saved.biz;if(saved.note)$('note').value=saved.note}catch(e){}
-function vals(){return {cat:sel.value,first:$('first').value.trim(),biz:$('biz').value.trim(),note:$('note').value.trim()}}
+try{var saved=JSON.parse(localStorage.getItem('pb-outreach')||'{}');if(saved.cat!=null)sel.value=saved.cat;if(saved.first)$('first').value=saved.first;if(saved.biz)$('biz').value=saved.biz}catch(e){}
+function vals(){return {cat:sel.value,first:$('first').value.trim(),biz:$('biz').value.trim()}}
 function fill(s,v,mark){
   var first=v.first||(mark?'<mark>[First name]</mark>':'[First name]');
   var biz=v.biz||(mark?'<mark>[Business name]</mark>':'[Business name]');
-  var note=v.note?(/[.!?]$/.test(v.note)?v.note:v.note+'.'):'';
-  s=s.split('[Personal note] ').join(note?note+' ':'');
-  s=s.split('[Personal note]').join(note);
   s=s.split(encodeURIComponent('[Business name]')).join(encodeURIComponent(v.biz||'[Business name]'));
   return s.split('[First name]').join(first).split('[Business name]').join(biz);
 }
@@ -103,7 +97,7 @@ function render(){
 function say(m){$('msg').textContent=m}
 function bodyHtml(){var v=vals(),c=DATA[v.cat];var m=fill(c.html,v,false).match(/<body[^>]*>([\\s\\S]*)<\\/body>/);return m?m[1]:''}
 function bodyText(){var v=vals(),c=DATA[v.cat];return fill(c.text,v,false).replace(/^Subject:.*\\n(Alt subjects:.*\\n)?\\n?/,'')}
-['cat','first','biz','note'].forEach(function(id){$(id).addEventListener('input',render)});
+['cat','first','biz'].forEach(function(id){$(id).addEventListener('input',render)});
 $('copyHtml').onclick=async function(){
   var v=vals();if(!v.first||!v.biz){say('Fill in the first name and business name first.');$('warn').hidden=false;return}
   var stage=$('stage');stage.innerHTML=bodyHtml();var ok=false;
@@ -122,13 +116,11 @@ render();
 // ---- write everything
 const written = [];
 const master = email({
-  id: 'master', label: 'Master template', eyebrow: 'For [industry]', subjects: ['[Subject line: a question or a specific fact, not a revenue promise]'], preheader: '[Preheader: one line that shows after the subject in the inbox]',
-  headline: '[Headline: the outcome for this kind of business, in their words]',
-  opener: '[Opener: where their clients get this today, and what changes when it is on their floor. Name [Business name].]',
-  whoTitle: 'Who books at a [kind of business], and why', why: '[Why their clients would want it: proof people already pay for it nearby, what the hour is like, when it fits their routine. No health claims.]',
-  who: ['[Client group 1]', '[Client group 2]', '[Client group 3]'],
-  fitTitle: 'How it fits your [menu / membership / practice]', fit: '[How they would sell sessions: singles, packs, membership tier, paired with an appointment.]',
-  cta: 'Worth 15 minutes to see if it fits [Business name]?', tiles: STANDARD_TILES,
+  id: 'master', label: 'Master template', eyebrow: 'A new profit line for [kind of business]', subjects: ['[Subject: the extra monthly net for [Business name], or the space it takes]'], preheader: '[Preheader: the proof people already pay for it nearby, and the monthly net]',
+  headline: 'One chamber in a 4 x 8 ft corner nets [Business name] an estimated ' + N.net + ' a month',
+  opener: '[Opener: where their clients pay for this today, that the revenue stays with them, and that it takes a 4 x 8 ft corner. Name [Business name].]',
+  whyLine: '[One line: who books it at this kind of business and how it sells (packs, memberships, paired with a visit).]',
+  tiles: STANDARD_TILES,
 });
 fs.writeFileSync(path.join(OUT, '00_master_template.html'), master); written.push('00_master_template.html');
 for (const c of CATEGORIES) {

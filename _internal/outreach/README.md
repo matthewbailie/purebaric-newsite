@@ -24,8 +24,10 @@ and contain paths from that machine; adjust the paths before re-running.
 ## Sending the emails (admin Outreach tab)
 
 The admin portal has an **Outreach** tab (`admin.html`, `netlify/functions/admin-outreach.js`) that sends the industry
-template to each prospect, addressed to the owner's first name when one is known (otherwise "Hi <Business> team"), with the
-one-sentence personal note written from the research hook. Copy for every template lives in
+template to each prospect, addressed to the owner's first name when one is known (otherwise "Hi <Business> team").
+**There is no personal note.** The email says nothing about the recipient's business beyond its name and the industry
+template; the `personal_note` and `hook` values in `prospects.json` were drafted by a research pass, are not verified, and
+are dropped on import. Copy for every template lives in
 `netlify/functions/_lib/outreach-template.js` and is shared with the Gmail composer in `email-templates/`.
 
 Flow, in order:
@@ -37,10 +39,10 @@ Flow, in order:
 3. **Import list.** Loads `prospects.json` into the `outreach` Blobs store. Re-importing after a new deploy updates rows and
    keeps statuses, tokens and edits.
 4. **Send business outreach TEST to me** (also available beside the alert test on the Notifications tab). Delivers the selected row's exact email (or a sample for the filtered industry) to the owner inbox
-   with a `[Business outreach TEST for <business>]` subject. Check: greeting, personal note, the four tiles, the three links to
+   with a `[Business outreach TEST for <business>]` subject. Check: greeting, hero image, the four tiles, the three links to
    `purebaric.com/business` (UTM-tagged per industry), the prospectus PDF link, the mailto reply, the phone link, and the
    unsubscribe link at the bottom. Do this once per industry before the first real send.
-5. **Preview** any row to edit the first name or the personal note before it goes out.
+5. **Preview** any row to check or edit the first name and email before it goes out.
 6. **Send** one row, or **Send next batch** (checked rows, or the first sendable rows in the current filter up to the daily
    cap, 25 per click). Each send records the Resend id and the time; the row moves to `sent`.
 7. **Sync delivery** once a day: pulls bounces and complaints from Resend and moves those rows to `bounced` or `unsubscribed`.

@@ -900,14 +900,13 @@
 
       <div class="table-wrap">
         <table class="data-table" id="orTable">
-          <thead><tr><th style="width:28px;"><input type="checkbox" id="orCheckAll" onchange="toggleOutreachAll(this.checked)"></th><th>Business</th><th>Contact</th><th>Template</th><th>Personal note</th><th>Status</th><th>Actions</th></tr></thead>
+          <thead><tr><th style="width:28px;"><input type="checkbox" id="orCheckAll" onchange="toggleOutreachAll(this.checked)"></th><th>Business</th><th>Contact</th><th>Template</th><th>Status</th><th>Actions</th></tr></thead>
           <tbody id="orRows"></tbody>
         </table>
       </div>
       <style>
         #orTable td { font-size: 0.86rem; }
         #orTable .or-sub { color: var(--stone-muted); font-size: 0.78rem; }
-        #orTable .or-note { max-width: 260px; color: #5f544d; }
         .or-conf-high { color: #3d5a26; } .or-conf-medium { color: #6b5326; } .or-conf-none { color: #82402f; }
         .or-preview-frame { width: 100%; height: 60vh; border: 1px solid var(--line); border-radius: 8px; background: #efe7db; }
         .or-edit label { display:block; font-size:12px; font-weight:600; color: var(--stone-muted); margin: 10px 0 4px; }
@@ -3765,7 +3764,6 @@
         <td><strong>${escape(p.business)}</strong><div class="or-sub">${escape([p.city, p.county && p.county + ' Co.'].filter(Boolean).join(', '))}${p.website ? ` · <a href="https://${escape(p.website.replace(/^https?:\/\//, ''))}" target="_blank" rel="noopener" style="color:var(--terracotta);">site</a>` : ''}</div></td>
         <td><div>${greeting}</div><div class="or-sub">${p.owner ? escape(p.owner) + (p.ownerTitle ? ', ' + escape(p.ownerTitle) : '') + '<br>' : ''}${p.email ? `<span class="or-conf-${escape(p.emailConfidence || 'none')}">${escape(p.email)} (${escape(p.emailConfidence || '?')})</span>` : '<span class="or-conf-none">no email</span>'}${p.phone ? '<br>' + escape(p.phone) : ''}</div></td>
         <td class="or-sub">${escape(tmplLabel(p.templateId))}</td>
-        <td class="or-note">${p.personalNote ? escape(p.personalNote) : '<span class="or-sub">none</span>'}</td>
         <td><span class="pill ${OR_PILL[p.status] || ''}">${escape(p.status)}</span>${p.sentAt ? `<div class="or-sub">${fmtDate(p.sentAt)}${p.lastEvent ? ' · ' + escape(p.lastEvent) : ''}</div>` : ''}${p.lastError ? `<div class="or-sub" style="color:#82402f;">${escape(p.lastError)}</div>` : ''}<div style="margin-top:4px;">${statusSel}</div></td>
         <td><div class="row-actions">
           <button class="btn btn-ghost btn-sm" onclick="previewOutreach('${p.id}')">Preview</button>
@@ -3808,8 +3806,6 @@
         <div><label>First name (blank = "Hi ${escape(p.business)} team,")</label><input id="orEditFirst" value="${escape(p.firstName)}"></div>
         <div><label>Email</label><input id="orEditEmail" value="${escape(p.email)}"></div>
       </div>
-      <div class="or-edit"><label>Personal note (one sentence after the greeting)</label><textarea id="orEditNote">${escape(p.personalNote)}</textarea>
-        ${p.hook ? `<div class="renter-line" style="margin-top:4px;"><strong>Research hook:</strong> ${escape(p.hook)}</div>` : ''}</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;">
         <button class="btn btn-ghost btn-sm" onclick="saveOutreachEdits('${p.id}')">Save and refresh preview</button>
         <button class="btn btn-ghost btn-sm" onclick="sendOutreachTest('${p.id}')">Send business outreach TEST to me</button>
@@ -3821,7 +3817,7 @@
   }
 
   async function saveOutreachEdits(id) {
-    const p = await patchOutreach(id, { firstName: orEditFirst.value, email: orEditEmail.value, personalNote: orEditNote.value });
+    const p = await patchOutreach(id, { firstName: orEditFirst.value, email: orEditEmail.value });
     if (p) { toast('Saved'); previewOutreach(id); }
   }
 

@@ -72,8 +72,8 @@ function normalizeProspect(row, existing) {
     city: String(row.city || "").trim().slice(0, 80),
     zip: String(row.zip || "").trim().slice(0, 10),
     county: String(row.county || "").trim().slice(0, 40),
-    personalNote: String(row.personalNote || row.personal_note || "").trim().slice(0, 400),
-    hook: String(row.hook || row.personal_note_hook || "").trim().slice(0, 600),
+    // No personal notes. The feed's personal_note and hook were drafted by a research pass and are not
+    // verified, so they are dropped here: the email asserts nothing about the business beyond its name.
     notes: String(row.notes || "").trim().slice(0, 1500),
     // a row can arrive with a status already set (e.g. "customer" for a business that signed before any email)
     status: STATUSES.includes(String(row.status || "").trim().toLowerCase()) ? String(row.status).trim().toLowerCase() : "new",
@@ -92,7 +92,7 @@ function normalizeProspect(row, existing) {
     for (const k of ["status", "sentAt", "resendId", "lastEvent", "lastError", "history", "unsubToken", "createdAt"]) {
       if (existing[k] !== undefined && existing[k] !== null) p[k] = existing[k];
     }
-    for (const k of ["firstName", "personalNote", "email", "notes"]) {
+    for (const k of ["firstName", "email", "notes"]) {
       if (existing.edited && existing.edited.includes(k)) p[k] = existing[k];
     }
     p.edited = existing.edited || [];
@@ -105,7 +105,6 @@ function applyPatch(p, patch) {
   const next = { ...p, edited: [...(p.edited || [])] };
   const mark = k => { if (!next.edited.includes(k)) next.edited.push(k); };
   if (patch.firstName !== undefined) { next.firstName = String(patch.firstName || "").trim().slice(0, 60); mark("firstName"); }
-  if (patch.personalNote !== undefined) { next.personalNote = String(patch.personalNote || "").trim().slice(0, 400); mark("personalNote"); }
   if (patch.email !== undefined) { next.email = cleanEmail(patch.email); mark("email"); }
   if (patch.notes !== undefined) { next.notes = String(patch.notes || "").trim().slice(0, 1500); mark("notes"); }
   if (patch.templateId !== undefined && categoryById(patch.templateId)) next.templateId = patch.templateId;

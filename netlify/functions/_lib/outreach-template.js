@@ -25,195 +25,127 @@ const PHONE = '(801) 901-0873', TEL = '+18019010873', EMAIL = 'hello@purebaric.c
 const POSTAL_ADDRESS = 'Lehi, Utah 84043';
 const PROSPECTUS_URL = `${SITE}/purebaric-business-prospectus.pdf`;
 
-// The proof of demand, used in every revenue email: people are already paying for this nearby.
-const DEMAND = 'Recovery studios in Lehi, Orem, and Salt Lake City charge $79 to $129 for a 60-minute session and sell 20-packs for $1,400 to $2,580.';
-
 // Standard money tiles (hero + three). Teams get their own set.
 const STANDARD_TILES = {
-  hero: { k: 'Estimated net revenue', v: N.net, unit: 'per month', p: `at four sessions a day, after rental and supplies. Two a day nets about ${N.netLight}.` },
+  hero: { k: 'Estimated net revenue', v: N.net, unit: 'per month', p: ['4 sessions a day at the recommended rate', `2 sessions a day: an estimated ${N.netLight} net`, 'Estimates, not guarantees'] },
   small: [
-    { k: 'Your cost', v: N.rent, unit: 'per month', p: 'to rent, on a 12-month term' },
-    { k: 'Break-even', v: `${N.breakeven} sessions`, unit: '', p: 'a month, about one every other day you are open' },
-    { k: 'Space needed', v: '5 x 8 ft', unit: '', p: 'of floor space and a wall outlet' },
+    { k: 'Your cost', v: N.rent, unit: 'per month', p: '12-month rental, service included' },
+    { k: 'Break-even', v: `${N.breakeven} sessions`, unit: '', p: 'a month covers the rental' },
+    { k: 'Space needed', v: '4 x 8 ft', unit: '', p: 'and a standard wall outlet' },
   ],
 };
 
-// ---- the industries. Tokens: [First name], [Business name], [Personal note]
+// ---- the industries. Tokens: [First name], [Business name]. No personal notes: nothing in an email
+// may assert a fact about the recipient's business beyond its name.
+// Each email is short: the profit in the first line, a button to reserve, the four tiles, three
+// bullets on what is included, a second button. Per industry only the subject, headline, the one
+// opening paragraph, and the "why they book" line change.
 const CATEGORIES = [
   {
     id: 'gyms-and-fitness',
     label: 'Gyms and fitness centers',
-    eyebrow: 'For gyms and fitness centers',
+    eyebrow: 'A new profit line for your gym',
     subjects: [
-      'Your members are paying $79 an hour for this across town',
-      'A recovery room for [Business name] in 5 x 8 ft',
-      '14 sessions a month to break even on a hyperbaric chamber',
+      'A new revenue line for [Business name] that fits in a 4 x 8 ft corner',
+      'Keep the recovery spend your members take across town',
+      'Hyperbaric on your gym floor, no chamber to buy',
     ],
-    preheader: `Members already drive to recovery studios and pay $79 to $129 a session. Put it where they train. One chamber nets an estimated ${N.net} a month.`,
-    headline: 'Recovery your members already pay for, on your floor instead of across town',
-    opener: 'Your members train hard at [Business name], and the ones who take recovery seriously are already driving to a recovery studio for it. A mild hyperbaric chamber in a 5 x 8 ft corner keeps that spend, and that visit, inside your gym, and gives you revenue that is not dues.',
-    whoTitle: 'Who books at a gym, and why',
-    why: `${DEMAND} Your members are the people buying those packs. A 60-minute session is quiet time on a rest day: lie down, nap, scroll, and leave. It is a reason to come in on the days they do not train.`,
-    who: [
-      'Members who train hard and already spend on recovery: massage, sauna, compression boots.',
-      'Weekend competitors, race-season runners, and masters athletes between hard weeks.',
-      'Personal-training clients whose trainer builds recovery into their plan.',
-    ],
-    fitTitle: 'How it fits your membership',
-    fit: 'Sell single sessions at the front desk, bundle 10- and 20-session packs, or add sessions to a premium membership tier. You set the prices and keep the revenue.',
-    cta: 'Worth 15 minutes to see if it fits [Business name]?',
+    preheader: 'Members already pay recovery studios $79 to $129 a session for hyperbaric. Put it on your floor and keep that revenue.',
+    headline: 'Turn a 4 x 8 ft corner of your business into a new profit line',
+    opener: 'Your members are already paying recovery studios $79 to $129 an hour for hyperbaric sessions. One chamber in a 4 x 8 ft corner makes that revenue yours.',
     tiles: STANDARD_TILES,
   },
   {
     id: 'crossfit-and-performance',
     label: 'CrossFit and performance gyms',
-    eyebrow: 'For CrossFit and performance gyms',
+    eyebrow: 'A new profit line for your gym',
     subjects: [
-      'Recovery for the athletes at [Business name] who train five days a week',
-      'A hyperbaric chamber on the floor at [Business name], no purchase',
-      '14 sessions a month to break even on a hyperbaric chamber',
+      'A new revenue line for [Business name] that fits in a 4 x 8 ft corner',
+      'Revenue for [Business name] that is not memberships',
+      'Keep the recovery spend your athletes take across town',
     ],
-    preheader: `Your five-day-a-week athletes already pay $79 to $129 a session for hyperbaric across town. One chamber nets an estimated ${N.net} a month.`,
-    headline: 'Recovery your athletes will book between training blocks',
-    opener: 'Your athletes at [Business name] train five or more days a week and feel it. A mild hyperbaric chamber on the floor gives them 60 quiet minutes to recover from the week, and gives you a new amenity to sell without adding a coach, a class, or square footage you do not have.',
-    whoTitle: 'Who books at a performance gym, and why',
-    why: `${DEMAND} Your competitive members are already in those studios. A session is 60 minutes lying down at 1.5 ATA, breathing 95 to 99.9% oxygen, and it slots in after a heavy day or during a deload. It is the recovery tool they ask about and go elsewhere to find.`,
-    who: [
-      'Competitive athletes in a heavy block or prepping for the Open, a comp, or a race.',
-      'Members training five or more days a week who already pay for recovery somewhere else.',
-      'Clients in your performance, sports-prep, or masters programs.',
-    ],
-    fitTitle: 'How it fits your programming',
-    fit: 'Offer it as an add-on to unlimited memberships, sell comp-prep session packs, or run it as a members-only perk at a flat monthly rate. You set the prices and keep the revenue.',
-    cta: 'Worth 15 minutes to see if it fits [Business name]?',
+    preheader: 'Your five-day-a-week athletes already pay $79 to $129 a session for hyperbaric elsewhere. Keep it in the box.',
+    headline: 'Turn a 4 x 8 ft corner of your business into a new profit line',
+    opener: 'Your athletes train five or more days a week and already pay recovery studios $79 to $129 an hour for hyperbaric sessions. One chamber in a 4 x 8 ft corner of the box makes that revenue yours.',
     tiles: STANDARD_TILES,
   },
   {
     id: 'sports-teams-and-athletics',
     label: 'Sports teams and athletic programs',
-    eyebrow: 'For sports teams and athletic programs',
+    eyebrow: 'For your athletic program',
     subjects: [
-      'A hyperbaric chamber in the [Business name] training room this season, no capital purchase',
+      'A hyperbaric chamber in the [Business name] training room for $979 a month',
       'Stop sending athletes across town for hyperbaric sessions',
-      'Recovery station for [Business name]: 5 x 8 ft, $979 a month, serviced',
+      'Recovery station for [Business name]: 4 x 8 ft, no capital purchase',
     ],
-    preheader: 'A 1.5 ATA mild hyperbaric chamber in your training room, installed, staff trained, and serviced, for $979 a month. No procurement cycle, no maintenance contract.',
-    headline: 'A hyperbaric chamber in your training room this season, without a capital purchase',
-    opener: 'Your athletes at [Business name] ask for hyperbaric, and the answer today is usually a clinic across town or a six-figure hard-shell chamber that has to clear procurement. A Purebaric chamber in your training room gives them 60-minute sessions on their own schedule, on a monthly rental your department can approve, and we service it.',
-    whoTitle: 'Who uses it, and why',
-    why: 'Athletes use mild hyperbaric as a recovery session between games, travel, and heavy training weeks: 60 minutes lying down at 1.5 ATA, breathing 95 to 99.9% oxygen, phone in hand. One chamber runs up to 8 sessions in a 10-hour day, so a roster can rotate through it over a week.',
-    who: [
-      'Athletes in season, recovering between games and road trips.',
-      'Athletes in heavy training blocks, pre-season and off-season.',
-      'Athletes you currently send to a clinic across town for sessions.',
-    ],
-    fitTitle: 'How it fits your training room',
-    fit: 'Run it like any other recovery station. Your athletic trainers start and end each session; we train them in person and leave a written runbook. It is a general-wellness amenity, not a medical device, and the consent templates describe it that way.',
-    cta: 'Worth 15 minutes to see if it fits your training room?',
-    intro: 'Purebaric is a Lehi company. I rent 1.5 ATA mild hyperbaric chambers to homes across the Wasatch Front, and I place the same chambers in businesses and athletic programs. I deliver and install the chamber, train your athletic trainers, and service it myself. If something stops working, I fix it.',
-    handle: [
-      ['Delivery and install', 'in your training room, in days.'],
-      ['Athletic trainer training and a runbook', 'so your staff runs sessions with confidence and can train new hires.'],
-      ['Consent-form templates and an athlete information sheet', 'ready for your intake process.'],
-      ['Equipment service and ongoing support.', 'No maintenance contract. If something stops working, we fix it.'],
-      ['What it asks of you:', 'a 5 x 8 ft spot, a wall outlet, and about 15 minutes of staff time per session.'],
-    ],
+    preheader: 'A 1.5 ATA chamber in your training room, installed, staff trained, and serviced, for $979 a month. No procurement cycle, no maintenance contract.',
+    headline: 'A hyperbaric chamber in your training room for $979 a month, no capital purchase',
+    opener: 'Your athletes ask for hyperbaric, and today the answer is a clinic across town or a six-figure chamber that has to clear procurement. A monthly rental puts one in your training room this month, with no capital request.',
     tiles: {
-      hero: { k: 'Your cost', v: N.rent, unit: 'per month', p: `for the chamber and machine on a 12-month term, plus a one-time ${N.fee} for delivery, installation, training, and initial supplies. Service included.` },
+      hero: { k: 'Your cost', v: N.rent, unit: 'per month', p: `12-month rental of the chamber and oxygen machine, service included. One-time ${N.fee} for delivery, installation, training, and starting supplies.` },
       small: [
-        { k: 'Capacity', v: 'Up to 8', unit: 'sessions', p: 'in a 10-hour day, one athlete at a time' },
+        { k: 'Capacity', v: 'Up to 8', unit: 'sessions', p: 'a day, one athlete at a time' },
         { k: 'Session', v: '60 min', unit: '', p: 'at 1.5 ATA, breathing 95 to 99.9% oxygen' },
-        { k: 'Space needed', v: '5 x 8 ft', unit: '', p: 'of floor space and a wall outlet' },
+        { k: 'Space needed', v: '4 x 8 ft', unit: '', p: 'and a standard wall outlet' },
       ],
     },
   },
   {
     id: 'recovery-studios-and-med-spas',
     label: 'Recovery studios and med spas',
-    eyebrow: 'For recovery studios and med spas',
+    eyebrow: 'A new profit line for your studio',
     subjects: [
-      'How often does someone ask [Business name] for hyperbaric?',
-      'Hyperbaric on the [Business name] menu, no purchase, in 5 x 8 ft',
-      '14 sessions a month to break even on a hyperbaric chamber',
+      'Hyperbaric on the [Business name] menu without buying a chamber',
+      'A new revenue line for [Business name] that fits in a 4 x 8 ft corner',
+      'The service your clients book somewhere else',
     ],
-    preheader: `Studios across the Wasatch Front already charge $79 to $129 a session for hyperbaric. Add it without buying a chamber. One chamber nets an estimated ${N.net} a month.`,
-    headline: 'The service your clients ask for and go elsewhere to find',
-    opener: 'Your clients at [Business name] already book cold plunge, sauna, cryo, or IV, and some of them are asking whether you have hyperbaric. A mild hyperbaric chamber fits in the space of a twin bed and goes on your menu without buying a chamber, servicing a machine, or guessing whether it will sell.',
-    whoTitle: 'Who books at a recovery studio, and why',
-    why: `${DEMAND} Those studios are your competitors, and the clients paying them are your clients. A session is 60 minutes lying down at 1.5 ATA, breathing 95 to 99.9% oxygen, and it pairs naturally with a plunge or a drip.`,
-    who: [
-      'Clients already buying sauna, cold plunge, massage, or IV.',
-      'Members on a recovery membership who would make a chamber their weekly session.',
-      'Clients who ask whether you offer hyperbaric and book it somewhere else.',
-    ],
-    fitTitle: 'How it fits your menu',
-    fit: 'Add it as a standalone service, bundle it with cold plunge or IV, and include it in your top membership tier. You set the prices and keep the revenue; our estimates use $75 a session, below the local single-session rate.',
-    cta: 'Worth 15 minutes to see if it fits [Business name]?',
+    preheader: 'Studios across the Wasatch Front charge $79 to $129 a session for hyperbaric. Add it to your menu without buying a chamber.',
+    headline: 'Turn a 4 x 8 ft corner of your business into a new profit line',
+    opener: 'Your clients already book cold plunge, sauna, cryo, or IV, and studios across the Wasatch Front charge $79 to $129 for an hour of hyperbaric. One chamber in a 4 x 8 ft corner puts that hour on your menu, with nothing to buy and nothing to service.',
     tiles: STANDARD_TILES,
   },
   {
     id: 'physical-therapy-and-sports-medicine',
     label: 'Physical therapy, chiropractic, and sports medicine',
-    eyebrow: 'For physical therapy, chiropractic, and sports medicine clinics',
+    eyebrow: 'A cash-pay profit line for your clinic',
     subjects: [
-      'A cash-pay wellness service for [Business name], no billing codes',
+      'A cash-pay wellness line for [Business name] in a 4 x 8 ft room',
+      'A new revenue line for [Business name], no billing codes',
       'What your discharged patients could keep coming in for',
-      '14 sessions a month to break even on a hyperbaric chamber',
     ],
-    preheader: `A self-pay wellness session patients book before or after a visit. No claims, no codes, run by the staff you have. One chamber nets an estimated ${N.net} a month.`,
-    headline: 'A cash-pay wellness service your patients can book around their visits',
-    opener: 'Patients at [Business name] walk in already focused on recovery, and the active ones are paying a recovery studio for hyperbaric on top of what they pay you. A mild hyperbaric chamber in a 5 x 8 ft room gives them a self-pay wellness session before or after a visit: no claims, no codes, no new hire, and revenue that does not depend on a payer.',
-    whoTitle: 'Who books at a clinic, and why',
-    why: `${DEMAND} Your athletes and active patients are the ones buying those packs. Clinics already run cash-pay wellness lines beside care, such as compression boots, red light, and massage; this is another one, with a clear line between it and treatment.`,
-    who: [
-      'Active patients and athletes you already see, who want a wellness session alongside their visits.',
-      'Patients who finish a plan of care and want a reason to keep coming in.',
-      'Staff and family of patients who hear about it at the front desk.',
-    ],
-    fitTitle: 'How it fits your practice',
-    fit: 'Offer it as a cash-pay general-wellness service with single sessions and packs. It is not a medical treatment, and the consent templates and marketing language we provide describe it that way, so it sits beside your clinical services without blurring them. Have your counsel review the templates and confirm coverage with your insurer, as you would for any wellness line.',
-    cta: 'Worth 15 minutes to see if it fits [Business name]?',
+    preheader: 'A self-pay wellness session patients book around their visits. No claims, no codes, run by the staff you have.',
+    headline: 'Turn a 4 x 8 ft corner of your business into a new profit line',
+    opener: 'Your active patients are already paying recovery studios $79 to $129 an hour for hyperbaric on top of what they pay you. One chamber in a 4 x 8 ft room makes that a cash-pay line of your own, with no claims and no codes.',
     tiles: STANDARD_TILES,
   },
   {
     id: 'salons-and-beauty',
     label: 'Salons and beauty studios',
-    eyebrow: 'For salons, lash lounges, and beauty studios',
+    eyebrow: 'A new profit line for your salon',
     subjects: [
+      'A new revenue line for [Business name] that fits in a 4 x 8 ft corner',
       'Sixty quiet minutes your regulars would add to their appointment',
-      'A new service for [Business name] with no new hire',
-      '14 sessions a month to break even on a hyperbaric chamber',
+      'A new service for [Business name], no new hire',
     ],
-    preheader: `Regulars add a 60-minute session before or after their appointment. No new hire, no treatment room. One chamber nets an estimated ${N.net} a month.`,
-    headline: 'An hour your regulars would add to their appointment',
-    opener: 'Your clients at [Business name] already come in every few weeks and treat the appointment as time for themselves. A mild hyperbaric session is 60 quiet minutes they can add before or after a fill, color, or cut: no needles, no downtime, nothing for your artists to perform. It is a new service you can sell without hiring anyone.',
-    whoTitle: 'Who books at a salon, and why',
-    why: 'Beauty clients book it for the hour: lie back in a private chamber, breathe oxygen through a mask, nap or scroll, and walk out. Many also come to it for the early research on hyperbaric oxygen and skin, which the client pamphlet we make for you summarizes plainly, citations and limits included. Across the Wasatch Front, studios charge $79 to $129 for that hour.',
-    who: [
-      'Regulars who come in for a fill, color, or cut every few weeks and would add an hour.',
-      'Clients who want time to fully switch off and would pay for it.',
-      'Clients who already spend on skin care, facials, and wellness.',
-    ],
-    fitTitle: 'How it fits your book',
-    fit: 'Pair a session with an appointment, sell session packs at checkout, and let your artists book it like any other service. We build a client pamphlet in your brand, like the one we made for a lash lounge, so your front desk has something to hand over.',
-    cta: 'Worth 15 minutes to see if it fits [Business name]?',
+    preheader: 'Regulars add a 60-minute session before or after their appointment. No new hire, no treatment room.',
+    headline: 'Turn a 4 x 8 ft corner of your business into a new profit line',
+    opener: 'Your clients already come in every few weeks and treat the appointment as time for themselves. Studios across the Wasatch Front charge $79 to $129 for a 60-minute hyperbaric session. One chamber in a 4 x 8 ft corner adds that hour to every appointment, with nothing for your artists to perform.',
     tiles: STANDARD_TILES,
   },
 ];
 
 // ---- shared copy
 const SHARED = {
-  intro: 'Purebaric is a Lehi company. I rent 1.5 ATA mild hyperbaric chambers to homes across the Wasatch Front, and I place the same chambers in businesses. I deliver and install the chamber, train your staff, and service it myself. You set your prices and keep the session revenue.',
-  handleTitle: 'What we handle, and what it asks of you',
-  handle: [
-    ['Delivery and install', 'at your location, in days.'],
-    ['Staff training and a runbook', 'so your team runs sessions with confidence and can train new hires.'],
-    ['Consent-form templates and a client pamphlet in your brand', 'ready for your front desk.'],
-    ['Equipment service and ongoing support.', 'If something stops working, we fix it.'],
-    ['What it asks of you:', 'a 5 x 8 ft spot, a wall outlet, and about 15 minutes of staff time per session to close the chamber, open it, and wipe it down.'],
+  intro: 'Purebaric is a Lehi company. We deliver and install mild hyperbaric chambers, train your staff, and provide ongoing service and support. With minimal upfront cost, the chamber becomes a lucrative revenue stream for your business.',
+  includedTitle: 'Included in the rental',
+  included: [
+    ['Delivery, installation, and staff training.', 'We deliver the chamber, set it up in your space, and train your team hands-on so they can run sessions with confidence from day one.'],
+    ['Ready-to-use consent forms and a branded pamphlet', 'for your front desk, so you can start booking sessions immediately.'],
+    ['24/7 service and support.', 'If anything comes up with the chamber, we service it promptly.'],
   ],
-  ctaBody: 'The full business prospectus is on our site: the chamber, a session, the pricing Utah businesses publish, and the assumptions behind every figure above, so you can swap in your own. When it looks like a fit, request a chamber from that page, or reply here and I will bring the numbers for your space.',
-  fine: 'Purebaric provides general-wellness equipment. It is not a medical device and is not intended to diagnose, treat, cure, or prevent any disease. Revenue figures are estimates, not guarantees: session revenue at $75 a session less rental and supplies, before staff time, overhead, taxes, and the one-time setup fee. Local prices are published 2026 prices from businesses in Lehi, Orem, and Salt Lake City.',
+  ctaTitle: 'Ready to add it to [Business name]?',
+  ctaBody: 'Reserve a chamber and we will confirm a delivery date and walk your team through setup. There is no charge until we confirm your booking. Prefer to talk through your space first? Call or text.',
+  fine: 'Purebaric provides general-wellness equipment. Our chambers are not medical devices and are not intended to diagnose, treat, cure, or prevent any disease. Revenue figures are estimates, not guarantees. They assume $75 a session, subtract rental and supplies, and do not include staff time, overhead, taxes, or the one-time setup fee. Local prices are published 2026 prices from businesses in Lehi, Orem, and Salt Lake City.',
 };
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -225,7 +157,9 @@ function tile(t, hero) {
   <tr><td style="padding:${hero ? '18px 22px 20px' : '12px 14px 14px'};">
     <p style="margin:0 0 3px; font-family:${SANS}; font-size:${hero ? 11 : 10.5}px; letter-spacing:${hero ? '0.14em' : '0.1em'}; text-transform:uppercase; font-weight:700; color:${k}; white-space:nowrap;">${esc(t.k)}</p>
     <p style="margin:0; font-family:Georgia,'Times New Roman',serif; font-size:${vsize}px; line-height:1.1; font-weight:700; color:${fg};">${esc(t.v)}${t.unit ? ` <span style="font-family:${SANS}; font-size:${usize}px; font-weight:700;">${esc(t.unit)}</span>` : ''}</p>
-    <p style="margin:6px 0 0; font-family:${SANS}; font-size:${hero ? 14 : 12.5}px; line-height:1.45; color:${fg};">${esc(t.p)}</p>
+    ${Array.isArray(t.p)
+      ? `<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-top:8px;">${t.p.map(l => `<tr><td width="14" valign="top" style="width:14px; padding:0 0 3px; font-family:${SANS}; font-size:14px; line-height:1.45; color:${fg};">&bull;</td><td style="padding:0 0 3px; font-family:${SANS}; font-size:14px; line-height:1.45; color:${fg};">${esc(l)}</td></tr>`).join('')}</table>`
+      : `<p style="margin:6px 0 0; font-family:${SANS}; font-size:${hero ? 14 : 12.5}px; line-height:1.45; color:${fg};">${esc(t.p)}</p>`}
   </td></tr>
 </table>`;
 }
@@ -237,17 +171,25 @@ function bullets(items) {
 </tr>`).join('\n');
 }
 
+function button(href, label, opts = {}) {
+  const bg = opts.onDark ? C.terra : C.terra;
+  return `<a href="${href}" style="display:inline-block; padding:14px 22px; background:${bg}; color:#ffffff; text-decoration:none; border-radius:8px; font-weight:700; font-size:16px; white-space:nowrap;">${esc(label)}</a>`;
+}
+
+function links(cat) {
+  const utm = `utm_source=email&utm_medium=outreach&utm_campaign=b2b-${cat.id}`;
+  return { reserve: `${SITE}/book?type=business&${utm}`, biz: `${SITE}/business?${utm}` };
+}
+
 function email(cat, opts = {}) {
   const postal = opts.postalAddress || POSTAL_ADDRESS;
   const prospectusUrl = opts.prospectusUrl || PROSPECTUS_URL;
   const unsub = opts.unsubscribeUrl
-    ? `If you would rather not hear from me again, <a href="${esc(opts.unsubscribeUrl)}" style="color:${C.muted}; text-decoration:underline;">unsubscribe here</a> or reply with "no thanks".`
-    : 'If you would rather not hear from me again, reply with "no thanks" and I will not email again.';
+    ? `<a href="${esc(opts.unsubscribeUrl)}" style="color:${C.muted}; text-decoration:underline;">Unsubscribe</a>`
+    : `<a href="mailto:${EMAIL}?subject=Unsubscribe" style="color:${C.muted}; text-decoration:underline;">Unsubscribe</a>`;
   const sm = cat.tiles.small;
-  const intro = cat.intro || SHARED.intro;
-  const handle = (cat.handle || SHARED.handle).map(([b, r]) => `<strong style="color:${C.ink};">${esc(b)}</strong> ${esc(r)}`);
-  const replySubject = encodeURIComponent('Chamber for [Business name]');
-  const bizUrl = `${SITE}/business?utm_source=email&utm_medium=outreach&utm_campaign=b2b-${cat.id}`;
+  const { reserve, biz } = links(cat);
+  const included = SHARED.included.map(([b, r]) => `<strong style="color:${C.ink};">${esc(b)}</strong> ${esc(r)}`);
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -272,28 +214,30 @@ function email(cat, opts = {}) {
 
           <!-- Header -->
           <tr>
-            <td style="background:${C.ink}; padding:22px 40px; text-align:center;">
-              <a href="${SITE}/business" style="text-decoration:none;">
-                <img src="${SITE}/images/logo-cream.png?v=3" alt="Purebaric" width="220" style="display:inline-block; height:auto; max-width:220px; border:0; outline:none; text-decoration:none;" />
+            <td align="center" style="background:${C.ink}; padding:22px 40px; text-align:center;">
+              <a href="${biz}" style="text-decoration:none;">
+                <img src="${SITE}/images/logo-cream.png?v=3" alt="Purebaric" width="220" style="display:block; margin:0 auto; height:auto; max-width:220px; border:0; outline:none; text-decoration:none;" />
               </a>
             </td>
           </tr>
 
-          <!-- Hero image -->
+          <!-- Hero image, full card width -->
           <tr>
-            <td style="padding:0;">
-              <img src="${SITE}/images/chamber-living.jpg" alt="A Purebaric 1.5 ATA hyperbaric chamber set up in a bright room" width="560" style="display:block; width:100%; max-width:560px; height:auto; border:0;" />
+            <td align="center" style="padding:0; line-height:0; font-size:0;">
+              <img src="${SITE}/images/chamber-living.jpg" alt="A Purebaric 1.5 ATA hyperbaric chamber" width="560" style="display:block; width:100%; max-width:560px; height:auto; border:0;" />
             </td>
           </tr>
 
-          <!-- Eyebrow, headline, opener, who we are -->
+          <!-- Headline, opener, first CTA -->
           <tr>
             <td class="pb-pad" style="padding:30px 40px 6px;">
               <p style="margin:0 0 8px; font-size:12px; letter-spacing:0.16em; text-transform:uppercase; font-weight:700; color:${C.terraD};">${esc(cat.eyebrow)}</p>
               <h1 style="margin:0 0 18px; font-family:Georgia,'Times New Roman',serif; font-size:27px; line-height:1.22; font-weight:700; color:${C.ink};">${esc(cat.headline)}</h1>
               <p style="margin:0 0 14px; font-size:16px;">Hi [First name],</p>
-              <p style="margin:0 0 14px; font-size:16px;">[Personal note] ${esc(cat.opener)}</p>
-              <p style="margin:0 0 6px; font-size:16px;">${esc(intro)} <a href="${bizUrl}" style="color:${C.terraD}; text-decoration:underline;">Here is how it works for businesses.</a></p>
+              <p style="margin:0 0 14px; font-size:16px;">${esc(cat.opener)}</p>
+              <p style="margin:0 0 20px; font-size:16px;">${esc(SHARED.intro)} <a href="${biz}" style="color:${C.terraD}; text-decoration:underline;">See the numbers for businesses.</a></p>
+              <p style="margin:0 0 6px;">${button(reserve, 'Reserve a chamber')}</p>
+              <p style="margin:0 0 10px; font-size:13px; color:${C.muted};">No charge until we confirm a delivery date.</p>
             </td>
           </tr>
 
@@ -310,48 +254,30 @@ function email(cat, opts = {}) {
                   <td class="pb-stack" width="32%" valign="top" style="width:32%;">${tile(sm[2], false)}</td>
                 </tr>
               </table>
+              ${cat.whyLine ? `<p style="margin:12px 0 0; font-size:14px; line-height:1.55; color:#5f544d;">${esc(cat.whyLine)}</p>` : ''}
             </td>
           </tr>
 
-          <!-- Who books, why, how it fits -->
+          <!-- Included -->
           <tr>
             <td class="pb-pad" style="padding:22px 40px 0;">
-              <p style="margin:0 0 6px; font-size:12px; letter-spacing:0.16em; text-transform:uppercase; font-weight:700; color:${C.terraD};">Your clients</p>
-              <h2 style="margin:0 0 10px; font-family:Georgia,'Times New Roman',serif; font-size:20px; line-height:1.25; font-weight:700; color:${C.ink};">${esc(cat.whoTitle)}</h2>
-              <p style="margin:0 0 12px; font-size:15px; line-height:1.6; color:#5f544d;">${esc(cat.why)}</p>
+              <p style="margin:0 0 8px; font-size:12px; letter-spacing:0.16em; text-transform:uppercase; font-weight:700; color:${C.terraD};">${esc(SHARED.includedTitle)}</p>
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-${bullets(cat.who.map(esc))}
-              </table>
-              <p style="margin:10px 0 0; font-size:15px; line-height:1.6; color:#5f544d;"><strong style="color:${C.ink};">${esc(cat.fitTitle)}.</strong> ${esc(cat.fit)}</p>
-            </td>
-          </tr>
-
-          <!-- What we handle -->
-          <tr>
-            <td class="pb-pad" style="padding:24px 40px 0;">
-              <p style="margin:0 0 6px; font-size:12px; letter-spacing:0.16em; text-transform:uppercase; font-weight:700; color:${C.terraD};">What's included</p>
-              <h2 style="margin:0 0 10px; font-family:Georgia,'Times New Roman',serif; font-size:20px; line-height:1.25; font-weight:700; color:${C.ink};">${esc(SHARED.handleTitle)}</h2>
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-${bullets(handle)}
+${bullets(included)}
               </table>
             </td>
           </tr>
 
-          <!-- CTA block -->
+          <!-- Bottom CTA -->
           <tr>
-            <td class="pb-pad" style="padding:24px 40px 8px;">
+            <td class="pb-pad" style="padding:22px 40px 8px;">
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background:${C.ink}; border-radius:14px;">
                 <tr>
                   <td style="padding:22px 24px 20px;">
-                    <p style="margin:0 0 6px; font-family:Georgia,'Times New Roman',serif; font-size:20px; line-height:1.25; font-weight:700; color:#ffffff;">${esc(cat.cta)}</p>
+                    <p style="margin:0 0 6px; font-family:Georgia,'Times New Roman',serif; font-size:20px; line-height:1.25; font-weight:700; color:#ffffff;">${esc(SHARED.ctaTitle)}</p>
                     <p style="margin:0 0 16px; font-size:15px; line-height:1.55; color:${C.soft};">${esc(SHARED.ctaBody)}</p>
-                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                      <tr>
-                        <td style="padding:0 10px 6px 0;"><a href="${bizUrl}" style="display:inline-block; padding:12px 16px; background:${C.terra}; color:#ffffff; text-decoration:none; border-radius:8px; font-weight:700; font-size:14px; white-space:nowrap;">See the business prospectus</a></td>
-                        <td style="padding:0 10px 6px 0;"><a href="mailto:${EMAIL}?subject=${replySubject}" style="display:inline-block; padding:11px 14px; border:1px solid rgba(255,255,255,0.4); color:#ffffff; text-decoration:none; border-radius:8px; font-weight:600; font-size:14px; white-space:nowrap;">Reply: yes, let's talk</a></td>
-                      </tr>
-                    </table>
-                    <p style="margin:8px 0 0; font-size:14px; color:${C.soft};">Or call or text <a href="tel:${TEL}" style="color:#ffffff; text-decoration:underline;">${PHONE}</a>. <a href="${esc(prospectusUrl)}" style="color:#ffffff; text-decoration:underline;">Download the prospectus (PDF)</a>.</p>
+                    <p style="margin:0 0 12px;">${button(reserve, 'Reserve a chamber')}</p>
+                    <p style="margin:0; font-size:14px; color:${C.soft};">Call or text <a href="tel:${TEL}" style="color:#ffffff; text-decoration:underline;">${PHONE}</a> &nbsp;·&nbsp; <a href="${esc(prospectusUrl)}" style="color:#ffffff; text-decoration:underline;">Business prospectus (PDF)</a></p>
                   </td>
                 </tr>
               </table>
@@ -360,11 +286,19 @@ ${bullets(handle)}
 
           <!-- Signature -->
           <tr>
-            <td class="pb-pad" style="padding:18px 40px 32px;">
-              <p style="margin:0; font-size:16px;">Thanks,</p>
-              <p style="margin:0; font-size:16px; font-weight:700;">Matthew Bailie</p>
-              <p style="margin:0; font-size:14px; color:${C.muted};">Owner, Purebaric &nbsp;|&nbsp; Lehi, Utah</p>
-              <p style="margin:0; font-size:14px; color:${C.muted};">${PHONE} &nbsp;|&nbsp; <a href="mailto:${EMAIL}" style="color:${C.terraD}; text-decoration:none;">${EMAIL}</a> &nbsp;|&nbsp; <a href="${SITE}/business" style="color:${C.terraD}; text-decoration:none;">purebaric.com/business</a></p>
+            <td class="pb-pad" style="padding:18px 40px 30px;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td width="72" valign="top" style="width:72px; padding:0 16px 0 0;">
+                    <img src="${SITE}/images/founder-matthew-240.jpg" alt="Matthew Bailie" width="72" height="72" style="display:block; width:72px; height:72px; border-radius:50%; border:0;" />
+                  </td>
+                  <td valign="middle" style="font-family:${SANS};">
+                    <p style="margin:0; font-size:16px; font-weight:700; color:${C.ink};">Matthew Bailie</p>
+                    <p style="margin:0; font-size:14px; color:${C.muted};">Owner, Purebaric &nbsp;|&nbsp; Lehi, Utah</p>
+                    <p style="margin:0; font-size:14px; color:${C.muted};">${PHONE} &nbsp;|&nbsp; <a href="mailto:${EMAIL}" style="color:${C.terraD}; text-decoration:none;">${EMAIL}</a></p>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
         </table>
@@ -374,7 +308,7 @@ ${bullets(handle)}
           <tr>
             <td style="padding:16px 24px 0; text-align:center; font-size:12px; line-height:1.5; color:${C.muted};">
               ${esc(SHARED.fine)}
-              <br><br>You are receiving this one-time note because ${esc(cat.whyYou || 'your business serves the clients who book these sessions')}. ${unsub}
+              <br><br>${unsub}
               <br>Purebaric &nbsp;|&nbsp; ${esc(postal)}
             </td>
           </tr>
@@ -389,51 +323,47 @@ ${bullets(handle)}
 
 function plainText(cat, opts = {}) {
   const sm = cat.tiles.small, h = cat.tiles.hero;
+  const { reserve, biz } = links(cat);
   const line = s => s.replace(/\s+/g, ' ').trim();
   return [
     `Subject: ${cat.subjects[0]}`,
     `Alt subjects: ${cat.subjects.slice(1).join(' | ')}`,
     '',
+    line(cat.headline),
+    '',
     `Hi [First name],`,
     '',
-    line(`[Personal note] ${cat.opener}`),
+    line(cat.opener),
     '',
-    line(cat.intro || SHARED.intro) + ` How it works for businesses: ${SITE}/business`,
+    `${SHARED.intro} The numbers for businesses: ${biz}`,
     '',
-    `${h.k.toUpperCase()}: ${h.v}${h.unit ? ' ' + h.unit : ''}, ${h.p}`,
+    `Reserve a chamber for [Business name]: ${reserve}`,
+    'No charge until we confirm a delivery date.',
+    '',
+    `${h.k.toUpperCase()}: ${h.v}${h.unit ? ' ' + h.unit : ''}` + (Array.isArray(h.p) ? h.p.map(l => `\n  - ${l}`).join('') : `, ${h.p}`),
     ...sm.map(t => `${t.k.toUpperCase()}: ${t.v}${t.unit ? ' ' + t.unit : ''}, ${t.p}`),
+    ...(cat.whyLine ? [cat.whyLine] : []),
     '',
-    `${cat.whoTitle}:`,
-    cat.why,
-    ...cat.who.map(w => `- ${w}`),
+    `${SHARED.includedTitle}:`,
+    ...SHARED.included.map(([b, r]) => `- ${b} ${r}`),
     '',
-    `${cat.fitTitle}. ${cat.fit}`,
+    `${SHARED.ctaTitle} ${SHARED.ctaBody}`,
+    `Reserve a chamber: ${reserve}`,
+    `Call or text ${PHONE}. Business prospectus (PDF): ${opts.prospectusUrl || PROSPECTUS_URL}`,
     '',
-    `${SHARED.handleTitle}:`,
-    ...(cat.handle || SHARED.handle).map(([b, r]) => `- ${b} ${r}`),
-    '',
-    `${cat.cta} ${SHARED.ctaBody}`,
-    '',
-    `Business prospectus: ${SITE}/business`,
-    `Download the prospectus (PDF): ${opts.prospectusUrl || PROSPECTUS_URL}`,
-    `Or reply to this email, or call or text ${PHONE}.`,
-    '',
-    'Thanks,',
     'Matthew Bailie',
-    'Owner, Purebaric | Lehi, Utah',
-    `${PHONE} | ${EMAIL} | purebaric.com/business`,
+    `Owner, Purebaric | Lehi, Utah | ${PHONE} | ${EMAIL}`,
     '',
     SHARED.fine,
     '',
-    `You are receiving this one-time note because ${cat.whyYou || 'your business serves the clients who book these sessions'}. ` +
-      (opts.unsubscribeUrl ? `Unsubscribe: ${opts.unsubscribeUrl}` : 'Reply "no thanks" and I will not email again.'),
+    opts.unsubscribeUrl ? `Unsubscribe: ${opts.unsubscribeUrl}` : `Unsubscribe: email ${EMAIL} with the subject "Unsubscribe"`,
     `Purebaric | ${opts.postalAddress || POSTAL_ADDRESS}`,
     '',
   ].join('\n');
 }
 
 // ---- personalization -------------------------------------------------------------------------
-// Tokens in the templates: [First name], [Business name], [Personal note].
+// Tokens in the templates: [First name], [Business name].
 
 // Turn an "owner" string from research into a greeting name. Returns "" when there is no usable
 // first name, and the greeting then falls back to "Hi <Business> team,".
@@ -453,15 +383,11 @@ function greetingName(owner) {
   return firsts.slice(0, 2).map(cap).join(' and ');
 }
 
-function personalize(str, { firstName = '', businessName = '', personalNote = '' } = {}, { html = true } = {}) {
+function personalize(str, { firstName = '', businessName = '' } = {}, { html = true } = {}) {
   const e = html ? esc : (x => String(x));
   const biz = businessName ? e(businessName) : '[Business name]';
-  let note = String(personalNote || '').trim();
-  if (note && !/[.!?]$/.test(note)) note += '.';
   let s = String(str);
   s = s.replace('Hi [First name],', firstName ? `Hi ${e(firstName)},` : (businessName ? `Hi ${biz} team,` : 'Hi there,'));
-  s = s.split('[Personal note] ').join(note ? e(note) + ' ' : '');
-  s = s.split('[Personal note]').join(note ? e(note) : '');
   s = s.split(encodeURIComponent('[Business name]')).join(encodeURIComponent(businessName || '[Business name]'));
   s = s.split('[First name]').join(firstName ? e(firstName) : '[First name]');
   s = s.split('[Business name]').join(biz);
@@ -473,11 +399,11 @@ function categoryById(id) {
 }
 
 // Render one send-ready email. subjectIndex picks one of the category's subject lines (default 0).
-function render({ categoryId, firstName = '', businessName = '', personalNote = '', subjectIndex = 0, unsubscribeUrl = '', postalAddress = '', prospectusUrl = '' }) {
+function render({ categoryId, firstName = '', businessName = '', subjectIndex = 0, unsubscribeUrl = '', postalAddress = '', prospectusUrl = '' }) {
   const cat = categoryById(categoryId);
   if (!cat) throw new Error(`unknown outreach category: ${categoryId}`);
   const opts = { unsubscribeUrl, postalAddress, prospectusUrl };
-  const vars = { firstName, businessName, personalNote };
+  const vars = { firstName, businessName };
   const subject = personalize(cat.subjects[Math.min(subjectIndex, cat.subjects.length - 1)] || cat.subjects[0], vars, { html: false });
   const html = personalize(email(cat, opts), vars, { html: true });
   const text = personalize(plainText(cat, opts).replace(/^Subject:.*\n(Alt subjects:.*\n)?\n?/, ''), vars, { html: false });

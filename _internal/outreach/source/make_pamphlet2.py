@@ -140,7 +140,7 @@ y = bullets(0, y+4, [
   "**Recurring income.** Utah facilities sell 10- and 20-session packs and monthly memberships, which turns one-time visits into repeat revenue.",
   "**A reason to choose you.** A hyperbaric chamber is a premium amenity that helps your facility stand out from the gym or studio down the street.",
   "**Retention.** Clients who build a weekly session into their routine have one more reason to stay.",
-  "**Earn from idle space.** A chamber needs only a 5 x 8 foot area and a wall outlet.",
+  "**Earn from idle space.** A chamber needs only a 4 x 8 foot area and a wall outlet.",
   "**No capital outlay.** You rent the chamber. There is no equipment to buy, finance, or resell.",
 ], size=8.6, lh=3.9, gap=1.7)
 by0 = y+2
@@ -225,7 +225,7 @@ pdf.set_fill_color(*TERRA_BG); pdf.rect(px(2)+M, by1, CW, 27, "F")
 pdf.set_xy(px(2)+M+4, by1+3.5); pdf.set_font("Georgia","B",10); pdf.set_text_color(*TERRA_D)
 pdf.cell(CW-8, 5, "What's needed")
 yy = by1+10.5
-for t in ["**A 5 x 8 foot area**, about the size of a twin-size bed.", "**Access to a wall outlet.**"]:
+for t in ["**A 4 x 8 foot area**, about the size of a twin-size bed.", "**Access to a wall outlet.**"]:
     pdf.set_fill_color(*TERRA); pdf.ellipse(px(2)+M+4, yy+1.1, 1.8, 1.8, "F")
     yy = para(2, yy, t, size=8.6, lh=4, dx=8.2, w=CW-12) + 1.5
 y = by1+27
