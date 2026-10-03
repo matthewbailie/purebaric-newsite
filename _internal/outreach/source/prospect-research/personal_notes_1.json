@@ -1,0 +1,742 @@
+[
+ {
+  "business": "Big John's Pro Gym / The Elite Training Facility",
+  "city": "Bountiful",
+  "personal_note": "I noticed you offer contest prep and posing instruction alongside massage therapy."
+ },
+ {
+  "business": "Club Pilates Bountiful",
+  "city": "Bountiful",
+  "personal_note": "I saw the Bountiful studio is one of five Club Pilates locations you run across Utah."
+ },
+ {
+  "business": "Gracie Jiu-Jitsu Bountiful",
+  "city": "Bountiful",
+  "personal_note": "Looks like you run adult Gracie Combatives classes four evenings a week plus Saturday mornings."
+ },
+ {
+  "business": "Infusion Yoga & Pilates",
+  "city": "Bountiful",
+  "personal_note": "Your studio offers restorative and therapeutic yoga alongside Pilates, which is not common."
+ },
+ {
+  "business": "Legends Boxing Bountiful",
+  "city": "Bountiful",
+  "personal_note": "I read the Davis Journal piece calling your Bountiful gym more than a gym, a place where people notice you."
+ },
+ {
+  "business": "North Canyon Swim & Tennis Club",
+  "city": "Bountiful",
+  "personal_note": "I saw North Canyon is member-owned, with a volunteer board and a full-time manager running the club."
+ },
+ {
+  "business": "The Refinery Gym (Bountiful)",
+  "city": "Bountiful",
+  "personal_note": "I read you built a collection of rare machines before opening to the public, then added Bountiful to the original Sandy gym."
+ },
+ {
+  "business": "The Scratch Pad",
+  "city": "Bountiful",
+  "personal_note": "Congrats on hosting Ice Climbing World Youth Championships events at Utah's only drytooling gym."
+ },
+ {
+  "business": "BoxFit Utah",
+  "city": "Clearfield",
+  "personal_note": "Your boxing gym has a ring and heavy-bag floor just off I-15, with 20-plus years of coaching behind it."
+ },
+ {
+  "business": "Envision Personal Training",
+  "city": "Clearfield",
+  "personal_note": "I noticed you pitch a relaxed, non-intimidating small-group atmosphere and also coach health and nutrition."
+ },
+ {
+  "business": "GPP Fitness (Clearfield / Syracuse)",
+  "city": "Clearfield",
+  "personal_note": "Looks like you co-founded GPP after 20 years of training and still publish the GPP Fitness podcast."
+ },
+ {
+  "business": "Strike Boxing & Fitness Club",
+  "city": "Clearfield",
+  "personal_note": "I read you told Clearfield City Council that downtown redevelopment has grown your memberships."
+ },
+ {
+  "business": "World Martial Arts & Fitness Academy (WMA Fitness)",
+  "city": "Clearfield",
+  "personal_note": "Your 32-plus years in martial arts show up in the Jiu Jitsu, Muay Thai and boxing programs you run."
+ },
+ {
+  "business": "All Fit Bungee",
+  "city": "Clinton",
+  "personal_note": "Congrats on being Utah's first bungee fitness studio and getting featured on ABC4 Good Things Utah."
+ },
+ {
+  "business": "BODYBAR Pilates Farmington",
+  "city": "Farmington",
+  "personal_note": "I saw you opened the first Utah BODYBAR Pilates in Station Park back in August 2021."
+ },
+ {
+  "business": "HOTWORX Farmington (Station Park)",
+  "city": "Farmington",
+  "personal_note": "Your Station Park studio already sells infrared heat sessions, so members come in for recovery as well as workouts."
+ },
+ {
+  "business": "Lift at Station Park",
+  "city": "Farmington",
+  "personal_note": "I noticed your 25,000 square foot club in Station Park runs executive locker rooms and no-contract memberships."
+ },
+ {
+  "business": "Viva Lagree Farmington",
+  "city": "Farmington",
+  "personal_note": "Congrats on the Best Yoga Studio in Farmington 2024 award from Quality Business Awards."
+ },
+ {
+  "business": "BLK FLG Gym",
+  "city": "Kaysville",
+  "personal_note": "I saw the BLK FLG company took over the former Pivot Gym space on Deseret Drive."
+ },
+ {
+  "business": "Barre Forte Kaysville",
+  "city": "Kaysville",
+  "personal_note": "I read the VoyageUtah Community Highlights profile on you and your co-owner."
+ },
+ {
+  "business": "Orangetheory Fitness Kaysville",
+  "city": "Kaysville",
+  "personal_note": ""
+ },
+ {
+  "business": "Pivot Fitness",
+  "city": "Kaysville",
+  "personal_note": "I noticed you went from firefighter-paramedic to coach and run a dedicated Mobility class track."
+ },
+ {
+  "business": "Burn Boot Camp Layton",
+  "city": "Layton",
+  "personal_note": ""
+ },
+ {
+  "business": "Club Pilates Layton",
+  "city": "Layton",
+  "personal_note": ""
+ },
+ {
+  "business": "Da Dojo",
+  "city": "Layton",
+  "personal_note": "Looks like you're the official Bang Muay Thai affiliate in Layton, with Boxing Fit, BJJ and kickboxing classes."
+ },
+ {
+  "business": "Evolution Fitness and Personal Training",
+  "city": "Layton",
+  "personal_note": "I saw you're the top-rated gym in Layton on Yelp, with 24-hour access and in-house personal training."
+ },
+ {
+  "business": "Gracie Barra Layton",
+  "city": "Layton",
+  "personal_note": "I noticed your Layton Gracie Barra school competes regularly through Smoothcomp events."
+ },
+ {
+  "business": "HOTWORX Layton",
+  "city": "Layton",
+  "personal_note": "I saw your Layton studio opening announcement, and your infrared sauna sessions already sell as a recovery product."
+ },
+ {
+  "business": "Lions Pride Barbell & Fitness",
+  "city": "Layton",
+  "personal_note": "Your gym is Layton's dedicated powerlifting spot, with a monolift, reverse hyper, competition bench and strongman implements."
+ },
+ {
+  "business": "SALT Studios (Hot Yoga & Pilates)",
+  "city": "Layton",
+  "personal_note": "I noticed you run 26&2 hot yoga and Inferno Hot Pilates classes in heated rooms."
+ },
+ {
+  "business": "Team Link Utah Training Center",
+  "city": "Layton",
+  "personal_note": "Looks like you're the home gym of world champion Fabio Serrao, with BJJ, Muay Thai and MMA under one roof."
+ },
+ {
+  "business": "HOTWORX North Salt Lake (Redwood Rd)",
+  "city": "North Salt Lake",
+  "personal_note": ""
+ },
+ {
+  "business": "Mushin Self Defense (Mushin Academy)",
+  "city": "North Salt Lake",
+  "personal_note": "I read you've been Davis County's longest-running MMA gym since 2000, with certified Muay Thai instruction under Ajarn Chai Sirisute."
+ },
+ {
+  "business": "Club Pilates Syracuse",
+  "city": "Syracuse",
+  "personal_note": ""
+ },
+ {
+  "business": "Snap Fitness Syracuse",
+  "city": "Syracuse",
+  "personal_note": "I noticed your Snap location already offers an infrared sauna alongside 24/7 access and personal training."
+ },
+ {
+  "business": "Anatomy Boxing & Fitness",
+  "city": "Woods Cross",
+  "personal_note": "Your boxing gym serves Bountiful, Woods Cross, Farmington and North Salt Lake with strength and conditioning plus sparring classes."
+ },
+ {
+  "business": "Results Pro Training",
+  "city": "Woods Cross",
+  "personal_note": ""
+ },
+ {
+  "business": "Quality Fitness & Health",
+  "city": "Nephi",
+  "personal_note": "Congrats on 13-plus years of running a family-owned, 24-hour gym in Nephi with 40-plus classes a week."
+ },
+ {
+  "business": "Atomic Pilates & Chiropractic",
+  "city": "Bluffdale",
+  "personal_note": "I noticed you pair reformer Pilates with an in-house chiropractic clinic under one roof."
+ },
+ {
+  "business": "CORE XV",
+  "city": "Bluffdale",
+  "personal_note": "I saw you treat recovery as one of your three pillars alongside strength and conditioning."
+ },
+ {
+  "business": "Crown BJJ",
+  "city": "Bluffdale",
+  "personal_note": "Looks like you run corporate self-defense programs in addition to your adult and kids BJJ classes."
+ },
+ {
+  "business": "Hardbodiez Gym",
+  "city": "Bluffdale",
+  "personal_note": ""
+ },
+ {
+  "business": "Origin Fitness Syndicate",
+  "city": "Bluffdale",
+  "personal_note": "I noticed your private, capped-membership gym already sells a luxury recovery area alongside custom equipment and coaching."
+ },
+ {
+  "business": "Canyon Cove Pilates & Activewear",
+  "city": "Cottonwood Heights",
+  "personal_note": "Looks like you run a reformer studio and an activewear boutique out of the same space."
+ },
+ {
+  "business": "Intermountain Pilates Training Center",
+  "city": "Cottonwood Heights",
+  "personal_note": "I saw you run a Pilates teacher-training program in addition to regular classes."
+ },
+ {
+  "business": "KnockOut Pilates",
+  "city": "Cottonwood Heights",
+  "personal_note": "I read your profile in VoyageUtah's Life & Work series."
+ },
+ {
+  "business": "Leverage Fitness Solutions",
+  "city": "Cottonwood Heights",
+  "personal_note": "Looks like you keep the Highland Drive studio private and appointment-only."
+ },
+ {
+  "business": "TITLE Boxing Club Cottonwood Heights",
+  "city": "Cottonwood Heights",
+  "personal_note": "Looks like ABC4 Good Things Utah ran a segment on you, Working up a sweat with Title Boxing."
+ },
+ {
+  "business": "Pilates Revolution & Fitness",
+  "city": "Draper",
+  "personal_note": "Congrats on being named Best Pilates Studio in Draper for 2025 by Quality Business Awards."
+ },
+ {
+  "business": "Studio CORE Pilates",
+  "city": "Draper",
+  "personal_note": "I noticed you also run your own instructor-training brand alongside the Draper studio."
+ },
+ {
+  "business": "Studio IVL",
+  "city": "Draper",
+  "personal_note": "I saw the studio grew out of your IVL Collective activewear brand."
+ },
+ {
+  "business": "A Beautiful SurpriZe Pilates",
+  "city": "Herriman",
+  "personal_note": "I noticed you bill the studio as Pilates Studio and Complete Wellness, with classes capped at six."
+ },
+ {
+  "business": "Gracie Barra Herriman",
+  "city": "Herriman",
+  "personal_note": "Looks like you lead both the Herriman and Riverton Gracie Barra schools as a 3rd-degree black belt."
+ },
+ {
+  "business": "Laionebuilt Fitness",
+  "city": "Herriman",
+  "personal_note": "I saw you run group training for athletes, youth and adults plus open gym at the 5600 W complex."
+ },
+ {
+  "business": "Rise4 Holladay",
+  "city": "Holladay",
+  "personal_note": "Congrats on taking over the Holladay studio as co-owners in November 2024."
+ },
+ {
+  "business": "Big Mountain Barbell",
+  "city": "Midvale",
+  "personal_note": "I read you grew from a 2014 warehouse gym into a full Midvale facility with private coaching."
+ },
+ {
+  "business": "New Star Fitness & Nutrition",
+  "city": "Midvale",
+  "personal_note": "I saw the Redefining Wellness release about pairing personal training with in-house nutrition coaching."
+ },
+ {
+  "business": "212 Fitness",
+  "city": "Millcreek",
+  "personal_note": "Looks like you've kept 212 owner-run since opening in 2012, with small-group strength and conditioning on 3300 South."
+ },
+ {
+  "business": "Epic Fitness",
+  "city": "Millcreek",
+  "personal_note": "I noticed you already list rehabilitation and performance training among your services."
+ },
+ {
+  "business": "HOTWORX Millcreek (Holladay)",
+  "city": "Millcreek",
+  "personal_note": "I saw Olympus Hills is the second of your two Salt Lake area HOTWORX studios."
+ },
+ {
+  "business": "Obsidian Fitness",
+  "city": "Millcreek",
+  "personal_note": "Congrats on being voted best gym in Utah three years running with your own Obsidian format and app."
+ },
+ {
+  "business": "Hell's Gate Gym",
+  "city": "Murray",
+  "personal_note": "I noticed you've racked up 150-plus Birdeye reviews and also run online coaching on the side."
+ },
+ {
+  "business": "Rumble Boxing Murray",
+  "city": "Murray",
+  "personal_note": "Congrats on opening the first Rumble Boxing studio in Utah."
+ },
+ {
+  "business": "The Sports Mall",
+  "city": "Murray",
+  "personal_note": "Your club has been the Salt Lake Valley's original family athletic club since 1975, with 20 tennis courts and pickleball."
+ },
+ {
+  "business": "Anytime Fitness Riverton",
+  "city": "Riverton",
+  "personal_note": "Looks like Anytime Riverton is a true family operation, with Caleb and Carson managing alongside you."
+ },
+ {
+  "business": "Aspire Pilates Training Center",
+  "city": "Riverton",
+  "personal_note": "I saw you've been at it since 2009 with instructors who are all STOTT PILATES certified from nursing, PT and dance backgrounds."
+ },
+ {
+  "business": "Gracie Barra Riverton",
+  "city": "Riverton",
+  "personal_note": "I noticed Riverton runs female-only classes led by Professor Andrea."
+ },
+ {
+  "business": "The HITFIT Gym Riverton",
+  "city": "Riverton",
+  "personal_note": "I saw you keep a certified trainer on the floor for every 35-minute session."
+ },
+ {
+  "business": "The Station Gym",
+  "city": "Riverton",
+  "personal_note": "I read your blog posts on ski-season strength and injury prevention, and saw you also run The Muscle Bus."
+ },
+ {
+  "business": "BODYBAR Pilates - Downtown Salt Lake City",
+  "city": "Salt Lake City",
+  "personal_note": "I saw your Speaking on Business feature with the Salt Lake Chamber."
+ },
+ {
+  "business": "Barry's Salt Lake City",
+  "city": "Salt Lake City",
+  "personal_note": "Congrats on bringing Barry's first Utah studio to Sugar House in December 2025."
+ },
+ {
+  "business": "Bouldering Project - The Granary (Salt Lake Bouldering Project)",
+  "city": "Salt Lake City",
+  "personal_note": "I read in Climbing Business Journal that you're hosting two premier climbing camps for competitive youth."
+ },
+ {
+  "business": "CHVRCH Cycle",
+  "city": "Salt Lake City",
+  "personal_note": "I noticed you run cycling, boxing and strength formats under one roof downtown."
+ },
+ {
+  "business": "HOTWORX Salt Lake City (Sugarhouse)",
+  "city": "Salt Lake City",
+  "personal_note": "I saw you were awarded two Salt Lake market HOTWORX licenses, and infrared sauna sessions are already your core product."
+ },
+ {
+  "business": "JETSET Pilates - Sugar House",
+  "city": "Salt Lake City",
+  "personal_note": ""
+ },
+ {
+  "business": "Mcycle Studios",
+  "city": "Salt Lake City",
+  "personal_note": "I read the CanvasRebel and SLUG profiles on SLC's original boutique cycling studio."
+ },
+ {
+  "business": "Momentum Indoor Climbing (Trolley Square training gym)",
+  "city": "Salt Lake City",
+  "personal_note": "I saw Momentum was named USA Climbing's National Training Center partner, and Trolley Square is your training-focused gym."
+ },
+ {
+  "business": "Move Better Pilates & Training Studio",
+  "city": "Salt Lake City",
+  "personal_note": "I read the Utah Stories piece on your strength-and-mobility approach and semi-private format."
+ },
+ {
+  "business": "Rebel House (Sugar House)",
+  "city": "Salt Lake City",
+  "personal_note": "Congrats on being voted Utah's #1 privately owned gym and #1 HIIT studio."
+ },
+ {
+  "business": "Renzo Gracie Salt Lake City",
+  "city": "Salt Lake City",
+  "personal_note": "Looks like you're a 4th-degree black belt under Renzo Gracie running the Sugar House academy."
+ },
+ {
+  "business": "Rideologie",
+  "city": "Salt Lake City",
+  "personal_note": "I read the Her Campus feature calling Rideologie SLC's newest spin studio."
+ },
+ {
+  "business": "SLC Strength & Conditioning",
+  "city": "Salt Lake City",
+  "personal_note": "I noticed you coached collegiate strength at Utah and Hawai'i before opening your own gym in 2017."
+ },
+ {
+  "business": "Salt Lake Tennis & Health Club",
+  "city": "Salt Lake City",
+  "personal_note": "Your club is closing in on 50 years with 11 indoor courts and already runs a reformer Pilates program for members."
+ },
+ {
+  "business": "Seek Studio",
+  "city": "Salt Lake City",
+  "personal_note": "Congrats on making City Weekly's Best of Utah 2026 list of best privately owned gyms."
+ },
+ {
+  "business": "Seven Sisters Pilates",
+  "city": "Salt Lake City",
+  "personal_note": "I read your VoyageUtah profile on starting the Marmalade-district studio."
+ },
+ {
+  "business": "The Bar Method - Salt Lake City Sugarhouse",
+  "city": "Salt Lake City",
+  "personal_note": "I saw the Sugar House Chamber business spotlight on your long-running barre studio."
+ },
+ {
+  "business": "The Front Climbing Club",
+  "city": "Salt Lake City",
+  "personal_note": "I read Building Salt Lake's coverage of your South Main expansion in South Salt Lake."
+ },
+ {
+  "business": "The Picklr - Salt Lake City",
+  "city": "Salt Lake City",
+  "personal_note": "I noticed you keep eight indoor courts open from 6am to midnight at Brickyard Plaza."
+ },
+ {
+  "business": "Tonic Method 9th & 9th",
+  "city": "Salt Lake City",
+  "personal_note": "Looks like the 9th & 9th studio is the Salt Lake flagship for a brand that started in Aspen."
+ },
+ {
+  "business": "Torrent Cycle",
+  "city": "Salt Lake City",
+  "personal_note": "I read the VoyageUtah profile on your co-founder and saw you now run three studios across the valley."
+ },
+ {
+  "business": "Utah Fitness Institute",
+  "city": "Salt Lake City",
+  "personal_note": "I read in VoyageUtah that you're one of the few trainers in Utah with a PhD in exercise physiology."
+ },
+ {
+  "business": "Velocity Combat Club",
+  "city": "Salt Lake City",
+  "personal_note": "Congrats on the June opening downtown in the basement of the Church and State building."
+ },
+ {
+  "business": "Body Fit Training (BFT) Sandy",
+  "city": "Sandy",
+  "personal_note": ""
+ },
+ {
+  "business": "Dialed In Fitness",
+  "city": "Sandy",
+  "personal_note": "I noticed you're the top-rated gym in Sandy on Yelp with 160-plus Birdeye reviews."
+ },
+ {
+  "business": "Gracie Barra Sandy",
+  "city": "Sandy",
+  "personal_note": "Looks like you run both adult and competition BJJ programs at the Sandy school alongside your co-owner."
+ },
+ {
+  "business": "Jeremy Horn's Elite Performance",
+  "city": "Sandy",
+  "personal_note": "I saw you bring a UFC career with 100-plus pro MMA fights to the Sandy gym."
+ },
+ {
+  "business": "Mountain Yoga Sandy",
+  "city": "Sandy",
+  "personal_note": "I noticed you offer Pilates, barre and Qigong alongside heated flow."
+ },
+ {
+  "business": "Pilates for Everyone",
+  "city": "Sandy",
+  "personal_note": "Looks like you focus on small-group reformer classes using the Balanced Body method."
+ },
+ {
+  "business": "F45 Training SoDa Row",
+  "city": "South Jordan",
+  "personal_note": "I saw the SoDa Row studio is locally owned by a Daybreak mother and son team."
+ },
+ {
+  "business": "Force Fitness",
+  "city": "South Jordan",
+  "personal_note": "Congrats on the October 2025 opening in Daybreak, and I noticed you already offer Neubie training plus a stretching and mobility service."
+ },
+ {
+  "business": "FreedOM Hot Yoga + Pilates SoJo",
+  "city": "South Jordan",
+  "personal_note": "Looks like SoJo is the second studio for your Orem-based FreedOM Hot Yoga brand."
+ },
+ {
+  "business": "HOTWORX - South Jordan (Daybreak)",
+  "city": "South Jordan",
+  "personal_note": "Looks like you run the Daybreak studio behind Harmons alongside HOTWORX Draper under HX Draper LLC."
+ },
+ {
+  "business": "Orangetheory Fitness South Jordan",
+  "city": "South Jordan",
+  "personal_note": ""
+ },
+ {
+  "business": "Bernales Institute of Martial Arts",
+  "city": "South Salt Lake",
+  "personal_note": "I noticed your South Salt Lake academy teaches seven disciplines, from BJJ to Kali and Silat."
+ },
+ {
+  "business": "Champs Gym (Pouha Boxing)",
+  "city": "South Salt Lake",
+  "personal_note": "I saw the Fox 13 The Place segment on Champs and your partnership with Fitness 2 Recover for boxing classes."
+ },
+ {
+  "business": "Fight City SLC",
+  "city": "South Salt Lake",
+  "personal_note": "Looks like you run both a fight gym and a fight-gear retail shop out of South Salt Lake."
+ },
+ {
+  "business": "The Point Pilates",
+  "city": "South Salt Lake",
+  "personal_note": "Congrats on expanding to a second studio at 9th & 9th with Reformer and Pilates Chair classes."
+ },
+ {
+  "business": "Absolute MMA",
+  "city": "West Jordan",
+  "personal_note": "I saw you've spent 25-plus years building Utah's martial arts community and coached pro fighters and BJJ world champions."
+ },
+ {
+  "business": "Gracie Barra West Jordan",
+  "city": "West Jordan",
+  "personal_note": "I noticed you run a member-deals partner program with local businesses like CrossFit Helo."
+ },
+ {
+  "business": "180 Fitness Ephraim",
+  "city": "Ephraim",
+  "personal_note": "I read the Gym Insight piece on building a family-owned chain specifically for rural Utah towns."
+ },
+ {
+  "business": "Coalville Fit",
+  "city": "Coalville",
+  "personal_note": "Your studio is one of only two on Coalville's Main Street, bringing barre, kickboxing and HIIT to North Summit."
+ },
+ {
+  "business": "Oak + Willow Yoga and Wellness Studio",
+  "city": "Kamas",
+  "personal_note": "I read the Choose Park City spotlight on your studio, the only boutique studio in the Kamas Valley."
+ },
+ {
+  "business": "BJJ Revolution Park City (Malmberg Jiu Jitsu)",
+  "city": "Park City",
+  "personal_note": "I saw you train out of Silver Mountain Sports Club and also run BJJ Revolution classes for Heber and Kamas."
+ },
+ {
+  "business": "BODYROK Park City",
+  "city": "Park City",
+  "personal_note": "Congrats on the August 2025 opening at Junction Commons and the ski-prep Pilates classes with Halfdays."
+ },
+ {
+  "business": "Club Pilates Park City",
+  "city": "Park City",
+  "personal_note": "I noticed you still teach on the floor as a certified instructor at the Redstone studio."
+ },
+ {
+  "business": "F45 Training Park City",
+  "city": "Park City",
+  "personal_note": "I read in TownLift that you launched Park City's first in-gym cold plunge in July 2024."
+ },
+ {
+  "business": "Good Movement Studio",
+  "city": "Park City",
+  "personal_note": "I saw you pair reformer Pilates with in-house physical therapy and recently moved into the new space on Kearns Blvd."
+ },
+ {
+  "business": "HOTWORX Park City (Kimball Junction)",
+  "city": "Park City",
+  "personal_note": "Congrats on the June 2024 Kimball Junction grand opening covered by TownLift."
+ },
+ {
+  "business": "Movement Elevated",
+  "city": "Park City",
+  "personal_note": "I read TownLift's November profile, Where every body belongs, on your inclusive Pilates and yoga approach in Pinebrook."
+ },
+ {
+  "business": "PC Yoga Collective",
+  "city": "Park City",
+  "personal_note": "I noticed you're the only hot-yoga studio in Park City heated with radiant heat."
+ },
+ {
+  "business": "Park City Fit",
+  "city": "Park City",
+  "personal_note": "I read TownLift's Our Town piece on Park City Fit and saw the Adventure Preparedness Program for mountain athletes."
+ },
+ {
+  "business": "Park City Jiu Jitsu",
+  "city": "Park City",
+  "personal_note": "Congrats on the second academy in Lehi, adding to Park City's first BJJ school."
+ },
+ {
+  "business": "Peak|45 Lagree Fitness Park City",
+  "city": "Park City",
+  "personal_note": "I read the Best Version Media piece on Peak|45 being the only official Lagree studio in Park City."
+ },
+ {
+  "business": "Pure Barre Park City",
+  "city": "Park City",
+  "personal_note": "I saw the Newpark studio recently changed hands and runs classes seven days a week."
+ },
+ {
+  "business": "RISE Boxing",
+  "city": "Park City",
+  "personal_note": "I read KPCW's coverage of your Rock Steady-style boxing program for people with Parkinson's."
+ },
+ {
+  "business": "Resilience, A Private Gym",
+  "city": "Park City",
+  "personal_note": "I saw the Park City Property Guide spotlight and that you've lived in Park City since 1977."
+ },
+ {
+  "business": "Salt Pilates",
+  "city": "Park City",
+  "personal_note": "I noticed every reformer station in your studio has its own halotherapy salt wall."
+ },
+ {
+  "business": "Silver Mountain Sports Club & Spa",
+  "city": "Park City",
+  "personal_note": "Your club already has a pool, hot tub, sauna and spa under one roof in Prospector Square."
+ },
+ {
+  "business": "The Smart Fit Method Park City",
+  "city": "Park City",
+  "personal_note": "I saw you launched a $149 a month contrast-therapy membership with saunas and four cold plunges in December."
+ },
+ {
+  "business": "Yoga Mastery Institute / Tadasana Yoga",
+  "city": "Park City",
+  "personal_note": "I read TownLift's April 2025 piece on bringing Tadasana's heated flow classes and the Yoga Mastery Institute together in Pinebrook."
+ },
+ {
+  "business": "Anytime Fitness Tooele",
+  "city": "Tooele",
+  "personal_note": "Looks like your family has run the Tooele and Grantsville clubs since 2008."
+ },
+ {
+  "business": "HOTWORX Tooele",
+  "city": "Tooele",
+  "personal_note": "Congrats on the February ribbon cutting covered by the Tooele Transcript Bulletin under new local family ownership."
+ },
+ {
+  "business": "Tooele Martial Arts Academy",
+  "city": "Tooele",
+  "personal_note": "Looks like you run gi and no-gi BJJ, Muay Thai and a women's self-defense program out of the Garnet St building."
+ },
+ {
+  "business": "Alpine Fitness",
+  "city": "Alpine",
+  "personal_note": "I noticed you combine gym memberships with on-site physical therapy and run a formal Partner Program for local businesses."
+ },
+ {
+  "business": "Valhalla Strength Gym",
+  "city": "American Fork",
+  "personal_note": "Your 24/7 key-fob strongman and powerlifting gym in American Fork runs on specialty equipment at $70 a month."
+ },
+ {
+  "business": "Boom Fitness Culture",
+  "city": "Lehi",
+  "personal_note": "I saw you run both Lehi and Pleasant Grove with 24/7 access and childcare, and read your best gyms in American Fork guide."
+ },
+ {
+  "business": "Evolve Fitness",
+  "city": "Lehi",
+  "personal_note": ""
+ },
+ {
+  "business": "F45 Training Traverse Mountain",
+  "city": "Lehi",
+  "personal_note": "I saw the F45 MomTribe workout series you host listed on Luma."
+ },
+ {
+  "business": "Momentum Indoor Climbing - Lehi",
+  "city": "Lehi",
+  "personal_note": "I noticed the Lehi gym has a dedicated training and yoga area alongside the rope and bouldering walls."
+ },
+ {
+  "business": "Rage Fitness",
+  "city": "Lehi",
+  "personal_note": "I read the Lehi Free Press piece on RAGE being a Main Street fixture since 1995."
+ },
+ {
+  "business": "Studio Sculpt Pilates",
+  "city": "Lehi",
+  "personal_note": "I read the Lehi Free Press piece on going from pro athlete to opening Studio Sculpt Pilates."
+ },
+ {
+  "business": "The Picklr Lehi",
+  "city": "Lehi",
+  "personal_note": "Congrats on opening Utah County's largest indoor pickleball facility, 13 courts, in June 2025."
+ },
+ {
+  "business": "Utah Valley Tennis Club",
+  "city": "Lehi",
+  "personal_note": "I noticed your new club runs five indoor courts with a viewing mezzanine plus two outdoor red clay courts."
+ },
+ {
+  "business": "801 Fitness & Strength",
+  "city": "Orem",
+  "personal_note": "Your gym markets itself around strength, movement and recovery, so recovery is already part of the pitch."
+ },
+ {
+  "business": "Club Pickleball USA - Orem",
+  "city": "Orem",
+  "personal_note": "Looks like you run 15 indoor courts on Sandhill Rd and open at 5:30am six days a week."
+ },
+ {
+  "business": "Elevate Fitness & Rehab",
+  "city": "Orem",
+  "personal_note": "I noticed you already bundle PT, chiropractic and massage with training memberships."
+ },
+ {
+  "business": "The Quarry Indoor Climbing Center",
+  "city": "Provo",
+  "personal_note": "Congrats on 25 years in Provo, and I saw you still run the Rockreation youth club and in-house comps."
+ },
+ {
+  "business": "Upfit",
+  "city": "Provo",
+  "personal_note": "Looks like you specialize in strength training for adults 55 and up."
+ }
+]

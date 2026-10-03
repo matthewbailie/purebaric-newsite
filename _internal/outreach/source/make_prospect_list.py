@@ -205,7 +205,7 @@ wrap = Alignment(wrap_text=True, vertical="top")
 
 HEADERS = [("Business", 30), ("Industry", 30), ("Owner / contact", 24), ("Title", 22), ("Email", 32),
            ("Email confidence", 14), ("Email source", 40), ("Phone", 15), ("Website", 28), ("Address", 32),
-           ("City", 16), ("ZIP", 8), ("County", 12), ("Email template", 30), ("Personal note hook", 50),
+           ("City", 16), ("ZIP", 8), ("County", 12), ("Email template", 30), ("Personal note hook", 50), ("Personal note", 50),
            ("Notes", 50), ("Status", 14), ("Sent on", 12), ("Reply", 30)]
 
 
@@ -218,7 +218,7 @@ def write_sheet(ws, rows, headers=HEADERS, table_name="Prospects"):
     for r in rows:
         ws.append([r["business"], r["industry"], r["owner"], r["owner_title"], r["email"], r["email_confidence"],
                    r["email_source"], r["phone"], r["website"], r["address"], r["city"], r["zip"], r["county"],
-                   TEMPLATE.get(r["industry"], ""), r["personal_note_hook"], r["notes"], "Not sent", "", ""])
+                   TEMPLATE.get(r["industry"], ""), r["personal_note_hook"], r.get("personal_note", ""), r["notes"], "Not sent", "", ""])
     for row in ws.iter_rows(min_row=2, max_row=ws.max_row):
         for cell in row:
             cell.alignment = wrap

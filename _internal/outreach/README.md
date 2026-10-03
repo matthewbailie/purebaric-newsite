@@ -20,3 +20,33 @@ Lives under `_internal/`, so it is in git but never served on purebaric.com.
 
 The scripts in `source/` were run from a temporary folder (fpdf2, pymupdf, Pillow, fontTools)
 and contain paths from that machine; adjust the paths before re-running.
+
+## Sending the emails (admin Outreach tab)
+
+The admin portal has an **Outreach** tab (`admin.html`, `netlify/functions/admin-outreach.js`) that sends the industry
+template to each prospect, addressed to the owner's first name when one is known (otherwise "Hi <Business> team"), with the
+one-sentence personal note written from the research hook. Copy for every template lives in
+`netlify/functions/_lib/outreach-template.js` and is shared with the Gmail composer in `email-templates/`.
+
+Flow, in order:
+
+1. **Deploy.** Merge the branch to `main`; Netlify runs `npm test` and ships the functions with `prospects.json` bundled.
+2. **Settings** (top of the tab): from name, from email (must be on purebaric.com), reply-to, **postal address** (required by
+   CAN-SPAM; sending is refused while blank), daily cap (start at 15 to 25 while the sending reputation builds), subject line
+   variant. Save.
+3. **Import list.** Loads `prospects.json` into the `outreach` Blobs store. Re-importing after a new deploy updates rows and
+   keeps statuses, tokens and edits.
+4. **Send test to me.** Delivers the selected row's exact email (or a sample for the filtered industry) to the owner inbox
+   with a `[TEST to <business>]` subject. Check: greeting, personal note, the four tiles, the three links to
+   `purebaric.com/business` (UTM-tagged per industry), the prospectus PDF link, the mailto reply, the phone link, and the
+   unsubscribe link at the bottom. Do this once per industry before the first real send.
+5. **Preview** any row to edit the first name or the personal note before it goes out.
+6. **Send** one row, or **Send next batch** (checked rows, or the first sendable rows in the current filter up to the daily
+   cap, 25 per click). Each send records the Resend id and the time; the row moves to `sent`.
+7. **Sync delivery** once a day: pulls bounces and complaints from Resend and moves those rows to `bounced` or `unsubscribed`.
+8. Set `replied`, `interested`, `declined` by hand from the status dropdown as answers come in. Unsubscribe links and
+   one-click unsubscribes set `unsubscribed` automatically; those rows are never sent again.
+
+Cadence that protects deliverability: Tuesday to Thursday mornings, one industry per day so the UTM traffic is readable,
+15 to 25 a day for two weeks, then up to 40. Stop and look if bounces pass 2% or a complaint arrives. High-confidence emails
+first; medium-confidence rows get a glance at the business's site before sending.
