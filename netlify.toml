@@ -72,6 +72,12 @@
   to = "/.netlify/functions/service-area-public"
   status = 200
 
+# Unsubscribe link in business outreach emails (public, token-protected)
+[[redirects]]
+  from = "/api/outreach/unsubscribe"
+  to = "/.netlify/functions/outreach-unsubscribe"
+  status = 200
+
 # ───────── Admin API (base path + sub-paths) ─────────
 [[redirects]]
   from = "/api/admin/chambers"
@@ -172,6 +178,15 @@
   status = 200
 
 [[redirects]]
+  from = "/api/admin/outreach"
+  to = "/.netlify/functions/admin-outreach"
+  status = 200
+[[redirects]]
+  from = "/api/admin/outreach/*"
+  to = "/.netlify/functions/admin-outreach/:splat"
+  status = 200
+
+[[redirects]]
   from = "/api/admin/twilio"
   to = "/.netlify/functions/admin-twilio"
   status = 200
@@ -220,6 +235,11 @@
   from = "/api/admin/passkeys/*"
   to = "/.netlify/functions/admin-passkeys/:splat"
   status = 200
+
+# The admin Outreach tab imports its prospect list from this file (built by
+# _internal/outreach/source/make_prospect_list.py), so it ships inside the function bundle.
+[functions."admin-outreach"]
+  included_files = ["_internal/outreach/prospects.json"]
 
 # ───────── Scheduled function ─────────
 # Auto-expires waitlist holds and transitions rentals by date. Runs hourly.

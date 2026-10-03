@@ -76,3 +76,17 @@
 **Context:** Business placements (gyms, salons, clinics) run on a different rate, agreement and sales process than home rentals, and the owner wanted to tell them apart in the portal without asking home customers to self-classify.
 **Alternatives considered:** A separate "business rentals" tab (duplicates every rental feature); inferring business from the rate (fragile); a customer-level flag only (a business contact can also rent for home).
 **Status:** Confirmed
+
+## 2026-10-03 Send business outreach from the admin portal, through the site's own mailer
+
+**Decision:** Business prospects live in an `outreach` Blobs store with a per-row status, imported from `_internal/outreach/prospects.json` (bundled with the `admin-outreach` function). The admin Outreach tab previews, test-sends to the owner, sends singly or in daily-capped batches through the existing Resend setup from `hello@purebaric.com`, and syncs bounces from Resend. The email copy is one shared module (`_lib/outreach-template.js`) used by both the sender and the static template generator.
+**Context:** The owner wanted every prospect emailed with the right industry template, addressed to the owner by first name, with a personal note, and a test to the owner's inbox first. Sending from a laptop mail client cannot track status, cap volume, or honor unsubscribes.
+**Alternatives considered:** Copy-and-paste from the Gmail composer (no tracking, no cap, no unsubscribe link); a third-party cold-email tool (another account, another sender domain to warm, prospects leave the portal).
+**Status:** Confirmed
+
+## 2026-10-03 Outreach emails carry a postal address and an unsubscribe link, and link to the prospectus instead of attaching it
+
+**Decision:** Every outreach email ends with the business postal address (set in Outreach settings; sending is refused while blank), a one-line reason for the email, and a token-protected unsubscribe link that also goes out as `List-Unsubscribe` headers with one-click POST support. The prospectus is a public PDF at `/purebaric-business-prospectus.pdf`, linked from the email, not attached.
+**Context:** Cold commercial email to US businesses falls under CAN-SPAM (postal address, working opt-out, honest headers). Attachments from a low-volume sender hurt deliverability and the PDF is the same pitch as the public business page.
+**Alternatives considered:** Reply-to-unsubscribe only (fails one-click requirements at Gmail and Yahoo); attaching the 690 KB PDF (heavier, more often filtered).
+**Status:** Confirmed

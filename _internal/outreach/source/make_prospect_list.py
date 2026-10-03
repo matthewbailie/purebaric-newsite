@@ -115,9 +115,17 @@ if os.path.exists(OVR):
     with open(OVR) as fh:
         DROP = {NORM(x) for x in json.load(fh).get("drop", [])}
 
+# personal_notes*.json: one-sentence openers written from the hooks, keyed by business + city
+NOTES = {}
+for f in sorted(glob.glob(os.path.join(SRC, "personal_notes*.json"))):
+    with open(f) as fh:
+        for n in json.load(fh):
+            if n.get("personal_note"):
+                NOTES[(NORM(n.get("business")), NORM(n.get("city")))] = str(n["personal_note"]).strip()
+
 prospects, competitors, dropped = [], [], []
 for f in sorted(glob.glob(os.path.join(SRC, "*.json"))):
-    if os.path.basename(f).startswith(("enriched_", "enrich_targets_", "_")):
+    if os.path.basename(f).startswith(("enriched_", "enrich_targets_", "_", "personal_notes")):
         continue
     with open(f) as fh:
         data = json.load(fh)
@@ -129,6 +137,7 @@ for f in sorted(glob.glob(os.path.join(SRC, "*.json"))):
         r = clean(apply_enrichment(clean(row)))
         if NORM(r["business"]) in DROP:
             continue
+        r["personal_note"] = NOTES.get((NORM(r["business"]), NORM(r["city"])), "")
         r["_src"] = os.path.basename(f)
         if not r["zip"] and served("", r["city"]):
             r["notes"] = ("ZIP not captured; city is inside the delivery area. | " + r["notes"]).strip(" |")
@@ -272,5 +281,18 @@ for line in [
     ws4.cell(row=ws4.max_row, column=1).alignment = Alignment(wrap_text=True)
 
 wb.save(OUT)
+
+# JSON feed for the admin Outreach tab (bundled with the admin-outreach function; see netlify.toml)
+FEED = os.path.join(os.path.dirname(__file__), "..", "prospects.json")
+feed = [{
+    "business": r["business"], "industry": r["industry"], "templateId": TEMPLATE.get(r["industry"], ""),
+    "owner": r["owner"], "ownerTitle": r["owner_title"], "email": r["email"], "emailConfidence": r["email_confidence"],
+    "emailSource": r["email_source"], "phone": r["phone"], "website": r["website"], "address": r["address"],
+    "city": r["city"], "zip": r["zip"], "county": r["county"], "hook": r["personal_note_hook"],
+    "personalNote": r.get("personal_note", ""), "notes": r["notes"],
+} for r in prospects]
+with open(FEED, "w") as fh:
+    json.dump({"generated": date.today().isoformat(), "count": len(feed), "prospects": feed}, fh, indent=1)
+print(f"wrote {FEED}: {len(feed)} prospects")
 print(f"wrote {OUT}: {len(prospects)} prospects ({sum(1 for r in prospects if r['email'])} with email), "
       f"{len(competitors)} already-HBOT, {len(dropped)} outside area")

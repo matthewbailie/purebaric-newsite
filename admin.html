@@ -337,6 +337,7 @@
       <button class="tab-btn" data-tab="pricing">Pricing &amp; Payments</button>
       <button class="tab-btn" data-tab="servicearea">Service Area</button>
       <button class="tab-btn" data-tab="notifications">Notifications</button>
+      <button class="tab-btn" data-tab="outreach">Outreach</button>
     </nav>
     <div class="sidebar-foot admin-user" id="adminUser"></div>
   </aside>
@@ -855,6 +856,66 @@
       </style>
     </section>
 
+
+    <!-- ───── Outreach: business prospects and the emails sent to them ───── -->
+    <section class="tab-panel" data-panel="outreach">
+      <div class="panel-actions">
+        <h2>Outreach</h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-sm" onclick="importOutreach()" title="Load or refresh the prospect list from the latest deploy">Import list</button>
+          <button class="btn btn-ghost btn-sm" onclick="syncOutreach()" title="Check Resend for bounces and complaints on recent sends">Sync delivery</button>
+          <button class="btn btn-ghost btn-sm" onclick="sendOutreachTest()">Send test to me</button>
+          <button class="btn btn-primary btn-sm" onclick="sendOutreachBatch()">Send next batch</button>
+        </div>
+      </div>
+      <p class="renter-line" style="margin:0 0 14px;max-width:820px;">Businesses inside the delivery area, researched into <code>_internal/outreach/purebaric_b2b_email_prospects.xlsx</code>. Each row gets the email template for its industry, addressed to the owner by first name when one is known (otherwise "Hi &lt;Business&gt; team"), with a one-sentence personal note. <strong>Preview</strong> shows the exact email; <strong>Send test to me</strong> delivers it to <span id="orTestRecipient"></span>; <strong>Send</strong> goes to the business. Every email carries an unsubscribe link and the postal address below, and sends stop at the daily cap.</p>
+
+      <div class="form-card open" style="display:block;max-width:820px;margin-bottom:18px;">
+        <h3 style="font-size:16px;font-weight:700;margin:0 0 10px;">Sender settings</h3>
+        <div class="keyform">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="keyrow"><label>From name</label><input id="orFromName" autocomplete="off" placeholder="Matthew Bailie, Purebaric"></div>
+            <div class="keyrow"><label>From email (on purebaric.com)</label><input id="orFromEmail" autocomplete="off" placeholder="hello@purebaric.com"></div>
+            <div class="keyrow"><label>Reply-to</label><input id="orReplyTo" autocomplete="off" placeholder="hello@purebaric.com"></div>
+            <div class="keyrow"><label>Daily cap (emails per day)</label><input id="orDailyCap" type="number" min="1" max="200" placeholder="25"></div>
+          </div>
+          <div class="keyrow"><label>Postal address (required on every email, CAN-SPAM)</label><input id="orPostal" autocomplete="off" placeholder="Street or PO Box, City, UT ZIP"></div>
+          <div class="keyrow"><label>Subject line</label><select id="orSubjectIndex"><option value="0">First subject for each industry (question or fact)</option><option value="1">Second subject (no-purchase angle)</option><option value="2">Third subject (break-even number)</option></select></div>
+          <button type="button" class="btn btn-primary btn-sm" onclick="saveOutreachSettings()">Save settings</button>
+          <span id="orSettingsMsg" class="renter-line" style="margin-left:10px;"></span>
+        </div>
+      </div>
+
+      <div id="orStats" class="renter-line" style="margin:0 0 12px;"></div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px;">
+        <select id="orIndustry" onchange="renderOutreach()"><option value="">All industries</option></select>
+        <select id="orStatus" onchange="renderOutreach()"><option value="">All statuses</option></select>
+        <select id="orCounty" onchange="renderOutreach()"><option value="">All counties</option></select>
+        <input id="orSearch" placeholder="Search business, owner, city, email" oninput="renderOutreach()" style="min-width:240px;">
+        <label style="font-size:13px;display:inline-flex;gap:6px;align-items:center;"><input type="checkbox" id="orHasEmail" checked onchange="renderOutreach()"> Only rows with an email</label>
+        <span id="orCount" class="renter-line"></span>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table" id="orTable">
+          <thead><tr><th style="width:28px;"><input type="checkbox" id="orCheckAll" onchange="toggleOutreachAll(this.checked)"></th><th>Business</th><th>Contact</th><th>Template</th><th>Personal note</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="orRows"></tbody>
+        </table>
+      </div>
+      <style>
+        #orTable td { font-size: 0.86rem; }
+        #orTable .or-sub { color: var(--stone-muted); font-size: 0.78rem; }
+        #orTable .or-note { max-width: 260px; color: #5f544d; }
+        .or-conf-high { color: #3d5a26; } .or-conf-medium { color: #6b5326; } .or-conf-none { color: #82402f; }
+        .or-preview-frame { width: 100%; height: 60vh; border: 1px solid var(--line); border-radius: 8px; background: #efe7db; }
+        .or-edit label { display:block; font-size:12px; font-weight:600; color: var(--stone-muted); margin: 10px 0 4px; }
+        .or-edit input, .or-edit textarea { width:100%; padding:8px 10px; border:1px solid var(--line); border-radius:8px; font: inherit; font-size: 14px; }
+        .or-edit textarea { min-height: 64px; resize: vertical; }
+        #orTable select { padding: 3px 6px; border: 1px solid var(--line); border-radius: 6px; font-size: 0.78rem; }
+      </style>
+    </section>
+
   </div><!-- /#adminApp -->
   </main>
 </div><!-- /.admin-shell -->
@@ -1169,7 +1230,7 @@
     // Load each section independently: one failing call must not blank the rest,
     // and we still paint whatever succeeded.
     const results = await Promise.allSettled([
-      loadChambers(), loadRentals(), loadLayout(), loadWaitlist(), loadBookings(), loadReviews(), loadPricing(), loadMachines(), loadServiceArea(), loadNotifications(), loadTwilioConfig(), loadStripeConfig()
+      loadChambers(), loadRentals(), loadLayout(), loadWaitlist(), loadBookings(), loadReviews(), loadPricing(), loadMachines(), loadServiceArea(), loadNotifications(), loadTwilioConfig(), loadStripeConfig(), loadOutreach()
     ]);
     paintStats();
     // Repaint inventory now that chambers, machines, and rentals are all loaded,
@@ -3647,6 +3708,158 @@
     }, true);
     document.addEventListener('dragstart', (e) => { if (st) e.preventDefault(); });
   })();
+
+
+  // ───────── Outreach (business prospects) ─────────
+  let _outreach = { prospects: [], stats: null, settings: null, templates: [], testRecipient: '' };
+  const OR_PILL = { new: 'pill-new', sent: 'pill-notified', bounced: 'pill-rejected', replied: 'pill-approved', interested: 'pill-approved', declined: 'pill-cancelled', unsubscribed: 'pill-archived', skipped: 'pill-expired', failed: 'pill-rejected' };
+  const OR_STATUSES = ['new', 'sent', 'bounced', 'replied', 'interested', 'declined', 'unsubscribed', 'skipped', 'failed'];
+
+  async function loadOutreach() {
+    const data = await api('/api/admin/outreach');
+    _outreach = data;
+    const setIf = (id, v) => { const el = document.getElementById(id); if (el && document.activeElement !== el) el.value = v == null ? '' : v; };
+    const st = data.settings || {};
+    setIf('orFromName', st.fromName); setIf('orFromEmail', st.fromEmail); setIf('orReplyTo', st.replyTo);
+    setIf('orDailyCap', st.dailyCap); setIf('orPostal', st.postalAddress); setIf('orSubjectIndex', st.subjectIndex || 0);
+    document.getElementById('orTestRecipient').textContent = data.testRecipient || 'the owner inbox';
+    const fill = (id, values, label) => {
+      const sel = document.getElementById(id); const cur = sel.value;
+      sel.innerHTML = `<option value="">${label}</option>` + values.map(v => `<option value="${escape(v)}">${escape(v)}</option>`).join('');
+      sel.value = values.includes(cur) ? cur : '';
+    };
+    fill('orIndustry', [...new Set(data.prospects.map(p => p.industry).filter(Boolean))].sort(), 'All industries');
+    fill('orStatus', OR_STATUSES, 'All statuses');
+    fill('orCounty', [...new Set(data.prospects.map(p => p.county).filter(Boolean))].sort(), 'All counties');
+    renderOutreach();
+  }
+
+  function outreachVisible() {
+    const ind = document.getElementById('orIndustry').value, st = document.getElementById('orStatus').value, co = document.getElementById('orCounty').value;
+    const q = document.getElementById('orSearch').value.trim().toLowerCase(), hasEmail = document.getElementById('orHasEmail').checked;
+    return _outreach.prospects.filter(p =>
+      (!ind || p.industry === ind) && (!st || p.status === st) && (!co || p.county === co) && (!hasEmail || p.email) &&
+      (!q || [p.business, p.owner, p.firstName, p.city, p.email].join(' ').toLowerCase().includes(q))
+    ).sort((a, b) => (a.status === 'new' ? 0 : 1) - (b.status === 'new' ? 0 : 1) || (a.emailConfidence === 'high' ? 0 : 1) - (b.emailConfidence === 'high' ? 0 : 1) || a.business.localeCompare(b.business));
+  }
+
+  function renderOutreach() {
+    const s = _outreach.stats;
+    if (s) {
+      const cap = _outreach.settings ? _outreach.settings.dailyCap : 0;
+      const pills = OR_STATUSES.filter(k => s.byStatus[k]).map(k => `<span class="pill ${OR_PILL[k]}">${k} ${s.byStatus[k]}</span>`).join(' ');
+      const postalWarn = _outreach.settings && !_outreach.settings.postalAddress ? ' <strong style="color:#82402f;">Set the postal address above before sending.</strong>' : '';
+      document.getElementById('orStats').innerHTML = `<strong>${s.total}</strong> prospects, <strong>${s.withEmail}</strong> with an email. Sent today: <strong>${s.sentToday}</strong> of ${cap}. &nbsp; ${pills}${postalWarn}` + (s.total ? '' : ' &nbsp; <em>Click Import list to load the prospects from this deploy.</em>');
+    }
+    const rows = outreachVisible();
+    document.getElementById('orCount').textContent = `${rows.length} shown`;
+    document.getElementById('orCheckAll').checked = false;
+    const tmplLabel = id => { const t = _outreach.templates.find(x => x.id === id); return t ? t.label : (id || 'none'); };
+    document.getElementById('orRows').innerHTML = rows.length ? rows.map(p => {
+      const sendable = p.email && (p.status === 'new' || p.status === 'failed');
+      const greeting = p.firstName ? `Hi ${escape(p.firstName)},` : `Hi ${escape(p.business)} team,`;
+      const statusSel = `<select onchange="patchOutreach('${p.id}', { status: this.value })">${OR_STATUSES.map(k => `<option value="${k}"${k === p.status ? ' selected' : ''}>${k}</option>`).join('')}</select>`;
+      return `<tr data-id="${p.id}">
+        <td><input type="checkbox" class="or-check" value="${p.id}"${sendable ? '' : ' disabled'}></td>
+        <td><strong>${escape(p.business)}</strong><div class="or-sub">${escape([p.city, p.county && p.county + ' Co.'].filter(Boolean).join(', '))}${p.website ? ` · <a href="https://${escape(p.website.replace(/^https?:\/\//, ''))}" target="_blank" rel="noopener" style="color:var(--terracotta);">site</a>` : ''}</div></td>
+        <td><div>${greeting}</div><div class="or-sub">${p.owner ? escape(p.owner) + (p.ownerTitle ? ', ' + escape(p.ownerTitle) : '') + '<br>' : ''}${p.email ? `<span class="or-conf-${escape(p.emailConfidence || 'none')}">${escape(p.email)} (${escape(p.emailConfidence || '?')})</span>` : '<span class="or-conf-none">no email</span>'}${p.phone ? '<br>' + escape(p.phone) : ''}</div></td>
+        <td class="or-sub">${escape(tmplLabel(p.templateId))}</td>
+        <td class="or-note">${p.personalNote ? escape(p.personalNote) : '<span class="or-sub">none</span>'}</td>
+        <td><span class="pill ${OR_PILL[p.status] || ''}">${escape(p.status)}</span>${p.sentAt ? `<div class="or-sub">${fmtDate(p.sentAt)}${p.lastEvent ? ' · ' + escape(p.lastEvent) : ''}</div>` : ''}${p.lastError ? `<div class="or-sub" style="color:#82402f;">${escape(p.lastError)}</div>` : ''}<div style="margin-top:4px;">${statusSel}</div></td>
+        <td><div class="row-actions">
+          <button class="btn btn-ghost btn-sm" onclick="previewOutreach('${p.id}')">Preview</button>
+          ${sendable ? `<button class="btn btn-primary btn-sm" onclick="sendOutreach(['${p.id}'])">Send</button>` : ''}
+        </div></td>
+      </tr>`;
+    }).join('') : '<tr><td colspan="7"><div class="empty-state">No prospects match. Import the list, or clear the filters.</div></td></tr>';
+  }
+
+  function toggleOutreachAll(on) { document.querySelectorAll('.or-check:not(:disabled)').forEach(c => { c.checked = on; }); }
+
+  async function saveOutreachSettings() {
+    const body = { fromName: orFromName.value, fromEmail: orFromEmail.value, replyTo: orReplyTo.value, dailyCap: orDailyCap.value, postalAddress: orPostal.value, subjectIndex: orSubjectIndex.value };
+    try { const r = await api('/api/admin/outreach/settings', { method: 'PUT', body: JSON.stringify(body) }); _outreach.settings = r.settings; document.getElementById('orSettingsMsg').textContent = 'Saved.'; renderOutreach(); toast('Outreach settings saved'); }
+    catch (e) { toast(e.message, true); }
+  }
+
+  async function importOutreach() {
+    try { const r = await api('/api/admin/outreach/import', { method: 'POST' }); toast(`Imported: ${r.added} added, ${r.updated} updated`); await loadOutreach(); }
+    catch (e) { toast(e.message, true); }
+  }
+
+  async function syncOutreach() {
+    try { const r = await api('/api/admin/outreach/sync', { method: 'POST' }); toast(`Checked ${r.checked} recent sends, ${r.changed} changed`); await loadOutreach(); }
+    catch (e) { toast(e.message, true); }
+  }
+
+  async function patchOutreach(id, patch) {
+    try { const r = await api('/api/admin/outreach/' + encodeURIComponent(id), { method: 'PATCH', body: JSON.stringify(patch) });
+      const i = _outreach.prospects.findIndex(p => p.id === id); if (i >= 0) _outreach.prospects[i] = r.prospect; renderOutreach(); return r.prospect; }
+    catch (e) { toast(e.message, true); }
+  }
+
+  async function previewOutreach(id) {
+    const p = _outreach.prospects.find(x => x.id === id); if (!p) return;
+    let r;
+    try { r = await api('/api/admin/outreach/preview', { method: 'POST', body: JSON.stringify({ id }) }); } catch (e) { toast(e.message, true); return; }
+    openModal(`Preview: ${p.business}`, `
+      <div class="or-edit" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;">
+        <div><label>First name (blank = "Hi ${escape(p.business)} team,")</label><input id="orEditFirst" value="${escape(p.firstName)}"></div>
+        <div><label>Email</label><input id="orEditEmail" value="${escape(p.email)}"></div>
+      </div>
+      <div class="or-edit"><label>Personal note (one sentence after the greeting)</label><textarea id="orEditNote">${escape(p.personalNote)}</textarea>
+        ${p.hook ? `<div class="renter-line" style="margin-top:4px;"><strong>Research hook:</strong> ${escape(p.hook)}</div>` : ''}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;">
+        <button class="btn btn-ghost btn-sm" onclick="saveOutreachEdits('${p.id}')">Save and refresh preview</button>
+        <button class="btn btn-ghost btn-sm" onclick="sendOutreachTest('${p.id}')">Send test to me</button>
+        ${p.email && (p.status === 'new' || p.status === 'failed') ? `<button class="btn btn-primary btn-sm" onclick="closeModal(); sendOutreach(['${p.id}'])">Send to ${escape(p.email)}</button>` : `<span class="renter-line">${r.blocker ? escape(r.blocker) : ''}</span>`}
+      </div>
+      <div class="renter-line" style="margin-bottom:6px;"><strong>Subject:</strong> ${escape(r.subject)}</div>
+      <iframe class="or-preview-frame" id="orPreviewFrame" title="Email preview"></iframe>`);
+    document.getElementById('orPreviewFrame').srcdoc = r.html;
+  }
+
+  async function saveOutreachEdits(id) {
+    const p = await patchOutreach(id, { firstName: orEditFirst.value, email: orEditEmail.value, personalNote: orEditNote.value });
+    if (p) { toast('Saved'); previewOutreach(id); }
+  }
+
+  async function sendOutreachTest(id) {
+    let body = {};
+    if (id) body = { id };
+    else {
+      const ind = document.getElementById('orIndustry').value;
+      const t = _outreach.templates.find(x => x.label === ind) || _outreach.templates[0];
+      body = { templateId: t ? t.id : 'gyms-and-fitness' };
+    }
+    try { const r = await api('/api/admin/outreach/test', { method: 'POST', body: JSON.stringify(body) });
+      toast(`Test sent to ${r.to}${r.postalAddressSet ? '' : ' (postal address placeholder; set it in settings)'}`); }
+    catch (e) { toast(e.message, true); }
+  }
+
+  async function sendOutreach(ids) {
+    if (!ids.length) { toast('Nothing selected', true); return; }
+    if (_outreach.settings && !_outreach.settings.postalAddress) { toast('Set the postal address in Outreach settings first', true); return; }
+    const names = ids.map(id => (_outreach.prospects.find(p => p.id === id) || {}).business).filter(Boolean);
+    if (!confirm(`Send ${ids.length} outreach email${ids.length === 1 ? '' : 's'} now?\n\n${names.slice(0, 8).join('\n')}${names.length > 8 ? `\n…and ${names.length - 8} more` : ''}`)) return;
+    try {
+      const r = await api('/api/admin/outreach/send', { method: 'POST', body: JSON.stringify({ ids }) });
+      const ok = r.results.filter(x => x.ok).length, skipped = r.results.filter(x => x.skipped), failed = r.results.filter(x => !x.ok && !x.skipped);
+      toast(`Sent ${ok}. ${skipped.length ? skipped.length + ' skipped (' + skipped[0].reason + '). ' : ''}${failed.length ? failed.length + ' failed.' : ''} Today: ${r.sentToday}/${r.dailyCap}`, failed.length > 0);
+      await loadOutreach();
+    } catch (e) { toast(e.message, true); }
+  }
+
+  function sendOutreachBatch() {
+    let ids = [...document.querySelectorAll('.or-check:checked')].map(c => c.value);
+    if (!ids.length) {
+      const cap = _outreach.settings ? _outreach.settings.dailyCap : 25, today = _outreach.stats ? _outreach.stats.sentToday : 0;
+      const room = Math.max(0, Math.min(25, cap - today));
+      if (!room) { toast('Daily cap reached. Raise it in settings or send tomorrow.', true); return; }
+      ids = outreachVisible().filter(p => p.email && (p.status === 'new' || p.status === 'failed')).slice(0, room).map(p => p.id);
+    }
+    sendOutreach(ids);
+  }
 
   function escape(s) {
     return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
