@@ -30,7 +30,7 @@ const STANDARD_TILES = {
   hero: { k: 'Estimated net revenue', v: N.net, unit: 'per month', p: ['4 sessions a day at the recommended rate', `2 sessions a day nets an estimated ${N.netLight}`], note: 'Estimates, not guarantees.' },
   small: [
     { k: 'Your cost', v: N.rent, unit: 'per month', p: '12-month rental, service included' },
-    { k: 'Break-even', v: `${N.breakeven} sessions`, unit: '', p: 'a month covers the rental' },
+    { k: 'Break-even', v: `~${N.breakeven} sessions`, unit: '', p: 'a month' },
     { k: 'Space needed', v: '4 x 8 ft', unit: '', p: 'and a standard wall outlet' },
   ],
 };
