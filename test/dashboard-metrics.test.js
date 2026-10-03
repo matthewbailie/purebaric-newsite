@@ -28,6 +28,15 @@ test("cancelled rentals and out-of-window days do not count", () => {
   assert.equal(M.activeOn(rentals[0], "2026-06-10"), false);
 });
 
+test("scheduled rentals do not count as MRR before activation", () => {
+  const scheduled = r(7, "future@x.com", "2026-10-03", "2026-11-02", 729, { status: "scheduled" });
+  const completed = r(8, "past@x.com", "2026-09-01", "2026-09-30", 500, { status: "completed" });
+
+  assert.equal(M.activeOn(scheduled, "2026-10-03"), false);
+  assert.equal(M.snapshot([scheduled], "2026-10-03").mrr, 0);
+  assert.equal(M.snapshot([completed], "2026-09-30").mrr, 500);
+});
+
 test("snapshot sums MRR, counts rentals and distinct subscribers, averages price", () => {
   const s = M.snapshot(rentals, "2026-03-31");
   assert.equal(s.rentals, 2);

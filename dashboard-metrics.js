@@ -3,7 +3,9 @@
 // in test/dashboard-metrics.test.js.
 //
 // Definitions (keep in sync with RUNBOOK §11):
-//  - A rental counts on a day when it is not cancelled and start <= day <= end.
+//  - A rental counts on a day when it is neither cancelled nor still scheduled,
+//    and start <= day <= end. Scheduled rentals stay in "Starting soon" until
+//    they are explicitly/automatically made active.
 //  - Monthly-equivalent revenue: a monthly rental's rate; a custom weekly rental's
 //    weekly rate x 52/12.
 //  - MRR = sum of monthly-equivalent revenue of the rentals counting that day.
@@ -37,7 +39,7 @@
     return !!r && r.status !== 'cancelled' && !!day10(r.startDate) && !!day10(r.endDate);
   }
   function activeOn(r, day) {
-    return isCounted(r) && day10(r.startDate) <= day && day10(r.endDate) >= day;
+    return isCounted(r) && r.status !== 'scheduled' && day10(r.startDate) <= day && day10(r.endDate) >= day;
   }
   // Mirrors renterKey in netlify/functions/_lib/customer-key.js: email, else phone, else name (else this rental alone).
   const emailOf = (r) => {

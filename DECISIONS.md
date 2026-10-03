@@ -97,3 +97,10 @@
 **Context:** An apostrophe in an Outreach empty-state message made the complete admin script fail to parse, leaving `/admin` blank even though the existing module tests passed.
 **Alternatives considered:** Moving the full inline application into a separate JavaScript file would make syntax checking easier but is an unrelated, high-risk refactor for this production repair.
 **Status:** Confirmed
+
+## 2026-10-03 Exclude scheduled rentals from MRR until activation
+
+**Decision:** MRR, active subscribers, average monthly price, utilization, and ARR exclude rentals whose status is still `scheduled`, even when their stored date range includes today. Scheduled revenue remains visible as forecast revenue under “Starting soon” and enters MRR only after the rental becomes active.
+**Context:** A pending, unpaid business rental was still scheduled but had a stored start date of October 3, so its $729 rate appeared in current MRR before the actual Monday start.
+**Alternatives considered:** Keying MRR to payment status would exclude valid active subscriptions that bill after delivery and would turn MRR into a cash-collected metric; relying on dates alone repeats the reported error when a planned date changes or activation has not happened.
+**Status:** Confirmed
