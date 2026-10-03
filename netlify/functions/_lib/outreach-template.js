@@ -52,7 +52,7 @@ const CATEGORIES = [
     ],
     preheader: 'Members already pay recovery studios $79 to $129 a session for hyperbaric. Put it on your floor and keep that revenue.',
     headline: 'Turn a 4 x 8 ft corner into a new profit line',
-    opener: 'Your members are already paying recovery studios $79 to $129 an hour for hyperbaric sessions. Put a chamber on your floor and that spend stays in your gym: you set the price, you keep every dollar, and the only space it takes is a 4 x 8 ft corner.',
+    opener: 'Your members are already paying recovery studios $79 to $129 an hour for hyperbaric sessions. One chamber in a 4 x 8 ft corner makes that revenue yours.',
     whyLine: 'Members who train hard book it on rest days, and session packs turn one-off visits into repeat revenue that is not dues.',
     tiles: STANDARD_TILES,
   },
@@ -67,7 +67,7 @@ const CATEGORIES = [
     ],
     preheader: 'Your five-day-a-week athletes already pay $79 to $129 a session for hyperbaric elsewhere. Keep it in the box.',
     headline: 'Turn a 4 x 8 ft corner into a new profit line',
-    opener: 'Your athletes train five or more days a week and already pay recovery studios $79 to $129 an hour for hyperbaric sessions. A chamber in the box keeps that money in your business: you set the price, keep every dollar, and give up only a 4 x 8 ft corner.',
+    opener: 'Your athletes train five or more days a week and already pay recovery studios $79 to $129 an hour for hyperbaric sessions. One chamber in a 4 x 8 ft corner of the box makes that revenue yours.',
     whyLine: 'Competitors in a heavy block or prepping for a comp book it between sessions, and comp-prep packs sell themselves.',
     tiles: STANDARD_TILES,
   },
@@ -82,7 +82,7 @@ const CATEGORIES = [
     ],
     preheader: 'A 1.5 ATA chamber in your training room, installed, staff trained, and serviced, for $979 a month. No procurement cycle, no maintenance contract.',
     headline: 'A hyperbaric chamber in your training room for $979 a month, no capital purchase',
-    opener: 'Your athletes ask for hyperbaric, and today the answer is a clinic across town or a six-figure chamber that has to clear procurement. A Purebaric chamber in your training room gives them 60-minute sessions on their own schedule, on a monthly rental your department can approve, and we service it.',
+    opener: 'Your athletes ask for hyperbaric, and today the answer is a clinic across town or a six-figure chamber that has to clear procurement. A monthly rental puts one in your training room this month, with no capital request.',
     whyLine: 'Athletes rotate through it between games, travel, and heavy training weeks; one chamber runs up to 8 sessions a day.',
     tiles: {
       hero: { k: 'Your cost', v: N.rent, unit: 'per month', p: `for the chamber and machine on a 12-month term, plus a one-time ${N.fee} for delivery, installation, training, and initial supplies. Service included.` },
@@ -104,7 +104,7 @@ const CATEGORIES = [
     ],
     preheader: 'Studios across the Wasatch Front charge $79 to $129 a session for hyperbaric. Add it to your menu without buying a chamber.',
     headline: 'Turn a 4 x 8 ft corner into a new profit line',
-    opener: 'Your clients already book cold plunge, sauna, cryo, or IV, and some are asking whether you offer hyperbaric. Studios across the Wasatch Front charge $79 to $129 for that hour. A chamber adds it to your menu in a 4 x 8 ft corner, with no chamber to buy and no machine to service.',
+    opener: 'Your clients already book cold plunge, sauna, cryo, or IV, and studios across the Wasatch Front charge $79 to $129 for an hour of hyperbaric. One chamber in a 4 x 8 ft corner puts that hour on your menu, with nothing to buy and nothing to service.',
     whyLine: 'It pairs with a plunge or a drip, sells as packs, and slots into your top membership tier.',
     tiles: STANDARD_TILES,
   },
@@ -119,7 +119,7 @@ const CATEGORIES = [
     ],
     preheader: 'A self-pay wellness session patients book around their visits. No claims, no codes, run by the staff you have.',
     headline: 'Turn a 4 x 8 ft corner into a new profit line',
-    opener: 'Your active patients are already paying recovery studios $79 to $129 an hour for hyperbaric on top of what they pay you. A chamber in a 4 x 8 ft room gives them a self-pay wellness session before or after a visit: no claims, no codes, no new hire, and revenue that does not depend on a payer.',
+    opener: 'Your active patients are already paying recovery studios $79 to $129 an hour for hyperbaric on top of what they pay you. One chamber in a 4 x 8 ft room makes that a cash-pay line of your own, with no claims and no codes.',
     whyLine: 'Patients who finish a plan of care get a reason to keep coming in, and it sits beside your clinical services as a general-wellness line.',
     tiles: STANDARD_TILES,
   },
@@ -134,7 +134,7 @@ const CATEGORIES = [
     ],
     preheader: 'Regulars add a 60-minute session before or after their appointment. No new hire, no treatment room.',
     headline: 'Turn a 4 x 8 ft corner into a new profit line',
-    opener: 'Your clients already come in every few weeks and treat the appointment as time for themselves. A hyperbaric session is 60 quiet minutes they add before or after a fill, color, or cut, and studios across the Wasatch Front charge $79 to $129 for that hour. Nothing for your artists to perform; a 4 x 8 ft corner is all it takes.',
+    opener: 'Your clients already come in every few weeks and treat the appointment as time for themselves. Studios across the Wasatch Front charge $79 to $129 for a 60-minute hyperbaric session. One chamber in a 4 x 8 ft corner adds that hour to every appointment, with nothing for your artists to perform.',
     whyLine: 'Pair it with an appointment, sell packs at checkout, and hand clients the pamphlet we make in your brand.',
     tiles: STANDARD_TILES,
   },
@@ -240,7 +240,7 @@ function email(cat, opts = {}) {
               <p style="margin:0 0 14px; font-size:16px;">Hi [First name],</p>
               <p style="margin:0 0 14px; font-size:16px;">${esc(cat.opener)}</p>
               <p style="margin:0 0 20px; font-size:16px;">${esc(SHARED.intro)} <a href="${biz}" style="color:${C.terraD}; text-decoration:underline;">See the numbers for businesses.</a></p>
-              <p style="margin:0 0 6px;">${button(reserve, 'Reserve a chamber for [Business name]')}</p>
+              <p style="margin:0 0 6px;">${button(reserve, 'Reserve a chamber')}</p>
               <p style="margin:0 0 10px; font-size:13px; color:${C.muted};">No charge until we confirm a delivery date.</p>
             </td>
           </tr>
@@ -291,8 +291,18 @@ ${bullets(included)}
           <!-- Signature -->
           <tr>
             <td class="pb-pad" style="padding:18px 40px 30px;">
-              <p style="margin:0; font-size:16px; font-weight:700;">Matthew Bailie</p>
-              <p style="margin:0; font-size:14px; color:${C.muted};">Owner, Purebaric &nbsp;|&nbsp; Lehi, Utah &nbsp;|&nbsp; ${PHONE} &nbsp;|&nbsp; <a href="mailto:${EMAIL}" style="color:${C.terraD}; text-decoration:none;">${EMAIL}</a></p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td width="72" valign="top" style="width:72px; padding:0 16px 0 0;">
+                    <img src="${SITE}/images/founder-matthew-240.jpg" alt="Matthew Bailie" width="72" height="72" style="display:block; width:72px; height:72px; border-radius:50%; border:0;" />
+                  </td>
+                  <td valign="middle" style="font-family:${SANS};">
+                    <p style="margin:0; font-size:16px; font-weight:700; color:${C.ink};">Matthew Bailie</p>
+                    <p style="margin:0; font-size:14px; color:${C.muted};">Owner, Purebaric &nbsp;|&nbsp; Lehi, Utah</p>
+                    <p style="margin:0; font-size:14px; color:${C.muted};">${PHONE} &nbsp;|&nbsp; <a href="mailto:${EMAIL}" style="color:${C.terraD}; text-decoration:none;">${EMAIL}</a></p>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
         </table>
