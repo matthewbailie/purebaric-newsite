@@ -218,7 +218,7 @@ const SHARED = {
     ['Equipment service and ongoing support.', 'If something stops working, we fix it.'],
     ['What it asks of you:', 'a 5 x 8 ft spot, a wall outlet, and about 15 minutes of staff time per session to close the chamber, open it, and wipe it down.'],
   ],
-  ctaBody: 'Reply to this email or call me, and I will bring the numbers for your space. The assumptions behind every figure are in the attached prospectus and at purebaric.com/business, so you can swap in your own.',
+  ctaBody: 'The full business prospectus is on our site: the chamber, a session, the pricing Utah businesses publish, and the assumptions behind every figure above, so you can swap in your own. When it looks like a fit, request a chamber from that page, or reply here and I will bring the numbers for your space.',
   fine: 'Purebaric provides general-wellness equipment. It is not a medical device and is not intended to diagnose, treat, cure, or prevent any disease. Revenue figures are estimates, not guarantees: session revenue at $75 a session less rental and supplies, before staff time, overhead, taxes, and the one-time setup fee. Local prices are published 2026 prices from businesses in Lehi, Orem, and Salt Lake City.',
 };
 
@@ -248,6 +248,7 @@ function email(cat) {
   const intro = cat.intro || SHARED.intro;
   const handle = (cat.handle || SHARED.handle).map(([b, r]) => `<strong style="color:${C.ink};">${esc(b)}</strong> ${esc(r)}`);
   const replySubject = encodeURIComponent('Chamber for [Business name]');
+  const bizUrl = `${SITE}/business?utm_source=email&utm_medium=outreach&utm_campaign=b2b-${cat.id}`;
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -293,7 +294,7 @@ function email(cat) {
               <h1 style="margin:0 0 18px; font-family:Georgia,'Times New Roman',serif; font-size:27px; line-height:1.22; font-weight:700; color:${C.ink};">${esc(cat.headline)}</h1>
               <p style="margin:0 0 14px; font-size:16px;">Hi [First name],</p>
               <p style="margin:0 0 14px; font-size:16px;">[Personal note] ${esc(cat.opener)}</p>
-              <p style="margin:0 0 6px; font-size:16px;">${esc(intro)}</p>
+              <p style="margin:0 0 6px; font-size:16px;">${esc(intro)} <a href="${bizUrl}" style="color:${C.terraD}; text-decoration:underline;">Here is how it works for businesses.</a></p>
             </td>
           </tr>
 
@@ -347,10 +348,11 @@ ${bullets(handle)}
                     <p style="margin:0 0 16px; font-size:15px; line-height:1.55; color:${C.soft};">${esc(SHARED.ctaBody)}</p>
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                       <tr>
-                        <td style="padding:0 10px 6px 0;"><a href="mailto:${EMAIL}?subject=${replySubject}" style="display:inline-block; padding:12px 20px; background:${C.terra}; color:#ffffff; text-decoration:none; border-radius:8px; font-weight:700; font-size:15px;">Reply: yes, let's talk</a></td>
-                        <td style="padding:0 10px 6px 0;"><a href="tel:${TEL}" style="display:inline-block; padding:11px 18px; border:1px solid rgba(255,255,255,0.4); color:#ffffff; text-decoration:none; border-radius:8px; font-weight:600; font-size:15px;">Call ${PHONE}</a></td>
+                        <td style="padding:0 10px 6px 0;"><a href="${bizUrl}" style="display:inline-block; padding:12px 20px; background:${C.terra}; color:#ffffff; text-decoration:none; border-radius:8px; font-weight:700; font-size:15px;">See the business prospectus</a></td>
+                        <td style="padding:0 10px 6px 0;"><a href="mailto:${EMAIL}?subject=${replySubject}" style="display:inline-block; padding:11px 18px; border:1px solid rgba(255,255,255,0.4); color:#ffffff; text-decoration:none; border-radius:8px; font-weight:600; font-size:15px;">Reply: yes, let's talk</a></td>
                       </tr>
                     </table>
+                    <p style="margin:8px 0 0; font-size:14px; color:${C.soft};">Or call or text <a href="tel:${TEL}" style="color:#ffffff; text-decoration:underline;">${PHONE}</a>. The prospectus is also attached.</p>
                   </td>
                 </tr>
               </table>
@@ -395,7 +397,7 @@ function plainText(cat) {
     '',
     line(`[Personal note] ${cat.opener}`),
     '',
-    line(cat.intro || SHARED.intro),
+    line(cat.intro || SHARED.intro) + ` How it works for businesses: ${SITE}/business`,
     '',
     `${h.k.toUpperCase()}: ${h.v}${h.unit ? ' ' + h.unit : ''}, ${h.p}`,
     ...sm.map(t => `${t.k.toUpperCase()}: ${t.v}${t.unit ? ' ' + t.unit : ''}, ${t.p}`),
@@ -411,7 +413,8 @@ function plainText(cat) {
     '',
     `${cat.cta} ${SHARED.ctaBody}`,
     '',
-    `Reply to this email, or call ${PHONE}.`,
+    `Business prospectus: ${SITE}/business`,
+    `Or reply to this email, or call or text ${PHONE}.`,
     '',
     'Thanks,',
     'Matthew Bailie',
