@@ -3,6 +3,7 @@ const {
   listRentals,
   getBooking,
   getRental,
+  createBooking,
   updateBooking,
   store,
   STORES,
@@ -23,6 +24,34 @@ exports.handler = async (event, context) => {
     if (method === "GET" && !id) {
       const bookings = await listBookings({ status: q.status || undefined });
       return json(200, { bookings });
+    }
+
+    // Admin-entered request (a signed paper agreement, a phone call): same record shape as the public form,
+    // no customer emails or alerts.
+    if (method === "POST" && !id) {
+      const body = parseBody(event);
+      const firstName = String(body.firstName || "").trim();
+      if (!firstName) return json(400, { error: "first name is required" });
+      const rentalType = cleanRentalType(body.rentalType);
+      const booking = await createBooking({
+        firstName, lastName: String(body.lastName || "").trim(),
+        email: String(body.email || "").trim().toLowerCase(),
+        rentalType,
+        businessName: rentalType === "business" ? cleanBusinessName(body.businessName) : "",
+        phone: String(body.phone || "").trim(),
+        zip: String(body.zip || "").trim(),
+        streetAddress: String(body.streetAddress || "").trim(),
+        city: String(body.city || "").trim(),
+        state: String(body.state || "").trim(),
+        startDate: String(body.startDate || "").trim(),
+        rentalLength: String(body.rentalLength || "").trim(),
+        requestedType: String(body.requestedType || "").trim(),
+        reason: String(body.reason || "").trim(),
+        adminNotes: String(body.adminNotes || "").trim(),
+        source: "admin",
+        outOfArea: false,
+      });
+      return json(201, { booking });
     }
 
     if (method === "PATCH" && id) {
