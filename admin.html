@@ -3776,6 +3776,8 @@
   function setOutreachStatusFilter(k) {
     const sel = document.getElementById('orStatus');
     sel.value = sel.value === k ? '' : k;
+    // "Only rows with an email" is a sending filter; a status view should show every row in that status
+    if (sel.value && sel.value !== 'new') document.getElementById('orHasEmail').checked = false;
     renderOutreach();
   }
 
@@ -3822,7 +3824,7 @@
           ${sendable ? `<button class="btn btn-primary btn-sm" onclick="sendOutreach(['${p.id}'])">Send</button>` : ''}
         </div></td>
       </tr>`;
-    }).join('') : '<tr><td colspan="7"><div class="empty-state">No prospects match. Import the list, or clear the filters.</div></td></tr>';
+    }).join('') : '<tr><td colspan="7"><div class="empty-state">No prospects match. Import the list, clear the filters, or untick 'Only rows with an email'.</div></td></tr>';
   }
 
   function toggleOutreachAll(on) { document.querySelectorAll('.or-check:not(:disabled)').forEach(c => { c.checked = on; }); }
