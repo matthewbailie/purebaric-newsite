@@ -9,16 +9,34 @@ const STORE = "outreach";
 const SETTINGS_KEY = "settings";
 const SITE = "https://purebaric.com";
 
+// Blobs calls fail now and then ("fetch failed") and, under a 600-wide fan-out, often enough to break the
+// page. Reads and writes retry, reads run in small groups, and a list is either complete or an error:
+// a partial list would undercount today's sends and let the automation send past its cap.
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+async function withRetry(fn, what, tries = 4) {
+  let lastErr;
+  for (let i = 0; i < tries; i++) {
+    try { return await fn(); } catch (e) { lastErr = e; await sleep(120 * (i + 1)); }
+  }
+  throw new Error(`${what}: ${lastErr && lastErr.message ? lastErr.message : lastErr}`);
+}
+const READ_GROUP = 16;
+
 async function listProspects() {
   const s = store(STORE);
-  const { blobs } = await s.list();
-  const items = await Promise.all(blobs.filter(b => b.key !== SETTINGS_KEY).map(b => s.get(b.key, { type: "json" })));
+  const { blobs } = await withRetry(() => s.list(), "outreach list");
+  const keys = blobs.map(b => b.key).filter(k => k !== SETTINGS_KEY);
+  const items = [];
+  for (let i = 0; i < keys.length; i += READ_GROUP) {
+    const group = keys.slice(i, i + READ_GROUP);
+    items.push(...await Promise.all(group.map(k => withRetry(() => s.get(k, { type: "json" }), `outreach read ${k}`))));
+  }
   return items.filter(Boolean);
 }
-async function getProspect(id) { return store(STORE).get(id, { type: "json" }); }
-async function putProspect(p) { await store(STORE).setJSON(p.id, p); return p; }
-async function getSettings() { return out.cleanSettings(await store(STORE).get(SETTINGS_KEY, { type: "json" })); }
-async function putSettings(s) { const clean = out.cleanSettings(s); await store(STORE).setJSON(SETTINGS_KEY, { ...clean, updatedAt: nowIso() }); return clean; }
+async function getProspect(id) { return withRetry(() => store(STORE).get(id, { type: "json" }), `outreach read ${id}`); }
+async function putProspect(p) { await withRetry(() => store(STORE).setJSON(p.id, p), `outreach write ${p.id}`); return p; }
+async function getSettings() { return out.cleanSettings(await withRetry(() => store(STORE).get(SETTINGS_KEY, { type: "json" }), "outreach settings read")); }
+async function putSettings(s) { const clean = out.cleanSettings(s); await withRetry(() => store(STORE).setJSON(SETTINGS_KEY, { ...clean, updatedAt: nowIso() }), "outreach settings write"); return clean; }
 
 function unsubscribeUrl(p) {
   return `${SITE}/api/outreach/unsubscribe?p=${encodeURIComponent(p.id)}&t=${encodeURIComponent(p.unsubToken)}`;
