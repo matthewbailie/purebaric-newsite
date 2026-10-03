@@ -2,5 +2,25 @@
  "drop": [
   "Park City Massage and Spa (Silver Mountain Spa)"
  ],
- "_comment": "Rows removed from the workbook: confirmed duplicates or closed. Matched on normalized business name."
+ "_comment": "drop: rows removed as duplicates or closed (matched on normalized business name). add: rows known outside the research, e.g. a business that already signed, with an initial status.",
+ "add": [
+  {
+   "business": "Rest Recovery Wellness (Ephraim)",
+   "industry": "Recovery studios and med spas",
+   "owner": "Cassie Johnson",
+   "owner_title": "Owner",
+   "email": "",
+   "email_confidence": "none",
+   "email_source": "",
+   "phone": "",
+   "website": "",
+   "address": "722 N 80 E Ste 4",
+   "city": "Ephraim",
+   "zip": "84627",
+   "county": "Sanpete",
+   "notes": "CUSTOMER. Legal name JC Wellness LLC (Utah). Signed the Business Rental Agreement and Liability Waiver on 2026-10-02; placement pending. Do not include in outreach. Related brand: Rest Recovery Wellness Bountiful (separate unit, already runs a chamber).",
+   "personal_note_hook": "",
+   "status": "customer"
+  }
+ ]
 }

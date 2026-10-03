@@ -7,7 +7,7 @@
 const crypto = require("crypto");
 const { greetingName, categoryById } = require("./outreach-template");
 
-const STATUSES = ["new", "sent", "bounced", "replied", "interested", "declined", "unsubscribed", "skipped", "failed"];
+const STATUSES = ["new", "sent", "bounced", "replied", "interested", "customer", "declined", "unsubscribed", "skipped", "failed"];
 // Statuses that a bulk send may pick up. Everything else is final or manual.
 const SENDABLE = new Set(["new", "failed"]);
 
@@ -75,7 +75,8 @@ function normalizeProspect(row, existing) {
     // No personal notes. The feed's personal_note and hook were drafted by a research pass and are not
     // verified, so they are dropped here: the email asserts nothing about the business beyond its name.
     notes: String(row.notes || "").trim().slice(0, 1500),
-    status: "new",
+    // a row can arrive with a status already set (e.g. "customer" for a business that signed before any email)
+    status: STATUSES.includes(String(row.status || "").trim().toLowerCase()) ? String(row.status).trim().toLowerCase() : "new",
     unsubToken: newToken(),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),

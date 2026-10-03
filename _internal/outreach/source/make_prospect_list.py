@@ -110,10 +110,12 @@ def apply_enrichment(r):
 
 # _overrides.json: {"drop": ["business name", ...]} for rows confirmed as duplicates or closed
 OVR = os.path.join(SRC, "_overrides.json")
-DROP = set()
+DROP, ADD = set(), []
 if os.path.exists(OVR):
     with open(OVR) as fh:
-        DROP = {NORM(x) for x in json.load(fh).get("drop", [])}
+        ovr = json.load(fh)
+    DROP = {NORM(x) for x in ovr.get("drop", [])}
+    ADD = ovr.get("add", [])   # rows known outside the research (e.g. a business that already signed), may carry a status
 
 # personal_notes*.json: one-sentence openers written from the hooks, keyed by business + city
 NOTES = {}
@@ -146,6 +148,12 @@ for f in sorted(glob.glob(os.path.join(SRC, "*.json"))):
         r = clean(row)
         r["_src"] = os.path.basename(f)
         competitors.append(r)
+for row in ADD:
+    r = clean(row)
+    r["status"] = str(row.get("status", "")).strip()
+    r["personal_note"] = ""
+    r["_src"] = "_overrides.json"
+    (prospects if served(r["zip"], r["city"]) else dropped).append(r)
 
 # de-duplicate on (normalized business, city) and on email; keep the row with the better email
 STOP = {"the", "gym", "fitness", "llc", "club", "studio", "utah", "ut", "inc", "center", "centre", "of", "and"}
@@ -218,7 +226,7 @@ def write_sheet(ws, rows, headers=HEADERS, table_name="Prospects"):
     for r in rows:
         ws.append([r["business"], r["industry"], r["owner"], r["owner_title"], r["email"], r["email_confidence"],
                    r["email_source"], r["phone"], r["website"], r["address"], r["city"], r["zip"], r["county"],
-                   TEMPLATE.get(r["industry"], ""), r["personal_note_hook"], r.get("personal_note", ""), r["notes"], "Not sent", "", ""])
+                   TEMPLATE.get(r["industry"], ""), r["personal_note_hook"], r.get("personal_note", ""), r["notes"], r.get("status") or "Not sent", "", ""])
     for row in ws.iter_rows(min_row=2, max_row=ws.max_row):
         for cell in row:
             cell.alignment = wrap
@@ -289,7 +297,7 @@ feed = [{
     "owner": r["owner"], "ownerTitle": r["owner_title"], "email": r["email"], "emailConfidence": r["email_confidence"],
     "emailSource": r["email_source"], "phone": r["phone"], "website": r["website"], "address": r["address"],
     "city": r["city"], "zip": r["zip"], "county": r["county"], "hook": r["personal_note_hook"],
-    "personalNote": r.get("personal_note", ""), "notes": r["notes"],
+    "personalNote": r.get("personal_note", ""), "notes": r["notes"], "status": r.get("status", ""),
 } for r in prospects]
 with open(FEED, "w") as fh:
     json.dump({"generated": date.today().isoformat(), "count": len(feed), "prospects": feed}, fh, indent=1)
