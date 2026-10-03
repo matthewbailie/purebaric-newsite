@@ -94,7 +94,7 @@ function wrap(bodyHtml) {
           <!-- Hero imagery -->
           <tr>
             <td style="padding:0; font-size:0; line-height:0;">
-              <img src="https://purebaric.com/images/chamber-side.jpg?v=2" alt="A Purebaric hyperbaric chamber set up at home" width="560" style="display:block; width:100%; max-width:560px; height:auto; border:0;" />
+              <img src="https://purebaric.com/images/chamber-living.jpg?v=3" alt="A Purebaric hyperbaric chamber set up at home" width="560" style="display:block; width:100%; max-width:560px; height:auto; border:0;" />
             </td>
           </tr>
           <!-- Body content -->
