@@ -368,6 +368,11 @@ body.bizbar-on{padding-bottom:84px}
   function go(i){idx=(i+slides.length)%slides.length;slides.forEach(function(s,j){s.classList.toggle('active',j===idx);});dots.querySelectorAll('button').forEach(function(d,j){d.classList.toggle('on',j===idx);});}
   function start(){if(reduce)return;timer=setInterval(function(){go(idx+1);},5000);}
   function restart(){if(timer)clearInterval(timer);start();}
+  // swipe left or right anywhere on the photo to change slides (touch and pen; mouse drags are ignored)
+  var wrap=slides[0].parentElement, sx=null, sy=null;
+  wrap.style.touchAction='pan-y';
+  wrap.addEventListener('touchstart',function(e){var t=e.changedTouches[0];sx=t.clientX;sy=t.clientY;},{passive:true});
+  wrap.addEventListener('touchend',function(e){if(sx===null)return;var t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;sx=sy=null;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){go(idx+(dx<0?1:-1));restart();}},{passive:true});
   start();
 })();
 </script>
