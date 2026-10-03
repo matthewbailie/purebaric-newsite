@@ -18,6 +18,9 @@ const DEFAULT_SETTINGS = {
   postalAddress: "",          // CAN-SPAM: a valid physical postal address; sending is refused while this is blank
   dailyCap: 25,               // cold-email ramp: keep this low for the first weeks
   subjectIndex: 0,            // which of the category's subject lines to use
+  autoSend: false,            // the scheduled sender (outreach-daily.js) only runs while this is on
+  lastAutoRun: null,          // { at, trigger, sent, failed, sentToday, remaining } written by the sender
+  lastSummaryDay: "",         // YYYY-MM-DD of the last daily summary email, so it goes once a day
 };
 
 function cleanSettings(input) {
@@ -29,6 +32,9 @@ function cleanSettings(input) {
   const cap = parseInt(s.dailyCap, 10);
   s.dailyCap = Math.max(1, Math.min(200, Number.isFinite(cap) ? cap : DEFAULT_SETTINGS.dailyCap));
   s.subjectIndex = Math.max(0, Math.min(2, parseInt(s.subjectIndex, 10) || 0));
+  s.autoSend = s.autoSend === true || s.autoSend === 1 || s.autoSend === "1" || s.autoSend === "true";
+  s.lastAutoRun = s.lastAutoRun && typeof s.lastAutoRun === "object" ? s.lastAutoRun : null;
+  s.lastSummaryDay = String(s.lastSummaryDay || "").slice(0, 10);
   return s;
 }
 

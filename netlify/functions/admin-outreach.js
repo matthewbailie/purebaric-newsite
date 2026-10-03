@@ -6,6 +6,7 @@
 //   POST   /api/admin/outreach/preview  {id}   -> { subject, html, text } for one prospect, or {templateId, firstName, businessName}
 //   POST   /api/admin/outreach/test     {id?, templateId?} -> sends that email to the owner's own inbox (never to the prospect)
 //   POST   /api/admin/outreach/send     {ids}  -> sends to each prospect (daily cap, sendable status, email present), returns per-id results
+//   POST   /api/admin/outreach/run             -> sends one automation batch now (see _lib/outreach-run.js)
 //   POST   /api/admin/outreach/sync            -> refreshes delivery state for recently sent emails from Resend (bounced, complained)
 //   PATCH  /api/admin/outreach/:id      {status|firstName|email|notes|templateId}
 //
@@ -14,57 +15,16 @@
 const fs = require("fs");
 const path = require("path");
 const { requireAuth, adminEmail, json, parseBody } = require("./_lib/admin");
-const { store, nowIso } = require("./_lib/storage");
 const { send } = require("./_lib/email");
 const { OWNER_EMAIL } = require("./_lib/owner");
 const tpl = require("./_lib/outreach-template");
 const out = require("./_lib/outreach");
 
-const STORE = "outreach";
-const SETTINGS_KEY = "settings";
-const SITE = "https://purebaric.com";
+const io = require("./_lib/outreach-io");
+const { listProspects, getProspect, putProspect, getSettings, putSettings, deliver, renderFor } = io;
+const { runBatch, SUB_BATCH } = require("./_lib/outreach-run");
+
 const MAX_PER_CALL = 25;
-
-async function listProspects() {
-  const s = store(STORE);
-  const { blobs } = await s.list();
-  const items = await Promise.all(blobs.filter(b => b.key !== SETTINGS_KEY).map(b => s.get(b.key, { type: "json" })));
-  return items.filter(Boolean);
-}
-async function getProspect(id) { return store(STORE).get(id, { type: "json" }); }
-async function putProspect(p) { await store(STORE).setJSON(p.id, p); return p; }
-async function getSettings() { return out.cleanSettings(await store(STORE).get(SETTINGS_KEY, { type: "json" })); }
-async function putSettings(s) { const clean = out.cleanSettings(s); await store(STORE).setJSON(SETTINGS_KEY, { ...clean, updatedAt: nowIso() }); return clean; }
-
-function unsubscribeUrl(p) {
-  return `${SITE}/api/outreach/unsubscribe?p=${encodeURIComponent(p.id)}&t=${encodeURIComponent(p.unsubToken)}`;
-}
-
-function renderFor(p, settings, overrides = {}) {
-  return tpl.render({
-    categoryId: overrides.templateId || p.templateId,
-    firstName: overrides.firstName !== undefined ? overrides.firstName : p.firstName,
-    businessName: overrides.businessName !== undefined ? overrides.businessName : p.business,
-    subjectIndex: settings.subjectIndex,
-    unsubscribeUrl: p.unsubToken ? unsubscribeUrl(p) : "",
-    postalAddress: settings.postalAddress,
-  });
-}
-
-function fromHeader(settings) {
-  return `${settings.fromName.replace(/[<>"]/g, "")} <${settings.fromEmail}>`;
-}
-
-async function deliver(p, settings, to, { isTest = false } = {}) {
-  const r = renderFor(p, settings);
-  const headers = p.unsubToken ? {
-    "List-Unsubscribe": `<${unsubscribeUrl(p)}>, <mailto:${settings.replyTo}?subject=unsubscribe>`,
-    "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-  } : {};
-  const subject = isTest ? `[Business outreach TEST for ${p.business}] ${r.subject}` : r.subject;
-  const res = await send({ to, subject, html: r.html, text: r.text, from: fromHeader(settings), replyTo: settings.replyTo, headers });
-  return { resendId: res && res.data && res.data.id, subject };
-}
 
 // Reads the feed bundled with the function (netlify.toml included_files). Falls back to the repo path in dev.
 function loadFeed() {
@@ -100,7 +60,7 @@ exports.handler = async (event, context) => {
     }
 
     if (method === "PUT" && sub === "settings") {
-      const settings = await putSettings(parseBody(event));
+      const settings = await putSettings({ ...(await getSettings()), ...parseBody(event) });
       return json(200, { settings });
     }
 
@@ -172,25 +132,15 @@ exports.handler = async (event, context) => {
       return json(200, { results, sentToday: settings.dailyCap - remaining, dailyCap: settings.dailyCap });
     }
 
+    // One automation batch right now (same selection, spacing and cap as the scheduled sender).
+    if (method === "POST" && sub === "run") {
+      const notify = ({ subject, text }) => send({ to: OWNER_EMAIL, subject, text, html: `<p>${text}</p>` });
+      const r = await runBatch({ ...io, notify }, { trigger: "manual", max: SUB_BATCH });
+      return json(200, r);
+    }
+
     if (method === "POST" && sub === "sync") {
-      const { Resend } = require("resend");
-      const key = process.env.RESEND_API_KEY;
-      if (!key) return json(500, { error: "RESEND_API_KEY not set" });
-      const resend = new Resend(key);
-      const cutoff = Date.now() - 21 * 86400000;
-      const all = await listProspects();
-      let checked = 0, changed = 0;
-      for (const p of all) {
-        if (!p.resendId || p.status !== "sent" || !p.sentAt || Date.parse(p.sentAt) < cutoff) continue;
-        try {
-          const r = await resend.emails.get(p.resendId);
-          const ev = r && r.data && (r.data.last_event || r.data.lastEvent);
-          checked++;
-          const next = out.applyResendEvent(p, ev);
-          if (next.status !== p.status || next.lastEvent !== p.lastEvent) { await putProspect(next); changed++; }
-        } catch (e) { /* leave as is; the next sync retries */ }
-      }
-      return json(200, { checked, changed });
+      return json(200, await io.syncRecent({ limit: 500, maxAgeDays: 21 }));
     }
 
     if (method === "PATCH" && sub) {

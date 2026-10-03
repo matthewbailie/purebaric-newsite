@@ -881,8 +881,10 @@
             <div class="keyrow"><label>Daily cap (emails per day)</label><input id="orDailyCap" type="number" min="1" max="200" placeholder="25"></div>
           </div>
           <div class="keyrow"><label>Postal address (required on every email, CAN-SPAM)</label><input id="orPostal" autocomplete="off" placeholder="Street or PO Box, City, UT ZIP"></div>
+          <div class="keyrow"><label>Daily auto-send</label><select id="orAutoSend"><option value="0">Off</option><option value="1">On: Monday to Thursday around 10 a.m., a few at a time up to the daily cap</option></select></div>
           <div class="keyrow"><label>Subject line</label><select id="orSubjectIndex"><option value="0">First subject for each industry (question or fact)</option><option value="1">Second subject (no-purchase angle)</option><option value="2">Third subject (break-even number)</option></select></div>
           <button type="button" class="btn btn-primary btn-sm" onclick="saveOutreachSettings()">Save settings</button>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="runOutreachBatch()" title="Sends the next automation batch now: highest-confidence emails first, mixed across industries, up to today's cap">Send next auto batch now</button>
           <span id="orSettingsMsg" class="renter-line" style="margin-left:10px;"></span>
         </div>
       </div>
@@ -3721,7 +3723,7 @@
     const setIf = (id, v) => { const el = document.getElementById(id); if (el && document.activeElement !== el) el.value = v == null ? '' : v; };
     const st = data.settings || {};
     setIf('orFromName', st.fromName); setIf('orFromEmail', st.fromEmail); setIf('orReplyTo', st.replyTo);
-    setIf('orDailyCap', st.dailyCap); setIf('orPostal', st.postalAddress); setIf('orSubjectIndex', st.subjectIndex || 0);
+    setIf('orDailyCap', st.dailyCap); setIf('orPostal', st.postalAddress); setIf('orSubjectIndex', st.subjectIndex || 0); setIf('orAutoSend', st.autoSend ? 1 : 0);
     document.getElementById('orTestRecipient').textContent = data.testRecipient || 'the owner inbox';
     const fill = (id, values, label) => {
       const sel = document.getElementById(id); const cur = sel.value;
@@ -3749,7 +3751,9 @@
       const cap = _outreach.settings ? _outreach.settings.dailyCap : 0;
       const pills = OR_STATUSES.filter(k => s.byStatus[k]).map(k => `<span class="pill ${OR_PILL[k]}">${k} ${s.byStatus[k]}</span>`).join(' ');
       const postalWarn = _outreach.settings && !_outreach.settings.postalAddress ? ' <strong style="color:#82402f;">Set the postal address above before sending.</strong>' : '';
-      document.getElementById('orStats').innerHTML = `<strong>${s.total}</strong> prospects, <strong>${s.withEmail}</strong> with an email. Sent today: <strong>${s.sentToday}</strong> of ${cap}. &nbsp; ${pills}${postalWarn}` + (s.total ? '' : ' &nbsp; <em>Click Import list to load the prospects from this deploy.</em>');
+      const st = _outreach.settings || {}, lr = st.lastAutoRun;
+      const autoLine = ` <span class="or-sub">Auto-send ${st.autoSend ? '<strong style="color:#3d5a26;">on</strong>' : 'off'}${lr ? ` · last run ${fmtDate(lr.at)}: ${lr.sent} sent${lr.failed ? ', ' + lr.failed + ' failed' : ''}${lr.note ? ', ' + escape(lr.note) : ''}${lr.remaining != null ? ', ' + lr.remaining + ' left' : ''}` : ''}</span>`;
+      document.getElementById('orStats').innerHTML = `<strong>${s.total}</strong> prospects, <strong>${s.withEmail}</strong> with an email. Sent today: <strong>${s.sentToday}</strong> of ${cap}.${autoLine} &nbsp; ${pills}${postalWarn}` + (s.total ? '' : ' &nbsp; <em>Click Import list to load the prospects from this deploy.</em>');
     }
     const rows = outreachVisible();
     document.getElementById('orCount').textContent = `${rows.length} shown`;
@@ -3775,8 +3779,16 @@
 
   function toggleOutreachAll(on) { document.querySelectorAll('.or-check:not(:disabled)').forEach(c => { c.checked = on; }); }
 
+  async function runOutreachBatch() {
+    if (!confirm('Send the next automation batch now? Real emails go to real businesses.')) return;
+    try { const r = await api('/api/admin/outreach/run', { method: 'POST', body: '{}' });
+      toast(r.skipped ? `Nothing sent: ${r.skipped}` : `Sent ${r.sent}${r.failed ? ', ' + r.failed + ' failed' : ''}. Today: ${r.sentToday}. ${r.remaining} left.`, !!r.skipped || r.failed > 0);
+      loadOutreach(); }
+    catch (e) { toast(e.message, true); }
+  }
+
   async function saveOutreachSettings() {
-    const body = { fromName: orFromName.value, fromEmail: orFromEmail.value, replyTo: orReplyTo.value, dailyCap: orDailyCap.value, postalAddress: orPostal.value, subjectIndex: orSubjectIndex.value };
+    const body = { fromName: orFromName.value, fromEmail: orFromEmail.value, replyTo: orReplyTo.value, dailyCap: orDailyCap.value, postalAddress: orPostal.value, subjectIndex: orSubjectIndex.value, autoSend: orAutoSend.value };
     try { const r = await api('/api/admin/outreach/settings', { method: 'PUT', body: JSON.stringify(body) }); _outreach.settings = r.settings; document.getElementById('orSettingsMsg').textContent = 'Saved.'; renderOutreach(); toast('Outreach settings saved'); }
     catch (e) { toast(e.message, true); }
   }

@@ -250,3 +250,9 @@
 # Mondays at 15:00 UTC (9:00 AM Utah in summer, 8:00 AM in winter).
 [functions."rental-ending-notify"]
   schedule = "0 15 * * 1"
+
+# Business outreach sender: every 10 minutes from 16:00 to 17:50 UTC (the 10 a.m. hour in Utah), Monday to
+# Thursday. Each run sends a few emails until the daily cap in the admin Outreach settings is reached. Only
+# runs while "auto-send" is on in those settings. Logic: netlify/functions/_lib/outreach-run.js
+[functions."outreach-daily"]
+  schedule = "*/10 16-17 * * 1-4"
