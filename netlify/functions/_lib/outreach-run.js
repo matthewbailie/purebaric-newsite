@@ -59,6 +59,7 @@ async function runBatch(io, { max = SUB_BATCH, now = new Date(), trigger = "sche
   const day = now.toISOString().slice(0, 10);
   const result = { trigger, day, sent: 0, failed: 0, skipped: null, sentToday: 0, remaining: 0 };
   if (trigger === "schedule" && !settings.autoSend) { result.skipped = "auto-send is off"; return result; }
+  if (trigger === "schedule" && !out.inSendWindow(settings, now)) { result.skipped = "outside the chosen days and time"; return result; }
   if (!settings.postalAddress) { result.skipped = "postal address not set"; return result; }
 
   if (io.syncRecent) { try { await io.syncRecent({ limit: SYNC_PER_RUN }); } catch (e) { /* next run */ } }
@@ -78,8 +79,8 @@ async function runBatch(io, { max = SUB_BATCH, now = new Date(), trigger = "sche
   for (let i = 0; i < batch.length; i++) {
     const p = batch[i];
     try {
-      const { resendId } = await io.deliver(p, settings, p.email);
-      const sent = out.markSent(p, resendId);
+      const { resendId, subject } = await io.deliver(p, settings, p.email);
+      const sent = out.markSent(p, resendId, subject);
       sent.history[sent.history.length - 1].by = trigger === "manual" ? "admin:auto-batch" : "auto";
       await io.putProspect(sent); result.sent++;
     } catch (e) {

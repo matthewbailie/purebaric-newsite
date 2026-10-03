@@ -19,6 +19,8 @@ const DEFAULT_SETTINGS = {
   dailyCap: 25,               // cold-email ramp: keep this low for the first weeks
   subjectIndex: 0,            // which of the category's subject lines to use
   autoSend: false,            // the scheduled sender (outreach-daily.js) only runs while this is on
+  autoDays: [1, 2, 3, 4],     // weekdays it may send (0 = Sunday ... 6 = Saturday), Mountain time
+  autoTime: "10:00",          // when the day's sending starts (Mountain time); runs continue until the cap
   lastAutoRun: null,          // { at, trigger, sent, failed, sentToday, remaining } written by the sender
   lastSummaryDay: "",         // YYYY-MM-DD of the last daily summary email, so it goes once a day
 };
@@ -33,6 +35,9 @@ function cleanSettings(input) {
   s.dailyCap = Math.max(1, Math.min(200, Number.isFinite(cap) ? cap : DEFAULT_SETTINGS.dailyCap));
   s.subjectIndex = Math.max(0, Math.min(2, parseInt(s.subjectIndex, 10) || 0));
   s.autoSend = s.autoSend === true || s.autoSend === 1 || s.autoSend === "1" || s.autoSend === "true";
+  const days = Array.isArray(s.autoDays) ? s.autoDays : String(s.autoDays || "").split(",");
+  s.autoDays = [...new Set(days.map(d => parseInt(d, 10)).filter(d => d >= 0 && d <= 6))].sort();
+  s.autoTime = /^([01]\d|2[0-3]):[0-5]\d$/.test(String(s.autoTime || "")) ? String(s.autoTime) : DEFAULT_SETTINGS.autoTime;
   s.lastAutoRun = s.lastAutoRun && typeof s.lastAutoRun === "object" ? s.lastAutoRun : null;
   s.lastSummaryDay = String(s.lastSummaryDay || "").slice(0, 10);
   return s;
@@ -140,10 +145,28 @@ function sendBlocker(p, settings) {
   return null;
 }
 
-function markSent(p, resendId) {
+function markSent(p, resendId, subject) {
   const at = new Date().toISOString();
   return { ...p, status: "sent", sentAt: at, resendId: resendId || null, lastError: null, updatedAt: at,
-    history: [...(p.history || []), { at, event: "sent", resendId: resendId || null }] };
+    sentSubject: subject ? String(subject).slice(0, 200) : (p.sentSubject || null),
+    history: [...(p.history || []), { at, event: "sent", resendId: resendId || null, subject: subject ? String(subject).slice(0, 200) : undefined }] };
+}
+
+// Local Mountain-time clock for the schedule: { day: 0..6, minutes: minutes since midnight }.
+function mountainNow(now = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Denver", weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(now);
+  const get = t => (parts.find(x => x.type === t) || {}).value;
+  const day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(get("weekday"));
+  return { day, minutes: (parseInt(get("hour"), 10) % 24) * 60 + parseInt(get("minute"), 10) };
+}
+
+// May the scheduled sender send right now? Within the chosen days, from the chosen time until the end of
+// that day (the daily cap stops it long before), so a late start still sends.
+function inSendWindow(settings, now = new Date()) {
+  const { day, minutes } = mountainNow(now);
+  if (!settings.autoDays.includes(day)) return false;
+  const [h, m] = settings.autoTime.split(":").map(Number);
+  return minutes >= h * 60 + m;
 }
 
 function markFailed(p, error) {
@@ -184,5 +207,5 @@ function publicView(p) {
   return rest;
 }
 
-module.exports = { STATUSES, SENDABLE, DEFAULT_SETTINGS, cleanSettings, cleanEmail, prospectId, normalizeProspect,
+module.exports = { STATUSES, SENDABLE, DEFAULT_SETTINGS, cleanSettings, mountainNow, inSendWindow, cleanEmail, prospectId, normalizeProspect,
   applyPatch, sentToday, sendBlocker, markSent, markFailed, applyResendEvent, stats, publicView };

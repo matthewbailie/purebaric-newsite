@@ -881,8 +881,22 @@
             <div class="keyrow"><label>Daily cap (emails per day)</label><input id="orDailyCap" type="number" min="1" max="200" placeholder="25"></div>
           </div>
           <div class="keyrow"><label>Postal address (required on every email, CAN-SPAM)</label><input id="orPostal" autocomplete="off" placeholder="Street or PO Box, City, UT ZIP"></div>
-          <div class="keyrow"><label>Daily auto-send</label><select id="orAutoSend"><option value="0">Off</option><option value="1">On: Monday to Thursday around 10 a.m., a few at a time up to the daily cap</option></select></div>
-          <div class="keyrow"><label>Subject line</label><select id="orSubjectIndex"><option value="0">First subject for each industry (question or fact)</option><option value="1">Second subject (no-purchase angle)</option><option value="2">Third subject (break-even number)</option></select></div>
+          <div class="keyrow"><label>Daily auto-send</label><select id="orAutoSend"><option value="0">Off</option><option value="1">On</option></select></div>
+          <div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end;">
+            <div class="keyrow"><label>Send on these days</label>
+              <div id="orAutoDays" style="display:flex;gap:10px;flex-wrap:wrap;padding:6px 0;">
+                <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="1"> Mon</label>
+                <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="2"> Tue</label>
+                <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="3"> Wed</label>
+                <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="4"> Thu</label>
+                <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="5"> Fri</label>
+                <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="6"> Sat</label>
+                <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="0"> Sun</label>
+              </div></div>
+            <div class="keyrow"><label>Start time (Mountain)</label><input id="orAutoTime" type="time" value="10:00" step="600"></div>
+          </div>
+          <p class="renter-line" style="margin:0 0 10px;">On a chosen day, sending starts at that time and continues a few emails every 10 minutes until the daily cap is reached. Each email is addressed to the owner's first name when the list has one (otherwise "Hi [Business] team"), names the business in the subject and body, and uses that industry's template. The Preview button on any row shows the exact email that row gets.</p>
+          <div class="keyrow"><label>Subject line to use (example shown for gyms; each industry has its own wording)</label><select id="orSubjectIndex"></select></div>
           <button type="button" class="btn btn-primary btn-sm" onclick="saveOutreachSettings()">Save settings</button>
           <button type="button" class="btn btn-ghost btn-sm" onclick="runOutreachBatch()" title="Sends the next automation batch now: highest-confidence emails first, mixed across industries, up to today's cap">Send next auto batch now</button>
           <span id="orSettingsMsg" class="renter-line" style="margin-left:10px;"></span>
@@ -3723,7 +3737,14 @@
     const setIf = (id, v) => { const el = document.getElementById(id); if (el && document.activeElement !== el) el.value = v == null ? '' : v; };
     const st = data.settings || {};
     setIf('orFromName', st.fromName); setIf('orFromEmail', st.fromEmail); setIf('orReplyTo', st.replyTo);
-    setIf('orDailyCap', st.dailyCap); setIf('orPostal', st.postalAddress); setIf('orSubjectIndex', st.subjectIndex || 0); setIf('orAutoSend', st.autoSend ? 1 : 0);
+    setIf('orDailyCap', st.dailyCap); setIf('orPostal', st.postalAddress); setIf('orSubjectIndex', st.subjectIndex || 0); setIf('orAutoSend', st.autoSend ? 1 : 0); setIf('orAutoTime', st.autoTime || '10:00');
+    document.querySelectorAll('#orAutoDays input').forEach(cb => { cb.checked = (st.autoDays || []).includes(parseInt(cb.value, 10)); });
+    const subjSel = document.getElementById('orSubjectIndex');
+    if (subjSel && !subjSel.options.length) {
+      const gym = (data.templates || []).find(t => t.id === 'gyms-and-fitness') || (data.templates || [])[0];
+      subjSel.innerHTML = [0, 1, 2].map(i => `<option value="${i}">Option ${i + 1}: "${escape((gym && gym.subjects[i]) || '')}"</option>`).join('');
+    }
+    setIf('orSubjectIndex', st.subjectIndex || 0);
     document.getElementById('orTestRecipient').textContent = data.testRecipient || 'the owner inbox';
     const fill = (id, values, label) => {
       const sel = document.getElementById(id); const cur = sel.value;
@@ -3736,20 +3757,27 @@
     renderOutreach();
   }
 
+  function setOutreachStatusFilter(k) {
+    const sel = document.getElementById('orStatus');
+    sel.value = sel.value === k ? '' : k;
+    renderOutreach();
+  }
+
   function outreachVisible() {
     const ind = document.getElementById('orIndustry').value, st = document.getElementById('orStatus').value, co = document.getElementById('orCounty').value;
     const q = document.getElementById('orSearch').value.trim().toLowerCase(), hasEmail = document.getElementById('orHasEmail').checked;
     return _outreach.prospects.filter(p =>
       (!ind || p.industry === ind) && (!st || p.status === st) && (!co || p.county === co) && (!hasEmail || p.email) &&
       (!q || [p.business, p.owner, p.firstName, p.city, p.email].join(' ').toLowerCase().includes(q))
-    ).sort((a, b) => (a.status === 'new' ? 0 : 1) - (b.status === 'new' ? 0 : 1) || (a.emailConfidence === 'high' ? 0 : 1) - (b.emailConfidence === 'high' ? 0 : 1) || a.business.localeCompare(b.business));
+    ).sort((a, b) => (b.sentAt ? 1 : 0) - (a.sentAt ? 1 : 0) || String(b.sentAt || '').localeCompare(String(a.sentAt || '')) || (a.emailConfidence === 'high' ? 0 : 1) - (b.emailConfidence === 'high' ? 0 : 1) || a.business.localeCompare(b.business));
   }
 
   function renderOutreach() {
     const s = _outreach.stats;
     if (s) {
       const cap = _outreach.settings ? _outreach.settings.dailyCap : 0;
-      const pills = OR_STATUSES.filter(k => s.byStatus[k]).map(k => `<span class="pill ${OR_PILL[k]}">${k} ${s.byStatus[k]}</span>`).join(' ');
+      const curSt = document.getElementById('orStatus').value;
+      const pills = OR_STATUSES.filter(k => s.byStatus[k]).map(k => `<button type="button" class="pill ${OR_PILL[k]}" style="cursor:pointer;border:${curSt === k ? '2px solid var(--ink)' : '2px solid transparent'};font:inherit;" title="${curSt === k ? 'Show all' : 'Show only ' + k}" onclick="setOutreachStatusFilter('${k}')">${k} ${s.byStatus[k]}</button>`).join(' ');
       const postalWarn = _outreach.settings && !_outreach.settings.postalAddress ? ' <strong style="color:#82402f;">Set the postal address above before sending.</strong>' : '';
       const st = _outreach.settings || {}, lr = st.lastAutoRun;
       const autoLine = ` <span class="or-sub">Auto-send ${st.autoSend ? '<strong style="color:#3d5a26;">on</strong>' : 'off'}${lr ? ` · last run ${fmtDate(lr.at)}: ${lr.sent} sent${lr.failed ? ', ' + lr.failed + ' failed' : ''}${lr.note ? ', ' + escape(lr.note) : ''}${lr.remaining != null ? ', ' + lr.remaining + ' left' : ''}` : ''}</span>`;
@@ -3762,11 +3790,15 @@
     document.getElementById('orRows').innerHTML = rows.length ? rows.map(p => {
       const sendable = p.email && (p.status === 'new' || p.status === 'failed');
       const greeting = p.firstName ? `Hi ${escape(p.firstName)},` : `Hi ${escape(p.business)} team,`;
+      const tmplObj = _outreach.templates.find(x => x.id === p.templateId);
+      const subjIdx = _outreach.settings ? (_outreach.settings.subjectIndex || 0) : 0;
+      const subject = p.sentSubject || (tmplObj ? (tmplObj.subjects[subjIdx] || tmplObj.subjects[0] || '').split('[Business name]').join(p.business) : '');
+      const contacted = p.sentAt ? `<span class="pill pill-notified" style="margin-left:6px;">Contacted ${fmtDate(p.sentAt)}</span>` : '';
       const statusSel = `<select onchange="patchOutreach('${p.id}', { status: this.value })">${OR_STATUSES.map(k => `<option value="${k}"${k === p.status ? ' selected' : ''}>${k}</option>`).join('')}</select>`;
       return `<tr data-id="${p.id}">
         <td><input type="checkbox" class="or-check" value="${p.id}"${sendable ? '' : ' disabled'}></td>
-        <td><strong>${escape(p.business)}</strong><div class="or-sub">${escape([p.city, p.county && p.county + ' Co.'].filter(Boolean).join(', '))}${p.website ? ` · <a href="https://${escape(p.website.replace(/^https?:\/\//, ''))}" target="_blank" rel="noopener" style="color:var(--terracotta);">site</a>` : ''}</div></td>
-        <td><div>${greeting}</div><div class="or-sub">${p.owner ? escape(p.owner) + (p.ownerTitle ? ', ' + escape(p.ownerTitle) : '') + '<br>' : ''}${p.email ? `<span class="or-conf-${escape(p.emailConfidence || 'none')}">${escape(p.email)} (${escape(p.emailConfidence || '?')})</span>` : '<span class="or-conf-none">no email</span>'}${p.phone ? '<br>' + escape(p.phone) : ''}</div></td>
+        <td><strong>${escape(p.business)}</strong>${contacted}<div class="or-sub">${escape([p.city, p.county && p.county + ' Co.'].filter(Boolean).join(', '))}${p.website ? ` · <a href="https://${escape(p.website.replace(/^https?:\/\//, ''))}" target="_blank" rel="noopener" style="color:var(--terracotta);">site</a>` : ''}</div></td>
+        <td><div>${greeting}</div>${subject ? `<div class="or-sub">${p.sentSubject ? 'Sent as' : 'Subject'}: ${escape(subject)}</div>` : ''}<div class="or-sub">${p.owner ? escape(p.owner) + (p.ownerTitle ? ', ' + escape(p.ownerTitle) : '') + '<br>' : ''}${p.email ? `<span class="or-conf-${escape(p.emailConfidence || 'none')}">${escape(p.email)} (${escape(p.emailConfidence || '?')})</span>` : '<span class="or-conf-none">no email</span>'}${p.phone ? '<br>' + escape(p.phone) : ''}</div></td>
         <td class="or-sub">${escape(tmplLabel(p.templateId))}</td>
         <td><span class="pill ${OR_PILL[p.status] || ''}">${escape(p.status)}</span>${p.sentAt ? `<div class="or-sub">${fmtDate(p.sentAt)}${p.lastEvent ? ' · ' + escape(p.lastEvent) : ''}</div>` : ''}${p.lastError ? `<div class="or-sub" style="color:#82402f;">${escape(p.lastError)}</div>` : ''}<div style="margin-top:4px;">${statusSel}</div></td>
         <td><div class="row-actions">
@@ -3788,7 +3820,7 @@
   }
 
   async function saveOutreachSettings() {
-    const body = { fromName: orFromName.value, fromEmail: orFromEmail.value, replyTo: orReplyTo.value, dailyCap: orDailyCap.value, postalAddress: orPostal.value, subjectIndex: orSubjectIndex.value, autoSend: orAutoSend.value };
+    const body = { fromName: orFromName.value, fromEmail: orFromEmail.value, replyTo: orReplyTo.value, dailyCap: orDailyCap.value, postalAddress: orPostal.value, subjectIndex: orSubjectIndex.value, autoSend: orAutoSend.value, autoTime: orAutoTime.value, autoDays: [...document.querySelectorAll('#orAutoDays input:checked')].map(cb => parseInt(cb.value, 10)) };
     try { const r = await api('/api/admin/outreach/settings', { method: 'PUT', body: JSON.stringify(body) }); _outreach.settings = r.settings; document.getElementById('orSettingsMsg').textContent = 'Saved.'; renderOutreach(); toast('Outreach settings saved'); }
     catch (e) { toast(e.message, true); }
   }

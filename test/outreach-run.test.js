@@ -4,7 +4,7 @@ const assert = require("node:assert/strict");
 const run = require("../netlify/functions/_lib/outreach-run");
 const out = require("../netlify/functions/_lib/outreach");
 
-const settings = out.cleanSettings({ postalAddress: "1 Main St, Lehi, UT 84043", dailyCap: 20, autoSend: true });
+const settings = out.cleanSettings({ postalAddress: "1 Main St, Lehi, UT 84043", dailyCap: 20, autoSend: true, autoDays: [0, 1, 2, 3, 4, 5, 6], autoTime: "00:00" });
 const mk = (i, over = {}) => ({ id: "p" + i, business: "Biz " + i, email: `b${i}@example.com`, emailConfidence: "medium",
   templateId: "gyms-and-fitness", status: "new", history: [], unsubToken: "t", ...over });
 
@@ -89,4 +89,25 @@ test("runBatch pauses on a high bounce rate and tells the owner", async () => {
   assert.equal(state.settings.autoSend, false);
   assert.match(state.notices[0].subject, /paused/);
   assert.equal(state.delivered.length, 0);
+});
+
+test("the schedule honours the chosen days and start time in Mountain time", () => {
+  const s = out.cleanSettings({ autoDays: [1, 3], autoTime: "10:00" });
+  // 2026-10-05 is a Monday. 16:30 UTC = 10:30 a.m. MDT; 15:30 UTC = 9:30 a.m. MDT.
+  assert.equal(out.inSendWindow(s, new Date("2026-10-05T16:30:00Z")), true);
+  assert.equal(out.inSendWindow(s, new Date("2026-10-05T15:30:00Z")), false, "before the start time");
+  assert.equal(out.inSendWindow(s, new Date("2026-10-06T16:30:00Z")), false, "Tuesday is not chosen");
+  assert.equal(out.inSendWindow(s, new Date("2026-10-07T23:30:00Z")), true, "Wednesday 5:30 p.m., still that day");
+  assert.deepEqual(out.cleanSettings({ autoDays: "6,0,9,x" }).autoDays, [0, 6]);
+  assert.equal(out.cleanSettings({ autoTime: "25:99" }).autoTime, "10:00");
+});
+
+test("a scheduled run outside the window sends nothing; a manual run ignores the window", async () => {
+  const rows = [mk(1), mk(2)];
+  const { io, state } = fakeIo(rows, { ...settings, autoDays: [2], autoTime: "10:00" });
+  const r = await run.runBatch(io, { now: new Date("2026-10-05T16:30:00Z"), sleepFn: fast });
+  assert.equal(r.skipped, "outside the chosen days and time"); assert.equal(state.delivered.length, 0);
+  const r2 = await run.runBatch(io, { now: new Date("2026-10-05T16:30:00Z"), trigger: "manual", sleepFn: fast });
+  assert.equal(r2.sent, 2);
+  assert.equal(state.rows.get("p1").sentSubject, null, "fake deliver returns no subject");
 });

@@ -61,6 +61,7 @@ exports.handler = async (event, context) => {
 
     if (method === "PUT" && sub === "settings") {
       const settings = await putSettings({ ...(await getSettings()), ...parseBody(event) });
+      // settings PUT also answers with the local clock so the admin can show "next run"
       return json(200, { settings });
     }
 
@@ -119,7 +120,7 @@ exports.handler = async (event, context) => {
         if (remaining <= 0) { results.push({ id, ok: false, skipped: true, reason: `daily cap of ${settings.dailyCap} reached` }); continue; }
         try {
           const { resendId, subject } = await deliver(p, settings, p.email);
-          const sent = out.markSent(p, resendId);
+          const sent = out.markSent(p, resendId, subject);
           sent.history[sent.history.length - 1].by = by || "admin";
           await putProspect(sent);
           remaining--;
