@@ -27,7 +27,7 @@ const PROSPECTUS_URL = `${SITE}/purebaric-business-prospectus.pdf`;
 
 // Standard money tiles (hero + three). Teams get their own set.
 const STANDARD_TILES = {
-  hero: { k: 'Estimated net revenue', v: N.net, unit: 'per month', p: `Four sessions a day at $75 each, after rental and supplies. Two sessions a day comes to about ${N.netLight}. Estimates, not guarantees.` },
+  hero: { k: 'Estimated net revenue', v: N.net, unit: 'per month', p: ['4 sessions a day at the recommended rate', `2 sessions a day: an estimated ${N.netLight} net`, 'Estimates, not guarantees'] },
   small: [
     { k: 'Your cost', v: N.rent, unit: 'per month', p: '12-month rental, service included' },
     { k: 'Break-even', v: `${N.breakeven} sessions`, unit: '', p: 'a month covers the rental' },
@@ -53,7 +53,6 @@ const CATEGORIES = [
     preheader: 'Members already pay recovery studios $79 to $129 a session for hyperbaric. Put it on your floor and keep that revenue.',
     headline: 'Turn a 4 x 8 ft corner into a new profit line',
     opener: 'Your members are already paying recovery studios $79 to $129 an hour for hyperbaric sessions. One chamber in a 4 x 8 ft corner makes that revenue yours.',
-    whyLine: 'Members book sessions on rest days, and session packs add recurring revenue on top of dues.',
     tiles: STANDARD_TILES,
   },
   {
@@ -68,7 +67,6 @@ const CATEGORIES = [
     preheader: 'Your five-day-a-week athletes already pay $79 to $129 a session for hyperbaric elsewhere. Keep it in the box.',
     headline: 'Turn a 4 x 8 ft corner into a new profit line',
     opener: 'Your athletes train five or more days a week and already pay recovery studios $79 to $129 an hour for hyperbaric sessions. One chamber in a 4 x 8 ft corner of the box makes that revenue yours.',
-    whyLine: 'Athletes book sessions between heavy training days, and session packs add recurring revenue on top of memberships.',
     tiles: STANDARD_TILES,
   },
   {
@@ -150,7 +148,7 @@ const SHARED = {
     ['Service and support.', 'If anything stops working, we fix it. Staff time is about 15 minutes per session.'],
   ],
   ctaTitle: 'Ready to add it to [Business name]?',
-  ctaBody: 'Reserve a chamber and we will confirm a delivery date and walk your team through setup. There is no charge until we confirm. Prefer to talk through your space first? Call or text.',
+  ctaBody: 'Reserve a chamber and we will confirm a delivery date and walk your team through setup. There is no charge until we confirm your booking. Prefer to talk through your space first? Call or text.',
   fine: 'Purebaric provides general-wellness equipment. It is not a medical device and is not intended to diagnose, treat, cure, or prevent any disease. Revenue figures are estimates, not guarantees. They assume $75 a session, subtract rental and supplies, and do not include staff time, overhead, taxes, or the one-time setup fee. Local prices are published 2026 prices from businesses in Lehi, Orem, and Salt Lake City.',
 };
 
@@ -163,7 +161,9 @@ function tile(t, hero) {
   <tr><td style="padding:${hero ? '18px 22px 20px' : '12px 14px 14px'};">
     <p style="margin:0 0 3px; font-family:${SANS}; font-size:${hero ? 11 : 10.5}px; letter-spacing:${hero ? '0.14em' : '0.1em'}; text-transform:uppercase; font-weight:700; color:${k}; white-space:nowrap;">${esc(t.k)}</p>
     <p style="margin:0; font-family:Georgia,'Times New Roman',serif; font-size:${vsize}px; line-height:1.1; font-weight:700; color:${fg};">${esc(t.v)}${t.unit ? ` <span style="font-family:${SANS}; font-size:${usize}px; font-weight:700;">${esc(t.unit)}</span>` : ''}</p>
-    <p style="margin:6px 0 0; font-family:${SANS}; font-size:${hero ? 14 : 12.5}px; line-height:1.45; color:${fg};">${esc(t.p)}</p>
+    ${Array.isArray(t.p)
+      ? `<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-top:8px;">${t.p.map(l => `<tr><td width="14" valign="top" style="width:14px; padding:0 0 3px; font-family:${SANS}; font-size:14px; line-height:1.45; color:${fg};">&bull;</td><td style="padding:0 0 3px; font-family:${SANS}; font-size:14px; line-height:1.45; color:${fg};">${esc(l)}</td></tr>`).join('')}</table>`
+      : `<p style="margin:6px 0 0; font-family:${SANS}; font-size:${hero ? 14 : 12.5}px; line-height:1.45; color:${fg};">${esc(t.p)}</p>`}
   </td></tr>
 </table>`;
 }
@@ -258,7 +258,7 @@ function email(cat, opts = {}) {
                   <td class="pb-stack" width="32%" valign="top" style="width:32%;">${tile(sm[2], false)}</td>
                 </tr>
               </table>
-              <p style="margin:12px 0 0; font-size:14px; line-height:1.55; color:#5f544d;">${esc(cat.whyLine)}</p>
+              ${cat.whyLine ? `<p style="margin:12px 0 0; font-size:14px; line-height:1.55; color:#5f544d;">${esc(cat.whyLine)}</p>` : ''}
             </td>
           </tr>
 
@@ -344,9 +344,9 @@ function plainText(cat, opts = {}) {
     `Reserve a chamber for [Business name]: ${reserve}`,
     'No charge until we confirm a delivery date.',
     '',
-    `${h.k.toUpperCase()}: ${h.v}${h.unit ? ' ' + h.unit : ''}, ${h.p}`,
+    `${h.k.toUpperCase()}: ${h.v}${h.unit ? ' ' + h.unit : ''}` + (Array.isArray(h.p) ? h.p.map(l => `\n  - ${l}`).join('') : `, ${h.p}`),
     ...sm.map(t => `${t.k.toUpperCase()}: ${t.v}${t.unit ? ' ' + t.unit : ''}, ${t.p}`),
-    cat.whyLine,
+    ...(cat.whyLine ? [cat.whyLine] : []),
     '',
     `${SHARED.includedTitle}:`,
     ...SHARED.included.map(([b, r]) => `- ${b} ${r}`),
