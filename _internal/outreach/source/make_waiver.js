@@ -62,7 +62,7 @@ children.push(p("2.6 **Access for removal.** The Business will give Purebaric re
 
 // ---------- 3 ----------
 children.push(h1("3. Delivery, Installation, and Training"));
-children.push(p("3.1 **Site requirements.** The Business will provide a clean, dry, indoor area of at least 5 feet by 8 feet, a standard grounded wall outlet on a circuit able to supply the Equipment, and reasonable temperature control. The Business is responsible for confirming that its premises, lease, and zoning permit the Equipment and the offering of sessions."));
+children.push(p("3.1 **Site requirements.** The Business will provide a clean, dry, indoor area of at least 4 feet by 8 feet, a standard grounded wall outlet on a circuit able to supply the Equipment, and reasonable temperature control. The Business is responsible for confirming that its premises, lease, and zoning permit the Equipment and the offering of sessions."));
 children.push(p("3.2 **Training.** Before any client session, the Business's staff who will operate the Equipment must complete Purebaric's training. The Business will keep a list of trained staff and will not allow untrained staff to run sessions. Purebaric will provide refresher training on request at no additional charge, and training for new staff at the rate in Exhibit A."));
 children.push(p("3.3 **Acceptance.** The Business will inspect the Equipment at installation and note any existing damage on the Installation Checklist in Exhibit A. Otherwise the Equipment is accepted as delivered in good working order."));
 
@@ -164,7 +164,7 @@ children.push(kv([
 ]));
 children.push(...blank());
 children.push(h2("Installation checklist (completed at delivery)"));
-children.push(bullet("Site meets Section 3.1 (5 x 8 ft area, grounded outlet, dry, temperature controlled):  ☐ Yes"));
+children.push(bullet("Site meets Section 3.1 (4 x 8 ft area, grounded outlet, dry, temperature controlled):  ☐ Yes"));
 children.push(bullet("Equipment inspected; existing damage noted here: ______________________________________________"));
 children.push(bullet("Staff trained (names): ______________________________________________________________________"));
 children.push(bullet("Runbook, consent form template, and safety rules provided:  ☐ Yes"));

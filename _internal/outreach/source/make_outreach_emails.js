@@ -122,13 +122,11 @@ render();
 // ---- write everything
 const written = [];
 const master = email({
-  id: 'master', label: 'Master template', eyebrow: 'For [industry]', subjects: ['[Subject line: a question or a specific fact, not a revenue promise]'], preheader: '[Preheader: one line that shows after the subject in the inbox]',
-  headline: '[Headline: the outcome for this kind of business, in their words]',
-  opener: '[Opener: where their clients get this today, and what changes when it is on their floor. Name [Business name].]',
-  whoTitle: 'Who books at a [kind of business], and why', why: '[Why their clients would want it: proof people already pay for it nearby, what the hour is like, when it fits their routine. No health claims.]',
-  who: ['[Client group 1]', '[Client group 2]', '[Client group 3]'],
-  fitTitle: 'How it fits your [menu / membership / practice]', fit: '[How they would sell sessions: singles, packs, membership tier, paired with an appointment.]',
-  cta: 'Worth 15 minutes to see if it fits [Business name]?', tiles: STANDARD_TILES,
+  id: 'master', label: 'Master template', eyebrow: 'A new profit line for [kind of business]', subjects: ['[Subject: the extra monthly net for [Business name], or the space it takes]'], preheader: '[Preheader: the proof people already pay for it nearby, and the monthly net]',
+  headline: 'One chamber in a 4 x 8 ft corner nets [Business name] an estimated ' + N.net + ' a month',
+  opener: '[Opener: where their clients pay for this today, that the revenue stays with them, and that it takes a 4 x 8 ft corner. Name [Business name].]',
+  whyLine: '[One line: who books it at this kind of business and how it sells (packs, memberships, paired with a visit).]',
+  tiles: STANDARD_TILES,
 });
 fs.writeFileSync(path.join(OUT, '00_master_template.html'), master); written.push('00_master_template.html');
 for (const c of CATEGORIES) {

@@ -98,7 +98,7 @@ unit = (CW-3*gap)/4.6
 tiles = [("YOUR COST", money(RENT), "per month", "to rent, on a\n12-month term", unit, False),
          ("BREAK-EVEN", "%d sessions" % breakeven, "", "a month cover your\nrental and supplies", unit, False),
          ("ESTIMATED NET REVENUE", money(net_m), "per month", "at moderate usage, an average\nof four sessions daily", unit*1.6, True),
-         ("SPACE NEEDED", "5 x 8 ft", "", "of floor space and\na wall outlet", unit, False)]
+         ("SPACE NEEDED", "4 x 8 ft", "", "of floor space and\na wall outlet", unit, False)]
 x = M
 for eyebrow, big, suffix, lab, w_, hero in tiles:
     pdf.set_fill_color(*(TERRA if hero else TERRA_BG)); pdf.rect(x, y, w_, 36, "F")
@@ -143,7 +143,7 @@ yl = steps(yl+3, [
   "Your staff wipes the chamber down and sets out a fresh mask for the next client.",
 ], w=COL)
 def needs(x, y0, w):
-    bullets(y0, ["**A 5 x 8 foot area**, about the size of a twin-size bed.", "**Access to a wall outlet.**",
+    bullets(y0, ["**A 4 x 8 foot area**, about the size of a twin-size bed.", "**Access to a wall outlet.**",
                  "**A staff member** to start and end each session."], x=x, w=w, size=9.2, gap=1.3)
 callout(y, "What's needed", needs, x=M+COL+GUT, w=COL, h=36)
 def one(x, y0, w):
