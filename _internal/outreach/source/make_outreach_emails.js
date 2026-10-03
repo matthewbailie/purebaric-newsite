@@ -348,8 +348,8 @@ ${bullets(handle)}
                     <p style="margin:0 0 16px; font-size:15px; line-height:1.55; color:${C.soft};">${esc(SHARED.ctaBody)}</p>
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                       <tr>
-                        <td style="padding:0 10px 6px 0;"><a href="${bizUrl}" style="display:inline-block; padding:12px 20px; background:${C.terra}; color:#ffffff; text-decoration:none; border-radius:8px; font-weight:700; font-size:15px;">See the business prospectus</a></td>
-                        <td style="padding:0 10px 6px 0;"><a href="mailto:${EMAIL}?subject=${replySubject}" style="display:inline-block; padding:11px 18px; border:1px solid rgba(255,255,255,0.4); color:#ffffff; text-decoration:none; border-radius:8px; font-weight:600; font-size:15px;">Reply: yes, let's talk</a></td>
+                        <td style="padding:0 10px 6px 0;"><a href="${bizUrl}" style="display:inline-block; padding:12px 16px; background:${C.terra}; color:#ffffff; text-decoration:none; border-radius:8px; font-weight:700; font-size:14px; white-space:nowrap;">See the business prospectus</a></td>
+                        <td style="padding:0 10px 6px 0;"><a href="mailto:${EMAIL}?subject=${replySubject}" style="display:inline-block; padding:11px 14px; border:1px solid rgba(255,255,255,0.4); color:#ffffff; text-decoration:none; border-radius:8px; font-weight:600; font-size:14px; white-space:nowrap;">Reply: yes, let's talk</a></td>
                       </tr>
                     </table>
                     <p style="margin:8px 0 0; font-size:14px; color:${C.soft};">Or call or text <a href="tel:${TEL}" style="color:#ffffff; text-decoration:underline;">${PHONE}</a>. The prospectus is also attached.</p>

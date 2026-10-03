@@ -82,8 +82,36 @@ def clean(row):
     return r
 
 
+# enrichment files (enriched_*.json) hold emails/owners found in a later pass; applied by business + city
+NORM = lambda s: re.sub(r"[^a-z0-9]", "", (s or "").lower())
+enriched = {}
+for f in sorted(glob.glob(os.path.join(SRC, "enriched_*.json"))):
+    with open(f) as fh:
+        for e in json.load(fh):
+            enriched[(NORM(e.get("business")), NORM(e.get("city")))] = e
+            enriched.setdefault((NORM(e.get("business")), ""), e)
+
+
+def apply_enrichment(r):
+    e = enriched.get((NORM(r["business"]), NORM(r["city"]))) or enriched.get((NORM(r["business"]), ""))
+    if not e:
+        return r
+    if not r["email"] and e.get("email"):
+        r["email"] = str(e["email"]).strip()
+        r["email_confidence"] = e.get("email_confidence") or "medium"
+        r["email_source"] = e.get("email_source") or r["email_source"]
+    if not r["owner"] and e.get("owner"):
+        r["owner"] = str(e["owner"]).strip()
+        r["owner_title"] = e.get("owner_title") or r["owner_title"]
+    if e.get("notes"):
+        r["notes"] = (r["notes"] + " | " + str(e["notes"])).strip(" |")
+    return r
+
+
 prospects, competitors, dropped = [], [], []
 for f in sorted(glob.glob(os.path.join(SRC, "*.json"))):
+    if os.path.basename(f).startswith(("enriched_", "enrich_targets_")):
+        continue
     with open(f) as fh:
         data = json.load(fh)
     rows = data.get("prospects", data) if isinstance(data, dict) else data
@@ -91,7 +119,7 @@ for f in sorted(glob.glob(os.path.join(SRC, "*.json"))):
     if isinstance(rows, dict):
         rows = rows.get("rows", [])
     for row in rows:
-        r = clean(row)
+        r = clean(apply_enrichment(clean(row)))
         r["_src"] = os.path.basename(f)
         if not r["zip"] and served("", r["city"]):
             r["notes"] = ("ZIP not captured; city is inside the delivery area. | " + r["notes"]).strip(" |")
