@@ -36,8 +36,8 @@ Flow, in order:
    variant. Save.
 3. **Import list.** Loads `prospects.json` into the `outreach` Blobs store. Re-importing after a new deploy updates rows and
    keeps statuses, tokens and edits.
-4. **Send test to me.** Delivers the selected row's exact email (or a sample for the filtered industry) to the owner inbox
-   with a `[TEST to <business>]` subject. Check: greeting, personal note, the four tiles, the three links to
+4. **Send business outreach TEST to me** (also available beside the alert test on the Notifications tab). Delivers the selected row's exact email (or a sample for the filtered industry) to the owner inbox
+   with a `[Business outreach TEST for <business>]` subject. Check: greeting, personal note, the four tiles, the three links to
    `purebaric.com/business` (UTM-tagged per industry), the prospectus PDF link, the mailto reply, the phone link, and the
    unsubscribe link at the bottom. Do this once per industry before the first real send.
 5. **Preview** any row to edit the first name or the personal note before it goes out.

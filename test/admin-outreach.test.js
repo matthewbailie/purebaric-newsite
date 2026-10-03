@@ -68,7 +68,7 @@ test("test send goes to the owner only, flagged as a test, even before the posta
   assert.equal(r.ok, true);
   assert.equal(r.to, "matthewbailie@gmail.com");
   assert.equal(sent[0].to, "matthewbailie@gmail.com");
-  assert.match(sent[0].subject, /^\[TEST to /);
+  assert.match(sent[0].subject, /^\[Business outreach TEST for /);
   assert.equal(r.postalAddressSet, false);
   assert.equal(parse(await call("GET")).prospects.find(x => x.id === p.id).status, "new", "a test does not change status");
 });

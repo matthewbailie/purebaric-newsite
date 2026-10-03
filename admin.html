@@ -806,12 +806,13 @@
       <div class="panel-actions">
         <h2>Notifications</h2>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn btn-ghost btn-sm" onclick="sendTestNotifications()">Send test</button>
+          <button class="btn btn-ghost btn-sm" onclick="sendTestNotifications()">Send alert test</button>
+          <button class="btn btn-ghost btn-sm" onclick="sendOutreachTest()" title="Sends a full business outreach email (the gym/studio pitch) to the owner inbox" style="border-color:var(--terracotta);color:var(--terracotta);">Send business outreach TEST</button>
           <button class="btn btn-primary btn-sm" onclick="saveNotifications()">Save notifications</button>
         </div>
       </div>
       <p class="renter-line" style="margin:0 0 12px;max-width:780px;">Register who gets alerted for each event. Add one or more <strong>email addresses</strong> and/or <strong>phone numbers</strong>, and check which events each should receive: a new reservation request from inside the service area, one from outside it, a new review, or a rental ending within a week. Email is sent normally; texts are sent free through the carrier's email-to-text gateway (standard carrier rates may apply on the receiving phone; if texts stop, re-check the carrier).</p>
-      <p class="renter-line" style="margin:0 0 18px;max-width:780px;"><strong>Save first, then Send test</strong> to fire a real email + text to everyone on file and see per-recipient results below.</p>
+      <p class="renter-line" style="margin:0 0 18px;max-width:780px;"><strong>Save first, then Send alert test</strong> to fire a real alert email + text to everyone on file and see per-recipient results below. <strong>Send business outreach TEST</strong> is different: it sends one full business outreach email (the pitch to gyms, studios and clinics) to the owner inbox so you can check that email's layout and links; manage those emails in the Outreach tab.</p>
       <div id="notifTestResults" style="margin-bottom:16px;"></div>
 
       <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Email notifications</h3>
@@ -864,11 +865,11 @@
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn btn-ghost btn-sm" onclick="importOutreach()" title="Load or refresh the prospect list from the latest deploy">Import list</button>
           <button class="btn btn-ghost btn-sm" onclick="syncOutreach()" title="Check Resend for bounces and complaints on recent sends">Sync delivery</button>
-          <button class="btn btn-ghost btn-sm" onclick="sendOutreachTest()">Send test to me</button>
+          <button class="btn btn-ghost btn-sm" onclick="sendOutreachTest()" style="border-color:var(--terracotta);color:var(--terracotta);font-weight:700;">Send business outreach TEST to me</button>
           <button class="btn btn-primary btn-sm" onclick="sendOutreachBatch()">Send next batch</button>
         </div>
       </div>
-      <p class="renter-line" style="margin:0 0 14px;max-width:820px;">Businesses inside the delivery area, researched into <code>_internal/outreach/purebaric_b2b_email_prospects.xlsx</code>. Each row gets the email template for its industry, addressed to the owner by first name when one is known (otherwise "Hi &lt;Business&gt; team"), with a one-sentence personal note. <strong>Preview</strong> shows the exact email; <strong>Send test to me</strong> delivers it to <span id="orTestRecipient"></span>; <strong>Send</strong> goes to the business. Every email carries an unsubscribe link and the postal address below, and sends stop at the daily cap.</p>
+      <p class="renter-line" style="margin:0 0 14px;max-width:820px;">Businesses inside the delivery area, researched into <code>_internal/outreach/purebaric_b2b_email_prospects.xlsx</code>. Each row gets the email template for its industry, addressed to the owner by first name when one is known (otherwise "Hi &lt;Business&gt; team"), with a one-sentence personal note. <strong>Preview</strong> shows the exact email; <strong>Send business outreach TEST to me</strong> delivers it to <span id="orTestRecipient"></span> with a subject starting "[Business outreach TEST]" (this is different from the Notifications tab's alert test); <strong>Send</strong> goes to the business. Every email carries an unsubscribe link and the postal address below, and sends stop at the daily cap.</p>
 
       <div class="form-card open" style="display:block;max-width:820px;margin-bottom:18px;">
         <h3 style="font-size:16px;font-weight:700;margin:0 0 10px;">Sender settings</h3>
@@ -3811,7 +3812,7 @@
         ${p.hook ? `<div class="renter-line" style="margin-top:4px;"><strong>Research hook:</strong> ${escape(p.hook)}</div>` : ''}</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;">
         <button class="btn btn-ghost btn-sm" onclick="saveOutreachEdits('${p.id}')">Save and refresh preview</button>
-        <button class="btn btn-ghost btn-sm" onclick="sendOutreachTest('${p.id}')">Send test to me</button>
+        <button class="btn btn-ghost btn-sm" onclick="sendOutreachTest('${p.id}')">Send business outreach TEST to me</button>
         ${p.email && (p.status === 'new' || p.status === 'failed') ? `<button class="btn btn-primary btn-sm" onclick="closeModal(); sendOutreach(['${p.id}'])">Send to ${escape(p.email)}</button>` : `<span class="renter-line">${r.blocker ? escape(r.blocker) : ''}</span>`}
       </div>
       <div class="renter-line" style="margin-bottom:6px;"><strong>Subject:</strong> ${escape(r.subject)}</div>
@@ -3833,7 +3834,7 @@
       body = { templateId: t ? t.id : 'gyms-and-fitness' };
     }
     try { const r = await api('/api/admin/outreach/test', { method: 'POST', body: JSON.stringify(body) });
-      toast(`Test sent to ${r.to}${r.postalAddressSet ? '' : ' (postal address placeholder; set it in settings)'}`); }
+      toast(`Business outreach TEST sent to ${r.to}. Subject: ${r.subject}${r.postalAddressSet ? '' : ' (postal address placeholder; set it in Outreach settings)'}`); }
     catch (e) { toast(e.message, true); }
   }
 

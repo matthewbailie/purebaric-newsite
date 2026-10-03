@@ -62,7 +62,7 @@ async function deliver(p, settings, to, { isTest = false } = {}) {
     "List-Unsubscribe": `<${unsubscribeUrl(p)}>, <mailto:${settings.replyTo}?subject=unsubscribe>`,
     "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
   } : {};
-  const subject = isTest ? `[TEST to ${p.business}] ${r.subject}` : r.subject;
+  const subject = isTest ? `[Business outreach TEST for ${p.business}] ${r.subject}` : r.subject;
   const res = await send({ to, subject, html: r.html, text: r.text, from: fromHeader(settings), replyTo: settings.replyTo, headers });
   return { resendId: res && res.data && res.data.id, subject };
 }
