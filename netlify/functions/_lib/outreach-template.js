@@ -27,11 +27,11 @@ const PROSPECTUS_URL = `${SITE}/purebaric-business-prospectus.pdf`;
 
 // Standard money tiles (hero + three). Teams get their own set.
 const STANDARD_TILES = {
-  hero: { k: 'Estimated net revenue', v: N.net, unit: 'per month', p: `if one chamber runs four $75 sessions a day, after rental and supplies. At two a day, about ${N.netLight}. An estimate, not a guarantee.` },
+  hero: { k: 'Estimated net revenue', v: N.net, unit: 'per month', p: `Four sessions a day at $75 each, after rental and supplies. Two sessions a day comes to about ${N.netLight}. Estimates, not guarantees.` },
   small: [
-    { k: 'Your cost', v: N.rent, unit: 'per month', p: 'to rent, on a 12-month term' },
-    { k: 'Break-even', v: `${N.breakeven} sessions`, unit: '', p: 'a month, about one every other day' },
-    { k: 'Space needed', v: '4 x 8 ft', unit: '', p: 'of floor space and a wall outlet' },
+    { k: 'Your cost', v: N.rent, unit: 'per month', p: '12-month rental, service included' },
+    { k: 'Break-even', v: `${N.breakeven} sessions`, unit: '', p: 'a month covers the rental' },
+    { k: 'Space needed', v: '4 x 8 ft', unit: '', p: 'and a standard wall outlet' },
   ],
 };
 
@@ -53,7 +53,7 @@ const CATEGORIES = [
     preheader: 'Members already pay recovery studios $79 to $129 a session for hyperbaric. Put it on your floor and keep that revenue.',
     headline: 'Turn a 4 x 8 ft corner into a new profit line',
     opener: 'Your members are already paying recovery studios $79 to $129 an hour for hyperbaric sessions. One chamber in a 4 x 8 ft corner makes that revenue yours.',
-    whyLine: 'Members who train hard book it on rest days, and session packs turn one-off visits into repeat revenue that is not dues.',
+    whyLine: 'Members book sessions on rest days, and session packs add recurring revenue on top of dues.',
     tiles: STANDARD_TILES,
   },
   {
@@ -68,7 +68,7 @@ const CATEGORIES = [
     preheader: 'Your five-day-a-week athletes already pay $79 to $129 a session for hyperbaric elsewhere. Keep it in the box.',
     headline: 'Turn a 4 x 8 ft corner into a new profit line',
     opener: 'Your athletes train five or more days a week and already pay recovery studios $79 to $129 an hour for hyperbaric sessions. One chamber in a 4 x 8 ft corner of the box makes that revenue yours.',
-    whyLine: 'Competitors in a heavy block or prepping for a comp book it between sessions, and comp-prep packs sell themselves.',
+    whyLine: 'Athletes book sessions between heavy training days, and session packs add recurring revenue on top of memberships.',
     tiles: STANDARD_TILES,
   },
   {
@@ -83,13 +83,13 @@ const CATEGORIES = [
     preheader: 'A 1.5 ATA chamber in your training room, installed, staff trained, and serviced, for $979 a month. No procurement cycle, no maintenance contract.',
     headline: 'A hyperbaric chamber in your training room for $979 a month, no capital purchase',
     opener: 'Your athletes ask for hyperbaric, and today the answer is a clinic across town or a six-figure chamber that has to clear procurement. A monthly rental puts one in your training room this month, with no capital request.',
-    whyLine: 'Athletes rotate through it between games, travel, and heavy training weeks; one chamber runs up to 8 sessions a day.',
+    whyLine: 'Athletes rotate through between games and heavy training weeks. One chamber handles up to eight sessions a day.',
     tiles: {
-      hero: { k: 'Your cost', v: N.rent, unit: 'per month', p: `for the chamber and machine on a 12-month term, plus a one-time ${N.fee} for delivery, installation, training, and initial supplies. Service included.` },
+      hero: { k: 'Your cost', v: N.rent, unit: 'per month', p: `12-month rental of the chamber and oxygen machine, service included. One-time ${N.fee} for delivery, installation, training, and starting supplies.` },
       small: [
         { k: 'Capacity', v: 'Up to 8', unit: 'sessions', p: 'a day, one athlete at a time' },
         { k: 'Session', v: '60 min', unit: '', p: 'at 1.5 ATA, breathing 95 to 99.9% oxygen' },
-        { k: 'Space needed', v: '4 x 8 ft', unit: '', p: 'of floor space and a wall outlet' },
+        { k: 'Space needed', v: '4 x 8 ft', unit: '', p: 'and a standard wall outlet' },
       ],
     },
   },
@@ -105,7 +105,7 @@ const CATEGORIES = [
     preheader: 'Studios across the Wasatch Front charge $79 to $129 a session for hyperbaric. Add it to your menu without buying a chamber.',
     headline: 'Turn a 4 x 8 ft corner into a new profit line',
     opener: 'Your clients already book cold plunge, sauna, cryo, or IV, and studios across the Wasatch Front charge $79 to $129 for an hour of hyperbaric. One chamber in a 4 x 8 ft corner puts that hour on your menu, with nothing to buy and nothing to service.',
-    whyLine: 'It pairs with a plunge or a drip, sells as packs, and slots into your top membership tier.',
+    whyLine: 'It sells beside cold plunge and IV as single sessions, packs, or part of your top membership tier.',
     tiles: STANDARD_TILES,
   },
   {
@@ -120,7 +120,7 @@ const CATEGORIES = [
     preheader: 'A self-pay wellness session patients book around their visits. No claims, no codes, run by the staff you have.',
     headline: 'Turn a 4 x 8 ft corner into a new profit line',
     opener: 'Your active patients are already paying recovery studios $79 to $129 an hour for hyperbaric on top of what they pay you. One chamber in a 4 x 8 ft room makes that a cash-pay line of your own, with no claims and no codes.',
-    whyLine: 'Patients who finish a plan of care get a reason to keep coming in, and it sits beside your clinical services as a general-wellness line.',
+    whyLine: 'Patients who finish a plan of care have a reason to keep coming in, and it runs as a general-wellness service beside your clinical care.',
     tiles: STANDARD_TILES,
   },
   {
@@ -135,7 +135,7 @@ const CATEGORIES = [
     preheader: 'Regulars add a 60-minute session before or after their appointment. No new hire, no treatment room.',
     headline: 'Turn a 4 x 8 ft corner into a new profit line',
     opener: 'Your clients already come in every few weeks and treat the appointment as time for themselves. Studios across the Wasatch Front charge $79 to $129 for a 60-minute hyperbaric session. One chamber in a 4 x 8 ft corner adds that hour to every appointment, with nothing for your artists to perform.',
-    whyLine: 'Pair it with an appointment, sell packs at checkout, and hand clients the pamphlet we make in your brand.',
+    whyLine: 'Clients add it to an appointment and buy packs at checkout. We supply a pamphlet in your brand.',
     tiles: STANDARD_TILES,
   },
 ];
@@ -145,13 +145,13 @@ const SHARED = {
   intro: 'Purebaric is a Lehi company. We deliver and install the chamber, train your staff, and service it. You set your prices and keep the session revenue.',
   includedTitle: 'Included in the rental',
   included: [
-    ['Delivery, install, and staff training', 'with a written runbook, in days.'],
-    ['Consent-form templates and a client pamphlet', 'in your brand, ready for your front desk.'],
-    ['Service and support.', 'If something stops working, we fix it. About 15 minutes of staff time per session.'],
+    ['Delivery, installation, and staff training', 'with a written guide, within days.'],
+    ['Consent forms and a client pamphlet', 'in your brand, ready for your front desk.'],
+    ['Service and support.', 'If anything stops working, we fix it. Staff time is about 15 minutes per session.'],
   ],
   ctaTitle: 'Ready to add it to [Business name]?',
-  ctaBody: 'Reserve a chamber and we will confirm a delivery date and walk your team through setup. No charge until we confirm. Or call or text to talk through your space first.',
-  fine: 'Purebaric provides general-wellness equipment. It is not a medical device and is not intended to diagnose, treat, cure, or prevent any disease. Revenue figures are estimates, not guarantees: session revenue at $75 a session less rental and supplies, before staff time, overhead, taxes, and the one-time setup fee. Local prices are published 2026 prices from businesses in Lehi, Orem, and Salt Lake City.',
+  ctaBody: 'Reserve a chamber and we will confirm a delivery date and walk your team through setup. There is no charge until we confirm. Prefer to talk through your space first? Call or text.',
+  fine: 'Purebaric provides general-wellness equipment. It is not a medical device and is not intended to diagnose, treat, cure, or prevent any disease. Revenue figures are estimates, not guarantees. They assume $75 a session, subtract rental and supplies, and do not include staff time, overhead, taxes, or the one-time setup fee. Local prices are published 2026 prices from businesses in Lehi, Orem, and Salt Lake City.',
 };
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
