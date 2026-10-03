@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="/warm.css">
 <style>
 .biz-hero{display:block}
-.biz-hero>div{max-width:820px;margin-top:28px}
+.biz-hero>div:not(.biz-slides){max-width:820px;margin-top:28px}
 .biz-hero img,.feature-img img{height:auto}
 .feature-img.soon img{filter:grayscale(.55) brightness(1.02) blur(14px);transform:scale(1.12)}
 .biz-slides{position:relative;width:100%;height:400px;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
@@ -72,7 +72,7 @@
 .faq details[open] summary::after{content:"\2013"}
 .faq details[open] summary{border-bottom:1px solid var(--line)}
 .faq .a{padding:16px 20px 18px;color:#5f544d;font-size:15px;line-height:1.65}
-@media(max-width:820px){.num-grid{grid-template-columns:1fr;gap:26px}.biz-slides{height:250px;margin:0 -24px;border-radius:0;border:none}.biz-hero>div{margin-top:22px}.tiles{grid-template-columns:1fr 1fr}.tile.hero{grid-column:1/-1;order:-1}.cards{grid-template-columns:1fr}.page-hero h1{font-size:32px}.tbl{font-size:13px}}
+@media(max-width:820px){.num-grid{grid-template-columns:1fr;gap:26px}.biz-slides{height:250px;margin:0 -24px;border-radius:0;border:none}.biz-hero>div:not(.biz-slides){margin-top:22px}.tiles{grid-template-columns:1fr 1fr}.tile.hero{grid-column:1/-1;order:-1}.cards{grid-template-columns:1fr}.page-hero h1{font-size:32px}.tbl{font-size:13px}}
 @media(max-width:520px){.tiles{grid-template-columns:1fr}}
 </style>
   <script src="/pb-metrics.js"></script>
