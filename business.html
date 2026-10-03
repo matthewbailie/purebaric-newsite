@@ -22,7 +22,13 @@
 .biz-hero{display:grid;grid-template-columns:1fr 1.2fr;gap:44px;align-items:center}
 .biz-hero img,.feature-img img{height:auto}
 .feature-img.soon img{filter:grayscale(.55) brightness(1.02) blur(14px);transform:scale(1.12)}
-.biz-hero img{width:100%;height:auto;display:block;border-radius:16px;border:1px solid var(--line)}
+.biz-slides{position:relative;width:100%;aspect-ratio:1672/941;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.biz-slides .slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .8s ease}
+.biz-slides .slide.active{opacity:1}
+.biz-slides .hero-dots{position:absolute;left:16px;bottom:16px;display:flex;gap:7px;z-index:2}
+.biz-slides .hero-dots button{width:8px;height:8px;border-radius:999px;border:none;background:rgba(255,255,255,.55);cursor:pointer;padding:0;transition:width .3s ease,background .3s ease}
+.biz-slides .hero-dots button.on{background:#fff;width:22px}
+@media(prefers-reduced-motion:reduce){.biz-slides .slide{transition:none}}
 .contact-cta{background:var(--ink);color:#fff;border-radius:14px;padding:22px 24px;margin-top:24px;max-width:660px}
 .contact-cta h2{font-size:19px;font-weight:700;margin-bottom:6px}
 .contact-cta p{color:#e6dac8;font-size:15px;margin-bottom:16px;max-width:none}
@@ -65,7 +71,7 @@
 .faq details[open] summary::after{content:"\2013"}
 .faq details[open] summary{border-bottom:1px solid var(--line)}
 .faq .a{padding:16px 20px 18px;color:#5f544d;font-size:15px;line-height:1.65}
-@media(max-width:820px){.biz-hero,.num-grid{grid-template-columns:1fr;gap:26px}.biz-hero img{height:auto;order:-1}.tiles{grid-template-columns:1fr 1fr}.tile.hero{grid-column:1/-1;order:-1}.cards{grid-template-columns:1fr}.page-hero h1{font-size:32px}.tbl{font-size:13px}}
+@media(max-width:820px){.biz-hero,.num-grid{grid-template-columns:1fr;gap:26px}.biz-slides{order:-1}.tiles{grid-template-columns:1fr 1fr}.tile.hero{grid-column:1/-1;order:-1}.cards{grid-template-columns:1fr}.page-hero h1{font-size:32px}.tbl{font-size:13px}}
 @media(max-width:520px){.tiles{grid-template-columns:1fr}}
 </style>
   <script src="/pb-metrics.js"></script>
@@ -106,7 +112,11 @@
         </div>
       </div>
     </div>
-    <img src="/images/chamber-gym.webp" width="1672" height="941" fetchpriority="high" alt="A Purebaric 1.5 ATA hyperbaric chamber set up in a modern gym">
+    <div class="biz-slides" aria-label="Chamber photos">
+      <img class="slide active" src="/images/chamber-gym2.webp" width="1672" height="941" fetchpriority="high" alt="A Purebaric 1.5 ATA hyperbaric chamber in a modern training facility">
+      <img class="slide" src="/images/chamber-gym.webp" width="1672" height="941" loading="lazy" alt="A Purebaric 1.5 ATA hyperbaric chamber set up in a modern gym">
+      <div class="hero-dots" id="bizDots" aria-label="Chamber photos"></div>
+    </div>
   </div>
 </section>
 
@@ -299,4 +309,19 @@
 </footer>
 
 <script src="/warm.js"></script>
+<script>
+/* business hero carousel (auto crossfade + dots; pauses for reduced motion) */
+(function(){
+  var slides=document.querySelectorAll('.biz-slides .slide');
+  var dots=document.getElementById('bizDots');
+  if(slides.length<2||!dots)return;
+  var idx=0,timer=null;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  slides.forEach(function(s,i){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Show photo '+(i+1));if(i===0)b.className='on';b.addEventListener('click',function(){go(i);restart();});dots.appendChild(b);});
+  function go(i){idx=(i+slides.length)%slides.length;slides.forEach(function(s,j){s.classList.toggle('active',j===idx);});dots.querySelectorAll('button').forEach(function(d,j){d.classList.toggle('on',j===idx);});}
+  function start(){if(reduce)return;timer=setInterval(function(){go(idx+1);},5000);}
+  function restart(){if(timer)clearInterval(timer);start();}
+  start();
+})();
+</script>
 </body></html>
