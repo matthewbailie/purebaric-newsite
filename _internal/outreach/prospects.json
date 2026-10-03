@@ -1,6 +1,6 @@
 {
  "generated": "2026-10-03",
- "count": 636,
+ "count": 637,
  "prospects": [
   {
    "business": "Big John's Pro Gym / The Elite Training Facility",
@@ -7343,6 +7343,26 @@
    "status": ""
   },
   {
+   "business": "VASA Fitness (corporate office)",
+   "industry": "Gyms and fitness centers",
+   "templateId": "gyms-and-fitness",
+   "owner": "",
+   "ownerTitle": "",
+   "email": "",
+   "emailConfidence": "none",
+   "emailSource": "",
+   "phone": "",
+   "website": "vasafitness.com",
+   "address": "1259 S 800 E",
+   "city": "Orem",
+   "zip": "84097",
+   "county": "Utah",
+   "hook": "",
+   "personalNote": "",
+   "notes": "Shares a street address with VASA Fitness - Orem University; may be the same facility or a tenant inside it. Confirm before emailing both. | Chain with 19 Utah locations in this list; location managers do not decide amenities, corporate does. No verified email found. Route: LinkedIn (CEO Michael Osanloo since March 2026; CMO Liz Crisafi). HQ phone listed by directories: (801) 655-1139.",
+   "status": "new"
+  },
+  {
    "business": "VASA Fitness - Orem University",
    "industry": "Gyms and fitness centers",
    "templateId": "gyms-and-fitness",
@@ -7359,7 +7379,7 @@
    "county": "Utah",
    "hook": "",
    "personalNote": "",
-   "notes": "Chain (VASA HQ in Orem).",
+   "notes": "Shares a street address with VASA Fitness (corporate office); may be the same facility or a tenant inside it. Confirm before emailing both. | Chain (VASA HQ in Orem).",
    "status": ""
   },
   {
