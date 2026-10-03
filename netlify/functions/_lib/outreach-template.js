@@ -81,7 +81,6 @@ const CATEGORIES = [
     preheader: 'A 1.5 ATA chamber in your training room, installed, staff trained, and serviced, for $979 a month. No procurement cycle, no maintenance contract.',
     headline: 'A hyperbaric chamber in your training room for $979 a month, no capital purchase',
     opener: 'Your athletes ask for hyperbaric, and today the answer is a clinic across town or a six-figure chamber that has to clear procurement. A monthly rental puts one in your training room this month, with no capital request.',
-    whyLine: 'Athletes rotate through between games and heavy training weeks. One chamber handles up to eight sessions a day.',
     tiles: {
       hero: { k: 'Your cost', v: N.rent, unit: 'per month', p: `12-month rental of the chamber and oxygen machine, service included. One-time ${N.fee} for delivery, installation, training, and starting supplies.` },
       small: [
@@ -103,7 +102,6 @@ const CATEGORIES = [
     preheader: 'Studios across the Wasatch Front charge $79 to $129 a session for hyperbaric. Add it to your menu without buying a chamber.',
     headline: 'Turn a 4 x 8 ft corner into a new profit line',
     opener: 'Your clients already book cold plunge, sauna, cryo, or IV, and studios across the Wasatch Front charge $79 to $129 for an hour of hyperbaric. One chamber in a 4 x 8 ft corner puts that hour on your menu, with nothing to buy and nothing to service.',
-    whyLine: 'It sells beside cold plunge and IV as single sessions, packs, or part of your top membership tier.',
     tiles: STANDARD_TILES,
   },
   {
@@ -118,7 +116,6 @@ const CATEGORIES = [
     preheader: 'A self-pay wellness session patients book around their visits. No claims, no codes, run by the staff you have.',
     headline: 'Turn a 4 x 8 ft corner into a new profit line',
     opener: 'Your active patients are already paying recovery studios $79 to $129 an hour for hyperbaric on top of what they pay you. One chamber in a 4 x 8 ft room makes that a cash-pay line of your own, with no claims and no codes.',
-    whyLine: 'Patients who finish a plan of care have a reason to keep coming in, and it runs as a general-wellness service beside your clinical care.',
     tiles: STANDARD_TILES,
   },
   {
@@ -133,7 +130,6 @@ const CATEGORIES = [
     preheader: 'Regulars add a 60-minute session before or after their appointment. No new hire, no treatment room.',
     headline: 'Turn a 4 x 8 ft corner into a new profit line',
     opener: 'Your clients already come in every few weeks and treat the appointment as time for themselves. Studios across the Wasatch Front charge $79 to $129 for a 60-minute hyperbaric session. One chamber in a 4 x 8 ft corner adds that hour to every appointment, with nothing for your artists to perform.',
-    whyLine: 'Clients add it to an appointment and buy packs at checkout. We supply a pamphlet in your brand.',
     tiles: STANDARD_TILES,
   },
 ];
