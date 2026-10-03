@@ -185,8 +185,8 @@ function email(cat, opts = {}) {
   const postal = opts.postalAddress || POSTAL_ADDRESS;
   const prospectusUrl = opts.prospectusUrl || PROSPECTUS_URL;
   const unsub = opts.unsubscribeUrl
-    ? `If you would rather not hear from me again, <a href="${esc(opts.unsubscribeUrl)}" style="color:${C.muted}; text-decoration:underline;">unsubscribe here</a> or reply with "no thanks".`
-    : 'If you would rather not hear from me again, reply with "no thanks" and I will not email again.';
+    ? `<a href="${esc(opts.unsubscribeUrl)}" style="color:${C.muted}; text-decoration:underline;">Unsubscribe</a>`
+    : `<a href="mailto:${EMAIL}?subject=Unsubscribe" style="color:${C.muted}; text-decoration:underline;">Unsubscribe</a>`;
   const sm = cat.tiles.small;
   const { reserve, biz } = links(cat);
   const included = SHARED.included.map(([b, r]) => `<strong style="color:${C.ink};">${esc(b)}</strong> ${esc(r)}`);
@@ -308,7 +308,7 @@ ${bullets(included)}
           <tr>
             <td style="padding:16px 24px 0; text-align:center; font-size:12px; line-height:1.5; color:${C.muted};">
               ${esc(SHARED.fine)}
-              <br><br>You are receiving this one-time note because ${esc(cat.whyYou || 'your business serves the clients who book these sessions')}. ${unsub}
+              <br><br>${unsub}
               <br>Purebaric &nbsp;|&nbsp; ${esc(postal)}
             </td>
           </tr>
@@ -356,8 +356,7 @@ function plainText(cat, opts = {}) {
     '',
     SHARED.fine,
     '',
-    `You are receiving this one-time note because ${cat.whyYou || 'your business serves the clients who book these sessions'}. ` +
-      (opts.unsubscribeUrl ? `Unsubscribe: ${opts.unsubscribeUrl}` : 'Reply "no thanks" and I will not email again.'),
+    opts.unsubscribeUrl ? `Unsubscribe: ${opts.unsubscribeUrl}` : `Unsubscribe: email ${EMAIL} with the subject "Unsubscribe"`,
     `Purebaric | ${opts.postalAddress || POSTAL_ADDRESS}`,
     '',
   ].join('\n');

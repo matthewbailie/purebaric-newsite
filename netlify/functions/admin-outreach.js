@@ -139,7 +139,7 @@ exports.handler = async (event, context) => {
         p = { id: "test", business: body.businessName || "[Sample business]", firstName: body.firstName || "", templateId: body.templateId || "gyms-and-fitness", unsubToken: "test-token" };
       }
       if (!tpl.categoryById(p.templateId)) return json(400, { error: "no_template", message: "No email template for this industry." });
-      const { resendId, subject } = await deliver(p, { ...settings, postalAddress: settings.postalAddress || "(postal address not set yet)" }, OWNER_EMAIL, { isTest: true });
+      const { resendId, subject } = await deliver(p, settings, OWNER_EMAIL, { isTest: true });
       return json(200, { ok: true, to: OWNER_EMAIL, subject, resendId, postalAddressSet: !!settings.postalAddress });
     }
 
