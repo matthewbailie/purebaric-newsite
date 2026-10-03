@@ -108,9 +108,16 @@ def apply_enrichment(r):
     return r
 
 
+# _overrides.json: {"drop": ["business name", ...]} for rows confirmed as duplicates or closed
+OVR = os.path.join(SRC, "_overrides.json")
+DROP = set()
+if os.path.exists(OVR):
+    with open(OVR) as fh:
+        DROP = {NORM(x) for x in json.load(fh).get("drop", [])}
+
 prospects, competitors, dropped = [], [], []
 for f in sorted(glob.glob(os.path.join(SRC, "*.json"))):
-    if os.path.basename(f).startswith(("enriched_", "enrich_targets_")):
+    if os.path.basename(f).startswith(("enriched_", "enrich_targets_", "_")):
         continue
     with open(f) as fh:
         data = json.load(fh)
@@ -120,6 +127,8 @@ for f in sorted(glob.glob(os.path.join(SRC, "*.json"))):
         rows = rows.get("rows", [])
     for row in rows:
         r = clean(apply_enrichment(clean(row)))
+        if NORM(r["business"]) in DROP:
+            continue
         r["_src"] = os.path.basename(f)
         if not r["zip"] and served("", r["city"]):
             r["notes"] = ("ZIP not captured; city is inside the delivery area. | " + r["notes"]).strip(" |")
@@ -129,10 +138,16 @@ for f in sorted(glob.glob(os.path.join(SRC, "*.json"))):
         r["_src"] = os.path.basename(f)
         competitors.append(r)
 
-# de-duplicate on (business, city) and on email
+# de-duplicate on (normalized business, city) and on email; keep the row with the better email
+STOP = {"the", "gym", "fitness", "llc", "club", "studio", "utah", "ut", "inc", "center", "centre", "of", "and"}
+def keyname(s):
+    s = re.sub(r"\(.*?\)", "", (s or "").lower())
+    return "".join(w for w in re.sub(r"[^a-z0-9 ]", " ", s).split() if w not in STOP)
+def keycity(s):
+    return (s or "").lower().split("(")[0].split("/")[0].strip()
 seen, uniq = set(), []
 for r in sorted(prospects, key=lambda r: (r["email"] == "", r["email_confidence"] != "high")):
-    key = (re.sub(r"\W+", "", r["business"].lower()), r["city"].lower())
+    key = (keyname(r["business"]), keycity(r["city"]))
     ekey = r["email"] or None
     if key in seen or (ekey and ekey in seen):
         continue
@@ -141,6 +156,33 @@ for r in sorted(prospects, key=lambda r: (r["email"] == "", r["email_confidence"
         seen.add(ekey)
     uniq.append(r)
 prospects = uniq
+
+# flag rows that share a street address with another row (same facility under two names, or a tenant inside a gym)
+def keyaddr(a):
+    a = (a or "").lower()
+    a = re.sub(r"\(.*?\)", "", a)
+    a = re.sub(r"\b(suite|ste|unit|bldg|building|#)\s*[a-z0-9-]+", "", a)
+    for long, short in (("south", "s"), ("north", "n"), ("east", "e"), ("west", "w")):
+        a = re.sub(r"\b%s\b" % long, short, a)
+    a = re.sub(r"\b(street|st|drive|dr|road|rd|boulevard|blvd|avenue|ave|way|lane|ln|parkway|pkwy|place|pl|court|ct|highway|hwy)\b", "", a)
+    return re.sub(r"[^a-z0-9]", "", a)
+def suite(a):
+    m = re.search(r"\b(?:suite|ste|unit|bldg|building|#)\s*([a-z0-9-]+)", (a or "").lower())
+    return m.group(1) if m else ""
+by_addr = {}
+for r in prospects:
+    if r["industry"] == "Sports teams and athletic programs":
+        continue  # teams share stadiums and campuses by design
+    k = (keyaddr(r["address"]), keycity(r["city"]))
+    if len(k[0]) > 6:
+        by_addr.setdefault(k, []).append(r)
+for group in by_addr.values():
+    if len(group) > 1:
+        for r in group:
+            # a different suite number in the same building is a neighbor, not a duplicate
+            others = [o["business"] for o in group if o is not r and (not suite(o["address"]) or not suite(r["address"]) or suite(o["address"]) == suite(r["address"]))]
+            if others:
+                r["notes"] = (f"Shares a street address with {', '.join(others)}; may be the same facility or a tenant inside it. Confirm before emailing both. | " + r["notes"]).strip(" |")
 
 CONF_RANK = {"high": 0, "medium": 1, "none": 2}
 prospects.sort(key=lambda r: (INDUSTRIES.index(r["industry"]) if r["industry"] in INDUSTRIES else 9,
