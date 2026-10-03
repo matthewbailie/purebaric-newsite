@@ -139,9 +139,9 @@ const SHARED = {
   intro: 'Purebaric is a Lehi company. We deliver and install mild hyperbaric chambers, train your staff, and provide ongoing service and support. With minimal upfront cost, the chamber becomes a lucrative revenue stream for your business.',
   includedTitle: 'Included in the rental',
   included: [
-    ['Delivery, installation, and staff training', 'with a written guide, within days.'],
-    ['Consent forms and a client pamphlet', 'in your brand, ready for your front desk.'],
-    ['Service and support.', 'If anything stops working, we fix it. Staff time is about 15 minutes per session.'],
+    ['Delivery, installation, and staff training.', 'We deliver the chamber, set it up in your space, and train your team hands-on so they can run sessions with confidence from day one.'],
+    ['Ready-to-use consent forms and a branded pamphlet', 'for your front desk, so you can start booking sessions immediately.'],
+    ['24/7 service and support.', 'If anything comes up with the chamber, we service it promptly.'],
   ],
   ctaTitle: 'Ready to add it to [Business name]?',
   ctaBody: 'Reserve a chamber and we will confirm a delivery date and walk your team through setup. There is no charge until we confirm your booking. Prefer to talk through your space first? Call or text.',
