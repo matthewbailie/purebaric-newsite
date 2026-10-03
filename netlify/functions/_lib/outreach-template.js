@@ -27,7 +27,7 @@ const PROSPECTUS_URL = `${SITE}/purebaric-business-prospectus.pdf`;
 
 // Standard money tiles (hero + three). Teams get their own set.
 const STANDARD_TILES = {
-  hero: { k: 'Estimated net revenue', v: N.net, unit: 'per month', p: ['4 sessions a day at the recommended rate', `2 sessions a day: an estimated ${N.netLight} net`, 'Estimates, not guarantees'] },
+  hero: { k: 'Estimated net revenue', v: N.net, unit: 'per month', p: ['4 sessions a day at the recommended rate', `2 sessions a day nets an estimated ${N.netLight}`], note: 'Estimates, not guarantees.' },
   small: [
     { k: 'Your cost', v: N.rent, unit: 'per month', p: '12-month rental, service included' },
     { k: 'Break-even', v: `${N.breakeven} sessions`, unit: '', p: 'a month covers the rental' },
@@ -160,6 +160,7 @@ function tile(t, hero) {
     ${Array.isArray(t.p)
       ? `<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-top:8px;">${t.p.map(l => `<tr><td width="14" valign="top" style="width:14px; padding:0 0 3px; font-family:${SANS}; font-size:14px; line-height:1.45; color:${fg};">&bull;</td><td style="padding:0 0 3px; font-family:${SANS}; font-size:14px; line-height:1.45; color:${fg};">${esc(l)}</td></tr>`).join('')}</table>`
       : `<p style="margin:6px 0 0; font-family:${SANS}; font-size:${hero ? 14 : 12.5}px; line-height:1.45; color:${fg};">${esc(t.p)}</p>`}
+    ${t.note ? `<p style="margin:10px 0 0; font-family:${SANS}; font-size:12px; line-height:1.4; color:${fg}; opacity:0.85;">${esc(t.note)}</p>` : ''}
   </td></tr>
 </table>`;
 }
@@ -340,7 +341,7 @@ function plainText(cat, opts = {}) {
     `Reserve a chamber for [Business name]: ${reserve}`,
     'No charge until we confirm a delivery date.',
     '',
-    `${h.k.toUpperCase()}: ${h.v}${h.unit ? ' ' + h.unit : ''}` + (Array.isArray(h.p) ? h.p.map(l => `\n  - ${l}`).join('') : `, ${h.p}`),
+    `${h.k.toUpperCase()}: ${h.v}${h.unit ? ' ' + h.unit : ''}` + (Array.isArray(h.p) ? h.p.map(l => `\n  - ${l}`).join('') : `, ${h.p}`) + (h.note ? `\n  ${h.note}` : ''),
     ...sm.map(t => `${t.k.toUpperCase()}: ${t.v}${t.unit ? ' ' + t.unit : ''}, ${t.p}`),
     ...(cat.whyLine ? [cat.whyLine] : []),
     '',
