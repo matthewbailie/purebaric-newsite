@@ -90,3 +90,10 @@
 **Context:** Cold commercial email to US businesses falls under CAN-SPAM (postal address, working opt-out, honest headers). Attachments from a low-volume sender hurt deliverability and the PDF is the same pitch as the public business page.
 **Alternatives considered:** Reply-to-unsubscribe only (fails one-click requirements at Gmail and Yahoo); attaching the 690 KB PDF (heavier, more often filtered).
 **Status:** Confirmed
+
+## 2026-10-03 Compile inline admin JavaScript in the test suite
+
+**Decision:** Extract every inline script from `admin.html` and run Node's syntax checker against it during `npm test`.
+**Context:** An apostrophe in an Outreach empty-state message made the complete admin script fail to parse, leaving `/admin` blank even though the existing module tests passed.
+**Alternatives considered:** Moving the full inline application into a separate JavaScript file would make syntax checking easier but is an unrelated, high-risk refactor for this production repair.
+**Status:** Confirmed

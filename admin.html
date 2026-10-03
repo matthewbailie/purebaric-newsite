@@ -3825,7 +3825,7 @@
           ${sendable ? `<button class="btn btn-primary btn-sm" onclick="sendOutreach(['${p.id}'])">Send</button>` : ''}
         </div></td>
       </tr>`;
-    }).join('') : '<tr><td colspan="7"><div class="empty-state">No prospects match. Import the list, clear the filters, or untick 'Only rows with an email'.</div></td></tr>';
+    }).join('') : '<tr><td colspan="7"><div class="empty-state">No prospects match. Import the list, clear the filters, or untick &quot;Only rows with an email&quot;.</div></td></tr>';
   }
 
   function toggleOutreachAll(on) { document.querySelectorAll('.or-check:not(:disabled)').forEach(c => { c.checked = on; }); }
