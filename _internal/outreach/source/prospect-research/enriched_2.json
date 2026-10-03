@@ -1,0 +1,562 @@
+[
+ {
+  "business": "Explosive Fitness",
+  "city": "Springville",
+  "email": "brandie@springvilleexplosivefitness.com",
+  "email_confidence": "high",
+  "email_source": "https://www.springvilleexplosivefitness.com/contact",
+  "owner": "Brandie Hubbard",
+  "owner_title": "Founder/Owner",
+  "notes": "Founded 2014; BYU business background; 400+ clients. Note: site/Facebook list address as 1025 S 1950 W, Springville 84663/84664 (input said 54 N Main St)."
+ },
+ {
+  "business": "Sunpro Tennis & Pickleball Club",
+  "city": "Springville",
+  "email": "sunprotennisclub@gmail.com",
+  "email_confidence": "high",
+  "email_source": "https://sunproclub.com/contact/",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Address 2069 W 1150 N, Springville, UT 84663; phone 385-483-2015; website sunproclub.com. Tennis/pickleball club (11 courts); programs run by Advantage Tennis."
+ },
+ {
+  "business": "The Barn Elite Training Club",
+  "city": "Mapleton",
+  "email": "info@thebarnetc.com",
+  "email_confidence": "high",
+  "email_source": "https://thebarnetc.com/",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Site lists phone 385-999-7765 (text preferred, 'usually coaching'). Athlete performance + semi-private/family memberships."
+ },
+ {
+  "business": "Infinity BJJ Utah",
+  "city": "Mapleton",
+  "email": "Contact@InfinityBJJUtah.com",
+  "email_confidence": "high",
+  "email_source": "https://infinitybjjutah.com/contact",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Contact page says 'Text Melina at 619-227-7402' (likely owner/instructor, title not stated). Yelp lists an older address 790 N 1600 W; site uses 1885 W Alvey Dr Unit 3."
+ },
+ {
+  "business": "Simply Fit Personal Training",
+  "city": "Mapleton",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Jennefer H.",
+  "owner_title": "Owner (Yelp business owner field)",
+  "notes": "No email surfaced in 2 queries. Website simplyfitpersonaltraining.com; phone/text (209) 597-1344."
+ },
+ {
+  "business": "Sports Performance Academy",
+  "city": "Spanish Fork",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Devin Shaw confirmed as co-owner (Serve Daily article). No email in search snippets; site not indexed for '@'. Use site contact form at thesportsperformanceacademy.com or Facebook."
+ },
+ {
+  "business": "Vida Jiu-Jitsu Utah",
+  "city": "Spanish Fork",
+  "email": "Casey@VidaJiuJitsu.com",
+  "email_confidence": "high",
+  "email_source": "https://www.vidajiujitsu.com/pages/utah",
+  "owner": "Casey",
+  "owner_title": "Utah location contact (first name only, from email on official page)",
+  "notes": "Utah branch of Vida Jiu-Jitsu (parent in Mandeville, LA)."
+ },
+ {
+  "business": "Deep Half BJJ",
+  "city": "Spanish Fork",
+  "email": "deephalfjiujitsu@gmail.com",
+  "email_confidence": "high",
+  "email_source": "https://deephalfbjj.com/ (also localgymsandfitness listing)",
+  "owner": "Weston Youd",
+  "owner_title": "Manager (per directory listing)",
+  "notes": "Located upstairs at 28 E 100 N."
+ },
+ {
+  "business": "The Core Studio Utah",
+  "city": "Spanish Fork",
+  "email": "contact@thecore-utah.com",
+  "email_confidence": "high",
+  "email_source": "https://www.thecore-utah.com/contact",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Reformer Pilates and yoga studio; runs Mat Pilates teacher training."
+ },
+ {
+  "business": "Jazzercise Spanish Fork Fitness Center",
+  "city": "Spanish Fork",
+  "email": "sfjazzercise@gmail.com",
+  "email_confidence": "medium",
+  "email_source": "Jazzercise/Facebook location listing via search (jazzercise.com/location/jazzercise-spanish-fork-fitness-center)",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Jazzercise franchise location; Yelp lists 50 E 100 N, other listings 1332 E Center St."
+ },
+ {
+  "business": "FitClub",
+  "city": "Salem",
+  "email": "fitclub.ut@gmail.com",
+  "email_confidence": "high",
+  "email_source": "https://www.fitclub-ut.com/",
+  "owner": "",
+  "owner_title": "",
+  "notes": "24/7 gym; staffed 7-10am and 4-7pm; teen fitness and nutrition coaching programs."
+ },
+ {
+  "business": "180 Fitness - Salem",
+  "city": "Salem",
+  "email": "info@totalfitness.fit",
+  "email_confidence": "high",
+  "email_source": "https://totalfitness.fit/contact/",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Family-owned, 2 locations (Salem + Payson) share one email. Salem phone (435) 557-0026 / 801-465-1158."
+ },
+ {
+  "business": "Uplift Fitness Studio",
+  "city": "Salem",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "No email in 2 queries. Address 576 UT-198, Salem. Contact form: https://www.upliftfitness.studio/contact; books via Vagaro (vagaro.com/uplift-fitness)."
+ },
+ {
+  "business": "Powerhouse Fitness",
+  "city": "Salem",
+  "email": "Powerhousefitnes2016@gmail.com",
+  "email_confidence": "medium",
+  "email_source": "Facebook page / Zumba class listing via search",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Independent (not Powerhouse Gym franchise). Phone (801) 735-3868. Zumba classes listed."
+ },
+ {
+  "business": "180 Fitness (Total Fitness) - Payson",
+  "city": "Payson",
+  "email": "info@totalfitness.fit",
+  "email_confidence": "high",
+  "email_source": "https://totalfitness.fit/contact/",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Same owner/email as Salem location; Payson phone (801) 465-5633. Send one email covering both."
+ },
+ {
+  "business": "Maximus Boxing Gym",
+  "city": "Payson",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Aaron \"Maximus\" Garcia",
+  "owner_title": "Owner (family-owned per site)",
+  "notes": "Site email is Cloudflare-obfuscated in search snippets ([email protected]) so not captured verbatim. Phone (801) 836-6484. Boxing/MMA/BJJ/wrestling; Quality Business Awards 2024 best martial arts studio Payson."
+ },
+ {
+  "business": "Pepperbox CrossFit",
+  "city": "Elk Ridge",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Natalie Anderson",
+  "owner_title": "Contact (Manta listing)",
+  "notes": "Manta lists phone (801) 822-4781, no email. Little web presence; may be a home/garage affiliate."
+ },
+ {
+  "business": "Target Fitness",
+  "city": "Santaquin",
+  "email": "admin@targetfitnation.com",
+  "email_confidence": "high",
+  "email_source": "https://targetfitnation.com/",
+  "owner": "Zak and Ciara",
+  "owner_title": "Owners (first names only, from site)",
+  "notes": "24/7 private gym at 77 Summit Ridge Pkwy Unit 1, Santaquin; phone 801-609-8511. Sponsors Target Fitness 5K at Orchard Days."
+ },
+ {
+  "business": "Quality Fitness & Health",
+  "city": "Nephi",
+  "email": "Shannon@quality.fitness",
+  "email_confidence": "high",
+  "email_source": "https://quality.fitness/contact-us/",
+  "owner": "Shannon and Mike McPherson",
+  "owner_title": "Owners",
+  "notes": "Family-owned since 2013; 41 Birdeye reviews."
+ },
+ {
+  "business": "Ironground Gym",
+  "city": "Murray",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Stephanie Trinh",
+  "owner_title": "Owner (LinkedIn: Owner, Ironground Gym LLC)",
+  "notes": "No public email in 3 queries; ZoomInfo masks it. Phone (385) 419-0671; Facebook facebook.com/irongroundgym. Powerlifting-focused; hosted 2024 APO Winter War meet."
+ },
+ {
+  "business": "The Sports Mall",
+  "city": "Murray",
+  "email": "porscheg@sportsmallgroup.com",
+  "email_confidence": "high",
+  "email_source": "https://sportsmallgroup.com/contact/ (membership contact; second contact alexandera@sportsmallgroup.com)",
+  "owner": "Bryson Ostler",
+  "owner_title": "Owner and General Manager (per leadership page, 2021)",
+  "notes": "Large multi-sport club (22 tennis courts). Emails found are for membership staff Porsche Gardner and Alex Altman, not the owner. Owner email not shown verbatim (format firstname@sportsmallgroup.com) - do not construct."
+ },
+ {
+  "business": "Murray Kickboxing Academy",
+  "city": "Murray",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "No email in 2 queries. WKA-affiliated; MMA/Muay Thai/kickboxing/BJJ. Phone (801) 815-8664. FindMMAGym listing has a 'Send E-mail' form."
+ },
+ {
+  "business": "Fitness Together Cottonwood Heights",
+  "city": "Cottonwood Heights",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Jacob Jones",
+  "owner_title": "Owner (confirmed, ISSA-certified trainer, Crown College degree)",
+  "notes": "Franchise (Fitness Together), open since 2007. No email surfaced in 2 queries. Contact form: https://fitnesstogether.com/cottonwood-heights/contact-us."
+ },
+ {
+  "business": "Intermountain Pilates Training Center",
+  "city": "Cottonwood Heights",
+  "email": "jenny@iptconline.com",
+  "email_confidence": "high",
+  "email_source": "https://www.iptconline.com/contact",
+  "owner": "Jenny Carr",
+  "owner_title": "Owner and Founder (since 2008)",
+  "notes": "Also phone 801.895.0035. Runs Pilates teacher training courses; ZoomInfo lists her as Jennifer Carr."
+ },
+ {
+  "business": "Justin's School of Brazilian Jiu Jitsu and Gymnastics",
+  "city": "Sandy",
+  "email": "manahivawoodruff@gmail.com",
+  "email_confidence": "medium",
+  "email_source": "Facebook page listing via search (facebook.com/DojojjbVenus)",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Email is a personal gmail from the Facebook listing; search summary could not confirm it is current. Also operates as 'Justin Jiu Jitsu Academy' (justinjiujitsu.com). Owner's full name not found."
+ },
+ {
+  "business": "Koko FitClub of Sandy",
+  "city": "Sandy",
+  "email": "ut.sandy@kokofitclub.com",
+  "email_confidence": "high",
+  "email_source": "https://sandy.kokofitclub.com/",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Franchise location (Koko FitClub LLC); corporate general email hello@kokofitclub.com. Local owner name not found."
+ },
+ {
+  "business": "Absolute Power & Fitness",
+  "city": "Ogden",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "No email in 2 queries; owner 'Jeremiah' from input not confirmed by a source. 6,000 sq ft private 24/7 powerlifting gym, est. Oct 2014; 4.7 stars/60 reviews. Facebook: facebook.com/AbsolutePowerandFitness."
+ },
+ {
+  "business": "Body Evolution",
+  "city": "Ogden",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Jason Hanson",
+  "owner_title": "Customer Contact (BBB profile)",
+  "notes": "BBB categorizes as weight loss business. No email surfaced; site not indexed for '@'."
+ },
+ {
+  "business": "Kut Fitness",
+  "city": "Marriott-Slaterville",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Cindy Spencer",
+  "owner_title": "CEO and Co-founder (with Shane Spencer)",
+  "notes": "Signed 16,606 sq ft lease at 12th Street Exchange (St. John Properties, June 2025 press release) - good hook. No email in 2 queries; site contact page at kutfitness.com."
+ },
+ {
+  "business": "Ogden Athletic Club",
+  "city": "South Ogden",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Jan Browning",
+  "owner_title": "General Manager (801-479-6500 x330)",
+  "notes": "Private club since 1976; has CrossFit and Parisi Speed School. Staff emails exist at @ogdenathletic.com but all masked on ZoomInfo; not constructed. Personnel page: oac.caclubs.com/public/personnel?FLAGCODE=MGMT."
+ },
+ {
+  "business": "Power MMA (Power Mixed Martial Arts)",
+  "city": "Roy",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Sean Powers",
+  "owner_title": "Owner / pro MMA fighter (Power Promotions)",
+  "notes": "No email in 2 queries. Also runs Power Promotions fight events. 82 Birdeye reviews."
+ },
+ {
+  "business": "Propulsion Climbing Gym",
+  "city": "Ogden",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Very thin web presence (Yelp only); no email or website found in 2 queries. Verify still open before emailing."
+ },
+ {
+  "business": "Rocky Mountain Athletic Center",
+  "city": "Roy",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "No email or owner in 2 queries. ZoomInfo: 5-9 employees, <$500K revenue, fitness/dance facility. Phone (801) 776-1873."
+ },
+ {
+  "business": "Street Fighters Martial Arts Academy",
+  "city": "Ogden",
+  "email": "sensei@streetfightersmaa.com",
+  "email_confidence": "high",
+  "email_source": "https://www.streetfightersmaa.com/",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Traditional Korean martial arts (Hapkido/Taekwondo/Gumdo) led by an 8th-degree black belt with ~40 years experience; name not given in snippets. Kids and adult programs."
+ },
+ {
+  "business": "Thiago Alves BJJ",
+  "city": "Riverdale",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Thiago Alves",
+  "owner_title": "Founder / Head Instructor (3rd-degree black belt, IBJJF)",
+  "notes": "No email in 2 queries. Phone (385) 394-7953. Lead page lp.thiagoalvesbjj.com. Not the UFC fighter of the same name."
+ },
+ {
+  "business": "Training for Warriors Ogden (formerly Destination MMA)",
+  "city": "South Ogden",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "TFW franchise (Training For Warriors Ogden LLC). No email or owner name in 2 queries; ZoomInfo lists 11-50 employees. Site tfwogden.com; phone (385) 294-9841."
+ },
+ {
+  "business": "Premier Martial Arts North Ogden",
+  "city": "North Ogden",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Jonathan Koelling and Emily Koelling",
+  "owner_title": "Owners (BBB profile, entity Edgewater Enterprises LLC; also own PMA Bountiful)",
+  "notes": "Email on directory listing is Cloudflare-obfuscated ([email protected]), not captured. Aleks Koelling is Program Director (LinkedIn). Franchise. One article mentions Premier Martial Arts closures in area - verify still open (Yelp updated Feb 2026 suggests yes)."
+ },
+ {
+  "business": "Thrive Fitness",
+  "city": "West Jordan",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "No email or owner in 3 queries. 24-hour gym open since 2006; free 7-day trial. Not to be confused with Thryve Fitness Club (closed). Phone (801) 280-8484."
+ },
+ {
+  "business": "Body Mechanics Fitness Training",
+  "city": "West Jordan",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "No current email in 2 queries; one Facebook listing shows bodymechanicsonline@yahoo.com but search summary flagged it as tied to a long-closed location - do not use without verifying. Phone (435) 590-1985; Facebook facebook.com/BodyMechanicsFitnessTraining."
+ },
+ {
+  "business": "Impact Strong",
+  "city": "South Jordan",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Angie Garcia",
+  "owner_title": "Franchise owner (South Jordan Journal spotlight, 2018)",
+  "notes": "Email on Yahoo Local listing is obfuscated ([email protected]), not captured in 3 queries. Hook: Garcia partners with nonprofit Passionate Wings to sponsor memberships for abuse survivors; 30-min kickboxing + HIIT format. Franchise (Impact Strong)."
+ },
+ {
+  "business": "FreedOM Hot Yoga + Pilates SoJo",
+  "city": "South Jordan",
+  "email": "info@freedomhotyoga.com",
+  "email_confidence": "high",
+  "email_source": "https://www.freedomhotyoga.com/ (studio contact block)",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Shared email across both studios (Orem 1028 W 950 N and South Jordan 10975 S Sterling View Dr Ste 1B). Woman-owned; owner name not surfaced. SoJo phone (801) 201-5517."
+ },
+ {
+  "business": "CORE XV",
+  "city": "Bluffdale",
+  "email": "info@corexv.com",
+  "email_confidence": "high",
+  "email_source": "https://corexv.com/page/contact.php",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Physical studio is at 3796 W 12600 S, Riverton, UT 84065 (ZIP 84065 qualifies). Also markets a women's training program. ZoomInfo lists as Core XV Training."
+ },
+ {
+  "business": "Victory MMA",
+  "city": "West Valley City",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Input owner 'Joe Mannino' is the owner of the unrelated Victory MMA & Fitness in San Diego - not this gym; cleared. Yelp lists this address (2854 S Redwood Rd) as 'CCS MMA - CLOSED' (Comprehensive Combat Sports). Likely closed; verify before emailing."
+ },
+ {
+  "business": "Reyes K.O. Boxing Gym",
+  "city": "West Valley City",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Armando",
+  "owner_title": "Coach/Owner (first name only, per directory reviews)",
+  "notes": "Registered as Reyes K.O. Boxing Gym LLC (OpenCorporates). No email in 2 queries. Unit 18; phone (385) 256-3053; Google business site reyes-ko-boxing-gym.business.site. 179 Birdeye reviews."
+ },
+ {
+  "business": "Boxing Roots",
+  "city": "West Valley City",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "No email or owner in 3 queries; boxingroots.com not indexed. Phone (801) 738-0744."
+ },
+ {
+  "business": "Jazzercise Magna",
+  "city": "Magna",
+  "email": "jazzercisemagna@gmail.com",
+  "email_confidence": "medium",
+  "email_source": "Jazzercise location listing via search (jazzercise.co.uk/location/jazzercise-magna-20298 / mapsus.net)",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Franchise. Listing address 3441 S 8400 W Ste B, Magna 84044 (input had 8400 S Country West Dr); phone (801) 386-4695. Holly Hartzell appears on LinkedIn as a Jazzercise owner in SLC but not tied to Magna by a source."
+ },
+ {
+  "business": "Tonic Method - Daybreak",
+  "city": "South Jordan",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Madeleine Hasulak",
+  "owner_title": "Founder (Tonic Method; developed the method 2018, now based in SLC)",
+  "notes": "No email in 3 queries. Multi-location chain (Colorado + Utah: SLC 951 E 900 S, Sandy, Daybreak; Highland-Alpine 'coming soon'). Women-owned. Daybreak phone (801) 753-8909."
+ },
+ {
+  "business": "Aspire Pilates Training Center",
+  "city": "Riverton",
+  "email": "info@aspireptc.com",
+  "email_confidence": "high",
+  "email_source": "https://www.aspireptc.com/contact-aspire-pilates/",
+  "owner": "Cari Kapele",
+  "owner_title": "Owner",
+  "notes": "Website aspireptc.com (not aspirepilatescenter.com, which is a different studio)."
+ },
+ {
+  "business": "Infinite Martial Arts",
+  "city": "Kearns",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Cody Olsen",
+  "owner_title": "Contact (D&B listing)",
+  "notes": "Founded 2010 per D&B. No email in 2 queries; infinite-martialarts.com belongs to an unrelated San Francisco school. Facebook facebook.com/infinitema. Phone (801) 964-6900."
+ },
+ {
+  "business": "SLC Strength & Conditioning",
+  "city": "Salt Lake City",
+  "email": "training.elevated@slcstrength.com",
+  "email_confidence": "high",
+  "email_source": "https://slcstrengthandconditioning.com/contact/ (via Yahoo Local/BBB listing)",
+  "owner": "Stephen Pizza",
+  "owner_title": "Owner / Founder (former U of Utah and U of Hawaii strength coach)",
+  "notes": "Opened Feb 2017; group training, personal training, open gym, youth athletic development, summer camps."
+ },
+ {
+  "business": "CoreFit Studio",
+  "city": "Lehi",
+  "email": "info@corefit-studio.com",
+  "email_confidence": "high",
+  "email_source": "https://www.corefit-studio.com/",
+  "owner": "Connie N.",
+  "owner_title": "Owner (Yelp business owner field; listed on utahwomenowned.com)",
+  "notes": "Phone (801) 901-8838. 136 Birdeye reviews. Women-owned."
+ },
+ {
+  "business": "Valhalla Strength Gym",
+  "city": "American Fork",
+  "email": "Valhalla.strength.gym@gmail.com",
+  "email_confidence": "high",
+  "email_source": "https://www.valhallastrengthgym.fitness/contact",
+  "owner": "Michelle and Niko",
+  "owner_title": "Primary contacts (first names on site; owner title not stated)",
+  "notes": "24/7 key-fob strength gym (strongman, powerlifting, Olympic lifting); tours by appointment. Phones: Michelle (801) 360-5681, Niko (801) 427-5530."
+ },
+ {
+  "business": "Utah Iron Gym",
+  "city": "Springville",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Ben and Brittany M.",
+  "owner_title": "Owners (Yelp business owner field)",
+  "notes": "No email in 2 queries. Brands itself 'Utah's Strongest Gym'; website utahirongym.com; phone (801) 449-1329."
+ },
+ {
+  "business": "Lifelong Fitness Personal Training Gym",
+  "city": "Kaysville",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Griff Neilson",
+  "owner_title": "President & Founder",
+  "notes": "Email on llfit.com is Cloudflare-obfuscated in snippets ([email protected]), not captured. Mobile 801-686-2131 / office 801-444-2796 listed publicly. Multiple locations (Kaysville, Layton, Syracuse per ppc.llfit.com). Level III CHEK coach; '5 Power Pillar Coaching System'."
+ },
+ {
+  "business": "Blue Collar Group Fitness",
+  "city": "Layton",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Coach Gonzo",
+  "owner_title": "Coach (per review; nickname only)",
+  "notes": "Birdeye lists it as temporarily closed. Strength/conditioning + Muay Thai + BJJ. Phone (385) 288-7922. Low priority."
+ },
+ {
+  "business": "Park City Fit",
+  "city": "Park City",
+  "email": "jeannie@parkcityfit.com",
+  "email_confidence": "high",
+  "email_source": "https://www.parkcityfit.com/park-city-fit-contact",
+  "owner": "Chris Spealler",
+  "owner_title": "Founder / Owner (CrossFit Games athlete)",
+  "notes": "Email found is for Jeannie (likely staff/co-owner; title not stated), not Chris. Phone (435) 710-8786. Also sells online programming via BTWB/PushPress/Chalk It Pro."
+ }
+]
