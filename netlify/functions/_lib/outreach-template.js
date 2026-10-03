@@ -145,7 +145,7 @@ const SHARED = {
   ],
   ctaTitle: 'Ready to add it to [Business name]?',
   ctaBody: 'Reserve a chamber and we will confirm a delivery date and walk your team through setup. There is no charge until we confirm your booking. Prefer to talk through your space first? Call or text.',
-  fine: 'Purebaric provides general-wellness equipment. It is not a medical device and is not intended to diagnose, treat, cure, or prevent any disease. Revenue figures are estimates, not guarantees. They assume $75 a session, subtract rental and supplies, and do not include staff time, overhead, taxes, or the one-time setup fee. Local prices are published 2026 prices from businesses in Lehi, Orem, and Salt Lake City.',
+  fine: 'Purebaric provides general-wellness equipment. Our chambers are not medical devices and are not intended to diagnose, treat, cure, or prevent any disease. Revenue figures are estimates, not guarantees. They assume $75 a session, subtract rental and supplies, and do not include staff time, overhead, taxes, or the one-time setup fee. Local prices are published 2026 prices from businesses in Lehi, Orem, and Salt Lake City.',
 };
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
