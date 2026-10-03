@@ -94,6 +94,7 @@ const CATEGORIES = [
   },
   {
     id: 'recovery-studios-and-med-spas',
+    image: 'chamber-salon-email.jpg',
     label: 'Recovery studios and med spas',
     eyebrow: 'A new profit line for your studio',
     subjects: [
@@ -108,6 +109,7 @@ const CATEGORIES = [
   },
   {
     id: 'physical-therapy-and-sports-medicine',
+    image: 'chamber-clinic-email.jpg',
     label: 'Physical therapy, chiropractic, and sports medicine',
     eyebrow: 'A cash-pay profit line for your clinic',
     subjects: [
@@ -122,6 +124,7 @@ const CATEGORIES = [
   },
   {
     id: 'salons-and-beauty',
+    image: 'chamber-salon-email.jpg',
     label: 'Salons and beauty studios',
     eyebrow: 'A new profit line for your salon',
     subjects: [
