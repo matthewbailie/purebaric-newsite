@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType, LevelFormat, PageBreak, Footer, PageNumber, TabStopType } = require("docx");
 
-const OUT = "/Users/bailie/Library/CloudStorage/OneDrive-Adobe/DMe-C&P/Claude_AI/purebaric-outreach/purebaric_business_rental_agreement_and_liability_waiver.docx";
+const OUT = process.env.WAIVER_OUT || "/Users/bailie/Library/CloudStorage/OneDrive-Adobe/DMe-C&P/Claude_AI/purebaric-outreach/purebaric_business_rental_agreement_and_liability_waiver.docx";
 const FONT = "Calibri";
 const INK = "2B2320", TERRA = "9A4F3A", MUTED = "6F635B";
 
@@ -36,7 +36,7 @@ children.push(new Paragraph({ spacing: { after: 200 }, border: { top: { style: B
 
 children.push(p("This Business Rental Agreement and Liability Waiver (the \"Agreement\") is made on the Effective Date below between:"));
 children.push(kv([
-  ["Purebaric", "Matthew Bailie, doing business as Purebaric, Salt Lake City, Utah (\"Purebaric\", \"we\", \"us\"). hello@purebaric.com · (801) 901-0873"],
+  ["Purebaric", "Matthew Bailie, doing business as Purebaric, Lehi, Utah (\"Purebaric\", \"we\", \"us\"). hello@purebaric.com · (801) 901-0873"],
   ["Business", "______________________________________ (legal name), a ______________ (entity type and state), doing business as ______________________________ (\"Business\", \"you\")"],
   ["Business address", "______________________________________________________________"],
   ["Authorized signer", "Name: ______________________________  Title: ______________________"],
@@ -117,7 +117,7 @@ children.push(h1("11. General Terms"));
 children.push(p("11.1 **Independent parties.** The parties are independent contractors. Nothing in this Agreement creates a partnership, joint venture, franchise, agency, or employment relationship. Neither party may bind the other."));
 children.push(p("11.2 **Notices.** Notices must be in writing and sent by email with confirmation of receipt, or by mail, to the addresses in this Agreement (for Purebaric: hello@purebaric.com)."));
 children.push(p("11.3 **Assignment.** The Business may not assign this Agreement or sublet the Equipment without Purebaric's written consent. Purebaric may assign this Agreement to a successor to its business."));
-children.push(p("11.4 **Governing law and venue.** This Agreement is governed by the laws of the State of Utah, without regard to conflict-of-law rules. Any dispute will be brought exclusively in the state or federal courts located in Salt Lake County, Utah, and each party consents to that jurisdiction."));
+children.push(p("11.4 **Governing law and venue.** This Agreement is governed by the laws of the State of Utah, without regard to conflict-of-law rules. Any dispute will be brought exclusively in the state or federal courts located in Utah County, Utah, and each party consents to that jurisdiction."));
 children.push(p("11.5 **Attorney fees.** In any action to enforce this Agreement, the prevailing party may recover its reasonable attorney fees and costs."));
 children.push(p("11.6 **Severability.** If any provision is held unenforceable, it will be enforced to the maximum extent permitted and the rest of the Agreement remains in effect. The parties intend the release, indemnity, and limitation of liability to be enforced to the fullest extent the law allows."));
 children.push(p("11.7 **Survival.** Sections 4.3 (record keeping), 5, 6.3, 7, 8, 9, 10, and 11 survive termination."));
