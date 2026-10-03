@@ -136,7 +136,7 @@ const CATEGORIES = [
 
 // ---- shared copy
 const SHARED = {
-  intro: 'Purebaric is a Lehi company. We deliver and install the chamber, train your staff, and service it. You set your prices and keep the session revenue.',
+  intro: 'Purebaric is a Lehi company. We deliver and install mild hyperbaric chambers, train your staff, and provide ongoing service and support. With minimal upfront cost, the chamber becomes a lucrative revenue stream for your business.',
   includedTitle: 'Included in the rental',
   included: [
     ['Delivery, installation, and staff training', 'with a written guide, within days.'],
