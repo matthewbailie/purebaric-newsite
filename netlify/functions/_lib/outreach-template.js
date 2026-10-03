@@ -43,6 +43,7 @@ const STANDARD_TILES = {
 const CATEGORIES = [
   {
     id: 'gyms-and-fitness',
+    image: 'chamber-gym-email.jpg',
     label: 'Gyms and fitness centers',
     eyebrow: 'A new profit line for your gym',
     subjects: [
@@ -57,6 +58,7 @@ const CATEGORIES = [
   },
   {
     id: 'crossfit-and-performance',
+    image: 'chamber-gym-email.jpg',
     label: 'CrossFit and performance gyms',
     eyebrow: 'A new profit line for your gym',
     subjects: [
@@ -225,7 +227,7 @@ function email(cat, opts = {}) {
           <!-- Hero image, full card width -->
           <tr>
             <td align="center" style="padding:0; line-height:0; font-size:0;">
-              <img src="${SITE}/images/chamber-living.jpg" alt="A Purebaric 1.5 ATA hyperbaric chamber" width="560" style="display:block; width:100%; max-width:560px; height:auto; border:0;" />
+              <img src="${SITE}/images/${cat.image || 'chamber-living.jpg'}" alt="A Purebaric 1.5 ATA hyperbaric chamber" width="560" style="display:block; width:100%; max-width:560px; height:auto; border:0;" />
             </td>
           </tr>
 
