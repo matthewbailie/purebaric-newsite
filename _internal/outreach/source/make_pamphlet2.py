@@ -109,9 +109,9 @@ para(1, PH-30,
 
 # ---- Cover (right)
 cy = logo(2, 13, w=34)
-src_im = Image.open(os.path.join(SRC, "/Users/bailie/Library/CloudStorage/OneDrive-Adobe/DMe-C&P/Claude_AI/purebaric-outreach/branded-images/chamber-living-branded.jpg"))
+src_im = Image.open(os.path.join(SRC, "/Users/bailie/Library/CloudStorage/OneDrive-Adobe/DMe-C&P/Claude_AI/purebaric-outreach/branded-images/chamber-gym-branded.jpg"))
 ih = W * src_im.height / src_im.width          # whole photo, no crop, so the full chamber shows
-img = crop("/Users/bailie/Library/CloudStorage/OneDrive-Adobe/DMe-C&P/Claude_AI/purebaric-outreach/branded-images/chamber-living-branded.jpg", "cover.jpg", W, ih)
+img = crop("/Users/bailie/Library/CloudStorage/OneDrive-Adobe/DMe-C&P/Claude_AI/purebaric-outreach/branded-images/chamber-gym-branded.jpg", "cover.jpg", W, ih)
 pdf.image(img, x=px(2), y=cy+8, w=W, h=ih)
 pdf.set_xy(px(2)+M, cy+8+ih+10); pdf.set_font("Georgia","B",19); pdf.set_text_color(*INK)
 pdf.multi_cell(CW, 7.9, "A New Revenue-\nGenerating Amenity\nfor Your Facility", align="L")

@@ -84,7 +84,7 @@ pdf.add_page()
 lg = os.path.join(SRC,"logo.png"); li = Image.open(lg); lw=40
 pdf.image(lg, x=M, y=14, w=lw, h=lw*li.height/li.width)
 pdf.set_xy(M, 15.5); pdf.set_font("Helvetica","B",8.4); pdf.set_text_color(*MUTED); pdf.cell(CW, 5, "FACILITY PROSPECTUS", align="R")
-hero = crop("/Users/bailie/Library/CloudStorage/OneDrive-Adobe/DMe-C&P/Claude_AI/purebaric-outreach/branded-images/chamber-living-branded.jpg","pro_hero.jpg", PW, 108, focus=(0.5,0.5))
+hero = crop("/Users/bailie/Library/CloudStorage/OneDrive-Adobe/DMe-C&P/Claude_AI/purebaric-outreach/branded-images/chamber-gym-branded.jpg","pro_hero.jpg", PW, 108, focus=(0.5,0.5))
 pdf.image(hero, x=0, y=27, w=PW, h=108)
 y = 145
 pdf.set_xy(M,y); pdf.set_font("Georgia","B",25); pdf.set_text_color(*INK)
