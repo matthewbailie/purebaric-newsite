@@ -86,10 +86,10 @@ body{background:#f7f6f3}
 .page-hero .eyebrow2{background:transparent;color:#7a5a2c}
 .contact-cta{background:#2f3337}
 .contact-cta p{color:#d6d3cc}
-.tile{background:#f3f1ec;border-top-color:#c89b5a}
-.tile .k{color:#8a6a3a}
-.tile.hero{background:#2f3337;border-top-color:#c89b5a}
-.tile.hero .v{color:#e8c48a}
+.tile{background:#f3f1ec;border-top-color:#59707f}
+.tile .k{color:#46606f}
+.tile.hero{background:#3b4a55;border-top-color:var(--terra)}
+.tile.hero .v{color:#fff}
 .tbl th{background:#2f3337}
 .tbl td.b{color:#8a6a3a}
 .steps li:before{background:#2f3337}
@@ -97,6 +97,15 @@ body{background:#f7f6f3}
 .cta-band{background:#eeede9}
 .faq summary::after{color:#8a6a3a}
 .biz-slides{border-color:#dfdcd5}
+.bizbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(43,35,32,.08);transform:translateY(110%);transition:transform .35s ease}
+.bizbar.show{transform:none}
+.bizbar-in{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 24px}
+.bizbar .mb-price{font-size:20px;font-weight:800;line-height:1.1}
+.bizbar .mb-price small{font-size:13px;color:var(--muted);font-weight:500}
+.bizbar .mb-sub{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
+.bizbar-btns{display:flex;gap:10px;flex:none}
+body.bizbar-on{padding-bottom:84px}
+@media(max-width:600px){.bizbar .btn-ghost{display:none}.bizbar .mb-sub{display:none}.bizbar-in{padding:10px 16px}}
 </style>
   <script src="/pb-metrics.js"></script>
 </head><body>
@@ -126,14 +135,6 @@ body{background:#f7f6f3}
       <span class="eyebrow2">For businesses</span>
       <h1>A new revenue-generating amenity for your business</h1>
       <p>Offer mild hyperbaric sessions to the members and clients you already serve. Purebaric installs the chamber, trains your staff, supplies your consent forms, helps you craft a marketing pamphlet for your brand, and services the equipment. You set your prices and keep the session revenue.</p>
-      <div class="contact-cta">
-        <h2>See if a chamber fits your business</h2>
-        <p>Call us and we will talk you through your space, your clients, and the numbers for your business, with no obligation.</p>
-        <div class="btns">
-          <a class="btn btn-primary" href="/book?type=business" onclick="window.trackPurebaricEvent?.('business_cta',{method:'request'})">Request a business rental</a>
-          <a class="btn btn-ghost" href="tel:+18019010873" onclick="window.trackPurebaricEvent?.('business_cta',{method:'call'})">Call (801) 901-0873</a>
-          <a class="btn btn-ghost" href="/contact?topic=business" onclick="window.trackPurebaricEvent?.('business_cta',{method:'form'})">Send a message</a>
-        </div>
       </div>
     </div>
     <div class="biz-slides" aria-label="Chamber photos">
@@ -337,7 +338,24 @@ body{background:#f7f6f3}
   </div>
 </footer>
 
+<div class="bizbar" id="bizbar" aria-hidden="true">
+  <div class="wrap bizbar-in">
+    <div><div class="mb-price">$979<small> /mo</small></div><span class="mb-sub">$500 one-time setup · no charge until we confirm</span></div>
+    <div class="bizbar-btns">
+      <a class="btn btn-ghost" href="tel:+18019010873" onclick="window.trackPurebaricEvent?.('business_cta',{method:'call'})">Call (801) 901-0873</a>
+      <a class="btn btn-primary" href="/book?type=business" onclick="window.trackPurebaricEvent?.('business_cta',{method:'request'})">Request a business rental</a>
+    </div>
+  </div>
+</div>
 <script src="/warm.js"></script>
+<script>
+/* sliding call to action: appears once the hero scrolls out of view */
+(function(){
+  var bar=document.getElementById('bizbar'), hero=document.querySelector('.page-hero');
+  if(!bar||!hero||!('IntersectionObserver' in window))return;
+  new IntersectionObserver(function(es){var out=!es[0].isIntersecting;bar.classList.toggle('show',out);bar.setAttribute('aria-hidden',out?'false':'true');document.body.classList.toggle('bizbar-on',out);},{threshold:0}).observe(hero);
+})();
+</script>
 <script>
 /* business hero carousel (auto crossfade + dots; pauses for reduced motion) */
 (function(){
