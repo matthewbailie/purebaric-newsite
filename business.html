@@ -106,6 +106,7 @@ body{background:#f7f6f3}
 .bizbar-btns{display:flex;gap:10px;flex:none}
 body.bizbar-on{padding-bottom:84px}
 @media(max-width:600px){.bizbar .btn-ghost{display:none}.bizbar .mb-sub{display:none}.bizbar-in{padding:10px 16px}}
+@media(max-width:820px){.bizbar{transform:none}body{padding-bottom:84px}}
 </style>
   <script src="/pb-metrics.js"></script>
 </head><body>
@@ -353,7 +354,9 @@ body.bizbar-on{padding-bottom:84px}
 (function(){
   var bar=document.getElementById('bizbar'), hero=document.querySelector('.page-hero');
   if(!bar||!hero||!('IntersectionObserver' in window))return;
-  new IntersectionObserver(function(es){var out=!es[0].isIntersecting;bar.classList.toggle('show',out);bar.setAttribute('aria-hidden',out?'false':'true');document.body.classList.toggle('bizbar-on',out);},{threshold:0}).observe(hero);
+  var always=window.matchMedia('(max-width:820px)');
+  if(always.matches){bar.classList.add('show');bar.setAttribute('aria-hidden','false');document.body.classList.add('bizbar-on');}
+  new IntersectionObserver(function(es){if(always.matches)return;var out=!es[0].isIntersecting;bar.classList.toggle('show',out);bar.setAttribute('aria-hidden',out?'false':'true');document.body.classList.toggle('bizbar-on',out);},{threshold:0}).observe(hero);
 })();
 </script>
 <script>
