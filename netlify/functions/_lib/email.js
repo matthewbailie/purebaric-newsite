@@ -13,20 +13,23 @@ function client() {
   return new Resend(key);
 }
 
-async function send({ to, subject, html, text }) {
+// `from`, `replyTo` and `headers` are optional overrides (the admin Outreach tab sends from the owner's
+// own address with List-Unsubscribe headers); everything else on the site uses the defaults.
+async function send({ to, subject, html, text, from, replyTo, headers }) {
   const resend = client();
   const recipients = Array.isArray(to) ? to : [to];
   const payload = {
-    from: FROM,
+    from: from || FROM,
     to: recipients,
     // v4 SDK uses camelCase `replyTo`; v1-v2 used snake_case `reply_to`.
     // We send both for maximum compatibility, extra fields are ignored.
-    replyTo: REPLY_TO,
-    reply_to: REPLY_TO,
+    replyTo: replyTo || REPLY_TO,
+    reply_to: replyTo || REPLY_TO,
     subject,
     html,
     text,
   };
+  if (headers && Object.keys(headers).length) payload.headers = headers;
   let result;
   try {
     result = await resend.emails.send(payload);

@@ -1,0 +1,562 @@
+[
+ {
+  "business": "Rockwell Training Facility",
+  "city": "Woods Cross",
+  "email": "info@rockwelltime.com",
+  "email_confidence": "medium",
+  "email_source": "leadiq.com / rockwelltime.com contact page (parent company Rockwell Time, same address 1431 S Redwood Rd)",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Gym (aka Rockwell CrossFit, open since July 2015) is run by watch company Rockwell Time; gym's own email is obfuscated in every listing (Birdeye/Gymnearx). Email given is Rockwell Time's general inbox, not gym-specific. Website listed as rockwelltime.com."
+ },
+ {
+  "business": "Fat Albert's Gym & Fitness",
+  "city": "Layton",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Larry Larson",
+  "owner_title": "President",
+  "notes": "Established 1990, open 24 hours. No email in Yelp/YP/Manta/IDEAfit listings; phone (801) 546-1775 only."
+ },
+ {
+  "business": "Championship Martial Arts Kaysville",
+  "city": "Kaysville",
+  "email": "info@cmaut.com",
+  "email_confidence": "medium",
+  "email_source": "Davis Chamber of Commerce member listing / cfe-fund service-provider listing (also jennifer@cmaut.com, info@kaysvillekarate.com)",
+  "owner": "Caleb Collier",
+  "owner_title": "Owner",
+  "notes": "Multi-location (Kaysville, Bountiful, Clinton, Syracuse). Opened 2005 when owner was 17; commercial space since 2009. Alternate address 865 W 450 N Ste 10 Kaysville appears on Yelp."
+ },
+ {
+  "business": "Utah Self Defense & Fitness Blackbelt Academy",
+  "city": "Bountiful",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Carlos M. Ferrer",
+  "owner_title": "Owner / Shihan",
+  "notes": "Bountiful's longest-running school (opened 1984). No email found in 3 queries; phone (801) 295-9274; site utahselfdefense.com."
+ },
+ {
+  "business": "CrossFit North Salt Lake",
+  "city": "Centerville",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "No email after 3 queries. (Different nearby affiliate CrossFit 801, owner Mercedes Brito, westsidefitness801@gmail.com - not this business.)"
+ },
+ {
+  "business": "Elite Sports Performance",
+  "city": "Layton",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Only directory listings (YP/Superpages): phone (702) 279-3146. Do not confuse with Elite Layton Utah microschool (info@elitelaytonutah.com, Kaysville) - different business."
+ },
+ {
+  "business": "Boom Cycle Room",
+  "city": "Park City",
+  "email": "regan@boomcycleroom.com",
+  "email_confidence": "medium",
+  "email_source": "local.yahoo.com / Manta listing",
+  "owner": "Regan Rodgers",
+  "owner_title": "Owner",
+  "notes": "Spin studio in Kimball Junction, opened 2016 (Park Record). Site boomcycleroom.com."
+ },
+ {
+  "business": "FIT Gym Park City",
+  "city": "Park City",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Email on fitparkcity.com is obfuscated in search results. 24-hour members-only private gym; programs incl. Parkinson's Level 1 & 2 and Warrior Training (men 35+). Not the same as Park City Fit (parkcityfit.com)."
+ },
+ {
+  "business": "Park City Personal Training",
+  "city": "Park City",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Only YP-type listings: 4942 Ponderosa Dr, (435) 640-5841, 'in business 29 years'. No website or email found in 3 queries. (pcptgym.com is Park Cities Personal Training in Dallas - unrelated.)"
+ },
+ {
+  "business": "The Mine Bouldering Gym",
+  "city": "Park City",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Andy Jacobsen",
+  "owner_title": "Co-founder",
+  "notes": "Original Ute Blvd venue closed; new full-service climbing gym at Quinn's Junction 'back in the works' (KPCW 2023). Website shows suspended/maintenance page. No email found. Low priority until reopened."
+ },
+ {
+  "business": "State of Mind Yoga & Fitness Studio",
+  "city": "Coalville",
+  "email": "stateofmindyogafitness@gmail.com",
+  "email_confidence": "medium",
+  "email_source": "Coalville City business directory / Summit County representative list (search snippet)",
+  "owner": "Ashley Battersby",
+  "owner_title": "Owner",
+  "notes": "Owner is former pro slopestyle skier (X Games medalist, Dew Tour champ). Small studio; classes incl. sculpt, power vinyasa, small group training."
+ },
+ {
+  "business": "The Underground Barbell Club",
+  "city": "Heber City",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Yelp lists it as 'Underground Club', phone (208) 704-6418. No email in Groupon/Yelp/site snippets after 3 queries."
+ },
+ {
+  "business": "BC Boxing Utah",
+  "city": "Heber City",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Brittney Christian",
+  "owner_title": "Owner (registered agent Brittney Pauline Christian per utah-biz.com; Yelp owner 'Brittney N.')",
+  "notes": "Directories list newer address 345 W 600 S Ste 200, Heber City 84032 (Yelp still shows 483 W Airport Rd). Site bcboxingutah.com. No email after 3 queries."
+ },
+ {
+  "business": "Gracie Barra Heber City",
+  "city": "Heber City",
+  "email": "info@graciebarraheber.com",
+  "email_confidence": "high",
+  "email_source": "graciebarraheber.com / gohebervalley.com listing",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Franchise school under Gracie Barra Utah (gbutah.com, 8+ Utah schools). Phone (435) 339-9298 per listing."
+ },
+ {
+  "business": "Tooele Boxing",
+  "city": "Tooele",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Only a Facebook page surfaced (boxing, Muay Thai, kickboxing). No website, phone or email found."
+ },
+ {
+  "business": "Sweat Fitness Center",
+  "city": "Tooele",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Only Nextdoor/Yelp listings; phone (435) 882-6680. No email after 2 queries."
+ },
+ {
+  "business": "WaspFit",
+  "city": "Nephi",
+  "email": "waspfit@gmail.com",
+  "email_confidence": "medium",
+  "email_source": "local.yahoo.com / Yelp listing",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Phone (435) 850-0956, site waspfit.com. LinkedIn shows Shane Blackett (Youth Conditioning/Athletic Development at WaspFit) - likely principal but not confirmed as owner. Boot camps and youth athletic development."
+ },
+ {
+  "business": "180 Fitness Ephraim",
+  "city": "Ephraim",
+  "email": "hello@180fitness.com",
+  "email_confidence": "high",
+  "email_source": "180fitness.com contact page / gyminsight.com profile",
+  "owner": "John Anderson and Lloyd Gleave",
+  "owner_title": "Co-owners",
+  "notes": "Regional chain: 7 locations (Mt Pleasant HQ, Ephraim, Gunnison, Richfield, Monroe, Payson, Salem), ~7,000 members, 24/7. Started 2015 in Mt Pleasant. Email is company-wide, not Ephraim-specific. Site lists Ephraim at 51 E 300 S."
+ },
+ {
+  "business": "Black Canyon CrossFit",
+  "city": "Mount Pleasant",
+  "email": "blackcanyoncrossfit@gmail.com",
+  "email_confidence": "high",
+  "email_source": "blackcanyoncrossfit.com contact page / crossfit.com affiliate listing",
+  "owner": "Micah Painter",
+  "owner_title": "Owner",
+  "notes": "Independent CrossFit affiliate in Sanpete County."
+ },
+ {
+  "business": "Momentum Indoor Climbing - Lehi",
+  "city": "Lehi",
+  "email": "lehiclimbing@momentumclimbing.com",
+  "email_confidence": "high",
+  "email_source": "momentumclimbing.com/lehi pages (also lehiyouth@momentumclimbing.com, lehievents@momentumclimbing.com)",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Regional chain (Momentum Climbing, multiple Utah/Texas gyms); Lehi is 'Utah's largest indoor bouldering facility' (10,000 sq ft) with fitness, cardio and yoga. Emails are location desks, not an owner."
+ },
+ {
+  "business": "University of Grappling",
+  "city": "Lehi",
+  "email": "universityofgrappling801@gmail.com",
+  "email_confidence": "medium",
+  "email_source": "Facebook page snippet (UniversityofGrapplingUT)",
+  "owner": "Ricky Lundell",
+  "owner_title": "Co-founder / Head Instructor",
+  "notes": "Lundell is a 4th-degree Gracie BJJ black belt and coaches elite MMA fighters in Las Vegas, so may not be day-to-day in Lehi. universityofgrappling.com is currently a holding page. Alt phone (801) 636-9587."
+ },
+ {
+  "business": "Warrior Mountain Academy",
+  "city": "Lehi",
+  "email": "JujitsuLehi@yahoo.com",
+  "email_confidence": "medium",
+  "email_source": "Lehi Jujitsu Google Sites page (sites.google.com/site/lehijujitsu) - Sensei Duane Sheely contact",
+  "owner": "Duane Sheely",
+  "owner_title": "Owner / Sensei (Danzan Ryu Jujitsu, Sandan)",
+  "notes": "warriormountainacademy.com email is obfuscated in snippets; this is the older Lehi Jujitsu address for the same owner at 68 W Main St (Lehi City 2010 planning record names Sheely as operator). Umbrella for Lehi Jujitsu, Wing Chun Combat Club, Theta Combat, Academy of Filipino Martial Arts; homeschool self-defense program."
+ },
+ {
+  "business": "The Training Room",
+  "city": "American Fork",
+  "email": "athletedevelopmentpros@gmail.com",
+  "email_confidence": "medium",
+  "email_source": "Facebook / LinkedIn snippet - secondary email for their Athlete Development Professionals program (primary ttrfitness.com email is obfuscated)",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Launched 2018; 22,000 sq ft, childcare, sports medicine/PT arm (ttrfitnessutah.com), towel service. Phil Templeman listed as workout coach (not confirmed owner); Taylor Braza General Manager. Primary site email obfuscated in all snippets; secondary gmail is for the athlete-development program."
+ },
+ {
+  "business": "Paul Tom's Academy of Brazilian Jiu Jitsu",
+  "city": "American Fork",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Paul Tom",
+  "owner_title": "Head Coach",
+  "notes": "20+ years, Gracie-affiliated. Phone (801) 362-0391. Contact form at bjjutah.com/contact; no email surfaced."
+ },
+ {
+  "business": "XD Fit",
+  "city": "Pleasant Grove",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Formerly CrossFit XD. Phones (801) 403-5912 / (801) 420-5068; sites xd-fit.com, xdfit-pg.com. No email after 3 queries."
+ },
+ {
+  "business": "StrongLife Fitness Pleasant Grove",
+  "city": "Pleasant Grove",
+  "email": "Info@StrongLifeFitness.net",
+  "email_confidence": "high",
+  "email_source": "stronglifefitness.net contact page (also bestronglifefit@gmail.com)",
+  "owner": "Jill Carlile",
+  "owner_title": "Owner",
+  "notes": "Two locations (Riverton and Pleasant Grove). Private personal-training gym: strength, nutrition coaching, weight loss and recovery. Phones (801) 870-0047 / (385) 233-9435."
+ },
+ {
+  "business": "The Box (Pleasant Grove)",
+  "city": "Pleasant Grove",
+  "email": "info@builtbythebox.com",
+  "email_confidence": "high",
+  "email_source": "builtbythebox.com",
+  "owner": "Julia Smith",
+  "owner_title": "Owner (per site snippet; input listed Chantelle L.)",
+  "notes": "Site now gives address 236 S 1250 W, Lindon, UT 84042 - appears to have moved from 793 S Main St PG; verify ZIP (Lindon 84042 still qualifies). Group classes, Olympic lifting, PT, nutrition coaching."
+ },
+ {
+  "business": "The Park Pilates",
+  "city": "Pleasant Grove",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Alayna Erb and Dillen Erb",
+  "owner_title": "Founders",
+  "notes": "Site email (hello@-pattern) is obfuscated in every snippet after 3 queries. High-intensity reformer studio, 8 reformers, ParkCore method, weekend 'Signature + Recovery' classes with sound bath (recovery angle). Phones (801) 613-0151 / text (801) 915-5222."
+ },
+ {
+  "business": "Work Training Studio",
+  "city": "Pleasant Grove",
+  "email": "amy@work-utah.com",
+  "email_confidence": "high",
+  "email_source": "work-utah.com (owner email in site/Yelp snippet)",
+  "owner": "Amy and Daniel",
+  "owner_title": "Owners/Founders (surname not given in sources)",
+  "notes": "Address 2415 W 700 S Ste G, Pleasant Grove 84062; phone (385) 503-4688. Opened October 2024; circuit-style MST (Metabolic Strength Training) group personal training; 5.0 rating."
+ },
+ {
+  "business": "Magnolia Fit Utah",
+  "city": "Saratoga Springs",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Phone (801) 358-0731; two sites (magnoliafitutah.com, magnoliafitnessutah.com). Women-focused group fitness ($70/mo unlimited). No email after 3 queries."
+ },
+ {
+  "business": "Rio Combat Team Utah (Shark Tank)",
+  "city": "Saratoga Springs",
+  "email": "Riocombat801@gmail.com",
+  "email_confidence": "high",
+  "email_source": "riocombatteamutah.com/contact",
+  "owner": "James Aiono",
+  "owner_title": "Head Coach (under Professor Diogo Gomes, 4th-degree black belt)",
+  "notes": "BJJ academy; phone (385) 452-2600. Yahoo listing also shows an American Fork address - may have a second/previous location."
+ },
+ {
+  "business": "LAB Pilates Saratoga",
+  "city": "Saratoga Springs",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "LIKELY NOT A UTAH BUSINESS: labpilates.com / 'LAB Pilates Saratoga' is Heidi Galli's studio at 384 Broadway, Saratoga Springs, NY 12866 (info@labpilates.com). No Utah LAB Pilates surfaced in 2 queries. Recommend dropping this row."
+ },
+ {
+  "business": "The Ranches Fitness",
+  "city": "Eagle Mountain",
+  "email": "ranchesfitness@golfandfitnessutah.com",
+  "email_confidence": "high",
+  "email_source": "theranchesfitness.com/contact-me",
+  "owner": "Jeff Harbertson",
+  "owner_title": "Owner (also owns The Ranches Golf Club)",
+  "notes": "Fitness center inside The Ranches Golf Club complex with co-working and event center (opened ~2023/24). Phone (385) 484-8698. 'Best Personal Trainer in Eagle Mountain 2026' (Quality Business Awards)."
+ },
+ {
+  "business": "Vitalogy Fitness",
+  "city": "Eagle Mountain",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Jarom Ricks",
+  "owner_title": "Owner (OTR/L, CPT, Postural Alignment Specialist, NPC bodybuilder)",
+  "notes": "4095 E Pony Express Pkwy Ste 6 (same suite as Eagle Mountain BJJ Academy). 24/7 open gym $50/mo, PT, chronic pain / postural alignment focus. Phones (801) 919-6911 / (801) 703-0199. No email after 3 queries."
+ },
+ {
+  "business": "Eagle Mountain Brazilian Jiu Jitsu Academy",
+  "city": "Eagle Mountain",
+  "email": "embjjacademy@gmail.com",
+  "email_confidence": "high",
+  "email_source": "eaglemountainbrazilianjiujitsuacademy.com/contact",
+  "owner": "Andy Gates",
+  "owner_title": "Owner / Head Instructor",
+  "notes": "Address 4095 E Pony Express Pkwy Ste 6, Eagle Mountain 84005 (shares space with Vitalogy Fitness). Phone (801) 980-1703."
+ },
+ {
+  "business": "SLT Gym",
+  "city": "Salt Lake City",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Boutique members-only downtown gym (SLT Gym LLC), already offers cold plunge + sauna recovery and private gym rentals for trainers/teams/influencers - strong recovery-add-on fit. No email or owner after 3 queries; phone 385-315-5174."
+ },
+ {
+  "business": "Holladay Health & Fitness",
+  "city": "Holladay",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Rob Dunfield",
+  "owner_title": "Owner and Manager",
+  "notes": "10+ years; PT, isokinetics, physical therapy and massage on site. No email after 3 queries; phone (801) 278-6465."
+ },
+ {
+  "business": "Rise4 Holladay",
+  "city": "Holladay",
+  "email": "Info@Rise-4.com",
+  "email_confidence": "high",
+  "email_source": "rise-4.com/contact",
+  "owner": "Brecca Johnson and Chris Johnson",
+  "owner_title": "Co-owners (Brecca is Owner/Lead Trainer, CPT)",
+  "notes": "Address 4890 Highland Dr, Holladay 84117; phone (801) 835-7507. Became co-owners Nov 2024; second Rise4 location (original is SLC). Email is general inbox."
+ },
+ {
+  "business": "RxFIT Gym - Holladay",
+  "city": "Millcreek",
+  "email": "tyler@rxfit.health",
+  "email_confidence": "medium",
+  "email_source": "LinkedIn company snippet for RxFit Health (Provo HQ); Holladay site email is obfuscated",
+  "owner": "Mark (owner) and Tyler (operations)",
+  "owner_title": "Owner / Operations (first names only in sources)",
+  "notes": "Chain: Holladay, Provo, Springville, South Jordan ('largest functional fitness community in Utah'); parent RxFit Health founded 2016, Provo. Email is the parent-company contact, not Holladay-specific. Phone 435-292-3668."
+ },
+ {
+  "business": "Obsidian Fitness",
+  "city": "Millcreek",
+  "email": "info@obsidianfitness.com",
+  "email_confidence": "high",
+  "email_source": "obsidianfitness.com (snippet); Lacey's own @obsidianfitness.com address is masked on ZoomInfo",
+  "owner": "Lacey Bruschke",
+  "owner_title": "Owner / Creator of Obsidian method",
+  "notes": "Patented/trademarked Obsidian HIIT-low-impact workout; owner is an RN + CPT with 25 yrs teaching. Phone 801-486-1122."
+ },
+ {
+  "business": "btone FITNESS Brickyard",
+  "city": "Millcreek",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Janeen McCormick",
+  "owner_title": "Owner and CEO (franchisee)",
+  "notes": "Franchise of Boston-based btone FITNESS (Jody Merrill, founder); local owner's @btonefitness.com email is masked on ZoomInfo. Reformer 'Pilates remixed' 45-min classes. Phones 801-810-4664 / (857) 445-1250. Salt Lake Chamber member."
+ },
+ {
+  "business": "Champs Gym (Pouha Boxing)",
+  "city": "South Salt Lake",
+  "email": "champsgymslc@gmail.com",
+  "email_confidence": "high",
+  "email_source": "champsgymslc.com/contact",
+  "owner": "Sione Pouha",
+  "owner_title": "Head Trainer / Owner (former NFL DT)",
+  "notes": "Boxing gym for all ages; phone (801) 871-5234."
+ },
+ {
+  "business": "The Institute of Mixed Martial Arts",
+  "city": "South Salt Lake",
+  "email": "sep.imma@gmail.com",
+  "email_confidence": "medium",
+  "email_source": "Yelp / quicklocal listing",
+  "owner": "Sepuloni (Sep) Pouha",
+  "owner_title": "Owner",
+  "notes": "Boxing, Muay Thai, BJJ. Phones 801-870-8904 / (801) 906-8062. Sep's @immafight.com address is masked on ZoomInfo."
+ },
+ {
+  "business": "Velocity Combat Club",
+  "city": "Salt Lake City",
+  "email": "VelocityCombatClub@gmail.com",
+  "email_confidence": "high",
+  "email_source": "velocitycombat.com",
+  "owner": "",
+  "owner_title": "",
+  "notes": "New: grand opening June 2026 in basement of Church and State (370 S 300 E). Combat arts strength & conditioning + BJJ. Phone (801) 502-8464."
+ },
+ {
+  "business": "Renzo Gracie Salt Lake City",
+  "city": "Salt Lake City",
+  "email": "info@renzogracieslc.com",
+  "email_confidence": "high",
+  "email_source": "renzogracieslc.com/contact",
+  "owner": "Stan Beck",
+  "owner_title": "Owner / Head Instructor (Renzo Gracie black belt, 28+ yrs under Renzo)",
+  "notes": "Moved to Utah 2019; BJJ, MMA, kids. 615 E Simpson Ave 84106; phone (801) 810-6550. Stan's personal address is obfuscated in snippets."
+ },
+ {
+  "business": "Keel Pilates",
+  "city": "Millcreek",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Boutique studio, group + private sessions; only Facebook/YouTube presence surfaced. No email, phone or owner after 3 queries."
+ },
+ {
+  "business": "Mcycle Studios",
+  "city": "Salt Lake City",
+  "email": "megan@mcyclestudios.com",
+  "email_confidence": "high",
+  "email_source": "mcyclestudios.com/about and press (also hello@mcyclestudios.com general)",
+  "owner": "Megan Tyrrell",
+  "owner_title": "CEO / Founder (co-owner Richmond Tyrrell)",
+  "notes": "Indoor cycling; 2021 ClassPass National Studio of the Year. Phone 385-270-5185."
+ },
+ {
+  "business": "Body Alive Fitness - Orem",
+  "city": "Orem",
+  "email": "orem@bodyalivefitness.com",
+  "email_confidence": "high",
+  "email_source": "bodyalivefitness.com Orem location page (general: info@bodyalivefitness.com)",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Multi-location Utah chain (Body Alive Fitness); Orem is a Pilates/fitness studio at 542 E University Pkwy 84097, phone (385) 535-7092. Email is location inbox, not an owner."
+ },
+ {
+  "business": "Nasty Erne Nelson's Pickleball Gym",
+  "city": "Orem",
+  "email": "rosemary@nastyernenelsons.com",
+  "email_confidence": "high",
+  "email_source": "nastyernenelsons.com / listing snippet",
+  "owner": "Rosemary Jarman",
+  "owner_title": "Owner (ran the GoFundMe to build the gym)",
+  "notes": "4 indoor pickleball courts, ball-machine and video drilling, lessons; open 6am-midnight; 4.9 stars/60 reviews. 665 W 400 S, Orem 84058; phone 801-691-4256."
+ },
+ {
+  "business": "Mountain West Pilates - Provo",
+  "city": "Provo",
+  "email": "hello@mountainwestpilates.com",
+  "email_confidence": "high",
+  "email_source": "mountainwestpilates.com contact page",
+  "owner": "Camie Wray",
+  "owner_title": "CEO and Owner",
+  "notes": "Two locations: Pleasant Grove (793 S Main St - the address the input listed for The Box) and Provo (428 W 2310 N Ste 103, 84604). Phone (801) 899-9630. Same email for both."
+ },
+ {
+  "business": "Studio Physiques",
+  "city": "Provo",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Address 5101 Edgewood Dr, Provo 84604 (River Bottoms); phones (801) 225-0035 / (801) 319-0383; site studiophysiques.com. Email is obfuscated in all snippets. Romana's Pilates-certified, 32 yrs experience; back pain and pre/postnatal specialties."
+ },
+ {
+  "business": "Urban Pilates Utah",
+  "city": "Provo",
+  "email": "studio@urbanpilatesutah.com",
+  "email_confidence": "high",
+  "email_source": "urbanpilatesutah.com",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Actually in Orem: 560-562 E Park Ave Ste B, Orem 84097. Woman-owned boutique reformer studio; 500+ ClassPass ratings. Owner name not surfaced."
+ },
+ {
+  "business": "Upfit",
+  "city": "Provo",
+  "email": "Team@UpFitLife.com",
+  "email_confidence": "high",
+  "email_source": "upfitlife.com/contact-us",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Personal-training gym for adults 55+ (longevity/healthspan focus, developed with BYU senior-fitness researchers) - strong HBOT fit. 3601 N University Ave #150, 84604; phone 801-900-4348. Founders unnamed in sources."
+ },
+ {
+  "business": "LeanTrition",
+  "city": "Provo",
+  "email": "travis@leantrition.com",
+  "email_confidence": "medium",
+  "email_source": "leantrition.com contact-us / directory snippet",
+  "owner": "",
+  "owner_title": "",
+  "notes": "Travis Lott is a NASM trainer/nutrition consultant there (not confirmed as owner; Stefan Gardner also listed on ZoomInfo). Addresses vary: 3210 N Canyon Rd Ste 202 and 3067 N Canyon Rd, Provo 84604; new location in Midvale/Cottonwood Heights. Phone (801) 473-1887."
+ },
+ {
+  "business": "Stoneman Boxing",
+  "city": "Provo",
+  "email": "",
+  "email_confidence": "none",
+  "email_source": "",
+  "owner": "Shane Stoneman",
+  "owner_title": "Principal, Stoneman Boxing LLC",
+  "notes": "LLC registered at 852 S 900 E, Spanish Fork 84660 (est. 2012); gym at 1640 S State St, Provo. Phone (801) 798-8925. No email after 3 queries; Facebook page is main channel."
+ },
+ {
+  "business": "CrossFit Vitruvius",
+  "city": "Provo",
+  "email": "cfvitruvius@gmail.com",
+  "email_confidence": "high",
+  "email_source": "crossfitvitruvius.com/contact-us",
+  "owner": "Seth",
+  "owner_title": "Owner / Head Coach (surname not in sources)",
+  "notes": "3089 N Canyon Rd, Provo 84604; phones (801) 380-4678 / (801) 916-8943. 96 Birdeye reviews, 'best CrossFit gym in the valley' review theme."
+ }
+]
