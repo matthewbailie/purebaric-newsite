@@ -871,7 +871,7 @@
       </div>
       <p class="renter-line" style="margin:0 0 14px;max-width:820px;">Businesses inside the delivery area, researched into <code>_internal/outreach/purebaric_b2b_email_prospects.xlsx</code>. Each row gets the email template for its industry, addressed to the owner by first name when one is known (otherwise "Hi &lt;Business&gt; team"), with a one-sentence personal note. <strong>Preview</strong> shows the exact email; <strong>Send business outreach TEST to me</strong> delivers it to <span id="orTestRecipient"></span> with a subject starting "[Business outreach TEST]" (this is different from the Notifications tab's alert test); <strong>Send</strong> goes to the business. Every email carries an unsubscribe link and the postal address below, and sends stop at the daily cap.</p>
 
-      <div class="form-card open" style="display:block;max-width:820px;margin-bottom:18px;">
+      <div id="orSettingsCard" class="form-card open is-loading" style="display:block;max-width:820px;margin-bottom:18px;">
         <h3 style="font-size:16px;font-weight:700;margin:0 0 10px;">Sender settings</h3>
         <div class="keyform">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
@@ -903,7 +903,13 @@
         </div>
       </div>
 
-      <div id="orStats" class="renter-line" style="margin:0 0 12px;"></div>
+      <style>
+        .or-spin { display:inline-block; width:14px; height:14px; border:2px solid rgba(43,35,32,.2); border-top-color:var(--terracotta); border-radius:50%; animation:orspin .8s linear infinite; vertical-align:-2px; margin-right:6px; }
+        @keyframes orspin { to { transform:rotate(360deg); } }
+        #orSettingsCard.is-loading input, #orSettingsCard.is-loading select, #orSettingsCard.is-loading button { opacity:.5; pointer-events:none; }
+        #orSettingsCard.is-loading h3::after { content:""; display:inline-block; width:14px; height:14px; margin-left:8px; border:2px solid rgba(43,35,32,.2); border-top-color:var(--terracotta); border-radius:50%; animation:orspin .8s linear infinite; vertical-align:-2px; }
+      </style>
+      <div id="orStats" class="renter-line" style="margin:0 0 12px;"><span class="or-spin"></span>Loading outreach settings and prospects…</div>
 
       <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px;">
         <select id="orIndustry" onchange="renderOutreach()"><option value="">All industries</option></select>
@@ -917,7 +923,7 @@
       <div class="table-wrap">
         <table class="data-table" id="orTable">
           <thead><tr><th style="width:28px;"><input type="checkbox" id="orCheckAll" onchange="toggleOutreachAll(this.checked)"></th><th>Business</th><th>Contact</th><th>Template</th><th>Status</th><th>Actions</th></tr></thead>
-          <tbody id="orRows"></tbody>
+          <tbody id="orRows"><tr><td colspan="7" class="or-sub" style="padding:18px;"><span class="or-spin"></span>Loading prospects…</td></tr></tbody>
         </table>
       </div>
       <style>
@@ -3732,7 +3738,17 @@
   const OR_STATUSES = ['new', 'sent', 'bounced', 'replied', 'interested', 'customer', 'declined', 'unsubscribed', 'skipped', 'failed'];
 
   async function loadOutreach() {
-    const data = await api('/api/admin/outreach');
+    const card = document.getElementById('orSettingsCard');
+    const stats = document.getElementById('orStats');
+    if (!_outreach.prospects.length) {
+      card.classList.add('is-loading');
+      stats.innerHTML = '<span class="or-spin"></span>Loading outreach settings and prospects…';
+      document.getElementById('orRows').innerHTML = '<tr><td colspan="7" class="or-sub" style="padding:18px;"><span class="or-spin"></span>Loading prospects…</td></tr>';
+    }
+    let data;
+    try { data = await api('/api/admin/outreach'); }
+    catch (e) { card.classList.remove('is-loading'); stats.innerHTML = `<strong style="color:#82402f;">Could not load outreach: ${escape(e.message)}</strong> <button class="btn btn-ghost btn-sm" onclick="loadOutreach()">Retry</button>`; document.getElementById('orRows').innerHTML = ''; return; }
+    card.classList.remove('is-loading');
     _outreach = data;
     const setIf = (id, v) => { const el = document.getElementById(id); if (el && document.activeElement !== el) el.value = v == null ? '' : v; };
     const st = data.settings || {};
