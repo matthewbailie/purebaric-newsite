@@ -31,11 +31,19 @@ async function send({ to, subject, html, text, from, replyTo, headers }) {
   };
   if (headers && Object.keys(headers).length) payload.headers = headers;
   let result;
-  try {
-    result = await resend.emails.send(payload);
-  } catch (err) {
-    // Network errors, timeouts, etc., SDK threw outright
-    throw new Error(`Resend send threw: ${err && err.message ? err.message : String(err)}`);
+  // Resend allows 2 API requests per second. Alert tests and outreach batches send several emails
+  // back to back, so a 429 ("Too many requests") is paced and retried rather than surfaced as a failure.
+  for (let attempt = 0; ; attempt++) {
+    try {
+      result = await resend.emails.send(payload);
+    } catch (err) {
+      // Network errors, timeouts, etc., SDK threw outright
+      throw new Error(`Resend send threw: ${err && err.message ? err.message : String(err)}`);
+    }
+    const e = result && result.error;
+    const rateLimited = e && (e.statusCode === 429 || e.name === "rate_limit_exceeded");
+    if (!rateLimited || attempt >= 4) break;
+    await new Promise(r => setTimeout(r, 700 * (attempt + 1)));
   }
   // Resend SDK returns { data, error }, API-level errors are NOT thrown,
   // they come back as result.error and must be inspected manually.
