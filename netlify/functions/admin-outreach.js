@@ -3,11 +3,11 @@
 //   GET    /api/admin/outreach                 -> { prospects, stats, settings, templates }
 //   PUT    /api/admin/outreach/settings        -> save sender settings (from name, postal address, daily cap, subject)
 //   POST   /api/admin/outreach/import          -> upsert prospects from the bundled _internal/outreach/prospects.json
-//   POST   /api/admin/outreach/preview  {id}   -> { subject, html, text } for one prospect, or {templateId, firstName, businessName, personalNote}
+//   POST   /api/admin/outreach/preview  {id}   -> { subject, html, text } for one prospect, or {templateId, firstName, businessName}
 //   POST   /api/admin/outreach/test     {id?, templateId?} -> sends that email to the owner's own inbox (never to the prospect)
 //   POST   /api/admin/outreach/send     {ids}  -> sends to each prospect (daily cap, sendable status, email present), returns per-id results
 //   POST   /api/admin/outreach/sync            -> refreshes delivery state for recently sent emails from Resend (bounced, complained)
-//   PATCH  /api/admin/outreach/:id      {status|firstName|personalNote|email|notes|templateId}
+//   PATCH  /api/admin/outreach/:id      {status|firstName|email|notes|templateId}
 //
 // Every email carries the unsubscribe link and the postal address (CAN-SPAM); sending is refused while the
 // postal address is blank. Test sends go only to OWNER_EMAIL.
@@ -45,7 +45,6 @@ function renderFor(p, settings, overrides = {}) {
     categoryId: overrides.templateId || p.templateId,
     firstName: overrides.firstName !== undefined ? overrides.firstName : p.firstName,
     businessName: overrides.businessName !== undefined ? overrides.businessName : p.business,
-    personalNote: overrides.personalNote !== undefined ? overrides.personalNote : p.personalNote,
     subjectIndex: settings.subjectIndex,
     unsubscribeUrl: p.unsubToken ? unsubscribeUrl(p) : "",
     postalAddress: settings.postalAddress,
@@ -124,7 +123,7 @@ exports.handler = async (event, context) => {
       const settings = await getSettings();
       const p = body.id ? await getProspect(body.id) : null;
       if (body.id && !p) return json(404, { error: "not_found" });
-      const base = p || { id: "preview", business: body.businessName || "[Business name]", firstName: body.firstName || "", personalNote: body.personalNote || "", templateId: body.templateId, unsubToken: "" };
+      const base = p || { id: "preview", business: body.businessName || "[Business name]", firstName: body.firstName || "", templateId: body.templateId, unsubToken: "" };
       const r = renderFor(base, settings, body);
       return json(200, { subject: r.subject, html: r.html, text: r.text, blocker: p ? out.sendBlocker(p, settings) : null });
     }
@@ -137,7 +136,7 @@ exports.handler = async (event, context) => {
       if (!p) {
         // a placeholder prospect for the chosen template, so links and layout can be checked before any import.
         // Bracketed placeholders only: nothing here may read like a fact about a real business.
-        p = { id: "test", business: body.businessName || "[Sample business]", firstName: body.firstName || "", personalNote: body.personalNote || "", templateId: body.templateId || "gyms-and-fitness", unsubToken: "test-token" };
+        p = { id: "test", business: body.businessName || "[Sample business]", firstName: body.firstName || "", templateId: body.templateId || "gyms-and-fitness", unsubToken: "test-token" };
       }
       if (!tpl.categoryById(p.templateId)) return json(400, { error: "no_template", message: "No email template for this industry." });
       const { resendId, subject } = await deliver(p, { ...settings, postalAddress: settings.postalAddress || "(postal address not set yet)" }, OWNER_EMAIL, { isTest: true });

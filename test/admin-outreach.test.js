@@ -117,13 +117,12 @@ test("a failed send is recorded and can be retried", async () => {
 
 test("PATCH edits survive a re-import; invalid status is a 400", async () => {
   const p = ids.filter(x => x.email)[7];
-  const r = parse(await call("PATCH", p.id, { firstName: "Pat", personalNote: "custom", status: "replied" }));
+  const r = parse(await call("PATCH", p.id, { firstName: "Pat", status: "replied" }));
   assert.equal(r.prospect.firstName, "Pat");
   assert.equal(r.prospect.status, "replied");
   await call("POST", "import");
   const after = parse(await call("GET")).prospects.find(x => x.id === p.id);
   assert.equal(after.firstName, "Pat");
-  assert.equal(after.personalNote, "custom");
   assert.equal(after.status, "replied");
   const bad = await call("PATCH", p.id, { status: "nope" });
   assert.equal(bad.statusCode, 400);

@@ -21,22 +21,23 @@ test("normalizeProspect derives the greeting name, lowercases the email, starts 
   assert.equal(p.templateId, "gyms-and-fitness");
 });
 
-test("import keeps the research-drafted note as a suggestion only; the sent note starts empty", () => {
+test("import drops the research-drafted note and hook: the email asserts nothing about the business", () => {
   const p = out.normalizeProspect({ ...row, personal_note: "Congrats on the ribbon cutting." });
-  assert.equal(p.personalNote, "");
-  assert.equal(p.suggestedNote, "Congrats on the ribbon cutting.");
-  assert.equal(p.hook, "open 24/7");
+  assert.equal(p.personalNote, undefined);
+  assert.equal(p.suggestedNote, undefined);
+  assert.equal(p.hook, undefined);
+  const r = tpl.render({ categoryId: p.templateId, firstName: p.firstName, businessName: p.business, postalAddress: "x" });
+  assert.doesNotMatch(r.html, /ribbon|24\/7/);
 });
 
 test("re-import keeps status, token and the owner's edits", () => {
   const first = out.normalizeProspect(row);
   const sent = out.markSent(first, "re_123");
-  const edited = out.applyPatch(sent, { personalNote: "custom note", firstName: "Michael" });
+  const edited = out.applyPatch(sent, { firstName: "Michael" });
   const again = out.normalizeProspect({ ...row, owner: "Someone Else", personal_note: "from research" }, edited);
   assert.equal(again.status, "sent");
   assert.equal(again.unsubToken, first.unsubToken);
   assert.equal(again.resendId, "re_123");
-  assert.equal(again.personalNote, "custom note");
   assert.equal(again.firstName, "Michael");
 });
 
@@ -102,11 +103,10 @@ test("greetingName handles the owner strings research produces", () => {
 });
 
 test("render fills every token, escapes the business name, and carries the compliance footer", () => {
-  const r = tpl.render({ categoryId: "salons-and-beauty", firstName: "", businessName: "Lash & Co", personalNote: "your reviews mention the quiet room",
+  const r = tpl.render({ categoryId: "salons-and-beauty", firstName: "", businessName: "Lash & Co",
     unsubscribeUrl: "https://purebaric.com/api/outreach/unsubscribe?p=p_1&t=abc", postalAddress: "123 Main St, Lehi, UT 84043" });
   for (const s of [r.subject, r.html, r.text]) assert.doesNotMatch(s, /\[(First name|Business name|Personal note)\]/);
   assert.match(r.html, /Hi Lash &amp; Co team,/);
-  assert.match(r.html, /your reviews mention the quiet room\./);
   assert.match(r.html, /unsubscribe\?p=p_1&amp;t=abc/);
   assert.match(r.html, /123 Main St, Lehi, UT 84043/);
   assert.match(r.html, /purebaric\.com\/business\?utm_source=email&utm_medium=outreach&utm_campaign=b2b-salons-and-beauty/);
@@ -117,7 +117,7 @@ test("render fills every token, escapes the business name, and carries the compl
 
 test("every category renders with a subject, no leftover tokens when fully personalized", () => {
   for (const c of tpl.CATEGORIES) {
-    const r = tpl.render({ categoryId: c.id, firstName: "Pat", businessName: "Example Fitness", personalNote: "", postalAddress: "x" });
+    const r = tpl.render({ categoryId: c.id, firstName: "Pat", businessName: "Example Fitness", postalAddress: "x" });
     assert.ok(r.subject.length > 10, c.id);
     assert.doesNotMatch(r.html, /\[(First name|Business name|Personal note)\]/, c.id);
     assert.doesNotMatch(r.text, /\[(First name|Business name|Personal note)\]/, c.id);

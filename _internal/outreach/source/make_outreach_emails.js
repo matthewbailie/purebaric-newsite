@@ -65,9 +65,6 @@ iframe{width:100%;height:calc(100vh - 62px);border:0;display:block}
     <input id="first" placeholder="[First name]" autocomplete="off">
     <label for="biz">Business name</label>
     <input id="biz" placeholder="[Business name]" autocomplete="off">
-    <label for="note">Personal note (one sentence, optional)</label>
-    <textarea id="note" placeholder="One sentence you know to be true about this business. Leave blank if you are not certain."></textarea>
-    <div class="hint">Only something you have seen yourself: their website, a review you read, a visit. Never a guess. Leave blank to omit.</div>
     <div class="subjects">
       <h2>Subject lines</h2>
       <div id="subjects"></div>
@@ -81,14 +78,11 @@ iframe{width:100%;height:calc(100vh - 62px);border:0;display:block}
 var DATA=${data};
 var $=function(id){return document.getElementById(id)};
 var sel=$('cat');DATA.forEach(function(c,i){var o=document.createElement('option');o.value=i;o.textContent=c.label;sel.appendChild(o)});
-try{var saved=JSON.parse(localStorage.getItem('pb-outreach')||'{}');if(saved.cat!=null)sel.value=saved.cat;if(saved.first)$('first').value=saved.first;if(saved.biz)$('biz').value=saved.biz;if(saved.note)$('note').value=saved.note}catch(e){}
-function vals(){return {cat:sel.value,first:$('first').value.trim(),biz:$('biz').value.trim(),note:$('note').value.trim()}}
+try{var saved=JSON.parse(localStorage.getItem('pb-outreach')||'{}');if(saved.cat!=null)sel.value=saved.cat;if(saved.first)$('first').value=saved.first;if(saved.biz)$('biz').value=saved.biz}catch(e){}
+function vals(){return {cat:sel.value,first:$('first').value.trim(),biz:$('biz').value.trim()}}
 function fill(s,v,mark){
   var first=v.first||(mark?'<mark>[First name]</mark>':'[First name]');
   var biz=v.biz||(mark?'<mark>[Business name]</mark>':'[Business name]');
-  var note=v.note?(/[.!?]$/.test(v.note)?v.note:v.note+'.'):'';
-  s=s.split('[Personal note] ').join(note?note+' ':'');
-  s=s.split('[Personal note]').join(note);
   s=s.split(encodeURIComponent('[Business name]')).join(encodeURIComponent(v.biz||'[Business name]'));
   return s.split('[First name]').join(first).split('[Business name]').join(biz);
 }
@@ -103,7 +97,7 @@ function render(){
 function say(m){$('msg').textContent=m}
 function bodyHtml(){var v=vals(),c=DATA[v.cat];var m=fill(c.html,v,false).match(/<body[^>]*>([\\s\\S]*)<\\/body>/);return m?m[1]:''}
 function bodyText(){var v=vals(),c=DATA[v.cat];return fill(c.text,v,false).replace(/^Subject:.*\\n(Alt subjects:.*\\n)?\\n?/,'')}
-['cat','first','biz','note'].forEach(function(id){$(id).addEventListener('input',render)});
+['cat','first','biz'].forEach(function(id){$(id).addEventListener('input',render)});
 $('copyHtml').onclick=async function(){
   var v=vals();if(!v.first||!v.biz){say('Fill in the first name and business name first.');$('warn').hidden=false;return}
   var stage=$('stage');stage.innerHTML=bodyHtml();var ok=false;

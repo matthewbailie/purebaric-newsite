@@ -35,7 +35,8 @@ const STANDARD_TILES = {
   ],
 };
 
-// ---- the industries. Tokens: [First name], [Business name], [Personal note]
+// ---- the industries. Tokens: [First name], [Business name]. No personal notes: nothing in an email
+// may assert a fact about the recipient's business beyond its name.
 // Each email is short: the profit in the first line, a button to reserve, the four tiles, three
 // bullets on what is included, a second button. Per industry only the subject, headline, the one
 // opening paragraph, and the "why they book" line change.
@@ -50,7 +51,7 @@ const CATEGORIES = [
       'Hyperbaric on your gym floor, no chamber to buy',
     ],
     preheader: 'Members already pay recovery studios $79 to $129 a session for hyperbaric. Put it on your floor and keep that revenue.',
-    headline: 'Make a 4 x 8 ft corner of your gym pay',
+    headline: 'Turn a 4 x 8 ft corner into a new profit line',
     opener: 'Your members are already paying recovery studios $79 to $129 an hour for hyperbaric sessions. Put a chamber on your floor and that spend stays in your gym: you set the price, you keep every dollar, and the only space it takes is a 4 x 8 ft corner.',
     whyLine: 'Members who train hard book it on rest days, and session packs turn one-off visits into repeat revenue that is not dues.',
     tiles: STANDARD_TILES,
@@ -65,7 +66,7 @@ const CATEGORIES = [
       'Keep the recovery spend your athletes take across town',
     ],
     preheader: 'Your five-day-a-week athletes already pay $79 to $129 a session for hyperbaric elsewhere. Keep it in the box.',
-    headline: 'Make a 4 x 8 ft corner of your box pay',
+    headline: 'Turn a 4 x 8 ft corner into a new profit line',
     opener: 'Your athletes train five or more days a week and already pay recovery studios $79 to $129 an hour for hyperbaric sessions. A chamber in the box keeps that money in your business: you set the price, keep every dollar, and give up only a 4 x 8 ft corner.',
     whyLine: 'Competitors in a heavy block or prepping for a comp book it between sessions, and comp-prep packs sell themselves.',
     tiles: STANDARD_TILES,
@@ -102,7 +103,7 @@ const CATEGORIES = [
       'The service your clients book somewhere else',
     ],
     preheader: 'Studios across the Wasatch Front charge $79 to $129 a session for hyperbaric. Add it to your menu without buying a chamber.',
-    headline: 'Add hyperbaric to your menu in a 4 x 8 ft corner',
+    headline: 'Turn a 4 x 8 ft corner into a new profit line',
     opener: 'Your clients already book cold plunge, sauna, cryo, or IV, and some are asking whether you offer hyperbaric. Studios across the Wasatch Front charge $79 to $129 for that hour. A chamber adds it to your menu in a 4 x 8 ft corner, with no chamber to buy and no machine to service.',
     whyLine: 'It pairs with a plunge or a drip, sells as packs, and slots into your top membership tier.',
     tiles: STANDARD_TILES,
@@ -117,7 +118,7 @@ const CATEGORIES = [
       'What your discharged patients could keep coming in for',
     ],
     preheader: 'A self-pay wellness session patients book around their visits. No claims, no codes, run by the staff you have.',
-    headline: 'A cash-pay line that fits in a 4 x 8 ft room, with no billing codes',
+    headline: 'Turn a 4 x 8 ft corner into a new profit line',
     opener: 'Your active patients are already paying recovery studios $79 to $129 an hour for hyperbaric on top of what they pay you. A chamber in a 4 x 8 ft room gives them a self-pay wellness session before or after a visit: no claims, no codes, no new hire, and revenue that does not depend on a payer.',
     whyLine: 'Patients who finish a plan of care get a reason to keep coming in, and it sits beside your clinical services as a general-wellness line.',
     tiles: STANDARD_TILES,
@@ -132,7 +133,7 @@ const CATEGORIES = [
       'A new service for [Business name], no new hire',
     ],
     preheader: 'Regulars add a 60-minute session before or after their appointment. No new hire, no treatment room.',
-    headline: 'Make a 4 x 8 ft corner of your salon pay, with no new hire',
+    headline: 'Turn a 4 x 8 ft corner into a new profit line',
     opener: 'Your clients already come in every few weeks and treat the appointment as time for themselves. A hyperbaric session is 60 quiet minutes they add before or after a fill, color, or cut, and studios across the Wasatch Front charge $79 to $129 for that hour. Nothing for your artists to perform; a 4 x 8 ft corner is all it takes.',
     whyLine: 'Pair it with an appointment, sell packs at checkout, and hand clients the pamphlet we make in your brand.',
     tiles: STANDARD_TILES,
@@ -217,10 +218,17 @@ function email(cat, opts = {}) {
 
           <!-- Header -->
           <tr>
-            <td style="background:${C.ink}; padding:22px 40px; text-align:center;">
+            <td align="center" style="background:${C.ink}; padding:22px 40px; text-align:center;">
               <a href="${biz}" style="text-decoration:none;">
-                <img src="${SITE}/images/logo-cream.png?v=3" alt="Purebaric" width="220" style="display:inline-block; height:auto; max-width:220px; border:0; outline:none; text-decoration:none;" />
+                <img src="${SITE}/images/logo-cream.png?v=3" alt="Purebaric" width="220" style="display:block; margin:0 auto; height:auto; max-width:220px; border:0; outline:none; text-decoration:none;" />
               </a>
+            </td>
+          </tr>
+
+          <!-- Hero image, full card width -->
+          <tr>
+            <td align="center" style="padding:0; line-height:0; font-size:0;">
+              <img src="${SITE}/images/chamber-living.jpg" alt="A Purebaric 1.5 ATA hyperbaric chamber" width="560" style="display:block; width:100%; max-width:560px; height:auto; border:0;" />
             </td>
           </tr>
 
@@ -230,7 +238,7 @@ function email(cat, opts = {}) {
               <p style="margin:0 0 8px; font-size:12px; letter-spacing:0.16em; text-transform:uppercase; font-weight:700; color:${C.terraD};">${esc(cat.eyebrow)}</p>
               <h1 style="margin:0 0 18px; font-family:Georgia,'Times New Roman',serif; font-size:27px; line-height:1.22; font-weight:700; color:${C.ink};">${esc(cat.headline)}</h1>
               <p style="margin:0 0 14px; font-size:16px;">Hi [First name],</p>
-              <p style="margin:0 0 14px; font-size:16px;">[Personal note] ${esc(cat.opener)}</p>
+              <p style="margin:0 0 14px; font-size:16px;">${esc(cat.opener)}</p>
               <p style="margin:0 0 20px; font-size:16px;">${esc(SHARED.intro)} <a href="${biz}" style="color:${C.terraD}; text-decoration:underline;">See the numbers for businesses.</a></p>
               <p style="margin:0 0 6px;">${button(reserve, 'Reserve a chamber for [Business name]')}</p>
               <p style="margin:0 0 10px; font-size:13px; color:${C.muted};">No charge until we confirm a delivery date.</p>
@@ -319,7 +327,7 @@ function plainText(cat, opts = {}) {
     '',
     `Hi [First name],`,
     '',
-    line(`[Personal note] ${cat.opener}`),
+    line(cat.opener),
     '',
     `${SHARED.intro} The numbers for businesses: ${biz}`,
     '',
@@ -350,7 +358,7 @@ function plainText(cat, opts = {}) {
 }
 
 // ---- personalization -------------------------------------------------------------------------
-// Tokens in the templates: [First name], [Business name], [Personal note].
+// Tokens in the templates: [First name], [Business name].
 
 // Turn an "owner" string from research into a greeting name. Returns "" when there is no usable
 // first name, and the greeting then falls back to "Hi <Business> team,".
@@ -370,15 +378,11 @@ function greetingName(owner) {
   return firsts.slice(0, 2).map(cap).join(' and ');
 }
 
-function personalize(str, { firstName = '', businessName = '', personalNote = '' } = {}, { html = true } = {}) {
+function personalize(str, { firstName = '', businessName = '' } = {}, { html = true } = {}) {
   const e = html ? esc : (x => String(x));
   const biz = businessName ? e(businessName) : '[Business name]';
-  let note = String(personalNote || '').trim();
-  if (note && !/[.!?]$/.test(note)) note += '.';
   let s = String(str);
   s = s.replace('Hi [First name],', firstName ? `Hi ${e(firstName)},` : (businessName ? `Hi ${biz} team,` : 'Hi there,'));
-  s = s.split('[Personal note] ').join(note ? e(note) + ' ' : '');
-  s = s.split('[Personal note]').join(note ? e(note) : '');
   s = s.split(encodeURIComponent('[Business name]')).join(encodeURIComponent(businessName || '[Business name]'));
   s = s.split('[First name]').join(firstName ? e(firstName) : '[First name]');
   s = s.split('[Business name]').join(biz);
@@ -390,11 +394,11 @@ function categoryById(id) {
 }
 
 // Render one send-ready email. subjectIndex picks one of the category's subject lines (default 0).
-function render({ categoryId, firstName = '', businessName = '', personalNote = '', subjectIndex = 0, unsubscribeUrl = '', postalAddress = '', prospectusUrl = '' }) {
+function render({ categoryId, firstName = '', businessName = '', subjectIndex = 0, unsubscribeUrl = '', postalAddress = '', prospectusUrl = '' }) {
   const cat = categoryById(categoryId);
   if (!cat) throw new Error(`unknown outreach category: ${categoryId}`);
   const opts = { unsubscribeUrl, postalAddress, prospectusUrl };
-  const vars = { firstName, businessName, personalNote };
+  const vars = { firstName, businessName };
   const subject = personalize(cat.subjects[Math.min(subjectIndex, cat.subjects.length - 1)] || cat.subjects[0], vars, { html: false });
   const html = personalize(email(cat, opts), vars, { html: true });
   const text = personalize(plainText(cat, opts).replace(/^Subject:.*\n(Alt subjects:.*\n)?\n?/, ''), vars, { html: false });
