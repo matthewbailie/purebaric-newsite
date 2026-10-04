@@ -585,6 +585,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           <button class="btn btn-primary btn-sm" onclick="openNewRental()">+ New rental</button>
         </div>
       </div>
+      <div class="pin-bar">
       <div class="seg" id="rentalFilter" role="group" aria-label="Show rentals">
         <button type="button" data-f="active" onclick="setRentalFilter('active')">Active <span class="seg-n" id="rfActive"></span></button>
         <button type="button" data-f="scheduled" onclick="setRentalFilter('scheduled')" title="Confirmed rentals that have not started yet">Scheduled <span class="seg-n" id="rfScheduled"></span></button>
@@ -592,10 +593,11 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <button type="button" data-f="cancelled" onclick="setRentalFilter('cancelled')">Cancelled <span class="seg-n" id="rfCancelled"></span></button>
         <button type="button" data-f="all" onclick="setRentalFilter('all')">All <span class="seg-n" id="rfAll"></span></button>
       </div>
-      <div class="seg" id="rentalTypeFilter" role="group" aria-label="Rental type" style="margin-top:6px;">
+      <div class="seg" id="rentalTypeFilter" role="group" aria-label="Rental type">
         <button type="button" data-t="all" onclick="setRentalTypeFilter('all')">All types</button>
         <button type="button" data-t="residential" onclick="setRentalTypeFilter('residential')">Residential <span class="seg-n" id="rtResidential"></span></button>
         <button type="button" data-t="business" onclick="setRentalTypeFilter('business')">Business <span class="seg-n" id="rtBusiness"></span></button>
+      </div>
       </div>
 
       <div id="rentalFormAnchor"></div>
@@ -804,11 +806,13 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           <button class="btn btn-primary btn-sm" onclick="openAddCustomer()">+ Add customer</button>
         </div>
       </div>
+      <div class="pin-bar">
       <div class="seg" id="customerFilter" role="group" aria-label="Show customers">
         <button type="button" data-f="active" onclick="setCustomerFilter('active')">Active <span class="seg-n" id="cfActive"></span></button>
         <button type="button" data-f="all" onclick="setCustomerFilter('all')">All <span class="seg-n" id="cfAll"></span></button>
         <button type="button" data-f="home" onclick="setCustomerFilter('home')">Home <span class="seg-n" id="cfHome"></span></button>
         <button type="button" data-f="business" onclick="setCustomerFilter('business')">Business <span class="seg-n" id="cfBiz"></span></button>
+      </div>
       </div>
 
       <div id="customerFormAnchor"></div>
@@ -923,8 +927,8 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <button class="btn btn-ghost btn-sm" onclick="loadTraffic(true)">Refresh from Google Analytics</button>
       </div>
       <p class="renter-line" id="anNote" style="margin:0 0 14px;max-width:760px;">Loading…</p>
-      <div id="anRange">
-        <div class="seg an-range" role="group" aria-label="Chart range" style="margin:0;">
+      <div id="anRange" class="pin-bar" style="margin-bottom:1.25rem;">
+        <div class="seg an-range" role="group" aria-label="Chart range">
           <button type="button" data-r="365" onclick="setAnRange(365)">Year</button>
           <button type="button" data-r="90" onclick="setAnRange(90)">3 months</button>
           <button type="button" data-r="30" onclick="setAnRange(30)">Month</button>
@@ -951,11 +955,13 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       <style>
         .an-table td.n, .an-table th.n{text-align:right;white-space:nowrap;}
         .an-card{margin-top:1.5rem;padding-bottom:1.1rem;}
-        /* The period switch locks to the top of the viewport and stays there while you scroll the charts, on every screen size. */
-        #anRange{position:sticky;top:0;z-index:20;background:var(--cream-warm);padding:10px 0;margin:0 0 1.25rem;}
-        #anRange.stuck{box-shadow:0 8px 16px -8px rgba(43,35,32,.25);}
+        /* Filter / period switches lock to the top of the viewport and stay there while you scroll a list or chart. */
+        .pin-bar{position:sticky;top:0;z-index:20;background:var(--cream-warm);padding:10px 0;margin:0 0 1rem;}
+        .pin-bar .seg{margin:0;}
+        .pin-bar .seg + .seg{margin-top:6px;}
+        .pin-bar.stuck{box-shadow:0 8px 16px -8px rgba(43,35,32,.25);}
         @media(max-width:900px){
-          #anRange{margin:0 -1rem 1.25rem;padding:10px 1rem;}
+          .pin-bar{margin:0 -1rem 1rem;padding:10px 1rem;}
         }
         .an-card .traffic-kpis{margin:14px 0 18px;}
         .an-card #chartAnTotal, .an-card #chartAnPage{margin-top:8px;}
@@ -1718,10 +1724,9 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     _windowChartEl(document.getElementById('chartTraffic'), r.chart, w, 'visitor', 'Site visitors');
   }
   function paintAnRange() { document.querySelectorAll('.an-range button').forEach(b => b.classList.toggle('on', +b.dataset.r === _anRange)); }
-  // Shadow under the period switch only while it is pinned at the top.
+  // Shadow under a pinned filter bar only while it is actually stuck at the top.
   (function () {
-    const bar = document.getElementById('anRange'); if (!bar) return;
-    const check = () => bar.classList.toggle('stuck', bar.getBoundingClientRect().top <= 0 && document.querySelector('[data-panel="analytics"]').classList.contains('active'));
+    const check = () => document.querySelectorAll('.tab-panel.active .pin-bar').forEach(bar => bar.classList.toggle('stuck', window.scrollY > 0 && bar.getBoundingClientRect().top <= 0));
     window.addEventListener('scroll', check, { passive: true }); window.addEventListener('resize', check);
   })();
   function anRangeLabel() { return _anRange === 365 ? 'every day of this year' : _anRange === 7 ? 'the last 7 days' : _anRange === 30 ? 'the last 30 days' : 'the last 90 days'; }
