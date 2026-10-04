@@ -832,43 +832,70 @@
         <div class="keyform">
           <div class="keyrow"><label>Website booking mode</label>
             <select id="daMode"><option value="request">Reservation requests (customers ask, you confirm)</option><option value="book">Book with a delivery date (customers pick an open day from your calendar)</option></select></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+          <div class="da-settings">
             <div class="keyrow"><label>Earliest delivery (days from today)</label><input id="daLead" type="number" min="0" max="60"></div>
             <div class="keyrow"><label>Customers can book through</label><input id="daHorizon" readonly style="background:transparent;border-color:transparent;" title="Always December 31 of next year; it rolls forward each January 1"></div>
             <div class="keyrow"><label>Today (Mountain)</label><input id="daToday" readonly style="background:transparent;border-color:transparent;"></div>
           </div>
           <div class="keyrow"><label>Days of the week you never deliver</label>
-            <div id="daDays" style="display:flex;gap:12px;flex-wrap:wrap;padding:6px 0;">
-              <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="1"> Mon</label>
-              <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="2"> Tue</label>
-              <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="3"> Wed</label>
-              <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="4"> Thu</label>
-              <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="5"> Fri</label>
-              <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="6"> Sat</label>
-              <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="0"> Sun</label>
+            <div id="daDays" class="da-days">
+              <label><input type="checkbox" value="1"> Mon</label>
+              <label><input type="checkbox" value="2"> Tue</label>
+              <label><input type="checkbox" value="3"> Wed</label>
+              <label><input type="checkbox" value="4"> Thu</label>
+              <label><input type="checkbox" value="5"> Fri</label>
+              <label><input type="checkbox" value="6"> Sat</label>
+              <label><input type="checkbox" value="0"> Sun</label>
             </div></div>
-          <div style="margin:6px 0 10px;"><div style="display:flex;gap:8px;align-items:center;"><input type="checkbox" id="daHolidays" style="margin:0;"><label for="daHolidays" style="margin:0;font-weight:600;cursor:pointer;">Block all major U.S. holidays</label></div>
-            <div class="renter-line" style="margin-top:4px;">New Year's Day, MLK Day, Presidents' Day, Memorial Day, Juneteenth, Independence Day, Labor Day, Columbus Day, Veterans Day, Thanksgiving, and Christmas. They show hatched on the calendar below.</div></div>
+          <div class="da-holidays"><label class="da-check"><input type="checkbox" id="daHolidays"><span>Block all major U.S. holidays</span></label>
+            <div class="renter-line" style="margin-top:6px;">New Year's Day, MLK Day, Presidents' Day, Memorial Day, Juneteenth, Independence Day, Labor Day, Columbus Day, Veterans Day, Thanksgiving, and Christmas. They show hatched on the calendar below.</div></div>
           <div class="keyrow"><label>Note shown to customers next to the calendar and in their confirmation email</label><input id="daNote" maxlength="300"></div>
         </div>
       </div>
       <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Blocked days</h3>
       <p class="renter-line" style="margin:0 0 10px;max-width:760px;">Click a day to block or unblock it (vacations, a full delivery day, anything). Weekly days off are shown struck through. Or block a range below.</p>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
-        <label class="renter-line">Jump to</label><select id="daJump" onchange="_daMonth=this.value;renderDaCal();" style="padding:5px 8px;"></select>
+      <div class="da-toolbar">
+        <label class="renter-line" for="daJump">Jump to</label><select id="daJump" onchange="_daMonth=this.value;renderDaCal();"></select>
         <button type="button" class="btn btn-ghost btn-sm" onclick="shiftDaCal(-1)">&#8249; Earlier</button>
         <button type="button" class="btn btn-ghost btn-sm" onclick="shiftDaCal(1)">Later &#8250;</button>
       </div>
-      <div id="daCal" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;max-width:1100px;margin-bottom:12px;"></div>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
-        <label class="renter-line">Block a range</label><input type="date" id="daFrom" style="padding:5px 8px;"><span class="renter-line">to</span><input type="date" id="daTo" style="padding:5px 8px;">
+      <div id="daCal" class="da-cal"></div>
+      <div class="da-toolbar da-range">
+        <label class="renter-line" for="daFrom">Block a range</label><input type="date" id="daFrom"><span class="renter-line">to</span><input type="date" id="daTo">
         <button type="button" class="btn btn-ghost btn-sm" onclick="addDaRange()">Block range</button>
       </div>
       <div id="daBlocked" class="sa-list" style="margin-bottom:16px;"></div>
       <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">What customers would see</h3>
       <div id="daPreview" class="renter-line" style="margin-bottom:10px;"></div>
       <style>
-        .da-month{background:var(--card,#fffdf9);border:1px solid var(--line,#e6dccd);border-radius:12px;padding:10px 10px 8px;}
+        #daMode{width:100%;max-width:100%;min-width:0;padding:9px 11px;min-height:40px;border:1px solid var(--line,#e6dccd);border-radius:8px;background:var(--card,#fffdf9);font-family:inherit;font-size:14px;}
+        .da-settings{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+        .da-settings .keyrow label{min-height:2.6em;display:flex;align-items:flex-end;}
+        .da-days{display:flex;flex-wrap:wrap;gap:8px;padding:4px 0 2px;}
+        #daDays label,.da-check{display:inline-flex;margin:0;align-items:center;gap:8px;min-height:40px;padding:0 14px 0 10px;border:1px solid var(--line,#e6dccd);border-radius:999px;background:var(--card,#fffdf9);font-size:14px;font-weight:600;color:var(--ink,#2b2320);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;}
+        #daDays label:has(input:checked),.da-check:has(input:checked){background:#f4e7df;border-color:#e0b9a8;color:#82402f;}
+        #daDays input,#daHolidays{width:18px;height:18px;margin:0;padding:0;flex:none;accent-color:var(--terracotta,#b8654d);cursor:pointer;}
+        .da-holidays{margin:2px 0 14px;}
+        .da-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;}
+        .da-toolbar select,.da-toolbar input[type="date"]{padding:7px 8px;min-height:38px;border:1px solid var(--line,#e6dccd);border-radius:8px;background:var(--card,#fffdf9);font-family:inherit;font-size:14px;min-width:0;}
+        .da-toolbar .btn{min-height:38px;}
+        .da-cal{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;max-width:1100px;margin-bottom:12px;}
+        @media(max-width:720px){
+          .da-settings{grid-template-columns:1fr;gap:4px;}
+          .da-settings .keyrow label{min-height:0;display:block;}
+          .da-days{display:grid;grid-template-columns:repeat(4,1fr);}
+          #daDays label{justify-content:center;padding:0 6px;min-height:44px;}
+          .da-check{width:100%;min-height:44px;}
+          .da-toolbar label.renter-line{flex:0 0 100%;}
+          .da-toolbar select{flex:1 1 150px;}
+          .da-toolbar .btn{flex:1 1 auto;}
+          .da-range input[type="date"]{flex:1 1 120px;}
+          .da-range .btn{flex:0 0 100%;}
+          .da-cal{grid-template-columns:1fr;gap:12px;}
+          .da-day{height:40px;font-size:15px;}
+          .da-dow{font-size:11px;}
+        }
+        .da-month{background:var(--card,#fffdf9);border:1px solid var(--line,#e6dccd);border-radius:12px;padding:10px 10px 8px;min-width:0;}
         .da-month h4{font-size:14px;font-weight:700;margin:0 0 6px;text-align:center;}
         .da-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
         .da-dow{font-size:10px;font-weight:700;color:var(--muted,#8a7d70);text-align:center;text-transform:uppercase;}
