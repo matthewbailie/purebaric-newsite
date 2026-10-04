@@ -584,8 +584,8 @@ Individual units, both managed on the admin **Chambers** tab. No "types" or pool
 - *Admin page left open across midnight* (**done**): `rolloverIfNewDay()` re-runs `loadAll()` when the calendar day has changed, on focus/visibility and every 5 minutes, so no view shows yesterday's "today".
 - *Footer copyright* (**done**): every page's "© 2026" is now `<span class="foot-year">` filled from the clock (`warm.js` on warm pages; a one-line inline script on the legacy template pages and the homepage).
 
-**Content that names a date (owner):**
-- "Coming soon · Late Oct 2026" on the sitting-chamber card (`index.html`, `chambers.html`, `business.html`, and the disabled option in the homepage booking widget). This is product status, not code. *Recommendation:* drop the month ("Coming soon") or, when the chamber ships, remove the card; if a date must show, keep it in one place (a `settings` value edited in the admin) rather than four pages.
+**Content that names a date:**
+- The sitting-chamber card (`index.html`, `chambers.html`, `business.html`, and the disabled option in the homepage booking widget) used to say "Coming soon · Late Oct 2026"; it now says just "Coming soon" (**done** 2026-10-04). When the chamber ships, remove the card. If a date must ever show, keep it in one admin-managed `settings` value rather than four pages.
 - "Last updated" lines on `/privacy` and `/sms-consent` are factual history and should only change when the text does.
 
 **Rules for future work:**
