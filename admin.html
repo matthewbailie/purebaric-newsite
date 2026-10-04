@@ -559,12 +559,14 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         .cal-tools{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 6px;}
         .cal-tools-btns{display:inline-flex;gap:6px;}
         .cal-tools-btns .btn{min-width:34px;padding:4px 9px;}
-        .cal-bar{position:absolute;top:6px;bottom:6px;border-radius:6px;display:flex;align-items:center;padding:0 8px;overflow:hidden;font-size:11px;font-weight:600;color:#fff;white-space:nowrap;}
+        /* No padding on the bar itself: padding would set a minimum width (16px) that outruns a short bar at phone scale.
+           The label carries the padding instead, so the bar's edges are always the real start and end dates. */
+        .cal-bar{position:absolute;top:6px;bottom:6px;border-radius:6px;display:flex;align-items:center;padding:0;overflow:hidden;font-size:11px;font-weight:600;color:#fff;white-space:nowrap;}
         .cal-bar.scheduled{background:#5b7fa6;}
         .cal-bar.active{background:#5c7a34;}
         .cal-bar.maint{background:repeating-linear-gradient(135deg,#c9a24a 0 5px,#a8842c 5px 10px);color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.25);}
         .cal-bar.maint.open-ended{-webkit-mask-image:linear-gradient(to right,#000 70%,transparent);mask-image:linear-gradient(to right,#000 70%,transparent);}
-        .cal-bar span{overflow:hidden;text-overflow:ellipsis;}
+        .cal-bar span{overflow:hidden;text-overflow:ellipsis;padding:0 8px;}
         .cal-today{position:absolute;top:0;bottom:0;width:2px;background:var(--terracotta,#b8654d);z-index:2;pointer-events:none;}
         .cal-bar{cursor:pointer;}
         .cal-wrap{position:relative;}
