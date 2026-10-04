@@ -552,9 +552,13 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         .cal-row.cal-headrow{border-top:none;background:#faf6ef;}
         .cal-name{flex:0 0 100px;padding:8px 12px;font-size:13px;font-weight:700;display:flex;flex-direction:column;justify-content:center;gap:2px;border-right:1px solid var(--line,#e6dccd);}
         .cal-name .cal-machine{font-size:11px;font-weight:600;color:var(--stone-muted,#6f635b);}
-        .cal-track{position:relative;flex:1;background:repeating-linear-gradient(to right,transparent,transparent calc(100%/12 - 1px),var(--line,#efe7db) calc(100%/12 - 1px),var(--line,#efe7db) calc(100%/12));}
-        .cal-head{display:flex;}
-        .cal-mh{flex:1;text-align:center;font-size:11px;font-weight:600;color:var(--muted,#6f635b);padding:9px 0;text-transform:uppercase;letter-spacing:.03em;}
+        .cal-track{position:relative;flex:1;overflow:hidden;}
+        .cal-gl{position:absolute;top:0;bottom:0;width:1px;background:var(--line,#efe7db);pointer-events:none;}
+        .cal-head{position:relative;height:34px;}
+        .cal-mh{position:absolute;top:0;height:34px;line-height:34px;text-align:center;font-size:11px;font-weight:600;color:var(--muted,#6f635b);text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;overflow:hidden;}
+        .cal-tools{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 6px;}
+        .cal-tools-btns{display:inline-flex;gap:6px;}
+        .cal-tools-btns .btn{min-width:34px;padding:4px 9px;}
         .cal-bar{position:absolute;top:6px;bottom:6px;border-radius:6px;display:flex;align-items:center;padding:0 8px;overflow:hidden;font-size:11px;font-weight:600;color:#fff;white-space:nowrap;}
         .cal-bar.scheduled{background:#5b7fa6;}
         .cal-bar.active{background:#5c7a34;}
@@ -2209,6 +2213,44 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   // so it advances automatically each day. Only scheduled (confirmed, future) and
   // active rentals are drawn; a rental with no machine assigned gets its own row.
   // Drawn in two places: the Chambers tab and the Home tab under Operations.
+  // ─── Rental calendar time window: zoomable from 12 months down to a week (shared by Chambers + Home) ───
+  const CAL_DAY = 86400000, CAL_MIN_DAYS = 7, CAL_MAX_DAYS = 366;
+  let _calWin = null, _calRaf = 0;
+  const _calPts = new Map(); let _calPinch = null; // live pointers + pinch state survive re-renders
+  function calDefaultWindow() { const n = new Date(); const s = new Date(n.getFullYear(), n.getMonth(), 1); const e = new Date(s.getFullYear(), s.getMonth() + 12, 1); return { start: s, days: Math.round((e - s) / CAL_DAY) }; }
+  function calWindow() { if (!_calWin) _calWin = calDefaultWindow(); return { start: _calWin.start, end: new Date(_calWin.start.getTime() + _calWin.days * CAL_DAY), days: _calWin.days }; }
+  function calScheduleRender() { if (_calRaf) return; _calRaf = requestAnimationFrame(() => { _calRaf = 0; renderCalendar(); }); }
+  function calSetWindow(start, days) { _calWin = { start: new Date(start), days: Math.max(CAL_MIN_DAYS, Math.min(CAL_MAX_DAYS, days)) }; calScheduleRender(); }
+  // Zoom by `factor` keeping the date at `frac` (0..1 across the track) under the finger/cursor.
+  function calZoomAt(frac, factor) { const w = calWindow(); const anchor = w.start.getTime() + frac * w.days * CAL_DAY; const days = Math.max(CAL_MIN_DAYS, Math.min(CAL_MAX_DAYS, w.days * factor)); calSetWindow(new Date(anchor - frac * days * CAL_DAY), days); }
+  function calPan(fracDelta) { const w = calWindow(); calSetWindow(new Date(w.start.getTime() + fracDelta * w.days * CAL_DAY), w.days); }
+  function calReset() { _calWin = null; renderCalendar(); }
+  // Header ticks for the current zoom: months, then weeks (Mondays), then single days.
+  function calTicks(w) {
+    const bounds = [w.start];
+    const push = (d) => { if (d > w.start && d < w.end) bounds.push(d); };
+    let label;
+    if (w.days > 120) {
+      for (let d = new Date(w.start.getFullYear(), w.start.getMonth() + 1, 1); d < w.end; d = new Date(d.getFullYear(), d.getMonth() + 1, 1)) push(d);
+      label = (d, pct) => pct < 3.2 ? '' : d.toLocaleDateString('en-US', { month: 'short' }) + (d.getMonth() === 0 ? ` '${String(d.getFullYear()).slice(2)}` : '');
+    } else if (w.days > 35) {
+      const d0 = new Date(w.start.getFullYear(), w.start.getMonth(), w.start.getDate()); d0.setDate(d0.getDate() + ((8 - d0.getDay()) % 7 || 7));
+      for (let d = d0; d < w.end; d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 7)) push(d);
+      label = (d, pct) => pct < 5 ? '' : d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+    } else {
+      const d0 = new Date(w.start.getFullYear(), w.start.getMonth(), w.start.getDate() + 1);
+      for (let d = d0; d < w.end; d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1)) push(d);
+      // Wide slices get "Thu 1"; narrow ones just the day number; very narrow ones stay blank.
+      label = (d, pct) => pct >= 9 ? d.toLocaleDateString('en-US', { weekday: 'short' }) + ' ' + d.getDate() : pct >= 2.8 ? String(d.getDate()) : '';
+    }
+    return bounds.map((at, i) => {
+      const next = bounds[i + 1] || w.end;
+      const widthPct = (next - at) / (w.end - w.start) * 100;
+      // Label the period this slice belongs to: the slice's own start for whole periods, the period containing w.start for the leading partial one.
+      const d = i === 0 ? (w.days > 120 ? new Date(at.getFullYear(), at.getMonth(), 1) : at) : at;
+      return { at, widthPct, label: label(d, widthPct) };
+    });
+  }
   function renderCalendar() {
     ['chamberCalendar', 'homeCalendar'].forEach(id => renderCalendarInto(document.getElementById(id)));
   }
@@ -2220,16 +2262,18 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     if (!machines.length && !unassigned.length) { el.innerHTML = ''; return; }
     machines.sort((x, y) => String(x.name).localeCompare(String(y.name), undefined, { numeric: true }));
     const now = new Date();
-    const winStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    const winEnd = new Date(winStart.getFullYear(), winStart.getMonth() + 12, 1);
+    const win = calWindow();
+    const winStart = win.start, winEnd = win.end;
     const span = winEnd - winStart;
+    const todayIn = now >= winStart && now <= winEnd;
     const todayPct = Math.max(0, Math.min(100, (now - winStart) / span * 100));
-    let headCells = '';
-    for (let i = 0; i < 12; i++) {
-      const d = new Date(winStart.getFullYear(), winStart.getMonth() + i, 1);
-      const y = d.getMonth() === 0 ? ` '${String(d.getFullYear()).slice(2)}` : '';
-      headCells += `<div class="cal-mh">${d.toLocaleDateString('en-US', { month: 'short' })}${y}</div>`;
-    }
+    let headCells = '', gridLines = '';
+    calTicks(win).forEach((t, i) => {
+      const left = (t.at - winStart) / span * 100;
+      headCells += `<div class="cal-mh" style="left:${left}%;width:${t.widthPct}%;">${escape(t.label)}</div>`;
+      if (i > 0) gridLines += `<div class="cal-gl" style="left:${left}%;"></div>`;
+    });
+    const zoomLabel = win.days >= 360 ? '12 months' : win.days >= 28 ? Math.round(win.days / 30.4) + (Math.round(win.days / 30.4) === 1 ? ' month' : ' months') : Math.round(win.days) + ' days';
     const LANE = 34;
     // One row: its rentals laid out in lanes so any overlap stays visible instead of hiding a bar.
     const today0 = localToday();
@@ -2262,17 +2306,19 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           data-name="${escape(name)}" data-start="${escape(fmtDate(r.startDate))}" data-end="${escape(fmtDate(r.endDate))}" data-status="${escape(r.status)}" data-chamber="${escape(chamberName)}" data-machine="${escape(machineName)}"><span>${escape(name)} · ${escape(chamberName)}</span></div>`;
       }).join('');
       const height = Math.max(1, laneEnds.length) * LANE + 8;
-      return `<div class="cal-row" style="min-height:${height}px;"><div class="cal-name">${escape(label)}${sub ? `<div class="cal-machine">${escape(sub)}</div>` : ''}</div><div class="cal-track">${bars}<div class="cal-today" style="left:${todayPct}%;"></div></div></div>`;
+      return `<div class="cal-row" style="min-height:${height}px;"><div class="cal-name">${escape(label)}${sub ? `<div class="cal-machine">${escape(sub)}</div>` : ''}</div><div class="cal-track">${gridLines}${bars}<div class="cal-today"${todayIn ? '' : ' hidden'} style="left:${todayPct}%;"></div></div></div>`;
     };
     const rowsHtml = machines.map(m => rowHtml(m.name, m.status === 'archived' ? 'archived' : '', live.filter(r => r.machineId === m.id), m.name,
       m.status === 'maintenance' ? { since: m.maintenanceSince || '', until: m.maintenanceUntil || '' } : null)).join('')
       + (unassigned.length ? rowHtml('No machine', 'unassigned', unassigned, 'not assigned') : '');
     el.innerHTML = `
       <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Rental calendar</h3>
-      <div class="renter-line" style="margin-bottom:12px;">One row per machine, rolling 12 months from this month. Each bar shows the renter and the chamber the machine is paired with; empty space is when that machine is free. <span style="color:#5b7fa6;font-weight:700;">Blue</span> = scheduled (confirmed, upcoming), <span style="color:#5c7a34;font-weight:700;">green</span> = active, <span style="color:#a8842c;font-weight:700;">amber hatch</span> = maintenance. The orange line is today. Hover for a date, click a rental for its details.</div>
+      <div class="cal-tools"><span class="renter-line">Showing <strong id="calZoomLabel">${zoomLabel}</strong> from ${escape(fmtDate(winStart.toISOString().slice(0, 10)))}</span>
+        <span class="cal-tools-btns"><button type="button" class="btn btn-ghost btn-sm" onclick="calPan(-0.25)" title="Earlier">&#8249;</button><button type="button" class="btn btn-ghost btn-sm" onclick="calZoomAt(0.5, 0.6)" title="Zoom in">+</button><button type="button" class="btn btn-ghost btn-sm" onclick="calZoomAt(0.5, 1 / 0.6)" title="Zoom out">&minus;</button><button type="button" class="btn btn-ghost btn-sm" onclick="calPan(0.25)" title="Later">&#8250;</button><button type="button" class="btn btn-ghost btn-sm" onclick="calReset()">12 months</button></span></div>
+      <div class="renter-line" style="margin-bottom:12px;">One row per machine. Pinch to zoom from a year down to a week and drag with two fingers to move along time (on a computer: ctrl + scroll to zoom, shift + scroll to move). Each bar shows the renter and the chamber the machine is paired with; empty space is when that machine is free. <span style="color:#5b7fa6;font-weight:700;">Blue</span> = scheduled (confirmed, upcoming), <span style="color:#5c7a34;font-weight:700;">green</span> = active, <span style="color:#a8842c;font-weight:700;">amber hatch</span> = maintenance. The orange line is today. Hover for a date, click a rental for its details.</div>
       <div class="cal-wrap">
         <div class="cal">
-          <div class="cal-row cal-headrow"><div class="cal-name"></div><div class="cal-track cal-head">${headCells}<div class="cal-today" style="left:${todayPct}%;"></div><div class="cal-today-marker" style="left:${todayPct}%;">Today</div></div></div>
+          <div class="cal-row cal-headrow"><div class="cal-name"></div><div class="cal-track cal-head">${gridLines}${headCells}<div class="cal-today"${todayIn ? '' : ' hidden'} style="left:${todayPct}%;"></div><div class="cal-today-marker"${todayIn ? '' : ' hidden'} style="left:${todayPct}%;">Today</div></div></div>
           ${rowsHtml}
         </div>
         <div class="cal-hover-line" hidden></div>
@@ -2297,7 +2343,34 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
 
     function hideHover() { line.hidden = true; dateLbl.hidden = true; }
     wrap.style.touchAction = 'pan-y';
+    const trackFrac = (x) => { const tr = geomTrack().getBoundingClientRect(); return (x - tr.left) / tr.width; };
+    // Two fingers: pinch to zoom around the midpoint, and move both to pan. State lives at module level because every
+    // zoom step re-renders the calendar (new DOM) while the fingers are still down.
+    const pinchUpdate = () => {
+      const [a, b] = [..._calPts.values()];
+      const dist = Math.max(1, Math.hypot(a.x - b.x, a.y - b.y));
+      const days = Math.max(CAL_MIN_DAYS, Math.min(CAL_MAX_DAYS, _calPinch.days * (_calPinch.dist / dist)));
+      const midFrac = trackFrac((a.x + b.x) / 2);
+      calSetWindow(new Date(_calPinch.anchor - midFrac * days * CAL_DAY), days);
+    };
+    wrap.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse') return;
+      _calPts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (_calPts.size === 2) {
+        const [a, b] = [..._calPts.values()]; const w = calWindow(); const midFrac = trackFrac((a.x + b.x) / 2);
+        _calPinch = { dist: Math.max(1, Math.hypot(a.x - b.x, a.y - b.y)), days: w.days, anchor: w.start.getTime() + midFrac * w.days * CAL_DAY };
+        hideHover();
+      }
+    });
+    const endPt = (e) => { _calPts.delete(e.pointerId); if (_calPts.size < 2) _calPinch = null; };
+    wrap.addEventListener('pointerup', endPt); wrap.addEventListener('pointercancel', endPt);
+    wrap.addEventListener('wheel', (e) => {
+      if (e.ctrlKey || e.metaKey) { e.preventDefault(); calZoomAt(trackFrac(e.clientX), Math.exp(e.deltaY * 0.01)); }
+      else if (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) { e.preventDefault(); calPan((e.deltaX || e.deltaY) / geomTrack().getBoundingClientRect().width); }
+    }, { passive: false });
     wrap.addEventListener('pointermove', (e) => {
+      if (_calPts.has(e.pointerId)) { _calPts.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (_calPinch && _calPts.size === 2) { pinchUpdate(); return; } }
+      if (_calPinch) return;
       const track = geomTrack(); if (!track) return;
       const tr = track.getBoundingClientRect();
       const wr = wrap.getBoundingClientRect();
