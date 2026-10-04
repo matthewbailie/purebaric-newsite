@@ -50,7 +50,7 @@ test("availableDates respects lead time, horizon, days off and capacity", () => 
   assert.equal(byDate["2026-10-07"], true);
   assert.equal(byDate["2026-10-10"], false, "Saturday");
   assert.equal(byDate["2026-10-14"], false, "blocked");
-  const none = d.availableDates({ ...base, rentals: [...rentals, { chamberId: "c2", machineId: "m2", status: "scheduled", startDate: "2026-10-01", endDate: "2026-12-31" }], style: "lying", months: 1, today });
+  const none = d.availableDates({ ...base, rentals: [...rentals, { chamberId: "c2", machineId: "m2", status: "scheduled", startDate: "2026-10-01", endDate: "2028-01-31" }, { chamberId: "c1", machineId: "m1", status: "scheduled", startDate: "2026-11-20", endDate: "2028-01-31" }], style: "lying", months: 1, today });
   assert.ok(none.every(x => !x.ok), "no lying pair free anywhere in the window");
 });
 
