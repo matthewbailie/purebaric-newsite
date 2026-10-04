@@ -580,7 +580,6 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           <input type="hidden" name="id">
           <input type="hidden" name="sourceBookingId">
           <div class="form-row">
-            <div class="form-group"><label>Chamber<span class="req">*</span></label><select name="chamberId" id="rentalChamberSelect" required></select></div>
             <div class="form-group"><label>Status</label>
               <select name="status">
                 <option value="scheduled">Scheduled</option>
@@ -589,16 +588,21 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
                 <option value="cancelled">Cancelled</option>
               </select>
             </div>
+            <div class="form-group"></div>
           </div>
           <div class="form-row">
+            <div class="form-group"><label>Chamber<span class="req">*</span></label><select name="chamberId" id="rentalChamberSelect" required></select></div>
             <div class="form-group"><label>Machine</label><select name="machineId" id="rentalMachineSelect"></select>
               <div class="renter-line" style="margin-top:4px;">Which machine unit runs this rental.</div></div>
+          </div>
+          <div class="form-row">
             <div class="form-group"><label>Rental type</label>
               <select name="rentalType" id="rentalType" onchange="onRentalTypeChange()">
                 <option value="residential">Residential (home)</option>
                 <option value="business">Business</option>
               </select>
               <div class="renter-line" style="margin-top:4px;">Business: a chamber placed at a gym, studio, salon or clinic that sells sessions to its own clients. Uses the business rate and agreement.</div></div>
+            <div class="form-group"></div>
           </div>
           <div class="form-row" id="rentalBusinessRow" style="display:none;">
             <div class="form-group"><label>Business name<span class="req">*</span></label><input name="businessName" id="rentalBusinessName" maxlength="120" placeholder="e.g. Sugar House Beauty LLC"></div>
@@ -1885,7 +1889,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   function fmtDate(iso) {
     if (!iso) return '';
     const p = String(iso).slice(0, 10).split('-');
-    return new Date(+p[0], +p[1] - 1, +p[2]).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return new Date(+p[0], +p[1] - 1, +p[2]).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); // e.g. 18 Oct 2026
   }
 
   function renderChambers() {
@@ -2301,7 +2305,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           <div class="renter-line">${escape(machine ? machine.name : '(no machine assigned)')}</div>
         </td>
         <td>${rentalIsBusiness(r) ? `<strong>${escape(r.businessName || 'Business')}</strong> <span class="pill" style="background:#2b2320;color:#f3ead9;font-size:0.62rem;">Business</span><div class="renter-line">${escape(renter.name || ', ')}</div>` : escape(renter.name || ', ')}<div class="renter-line">${escape(renter.email || '')}${renter.phone ? ' · ' + escape(renter.phone) : ''}</div></td>
-        <td>${escape(r.startDate)} → ${escape(r.endDate)}</td>
+        <td>${escape(fmtDate(r.startDate))} → ${escape(fmtDate(r.endDate))}</td>
         <td>$${r.monthlyRate || 0}/${r.rateType === 'weekly' ? 'wk' : 'mo'}</td>
         <td><span class="pill pill-${r.status}">${r.status}</span></td>
         <td><span class="pill pill-${payStatus}">${escape(paymentLabel)}</span></td>
@@ -2362,7 +2366,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       <div class="modal-row"><strong>Machine</strong><div>${machine ? escape(machine.name) : '(none assigned)'}</div></div>
       <div class="modal-row"><strong>Contact</strong><div>${escape(renter.name || ', ')}<br>${escape(renter.email || ', ')}<br>${escape(renter.phone || ', ')}</div></div>
       <div class="modal-row"><strong>${rentalIsBusiness(r) ? 'Installation address' : 'Delivery address'}</strong><div>${escape(address)}</div></div>
-      <div class="modal-row"><strong>Dates</strong><div>${escape(r.startDate)} → ${escape(r.endDate)} <span style="color:var(--stone-muted);">(≈ ${isWeekly ? `${weeks} week${weeks > 1 ? 's' : ''}` : `${months} month${months > 1 ? 's' : ''}`}, ${days} days)</span></div></div>
+      <div class="modal-row"><strong>Dates</strong><div>${escape(fmtDate(r.startDate))} → ${escape(fmtDate(r.endDate))} <span style="color:var(--stone-muted);">(≈ ${isWeekly ? `${weeks} week${weeks > 1 ? 's' : ''}` : `${months} month${months > 1 ? 's' : ''}`}, ${days} days)</span></div></div>
       <div class="modal-row"><strong>Rate</strong><div>$${(r.monthlyRate || 0).toLocaleString()}/${isWeekly ? 'wk' : 'mo'}${isWeekly ? ' <span style="color:var(--terracotta);">(custom weekly billing)</span>' : ''} · est. total $${estTotal.toLocaleString()}</div></div>
       <div class="modal-row"><strong>Payment</strong><div><span class="pill pill-${payStatus}">${escape(payParts.join(' · '))}</span></div></div>
       <div class="modal-row"><strong>Waiver</strong><div>${waiverHtml}</div></div>
@@ -2433,7 +2437,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const r = _rentals.find(x => x.id === rentalId);
     if (!r) { toast('Rental not found', true); return; }
     const head = `<div class="modal-row"><strong>Renter</strong><div>${escape((r.renter && r.renter.name) || '—')}</div></div>
-      <div class="modal-row"><strong>Rental ends</strong><div>${escape(r.endDate)}</div></div>`;
+      <div class="modal-row"><strong>Rental ends</strong><div>${escape(fmtDate(r.endDate))}</div></div>`;
     openModal('Cancel Stripe subscription', `${head}<p class="renter-line">Looking up Stripe subscriptions…</p>`);
     try {
       const { candidates } = await api('/api/admin/stripe-cancel', { method: 'POST', body: JSON.stringify({ rentalId }) });
@@ -2754,7 +2758,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
             const running = (r.status === 'active' || r.status === 'scheduled') && r.startDate <= today0 && r.endDate >= today0;
             const left = running ? Math.round((new Date(r.endDate) - new Date(today0)) / 86400000) : null;
             const leftText = running ? ` · ${left === 0 ? 'ends today' : left === 1 ? '1 day left' : left + ' days left'}` : '';
-            return `<li>${escape(r.startDate)} → ${escape(r.endDate)} · ${period} · ${rate} · ${escape(ch ? ch.name : ', ')} · <span class="pill pill-${r.status}" style="font-size:0.65rem;">${r.status}</span>${leftText}</li>`;
+            return `<li>${escape(fmtDate(r.startDate))} → ${escape(fmtDate(r.endDate))} · ${period} · ${rate} · ${escape(ch ? ch.name : ', ')} · <span class="pill pill-${r.status}" style="font-size:0.65rem;">${r.status}</span>${leftText}</li>`;
           }).join('')
         : '<li style="color:var(--stone-muted);">None</li>';
       // Loyalty/discount rollup: sum each counted monthly-billed rental's
@@ -3161,7 +3165,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       <tr data-id="${escape(w.id)}">
         <td>${escape(created)}</td>
         <td><strong>${escape(w.name)}</strong>${w.rentalType === 'business' ? ` <span class="pill" style="background:#2b2320;color:#f3ead9;font-size:0.65rem;">Business${w.businessName ? ' · ' + escape(w.businessName) : ''}</span>` : ''}${w.wantsDiscount ? ` <span class="pill pill-discount">Requesting discount${w.discountPrice ? ' · $' + Number(w.discountPrice).toLocaleString('en-US') + '/mo' : ''}</span>` : ''}${w.category === 'out-of-area' ? ' <span class="pill pill-out-of-area">Out-of-area</span>' : ''}<div class="renter-line">${escape(w.email)}${w.phone ? ' · ' + escape(w.phone) : ''}${w.zip ? ' · ' + escape(w.zip) : ''}</div></td>
-        <td>${escape(w.preferredStartDate || ', ')}<div class="renter-line">${escape((w.reason || '').slice(0, 80))}</div>${notesPreview}</td>
+        <td>${escape(fmtDate(w.preferredStartDate) || 'any')}<div class="renter-line">${escape((w.reason || '').slice(0, 80))}</div>${notesPreview}</td>
         <td><span class="pill pill-${w.status}">${w.status}</span>${holdNote}${positionNote}</td>
         <td>
           <div class="row-actions">
@@ -3222,7 +3226,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <label class="renter-line" style="display:inline-flex;align-items:center;gap:6px;">Requested $<input type="number" id="waitlistDiscountPriceEdit" min="1" step="1" value="${w.discountPrice ? Number(w.discountPrice) : ''}" placeholder="450" style="width:90px;padding:6px 8px;border:1px solid var(--line,#e6dccd);border-radius:8px;"> a month</label></div></div>
       <div class="modal-row"><strong>Type</strong><div>${w.rentalType === 'business' ? `Business${w.businessName ? ' · ' + escape(w.businessName) : ''}` : 'Home'}</div></div>
       <div class="modal-row"><strong>ZIP</strong><div>${escape(w.zip || ', ')}</div></div>
-      <div class="modal-row"><strong>Preferred start</strong><div>${escape(w.preferredStartDate || ', ')}</div></div>
+      <div class="modal-row"><strong>Preferred start</strong><div>${escape(fmtDate(w.preferredStartDate) || 'any')}</div></div>
       <div class="modal-row"><strong>Reason / context</strong><div>${escape(w.reason || ', ')}</div></div>
       <div class="modal-row"><strong>Status</strong><div><span class="pill pill-${w.status}">${w.status}</span></div></div>
       ${w.holdExpiresAt ? `<div class="modal-row"><strong>Hold expires</strong><div>${new Date(w.holdExpiresAt).toLocaleString()}</div></div>` : ''}
@@ -3418,7 +3422,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       <div class="modal-row"><strong>Rental type</strong><div>${b.rentalType === 'business' ? `Business${b.businessName ? ' · ' + escape(b.businessName) : ''} <span class="renter-line">(from the For Businesses page)</span>` : 'Residential (home)'}</div></div>
       <div class="modal-row"><strong>Contact</strong><div>${escape(fullName)}<br>${escape(b.email)}<br>${escape(b.phone || ', ')}</div></div>
       <div class="modal-row"><strong>Delivery address</strong><div>${escape(address)}</div></div>
-      <div class="modal-row"><strong>Requested start</strong><div>${escape(b.startDate || ', ')}</div></div>
+      <div class="modal-row"><strong>Requested start</strong><div>${escape(fmtDate(b.startDate) || 'not given')}</div></div>
       <div class="modal-row"><strong>Rental length</strong><div>${escape(b.rentalLength || ', ')}</div></div>
       <div class="modal-row"><strong>Reason for renting</strong><div>${escape(b.reason || ', ')}</div></div>
       <div class="modal-row"><strong>Prior experience</strong><div>${escape(b.priorExperience || ', ')}</div></div>
