@@ -107,6 +107,8 @@ Values live only in Netlify. Env-var changes require a redeploy to take effect f
 | `NETLIFY_SITE_ID` | **Yes** | The site ID above, used for Blobs. (`SITE_ID` accepted as a fallback name.) |
 | `ADMIN_SMS_GATEWAY` | Optional (legacy) | Legacy single-number SMS fallback. SMS is now managed in the admin **Notifications** tab (§7c) — you normally leave this unset. If set, this address is also texted on reservation alerts. Value = `<10-digit-cell>@<carrier-gateway>`. |
 | `TWILIO_ACCOUNT_SID` / `TWILIO_AUTH_TOKEN` / `TWILIO_FROM` | Optional (recommended for reliable SMS) | Send texts via **Twilio** instead of free carrier email-to-text. **These can now be set in the admin → Notifications tab** (stored in `settings/twilio`, which takes precedence over these env vars); env vars are the more-secure alternative. `TWILIO_FROM` = your Twilio number in E.164 (e.g. `+18015550123`). When configured, every SMS (reservations + reviews + "Send test") goes through Twilio. Unset = free carrier email-to-text (unreliable). |
+| `GA4_SERVICE_ACCOUNT` | Optional (set 2026-10-04, **production context only**) | The full JSON key of the Google service account that reads GA4 reports for the admin **Site analytics** tab and the Home "Daily site visitors" card (§9a). Secret. Set with `netlify env:set GA4_SERVICE_ACCOUNT "$(cat key.json)" --secret --context production` — the CLI refuses `--secret` without a non-dev `--context`. Not available to `netlify dev` (secrets never download), so the card reads "Not connected" locally. |
+| `GA4_PROPERTY_ID` | Optional | Overrides the GA4 property the admin reads (defaults to `555169638` in code). |
 | `GA4_API_SECRET` | Optional | Turns on server-side GA4 conversions (`booking_request_submit`, `rental_confirmed`). Measurement Protocol secret from GA4 → Admin → Data Streams → the web stream → Measurement Protocol API secrets. If unset, those conversions are not sent — the site is otherwise unaffected. |
 | `STRIPE_SECRET_KEY` | Optional | Turns on Stripe payment links. **Can now be set in admin → Pricing & Payments** (stored in `settings/stripe`, takes precedence over env); env is the more-secure alternative. Stripe → Developers → API keys → Secret key (`sk_test_…`/`sk_live_…`). |
 | `STRIPE_WEBHOOK_SECRET` | Optional | Verifies the payment webhook so paid rentals auto-reconcile. Also settable in admin → Pricing & Payments. Stripe → Developers → Webhooks → endpoint `https://purebaric.com/api/stripe-webhook` (events `payment_intent.succeeded`, `checkout.session.completed`) → Signing secret (`whsec_…`). |
@@ -152,6 +154,10 @@ First-time CLI setup: `npm i -g netlify-cli` → `netlify login` → `netlify li
 
 ## 5a. GitHub repo + the (unfinished) move to Git-based CI — read this before touching deploys
 
+**Git identity (fixed 2026-10-04).** The remote is the owner's **personal** repo `github.com/matthewbailie/purebaric-newsite`; pushes go through the `matthewbailie` `gh` account (`gh auth switch --user matthewbailie` → push → `gh auth switch --user bailie_adobe`). The machine's *global* git config carries the owner's **Adobe** email, so this repo now has a **repo-local** `user.email = matthewbailie@gmail.com`. Nothing about Purebaric may ever be pushed to, or authored as, Adobe: before committing, confirm `git config user.email` prints the Gmail address, and never add an Adobe remote. Commits before 2026-10-04 still carry the Adobe author email in history (left alone; rewriting would need a force-push the owner has not asked for).
+
+**Deploy batching (owner rule, 2026-10-04).** Netlify bills per deploy. Finish a request (and any queued follow-ups), verify locally (`npm test`, headless renders), then deploy **once** with `netlify deploy --prod --dir . --skip-functions-cache`, then commit + push. Do not deploy after every edit. If the owner says "don't push to production until I say", keep committing locally but hold the deploy.
+
 **What exists:** a private GitHub repo, **`github.com/matthewbailie/purebaric-newsite`**, created 2026-09-26, containing this project's full local git history pushed to `main`. `netlify.toml` already has `[build] command = "npm test"` (also added 2026-09-26) so that both a manual `netlify deploy` *and* a future Git-triggered build would run the test suite first.
 
 **What does NOT exist yet:** an actual connection between the Netlify site and that repo. Confirmed via `netlify api getSite --data '{"site_id":"3e2c12f7-e737-4849-90aa-6b6134edbfab"}'` → `"build_settings": {}` (empty — no linked repo). **This means pushing to GitHub `main` does not deploy anything.** The only thing that publishes to production right now is manual `netlify deploy --prod --dir .` from this machine, exactly as it always has. `DECISIONS.md` records the *intent* to switch to Git-based deploys, gated on `npm test` — the intent is confirmed, the implementation is not finished.
@@ -159,6 +165,16 @@ First-time CLI setup: `npm i -g netlify-cli` → `netlify login` → `netlify li
 **If you're an AI agent picking this up:** do not assume a `git push` deployed anything. Verify with `netlify api getSite --data '{"site_id":"3e2c12f7-e737-4849-90aa-6b6134edbfab"}' | grep -A5 build_settings` — a populated `repo` object means it's since been connected (great, switch to Git-based deploys and stop using manual CLI); an empty `{}` means it's still not connected and you must keep using `netlify deploy --prod --dir .` after every change, same as before. **Connecting it requires a GitHub OAuth/App-authorization step** (Netlify's own "Link to Git provider" flow) that only the owner can complete via the Netlify dashboard — a coding agent should not attempt to drive that flow blind (it was explicitly declined for an agent to complete unattended on 2026-09-26; the owner does it via **Site configuration → Build & deploy → Link repository → GitHub → `matthewbailie/purebaric-newsite` → branch `main`**).
 
 **The dual-GitHub-account gotcha (important, easy to get wrong):** the `gh` CLI on this machine is logged into **two** GitHub accounts — `bailie_adobe` (an Adobe work identity, the default/active one) and `matthewbailie` (the owner's personal account, matching `matthewbailie@gmail.com` — the same identity the Netlify login uses). The `purebaric-newsite` repo lives under `matthewbailie`, not `bailie_adobe`. A `git push`/`git pull` against `origin` uses whichever account is currently active in `gh`'s credential helper — if that's `bailie_adobe`, you'll get `remote: Repository not found` (GitHub 404s a private repo you can't see, rather than 403). **Before pushing or pulling:** `gh auth switch --user matthewbailie`, do the git operation, then `gh auth switch --user bailie_adobe` to restore the default (so you don't leave other work on this machine authenticated as the wrong account). Check current state anytime with `gh auth status`.
+
+---
+
+## 5b. Local development with `netlify dev` (set up 2026-10-04)
+
+- The desktop-app launcher (`.claude/launch.json` in the owner's Claude working folder, **not** in this repo) runs `netlify dev --port 8888` in this repo with two env vars exported first: `NETLIFY_AUTH_TOKEN` read from the Netlify CLI's own login (`~/Library/Preferences/netlify/config.json` → `users[userId].auth.token`) and `NETLIFY_SITE_ID` from `.netlify/state.json`. Without them every function fails with `MissingBlobsEnvironmentError` because the production `NETLIFY_API_TOKEN` is a secret the CLI cannot download. `_lib/storage.js` falls back to `NETLIFY_AUTH_TOKEN` + `NETLIFY_SITE_ID`.
+- **Localhost therefore reads and writes the PRODUCTION Blobs store.** There is no sandbox. Use obviously fake test rows and delete them.
+- Admin sign-in on localhost: `admin.html` seeds `localStorage.netlifySiteURL = https://purebaric.com` when the host is localhost, otherwise the Identity widget never fires `init` and the page stays blank. Use **email & password**; passkeys are bound to `purebaric.com` and are not offered on localhost (a passkey registered while on localhost only works there).
+- Email from localhost needs `RESEND_API_KEY` in a repo-root `.env` (gitignored; `netlify dev` loads it at start — restart after editing). Without it the hold/confirm emails fail with "RESEND_API_KEY not set"; the admin toasts now say so. Twilio keys come from the shared settings store, so texts work locally if they work in production.
+- Headless-Chrome renders of `admin.html` are the quickest layout check without signing in: copy the file, rewrite `src="/`→`src="./`, append a script that hides `#loginGate`, shows `#adminApp`, activates one `.tab-panel`, sets the `_chambers`/`_rentals`/… globals and calls the render function. Note headless Chrome clamps the window to 500px wide; wrap the page in a 390px `<iframe>` for a true phone render.
 
 ---
 
@@ -297,6 +313,11 @@ Example resolved address: `8015551234@vtext.com`. **Current message text (privac
 ### 7d. Email deliverability
 If customer confirmation emails don't arrive, check Resend: the sending domain `purebaric.com` must be verified (SPF/DKIM). Admin alerts generally work first because they go to a Gmail address.
 
+### 7d2. Inbound mail: replies to hello@purebaric.com (verified end to end 2026-10-04)
+- Every site email goes out from `noreply@purebaric.com` with `Reply-To: hello@purebaric.com` (`_lib/email.js` `FROM`/`REPLY_TO`); outreach sends from `hello@` directly. There is **no mailbox** at purebaric.com: MX points at **ImprovMX**, whose dashboard (app.improvmx.com, sign in with the Gmail "email me a sign-in link" option) has aliases `hello` and catch-all `*`, both forwarding to **matthewbailie@gmail.com**. Domain shows Active. Its **Logs** page shows every forwarded message and Gmail's accept line.
+- **Gmail quirk that looks like a failure:** a reply the owner sends *from his own Gmail* to hello@ is forwarded back to the same Gmail, which merges it into the Sent thread and never shows it in the Inbox. Test from any other sender. Proven path: an admin Offer-hold email addressed to a throwaway waitlist entry at `hello@purebaric.com` arrived in the Gmail Inbox within seconds (the follow-up confirmation email landed in Spam via this hop; direct delivery to real customers does not take the hop).
+- Admin alerts never pass through hello@; they go straight to the owner's Gmail from the Notifications tab recipients.
+
 ### 7e. Stripe payments — wired up, **NOT configured in production** as of 2026-09-26
 
 The code is complete and correct; nobody has entered Stripe credentials yet. **Verified by probing the live webhook endpoint** (safe, no auth needed — Stripe calls it directly): `curl -X POST https://purebaric.com/api/stripe-webhook` → `503 stripe not configured`. If you're troubleshooting "a customer paid but their rental still shows unpaid," check this first before assuming a code bug — it almost certainly is not one; it's that Stripe was never finished being set up (this exact investigation happened twice this week, both times the root cause was the same: unconfigured).
@@ -360,6 +381,14 @@ The code is complete and correct; nobody has entered Stripe credentials yet. **V
 - **Links:** `/admin?endingSoon=1` opens the Rentals tab and a list of rentals ending within 10 days, each with a cancel button; `/admin?cancelRental=<id>` (from the email buttons) opens that rental's cancel modal (`openStripeCancel` in `admin.html`). Both need normal admin sign-in and never cancel by themselves. The modal calls `POST /api/admin/stripe-cancel` (`admin-stripe-cancel.js`), which lists the renter's live Stripe subscriptions (matched by email and by name; rentals aren't linked to subscriptions in our data), and only after the admin picks one and confirms does it set `cancel_at_period_end: true` (no more charges, paid time kept) and remember `stripeSubscriptionId` + `stripeCancelRequestedAt` on the rental. Also reachable from a rental's details → "Cancel Stripe subscription".
 - **Needs Stripe configured (§7e):** without the secret key the modal says so. The key needs read access to customers/subscriptions and write access to subscriptions (a restricted key is ideal).
 
+### 7h. Waitlist: hand-added entries, discount seekers, hold email with a Confirm button (built 2026-10-04)
+- **Entry shape additions** (`_lib/storage.js` comment): `wantsDiscount`, `discountPrice` (whole dollars/month the person asked for), `rentalType` (`residential`|`business`) + `businessName`, `source: "admin"` for hand-added rows, `confirmToken` (random per hold), `convertedBookingId`, `confirmedAt`.
+- **Admin Waitlist tab:** "+ Add to waitlist" form (name; email *or* phone required; ZIP; preferred start; what they want; Type Home/Business with business name; "Requesting a discount" checkbox + "Requested monthly price"; notes). **Edit** on each row opens the same form directly under the row (PATCH). Status filter has a **Requesting discount** view; flagged rows show an amber pill with the price. Details dialog can toggle the flag/price. API: `POST /api/admin/waitlist` creates; `PATCH /api/admin/waitlist/:id` accepts name/email/phone/zip/preferredStartDate/reason/adminNotes/wantsDiscount/discountPrice/rentalType/businessName.
+- **Offer hold** (`admin-waitlist.js` `POST /:id/hold`): sets `status: hold`, a 24h `holdExpiresAt`, mints `confirmToken`, then sends the chamber-ready **email** (if the entry has an email) and a **text** (if it has a phone and Twilio is configured). The response carries `notified: { email, sms }` and the admin toast prints it, so a missing Resend key or Twilio config is visible instead of silent.
+- **Chamber-ready email** (`notifyWaitlistChamberAvailable`): says "a lying/sitting chamber" (the held unit's `style`; never the unit number), the hold deadline in Mountain Time, the **rate line** "Your rate: $N a month, the reduced rate you asked for" only when flagged with a price, a **"Confirm my booking"** button (`waitlistConfirmUrl`), "You can also reply… or call…", a closing line that the chamber is released to the next person on **our waiting list**, signed **The Purebaric team** (`signoff("The Purebaric team")` — every other email still signs as Matthew). The text version is `waitlistHoldSmsText`. Wording lives in `_lib/email.js`.
+- **Confirm page** `/waitlist-confirm?w=<entry id>&t=<token>` → `netlify/functions/waitlist-confirm.js` (redirect in `netlify.toml`). GET renders a branded page (logo links home) that confirms via `fetch POST` as soon as it loads (so a link scanner's GET confirms nothing) with a fallback submit button. POST: token + `status === hold` + unexpired → **creates a rental request** (`createBooking`, `source: "waitlist"`, `waitlistId`, reason "Confirmed from the waitlist (held chamber: X). Requested monthly rate: $N."), marks the entry `converted`, emails the person (`notifyWaitlistConfirmed`: "we will reach out shortly to schedule your delivery"), and sends the normal admin new-request email (tagged `[confirmed from waitlist]`, routing `waitlist-confirmed`) + admin text. Pages for already-confirmed, expired, and inactive/mismatched links. Re-offering a hold mints a new token, so an older email's button shows "This link is no longer active".
+- Waitlist holds do **not** block inventory; the owner still converts the request to a rental by hand (Rental requests → convert), which is where the chamber/machine get assigned.
+
 ## 8. Public forms
 
 | Form (page) | Posts to | Mechanism |
@@ -411,6 +440,13 @@ Customer testimonials with a moderation gate. **No star ratings** by design — 
 
 **Deferred (needs Stripe):** `begin_checkout`, `purchase`, `refund` — not built (no checkout yet). Keep the Measurement Protocol secret server-side only.
 
+### 9a. Admin "Site analytics" tab + Home "Daily site visitors" card (GA4 Data API, built and connected 2026-10-04)
+- **What it shows.** Home: visitors (GA *sessions*) per day this month vs last month, and a daily line for this year with last year dashed. Site analytics tab: the same plus visits per day year-to-date vs the same days last year, a **page views by page** chart (page picker) and a table of views/day by page vs last month and vs last year. "Refresh from Google Analytics" bypasses the cache.
+- **Code.** `netlify/functions/admin-ga-traffic.js` (`GET /api/admin/ga-traffic[?refresh=1]`, auth-gated) → `_lib/ga-traffic.js` (pure maths, unit-tested in `test/ga-traffic.test.js`: `rowsToMap`, `pageRowsToMap`, `normalizePage`, `yearSeries`, `summarize`, `summarizePages`, `chartData`; network: `accessToken` = RS256 JWT signed with the service-account key via `crypto.sign`, no SDK; `fetchDaily` = `runReport` dims `date`, metrics `sessions`,`activeUsers`; `fetchPagesDaily` = dims `date`,`pagePathPlusQueryString`, metrics `screenPageViews`,`activeUsers`; both from Jan 1 of last year to today). Cached in the settings store under `gaTraffic` for 6 hours. Admin rendering: `loadTraffic()`/`renderTraffic()`/`renderPageChart()` in `admin.html`; the chart library `dashboard-charts.js` gained optional `labels` (one per point) and `ticks` so it can draw a 365-point daily series (the monthly charts are unchanged).
+- **Rules baked in.** Tracking began 20 Sep 2026, so days before the first row Analytics has are *no data* (gaps), not zero; year-to-date averages start there and the card says "tracking since …". A tracked day with no row is 0. `/admin*` paths are dropped. Page labels: `/`→Home, `/book`→Booking, `/book?type=business`→Business booking, `/business`→For businesses, the other public pages by name, anything else → Other. Key pages are listed first in that order.
+- **Google side (done 2026-10-04 under matthewbailie@gmail.com — never an Adobe account):** Google Cloud project **"My First Project"** (`regal-muse-441101-t7`) → Google Analytics Data API **enabled** → service account **`purebaric-admin-analytics@regal-muse-441101-t7.iam.gserviceaccount.com`** (no project roles; one JSON key, id `ec3feaad…`, expires never) → added as **Viewer** in GA Admin → Property access management on property 555169638. The key is the `GA4_SERVICE_ACCOUNT` Netlify secret (production context). To rotate: Cloud console → IAM & Admin → Service accounts → that account → Keys → add a new JSON key, `netlify env:set … --context production`, redeploy, delete the old key. To add a metric or dimension: extend the `runReport` body and the map/summarize helpers, add a test, and render it in `renderTraffic`.
+- **Not available locally** (`netlify dev` cannot read Netlify secrets): both cards show the "Not connected" copy with the setup steps. That copy and this section are the setup guide.
+
 ### SEO & structured data
 - **Business rentals page (added 2026-09-28):** `/business` (`business.html`) is the public version of the B2B prospectus in `_internal/outreach/`: contact CTA at the top (call, email, `/contact?topic=business`, which preselects the new "Business rental" topic), the $979/month business rate, revenue estimates, and owner FAQs. It is linked from every page's footer ("For businesses"); on the 15 warm pages also from a text link beside the header's Reserve button (`.nav-biz`, hidden below 1080px so the bar does not crowd) and the mobile menu; and from a dark band low on the homepage (`.biz-band`). The main menu itself is unchanged. The numbers are hard-coded; if the prospectus figures change, update this page too.
 - **`robots.txt`** (root) allows all, disallows `/admin` + `/_internal/`, and points to the sitemap. **`sitemap.xml`** (root) lists every public page — **update it whenever you add or remove a public page**, then re-submit it in Google Search Console.
@@ -442,6 +478,8 @@ Customer testimonials with a moderation gate. **No star ratings** by design — 
 
 ---
 
+**Business page + business booking (state on 2026-10-04):** `business.html` prices are **static text**, not read from `/api/pricing`: $979/mo, 10/15/20% tiers at 3/6/12 months ($881/$832/$783), the **$200 one-time training and supplies** fee (the old $500 setup fee is gone everywhere, incl. prospectus/pamphlet/waiver), single session "$75 to $150" (matches the homepage clinic figure). If business rates change in admin → Pricing, update `business.html` by hand. The bottom "sliding" bar is pinned at all times on every width and shows the 3-month rate ($881, $979 struck through, Save 10%) with a "Book for your business" button to `/book?type=business`; the nav button on that page also goes there. `/book?type=business` defaults the length slider to **4 months** (home bookings still 3).
+
 ## 10a. Chambers, machines & availability (inventory model, reworked 2026-09-24)
 
 Individual units, both managed on the admin **Chambers** tab. No "types" or pools.
@@ -460,6 +498,8 @@ Individual units, both managed on the admin **Chambers** tab. No "types" or pool
 - **Rental chamber/machine dropdowns only offer genuinely free inventory (fixed 2026-09-26):** `populateChamberSelect(keepChamberId, keepMachineId)` / `populateRentalMachineSelect(keepMachineId)` filter out any unit that's currently `inuse`/`scheduled` per `unitState()`, so you can't accidentally double-book a unit from the dropdown. The optional `keep*Id` params exist so editing an *existing* rental still shows (and keeps selected) that rental's own already-assigned unit, which would otherwise look "taken" by itself. Every entry point that opens the rental form (`editRental`, `openNewRental`, `convertBookingToRental`, `convertWaitlistToRental`) must call `populateChamberSelect(...)` with the right arguments — if you add a new entry point, do the same or the dropdown will silently show stale/wrong options.
 
 ---
+
+**Maintenance with a return date (2026-10-04):** chambers and machines carry `maintenanceUntil` (ISO day the unit is back) and `maintenanceSince` (set server-side on the day status flips to maintenance; both cleared on return). Set from the row's "To maintenance" prompt or the unit's edit form (Status select + "Back in service on"). Availability/booking (`_lib/inventory.js` `unitState`, `_lib/delivery.js` `inService`) treat a unit as available from that date; `autoTransitionRentals` (hourly `expire-holds`) flips it back to active. The rental calendar (Chambers tab + Home) draws a machine's outage as an amber hatched bar from `maintenanceSince` (today if unknown) to `maintenanceUntil`, open-ended fade when no date, laid in lanes with that machine's rentals; tap for dates.
 
 ## 11. Admin portal
 
@@ -487,6 +527,15 @@ Individual units, both managed on the admin **Chambers** tab. No "types" or pool
 
 ---
 
+**Admin conventions added 2026-10-04 (keep them when touching `admin.html`):**
+- **Tabs now:** Home, Rental requests, Rentals, Chambers, Customers, Waitlist, Reviews, Pricing & Payments, Service Area, Delivery availability, **Site analytics**, Notifications, Outreach. Tab data loads lazily via the `loaders` map in `ensureTabData()`; add new tabs there.
+- **Every row editor opens directly under its row** (owner rule): chambers, machines, rentals and waitlist rows use `placeInlineForm`; customer cards insert `#customerForm` right after the `<details>` card (`after-card`). Opening another row's editor replaces the open one (`classList.remove('open')` before `toggleForm`). Inside sideways-scrolling `.table-wrap` tables the inline editor is pinned to the visible width (`fitInlineForms()`: `position:sticky; left:0; width = wrap.clientWidth`). Any list that rebuilds its `innerHTML` must first move its form back to its anchor (`renderCustomers`/`renderWaitlist` do this themselves; chambers/machines/rentals do it in `loadAll`). Chamber and machine rows are also **tappable** (`unitRowClick`, ignores clicks on controls).
+- **Dates** everywhere in the admin render as day month year ("18 Oct 2026") via `fmtDate` (`en-GB` short); don't print raw ISO dates in markup.
+- **Rental form order:** Status first, then Chamber beside Machine, then Rental type. **Chambers in use** tile subtext shows only the maintenance count (the Available tile has the free count).
+- **Customers tab** filters: Active · All · **Home** · **Business** (`customerIsBusiness` = any business rental or booking), remembered in `localStorage`.
+- **Delivery availability tab** is phone-friendly: weekday and holiday checkboxes are chips (`#daDays`, `.da-check`), settings stack at ≤720px, calendar months one per row. Note `.form-card input { width:100% }` stretches any raw checkbox inside a form card — give checkboxes an explicit size (see `#daDays input`, `#waitlistFormEl input[type=checkbox]`).
+- Forms opened through `toggleForm` **must contain `<input type="hidden" name="id">`** — it resets that field and throws otherwise (the waitlist form lacked it at first).
+
 ## 12. Troubleshooting
 
 - **`/api/availability` or admin data returns 500 with "Netlify Blobs … 401"** → the `NETLIFY_API_TOKEN` env var expired. Create a new Netlify Personal Access Token with **No expiration** (Netlify → user → User settings → Applications → Personal access tokens), update the env var, then `netlify deploy --prod`. (Manual-deploy sites don't get Netlify's token-free auto-Blobs context, so the token must be valid.)
@@ -509,6 +558,8 @@ Individual units, both managed on the admin **Chambers** tab. No "types" or pool
 - **Never `git add -A`.** `design-previews/*` is edited live by an external tool outside git; a blanket add sweeps it in. Always add an explicit file list. See §5.
 - **Never commit or print secrets.** Keys/tokens live only in Netlify env vars, the admin portal's own masked settings (Twilio/Stripe), and the password manager.
 - **Do not change DNS.** Namecheap delegates to Netlify DNS.
+- **Nothing Purebaric goes to Adobe** — not the repo, not commit authorship, not Google/analytics setup. Personal accounts only (§5a, §9a).
+- **Customer-facing emails never name the chamber unit** (say "a lying chamber"); the waitlist hold/confirm emails sign as "The Purebaric team", the rest as Matthew (§7h).
 - **Blobs is one shared store across deploys** — preview writes hit live data; clean up test rows in `/admin`.
 - **`_internal/*.md` is git-tracked but not publicly served** (forced 404 in `netlify.toml`). Keep internal docs here. `DECISIONS.md` (repo root, git-tracked, IS a separate file from this one) is the running architectural-decision log — check it too, and keep adding to it.
 - **`admin.html` has no unit tests of its own** (it's markup + inline script, not a module `require()` can load) — `test/admin-rental-inline-edit.test.js` and similar test the *pattern*/logic in isolation, not the live file. Verify admin.html changes by loading it in a browser (force the Identity gate open, mock `fetch` for the endpoints you need) — this whole project's sessions have done this extensively; look at recent git history for the harness technique before reinventing it.
@@ -533,6 +584,11 @@ This is a wellness rental business, **not a medical provider** ("not a medical d
 - **Once Stripe/Twilio are live, watch for regressions in the "Lifetime paid (est.)" logic** (§11) — it's designed to gracefully stop estimating once real `paidAmount`s start flowing in from Stripe reconciliation, but it's worth eyeballing a few customer cards after the first real Stripe payment lands to confirm the estimate correctly yields to the real figure.
 - **Resubmit the Twilio A2P 10DLC campaign** (§7f) using `/sms-consent` as the public evidence link, once Twilio is actually active — the resubmission Message Flow text is in this session's chat history / the original build request.
 
+**Added 2026-10-04:**
+- **Delete the downloaded service-account key** from `~/Downloads/regal-muse-441101-t7-ec3feaad9051.json` (owner's Mac) — Netlify holds the only copy that matters (§9a).
+- **Business page prices are static** (§10); keep them in step with admin → Pricing by hand, or wire `business.html` to `/api/pricing`.
+- The waitlist hold **confirmation email reached Gmail Spam when routed through the hello@ forwarding hop** in testing; real customers get direct delivery, but worth a check with a non-Gmail test address (§7d2).
+
 **Older, still open:**
 - **Validate the staged Ads conversion setup:** keep `booking_request_submit` Primary and `close_convert_lead` Secondary while completed-rental volume is low. Run one labeled end-to-end test through the public reservation form and admin conversion flow. After 2–3 conversion cycles and approximately 10–15 confirmed rentals in a recent 30-day period, make `close_convert_lead` Primary and move `booking_request_submit` to Secondary.
 - **Submit `sitemap.xml` in Google Search Console:** verify the domain (DNS TXT) and submit `https://purebaric.com/sitemap.xml`. Re-submit whenever pages are added/removed. Not yet done.
@@ -544,20 +600,3 @@ This is a wellness rental business, **not a medical provider** ("not a medical d
 - **Sitting-chamber image:** the "coming soon" card reuses the current chamber photo, heavily blurred; replace with a real rendering/photo when available.
 - **Finish the design migration:** Safety, Terms, Practitioners, Blog + posts, and Use-case pages still use the legacy teal template (+ jQuery/Toastr/Vite). Migrating them to warm would also drop that legacy JS/CSS weight.
 - **Stripe / instant paid booking / real-time availability** — the reservation is request-only today.
-
-## Website visits on the admin Home tab (Google Analytics)
-
-The Home tab's **Website visits** card reads daily sessions from the GA4 property **555169638** through the
-Google Analytics Data API (`netlify/functions/admin-ga-traffic.js`, maths in `_lib/ga-traffic.js`). It shows
-visits per day this month vs last month, year to date vs the same days last year, and a daily line for this
-year against last year. Results are cached in the settings store for six hours; the card has a Refresh link.
-
-One-time setup (the card says "Not connected" until this is done):
-
-1. Google Cloud console → a project (any) → **APIs & Services → Enable APIs** → enable **Google Analytics Data API**.
-2. **IAM & Admin → Service accounts → Create service account** (no roles needed) → **Keys → Add key → JSON**. Keep the file private.
-3. Google Analytics → Admin → Property **Purebaric Website** → **Property access management** → add the service
-   account's email (ends in `.iam.gserviceaccount.com`) with the **Viewer** role.
-4. Store the key on Netlify as a secret env var, from the repo folder:
-   `netlify env:set GA4_SERVICE_ACCOUNT "$(cat /path/to/key.json)" --secret`
-   (optional: `GA4_PROPERTY_ID` if the property ever changes). Redeploy; the card fills in on the next load.

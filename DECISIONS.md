@@ -129,3 +129,29 @@
 **Alternatives:** Auto-create a scheduled rental on booking (rejected: assigns units without the owner, and a rental is a contract). Time-limited holds that expire (rejected for now: a customer who was told "booked" must not silently lose the date; the Scheduled bookings tile and request list surface what needs action).
 
 **Status:** Implemented. Request mode remains the default until the owner switches.
+
+## Waitlist confirm button creates a rental request, not a rental (2026-10-04)
+
+**Decision:** The chamber-ready email's "Confirm my booking" button turns the waitlist hold into a rental *request* (a booking with `source: "waitlist"`), emails the person that we will schedule delivery, and alerts the admin. It does not assign a chamber or create a rental. The link is a one-time token per hold and confirms only from a real page visit (POST from the page), never from a link scanner's GET.
+
+**Context:** The owner wants a one-click yes from the customer but keeps unit assignment and the rental contract in his hands, the same reasoning as the two booking modes decision above.
+
+**Alternatives:** Confirm on GET (rejected: email security scanners would confirm on the owner's behalf). Create a scheduled rental directly (rejected: assigns inventory without the owner).
+
+## Site traffic in the admin comes from the GA4 Data API with a service account (2026-10-04)
+
+**Decision:** The admin reads daily sessions and page views from the existing GA4 property through a Google service account stored as a Netlify secret, cached six hours, with the pure maths unit-tested. Home shows only visitors per day and the trend line; everything else lives on a Site analytics tab. Days before tracking began are gaps, not zeros.
+
+**Context:** The owner wants to see whether more people are coming to the site without opening Google Analytics. GA is already the measurement source of truth; first-party page-view logging would duplicate it and add PII risk.
+
+**Alternatives:** OAuth with the owner's Google login (rejected: tokens expire, needs a consent flow in the admin). First-party counters in Blobs (rejected: double counting, blockers, privacy).
+
+## Local development uses the production data store (2026-10-04)
+
+**Decision:** `netlify dev` is wired with the CLI's own Netlify token so functions reach the real Blobs store; there is no sandbox. Test rows must be obviously fake and deleted. Secrets (Resend key, GA service account) are not available locally; the admin says so instead of failing silently.
+
+**Context:** The owner wanted a localhost link that shows real data before publishing. Netlify secrets cannot be downloaded, and a separate store would show an empty admin.
+
+## Commit authorship is the owner's personal identity (2026-10-04)
+
+**Decision:** The repo carries a repo-local `user.email = matthewbailie@gmail.com`; pushes use the `matthewbailie` GitHub account; no Purebaric material is ever associated with the owner's employer accounts. Earlier commits with the employer author email are left in history rather than rewritten.
