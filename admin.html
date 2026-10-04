@@ -381,6 +381,7 @@
         <button type="button" class="stat-block" data-card-key="waitlist-queued" data-jump-tab="waitlist"><div class="stat-label">Waitlist queued</div><div class="stat-val" id="statWaitlist"></div></button>
         <button type="button" class="stat-block" data-card-key="pending-reviews" data-jump-tab="reviews"><div class="stat-label">Pending reviews</div><div class="stat-val" id="statReviews"></div></button>
       </div>
+      <div id="homeCalendar" style="margin:22px 0 4px;"></div>
 
       <h3 class="inv-heading">Revenue</h3>
       <div class="kpi-row" data-sortable="home-revenue">
@@ -1752,8 +1753,11 @@
   // are the machine's open availability. Window = start of this month + 12 months,
   // so it advances automatically each day. Only scheduled (confirmed, future) and
   // active rentals are drawn; a rental with no machine assigned gets its own row.
+  // Drawn in two places: the Chambers tab and the Home tab under Operations.
   function renderCalendar() {
-    const el = document.getElementById('chamberCalendar');
+    ['chamberCalendar', 'homeCalendar'].forEach(id => renderCalendarInto(document.getElementById(id)));
+  }
+  function renderCalendarInto(el) {
     if (!el) return;
     const live = (_rentals || []).filter(r => (r.status === 'scheduled' || r.status === 'active') && r.startDate && r.endDate);
     const machines = (_machines || []).filter(m => m.status !== 'archived' || live.some(r => r.machineId === m.id));
