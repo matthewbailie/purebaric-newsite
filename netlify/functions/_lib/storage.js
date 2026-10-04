@@ -786,6 +786,7 @@ async function deleteAdminSession(sessionId) {
 }
 
 module.exports = {
+  inventoryInputs,
   getDeliveryAvailability,
   setDeliveryAvailability,
   bookingHolds,
