@@ -544,3 +544,20 @@ This is a wellness rental business, **not a medical provider** ("not a medical d
 - **Sitting-chamber image:** the "coming soon" card reuses the current chamber photo, heavily blurred; replace with a real rendering/photo when available.
 - **Finish the design migration:** Safety, Terms, Practitioners, Blog + posts, and Use-case pages still use the legacy teal template (+ jQuery/Toastr/Vite). Migrating them to warm would also drop that legacy JS/CSS weight.
 - **Stripe / instant paid booking / real-time availability** — the reservation is request-only today.
+
+## Website visits on the admin Home tab (Google Analytics)
+
+The Home tab's **Website visits** card reads daily sessions from the GA4 property **555169638** through the
+Google Analytics Data API (`netlify/functions/admin-ga-traffic.js`, maths in `_lib/ga-traffic.js`). It shows
+visits per day this month vs last month, year to date vs the same days last year, and a daily line for this
+year against last year. Results are cached in the settings store for six hours; the card has a Refresh link.
+
+One-time setup (the card says "Not connected" until this is done):
+
+1. Google Cloud console → a project (any) → **APIs & Services → Enable APIs** → enable **Google Analytics Data API**.
+2. **IAM & Admin → Service accounts → Create service account** (no roles needed) → **Keys → Add key → JSON**. Keep the file private.
+3. Google Analytics → Admin → Property **Purebaric Website** → **Property access management** → add the service
+   account's email (ends in `.iam.gserviceaccount.com`) with the **Viewer** role.
+4. Store the key on Netlify as a secret env var, from the repo folder:
+   `netlify env:set GA4_SERVICE_ACCOUNT "$(cat /path/to/key.json)" --secret`
+   (optional: `GA4_PROPERTY_ID` if the property ever changes). Redeploy; the card fills in on the next load.

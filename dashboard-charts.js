@@ -1,6 +1,8 @@
 // Small dependency-free SVG line chart for the admin Home tab.
 //   PurebaricCharts.lineChart(container, { series, format, ariaLabel })
 // series: [{ label, values: [12 numbers|null], emphasis: true|false }]. The first
+// Optional: labels (one per point, any length; used for the readout) and ticks ([{ i, label }]) for the
+// x axis — without them the chart is the 12-month one.
 // series is the emphasised one (accent colour, end marker + direct label); any
 // others are context (muted, dashed). Calling it again on the same container
 // updates the data. Colours come from CSS custom properties (--viz-*), so the
@@ -63,7 +65,7 @@
       tip.replaceChildren();
       const head = document.createElement('div');
       head.className = 'viz-tip-head';
-      head.textContent = MONTHS[idx];
+      head.textContent = o.labels ? o.labels[idx] : MONTHS[idx];
       tip.appendChild(head);
       o.series.forEach((s, i) => {
         const row = document.createElement('div');
@@ -94,7 +96,8 @@
       const pw = W - m.l - m.r, ph = HEIGHT - m.t - m.b;
       const all = o.series.flatMap((s) => s.values).filter((v) => v != null);
       const { top, step } = niceCeil(Math.max(0, ...all));
-      const x = (i) => m.l + (pw * i) / 11;
+      const n = o.labels ? o.labels.length : 12;
+      const x = (i) => m.l + (pw * i) / Math.max(1, n - 1);
       const y = (v) => m.t + ph - (v / top) * ph;
       geo = { W, x, y };
 
@@ -116,9 +119,10 @@
         svgEl.appendChild(svg('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), class: 'viz-grid' }));
         svgEl.appendChild(svg('text', { x: m.l - 8, y: y(v) + 4, 'text-anchor': 'end', class: 'viz-axis' }, o.axisFormat ? o.axisFormat(v) : o.format(v)));
       }
-      MONTHS.forEach((mo, i) => {
-        if (narrow && i % 2 === 1) return;
-        svgEl.appendChild(svg('text', { x: x(i), y: HEIGHT - 6, 'text-anchor': 'middle', class: 'viz-axis' }, mo));
+      const ticks = o.ticks || MONTHS.map((mo, i) => ({ i, label: mo }));
+      ticks.forEach((t, k) => {
+        if (narrow && k % 2 === 1) return;
+        svgEl.appendChild(svg('text', { x: x(t.i), y: HEIGHT - 6, 'text-anchor': 'middle', class: 'viz-axis' }, t.label));
       });
 
       const path = (vals) => {
@@ -152,7 +156,7 @@
 
       const idxFromEvent = (e) => {
         const r = svgEl.getBoundingClientRect();
-        return Math.max(0, Math.min(11, Math.round(((e.clientX - r.left - m.l) / pw) * 11)));
+        return Math.max(0, Math.min(n - 1, Math.round(((e.clientX - r.left - m.l) / pw) * (n - 1))));
       };
       hit.addEventListener('pointermove', (e) => { focusIdx = idxFromEvent(e); showAt(focusIdx); });
       hit.addEventListener('pointerdown', (e) => { focusIdx = idxFromEvent(e); showAt(focusIdx); });
@@ -162,7 +166,7 @@
         if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
         e.preventDefault();
         const start = focusIdx == null ? Math.max(last, 0) : focusIdx;
-        focusIdx = Math.max(0, Math.min(11, start + (e.key === 'ArrowRight' ? 1 : -1)));
+        focusIdx = Math.max(0, Math.min(n - 1, start + (e.key === 'ArrowRight' ? 1 : -1)));
         showAt(focusIdx);
       });
 

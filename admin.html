@@ -426,6 +426,22 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <p class="viz-note" data-note="len">Running average term, in months, of every rental started by the end of that month (the same figure as the Average rental length card below).</p>
         <div id="chartLen"></div>
       </div>
+      <div class="viz-card viz" style="margin-top:1rem;" id="trafficCard">
+        <h3>Website visits</h3>
+        <p class="viz-note" id="trafficNote">Loading website visits…</p>
+        <div class="traffic-kpis" id="trafficKpis" hidden>
+          <div class="kpi"><div class="kpi-label">Visits per day, this month</div><div class="kpi-val" id="tkMonth"></div><div class="kpi-sub" id="tkMonthSub"></div></div>
+          <div class="kpi"><div class="kpi-label">Visits per day, year to date</div><div class="kpi-val" id="tkYtd"></div><div class="kpi-sub" id="tkYtdSub"></div></div>
+        </div>
+        <div id="chartTraffic"></div>
+        <div class="renter-line" id="trafficMeta" style="margin-top:6px;"></div>
+      </div>
+      <style>
+        .traffic-kpis{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:10px 0 12px;}
+        .traffic-kpis .kpi-val{font-size:1.9rem;}
+        .traffic-kpis .up{color:#4a5d24;font-weight:700;} .traffic-kpis .down{color:#9a4f3a;font-weight:700;}
+        @media(max-width:560px){.traffic-kpis{grid-template-columns:1fr;gap:0.6rem;}}
+      </style>
       <details class="viz-table">
         <summary>View the monthly numbers as a table</summary>
         <div style="overflow-x:auto"><table class="data-table" id="monthlyTable"></table></div>
@@ -1515,6 +1531,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   async function loadAll() {
     clearLoadError();
     fetchDeliveryCfg().then(() => { if (typeof paintStats === 'function' && _chambers) paintStats(); }).catch(() => {});
+    if (typeof loadTraffic === 'function') loadTraffic(false).catch(() => {});
     // Any inline-positioned edit form must be moved back out
     // of its table row *before* loadChambers()/loadMachines() below replace
     // that row's whole subtree via innerHTML — otherwise the form node (which
@@ -1598,6 +1615,40 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   window.addEventListener('focus', refreshSession);
   setInterval(refreshSession, 40 * 60 * 1000); // 40 min < 60 min token life
 
+  // ─── Website visits (Google Analytics sessions by day; see netlify/functions/admin-ga-traffic.js) ───
+  async function loadTraffic(refresh) {
+    const note = document.getElementById('trafficNote'); if (!note) return;
+    if (refresh) note.textContent = 'Refreshing from Google Analytics…';
+    try { renderTraffic(await api('/api/admin/ga-traffic' + (refresh ? '?refresh=1' : ''))); }
+    catch (e) { note.textContent = 'Could not load website visits: ' + e.message; }
+  }
+  function renderTraffic(r) {
+    const note = document.getElementById('trafficNote'), kpis = document.getElementById('trafficKpis'), meta = document.getElementById('trafficMeta');
+    const n1 = v => v == null ? '—' : (Math.round(v * 10) / 10).toLocaleString('en-US');
+    const delta = p => p == null ? '' : ` <span class="${p >= 0 ? 'up' : 'down'}">${p >= 0 ? '▲' : '▼'} ${Math.abs(p)}%</span>`;
+    if (!r.configured) {
+      kpis.hidden = true; meta.textContent = '';
+      note.innerHTML = `Not connected to Google Analytics yet. To connect it: in Google Cloud, enable the <strong>Google Analytics Data API</strong> and create a <strong>service account</strong> with a JSON key; in Google Analytics, add that service account's email as a <strong>Viewer</strong> on the Purebaric Website property (${escape(r.propertyId || '')}); then store the key as the <code>GA4_SERVICE_ACCOUNT</code> environment variable on Netlify (secret). Details are in the runbook.`;
+      return;
+    }
+    if (r.error && !r.summary) { kpis.hidden = true; note.textContent = 'Google Analytics returned an error: ' + r.error; return; }
+    const s = r.summary, c = r.chart;
+    kpis.hidden = false;
+    note.textContent = 'Visits (sessions) per day on purebaric.com. The chart shows every day of ' + c.year + (s.lastYearHasData ? ' against the same day in ' + (c.year - 1) + '.' : '. Last year\'s line will appear once Google Analytics has data for ' + (c.year - 1) + '.');
+    document.getElementById('tkMonth').textContent = n1(s.thisMonth.avgPerDay);
+    document.getElementById('tkMonthSub').innerHTML = `${s.thisMonth.total.toLocaleString('en-US')} visits in ${escape(s.thisMonth.label)} so far · ${n1(s.lastMonth.avgPerDay)} per day in ${escape(s.lastMonth.label)}${delta(s.monthChangePct)}`;
+    document.getElementById('tkYtd').textContent = n1(s.ytd.avgPerDay);
+    document.getElementById('tkYtdSub').innerHTML = s.lastYearHasData
+      ? `${s.ytd.total.toLocaleString('en-US')} visits in ${escape(s.ytd.label)} · ${n1(s.lastYtd.avgPerDay)} per day over the ${escape(s.lastYtd.label)}${delta(s.yearChangePct)}`
+      : `${s.ytd.total.toLocaleString('en-US')} visits in ${escape(s.ytd.label)} · no ${c.year - 1} data to compare yet`;
+    const series = [{ label: String(c.year), values: c.thisYear }];
+    if (s.lastYearHasData) series.push({ label: String(c.year - 1), values: c.lastYear });
+    const last = c.thisYear.filter(v => v != null).pop();
+    window.PurebaricCharts.lineChart(document.getElementById('chartTraffic'), { series, labels: c.labels, ticks: c.ticks, format: v => Math.round(v) + (Math.round(v) === 1 ? ' visit' : ' visits'), axisFormat: v => String(Math.round(v)),
+      ariaLabel: `Website visits by day, ${c.year}${s.lastYearHasData ? ` compared with ${c.year - 1}` : ''}. Today so far: ${last == null ? 'no data' : Math.round(last)}.` });
+    const when = r.fetchedAt ? new Date(r.fetchedAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) : '';
+    meta.innerHTML = `Source: Google Analytics sessions${when ? ' · updated ' + escape(when) : ''}${r.stale ? ' · <span style="color:#9a4f3a;">showing the last good copy, refresh failed: ' + escape(String(r.stale)) + '</span>' : ''} · <a href="#" onclick="loadTraffic(true);return false;" style="color:var(--terracotta);">Refresh</a>`;
+  }
   function paintStats() {
     const today = new Date().toISOString().slice(0, 10);
     // A unit is committed if it has a current/upcoming scheduled or active rental.
