@@ -730,6 +730,8 @@
       <div class="seg" id="customerFilter" role="group" aria-label="Show customers">
         <button type="button" data-f="active" onclick="setCustomerFilter('active')">Active <span class="seg-n" id="cfActive"></span></button>
         <button type="button" data-f="all" onclick="setCustomerFilter('all')">All <span class="seg-n" id="cfAll"></span></button>
+        <button type="button" data-f="home" onclick="setCustomerFilter('home')">Home <span class="seg-n" id="cfHome"></span></button>
+        <button type="button" data-f="business" onclick="setCustomerFilter('business')">Business <span class="seg-n" id="cfBiz"></span></button>
       </div>
 
       <div id="customerFormAnchor"></div>
@@ -2599,11 +2601,15 @@
     const days = Math.round((new Date(r.endDate) - new Date(r.startDate)) / 86400000) + 1;
     return Math.max(1, Math.round(days / 7));
   }
-  // Active = a current or upcoming rental. The choice is remembered on this device.
+  // Active = a current or upcoming rental. Home / Business = every customer of that kind, current or past.
+  // The choice is remembered on this device.
+  const CUSTOMER_FILTERS = ['active', 'all', 'home', 'business'];
   let _customerFilter = 'active';
-  try { if (localStorage.getItem('pb_customer_filter') === 'all') _customerFilter = 'all'; } catch (e) { /* storage blocked: default is fine */ }
+  try { const sf = localStorage.getItem('pb_customer_filter'); if (CUSTOMER_FILTERS.includes(sf)) _customerFilter = sf; } catch (e) { /* storage blocked: default is fine */ }
+  // A business customer is anyone with a business rental or booking (from the For Businesses page or entered as one).
+  function customerIsBusiness(c) { return [...(c.rentals || []), ...(c.bookings || [])].some(x => x.rentalType === 'business'); }
   function setCustomerFilter(f) {
-    _customerFilter = f === 'all' ? 'all' : 'active';
+    _customerFilter = CUSTOMER_FILTERS.includes(f) ? f : 'active';
     try { localStorage.setItem('pb_customer_filter', _customerFilter); } catch (e) { /* not critical */ }
     renderCustomers();
   }
@@ -2625,7 +2631,7 @@
   function renderCustomers() {
     const list = document.getElementById('customersList');
     if (!_customers.length) {
-      document.getElementById('cfActive').textContent = '0'; document.getElementById('cfAll').textContent = '0';
+      ['cfActive', 'cfAll', 'cfHome', 'cfBiz'].forEach(id => { document.getElementById(id).textContent = '0'; });
       document.querySelectorAll('#customerFilter button').forEach(b => b.classList.toggle('on', b.dataset.f === _customerFilter));
       list.innerHTML = `<div class="empty-state">No customers yet. Click <strong>+ Add customer</strong> to create one, or they'll be auto-created when bookings/rentals/waitlist entries come in.</div>`;
       return;
@@ -2646,10 +2652,17 @@
     const nActive = _customers.filter(isActiveCustomer).length;
     document.getElementById('cfActive').textContent = nActive;
     document.getElementById('cfAll').textContent = _customers.length;
+    const nBiz = _customers.filter(customerIsBusiness).length;
+    document.getElementById('cfHome').textContent = _customers.length - nBiz;
+    document.getElementById('cfBiz').textContent = nBiz;
     document.querySelectorAll('#customerFilter button').forEach(b => b.classList.toggle('on', b.dataset.f === _customerFilter));
-    const visibleCustomers = _customerFilter === 'active' ? _customers.filter(isActiveCustomer) : _customers;
+    const visibleCustomers = _customerFilter === 'active' ? _customers.filter(isActiveCustomer)
+      : _customerFilter === 'home' ? _customers.filter(c => !customerIsBusiness(c))
+      : _customerFilter === 'business' ? _customers.filter(customerIsBusiness)
+      : _customers;
     if (!visibleCustomers.length) {
-      list.innerHTML = `<div class="empty-state">No active customers${document.getElementById('customerSearch').value.trim() ? ' match that search' : ''}. Tap <strong>All</strong> to see everyone.</div>`;
+      const what = { active: 'active customers', home: 'home customers', business: 'business customers', all: 'customers' }[_customerFilter];
+      list.innerHTML = `<div class="empty-state">No ${what}${document.getElementById('customerSearch').value.trim() ? ' match that search' : ''}. Tap <strong>All</strong> to see everyone.</div>`;
       return;
     }
     const sortedCustomers = [...visibleCustomers].sort((a, b) => { const x = rankOf(a), y = rankOf(b); return x[0] - y[0] || x[1] - y[1]; });
@@ -2712,7 +2725,7 @@
       // "358 W Serenity Ct, Vineyard, UT 84059": the form you would paste into a map or an address label.
       const cityLine = [cardAddr.city, [cardAddr.state, cardAddr.zip].filter(Boolean).join(' ')].filter(Boolean).join(', ');
       const addressLine = [cardAddr.street, cityLine].filter(Boolean).join(', ');
-      const bizRecord = [...c.rentals, ...c.bookings].find(x => x.rentalType === 'business');
+      const bizRecord = customerIsBusiness(c) ? [...c.rentals, ...c.bookings].find(x => x.rentalType === 'business') : null;
       const bizPill = bizRecord ? `<span class="pill" style="background:#2b2320;color:#f3ead9;font-size:0.65rem;">Business${bizRecord.businessName ? ' · ' + escape(bizRecord.businessName) : ''}</span>` : '';
       const tagPills = bizPill + ' ' + ((c.tags && c.tags.length)
         ? c.tags.map(t => `<span class="pill" style="background:#e8e2d6;color:#6b6357;font-size:0.65rem;">${escape(t)}</span>`).join(' ')
