@@ -1739,7 +1739,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const series = [{ label: curName, values: w.cur }];
     if (w.hasPrev) series.push({ label: prevName, values: w.prevAligned });
     const last = w.cur.filter(v => v != null).pop();
-    window.PurebaricCharts.lineChart(el, { series, labels: w.labels, ticks: w.ticks, format: v => Math.round(v) + ' ' + (Math.round(v) === 1 ? unit : unit + 's'), axisFormat: v => String(Math.round(v)),
+    window.PurebaricCharts.lineChart(el, { series, labels: w.labels, ticks: w.ticks, alwaysLegend: true, format: v => Math.round(v) + ' ' + (Math.round(v) === 1 ? unit : unit + 's'), axisFormat: v => String(Math.round(v)),
       ariaLabel: `${what}, ${_rangeWords()}${w.hasPrev ? ', with the previous period' : ''}. Latest day: ${last == null ? 'no data' : Math.round(last)}.` });
   }
   function renderAnalyticsCharts() {

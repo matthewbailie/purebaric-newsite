@@ -2,7 +2,7 @@
 //   PurebaricCharts.lineChart(container, { series, format, ariaLabel })
 // series: [{ label, values: [12 numbers|null], emphasis: true|false }]. The first
 // Optional: labels (one per point, any length; used for the readout) and ticks ([{ i, label }]) for the
-// x axis — without them the chart is the 12-month one.
+// x axis — without them the chart is the 12-month one. alwaysLegend shows the legend even for one line.
 // series is the emphasised one (accent colour, end marker + direct label); any
 // others are context (muted, dashed). Calling it again on the same container
 // updates the data. Colours come from CSS custom properties (--viz-*), so the
@@ -102,7 +102,7 @@
       geo = { W, x, y };
 
       legend.replaceChildren();
-      if (o.series.length > 1) {
+      if (o.series.length > 1 || o.alwaysLegend) {
         o.series.forEach((s, i) => {
           const item = document.createElement('span');
           item.className = 'viz-legend-item';
