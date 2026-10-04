@@ -915,24 +915,36 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <button class="btn btn-ghost btn-sm" onclick="loadTraffic(true)">Refresh from Google Analytics</button>
       </div>
       <p class="renter-line" id="anNote" style="margin:0 0 14px;max-width:760px;">Loading…</p>
-      <div class="viz-card viz">
+      <div class="seg" id="anRange" role="group" aria-label="Chart range" style="margin-bottom:1.25rem;">
+        <button type="button" data-r="365" onclick="setAnRange(365)">Year</button>
+        <button type="button" data-r="90" onclick="setAnRange(90)">3 months</button>
+        <button type="button" data-r="30" onclick="setAnRange(30)">Month</button>
+        <button type="button" data-r="7" onclick="setAnRange(7)">Week</button>
+      </div>
+      <div class="viz-card viz an-card">
         <h3>Website visits</h3>
-        <p class="viz-note">Visits (sessions) per day on purebaric.com, every day of this year against the same day last year.</p>
+        <p class="viz-note" id="anTotalNote">Visits (sessions) per day on purebaric.com.</p>
         <div class="traffic-kpis" id="anKpis" hidden>
           <div class="kpi"><div class="kpi-label">Visits per day, this month</div><div class="kpi-val" id="akMonth"></div><div class="kpi-sub" id="akMonthSub"></div></div>
           <div class="kpi"><div class="kpi-label">Visits per day, year to date</div><div class="kpi-val" id="akYtd"></div><div class="kpi-sub" id="akYtdSub"></div></div>
         </div>
         <div id="chartAnTotal"></div>
       </div>
-      <div class="viz-card viz" style="margin-top:1rem;">
+      <div class="viz-card viz an-card">
         <h3>Page views by page</h3>
-        <p class="viz-note">Views of each page per day. Pick a page to chart it, this year against last year.</p>
+        <p class="viz-note" id="anPageNote">Views of each page per day. Pick a page to chart it.</p>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0 10px;"><label class="renter-line" for="anPage">Page</label><select id="anPage" onchange="renderPageChart()" style="padding:7px 10px;border:1px solid var(--line,#e6dccd);border-radius:8px;background:var(--card,#fffdf9);font-family:inherit;"></select></div>
         <div id="chartAnPage"></div>
         <div class="table-wrap" style="margin-top:14px;"><table class="data-table an-table"><thead><tr><th>Page</th><th class="n">Views/day this month</th><th class="n">Last month</th><th class="n">Change</th><th class="n">Views/day this year</th><th class="n">Same days last year</th><th class="n">Change</th></tr></thead><tbody id="anPagesBody"></tbody></table></div>
         <div class="renter-line" id="anMeta" style="margin-top:8px;"></div>
       </div>
-      <style>.an-table td.n, .an-table th.n{text-align:right;white-space:nowrap;}</style>
+      <style>
+        .an-table td.n, .an-table th.n{text-align:right;white-space:nowrap;}
+        .an-card{margin-top:1.5rem;padding-bottom:1.1rem;}
+        .an-card .traffic-kpis{margin:14px 0 18px;}
+        .an-card #chartAnTotal, .an-card #chartAnPage{margin-top:8px;}
+        .an-card .table-wrap{margin-top:22px;}
+      </style>
     </section>
 
     <!-- ───── Delivery availability + booking mode ───── -->
@@ -1655,6 +1667,48 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   const _n1 = v => v == null ? '—' : (Math.round(v * 10) / 10).toLocaleString('en-US');
   const _delta = p => p == null ? '' : ` <span class="${p >= 0 ? 'up' : 'down'}">${p >= 0 ? '▲' : '▼'} ${Math.abs(p)}%</span>`;
   const _notConnected = (r) => `Not connected to Google Analytics yet. To connect it: in Google Cloud, enable the <strong>Google Analytics Data API</strong> and create a <strong>service account</strong> with a JSON key; in Google Analytics, add that service account's email as a <strong>Viewer</strong> on the Purebaric Website property (${escape(r.propertyId || '')}); then store the key as the <code>GA4_SERVICE_ACCOUNT</code> environment variable on Netlify (secret). Details are in the runbook.`;
+  // Chart range on the Site analytics tab (365 = the whole year, else the last N days), remembered per device.
+  const AN_RANGES = [365, 90, 30, 7];
+  let _anRange = 365;
+  try { const v = parseInt(localStorage.getItem('pb_analytics_range'), 10); if (AN_RANGES.includes(v)) _anRange = v; } catch (e) { /* storage blocked */ }
+  function setAnRange(r) {
+    _anRange = AN_RANGES.includes(r) ? r : 365;
+    try { localStorage.setItem('pb_analytics_range', String(_anRange)); } catch (e) { /* not critical */ }
+    paintAnRange(); renderAnalyticsCharts();
+  }
+  function paintAnRange() { document.querySelectorAll('#anRange button').forEach(b => b.classList.toggle('on', +b.dataset.r === _anRange)); }
+  function anRangeLabel() { return _anRange === 365 ? 'every day of this year' : _anRange === 7 ? 'the last 7 days' : _anRange === 30 ? 'the last 30 days' : 'the last 90 days'; }
+  // Cut a full-year daily chart down to the last N days ending today (this year only; the window
+  // shortens in January rather than reaching into last year's series).
+  function _windowChart(c, days) {
+    if (!days || days >= 365) return c;
+    const todayIdx = c.thisYear.map((v, i) => v == null ? -1 : i).reduce((a, b) => Math.max(a, b), -1);
+    if (todayIdx < 0) return c;
+    const start = Math.max(0, todayIdx - days + 1);
+    const slice = a => a.slice(start, todayIdx + 1);
+    const labels = slice(c.labels);
+    const n = labels.length;
+    const every = n <= 7 ? 1 : n <= 31 ? 5 : 15;
+    const ticks = [];
+    if (n <= 7) {
+      const dow = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      for (let i = 0; i < n; i += 1) { const d = new Date(Date.UTC(c.year, 0, 1) + (start + i) * 86400000); ticks.push({ i, label: dow[d.getUTCDay()] + ' ' + d.getUTCDate() }); }
+    } else {
+      for (let i = n - 1; i >= 0; i -= every) ticks.push({ i, label: labels[i] });
+      ticks.reverse();
+    }
+    return { year: c.year, labels, ticks, thisYear: slice(c.thisYear), lastYear: slice(c.lastYear || []) };
+  }
+  function renderAnalyticsCharts() {
+    const r = _traffic; if (!r || !r.summary) return;
+    const s = r.summary;
+    const note = document.getElementById('anTotalNote');
+    if (note) note.textContent = 'Visits (sessions) per day on purebaric.com, ' + anRangeLabel() + (s.lastYearHasData ? ', against the same days last year.' : '.');
+    _dailyChart(document.getElementById('chartAnTotal'), _windowChart(r.chart, _anRange), s.lastYearHasData, 'visit', 'Website visits');
+    const pn = document.getElementById('anPageNote');
+    if (pn) pn.textContent = 'Views of each page per day, ' + anRangeLabel() + '. Pick a page to chart it.';
+    renderPageChart();
+  }
   function _dailyChart(el, c, hasPrev, unit, what) {
     if (!el) return;
     const series = [{ label: String(c.year), values: c.thisYear }];
@@ -1696,14 +1750,14 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         ? `${s.ytd.total.toLocaleString('en-US')} visits in ${escape(s.ytd.label)} · ${_n1(s.lastYtd.avgPerDay)} per day over the ${escape(s.lastYtd.label)}${_delta(s.yearChangePct)}`
         : `${s.ytd.total.toLocaleString('en-US')} visits in ${escape(s.ytd.label)} · no ${c.year - 1} data to compare yet`;
       if (s.ytd.since) document.getElementById('akYtdSub').innerHTML += ` · tracking since ${escape(fmtDate(s.ytd.since))}`;
-      _dailyChart(document.getElementById('chartAnTotal'), c, s.lastYearHasData, 'visit', 'Website visits');
+      paintAnRange();
       const sel = document.getElementById('anPage'), keep = sel.value;
       sel.innerHTML = (r.pages || []).map(p => `<option value="${escape(p.label)}">${escape(p.label)}</option>`).join('');
       if (keep && (r.pages || []).some(p => p.label === keep)) sel.value = keep;
       document.getElementById('anPagesBody').innerHTML = (r.pages || []).map(p => `<tr><td><strong>${escape(p.label)}</strong></td><td class="n">${_n1(p.thisMonthAvg)}</td><td class="n">${_n1(p.lastMonthAvg)}</td><td class="n">${_delta(p.monthChangePct) || '—'}</td><td class="n">${_n1(p.ytdAvg)}</td><td class="n">${p.lastYearHasData ? _n1(p.lastYtdAvg) : '—'}</td><td class="n">${_delta(p.yearChangePct) || '—'}</td></tr>`).join('')
         || '<tr><td colspan="7" class="renter-line">No page data yet.</td></tr>';
       document.getElementById('anMeta').innerHTML = source;
-      renderPageChart();
+      renderAnalyticsCharts();
     }
   }
   function renderPageChart() {
@@ -1711,7 +1765,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const label = document.getElementById('anPage').value;
     const c = _traffic.pageCharts[label]; if (!c) return;
     const row = (_traffic.pages || []).find(p => p.label === label);
-    _dailyChart(document.getElementById('chartAnPage'), c, !!(row && row.lastYearHasData), 'view', label + ' page views');
+    _dailyChart(document.getElementById('chartAnPage'), _windowChart(c, _anRange), !!(row && row.lastYearHasData), 'view', label + ' page views');
   }
   function paintStats() {
     const today = new Date().toISOString().slice(0, 10);
