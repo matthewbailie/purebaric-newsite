@@ -45,7 +45,7 @@ test("capacity counts free chamber+machine pairs of the style over the whole win
 
 test("availableDates respects lead time, horizon, days off and capacity", () => {
   const list = d.availableDates({ ...base, style: "lying", months: 1, today });
-  assert.equal(list[0].date, "2026-10-07"); assert.equal(list[list.length - 1].date, "2026-11-04");
+  assert.equal(list[0].date, "2026-10-07"); assert.equal(list[list.length - 1].date, "2027-12-31", "through the end of next year");
   const byDate = Object.fromEntries(list.map(x => [x.date, x.ok]));
   assert.equal(byDate["2026-10-07"], true);
   assert.equal(byDate["2026-10-10"], false, "Saturday");
@@ -58,7 +58,9 @@ test("dateAvailable rejects bad, early, late, off and full days and returns the 
   const ok = d.dateAvailable({ ...base, style: "lying", months: 2, today, date: "2026-10-13" });
   assert.deepEqual(ok, { ok: true, endDate: "2026-12-12" });
   assert.equal(d.dateAvailable({ ...base, style: "lying", months: 1, today, date: "2026-10-06" }).reason, "too soon");
-  assert.equal(d.dateAvailable({ ...base, style: "lying", months: 1, today, date: "2026-12-01" }).reason, "beyond the booking window");
+  assert.equal(d.dateAvailable({ ...base, style: "lying", months: 1, today, date: "2028-01-03" }).reason, "beyond the booking window");
+  assert.equal(d.dateAvailable({ ...base, style: "lying", months: 1, today, date: "2027-12-29" }).ok, true, "late next year is bookable");
+  assert.equal(d.horizonEnd("2027-01-01"), "2028-12-31");
   assert.equal(d.dateAvailable({ ...base, style: "lying", months: 1, today, date: "2026-10-11" }).reason, "no deliveries that day");
   assert.equal(d.dateAvailable({ ...base, style: "lying", months: 1, today, date: "junk" }).reason, "invalid date");
 });
@@ -82,12 +84,9 @@ test("nextAvailableDate looks past the horizon to the day after a rental ends, a
   const args = { ...base, rentals: full, style: "lying", months: 1, today };
   const next = d.nextAvailableDate(args);
   assert.equal(next, "2027-01-01", "c1 frees Jan 1 (a Friday), so delivery can start that day");
-  assert.equal(d.effectiveHorizon(base.config, next, today), 88 + 30, "horizon grows to the next open day plus a month");
-  assert.ok(d.availableDates(args).every(x => !x.ok), "the normal 30-day window has nothing");
-  const stretched = d.availableDates({ ...args, horizonDays: d.effectiveHorizon(base.config, next, today) });
-  assert.equal(stretched.find(x => x.ok).date, "2027-01-01");
-  assert.equal(d.dateAvailable({ ...args, date: "2027-01-01", horizonDays: 118 }).ok, true);
-  assert.equal(d.dateAvailable({ ...args, date: "2027-01-01" }).reason, "beyond the booking window", "without the stretch it is out of range");
+  assert.equal(d.effectiveHorizon(base.config, next, today), d.horizonDaysFor(base.config, today), "within the end-of-next-year window, nothing to stretch");
+  assert.equal(d.availableDates(args).find(x => x.ok).date, "2027-01-01");
+  assert.equal(d.dateAvailable({ ...args, date: "2027-01-01" }).ok, true);
   assert.equal(d.nextAvailableDate({ ...args, rentals: [...full, { chamberId: "c3", machineId: "m2", status: "scheduled", startDate: "2027-01-06", endDate: "2028-06-01" }, { chamberId: "c2", machineId: "m1", status: "scheduled", startDate: "2027-01-02", endDate: "2028-06-01" }] }, 120), null);
 });
 

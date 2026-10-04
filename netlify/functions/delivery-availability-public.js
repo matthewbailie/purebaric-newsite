@@ -10,7 +10,7 @@ exports.handler = async (event) => {
     const q = event.queryStringParameters || {};
     const config = await getDeliveryAvailability();
     const today = delivery.mountainToday();
-    const base = { mode: config.mode, leadDays: config.leadDays, horizonDays: config.horizonDays, weekdaysOff: config.weekdaysOff, deliveryNote: config.deliveryNote, today };
+    const base = { mode: config.mode, leadDays: config.leadDays, horizonDays: delivery.horizonDaysFor(config, today), horizonEnd: delivery.horizonEnd(today), weekdaysOff: config.weekdaysOff, deliveryNote: config.deliveryNote, today };
     if (config.mode !== "book") {
       return { statusCode: 200, headers: { "Content-Type": "application/json", "Cache-Control": "public, max-age=60" }, body: JSON.stringify({ ...base, styles: [], dates: [] }) };
     }
@@ -23,7 +23,7 @@ exports.handler = async (event) => {
     const styles = ["lying", "sitting"].map(s => {
       const exists = chambers.some(c => c.status === "active" && delivery.styleOf(c) === s);
       const next = exists ? delivery.nextAvailableDate({ ...inputs, style: s, months }) : null;
-      const status = !exists ? "soon" : !next ? "none" : (delivery.daysBetween(today, next) <= config.horizonDays ? "available" : "later");
+      const status = !exists ? "soon" : !next ? "none" : (delivery.daysBetween(today, next) <= delivery.horizonDaysFor(config, today) ? "available" : "later");
       return { style: s, label: styleLabel(s), available: exists, nextAvailable: next, status };
     });
     const mine = styles.find(s => s.style === style) || styles[0];

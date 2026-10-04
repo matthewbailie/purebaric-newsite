@@ -831,7 +831,7 @@
             <select id="daMode"><option value="request">Reservation requests (customers ask, you confirm)</option><option value="book">Book with a delivery date (customers pick an open day from your calendar)</option></select></div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
             <div class="keyrow"><label>Earliest delivery (days from today)</label><input id="daLead" type="number" min="0" max="60"></div>
-            <div class="keyrow"><label>How far ahead customers can book (days)</label><input id="daHorizon" type="number" min="7" max="400"></div>
+            <div class="keyrow"><label>Customers can book through</label><input id="daHorizon" readonly style="background:transparent;border-color:transparent;" title="Always December 31 of next year; it rolls forward each January 1"></div>
             <div class="keyrow"><label>Today (Mountain)</label><input id="daToday" readonly style="background:transparent;border-color:transparent;"></div>
           </div>
           <div class="keyrow"><label>Days of the week you never deliver</label>
@@ -3385,7 +3385,7 @@
   function renderDelivery() {
     const c = _deliveryCfg; if (!c) return;
     const setIf = (id, v) => { const el = document.getElementById(id); if (el && document.activeElement !== el) el.value = v == null ? '' : v; };
-    setIf('daMode', c.mode); setIf('daLead', c.leadDays); setIf('daHorizon', c.horizonDays); setIf('daNote', c.deliveryNote); setIf('daToday', fmtDate(_daToday));
+    setIf('daMode', c.mode); setIf('daLead', c.leadDays); setIf('daHorizon', 'Dec 31, ' + (parseInt(_daToday.slice(0, 4), 10) + 1)); setIf('daNote', c.deliveryNote); setIf('daToday', fmtDate(_daToday));
     const hol = document.getElementById('daHolidays'); if (hol) hol.checked = !!c.holidaysOff;
     document.querySelectorAll('#daDays input').forEach(cb => { cb.checked = (c.weekdaysOff || []).includes(parseInt(cb.value, 10)); });
     if (!_daMonth) _daMonth = _daToday.slice(0, 7);
@@ -3412,7 +3412,9 @@
       jump.innerHTML = Array.from({ length: 24 }, (_, i) => { const dt = new Date(Date.UTC(ty, tm + i, 1)); const ym = dt.toISOString().slice(0, 7); return `<option value="${ym}"${ym === _daMonth ? ' selected' : ''}>${dt.toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' })}</option>`; }).join('');
     }
     let html = '';
-    for (let k = 0; k < 12; k++) {
+    const endIdx = (parseInt(_daToday.slice(0, 4), 10) + 1) * 12 + 11;          // December of next year
+    const monthsToShow = Math.max(3, endIdx - (y0 * 12 + m0) + 1);
+    for (let k = 0; k < monthsToShow; k++) {
       const first = new Date(Date.UTC(y0, m0 + k, 1)), days = new Date(Date.UTC(y0, m0 + k + 1, 0)).getUTCDate();
       const ym = first.toISOString().slice(0, 7);
       let cells = dows.map(d => `<div class="da-dow">${d}</div>`).join('');
@@ -3430,7 +3432,7 @@
   // Mirror of usHolidays in netlify/functions/_lib/delivery.js, for the three months on screen.
   function usHolidaysClient(y0, m0) {
     const out = {};
-    const years = new Set([y0, new Date(Date.UTC(y0, m0 + 11, 1)).getUTCFullYear()]);
+    const years = new Set([y0, y0 + 1, y0 + 2]);
     years.forEach(year => {
       const pad = n => String(n).padStart(2, '0'), iso = (m, d) => `${year}-${pad(m)}-${pad(d)}`;
       const nth = (month, wd, n) => { if (n > 0) { const f = new Date(Date.UTC(year, month - 1, 1)).getUTCDay(); return iso(month, 1 + ((wd - f + 7) % 7) + (n - 1) * 7); } const last = new Date(Date.UTC(year, month, 0)); return iso(month, last.getUTCDate() - ((last.getUTCDay() - wd + 7) % 7)); };
@@ -3457,7 +3459,7 @@
   }
   document.addEventListener('change', e => { if (e.target && e.target.closest && (e.target.closest('#daDays') || e.target.id === 'daHolidays')) renderDaCal(); });
   async function saveDelivery() {
-    const body = { mode: document.getElementById('daMode').value, leadDays: document.getElementById('daLead').value, horizonDays: document.getElementById('daHorizon').value,
+    const body = { mode: document.getElementById('daMode').value, leadDays: document.getElementById('daLead').value,
       deliveryNote: document.getElementById('daNote').value, weekdaysOff: daCurrentDays(), holidaysOff: document.getElementById('daHolidays').checked, blockedDates: (_deliveryCfg && _deliveryCfg.blockedDates) || [] };
     try {
       const r = await api('/api/admin/delivery-availability', { method: 'PUT', body: JSON.stringify(body) });
