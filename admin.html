@@ -949,6 +949,10 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       <style>
         .an-table td.n, .an-table th.n{text-align:right;white-space:nowrap;}
         .an-card{margin-top:1.5rem;padding-bottom:1.1rem;}
+        @media(max-width:900px){
+          /* The period switch stays pinned while scrolling the charts on a phone. */
+          #anRange{position:sticky;top:0;z-index:20;background:var(--cream-warm);margin:0 -1rem 1.25rem;padding:10px 1rem;border-radius:0;border-left:0;border-right:0;border-top:0;box-shadow:0 6px 14px rgba(43,35,32,.08);}
+        }
         .an-card .traffic-kpis{margin:14px 0 18px;}
         .an-card #chartAnTotal, .an-card #chartAnPage{margin-top:8px;}
         .an-card .table-wrap{margin-top:22px;}
@@ -1727,10 +1731,13 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   }
   function _rangeWords() { return _anRange === 365 ? 'last 12 months' : _anRange === 7 ? 'last 7 days' : _anRange === 30 ? 'last 30 days' : 'last 90 days'; }
   function _prevWords() { return _anRange === 365 ? 'the 12 months before' : `the ${_anRange} days before`; }
+  // Legend / readout names for the two lines, matching the selected period.
+  function _periodNames() { return _anRange === 7 ? ['This week', 'Previous week'] : _anRange === 30 ? ['This month', 'Previous month'] : _anRange === 90 ? ['Last 3 months', 'Previous 3 months'] : ['Last 12 months', 'Previous 12 months']; }
   function _windowChartEl(el, c, w, unit, what) {
     if (!el || !w) return;
-    const series = [{ label: 'This period', values: w.cur }];
-    if (w.hasPrev) series.push({ label: 'Previous period', values: w.prevAligned });
+    const [curName, prevName] = _periodNames();
+    const series = [{ label: curName, values: w.cur }];
+    if (w.hasPrev) series.push({ label: prevName, values: w.prevAligned });
     const last = w.cur.filter(v => v != null).pop();
     window.PurebaricCharts.lineChart(el, { series, labels: w.labels, ticks: w.ticks, format: v => Math.round(v) + ' ' + (Math.round(v) === 1 ? unit : unit + 's'), axisFormat: v => String(Math.round(v)),
       ariaLabel: `${what}, ${_rangeWords()}${w.hasPrev ? ', with the previous period' : ''}. Latest day: ${last == null ? 'no data' : Math.round(last)}.` });
