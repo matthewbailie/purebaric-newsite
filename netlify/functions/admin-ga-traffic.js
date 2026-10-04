@@ -22,19 +22,23 @@ exports.handler = async (event, context) => {
   try {
     let cached = null;
     try { cached = await s.get(CACHE_KEY, { type: "json" }); } catch (e) { cached = null; }
-    let byDate = cached && cached.byDate, fetchedAt = cached && cached.fetchedAt, stale = false;
-    if (refresh || !byDate || !fetchedAt || Date.now() - new Date(fetchedAt).getTime() > CACHE_MS || cached.today !== today) {
+    let byDate = cached && cached.byDate, byPage = cached && cached.byPage, fetchedAt = cached && cached.fetchedAt, stale = false;
+    if (refresh || !byDate || !byPage || !fetchedAt || Date.now() - new Date(fetchedAt).getTime() > CACHE_MS || cached.today !== today) {
       try {
-        byDate = await ga.fetchDaily(sa, PROPERTY, +today.slice(0, 4));
+        const year = +today.slice(0, 4);
+        [byDate, byPage] = await Promise.all([ga.fetchDaily(sa, PROPERTY, year), ga.fetchPagesDaily(sa, PROPERTY, year)]);
         fetchedAt = new Date().toISOString();
-        await s.setJSON(CACHE_KEY, { byDate, fetchedAt, today });
+        await s.setJSON(CACHE_KEY, { byDate, byPage, fetchedAt, today });
       } catch (e) {
         if (!byDate) return json(200, { configured: true, error: e.message, propertyId: PROPERTY });
         stale = e.message; // serve the last good copy and say so
       }
     }
+    const pages = ga.summarizePages(byPage || {}, today);
+    const pageCharts = {};
+    for (const p of pages) pageCharts[p.label] = ga.chartData(byPage[p.label], today, "views");
     return json(200, { configured: true, propertyId: PROPERTY, fetchedAt, stale, today, metric: "sessions",
-      summary: ga.summarize(byDate, today), chart: ga.chartData(byDate, today) });
+      summary: ga.summarize(byDate, today), chart: ga.chartData(byDate, today), pages, pageCharts });
   } catch (err) {
     console.error("admin-ga-traffic error", err);
     return json(500, { error: err.message || "internal_error" });

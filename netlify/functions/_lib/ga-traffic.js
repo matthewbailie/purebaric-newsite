@@ -81,6 +81,56 @@ function chartData(byDate, today, key = "sessions") {
   return { year: y, labels, ticks, thisYear: yearSeries(byDate, y, today, key), lastYear: yearSeries(byDate, y - 1, `${y - 1}-12-31`, key).slice(0, n) };
 }
 
+// ---- Per-page views ----
+// GA reports page paths with their query string; fold them into the pages the owner thinks in.
+const PAGE_LABELS = [
+  ["/", "Home"], ["/business", "For businesses"], ["/pricing", "Pricing"], ["/chambers", "Chambers"],
+  ["/how-it-works", "How it works"], ["/about", "About"], ["/reviews", "Reviews"], ["/faq", "FAQ"],
+  ["/contact", "Contact"], ["/service-area", "Service area"], ["/waitlist", "Waitlist"], ["/safety", "Safety"],
+  ["/terms", "Terms"], ["/privacy", "Privacy"], ["/sms-consent", "SMS consent"], ["/waitlist-confirm", "Waitlist confirmation"],
+];
+function normalizePage(pathPlusQuery) {
+  const raw = String(pathPlusQuery || "").toLowerCase();
+  const q = raw.indexOf("?");
+  let path = (q === -1 ? raw : raw.slice(0, q)).replace(/\.html$/, "").replace(/\/+$/, "") || "/";
+  const query = q === -1 ? "" : raw.slice(q + 1);
+  if (path === "/index") path = "/";
+  if (path.startsWith("/admin")) return null; // the owner's own visits
+  if (path === "/book") return /(^|&)type=business(&|$)/.test(query) ? "Business booking" : "Booking";
+  const hit = PAGE_LABELS.find(([p]) => p === path);
+  return hit ? hit[1] : "Other";
+}
+// GA rows (dimensions: date, pagePathPlusQueryString; metrics: screenPageViews, activeUsers)
+// -> { "Home": { "2026-10-04": { views, users } }, ... }
+function pageRowsToMap(rows) {
+  const out = {};
+  for (const r of rows || []) {
+    const dv = r.dimensionValues || [], mv = r.metricValues || [];
+    const date = dv[0] && dv[0].value, label = normalizePage(dv[1] && dv[1].value);
+    if (!label || !/^\d{8}$/.test(String(date || ""))) continue;
+    const iso = gaDateToIso(date);
+    const page = out[label] || (out[label] = {});
+    const cur = page[iso] || (page[iso] = { views: 0, users: 0 });
+    cur.views += Number(mv[0] && mv[0].value) || 0;
+    cur.users += Number(mv[1] && mv[1].value) || 0;
+  }
+  return out;
+}
+// One compact row per page, busiest first.
+function summarizePages(byPage, today) {
+  const order = ["Home", "Booking", "For businesses", "Business booking"];
+  return Object.keys(byPage).map((label) => {
+    const s = summarize(byPage[label], today, "views");
+    return { label, thisMonthAvg: s.thisMonth.avgPerDay, thisMonthTotal: s.thisMonth.total, lastMonthAvg: s.lastMonth.avgPerDay, monthChangePct: s.monthChangePct,
+      ytdAvg: s.ytd.avgPerDay, ytdTotal: s.ytd.total, lastYtdAvg: s.lastYtd.avgPerDay, yearChangePct: s.yearChangePct, lastYearHasData: s.lastYearHasData };
+  }).sort((a, b) => {
+    const ia = order.indexOf(a.label), ib = order.indexOf(b.label);
+    if (ia !== -1 || ib !== -1) return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+    if (a.label === "Other") return 1; if (b.label === "Other") return -1;
+    return b.ytdTotal - a.ytdTotal;
+  });
+}
+
 // ---- Google auth + report (not unit-tested; needs the network) ----
 function parseServiceAccount(raw) {
   if (!raw) return null;
@@ -116,4 +166,20 @@ async function fetchDaily(sa, propertyId, year, fetchFn = fetch) {
   return rowsToMap(j.rows);
 }
 
-module.exports = { rowsToMap, yearSeries, summarize, chartData, parseServiceAccount, accessToken, fetchDaily, dayIndex, daysInYear };
+async function fetchPagesDaily(sa, propertyId, year, fetchFn = fetch) {
+  const token = await accessToken(sa, fetchFn);
+  const body = {
+    dimensions: [{ name: "date" }, { name: "pagePathPlusQueryString" }],
+    metrics: [{ name: "screenPageViews" }, { name: "activeUsers" }],
+    dateRanges: [{ startDate: `${year - 1}-01-01`, endDate: "today" }],
+    limit: 100000,
+  };
+  const res = await fetchFn(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`, {
+    method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify(body),
+  });
+  const j = await res.json();
+  if (!res.ok) throw new Error(`Google Analytics error: ${(j.error && j.error.message) || res.status}`);
+  return pageRowsToMap(j.rows);
+}
+
+module.exports = { rowsToMap, yearSeries, summarize, chartData, normalizePage, pageRowsToMap, summarizePages, parseServiceAccount, accessToken, fetchDaily, fetchPagesDaily, dayIndex, daysInYear };

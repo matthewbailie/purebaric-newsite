@@ -353,6 +353,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       <button class="tab-btn" data-tab="pricing">Pricing &amp; Payments</button>
       <button class="tab-btn" data-tab="servicearea">Service Area</button>
       <button class="tab-btn" data-tab="delivery">Delivery availability</button>
+      <button class="tab-btn" data-tab="analytics">Site analytics</button>
       <button class="tab-btn" data-tab="notifications">Notifications</button>
       <button class="tab-btn" data-tab="outreach">Outreach</button>
     </nav>
@@ -427,19 +428,19 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <div id="chartLen"></div>
       </div>
       <div class="viz-card viz" style="margin-top:1rem;" id="trafficCard">
-        <h3>Website visits</h3>
+        <h3>Daily site visitors</h3>
         <p class="viz-note" id="trafficNote">Loading website visits…</p>
-        <div class="traffic-kpis" id="trafficKpis" hidden>
-          <div class="kpi"><div class="kpi-label">Visits per day, this month</div><div class="kpi-val" id="tkMonth"></div><div class="kpi-sub" id="tkMonthSub"></div></div>
-          <div class="kpi"><div class="kpi-label">Visits per day, year to date</div><div class="kpi-val" id="tkYtd"></div><div class="kpi-sub" id="tkYtdSub"></div></div>
+        <div class="traffic-kpis one" id="trafficKpis" hidden>
+          <div class="kpi"><div class="kpi-label">Visitors per day, this month</div><div class="kpi-val" id="tkMonth"></div><div class="kpi-sub" id="tkMonthSub"></div></div>
         </div>
         <div id="chartTraffic"></div>
-        <div class="renter-line" id="trafficMeta" style="margin-top:6px;"></div>
+        <div class="renter-line" id="trafficMeta" style="margin-top:6px;">Page-by-page numbers are on the <a href="#analytics" onclick="document.querySelector('.tab-btn[data-tab=analytics]').click();return false;" style="color:var(--terracotta);">Site analytics</a> tab.</div>
       </div>
       <style>
         .traffic-kpis{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:10px 0 12px;}
+        .traffic-kpis.one{grid-template-columns:1fr;}
         .traffic-kpis .kpi-val{font-size:1.9rem;}
-        .traffic-kpis .up{color:#4a5d24;font-weight:700;} .traffic-kpis .down{color:#9a4f3a;font-weight:700;}
+        .traffic-kpis .up, .an-table .up{color:#4a5d24;font-weight:700;} .traffic-kpis .down, .an-table .down{color:#9a4f3a;font-weight:700;}
         @media(max-width:560px){.traffic-kpis{grid-template-columns:1fr;gap:0.6rem;}}
       </style>
       <details class="viz-table">
@@ -905,6 +906,33 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         .sa-add input{padding:6px 8px;border:1px solid var(--line,#e6dccd);border-radius:8px;font-size:13px;margin-right:8px;}
         .sa-empty{color:var(--muted,#8a7d70);font-size:13px;}
       </style>
+    </section>
+
+    <!-- ───── Site analytics (Google Analytics) ───── -->
+    <section class="tab-panel" data-panel="analytics">
+      <div class="panel-actions">
+        <h2>Site analytics</h2>
+        <button class="btn btn-ghost btn-sm" onclick="loadTraffic(true)">Refresh from Google Analytics</button>
+      </div>
+      <p class="renter-line" id="anNote" style="margin:0 0 14px;max-width:760px;">Loading…</p>
+      <div class="viz-card viz">
+        <h3>Website visits</h3>
+        <p class="viz-note">Visits (sessions) per day on purebaric.com, every day of this year against the same day last year.</p>
+        <div class="traffic-kpis" id="anKpis" hidden>
+          <div class="kpi"><div class="kpi-label">Visits per day, this month</div><div class="kpi-val" id="akMonth"></div><div class="kpi-sub" id="akMonthSub"></div></div>
+          <div class="kpi"><div class="kpi-label">Visits per day, year to date</div><div class="kpi-val" id="akYtd"></div><div class="kpi-sub" id="akYtdSub"></div></div>
+        </div>
+        <div id="chartAnTotal"></div>
+      </div>
+      <div class="viz-card viz" style="margin-top:1rem;">
+        <h3>Page views by page</h3>
+        <p class="viz-note">Views of each page per day. Pick a page to chart it, this year against last year.</p>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0 10px;"><label class="renter-line" for="anPage">Page</label><select id="anPage" onchange="renderPageChart()" style="padding:7px 10px;border:1px solid var(--line,#e6dccd);border-radius:8px;background:var(--card,#fffdf9);font-family:inherit;"></select></div>
+        <div id="chartAnPage"></div>
+        <div class="table-wrap" style="margin-top:14px;"><table class="data-table an-table"><thead><tr><th>Page</th><th class="n">Views/day this month</th><th class="n">Last month</th><th class="n">Change</th><th class="n">Views/day this year</th><th class="n">Same days last year</th><th class="n">Change</th></tr></thead><tbody id="anPagesBody"></tbody></table></div>
+        <div class="renter-line" id="anMeta" style="margin-top:8px;"></div>
+      </div>
+      <style>.an-table td.n, .an-table th.n{text-align:right;white-space:nowrap;}</style>
     </section>
 
     <!-- ───── Delivery availability + booking mode ───── -->
@@ -1509,6 +1537,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       delivery: () => loadDelivery(),
       notifications: () => Promise.all([loadNotifications(), loadTwilioConfig()]),
       outreach: () => loadOutreach(),
+      analytics: () => loadTraffic(false),
     };
     const loader = loaders[tab];
     if (!loader || (!force && _tabDataLoaded.has(tab))) return;
@@ -1622,32 +1651,66 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     try { renderTraffic(await api('/api/admin/ga-traffic' + (refresh ? '?refresh=1' : ''))); }
     catch (e) { note.textContent = 'Could not load website visits: ' + e.message; }
   }
+  let _traffic = null;
+  const _n1 = v => v == null ? '—' : (Math.round(v * 10) / 10).toLocaleString('en-US');
+  const _delta = p => p == null ? '' : ` <span class="${p >= 0 ? 'up' : 'down'}">${p >= 0 ? '▲' : '▼'} ${Math.abs(p)}%</span>`;
+  const _notConnected = (r) => `Not connected to Google Analytics yet. To connect it: in Google Cloud, enable the <strong>Google Analytics Data API</strong> and create a <strong>service account</strong> with a JSON key; in Google Analytics, add that service account's email as a <strong>Viewer</strong> on the Purebaric Website property (${escape(r.propertyId || '')}); then store the key as the <code>GA4_SERVICE_ACCOUNT</code> environment variable on Netlify (secret). Details are in the runbook.`;
+  function _dailyChart(el, c, hasPrev, unit, what) {
+    if (!el) return;
+    const series = [{ label: String(c.year), values: c.thisYear }];
+    if (hasPrev) series.push({ label: String(c.year - 1), values: c.lastYear });
+    const last = c.thisYear.filter(v => v != null).pop();
+    window.PurebaricCharts.lineChart(el, { series, labels: c.labels, ticks: c.ticks, format: v => Math.round(v) + ' ' + (Math.round(v) === 1 ? unit : unit + 's'), axisFormat: v => String(Math.round(v)),
+      ariaLabel: `${what} by day, ${c.year}${hasPrev ? ` compared with ${c.year - 1}` : ''}. Today so far: ${last == null ? 'no data' : Math.round(last)}.` });
+  }
   function renderTraffic(r) {
-    const note = document.getElementById('trafficNote'), kpis = document.getElementById('trafficKpis'), meta = document.getElementById('trafficMeta');
-    const n1 = v => v == null ? '—' : (Math.round(v * 10) / 10).toLocaleString('en-US');
-    const delta = p => p == null ? '' : ` <span class="${p >= 0 ? 'up' : 'down'}">${p >= 0 ? '▲' : '▼'} ${Math.abs(p)}%</span>`;
-    if (!r.configured) {
-      kpis.hidden = true; meta.textContent = '';
-      note.innerHTML = `Not connected to Google Analytics yet. To connect it: in Google Cloud, enable the <strong>Google Analytics Data API</strong> and create a <strong>service account</strong> with a JSON key; in Google Analytics, add that service account's email as a <strong>Viewer</strong> on the Purebaric Website property (${escape(r.propertyId || '')}); then store the key as the <code>GA4_SERVICE_ACCOUNT</code> environment variable on Netlify (secret). Details are in the runbook.`;
+    _traffic = r;
+    const note = document.getElementById('trafficNote'), kpis = document.getElementById('trafficKpis');
+    const anNote = document.getElementById('anNote'), anKpis = document.getElementById('anKpis');
+    if (!r.configured || (r.error && !r.summary)) {
+      const msg = !r.configured ? _notConnected(r) : 'Google Analytics returned an error: ' + escape(r.error);
+      if (kpis) kpis.hidden = true; if (anKpis) anKpis.hidden = true;
+      if (note) note.innerHTML = msg; if (anNote) anNote.innerHTML = msg;
+      const body = document.getElementById('anPagesBody'); if (body) body.innerHTML = '';
       return;
     }
-    if (r.error && !r.summary) { kpis.hidden = true; note.textContent = 'Google Analytics returned an error: ' + r.error; return; }
     const s = r.summary, c = r.chart;
-    kpis.hidden = false;
-    note.textContent = 'Visits (sessions) per day on purebaric.com. The chart shows every day of ' + c.year + (s.lastYearHasData ? ' against the same day in ' + (c.year - 1) + '.' : '. Last year\'s line will appear once Google Analytics has data for ' + (c.year - 1) + '.');
-    document.getElementById('tkMonth').textContent = n1(s.thisMonth.avgPerDay);
-    document.getElementById('tkMonthSub').innerHTML = `${s.thisMonth.total.toLocaleString('en-US')} visits in ${escape(s.thisMonth.label)} so far · ${n1(s.lastMonth.avgPerDay)} per day in ${escape(s.lastMonth.label)}${delta(s.monthChangePct)}`;
-    document.getElementById('tkYtd').textContent = n1(s.ytd.avgPerDay);
-    document.getElementById('tkYtdSub').innerHTML = s.lastYearHasData
-      ? `${s.ytd.total.toLocaleString('en-US')} visits in ${escape(s.ytd.label)} · ${n1(s.lastYtd.avgPerDay)} per day over the ${escape(s.lastYtd.label)}${delta(s.yearChangePct)}`
-      : `${s.ytd.total.toLocaleString('en-US')} visits in ${escape(s.ytd.label)} · no ${c.year - 1} data to compare yet`;
-    const series = [{ label: String(c.year), values: c.thisYear }];
-    if (s.lastYearHasData) series.push({ label: String(c.year - 1), values: c.lastYear });
-    const last = c.thisYear.filter(v => v != null).pop();
-    window.PurebaricCharts.lineChart(document.getElementById('chartTraffic'), { series, labels: c.labels, ticks: c.ticks, format: v => Math.round(v) + (Math.round(v) === 1 ? ' visit' : ' visits'), axisFormat: v => String(Math.round(v)),
-      ariaLabel: `Website visits by day, ${c.year}${s.lastYearHasData ? ` compared with ${c.year - 1}` : ''}. Today so far: ${last == null ? 'no data' : Math.round(last)}.` });
     const when = r.fetchedAt ? new Date(r.fetchedAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) : '';
-    meta.innerHTML = `Source: Google Analytics sessions${when ? ' · updated ' + escape(when) : ''}${r.stale ? ' · <span style="color:#9a4f3a;">showing the last good copy, refresh failed: ' + escape(String(r.stale)) + '</span>' : ''} · <a href="#" onclick="loadTraffic(true);return false;" style="color:var(--terracotta);">Refresh</a>`;
+    const source = `Source: Google Analytics${when ? ' · updated ' + escape(when) : ''}${r.stale ? ' · <span style="color:#9a4f3a;">showing the last good copy, refresh failed: ' + escape(String(r.stale)) + '</span>' : ''}`;
+    // Home: one number and the trend line.
+    if (kpis) {
+      kpis.hidden = false;
+      note.textContent = 'Visitors (sessions) per day on purebaric.com, every day of ' + c.year + (s.lastYearHasData ? ' against the same day in ' + (c.year - 1) + '.' : '. Last year\'s line will appear once Google Analytics has data for ' + (c.year - 1) + '.');
+      document.getElementById('tkMonth').textContent = _n1(s.thisMonth.avgPerDay);
+      document.getElementById('tkMonthSub').innerHTML = `${s.thisMonth.total.toLocaleString('en-US')} visitors in ${escape(s.thisMonth.label)} so far · ${_n1(s.lastMonth.avgPerDay)} per day in ${escape(s.lastMonth.label)}${_delta(s.monthChangePct)}`;
+      _dailyChart(document.getElementById('chartTraffic'), c, s.lastYearHasData, 'visitor', 'Site visitors');
+    }
+    // Site analytics tab: full comparison plus pages.
+    if (anKpis) {
+      anKpis.hidden = false;
+      anNote.innerHTML = source;
+      document.getElementById('akMonth').textContent = _n1(s.thisMonth.avgPerDay);
+      document.getElementById('akMonthSub').innerHTML = `${s.thisMonth.total.toLocaleString('en-US')} visits in ${escape(s.thisMonth.label)} so far · ${_n1(s.lastMonth.avgPerDay)} per day in ${escape(s.lastMonth.label)}${_delta(s.monthChangePct)}`;
+      document.getElementById('akYtd').textContent = _n1(s.ytd.avgPerDay);
+      document.getElementById('akYtdSub').innerHTML = s.lastYearHasData
+        ? `${s.ytd.total.toLocaleString('en-US')} visits in ${escape(s.ytd.label)} · ${_n1(s.lastYtd.avgPerDay)} per day over the ${escape(s.lastYtd.label)}${_delta(s.yearChangePct)}`
+        : `${s.ytd.total.toLocaleString('en-US')} visits in ${escape(s.ytd.label)} · no ${c.year - 1} data to compare yet`;
+      _dailyChart(document.getElementById('chartAnTotal'), c, s.lastYearHasData, 'visit', 'Website visits');
+      const sel = document.getElementById('anPage'), keep = sel.value;
+      sel.innerHTML = (r.pages || []).map(p => `<option value="${escape(p.label)}">${escape(p.label)}</option>`).join('');
+      if (keep && (r.pages || []).some(p => p.label === keep)) sel.value = keep;
+      document.getElementById('anPagesBody').innerHTML = (r.pages || []).map(p => `<tr><td><strong>${escape(p.label)}</strong></td><td class="n">${_n1(p.thisMonthAvg)}</td><td class="n">${_n1(p.lastMonthAvg)}</td><td class="n">${_delta(p.monthChangePct) || '—'}</td><td class="n">${_n1(p.ytdAvg)}</td><td class="n">${p.lastYearHasData ? _n1(p.lastYtdAvg) : '—'}</td><td class="n">${_delta(p.yearChangePct) || '—'}</td></tr>`).join('')
+        || '<tr><td colspan="7" class="renter-line">No page data yet.</td></tr>';
+      document.getElementById('anMeta').innerHTML = source;
+      renderPageChart();
+    }
+  }
+  function renderPageChart() {
+    if (!_traffic || !_traffic.pageCharts) return;
+    const label = document.getElementById('anPage').value;
+    const c = _traffic.pageCharts[label]; if (!c) return;
+    const row = (_traffic.pages || []).find(p => p.label === label);
+    _dailyChart(document.getElementById('chartAnPage'), c, !!(row && row.lastYearHasData), 'view', label + ' page views');
   }
   function paintStats() {
     const today = new Date().toISOString().slice(0, 10);

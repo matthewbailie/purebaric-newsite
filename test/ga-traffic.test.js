@@ -48,3 +48,34 @@ test("chart data has a label per day and a tick at each month start", () => {
   assert.equal(c.lastYear.length, 365);
   assert.equal(c.lastYear[ga.dayIndex("2025-10-03")], 4);
 });
+
+test("page paths fold into the pages the owner thinks in", () => {
+  assert.equal(ga.normalizePage("/"), "Home");
+  assert.equal(ga.normalizePage("/index.html"), "Home");
+  assert.equal(ga.normalizePage("/book"), "Booking");
+  assert.equal(ga.normalizePage("/book?type=business"), "Business booking");
+  assert.equal(ga.normalizePage("/book?type=business&v=2"), "Business booking");
+  assert.equal(ga.normalizePage("/book?v=2"), "Booking");
+  assert.equal(ga.normalizePage("/business/"), "For businesses");
+  assert.equal(ga.normalizePage("/admin?v=1"), null, "owner's admin visits are left out");
+  assert.equal(ga.normalizePage("/some-old-page"), "Other");
+});
+
+test("per-page rows sum by page and day, and pages summarize busiest-first after the key pages", () => {
+  const rows = [
+    { dimensionValues: [{ value: "20261003" }, { value: "/" }], metricValues: [{ value: "5" }, { value: "4" }] },
+    { dimensionValues: [{ value: "20261003" }, { value: "/index.html" }], metricValues: [{ value: "2" }, { value: "2" }] },
+    { dimensionValues: [{ value: "20261003" }, { value: "/book?type=business" }], metricValues: [{ value: "3" }, { value: "3" }] },
+    { dimensionValues: [{ value: "20261002" }, { value: "/pricing" }], metricValues: [{ value: "9" }, { value: "6" }] },
+    { dimensionValues: [{ value: "20261002" }, { value: "/admin" }], metricValues: [{ value: "40" }, { value: "1" }] },
+  ];
+  const byPage = ga.pageRowsToMap(rows);
+  assert.equal(byPage.Home["2026-10-03"].views, 7);
+  assert.equal(byPage["Business booking"]["2026-10-03"].views, 3);
+  assert.equal(byPage.Pricing["2026-10-02"].views, 9);
+  assert.equal(byPage.Other, undefined);
+  const pages = ga.summarizePages(byPage, "2026-10-04");
+  assert.deepEqual(pages.map((p) => p.label), ["Home", "Business booking", "Pricing"]);
+  assert.equal(pages[0].thisMonthTotal, 7);
+  assert.equal(pages[2].ytdTotal, 9);
+});
