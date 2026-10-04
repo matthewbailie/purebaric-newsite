@@ -532,6 +532,7 @@
       </div>
       <div class="seg" id="rentalFilter" role="group" aria-label="Show rentals">
         <button type="button" data-f="active" onclick="setRentalFilter('active')">Active <span class="seg-n" id="rfActive"></span></button>
+        <button type="button" data-f="scheduled" onclick="setRentalFilter('scheduled')" title="Confirmed rentals that have not started yet">Scheduled <span class="seg-n" id="rfScheduled"></span></button>
         <button type="button" data-f="completed" onclick="setRentalFilter('completed')">Completed <span class="seg-n" id="rfCompleted"></span></button>
         <button type="button" data-f="cancelled" onclick="setRentalFilter('cancelled')">Cancelled <span class="seg-n" id="rfCancelled"></span></button>
         <button type="button" data-f="all" onclick="setRentalFilter('all')">All <span class="seg-n" id="rfAll"></span></button>
@@ -2075,9 +2076,10 @@
     if (biz && !document.querySelector('#rentalFormEl input[name="id"]').value && !rate.value) rate.value = 979;
   }
   let _rentalFilter = 'active';
-  try { const f = localStorage.getItem('pb_rental_filter'); if (['active', 'completed', 'cancelled', 'all'].includes(f)) _rentalFilter = f; } catch (e) { /* storage blocked: default is fine */ }
+  try { const f = localStorage.getItem('pb_rental_filter'); if (['active', 'scheduled', 'completed', 'cancelled', 'all'].includes(f)) _rentalFilter = f; } catch (e) { /* storage blocked: default is fine */ }
+  // Active = running now; Scheduled = confirmed, starts later; Completed; Cancelled; All.
   function rentalMatchesFilter(r, f) {
-    return f === 'all' || (f === 'active' ? (r.status === 'active' || r.status === 'scheduled') : r.status === f);
+    return f === 'all' || r.status === f;
   }
   function setRentalFilter(f) {
     _rentalFilter = f;
@@ -2095,7 +2097,7 @@
     if (document.getElementById('rentalFormInlineRow')) {
       resetFormPosition('rentalForm', 'rentalFormAnchor');
     }
-    ['active', 'completed', 'cancelled', 'all'].forEach(f => {
+    ['active', 'scheduled', 'completed', 'cancelled', 'all'].forEach(f => {
       const n = document.getElementById('rf' + f[0].toUpperCase() + f.slice(1));
       if (n) n.textContent = _rentals.filter(r => rentalMatchesFilter(r, f)).length;
     });
