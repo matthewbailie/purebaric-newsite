@@ -409,6 +409,7 @@ function enterBookMode(j){
   var steps=document.querySelectorAll('.next li div');
   if(steps.length>=3){
     steps[0].textContent='Your delivery date is booked. We will text or call shortly to schedule the delivery time.';
+    steps[2].textContent=BIZ?'We deliver, install, and train your team hands-on. You start scheduling sessions for your clients, we support you throughout the rental, and we pick up the chamber at the end.':'We deliver, install, and train you hands-on. You start your sessions, we support you throughout the rental, and we pick up the chamber at the end.';
     steps[1].textContent=BIZ?'We send the business rental agreement to review and collect the one-time $500 setup fee before delivery. Nothing is charged until then.':'We send the rental agreement to review and collect the first month before delivery. Nothing is charged until then.';
   }
   if(BIZ)recalcBiz();
