@@ -454,6 +454,12 @@
             <div class="form-group"><label>Style</label>
               <select name="style"><option value="lying">Lying</option><option value="sitting">Sitting</option></select></div>
           </div>
+          <div class="form-row">
+            <div class="form-group"><label>Status</label>
+              <select name="status" onchange="syncMaintField(this.form)"><option value="active">Active</option><option value="maintenance">In maintenance</option></select></div>
+            <div class="form-group unit-maint"><label>Back in service on</label><input type="date" name="maintenanceUntil">
+              <div class="renter-line" style="margin-top:4px;">From this day the chamber can be booked again, for home or business, and it returns to service on its own. Leave blank to keep it out until you return it by hand.</div></div>
+          </div>
           <div class="form-group"><label>Notes</label><textarea name="notes" rows="2"></textarea></div>
           <div class="form-buttons">
             <button type="submit" class="btn btn-primary btn-sm">Save</button>
@@ -476,6 +482,12 @@
             <div class="form-group"><label>Name<span class="req">*</span></label><input name="name" required placeholder="e.g. M-001"></div>
             <div class="form-group"><label>Notes</label><input name="notes" placeholder="optional"></div>
           </div>
+          <div class="form-row">
+            <div class="form-group"><label>Status</label>
+              <select name="status" onchange="syncMaintField(this.form)"><option value="active">Active</option><option value="maintenance">In maintenance</option></select></div>
+            <div class="form-group unit-maint"><label>Back in service on</label><input type="date" name="maintenanceUntil">
+              <div class="renter-line" style="margin-top:4px;">From this day the machine can be booked again and it returns to service on its own. Leave blank to keep it out until you return it by hand.</div></div>
+          </div>
           <div class="form-buttons">
             <button type="submit" class="btn btn-primary btn-sm">Save</button>
             <button type="button" class="btn btn-ghost btn-sm" onclick="cancelMachineForm()">Cancel</button>
@@ -485,6 +497,10 @@
       <div id="machinesList"></div>
       <style>
         .inv-heading{font-size:1.15rem;font-weight:700;margin:26px 0 12px;}
+        .form-card .unit-maint{display:none;}
+        .form-card.maint-on .unit-maint{display:block;}
+        .tap-row{cursor:pointer;}
+        .tap-row:hover td{background:rgba(184,101,77,0.05);}
         .inv-head-row{display:flex;justify-content:space-between;align-items:center;margin:34px 0 12px;flex-wrap:wrap;gap:10px;}
         #availabilityByStyle{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem;}
         .avail-chip{border:1px solid var(--line,#e6dccd);border-radius:10px;padding:8px 12px;background:var(--card,#fffdf9);font-size:12px;min-width:150px;}
@@ -1322,8 +1338,24 @@
     document.getElementById(anchorId).insertAdjacentElement('afterend', form);
     if (wrap) wrap.remove();
   }
-  function openAddChamber() { resetFormPosition('chamberForm', 'chamberFormAnchor'); toggleForm('chamberForm'); }
-  function openAddMachine() { resetFormPosition('machineForm', 'machineFormAnchor'); toggleForm('machineForm'); }
+  function openAddChamber() { resetFormPosition('chamberForm', 'chamberFormAnchor'); toggleForm('chamberForm'); const f = document.getElementById('chamberFormEl'); f.querySelector('[name="status"]').disabled = false; syncMaintField(f); }
+  function openAddMachine() { resetFormPosition('machineForm', 'machineFormAnchor'); toggleForm('machineForm'); const f = document.getElementById('machineFormEl'); f.querySelector('[name="status"]').disabled = false; syncMaintField(f); }
+  // Show the "Back in service on" date only while the status select says maintenance.
+  function syncMaintField(form) {
+    if (!form) return;
+    const sel = form.querySelector('[name="status"]'), card = form.closest('.form-card');
+    if (card) card.classList.toggle('maint-on', !!sel && sel.value === 'maintenance');
+  }
+  // On phones the tables scroll sideways, so an inline editor would be clipped: open it above the list instead.
+  function openUnitForm(formId, anchorId, rowSelector, colspan) {
+    if (window.innerWidth <= 720) { resetFormPosition(formId, anchorId); setTimeout(() => document.getElementById(formId).scrollIntoView({ behavior: 'smooth', block: 'start' }), 0); }
+    else placeInlineForm(formId, rowSelector, colspan);
+  }
+  // Tapping anywhere on a chamber/machine row opens its editor; controls inside the row keep their own behaviour.
+  function unitRowClick(e, fn, id) {
+    if (e.target.closest('button, a, input, select, textarea, label, form')) return;
+    fn(id);
+  }
   function cancelChamberForm() { resetFormPosition('chamberForm', 'chamberFormAnchor'); toggleForm('chamberForm'); }
   function cancelMachineForm() { resetFormPosition('machineForm', 'machineFormAnchor'); toggleForm('machineForm'); }
 
@@ -1526,7 +1558,7 @@
     document.getElementById('statActive').textContent = String(inUse);
     const maint = _chambers.filter(c => c.status === 'maintenance');
     const maintTxt = maint.length ? `${maint.length} in maintenance${maint.some(c => c.maintenanceUntil) ? ' (back ' + maint.filter(c => c.maintenanceUntil).map(c => fmtDate(c.maintenanceUntil)).join(', ') + ')' : ''}` : 'none in maintenance';
-    document.getElementById('statActiveSub').textContent = `${freeChambers} available · ${maintTxt}`;
+    document.getElementById('statActiveSub').textContent = maintTxt;
     const bookMode = _deliveryCfg && _deliveryCfg.mode === 'book';
     const scheduled = (_bookings || []).filter(b => b.bookingMode === 'book' && ['new', 'contacted', 'approved'].includes(b.status) && (b.startDate || '') >= today).length;
     const schedWrap = document.getElementById('statScheduledWrap');
@@ -1730,10 +1762,11 @@
     const rows = machines.map(m => {
       const op = m.status === 'active' ? unitOpState(m.id, 'machineId') : { state: m.status, rental: null };
       const [cls, label] = STATE_PILL[op.state] || STATE_PILL.available;
-      return `<tr data-id="${escape(m.id)}">
+      const detail = m.status === 'maintenance' ? `Out of service${m.maintenanceUntil ? ' · back in service ' + escape(fmtDate(m.maintenanceUntil)) : ''}` : unitDetail(op);
+      return `<tr data-id="${escape(m.id)}" class="tap-row" onclick='unitRowClick(event, editMachine, ${JSON.stringify(m.id)})'>
         <td><strong>${escape(m.name)}</strong>${m.notes ? `<div class="renter-line">${escape(m.notes)}</div>` : ''}</td>
         <td><span class="pill pill-${cls}">${label}</span></td>
-        <td><span class="renter-line">${unitDetail(op)}</span></td>
+        <td><span class="renter-line">${detail}</span></td>
         <td><div class="row-actions"><button class="btn btn-ghost btn-sm" onclick='editMachine(${JSON.stringify(m.id)})'>Edit</button>${unitStatusActions(m, 'machine')}</div></td>
       </tr>`;
     }).join('');
@@ -1741,15 +1774,18 @@
   }
   function editMachine(id) {
     const m = _machines.find(x => x.id === id); if (!m) return;
-    placeInlineForm('machineForm', `#machinesList tr[data-id="${id}"]`, 4);
-    toggleForm('machineForm', { id: m.id, name: m.name, notes: m.notes });
+    openUnitForm('machineForm', 'machineFormAnchor', `#machinesList tr[data-id="${id}"]`, 4);
+    toggleForm('machineForm', { id: m.id, name: m.name, notes: m.notes, status: m.status === 'maintenance' ? 'maintenance' : 'active', maintenanceUntil: m.maintenanceUntil || '' });
+    const form = document.getElementById('machineFormEl');
+    form.querySelector('[name="status"]').disabled = m.status === 'archived';
+    syncMaintField(form);
   }
   async function submitMachine(e) {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.target));
     try {
       if (data.id) { const { id, ...patch } = data; await api(`/api/admin/machines/${id}`, { method: 'PATCH', body: JSON.stringify(patch) }); toast('Machine updated'); }
-      else { delete data.id; await api('/api/admin/machines', { method: 'POST', body: JSON.stringify(data) }); toast('Machine added'); }
+      else { delete data.id; delete data.status; delete data.maintenanceUntil; await api('/api/admin/machines', { method: 'POST', body: JSON.stringify(data) }); toast('Machine added'); }
       toggleForm('machineForm'); await loadAll();
     } catch (err) { toast(err.message, true); }
     return false;
@@ -1848,7 +1884,7 @@
         statusActions.push(`<button class="btn btn-ghost btn-sm" onclick='setChamberStatus(${JSON.stringify(c.id)}, "active")'>Restore</button>`);
       }
       return `
-      <tr data-id="${escape(c.id)}">
+      <tr data-id="${escape(c.id)}" class="tap-row" onclick='unitRowClick(event, editChamber, ${JSON.stringify(c.id)})'>
         <td><strong>${escape(c.name)}</strong><div class="renter-line">${escape((c.style || 'lying') === 'sitting' ? 'Sitting' : 'Lying')} chamber</div></td>
         <td><span class="pill pill-${opState}">${opLabel}</span></td>
         <td>${availability}</td>
@@ -2028,8 +2064,11 @@
   function editChamber(id) {
     const c = _chambers.find(x => x.id === id);
     if (!c) return;
-    placeInlineForm('chamberForm', `#chambersList tr[data-id="${id}"]`, 5);
-    toggleForm('chamberForm', { id: c.id, name: c.name, style: c.style || 'lying', notes: c.notes });
+    openUnitForm('chamberForm', 'chamberFormAnchor', `#chambersList tr[data-id="${id}"]`, 5);
+    toggleForm('chamberForm', { id: c.id, name: c.name, style: c.style || 'lying', notes: c.notes, status: c.status === 'maintenance' ? 'maintenance' : 'active', maintenanceUntil: c.maintenanceUntil || '' });
+    const form = document.getElementById('chamberFormEl');
+    form.querySelector('[name="status"]').disabled = c.status === 'archived';
+    syncMaintField(form);
   }
 
   async function submitChamber(e) {
@@ -2042,7 +2081,7 @@
         await api(`/api/admin/chambers/${id}`, { method: 'PATCH', body: JSON.stringify(patch) });
         toast('Chamber updated');
       } else {
-        delete data.id;
+        delete data.id; delete data.status; delete data.maintenanceUntil;
         await api('/api/admin/chambers', { method: 'POST', body: JSON.stringify(data) });
         toast('Chamber added');
       }
