@@ -37,6 +37,9 @@
     legend.className = 'viz-legend';
     const plot = document.createElement('div');
     plot.className = 'viz-plot';
+    // Phones ignore touch-action on SVG children, so the rule lives on this HTML wrapper: a finger sliding
+    // sideways scrubs the chart, a vertical swipe still scrolls the page (same as the rental calendar).
+    plot.style.touchAction = 'pan-y';
     const tip = document.createElement('div');
     tip.className = 'viz-tip';
     tip.hidden = true;
@@ -113,7 +116,7 @@
         });
       }
 
-      const svgEl = svg('svg', { width: W, height: HEIGHT, viewBox: `0 0 ${W} ${HEIGHT}`, role: 'img', 'aria-label': o.ariaLabel || '', tabindex: 0, class: 'viz-svg' });
+      const svgEl = svg('svg', { width: W, height: HEIGHT, viewBox: `0 0 ${W} ${HEIGHT}`, role: 'img', 'aria-label': o.ariaLabel || '', tabindex: 0, class: 'viz-svg', style: 'touch-action: pan-y;' });
       for (let t = 0; t * step <= top + 1e-9; t += 1) {
         const v = t * step;
         svgEl.appendChild(svg('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), class: 'viz-grid' }));
@@ -158,12 +161,13 @@
         const r = svgEl.getBoundingClientRect();
         return Math.max(0, Math.min(n - 1, Math.round(((e.clientX - r.left - m.l) / pw) * (n - 1))));
       };
-      hit.addEventListener('pointermove', (e) => { focusIdx = idxFromEvent(e); showAt(focusIdx); });
+      const onMove = (e) => { if (e.pointerType !== 'mouse' || e.buttons || e.target === hit) { focusIdx = idxFromEvent(e); showAt(focusIdx); } };
+      svgEl.addEventListener('pointermove', onMove);
       // Capture the pointer on press so a finger sliding across the chart keeps scrubbing days (touch
       // would otherwise hand the gesture to the page after the first move).
-      hit.addEventListener('pointerdown', (e) => { try { hit.setPointerCapture(e.pointerId); } catch (err) { /* older browsers */ } focusIdx = idxFromEvent(e); showAt(focusIdx); });
-      hit.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') hideTip(); });
-      hit.addEventListener('pointercancel', hideTip);
+      svgEl.addEventListener('pointerdown', (e) => { try { svgEl.setPointerCapture(e.pointerId); } catch (err) { /* older browsers */ } focusIdx = idxFromEvent(e); showAt(focusIdx); });
+      svgEl.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') hideTip(); });
+      svgEl.addEventListener('pointercancel', hideTip);
       svgEl.addEventListener('blur', hideTip);
       svgEl.addEventListener('keydown', (e) => {
         if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
