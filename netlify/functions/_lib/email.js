@@ -169,6 +169,11 @@ async function notifyAdminWaitlistJoin(entry) {
   return send({ to: ADMIN_NOTIFY, subject: `Waitlist: ${entry.name}`, html });
 }
 
+// One-click confirmation link in the chamber-ready email/text. The token is random per hold and lives only on
+// the waitlist entry, so the link works for that person and that hold alone (see waitlist-confirm.js).
+function waitlistConfirmUrl(entry) {
+  return entry && entry.id && entry.confirmToken ? `https://purebaric.com/waitlist-confirm?w=${encodeURIComponent(entry.id)}&t=${encodeURIComponent(entry.confirmToken)}` : "";
+}
 // The reduced monthly rate a waitlist person asked for, as a sentence for the chamber-ready email and text.
 function waitlistRateLine(entry) {
   const price = entry && entry.wantsDiscount && Number(entry.discountPrice) > 0 ? Math.round(Number(entry.discountPrice)) : 0;
@@ -179,7 +184,8 @@ function waitlistHoldSmsText(entry, chamber) {
   const first = String(entry.name || "there").split(" ")[0];
   const expires = entry.holdExpiresAt ? new Date(entry.holdExpiresAt).toLocaleString("en-US", { timeZone: "America/Denver", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "";
   const rate = waitlistRateLine(entry);
-  return `Purebaric: Hi ${first}, ${chamberKind(chamber)} is now available for you. We are holding it until ${expires || "tomorrow"}.${rate ? " " + rate : ""} To claim this offer, reply to this text or call (801) 901-0873 to confirm your booking.`;
+  const url = waitlistConfirmUrl(entry);
+  return `Purebaric: Hi ${first}, ${chamberKind(chamber)} is now available for you. We are holding it until ${expires || "tomorrow"}.${rate ? " " + rate : ""} ${url ? `To claim this offer, confirm here: ${url} or` : "To claim this offer, reply to this text or"} call (801) 901-0873.`;
 }
 async function notifyWaitlistChamberAvailable(entry, chamber) {
   const expires = new Date(entry.holdExpiresAt).toLocaleString("en-US", { timeZone: "America/Denver", dateStyle: "long", timeStyle: "short" });
@@ -187,7 +193,8 @@ async function notifyWaitlistChamberAvailable(entry, chamber) {
     <p style="margin:0 0 16px;">Hi ${escapeHtml(entry.name.split(" ")[0])},</p>
     <p style="margin:0 0 16px;">Good news: ${chamberKind(chamber)} is now available. We are holding <strong style="color:#2b2320;">${chamberKind(chamber)}</strong> for you until <strong style="color:#2b2320;">${expires} Mountain Time</strong>.</p>
     ${waitlistRateLine(entry) ? `<p style="margin:0 0 16px;"><strong style="color:#2b2320;">${escapeHtml(waitlistRateLine(entry))}</strong></p>` : ""}
-    <p style="margin:0 0 16px;">To claim this offer, reply to this email or call us at <a href="tel:+18019010873" style="color:#b8654d;">(801) 901-0873</a> to confirm your booking.</p>
+    ${waitlistConfirmUrl(entry) ? `<p style="margin:0 0 16px;"><a href="${waitlistConfirmUrl(entry)}" style="display:inline-block; padding:12px 22px; background:#b8654d; color:#ffffff; text-decoration:none; border-radius:8px; font-weight:700; font-size:15px;">Confirm my chamber</a></p>
+    <p style="margin:0 0 16px;">Click the button to confirm your booking. You can also reply to this email or call us at <a href="tel:+18019010873" style="color:#b8654d;">(801) 901-0873</a>.</p>` : `<p style="margin:0 0 16px;">To claim this offer, reply to this email or call us at <a href="tel:+18019010873" style="color:#b8654d;">(801) 901-0873</a> to confirm your booking.</p>`}
     <p style="margin:0;">This hold is reserved for you until the time above. If we have not heard from you by then, we will release the chamber to the next person on our waiting list.</p>
     ${signoff("The Purebaric team")}
   `);
@@ -196,6 +203,18 @@ async function notifyWaitlistChamberAvailable(entry, chamber) {
     subject: "A Purebaric chamber is available for you",
     html,
   });
+}
+
+// Customer-facing: they clicked Confirm in the chamber-ready email; the request is now in the admin queue.
+async function notifyWaitlistConfirmed(entry, chamber) {
+  const html = wrap(`
+    <p style="margin:0 0 16px;">Hi ${escapeHtml(String(entry.name || "there").split(" ")[0])},</p>
+    <p style="margin:0 0 16px;">Thank you. <strong style="color:#2b2320;">Your request for ${escapeHtml(chamberKind(chamber))} is confirmed.</strong></p>
+    ${waitlistRateLine(entry) ? `<p style="margin:0 0 16px;">${escapeHtml(waitlistRateLine(entry))}</p>` : ""}
+    <p style="margin:0 0 16px;">We will reach out shortly to schedule your delivery. If you have any questions in the meantime, reply to this email or call us at <a href="tel:+18019010873" style="color:#b8654d;">(801) 901-0873</a>.</p>
+    ${signoff("The Purebaric team")}
+  `);
+  return send({ to: entry.email, subject: "Your Purebaric chamber request is confirmed", html });
 }
 
 // Customer-facing: a chamber is available, Matthew will reach out
@@ -292,6 +311,8 @@ async function notifyAdminBooking(b, routing = {}, to) {
     routingBlock = `<p style="padding:12px 14px; background:#f4e7df; color:#7a4a1e; border-radius:8px; margin:0 0 16px;"><strong>Auto-routed: pending availability.</strong><br>Chambers exist but are already spoken for by earlier untriaged requests, so no chamber was auto-assigned. Customer was emailed that we'll contact them shortly. Action: triage and confirm.</p>`;
   } else if (routing.autoNotified === "booked") {
     routingBlock = `<p style="padding:12px 14px; background:#e4ebe1; color:#2f4a2a; border-radius:8px; margin:0 0 16px;"><strong>Booked online (book mode).</strong><br>Chamber: ${escapeHtml(b.chamberStyle === "sitting" ? "sitting" : "lying")}. Delivery ${escapeHtml(formatDeliveryDate(b.startDate))}, ${Number(b.months) || 1} month${Number(b.months) === 1 ? "" : "s"} through ${escapeHtml(formatDeliveryDate(b.endDate))}. The customer was emailed a confirmation and told we will text or call to set the delivery time. This date is held for them until you convert or reject the request.</p>`;
+  } else if (routing.autoNotified === "waitlist-confirmed") {
+    routingBlock = `<p style="padding:12px 14px; background:#ebf2da; color:#4a5d24; border-radius:8px; margin:0 0 16px;"><strong>Confirmed from the waitlist.</strong><br>They clicked Confirm in the chamber-ready email${routing.chamberName ? ` for ${escapeHtml(routing.chamberName)}` : ""}. They were told you will reach out shortly to schedule delivery.</p>`;
   } else if (routing.autoNotified === "waitlist") {
     routingBlock = `<p style="padding:12px 14px; background:#f4e7df; color:#7a4a1e; border-radius:8px; margin:0 0 16px;"><strong>Auto-routed: no chambers available.</strong><br>Customer was added to the waitlist and emailed about it. Linked waitlist id: <code>${or(routing.linkedWaitlistId)}</code></p>`;
   }
@@ -304,6 +325,7 @@ async function notifyAdminBooking(b, routing = {}, to) {
   const subjectTag = routing.autoNotified === "booked" ? ` [booked: ${formatDeliveryDate(b.startDate)}]` :
                      routing.autoNotified === "available" ? " [chamber available]" :
                      routing.autoNotified === "pending" ? " [pending availability]" :
+                     routing.autoNotified === "waitlist-confirmed" ? " [confirmed from waitlist]" :
                      routing.autoNotified === "waitlist" ? " [to waitlist]" : "";
   const isBiz = b.rentalType === "business";
   const bizBlock = isBiz
@@ -453,8 +475,10 @@ module.exports = {
   notifyAdminReview,
   notifyAdminWaitlistJoin,
   notifyWaitlistChamberAvailable,
+  notifyWaitlistConfirmed,
   waitlistRateLine,
   waitlistHoldSmsText,
+  waitlistConfirmUrl,
   notifyAdminBooking,
   notifyCustomerChamberAvailable,
   notifyCustomerWaitlistAdded,

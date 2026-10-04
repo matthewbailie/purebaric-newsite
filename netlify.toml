@@ -77,6 +77,12 @@
   to = "/.netlify/functions/service-area-public"
   status = 200
 
+# Confirm button in the waitlist chamber-ready email (public, token-protected)
+[[redirects]]
+  from = "/waitlist-confirm"
+  to = "/.netlify/functions/waitlist-confirm"
+  status = 200
+
 # Unsubscribe link in business outreach emails (public, token-protected)
 [[redirects]]
   from = "/api/outreach/unsubscribe"

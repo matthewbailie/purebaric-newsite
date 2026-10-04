@@ -7,6 +7,7 @@ const {
 } = require("./_lib/storage");
 const { notifyWaitlistChamberAvailable, waitlistHoldSmsText } = require("./_lib/email");
 const { getTwilioConfig } = require("./_lib/storage");
+const crypto = require("crypto");
 const { sendSms, isComplete } = require("./_lib/sms");
 // Requested monthly price: a whole-dollar amount, or null when none was given.
 function parsePrice(v) { const n = Math.round(Number(v)); return Number.isFinite(n) && n > 0 ? n : null; }
@@ -72,6 +73,8 @@ exports.handler = async (event, context) => {
         notifiedChamberId: body.chamberId,
         notifiedAt: new Date().toISOString(),
         holdExpiresAt,
+        // Fresh per hold: the Confirm button in the email/text only works for this offer.
+        confirmToken: crypto.randomBytes(16).toString("hex"),
       });
 
       // Tell them by email and, when we have a number and Twilio is set up, by text. Both quote the
