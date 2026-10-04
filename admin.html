@@ -376,7 +376,7 @@
       <div id="renewalsList"></div>
       <h3 class="inv-heading">Operations</h3>
       <div class="stat-row" data-sortable="home-operations">
-        <button type="button" class="stat-block" data-card-key="active-chambers" data-jump-tab="chambers"><div class="stat-label">Active + maintenance chambers</div><div class="stat-val" id="statActive"></div></button>
+        <button type="button" class="stat-block" data-card-key="active-chambers" data-jump-tab="chambers"><div class="stat-label">Chambers in use · available · maintenance</div><div class="stat-val" id="statActive"></div></button>
         <button type="button" class="stat-block" data-card-key="bookable-now" data-jump-tab="chambers"><div class="stat-label">Bookable now</div><div class="stat-val" id="statAvailable"></div></button>
         <button type="button" class="stat-block" data-card-key="new-requests" data-jump-tab="bookings"><div class="stat-label">New rental requests</div><div class="stat-val" id="statBookings"></div></button>
         <button type="button" class="stat-block" data-card-key="scheduled-bookings" data-jump-tab="bookings" id="statScheduledWrap" hidden><div class="stat-label">Scheduled bookings</div><div class="stat-val" id="statScheduled"></div></button>
@@ -408,6 +408,11 @@
           <p class="viz-note" data-note="avg"></p>
           <div id="chartAvg"></div>
         </div>
+      </div>
+      <div class="viz-card viz">
+        <h3>Average rental length</h3>
+        <p class="viz-note" data-note="len">Average term, in months, of the rentals active at the end of each month.</p>
+        <div id="chartLen"></div>
       </div>
       <details class="viz-table">
         <summary>View the monthly numbers as a table</summary>
@@ -1475,7 +1480,12 @@
     const queued = _waitlist.filter(w => w.status === 'queued' || w.status === 'hold').length;
     const newBookings = _bookings.filter(b => b.status === 'new').length;
     const pendingReviews = (_reviews || []).filter(r => r.status === 'pending').length;
-    document.getElementById('statActive').textContent = inMaintenance ? `${active} + ${inMaintenance}` : String(active);
+    // State of each chamber today: in use (an active rental covers today), available (active, nothing booked),
+    // scheduled (booked for a later start), maintenance. Archived chambers are not counted.
+    const inUseC = new Set(_rentals.filter(r => r.status === 'active' && r.startDate <= today && r.endDate >= today).map(r => r.chamberId));
+    const inUse = _chambers.filter(c => c.status === 'active' && inUseC.has(c.id)).length;
+    const scheduledOnly = _chambers.filter(c => c.status === 'active' && !inUseC.has(c.id) && committedC.has(c.id)).length;
+    document.getElementById('statActive').innerHTML = `${inUse} <span style="font-size:.55em;color:var(--muted);font-weight:600;">· ${freeChambers}${scheduledOnly ? ` · ${scheduledOnly} scheduled` : ''} · ${inMaintenance}</span>`;
     const bookMode = _deliveryCfg && _deliveryCfg.mode === 'book';
     const scheduled = (_bookings || []).filter(b => b.bookingMode === 'book' && ['new', 'contacted', 'approved'].includes(b.status) && (b.startDate || '') >= today).length;
     const schedWrap = document.getElementById('statScheduledWrap');
@@ -1576,6 +1586,8 @@
     C.lineChart(document.getElementById('chartMrr'), build('mrr', money, axisMoney, 'Monthly recurring revenue'));
     C.lineChart(document.getElementById('chartSubs'), build('subscribers', String, String, 'Active subscribers'));
     C.lineChart(document.getElementById('chartAvg'), build('avgPrice', money, axisMoney, 'Average monthly price per chamber'));
+    const fmtMonths = v => (Math.round(v * 10) / 10) + ' mo';
+    C.lineChart(document.getElementById('chartLen'), build('avgLength', fmtMonths, fmtMonths, 'Average rental length in months'));
 
     const cell = (p, key, f) => p && p[key] != null ? f(p[key]) : '—';
     const short = MONTH_NAMES.map(n => n.slice(0, 3));

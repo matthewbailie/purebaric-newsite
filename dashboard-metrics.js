@@ -59,12 +59,13 @@
   }
 
   function snapshot(rentals, day) {
-    let mrr = 0, count = 0;
+    let mrr = 0, count = 0, termDays = 0;
     const chambers = new Set();
     rentals.forEach((r) => {
       if (!activeOn(r, day)) return;
       mrr += monthlyEquivalent(r);
       count += 1;
+      termDays += daysInclusive(day10(r.startDate), day10(r.endDate));
       if (r.chamberId) chambers.add(r.chamberId);
     });
     return {
@@ -73,6 +74,7 @@
       rentals: count,
       subscribers: subscriberSet(rentals, day).size,
       avgPrice: count ? Math.round(mrr / count) : null,
+      avgLength: count ? Math.round((termDays / count / DAYS_PER_MONTH) * 10) / 10 : null,
       chambersInUse: chambers.size,
     };
   }
