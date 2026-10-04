@@ -85,9 +85,9 @@ exports.handler = async (event) => {
       if (r.state === "already") return page(ALREADY.title, ALREADY.body);
       // Open hold: confirm from the page itself so that only a real visit (not a link scanner) confirms.
       const action = `/waitlist-confirm?w=${encodeURIComponent(q.w)}&t=${encodeURIComponent(q.t)}`;
-      const body = `<p>One moment, confirming your chamber…</p><form method="post" action="${action}" id="f"><button class="btn" type="submit">Confirm my chamber</button></form>`;
+      const body = `<p>One moment, confirming your booking…</p><form method="post" action="${action}" id="f"><button class="btn" type="submit">Confirm my booking</button></form>`;
       const script = `<script>(function(){var f=document.getElementById('f');function show(t,b){document.getElementById('t').textContent=t;document.getElementById('b').innerHTML=b;}
-f.addEventListener('submit',function(e){e.preventDefault();go();});function go(){fetch(f.action,{method:'POST',headers:{'Accept':'application/json'}}).then(function(r){return r.json();}).then(function(j){show(j.title,j.body);}).catch(function(){f.querySelector('button').style.display='inline-block';show('Please confirm',${JSON.stringify("<p>Tap the button below to confirm your chamber.</p>")}+f.outerHTML);});}
+f.addEventListener('submit',function(e){e.preventDefault();go();});function go(){fetch(f.action,{method:'POST',headers:{'Accept':'application/json'}}).then(function(r){return r.json();}).then(function(j){show(j.title,j.body);}).catch(function(){f.querySelector('button').style.display='inline-block';show('Please confirm',${JSON.stringify("<p>Tap the button below to confirm your booking.</p>")}+f.outerHTML);});}
 go();})();</script>`;
       return page("Confirming your chamber", body, script);
     }
