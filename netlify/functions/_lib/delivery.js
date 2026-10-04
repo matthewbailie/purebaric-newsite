@@ -10,7 +10,7 @@ const DEFAULTS = {
   blockedDates: [],           // specific YYYY-MM-DD days with no deliveries
   leadDays: 2,                // earliest delivery is this many days out
   horizonDays: 90,            // how far ahead a customer may book
-  deliveryNote: "We will text or call to confirm the exact delivery time. Deliveries run until 9 p.m.",
+  deliveryNote: "We will text or call to confirm the exact delivery time.",
 };
 const ISO = /^(\d{4})-(\d{2})-(\d{2})$/;
 const HOLD_STATUSES = new Set(["new", "contacted", "approved"]);

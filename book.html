@@ -191,7 +191,7 @@ body.biz.bookmode .slider-block{display:block!important}
           <label>Delivery date <span class="req">*</span></label>
           <div class="dcal" id="dcal"></div>
           <input type="hidden" id="bookDate" value="">
-          <div class="dnote" id="dnote">Pick a highlighted day. <strong>We will text or call to confirm the exact delivery time.</strong> Deliveries run until 9 p.m.</div>
+          <div class="dnote" id="dnote">Pick a highlighted day. <strong>We will text or call to confirm the exact delivery time.</strong></div>
         </div>
         <div class="fg"><label for="cnotes">Notes (optional)</label><textarea id="cnotes" name="notes" placeholder="Ground floor setup, stairs, morning delivery preference..."></textarea></div>
 
@@ -408,7 +408,7 @@ function enterBookMode(j){
   applyDelivery(j);
   var steps=document.querySelectorAll('.next li div');
   if(steps.length>=3){
-    steps[0].textContent='Your delivery date is booked. We text or call shortly to set the delivery time; deliveries run until 9 p.m.';
+    steps[0].textContent='Your delivery date is booked. We will text or call shortly to schedule the delivery time.';
     steps[1].textContent=BIZ?'We send the business rental agreement to review and collect the one-time $500 setup fee before delivery. Nothing is charged until then.':'We send the rental agreement to review and collect the first month before delivery. Nothing is charged until then.';
   }
   if(BIZ)recalcBiz();

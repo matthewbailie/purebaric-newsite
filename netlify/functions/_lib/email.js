@@ -235,7 +235,7 @@ async function notifyCustomerBookingConfirmed(booking, { deliveryNote } = {}) {
   const months = Number(booking.months) || 1;
   const length = months === 1 ? "1 month" : `${months} months`;
   const when = formatDeliveryDate(booking.startDate);
-  const note = deliveryNote || "We will text or call to confirm the exact delivery time. Deliveries run until 9 p.m.";
+  const note = deliveryNote || "We will text or call to confirm the exact delivery time.";
   const isBiz = booking.rentalType === "business";
   const html = wrap(`
     <p style="margin:0 0 16px;">Hi ${escapeHtml(first)},</p>

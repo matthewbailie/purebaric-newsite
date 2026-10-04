@@ -13,7 +13,7 @@ const today = "2026-10-05"; // a Monday
 test("normalizeConfig cleans days, dates, bounds and the mode", () => {
   const c = d.normalizeConfig({ mode: "book", weekdaysOff: "6,0,9", blockedDates: ["2026-10-14", "nope", "2026-02-30"], leadDays: "99", horizonDays: 3, deliveryNote: "" });
   assert.equal(c.mode, "book"); assert.deepEqual(c.weekdaysOff, [0, 6]); assert.deepEqual(c.blockedDates, ["2026-10-14"]);
-  assert.equal(c.leadDays, 60); assert.equal(c.horizonDays, 7); assert.match(c.deliveryNote, /9 p\.m\./);
+  assert.equal(c.leadDays, 60); assert.equal(c.horizonDays, 7); assert.match(c.deliveryNote, /text or call/);
   assert.equal(d.normalizeConfig({ mode: "x" }).mode, "request");
 });
 
