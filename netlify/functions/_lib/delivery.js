@@ -97,10 +97,12 @@ function holdsFrom(bookings) {
 }
 
 // How many chamber+machine pairs of this style are free for the whole window.
+// A unit is in service for a window if it is active, or in maintenance with a return date before the window starts.
+const inService = (u, start) => u.status === "active" || (u.status === "maintenance" && !!u.maintenanceUntil && u.maintenanceUntil < start);
 function capacity({ chambers, machines, rentals, holds }, style, start, end) {
   const busy = (rentals || []).filter(liveRental).filter(r => overlaps(start, end, r.startDate, r.endDate));
-  const freeC = (chambers || []).filter(c => c.status === "active" && styleOf(c) === style && !busy.some(r => r.chamberId === c.id)).length;
-  const freeM = (machines || []).filter(m => m.status === "active" && !busy.some(r => r.machineId === m.id)).length;
+  const freeC = (chambers || []).filter(c => inService(c, start) && styleOf(c) === style && !busy.some(r => r.chamberId === c.id)).length;
+  const freeM = (machines || []).filter(m => inService(m, start) && !busy.some(r => r.machineId === m.id)).length;
   const hs = (holds || []).filter(h => overlaps(start, end, h.startDate, h.endDate));
   const holdC = hs.filter(h => h.style === style).length;
   return Math.max(0, Math.min(freeC - holdC, freeM - hs.length));

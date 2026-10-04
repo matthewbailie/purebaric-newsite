@@ -33,7 +33,7 @@ function chamberStyleOf(c) {
 function unitState(unit, rentals, unitKey, today) {
   if (!unit) return { state: "available", rental: null };
   if (unit.status === "archived") return { state: "archived", rental: null };
-  if (unit.status === "maintenance") return { state: "maintenance", rental: null };
+  if (unit.status === "maintenance" && !(unit.maintenanceUntil && unit.maintenanceUntil <= today)) return { state: "maintenance", rental: null };
   const mine = (rentals || []).filter(
     (r) => r[unitKey] === unit.id && (r.status === "scheduled" || r.status === "active")
   );

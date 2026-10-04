@@ -250,6 +250,15 @@ async function autoTransitionRentals() {
       transitioned.push({ id: r.id, from: r.status, to: next });
     }
   }
+  // Units whose maintenance window has passed come back into service on their own.
+  for (const [storeName, update] of [[STORES.chambers, updateChamber], [STORES.machines, updateMachine]]) {
+    for (const u of await listAll(storeName)) {
+      if (u.status === "maintenance" && u.maintenanceUntil && u.maintenanceUntil <= today) {
+        await update(u.id, { status: "active", maintenanceUntil: "" });
+        transitioned.push({ id: u.id, from: "maintenance", to: "active" });
+      }
+    }
+  }
   return { transitioned };
 }
 

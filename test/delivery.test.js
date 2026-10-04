@@ -105,3 +105,13 @@ test("usHolidays lists the major U.S. holidays and holidaysOff blocks them", () 
   assert.equal(d.isDeliveryDay(off, "2026-11-26"), true);
   assert.equal(d.isDeliveryDay(on, "2026-11-27"), true);
 });
+
+test("a chamber in maintenance with a return date is bookable from that date on", () => {
+  const ch = [{ id: "c1", style: "lying", status: "maintenance", maintenanceUntil: "2026-10-20" }];
+  const mc = [{ id: "m1", status: "active" }];
+  const args = { config: { weekdaysOff: [], leadDays: 0 }, chambers: ch, machines: mc, rentals: [], holds: [], style: "lying", months: 1, today: "2026-10-05" };
+  assert.equal(d.capacity(args, "lying", "2026-10-19", "2026-11-18"), 0, "still in maintenance");
+  assert.equal(d.capacity(args, "lying", "2026-10-21", "2026-11-20"), 1, "back in service");
+  assert.equal(d.nextAvailableDate(args), "2026-10-21");
+  assert.equal(d.capacity({ ...args, chambers: [{ id: "c1", style: "lying", status: "maintenance" }] }, "lying", "2027-01-05", "2027-02-04"), 0, "no return date means out indefinitely");
+});

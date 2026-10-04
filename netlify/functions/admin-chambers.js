@@ -39,6 +39,9 @@ exports.handler = async (event, context) => {
       if (typeof body.notes === "string") patch.notes = body.notes;
       if (["active", "maintenance", "archived"].includes(body.status)) {
         patch.status = body.status;
+        // Optional date the unit comes back from maintenance; cleared when it returns to service.
+        if (body.status === "maintenance") patch.maintenanceUntil = /^\d{4}-\d{2}-\d{2}$/.test(String(body.maintenanceUntil || "")) ? body.maintenanceUntil : "";
+        else patch.maintenanceUntil = "";
         if (body.status === "archived") patch.archivedAt = new Date().toISOString();
       }
       const updated = await updateChamber(id, patch);

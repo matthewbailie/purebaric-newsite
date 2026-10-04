@@ -74,3 +74,9 @@ test("chamberStyleOf tolerates legacy posture / type-id records", () => {
   assert.equal(chamberStyleOf({ chamberTypeId: "ct_1.5_sitting" }), "sitting");
   assert.equal(chamberStyleOf({}), "lying");
 });
+
+test("maintenance with a passed return date reads as back in service", () => {
+  const { unitState } = require("../netlify/functions/_lib/inventory");
+  assert.equal(unitState({ id: "x", status: "maintenance", maintenanceUntil: "2026-10-01" }, [], "chamberId", "2026-10-05").state, "available");
+  assert.equal(unitState({ id: "x", status: "maintenance", maintenanceUntil: "2026-10-09" }, [], "chamberId", "2026-10-05").state, "maintenance");
+});

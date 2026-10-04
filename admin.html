@@ -203,6 +203,7 @@
   .stat-block:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 2px; }
   .stat-block .stat-label { font-size: 0.75rem; color: var(--stone-muted); text-transform: uppercase; letter-spacing: 0.05em; }
   .stat-block .stat-val { font-family: var(--font-display); font-size: 2rem; color: var(--ink); }
+  .stat-block .stat-sub { font-size: 0.8rem; color: var(--stone-muted); margin-top: 0.2rem; line-height: 1.35; }
   /* ─── Mobile / responsive ─── */
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); }
   .table-wrap .data-table { border: none; min-width: 640px; }
@@ -266,6 +267,8 @@
     .kpi-row { grid-template-columns: repeat(3, 1fr); }
     .kpi.kpi-lead { grid-column: 1 / -1; }
     .viz-grid-2 { grid-template-columns: 1fr; }
+    .seg { display: flex; flex-wrap: wrap; border-radius: 14px; }
+    .seg button { flex: 1 1 auto; padding: 0.5rem 0.8rem; }
   }
   @media (max-width: 560px) {
     .kpi-row { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
@@ -376,7 +379,7 @@
       <div id="renewalsList"></div>
       <h3 class="inv-heading">Operations</h3>
       <div class="stat-row" data-sortable="home-operations">
-        <button type="button" class="stat-block" data-card-key="active-chambers" data-jump-tab="chambers"><div class="stat-label">Chambers in use · in maintenance</div><div class="stat-val" id="statActive"></div></button>
+        <button type="button" class="stat-block" data-card-key="active-chambers" data-jump-tab="chambers"><div class="stat-label">Chambers in use</div><div class="stat-val" id="statActive"></div><div class="stat-sub" id="statActiveSub"></div></button>
         <button type="button" class="stat-block" data-card-key="bookable-now" data-jump-tab="chambers"><div class="stat-label">Available</div><div class="stat-val" id="statAvailable"></div></button>
         <button type="button" class="stat-block" data-card-key="new-requests" data-jump-tab="bookings"><div class="stat-label">New rental requests</div><div class="stat-val" id="statBookings"></div></button>
         <button type="button" class="stat-block" data-card-key="scheduled-bookings" data-jump-tab="bookings" id="statScheduledWrap" hidden><div class="stat-label">Scheduled bookings</div><div class="stat-val" id="statScheduled"></div></button>
@@ -409,7 +412,7 @@
           <div id="chartAvg"></div>
         </div>
       </div>
-      <div class="viz-card viz">
+      <div class="viz-card viz" style="margin-top:1rem;">
         <h3>Average rental length</h3>
         <p class="viz-note" data-note="len">Running average term, in months, of every rental started by the end of that month (the same figure as the Average rental length card below).</p>
         <div id="chartLen"></div>
@@ -1493,7 +1496,10 @@
     // scheduled (booked for a later start), maintenance. Archived chambers are not counted.
     const inUseC = new Set(_rentals.filter(r => r.status === 'active' && r.startDate <= today && r.endDate >= today).map(r => r.chamberId));
     const inUse = _chambers.filter(c => c.status === 'active' && inUseC.has(c.id)).length;
-    document.getElementById('statActive').innerHTML = `${inUse} <span style="font-size:.55em;color:var(--muted);font-weight:600;">· ${inMaintenance}</span>`;
+    document.getElementById('statActive').textContent = String(inUse);
+    const maint = _chambers.filter(c => c.status === 'maintenance');
+    const maintTxt = maint.length ? `${maint.length} in maintenance${maint.some(c => c.maintenanceUntil) ? ' (back ' + maint.filter(c => c.maintenanceUntil).map(c => fmtDate(c.maintenanceUntil)).join(', ') + ')' : ''}` : 'none in maintenance';
+    document.getElementById('statActiveSub').textContent = `${freeChambers} available · ${maintTxt}`;
     const bookMode = _deliveryCfg && _deliveryCfg.mode === 'book';
     const scheduled = (_bookings || []).filter(b => b.bookingMode === 'book' && ['new', 'contacted', 'approved'].includes(b.status) && (b.startDate || '') >= today).length;
     const schedWrap = document.getElementById('statScheduledWrap');
@@ -1721,8 +1727,9 @@
     } catch (err) { toast(err.message, true); }
     return false;
   }
-  async function setMachineStatus(id, status) {
-    try { await api(`/api/admin/machines/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) }); toast(`Machine set to ${status}`); await loadAll(); } catch (err) { toast(err.message, true); }
+  async function setMachineStatus(id, status, maintenanceUntil) {
+    if (status === 'maintenance' && maintenanceUntil === undefined) return askMaintenanceDate('Machine', until => setMachineStatus(id, 'maintenance', until));
+    try { await api(`/api/admin/machines/${id}`, { method: 'PATCH', body: JSON.stringify({ status, maintenanceUntil: maintenanceUntil || '' }) }); toast(`Machine set to ${status}`); await loadAll(); } catch (err) { toast(err.message, true); }
   }
   async function archiveMachineFn(id) {
     if (!confirm('Archive this machine? It will no longer be assignable to rentals.')) return;
@@ -1780,7 +1787,7 @@
         availability = '<span class="renter-line"></span>';
       } else if (c.status === 'maintenance') {
         opState = 'maintenance'; opLabel = 'Maintenance';
-        availability = '<span class="renter-line">Out of service</span>';
+        availability = `<span class="renter-line">Out of service${c.maintenanceUntil ? ' · back in service ' + escape(fmtDate(c.maintenanceUntil)) : ''}</span>`;
       } else if (activeRental) {
         opState = 'rented'; opLabel = 'Rented';
         const renter = activeRental.renter?.name || ', ';
@@ -1962,9 +1969,27 @@
     popup.addEventListener('click', (e) => { if (e.target.classList.contains('cp-close')) popup.hidden = true; });
   }
 
-  async function setChamberStatus(id, status) {
+  // Going into maintenance asks for the date the unit comes back (optional). Until then it is
+  // unavailable; from that date the booking calendars offer it again and it returns to service on its own.
+  let _maintCb = null;
+  function askMaintenanceDate(what, cb) {
+    _maintCb = cb;
+    openModal(`${what} to maintenance`, `
+      <div class="or-edit"><label>Back in service on (leave blank if unknown)</label><input type="date" id="mtUntil" style="padding:8px 10px;"></div>
+      <p class="renter-line" style="margin:8px 0 12px;">With a date, customers can book deliveries from that day onward and the unit returns to service automatically. Without one it stays out until you click Return to service.</p>
+      <button class="btn btn-primary btn-sm" onclick="confirmMaintenance()">Set to maintenance</button>
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Cancel</button>`);
+  }
+  async function confirmMaintenance() {
+    const until = (document.getElementById('mtUntil') || {}).value || '';
+    closeModal();
+    const cb = _maintCb; _maintCb = null;
+    if (cb) await cb(until);
+  }
+  async function setChamberStatus(id, status, maintenanceUntil) {
+    if (status === 'maintenance' && maintenanceUntil === undefined) return askMaintenanceDate('Chamber', until => setChamberStatus(id, 'maintenance', until));
     try {
-      await api(`/api/admin/chambers/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
+      await api(`/api/admin/chambers/${id}`, { method: 'PATCH', body: JSON.stringify({ status, maintenanceUntil: maintenanceUntil || '' }) });
       toast(`Chamber set to ${status}`);
       await loadAll();
     } catch (err) { toast(err.message, true); }
