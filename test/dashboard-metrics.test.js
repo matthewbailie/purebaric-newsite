@@ -155,15 +155,17 @@ test("upcomingRenewals: weekly rentals renew every 7 days, month ends clamp, dea
   assert.deepEqual(at("2026-10-03", 7), ["1@2026-10-06"]);
 });
 
-test('snapshot reports the average rental length of the rentals active that day, in months', () => {
+test('snapshot reports the running average rental length, the same figure as the Home card', () => {
   const M = require('../dashboard-metrics.js');
   const rentals = [
-    { id: 'a', status: 'active', startDate: '2026-01-01', endDate: '2026-03-31', monthlyRate: 500, rateType: 'monthly' },   // 3 months
-    { id: 'b', status: 'active', startDate: '2026-02-01', endDate: '2026-02-28', monthlyRate: 500, rateType: 'monthly' },   // 1 month
+    { id: 'a', status: 'completed', startDate: '2026-01-01', endDate: '2026-03-31', monthlyRate: 500, rateType: 'monthly' },   // 3 months
+    { id: 'b', status: 'active', startDate: '2026-02-01', endDate: '2026-02-28', monthlyRate: 500, rateType: 'monthly' },      // 1 month
     { id: 'c', status: 'cancelled', startDate: '2026-02-01', endDate: '2027-02-01', monthlyRate: 500, rateType: 'monthly' },
+    { id: 'd', status: 'active', startDate: '2026-04-01', endDate: '2026-04-28', monthlyRate: 125, rateType: 'weekly' },
   ];
-  const s = M.snapshot(rentals, '2026-02-15');
-  assert.equal(s.rentals, 2);
-  assert.ok(s.avgLength >= 1.9 && s.avgLength <= 2.1, `avgLength ${s.avgLength}`);
+  assert.equal(M.snapshot(rentals, '2026-01-15').avgLength, 3, 'only the first rental had started');
+  assert.equal(M.snapshot(rentals, '2026-02-15').avgLength, 2, 'both monthly rentals, cancelled excluded');
+  assert.equal(M.snapshot(rentals, '2026-04-15').avgLength, 2, 'weekly rentals are not part of the average');
   assert.equal(M.snapshot(rentals, '2025-12-01').avgLength, null);
+  assert.equal(M.overview({ rentals, bookings: [], chambers: [], today: '2026-04-15' }).avgTermMonths, M.snapshot(rentals, '2026-04-15').avgLength);
 });

@@ -376,8 +376,8 @@
       <div id="renewalsList"></div>
       <h3 class="inv-heading">Operations</h3>
       <div class="stat-row" data-sortable="home-operations">
-        <button type="button" class="stat-block" data-card-key="active-chambers" data-jump-tab="chambers"><div class="stat-label">Chambers in use · available · maintenance</div><div class="stat-val" id="statActive"></div></button>
-        <button type="button" class="stat-block" data-card-key="bookable-now" data-jump-tab="chambers"><div class="stat-label">Bookable now</div><div class="stat-val" id="statAvailable"></div></button>
+        <button type="button" class="stat-block" data-card-key="active-chambers" data-jump-tab="chambers"><div class="stat-label">Chambers in use · in maintenance</div><div class="stat-val" id="statActive"></div></button>
+        <button type="button" class="stat-block" data-card-key="bookable-now" data-jump-tab="chambers"><div class="stat-label">Available</div><div class="stat-val" id="statAvailable"></div></button>
         <button type="button" class="stat-block" data-card-key="new-requests" data-jump-tab="bookings"><div class="stat-label">New rental requests</div><div class="stat-val" id="statBookings"></div></button>
         <button type="button" class="stat-block" data-card-key="scheduled-bookings" data-jump-tab="bookings" id="statScheduledWrap" hidden><div class="stat-label">Scheduled bookings</div><div class="stat-val" id="statScheduled"></div></button>
         <button type="button" class="stat-block" data-card-key="waitlist-queued" data-jump-tab="waitlist"><div class="stat-label">Waitlist queued</div><div class="stat-val" id="statWaitlist"></div></button>
@@ -411,7 +411,7 @@
       </div>
       <div class="viz-card viz">
         <h3>Average rental length</h3>
-        <p class="viz-note" data-note="len">Average term, in months, of the rentals active at the end of each month.</p>
+        <p class="viz-note" data-note="len">Running average term, in months, of every rental started by the end of that month (the same figure as the Average rental length card below).</p>
         <div id="chartLen"></div>
       </div>
       <details class="viz-table">
@@ -1484,8 +1484,7 @@
     // scheduled (booked for a later start), maintenance. Archived chambers are not counted.
     const inUseC = new Set(_rentals.filter(r => r.status === 'active' && r.startDate <= today && r.endDate >= today).map(r => r.chamberId));
     const inUse = _chambers.filter(c => c.status === 'active' && inUseC.has(c.id)).length;
-    const scheduledOnly = _chambers.filter(c => c.status === 'active' && !inUseC.has(c.id) && committedC.has(c.id)).length;
-    document.getElementById('statActive').innerHTML = `${inUse} <span style="font-size:.55em;color:var(--muted);font-weight:600;">· ${freeChambers}${scheduledOnly ? ` · ${scheduledOnly} scheduled` : ''} · ${inMaintenance}</span>`;
+    document.getElementById('statActive').innerHTML = `${inUse} <span style="font-size:.55em;color:var(--muted);font-weight:600;">· ${inMaintenance}</span>`;
     const bookMode = _deliveryCfg && _deliveryCfg.mode === 'book';
     const scheduled = (_bookings || []).filter(b => b.bookingMode === 'book' && ['new', 'contacted', 'approved'].includes(b.status) && (b.startDate || '') >= today).length;
     const schedWrap = document.getElementById('statScheduledWrap');

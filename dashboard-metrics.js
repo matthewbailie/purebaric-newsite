@@ -58,14 +58,21 @@
     return set;
   }
 
+  // Whole months of a rental's term (at least 1), e.g. a 90-day rental is 3.
+  const termMonths = (r) => Math.max(1, Math.round(daysInclusive(day10(r.startDate), day10(r.endDate)) / DAYS_PER_MONTH));
+  // Average term of the monthly-billed, non-cancelled rentals in the list, to one decimal.
+  function avgTermMonths(rentals) {
+    const monthly = rentals.filter((r) => isCounted(r) && r.rateType !== 'weekly');
+    return monthly.length ? Math.round((monthly.reduce((s, r) => s + termMonths(r), 0) / monthly.length) * 10) / 10 : null;
+  }
+
   function snapshot(rentals, day) {
-    let mrr = 0, count = 0, termDays = 0;
+    let mrr = 0, count = 0;
     const chambers = new Set();
     rentals.forEach((r) => {
       if (!activeOn(r, day)) return;
       mrr += monthlyEquivalent(r);
       count += 1;
-      termDays += daysInclusive(day10(r.startDate), day10(r.endDate));
       if (r.chamberId) chambers.add(r.chamberId);
     });
     return {
@@ -74,7 +81,8 @@
       rentals: count,
       subscribers: subscriberSet(rentals, day).size,
       avgPrice: count ? Math.round(mrr / count) : null,
-      avgLength: count ? Math.round((termDays / count / DAYS_PER_MONTH) * 10) / 10 : null,
+      // Running average rental length: every rental that had started by this day (same rule as the Home card).
+      avgLength: avgTermMonths(rentals.filter((r) => isCounted(r) && day10(r.startDate) <= day)),
       chambersInUse: chambers.size,
     };
   }
@@ -188,10 +196,7 @@
     });
     startingSoon.mrr = Math.round(startingSoon.mrr);
 
-    const monthly = counted.filter((r) => r.rateType !== 'weekly');
-    const avgTermMonths = monthly.length
-      ? Math.round((monthly.reduce((s, r) => s + Math.max(1, Math.round(daysInclusive(day10(r.startDate), day10(r.endDate)) / DAYS_PER_MONTH)), 0) / monthly.length) * 10) / 10
-      : null;
+    const avgTerm = avgTermMonths(counted);
 
     const since = addDays(today, -90);
     const recent = bookings.filter((b) => !b.outOfArea && day10(b.createdAt) >= since);
@@ -214,10 +219,10 @@
       renewalsDue,
       startingSoon,
       lifetimeRevenue: Math.round(rentals.reduce((s, r) => s + lifetimePaid(r), 0)),
-      avgTermMonths,
+      avgTermMonths: avgTerm,
       conversion: { requests: recent.length, converted, pct: recent.length ? Math.round((converted / recent.length) * 100) : null },
     };
   }
 
-  return { monthlyEquivalent, isCounted, activeOn, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon };
+  return { monthlyEquivalent, isCounted, activeOn, avgTermMonths, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon };
 });
