@@ -97,18 +97,15 @@ body{background:#f6f4f0}
 .cta-band{background:#ece8e1}
 .faq summary::after{color:#8a6a3a}
 .biz-slides{border-color:#e0dad1}
-.bizbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(43,35,32,.08);transform:translateY(110%);transition:transform .35s ease}
-.bizbar.show{transform:none}
+.bizbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(43,35,32,.08)}
 .bizbar-in{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 24px}
 .bizbar .mb-price{font-size:20px;font-weight:800;line-height:1.1}
 .bizbar .mb-price small{font-size:13px;color:var(--muted);font-weight:500}
-.bizbar .mb-sub{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
 .bizbar .mb-strike{font-size:13px;color:var(--muted);font-weight:500;text-decoration:line-through}
 .bizbar .mb-pill{display:inline-block;white-space:nowrap;margin-top:4px;background:var(--ok-bg,#e4eedf);color:var(--ok,#3f6b3a);font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px}
 .bizbar-btns{display:flex;gap:10px;flex:none}
-body.bizbar-on{padding-bottom:84px}
-@media(max-width:600px){.bizbar .btn-ghost{display:none}.bizbar .mb-sub{display:none}.bizbar .mb-pill-x{display:none}.bizbar-in{padding:10px 16px}}
-@media(max-width:1024px){.bizbar{transform:none}body{padding-bottom:84px}}
+body{padding-bottom:84px}
+@media(max-width:600px){.bizbar .btn-ghost{display:none}.bizbar .mb-pill-x{display:none}.bizbar-in{padding:10px 16px}}
 </style>
   <script src="/pb-metrics.js"></script>
 </head><body>
@@ -153,7 +150,7 @@ body.bizbar-on{padding-bottom:84px}
 <section class="section" style="border-top:none">
   <div class="wrap">
     <div class="tiles">
-      <div class="tile"><div class="k">Your cost</div><div class="v">$979 <small>per month</small></div><p>per chamber · 10% off from 3 months, 15% from 6, 20% at 12</p></div>
+      <div class="tile"><div class="k">Your cost</div><div class="v">$979 <small>per month</small></div><p>per chamber, plus a $200 one-time training and supplies charge</p></div>
       <div class="tile"><div class="k">Break-even</div><div class="v">14 sessions</div><p>a month cover your rental and supplies</p></div>
       <div class="tile hero"><div class="k">Estimated net revenue</div><div class="v">$6,686 <small>per month</small></div><p>at moderate usage, an average of four sessions daily</p></div>
       <div class="tile"><div class="k">Space needed</div><div class="v">4 x 8 ft</div><p>of floor space and a wall outlet</p></div>
@@ -341,9 +338,9 @@ body.bizbar-on{padding-bottom:84px}
   </div>
 </footer>
 
-<div class="bizbar" id="bizbar" aria-hidden="true">
+<div class="bizbar" id="bizbar">
   <div class="wrap bizbar-in">
-    <div><div class="mb-price">$881<small> /mo</small> <span class="mb-strike">$979</span></div><span class="mb-pill">Save 10%<span class="mb-pill-x"> · 3-month rate</span></span><span class="mb-sub">+ $200 one-time training and supplies charge</span></div>
+    <div><div class="mb-price">$881<small> /mo</small> <span class="mb-strike">$979</span></div><span class="mb-pill">Save 10%<span class="mb-pill-x"> · 3-month rate</span></span></div>
     <div class="bizbar-btns">
       <a class="btn btn-ghost" href="tel:+18019010873" onclick="window.trackPurebaricEvent?.('business_cta',{method:'call'})">Call (801) 901-0873</a>
       <a class="btn btn-primary" href="/book?type=business" onclick="window.trackPurebaricEvent?.('business_cta',{method:'request'})">Book for your business</a>
@@ -351,16 +348,6 @@ body.bizbar-on{padding-bottom:84px}
   </div>
 </div>
 <script src="/warm.js"></script>
-<script>
-/* sliding call to action: appears once the hero scrolls out of view */
-(function(){
-  var bar=document.getElementById('bizbar'), hero=document.querySelector('.page-hero');
-  if(!bar||!hero||!('IntersectionObserver' in window))return;
-  var always=window.matchMedia('(max-width:1024px)');
-  if(always.matches){bar.classList.add('show');bar.setAttribute('aria-hidden','false');document.body.classList.add('bizbar-on');}
-  new IntersectionObserver(function(es){if(always.matches)return;var out=!es[0].isIntersecting;bar.classList.toggle('show',out);bar.setAttribute('aria-hidden',out?'false':'true');document.body.classList.toggle('bizbar-on',out);},{threshold:0}).observe(hero);
-})();
-</script>
 <script>
 /* business hero carousel (auto crossfade + dots; pauses for reduced motion) */
 (function(){
