@@ -127,7 +127,7 @@ yl = para(y+4, "A hyperbaric chamber is a sealed chamber in which the air pressu
 yl = para(yl+3, "While inside, the client breathes **95 to 99.9% oxygen** through a mask.", w=COL)
 yl = para(yl+3, "A session is quiet, personal time. The client can relax, nap, or be on their phone, tablet, or laptop. "
   "The average session length is 60 minutes.", w=COL)
-yl = para(yl+3, "It is a wellness and recovery amenity, popular with athletes and active people.", w=COL)
+yl = para(yl+3, "It is a wellness and recovery amenity that suits a wide range of clients, anyone who wants a quiet hour to rest and recharge.", w=COL)
 im2 = crop("/Users/bailie/Library/CloudStorage/OneDrive-Adobe/DMe-C&P/Claude_AI/purebaric-outreach/branded-images/chamber-side-branded.jpg","pro_side.jpg", COL, 50)
 pdf.image(im2, x=M+COL+GUT, y=y+5, w=COL, h=50); pdf.set_draw_color(*LINE); pdf.rect(M+COL+GUT, y+5, COL, 50)
 pdf.set_xy(M+COL+GUT, y+56.5); pdf.set_font("Helvetica","",7.8); pdf.set_text_color(*MUTED)

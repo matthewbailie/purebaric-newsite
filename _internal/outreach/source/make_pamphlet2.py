@@ -75,8 +75,8 @@ y = para(0, y+3,
   "A quiet machine beside it gently raises the air pressure to **1.5 ATA**, about one and a half "
   "times normal air pressure, and supplies oxygen-enriched air.")
 y = para(0, y+2.5,
-  "Clients use sessions for general wellness and relaxation. It is popular with athletes and "
-  "active people as part of a recovery routine. It is a wellness amenity, not a medical treatment.")
+  "Clients use sessions for general wellness, rest, and recovery. It suits a wide range of clients, "
+  "anyone who wants a quiet hour to recharge. It is a wellness amenity, not a medical treatment.")
 img = crop("/Users/bailie/Library/CloudStorage/OneDrive-Adobe/DMe-C&P/Claude_AI/purebaric-outreach/branded-images/chamber-side-branded.jpg", "flap.jpg", CW, 40)
 pdf.image(img, x=px(0)+M, y=y+4, w=CW, h=40); pdf.set_draw_color(*LINE); pdf.rect(px(0)+M, y+4, CW, 40)
 y = sub(0, y+50, "What a session looks like")
