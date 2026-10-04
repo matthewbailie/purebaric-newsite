@@ -144,6 +144,7 @@
   .form-card { background: var(--cream); border: 1px solid var(--line); padding: 1.5rem; margin-bottom: 1.5rem; display: none; }
   .inline-edit-row td { padding: 0; border-bottom: 1px solid var(--line); }
   .inline-edit-row .form-card { margin-bottom: 0; border: none; border-top: 2px solid var(--terracotta, #b5654a); }
+  .form-card.after-card.open { margin-top: -1rem; margin-bottom: 1rem; border-top: 2px solid var(--terracotta, #b5654a); }
   .form-card.open { display: block; }
   .form-card h3 { margin: 0 0 1rem; font-size: 1.15rem; }
   .form-card .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -1332,11 +1333,25 @@
     tr.appendChild(td);
     row.insertAdjacentElement('afterend', tr);
     if (existingWrap) existingWrap.remove();
+    fitInlineForms();
   }
+  // Tables scroll sideways on phones, so an editor spanning the full table would be clipped:
+  // pin it to the left edge of the scroll box and size it to what is visible.
+  function fitInlineForms() {
+    document.querySelectorAll('.inline-edit-row .form-card').forEach(form => {
+      const wrap = form.closest('.table-wrap');
+      if (!wrap) return;
+      form.style.position = 'sticky'; form.style.left = '0'; form.style.boxSizing = 'border-box';
+      form.style.width = wrap.clientWidth + 'px';
+    });
+  }
+  window.addEventListener('resize', fitInlineForms);
   // Return a form to its original spot above the list, for "+ Add" and Cancel.
   function resetFormPosition(formId, anchorId) {
     const wrap = document.getElementById(formId + 'InlineRow');
     const form = document.getElementById(formId);
+    form.style.position = ''; form.style.left = ''; form.style.width = ''; form.style.boxSizing = '';
+    form.classList.remove('after-card');
     document.getElementById(anchorId).insertAdjacentElement('afterend', form);
     if (wrap) wrap.remove();
   }
@@ -1347,11 +1362,6 @@
     if (!form) return;
     const sel = form.querySelector('[name="status"]'), card = form.closest('.form-card');
     if (card) card.classList.toggle('maint-on', !!sel && sel.value === 'maintenance');
-  }
-  // On phones the tables scroll sideways, so an inline editor would be clipped: open it above the list instead.
-  function openUnitForm(formId, anchorId, rowSelector, colspan) {
-    if (window.innerWidth <= 720) { resetFormPosition(formId, anchorId); setTimeout(() => document.getElementById(formId).scrollIntoView({ behavior: 'smooth', block: 'start' }), 0); }
-    else placeInlineForm(formId, rowSelector, colspan);
   }
   // Tapping anywhere on a chamber/machine row opens its editor; controls inside the row keep their own behaviour.
   function unitRowClick(e, fn, id) {
@@ -1776,7 +1786,8 @@
   }
   function editMachine(id) {
     const m = _machines.find(x => x.id === id); if (!m) return;
-    openUnitForm('machineForm', 'machineFormAnchor', `#machinesList tr[data-id="${id}"]`, 4);
+    document.getElementById('machineForm').classList.remove('open');
+    placeInlineForm('machineForm', `#machinesList tr[data-id="${id}"]`, 4);
     toggleForm('machineForm', { id: m.id, name: m.name, notes: m.notes, status: m.status === 'maintenance' ? 'maintenance' : 'active', maintenanceUntil: m.maintenanceUntil || '' });
     const form = document.getElementById('machineFormEl');
     form.querySelector('[name="status"]').disabled = m.status === 'archived';
@@ -2066,7 +2077,8 @@
   function editChamber(id) {
     const c = _chambers.find(x => x.id === id);
     if (!c) return;
-    openUnitForm('chamberForm', 'chamberFormAnchor', `#chambersList tr[data-id="${id}"]`, 5);
+    document.getElementById('chamberForm').classList.remove('open');
+    placeInlineForm('chamberForm', `#chambersList tr[data-id="${id}"]`, 5);
     toggleForm('chamberForm', { id: c.id, name: c.name, style: c.style || 'lying', notes: c.notes, status: c.status === 'maintenance' ? 'maintenance' : 'active', maintenanceUntil: c.maintenanceUntil || '' });
     const form = document.getElementById('chamberFormEl');
     form.querySelector('[name="status"]').disabled = c.status === 'archived';
@@ -2630,6 +2642,8 @@
   }
   function renderCustomers() {
     const list = document.getElementById('customersList');
+    // The editor may be sitting inside the list from a previous Edit; move it out before the list is rebuilt.
+    if (document.getElementById('customerForm').closest('#customersList')) resetFormPosition('customerForm', 'customerFormAnchor');
     if (!_customers.length) {
       ['cfActive', 'cfAll', 'cfHome', 'cfBiz'].forEach(id => { document.getElementById(id).textContent = '0'; });
       document.querySelectorAll('#customerFilter button').forEach(b => b.classList.toggle('on', b.dataset.f === _customerFilter));
@@ -2761,7 +2775,7 @@
         ? `${totalMonths ? totalMonths + ' month' + (totalMonths === 1 ? '' : 's') + ' total · ' : ''}${c.rentals.length} rental${c.rentals.length === 1 ? '' : 's'}`
         : '';
       return `
-        <details class="customer-card">
+        <details class="customer-card" data-email="${escape(c.email || '')}">
           <summary class="customer-summary">
             <div class="cs-main">
               <div class="cs-name">${escape(c.name || '(no name)')} ${tagPills}</div>
@@ -2863,6 +2877,10 @@
   function editCustomer(email) {
     const c = _customers.find(x => x.email === email);
     if (!c) return;
+    // Open the editor right under this customer's card (unless the form is in use inside the rental form).
+    const form = document.getElementById('customerForm');
+    const card = document.querySelector(`#customersList details.customer-card[data-email="${CSS.escape(email)}"]`);
+    if (card && !form.closest('#rentalForm')) { form.classList.remove('open'); card.insertAdjacentElement('afterend', form); form.classList.add('after-card'); }
     // Address fallback: if no manual address yet, pull from the most recent rental
     let addr = c.address || {};
     const hasManualAddr = addr.street || addr.city || addr.state || addr.zip;
