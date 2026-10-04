@@ -191,7 +191,7 @@ body.biz.bookmode .slider-block{display:block!important}
           <label>Delivery date <span class="req">*</span></label>
           <div class="dcal" id="dcal"></div>
           <input type="hidden" id="bookDate" value="">
-          <div class="dnote" id="dnote">Pick a highlighted day. <strong>We will text or call to confirm the exact delivery time.</strong></div>
+          <div class="dnote" id="dnote"><strong>We will text or call to confirm the exact delivery time.</strong></div>
         </div>
         <div class="fg"><label for="cnotes">Notes (optional)</label><textarea id="cnotes" name="notes" placeholder="Ground floor setup, stairs, morning delivery preference..."></textarea></div>
 
@@ -370,7 +370,7 @@ fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){if(j&
   function render(){
     listEl.innerHTML=options.map(function(o,i){
       var sel=hidden.value===o.value;
-      var badge=o.soon?'<span class="cdd-badge soon">Coming soon</span>':(o.out?'<span class="cdd-badge no">Unavailable</span>':'<span class="cdd-badge ok">Available</span>');
+      var badge=o.soon?'<span class="cdd-badge soon">Coming soon</span>':(o.status==='later'&&o.next?'<span class="cdd-badge soon">Next: '+fmtShort(o.next)+'</span>':(o.out?'<span class="cdd-badge no">Unavailable</span>':'<span class="cdd-badge ok">Available</span>'));
       return '<li class="cdd-opt'+(o.out?' out':'')+'" role="option" data-i="'+i+'" aria-selected="'+sel+'"><span>'+o.label+'</span>'+badge+'</li>';
     }).join('');
   }
@@ -414,9 +414,9 @@ function enterBookMode(j){
   document.querySelectorAll('.trust span').forEach(function(sp){ if(/Reply within one business day/.test(sp.textContent)) sp.remove(); });
   document.getElementById('submitBtn').textContent=BIZ?'Book chamber for my business →':'Book chamber →';
   var fine=document.querySelector('.book .fine'); if(fine)fine.textContent=BIZ?'Plus a one-time $500 setup fee · no charge today · we confirm the delivery time by text or call':'No charge today · we confirm the delivery time by text or call · cancel free up to 7 days before delivery';
-  var note=document.getElementById('dnote'); if(note&&j.deliveryNote)note.innerHTML='Pick a highlighted day. <strong>'+j.deliveryNote.replace(/</g,'&lt;')+'</strong>';
+  var note=document.getElementById('dnote'); if(note&&j.deliveryNote)note.innerHTML='<strong>'+j.deliveryNote.replace(/</g,'&lt;')+'</strong>';
   if(j.styles&&j.styles.length){
-    window.__pbSetChamberOptions(j.styles.map(function(t){ var lbl='1.5 ATA '+(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:!t.available,soon:!t.available}; }));
+    window.__pbSetChamberOptions(j.styles.map(function(t){ var lbl='1.5 ATA '+(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:t.status!=='available'&&t.status!=='later',soon:t.status==='soon',status:t.status,next:t.nextAvailable}; }));
   }
   applyDelivery(j);
   var steps=document.querySelectorAll('.next li div');
@@ -427,10 +427,19 @@ function enterBookMode(j){
   }
   if(BIZ)recalcBiz();
 }
+function fmtShort(iso){ var d=new Date(iso+'T00:00:00'); return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+function fmtLong(iso){ var d=new Date(iso+'T00:00:00'); return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}); }
 function applyDelivery(j){
   DELIV=j; var sel=document.getElementById('bookDate').value;
-  if(sel && !(j.dates||[]).some(function(d){return d.date===sel&&d.ok;})){ document.getElementById('bookDate').value=''; }
+  if(sel && !(j.dates||[]).some(function(d){return d.date===sel&&d.ok;})){ document.getElementById('bookDate').value=''; sel=''; }
+  var firstOk=(j.dates||[]).filter(function(d){return d.ok;})[0];
+  var cur=DCAL_MONTH, curHasOk=cur&&(j.dates||[]).some(function(d){return d.ok&&d.date.slice(0,7)===cur;});
+  if(!sel && firstOk && (!cur || !curHasOk)) DCAL_MONTH=firstOk.date.slice(0,7);
   if(!DCAL_MONTH && j.dates && j.dates.length) DCAL_MONTH=j.dates[0].date.slice(0,7);
+  var note=document.getElementById('dnote');
+  if(note){ var base=note.dataset.base||note.innerHTML; note.dataset.base=base;
+    var lead=j.status==='later'&&j.nextAvailable?'<strong>Next available delivery: '+fmtLong(j.nextAvailable)+'.</strong> Every chamber is out until then, so the calendar starts there. ':'';
+    note.innerHTML=lead+base; note.dataset.lead=lead; }
   renderDcal();
 }
 function refetchDelivery(){
@@ -442,7 +451,7 @@ window.__pbOnChamberChange=refetchDelivery;
 document.getElementById('mo').addEventListener('input',refetchDelivery);
 function renderDcal(){
   var el=document.getElementById('dcal'); if(!el||!DELIV)return;
-  var dates=DELIV.dates||[]; if(!dates.length){ el.innerHTML='<div class="dnote">No delivery dates are open right now. <a href="/waitlist">Join the waitlist</a> or call (801) 901-0873.</div>'; return; }
+  var dates=DELIV.dates||[]; if(!dates.length||!dates.some(function(d){return d.ok;})){ el.innerHTML='<div class="dnote">Every chamber is booked for the coming months and no delivery date is open yet. <a href="/waitlist">Join the waitlist</a> and we will email you the moment a chamber frees up, or call (801) 901-0873.</div>'; return; }
   var byDate={}; dates.forEach(function(d){byDate[d.date]=d.ok;});
   var first=dates[0].date.slice(0,7), last=dates[dates.length-1].date.slice(0,7);
   if(DCAL_MONTH<first)DCAL_MONTH=first; if(DCAL_MONTH>last)DCAL_MONTH=last;
@@ -463,7 +472,7 @@ function renderDcal(){
   el.querySelector('#dcalPrev').addEventListener('click',function(){shift(-1);});
   el.querySelector('#dcalNext').addEventListener('click',function(){shift(1);});
   el.querySelectorAll('.dcal-day.ok').forEach(function(b){ b.addEventListener('click',function(){ document.getElementById('bookDate').value=b.dataset.d; renderDcal(); var r=document.getElementById('resResult'); if(r.className==='result err'){r.className='result';r.textContent='';} window.trackPurebaricEvent?.('select_delivery_date'); }); });
-  if(sel){ var dsel=new Date(sel+'T00:00:00'); var hint=el.parentElement.querySelector('.dnote'); if(hint&&!hint.dataset.base)hint.dataset.base=hint.innerHTML; if(hint)hint.innerHTML='<strong>Delivery on '+dsel.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'.</strong> '+hint.dataset.base; }
+  var hint=el.parentElement.querySelector('.dnote'); if(hint){ if(!hint.dataset.base)hint.dataset.base=hint.innerHTML; hint.innerHTML=(sel?'<strong>Delivery on '+fmtLong(sel)+'.</strong> ':(hint.dataset.lead||''))+hint.dataset.base; }
 }
 fetchDelivery().then(function(j){ if(j&&j.mode==='book')enterBookMode(j); }).catch(function(){});
 

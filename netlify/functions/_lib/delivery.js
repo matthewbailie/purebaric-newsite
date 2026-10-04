@@ -86,9 +86,33 @@ function capacity({ chambers, machines, rentals, holds }, style, start, end) {
   return Math.max(0, Math.min(freeC - holdC, freeM - hs.length));
 }
 
-// Every day from the lead time to the horizon, with whether delivery of `style` for `months` can start then.
-function availableDates({ config, chambers, machines, rentals, holds, style, months, today }) {
+const daysBetween = (a, b) => Math.round((parseIso(b) - parseIso(a)) / 86400000);
+
+// The first day on or after the lead time when `style` can be delivered for `months` (searching well past
+// the booking horizon, so a fully booked fleet still shows the day after a rental ends).
+function nextAvailableDate({ config, chambers, machines, rentals, holds, style, months, today }, maxDays = 400) {
   const c = normalizeConfig(config);
+  const st = styleOf({ style });
+  const mo = Math.max(1, Math.min(12, parseInt(months, 10) || 1));
+  for (let i = c.leadDays; i <= maxDays; i++) {
+    const date = addDays(today, i);
+    if (isDeliveryDay(c, date) && capacity({ chambers, machines, rentals, holds }, st, date, addMonthsInclusive(date, mo)) > 0) return date;
+  }
+  return null;
+}
+
+// The calendar window: the configured horizon, stretched so the next open day (plus a month around it)
+// is always in view when nothing opens sooner.
+function effectiveHorizon(config, nextAvailable, today) {
+  const c = normalizeConfig(config);
+  if (!nextAvailable) return c.horizonDays;
+  return Math.max(c.horizonDays, daysBetween(today, nextAvailable) + 30);
+}
+
+// Every day from the lead time to the horizon, with whether delivery of `style` for `months` can start then.
+function availableDates({ config, chambers, machines, rentals, holds, style, months, today, horizonDays }) {
+  const c = normalizeConfig(config);
+  if (horizonDays) c.horizonDays = Math.max(c.horizonDays, Math.min(430, horizonDays));
   const st = styleOf({ style });
   const mo = Math.max(1, Math.min(12, parseInt(months, 10) || 1));
   const from = addDays(today, c.leadDays);
@@ -104,8 +128,9 @@ function availableDates({ config, chambers, machines, rentals, holds, style, mon
 
 // Server-side check for one chosen date (the client's list may be stale).
 function dateAvailable(args) {
-  const { config, style, months, today, date } = args;
+  const { config, style, months, today, date, horizonDays } = args;
   const c = normalizeConfig(config);
+  if (horizonDays) c.horizonDays = Math.max(c.horizonDays, Math.min(430, horizonDays));
   if (!parseIso(date)) return { ok: false, reason: "invalid date" };
   if (date < addDays(today, c.leadDays)) return { ok: false, reason: "too soon" };
   if (date > addDays(today, c.horizonDays)) return { ok: false, reason: "beyond the booking window" };
@@ -116,5 +141,5 @@ function dateAvailable(args) {
   return cap > 0 ? { ok: true, endDate: end } : { ok: false, reason: "no chamber free for that window" };
 }
 
-module.exports = { MODES, DEFAULTS, HOLD_STATUSES, normalizeConfig, parseIso, addDays, addMonthsInclusive, mountainToday, isDeliveryDay,
-  holdsFrom, capacity, availableDates, dateAvailable, styleOf };
+module.exports = { MODES, DEFAULTS, HOLD_STATUSES, normalizeConfig, parseIso, addDays, daysBetween, addMonthsInclusive, mountainToday, isDeliveryDay,
+  holdsFrom, capacity, nextAvailableDate, effectiveHorizon, availableDates, dateAvailable, styleOf };

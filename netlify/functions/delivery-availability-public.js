@@ -17,9 +17,19 @@ exports.handler = async (event) => {
     const [{ chambers, machines, rentals }, holds] = await Promise.all([inventoryInputs(), bookingHolds()]);
     const months = Math.max(1, Math.min(12, parseInt(q.months, 10) || 1));
     const style = delivery.styleOf({ style: q.style });
-    const styles = ["lying", "sitting"].map(s => ({ style: s, label: styleLabel(s), available: chambers.some(c => c.status === "active" && delivery.styleOf(c) === s) }));
-    const dates = delivery.availableDates({ config, chambers, machines, rentals, holds, style, months, today });
-    return { statusCode: 200, headers: { "Content-Type": "application/json", "Cache-Control": "public, max-age=30" }, body: JSON.stringify({ ...base, style, months, styles, dates }) };
+    const inputs = { config, chambers, machines, rentals, holds, today };
+    // Per style: does it exist, and when is the next open delivery day for this rental length?
+    //   available = within the normal horizon; later = first open day is past the horizon; none = nothing within ~13 months; soon = no chambers of that style yet
+    const styles = ["lying", "sitting"].map(s => {
+      const exists = chambers.some(c => c.status === "active" && delivery.styleOf(c) === s);
+      const next = exists ? delivery.nextAvailableDate({ ...inputs, style: s, months }) : null;
+      const status = !exists ? "soon" : !next ? "none" : (delivery.daysBetween(today, next) <= config.horizonDays ? "available" : "later");
+      return { style: s, label: styleLabel(s), available: exists, nextAvailable: next, status };
+    });
+    const mine = styles.find(s => s.style === style) || styles[0];
+    const horizon = delivery.effectiveHorizon(config, mine.nextAvailable, today);
+    const dates = delivery.availableDates({ ...inputs, style, months, horizonDays: horizon });
+    return { statusCode: 200, headers: { "Content-Type": "application/json", "Cache-Control": "public, max-age=30" }, body: JSON.stringify({ ...base, style, months, styles, nextAvailable: mine.nextAvailable, status: mine.status, dates }) };
   } catch (err) {
     console.error("delivery-availability error", err);
     return { statusCode: 500, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ error: err.message || "delivery_availability_failed" }) };

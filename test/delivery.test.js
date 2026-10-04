@@ -75,3 +75,18 @@ test("holdsFrom only takes book-mode bookings still awaiting the owner", () => {
 test("mountainToday returns a date string", () => {
   assert.match(d.mountainToday(new Date("2026-10-04T05:30:00Z")), /^2026-10-03$/, "11:30 p.m. Mountain the night before");
 });
+
+test("nextAvailableDate looks past the horizon to the day after a rental ends, and the horizon stretches to show it", () => {
+  const full = [{ chamberId: "c1", machineId: "m1", status: "active", startDate: "2026-09-20", endDate: "2026-12-31" },
+    { chamberId: "c2", machineId: "m2", status: "scheduled", startDate: "2026-10-01", endDate: "2027-01-05" }];
+  const args = { ...base, rentals: full, style: "lying", months: 1, today };
+  const next = d.nextAvailableDate(args);
+  assert.equal(next, "2027-01-01", "c1 frees Jan 1 (a Friday), so delivery can start that day");
+  assert.equal(d.effectiveHorizon(base.config, next, today), 88 + 30, "horizon grows to the next open day plus a month");
+  assert.ok(d.availableDates(args).every(x => !x.ok), "the normal 30-day window has nothing");
+  const stretched = d.availableDates({ ...args, horizonDays: d.effectiveHorizon(base.config, next, today) });
+  assert.equal(stretched.find(x => x.ok).date, "2027-01-01");
+  assert.equal(d.dateAvailable({ ...args, date: "2027-01-01", horizonDays: 118 }).ok, true);
+  assert.equal(d.dateAvailable({ ...args, date: "2027-01-01" }).reason, "beyond the booking window", "without the stretch it is out of range");
+  assert.equal(d.nextAvailableDate({ ...args, rentals: [...full, { chamberId: "c3", machineId: "m2", status: "scheduled", startDate: "2027-01-06", endDate: "2028-06-01" }, { chamberId: "c2", machineId: "m1", status: "scheduled", startDate: "2027-01-02", endDate: "2028-06-01" }] }, 120), null);
+});

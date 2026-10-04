@@ -97,7 +97,9 @@ exports.handler = async (event) => {
       const months = Math.max(1, Math.min(12, parseInt(body.months, 10) || monthsFromLength(body["rental-length"] || "") || 1));
       const style = delivery.styleOf({ style: body.chamber_style });
       const [{ chambers, machines, rentals }, holds] = await Promise.all([inventoryInputs(), bookingHolds()]);
-      const check = delivery.dateAvailable({ config: deliveryCfg, chambers, machines, rentals, holds, style, months, today: delivery.mountainToday(), date: (body["start-date"] || body.preferred_date || "").trim() });
+      const today = delivery.mountainToday();
+      const next = delivery.nextAvailableDate({ config: deliveryCfg, chambers, machines, rentals, holds, style, months, today });
+      const check = delivery.dateAvailable({ config: deliveryCfg, chambers, machines, rentals, holds, style, months, today, horizonDays: delivery.effectiveHorizon(deliveryCfg, next, today), date: (body["start-date"] || body.preferred_date || "").trim() });
       if (!check.ok) {
         return { statusCode: 409, headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ error: "date_unavailable", reason: check.reason, message: `That delivery date is no longer available (${check.reason}). Please pick another date.` }) };
