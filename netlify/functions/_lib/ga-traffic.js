@@ -28,12 +28,21 @@ function rowsToMap(rows) {
   return out;
 }
 
-// Daily series for one year: a number for every day up to `today` (0 when GA had no row), null after.
+// The first day Analytics has any row for (tracking started partway through 2026): days before it are
+// "no data", not zero visits, so averages and the chart line begin there.
+function firstDataDay(byDate) {
+  const days = Object.keys(byDate).sort();
+  return days.length ? days[0] : null;
+}
+// Daily series for one year: null before tracking began, a number for every day from then up to `today`
+// (0 when GA had no row for the day), null after today.
 function yearSeries(byDate, year, today, key) {
   const n = daysInYear(year);
   const last = +today.slice(0, 4) > year ? n - 1 : +today.slice(0, 4) < year ? -1 : dayIndex(today);
+  const first = firstDataDay(byDate);
+  const start = !first ? n : +first.slice(0, 4) < year ? 0 : +first.slice(0, 4) > year ? n : dayIndex(first);
   const out = new Array(n).fill(null);
-  for (let i = 0; i <= last && i < n; i += 1) { const d = byDate[isoFromIndex(year, i)]; out[i] = d ? d[key] : 0; }
+  for (let i = start; i <= last && i < n; i += 1) { const d = byDate[isoFromIndex(year, i)]; out[i] = d ? d[key] : 0; }
   return out;
 }
 
@@ -50,9 +59,12 @@ function summarize(byDate, today, key = "sessions") {
     for (let dd = 1; dd <= (upToDay || days); dd += 1) { const r = byDate[`${yy}-${String(mm).padStart(2, "0")}-${String(dd).padStart(2, "0")}`]; out.push(r ? r[key] : 0); }
     return out;
   };
-  const thisMonth = inMonth(y, m, d);
+  // Months before tracking began have no data rather than zero visits.
+  const first = firstDataDay(byDate);
+  const monthOrNull = (yy, mm, upToDay) => (first && `${yy}-${String(mm).padStart(2, "0")}-31` >= first ? inMonth(yy, mm, upToDay) : []);
+  const thisMonth = monthOrNull(y, m, d);
   const [py, pm] = m === 1 ? [y - 1, 12] : [y, m - 1];
-  const lastMonth = inMonth(py, pm);
+  const lastMonth = monthOrNull(py, pm);
   const idx = dayIndex(today);
   const ytd = yearSeries(byDate, y, today, key).slice(0, idx + 1);
   const lastYtd = yearSeries(byDate, y - 1, `${y - 1}-12-31`, key).slice(0, idx + 1);
@@ -61,8 +73,8 @@ function summarize(byDate, today, key = "sessions") {
     thisMonth: { avgPerDay: avg(thisMonth), total: sum(thisMonth), days: thisMonth.length, label: `${MONTHS[m - 1]} ${y}` },
     lastMonth: { avgPerDay: avg(lastMonth), total: sum(lastMonth), days: lastMonth.length, label: `${MONTHS[pm - 1]} ${py}` },
     monthChangePct: pct(avg(thisMonth), avg(lastMonth)),
-    ytd: { avgPerDay: avg(ytd), total: sum(ytd), days: ytd.length, label: `${y} to date` },
-    lastYtd: { avgPerDay: lastYearHasData ? avg(lastYtd) : null, total: lastYearHasData ? sum(lastYtd) : null, days: lastYtd.length, label: `same days in ${y - 1}` },
+    ytd: { avgPerDay: avg(ytd), total: sum(ytd), days: ytd.filter((v) => v != null).length, label: `${y} to date`, since: first && first.slice(0, 4) === String(y) ? first : null },
+    lastYtd: { avgPerDay: lastYearHasData ? avg(lastYtd) : null, total: lastYearHasData ? sum(lastYtd) : null, days: lastYtd.filter((v) => v != null).length, label: `same days in ${y - 1}` },
     yearChangePct: lastYearHasData ? pct(avg(ytd), avg(lastYtd)) : null,
     lastYearHasData,
   };
@@ -182,4 +194,4 @@ async function fetchPagesDaily(sa, propertyId, year, fetchFn = fetch) {
   return pageRowsToMap(j.rows);
 }
 
-module.exports = { rowsToMap, yearSeries, summarize, chartData, normalizePage, pageRowsToMap, summarizePages, parseServiceAccount, accessToken, fetchDaily, fetchPagesDaily, dayIndex, daysInYear };
+module.exports = { rowsToMap, firstDataDay, yearSeries, summarize, chartData, normalizePage, pageRowsToMap, summarizePages, parseServiceAccount, accessToken, fetchDaily, fetchPagesDaily, dayIndex, daysInYear };

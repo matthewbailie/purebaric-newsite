@@ -1695,6 +1695,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       document.getElementById('akYtdSub').innerHTML = s.lastYearHasData
         ? `${s.ytd.total.toLocaleString('en-US')} visits in ${escape(s.ytd.label)} · ${_n1(s.lastYtd.avgPerDay)} per day over the ${escape(s.lastYtd.label)}${_delta(s.yearChangePct)}`
         : `${s.ytd.total.toLocaleString('en-US')} visits in ${escape(s.ytd.label)} · no ${c.year - 1} data to compare yet`;
+      if (s.ytd.since) document.getElementById('akYtdSub').innerHTML += ` · tracking since ${escape(fmtDate(s.ytd.since))}`;
       _dailyChart(document.getElementById('chartAnTotal'), c, s.lastYearHasData, 'visit', 'Website visits');
       const sel = document.getElementById('anPage'), keep = sel.value;
       sel.innerHTML = (r.pages || []).map(p => `<option value="${escape(p.label)}">${escape(p.label)}</option>`).join('');

@@ -19,6 +19,18 @@ test("GA rows become a date map; missing days count as zero up to today and null
   assert.equal(s[ga.dayIndex("2026-10-02")], 0, "no row = 0 visits");
   assert.equal(s[ga.dayIndex("2026-10-04")], 0, "today so far");
   assert.equal(s[ga.dayIndex("2026-10-05")], null, "future days are gaps");
+  const late = ga.yearSeries(ga.rowsToMap(rows.slice(0, 3)), 2026, "2026-10-04", "sessions"); // tracking began 2026-09-15
+  assert.equal(late[ga.dayIndex("2026-09-14")], null, "before tracking began is no data, not zero");
+  assert.equal(late[ga.dayIndex("2026-09-16")], 0, "a tracked day without a row is zero");
+});
+
+test("averages start on the first tracked day", () => {
+  const sm = ga.summarize(ga.rowsToMap(rows.slice(0, 3)), "2026-10-04"); // rows from 2026-09-15 on
+  assert.equal(sm.ytd.days, ga.dayIndex("2026-10-04") - ga.dayIndex("2026-09-15") + 1);
+  assert.equal(sm.ytd.since, "2026-09-15");
+  assert.equal(sm.lastMonth.days, 30, "September is tracked in full for the month comparison");
+  const aug = ga.summarize(ga.rowsToMap(rows.slice(0, 3)), "2026-09-20");
+  assert.equal(aug.lastMonth.avgPerDay, null, "August was before tracking: no comparison");
 });
 
 test("month and year-to-date daily averages compare against last month and last year", () => {
