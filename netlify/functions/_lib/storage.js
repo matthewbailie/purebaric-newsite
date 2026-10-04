@@ -274,7 +274,9 @@ async function updateRental(id, patch) {
 //   id, name, email, phone, zip, reason, preferredStartDate,
 //   status: "queued"|"hold"|"notified"|"converted"|"expired",
 //   holdExpiresAt, notifiedChamberId, createdAt, notifiedAt, convertedRentalId,
-//   wantsDiscount (asked for a reduced rate; contact when chambers sit idle), source ("admin" when added by hand)
+//   wantsDiscount (asked for a reduced rate; contact when chambers sit idle), discountPrice (the monthly rate they asked for,
+//   quoted in the chamber-ready email/text), source ("admin" when added by hand)
+//   rentalType "residential"|"business" with businessName (admin-entered entries; website joins are residential)
 // }
 
 async function listWaitlist({ status } = {}) {

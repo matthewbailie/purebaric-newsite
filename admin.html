@@ -63,6 +63,11 @@
     } catch (_) { /* localStorage unavailable, ignore */ }
   })();
 </script>
+<script>
+// Local development (netlify dev): the Identity widget only initialises on localhost once it knows the
+// real site, otherwise the page stays blank. Point it at production so email sign-in works locally.
+if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { try { if (!localStorage.getItem('netlifySiteURL')) localStorage.setItem('netlifySiteURL', 'https://purebaric.com'); } catch (e) { /* storage blocked */ } }
+</script>
 <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script src="/vendor/simplewebauthn-browser.js"></script>
 <script type="text/javascript" src="/rental-dates.js"></script>
@@ -723,9 +728,16 @@
         <button class="btn btn-primary btn-sm" onclick="openAddWaitlist()">+ Add to waitlist</button>
         </div>
       </div>
+      <div id="waitlistFormAnchor"></div>
       <div class="form-card" id="waitlistForm">
         <h3>New waitlist entry</h3>
         <form id="waitlistFormEl" onsubmit="return submitWaitlistEntry(event)">
+          <input type="hidden" name="id">
+          <div class="form-row">
+            <div class="form-group"><label>Type</label>
+              <select name="rentalType" onchange="syncWaitlistType(this.form)"><option value="residential">Home</option><option value="business">Business</option></select></div>
+            <div class="form-group wl-biz" style="display:none;"><label>Business name</label><input name="businessName" maxlength="120" placeholder="e.g. Sugar House Beauty LLC"></div>
+          </div>
           <div class="form-row">
             <div class="form-group"><label>Name<span class="req">*</span></label><input name="name" required></div>
             <div class="form-group"><label>Email</label><input type="email" name="email" placeholder="Email or phone required"></div>
@@ -738,12 +750,16 @@
             <div class="form-group"><label>Preferred start</label><input type="date" name="preferredStartDate"></div>
             <div class="form-group"><label>What they are looking for</label><input name="reason" placeholder="e.g. 3 months at a reduced rate"></div>
           </div>
-          <div class="form-group"><label class="da-check" style="display:inline-flex;"><input type="checkbox" name="wantsDiscount" checked><span>Requesting a discount</span></label>
-            <div class="renter-line" style="margin-top:6px;">Flags people who want a steep discount so you can reach out when a lot of chambers are available. Filter by it above.</div></div>
+          <div class="form-row">
+            <div class="form-group"><label class="da-check" style="display:inline-flex;"><input type="checkbox" name="wantsDiscount" checked onchange="syncWaitlistDiscount(this.form)"><span>Requesting a discount</span></label>
+              <div class="renter-line" style="margin-top:6px;">Flags people who want a steep discount so you can reach out when a lot of chambers are available. Filter by it above.</div></div>
+            <div class="form-group wl-price"><label>Requested monthly price ($)</label><input type="number" name="discountPrice" min="1" step="1" inputmode="numeric" placeholder="e.g. 450">
+              <div class="renter-line" style="margin-top:6px;">Quoted in the email and text they get when you offer them a chamber.</div></div>
+          </div>
           <div class="form-group"><label>Internal notes</label><textarea name="adminNotes" rows="2" placeholder="Follow-ups, conversations, what price they mentioned…"></textarea></div>
           <div class="form-buttons">
-            <button type="submit" class="btn btn-primary btn-sm">Add to waitlist</button>
-            <button type="button" class="btn btn-ghost btn-sm" onclick="toggleForm('waitlistForm')">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="cancelWaitlistForm()">Cancel</button>
           </div>
         </form>
       </div>
@@ -3118,6 +3134,7 @@
   document.getElementById('waitlistSearch').addEventListener('input', () => renderWaitlist());
   function renderWaitlist() {
     const list = document.getElementById('waitlistList');
+    if (document.getElementById('waitlistForm').closest('#waitlistList')) resetFormPosition('waitlistForm', 'waitlistFormAnchor');
     if (!_waitlist.length) {
       list.innerHTML = `<div class="empty-state">Waitlist is empty.</div>`;
       return;
@@ -3141,13 +3158,14 @@
       const positionNote = w.status === 'queued' ? `<div class="renter-line">#${positionMap.get(w.id)} of ${totalQueued}</div>` : '';
       const notesPreview = w.adminNotes ? `<div class="renter-line" style="color:var(--terracotta);">📝 ${escape(w.adminNotes.slice(0, 60))}${w.adminNotes.length > 60 ? '…' : ''}</div>` : '';
       return `
-      <tr>
+      <tr data-id="${escape(w.id)}">
         <td>${escape(created)}</td>
-        <td><strong>${escape(w.name)}</strong>${w.wantsDiscount ? ' <span class="pill pill-discount">Requesting discount</span>' : ''}${w.category === 'out-of-area' ? ' <span class="pill pill-out-of-area">Out-of-area</span>' : ''}<div class="renter-line">${escape(w.email)}${w.phone ? ' · ' + escape(w.phone) : ''}${w.zip ? ' · ' + escape(w.zip) : ''}</div></td>
+        <td><strong>${escape(w.name)}</strong>${w.rentalType === 'business' ? ` <span class="pill" style="background:#2b2320;color:#f3ead9;font-size:0.65rem;">Business${w.businessName ? ' · ' + escape(w.businessName) : ''}</span>` : ''}${w.wantsDiscount ? ` <span class="pill pill-discount">Requesting discount${w.discountPrice ? ' · $' + Number(w.discountPrice).toLocaleString('en-US') + '/mo' : ''}</span>` : ''}${w.category === 'out-of-area' ? ' <span class="pill pill-out-of-area">Out-of-area</span>' : ''}<div class="renter-line">${escape(w.email)}${w.phone ? ' · ' + escape(w.phone) : ''}${w.zip ? ' · ' + escape(w.zip) : ''}</div></td>
         <td>${escape(w.preferredStartDate || ', ')}<div class="renter-line">${escape((w.reason || '').slice(0, 80))}</div>${notesPreview}</td>
         <td><span class="pill pill-${w.status}">${w.status}</span>${holdNote}${positionNote}</td>
         <td>
           <div class="row-actions">
+            <button class="btn btn-ghost btn-sm" onclick='editWaitlistEntry(${JSON.stringify(w.id)})'>Edit</button>
             <button class="btn btn-ghost btn-sm" onclick='viewWaitlistDetails(${JSON.stringify(w.id)})'>Details</button>
             ${w.status === 'queued' ? `<button class="btn btn-primary btn-sm" onclick='offerHold(${JSON.stringify(w.id)})'>Offer hold</button>` : ''}
             ${w.status !== 'converted' && w.status !== 'expired' ? `<button class="btn btn-primary btn-sm" onclick='convertWaitlistToRental(${JSON.stringify(w.id)})'>→ Rental</button>` : ''}
@@ -3159,16 +3177,37 @@
     list.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Added</th><th>Contact</th><th>Preferred / reason</th><th>Status</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
   }
 
-  function openAddWaitlist() { toggleForm('waitlistForm'); document.querySelector('#waitlistFormEl [name="wantsDiscount"]').checked = true; }
+  function openAddWaitlist() { resetFormPosition('waitlistForm', 'waitlistFormAnchor'); const f = document.getElementById('waitlistFormEl'); toggleForm('waitlistForm'); f.querySelector('[name="wantsDiscount"]').checked = true; syncWaitlistType(f); syncWaitlistDiscount(f); }
+  function cancelWaitlistForm() { resetFormPosition('waitlistForm', 'waitlistFormAnchor'); toggleForm('waitlistForm'); }
+  // Edit opens the same form directly under the entry's row.
+  function editWaitlistEntry(id) {
+    const w = _waitlist.find(x => x.id === id); if (!w) return;
+    document.getElementById('waitlistForm').classList.remove('open');
+    placeInlineForm('waitlistForm', `#waitlistList tr[data-id="${CSS.escape(id)}"]`, 5);
+    const f = document.getElementById('waitlistFormEl');
+    toggleForm('waitlistForm', { id: w.id, rentalType: w.rentalType === 'business' ? 'business' : 'residential', businessName: w.businessName || '', name: w.name || '', email: w.email || '',
+      phone: w.phone || '', zip: w.zip || '', preferredStartDate: w.preferredStartDate || '', reason: w.reason || '', adminNotes: w.adminNotes || '', discountPrice: w.discountPrice || '' });
+    f.querySelector('[name="wantsDiscount"]').checked = !!w.wantsDiscount;
+    syncWaitlistType(f); syncWaitlistDiscount(f);
+  }
+  function syncWaitlistType(form) { form.querySelector('.wl-biz').style.display = form.querySelector('[name="rentalType"]').value === 'business' ? '' : 'none'; }
+  function syncWaitlistDiscount(form) { form.querySelector('.wl-price').style.display = form.querySelector('[name="wantsDiscount"]').checked ? '' : 'none'; }
   async function submitWaitlistEntry(e) {
     e.preventDefault();
     const form = e.target;
     const data = Object.fromEntries(new FormData(form));
+    delete data.id;
     data.wantsDiscount = form.querySelector('[name="wantsDiscount"]').checked;
     if (!data.email && !data.phone) { toast('Add an email or a phone number', true); return false; }
     try {
-      await api('/api/admin/waitlist', { method: 'POST', body: JSON.stringify(data) });
-      toast('Added to waitlist');
+      if (form.querySelector('[name="id"]').value) {
+        await api(`/api/admin/waitlist/${form.querySelector('[name="id"]').value}`, { method: 'PATCH', body: JSON.stringify(data) });
+        toast('Waitlist entry updated');
+      } else {
+        await api('/api/admin/waitlist', { method: 'POST', body: JSON.stringify(data) });
+        toast('Added to waitlist');
+      }
+      resetFormPosition('waitlistForm', 'waitlistFormAnchor');
       toggleForm('waitlistForm');
       await loadWaitlist();
     } catch (err) { toast(err.message, true); }
@@ -3179,7 +3218,9 @@
     if (!w) return;
     const body = `
       <div class="modal-row"><strong>Contact</strong><div>${escape(w.name)}<br>${escape(w.email || ', ')}<br>${escape(w.phone || ', ')}</div></div>
-      <div class="modal-row"><strong>Discount</strong><div><label class="da-check" style="display:inline-flex;min-height:34px;"><input type="checkbox" id="waitlistDiscountEdit"${w.wantsDiscount ? ' checked' : ''}><span>Requesting a discount</span></label></div></div>
+      <div class="modal-row"><strong>Discount</strong><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"><label class="da-check" style="display:inline-flex;min-height:34px;"><input type="checkbox" id="waitlistDiscountEdit"${w.wantsDiscount ? ' checked' : ''}><span>Requesting a discount</span></label>
+        <label class="renter-line" style="display:inline-flex;align-items:center;gap:6px;">Requested $<input type="number" id="waitlistDiscountPriceEdit" min="1" step="1" value="${w.discountPrice ? Number(w.discountPrice) : ''}" placeholder="450" style="width:90px;padding:6px 8px;border:1px solid var(--line,#e6dccd);border-radius:8px;"> a month</label></div></div>
+      <div class="modal-row"><strong>Type</strong><div>${w.rentalType === 'business' ? `Business${w.businessName ? ' · ' + escape(w.businessName) : ''}` : 'Home'}</div></div>
       <div class="modal-row"><strong>ZIP</strong><div>${escape(w.zip || ', ')}</div></div>
       <div class="modal-row"><strong>Preferred start</strong><div>${escape(w.preferredStartDate || ', ')}</div></div>
       <div class="modal-row"><strong>Reason / context</strong><div>${escape(w.reason || ', ')}</div></div>
@@ -3203,8 +3244,9 @@
   async function saveWaitlistNotes(id) {
     const notes = document.getElementById('waitlistNotesEdit').value;
     const wantsDiscount = !!(document.getElementById('waitlistDiscountEdit') || {}).checked;
+    const discountPrice = (document.getElementById('waitlistDiscountPriceEdit') || {}).value || '';
     try {
-      await api(`/api/admin/waitlist/${id}`, { method: 'PATCH', body: JSON.stringify({ adminNotes: notes, wantsDiscount }) });
+      await api(`/api/admin/waitlist/${id}`, { method: 'PATCH', body: JSON.stringify({ adminNotes: notes, wantsDiscount, discountPrice }) });
       toast('Saved');
       closeModal();
       await loadWaitlist();
@@ -3255,8 +3297,11 @@
     const choice = free.length === 1 ? free[0] : free.find(c => c.name === prompt(`Which chamber? (${free.map(c => c.name).join(', ')})`, free[0].name));
     if (!choice) return;
     try {
-      await api(`/api/admin/waitlist/${id}/hold`, { method: 'POST', body: JSON.stringify({ chamberId: choice.id }) });
-      toast(`Hold placed on ${choice.name}, renter emailed`);
+      const r = await api(`/api/admin/waitlist/${id}/hold`, { method: 'POST', body: JSON.stringify({ chamberId: choice.id }) });
+      const n = r.notified || {};
+      const bad = ['email', 'sms'].filter(k => String(n[k] || '').startsWith('failed'));
+      if (bad.length) toast(`Hold placed on ${choice.name}, but ${bad.map(k => `${k} ${n[k]}`).join('; ')}`, true);
+      else toast(`Hold placed on ${choice.name}. Email: ${n.email || '?'} · Text: ${n.sms || '?'}`);
       await loadAll();
     } catch (err) { toast(err.message, true); }
   }

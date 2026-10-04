@@ -5,7 +5,11 @@ const {
   STORES,
   store,
 } = require("./_lib/storage");
-const { notifyWaitlistChamberAvailable } = require("./_lib/email");
+const { notifyWaitlistChamberAvailable, waitlistHoldSmsText } = require("./_lib/email");
+const { getTwilioConfig } = require("./_lib/storage");
+const { sendSms, isComplete } = require("./_lib/sms");
+// Requested monthly price: a whole-dollar amount, or null when none was given.
+function parsePrice(v) { const n = Math.round(Number(v)); return Number.isFinite(n) && n > 0 ? n : null; }
 const { requireAuth, parseBody, parsePathSegments, json } = require("./_lib/admin");
 
 const HOLD_MS = 24 * 60 * 60 * 1000;
@@ -44,6 +48,9 @@ exports.handler = async (event, context) => {
         reason: str(body.reason),
         preferredStartDate: /^\d{4}-\d{2}-\d{2}$/.test(str(body.preferredStartDate)) ? str(body.preferredStartDate) : "",
         wantsDiscount: !!body.wantsDiscount,
+        discountPrice: body.wantsDiscount ? parsePrice(body.discountPrice) : null,
+        rentalType: body.rentalType === "business" ? "business" : "residential",
+        businessName: body.rentalType === "business" ? str(body.businessName) : "",
         adminNotes: str(body.adminNotes),
         source: "admin",
       });
@@ -67,11 +74,17 @@ exports.handler = async (event, context) => {
         holdExpiresAt,
       });
 
-      notifyWaitlistChamberAvailable(updated, chamber).catch((err) =>
-        console.error("waitlist notify failed", err)
-      );
+      // Tell them by email and, when we have a number and Twilio is set up, by text. Both quote the
+      // monthly rate they asked for when they are flagged as requesting a discount.
+      // The result of each is reported back so the admin can see when a notice did not go out.
+      const notified = { email: updated.email ? "pending" : "no email on file", sms: updated.phone ? "pending" : "no phone on file" };
+      const sends = [];
+      if (updated.email) sends.push(notifyWaitlistChamberAvailable(updated, chamber).then(() => { notified.email = "sent"; }, (err) => { notified.email = "failed: " + (err.message || "error"); console.error("waitlist email failed", err); }));
+      if (updated.phone) sends.push(getTwilioConfig().then((cfg) => (isComplete(cfg) ? sendSms(updated.phone, waitlistHoldSmsText(updated, chamber), cfg) : { sent: false, reason: "twilio_not_configured" }))
+        .then((r) => { notified.sms = r && r.sent ? "sent" : "failed: " + ((r && r.reason) || "error"); }, (err) => { notified.sms = "failed: " + (err.message || "error"); console.error("waitlist sms failed", err); }));
+      await Promise.allSettled(sends);
 
-      return json(200, { entry: updated });
+      return json(200, { entry: updated, notified });
     }
 
     // POST /:id/convert, mark converted (rentalId optional, for linking)
@@ -92,8 +105,17 @@ exports.handler = async (event, context) => {
         patch.status = body.status;
       }
       if (typeof body.reason === "string") patch.reason = body.reason;
+      if (typeof body.name === "string" && body.name.trim()) patch.name = body.name.trim();
+      if (typeof body.email === "string") patch.email = body.email.trim().toLowerCase();
+      if (typeof body.phone === "string") patch.phone = body.phone.trim();
+      if (typeof body.zip === "string") patch.zip = body.zip.trim();
+      if (typeof body.preferredStartDate === "string") patch.preferredStartDate = /^\d{4}-\d{2}-\d{2}$/.test(body.preferredStartDate) ? body.preferredStartDate : "";
       if (typeof body.adminNotes === "string") patch.adminNotes = body.adminNotes;
       if (typeof body.wantsDiscount === "boolean") patch.wantsDiscount = body.wantsDiscount;
+      if ("discountPrice" in body) patch.discountPrice = parsePrice(body.discountPrice);
+      if (body.wantsDiscount === false) patch.discountPrice = null;
+      if (body.rentalType === "business" || body.rentalType === "residential") patch.rentalType = body.rentalType;
+      if (typeof body.businessName === "string") patch.businessName = body.businessName.trim();
       if (typeof body.convertedRentalId === "string") patch.convertedRentalId = body.convertedRentalId;
       const updated = await updateWaitlistEntry(id, patch);
       if (!updated) return json(404, { error: "not_found" });

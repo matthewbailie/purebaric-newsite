@@ -162,11 +162,24 @@ async function notifyAdminWaitlistJoin(entry) {
   return send({ to: ADMIN_NOTIFY, subject: `Waitlist: ${entry.name}`, html });
 }
 
+// The reduced monthly rate a waitlist person asked for, as a sentence for the chamber-ready email and text.
+function waitlistRateLine(entry) {
+  const price = entry && entry.wantsDiscount && Number(entry.discountPrice) > 0 ? Math.round(Number(entry.discountPrice)) : 0;
+  return price ? `Your rate: $${price.toLocaleString("en-US")} a month, the reduced rate you asked for.` : "";
+}
+// Short text-message version of the chamber-ready notice.
+function waitlistHoldSmsText(entry, chamber) {
+  const first = String(entry.name || "there").split(" ")[0];
+  const expires = entry.holdExpiresAt ? new Date(entry.holdExpiresAt).toLocaleString("en-US", { timeZone: "America/Denver", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "";
+  const rate = waitlistRateLine(entry);
+  return `Purebaric: Hi ${first}, a chamber just opened up for you${chamber && chamber.name ? ` (${chamber.name})` : ""}. We are holding it until ${expires || "tomorrow"}.${rate ? " " + rate : ""} Reply or call (801) 901-0873 to claim it.`;
+}
 async function notifyWaitlistChamberAvailable(entry, chamber) {
   const expires = new Date(entry.holdExpiresAt).toLocaleString("en-US", { timeZone: "America/Denver", dateStyle: "long", timeStyle: "short" });
   const html = wrap(`
     <p style="margin:0 0 16px;">Hi ${escapeHtml(entry.name.split(" ")[0])},</p>
     <p style="margin:0 0 16px;">Good news, a chamber just opened up. We're holding <strong style="color:#2b2320;">${escapeHtml(chamber.name)}</strong>${chamber.style ? ` (${escapeHtml(chamber.style)} chamber)` : ""} for you until <strong style="color:#2b2320;">${expires} Mountain Time</strong>.</p>
+    ${waitlistRateLine(entry) ? `<p style="margin:0 0 16px;"><strong style="color:#2b2320;">${escapeHtml(waitlistRateLine(entry))}</strong></p>` : ""}
     <p style="margin:0 0 16px;">To claim it, reply to this email or call us at <a href="tel:+18019010873" style="color:#b8654d;">(801) 901-0873</a> and we'll get you set up.</p>
     <p style="margin:0;">If we don't hear back by then, the chamber will roll to the next person on the list.</p>
     ${signoff()}
@@ -433,6 +446,8 @@ module.exports = {
   notifyAdminReview,
   notifyAdminWaitlistJoin,
   notifyWaitlistChamberAvailable,
+  waitlistRateLine,
+  waitlistHoldSmsText,
   notifyAdminBooking,
   notifyCustomerChamberAvailable,
   notifyCustomerWaitlistAdded,
