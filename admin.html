@@ -1979,8 +1979,7 @@
       const height = Math.max(1, laneEnds.length) * LANE + 8;
       return `<div class="cal-row" style="min-height:${height}px;"><div class="cal-name">${escape(label)}${sub ? `<div class="cal-machine">${escape(sub)}</div>` : ''}</div><div class="cal-track">${bars}<div class="cal-today" style="left:${todayPct}%;"></div></div></div>`;
     };
-    const shortDay = (iso) => new Date(iso + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    const rowsHtml = machines.map(m => rowHtml(m.name, m.status === 'maintenance' ? 'maintenance' + (m.maintenanceUntil ? ' · back ' + shortDay(m.maintenanceUntil) : '') : (m.status === 'archived' ? 'archived' : ''), live.filter(r => r.machineId === m.id), m.name,
+    const rowsHtml = machines.map(m => rowHtml(m.name, m.status === 'archived' ? 'archived' : '', live.filter(r => r.machineId === m.id), m.name,
       m.status === 'maintenance' ? { since: m.maintenanceSince || '', until: m.maintenanceUntil || '' } : null)).join('')
       + (unassigned.length ? rowHtml('No machine', 'unassigned', unassigned, 'not assigned') : '');
     el.innerHTML = `
