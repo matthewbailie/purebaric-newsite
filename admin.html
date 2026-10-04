@@ -556,7 +556,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         .cal-gl{position:absolute;top:0;bottom:0;width:1px;background:var(--line,#efe7db);pointer-events:none;}
         .cal-head{position:relative;height:34px;}
         .cal-mh{position:absolute;top:0;height:34px;line-height:34px;text-align:center;font-size:11px;font-weight:600;color:var(--muted,#6f635b);text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;overflow:hidden;}
-        .cal-tools{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 6px;}
+        .cal-tools{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 8px;}
         .cal-tools-btns{display:inline-flex;gap:6px;}
         .cal-tools-btns .btn{min-width:34px;padding:4px 9px;}
         /* No padding on the bar itself: padding would set a minimum width (16px) that outruns a short bar at phone scale.
@@ -2219,6 +2219,13 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   const CAL_DAY = 86400000, CAL_MIN_DAYS = 7, CAL_MAX_DAYS = 366;
   let _calWin = null, _calRaf = 0;
   const _calPts = new Map(); let _calPinch = null; // live pointers + pinch state survive re-renders
+  // A finger lifted outside the calendar (or after a re-render replaced it) must still end the pinch, otherwise the
+  // calendar keeps believing two fingers are down and ignores the one-finger date readout from then on.
+  function calEndPointer(e) { _calPts.delete(e.pointerId); if (_calPts.size < 2) _calPinch = null; }
+  window.addEventListener('pointerup', calEndPointer, true);
+  window.addEventListener('pointercancel', calEndPointer, true);
+  window.addEventListener('blur', () => { _calPts.clear(); _calPinch = null; });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { _calPts.clear(); _calPinch = null; } });
   function calDefaultWindow() { const n = new Date(); const s = new Date(n.getFullYear(), n.getMonth(), 1); const e = new Date(s.getFullYear(), s.getMonth() + 12, 1); return { start: s, days: Math.round((e - s) / CAL_DAY) }; }
   function calWindow() { if (!_calWin) _calWin = calDefaultWindow(); return { start: _calWin.start, end: new Date(_calWin.start.getTime() + _calWin.days * CAL_DAY), days: _calWin.days }; }
   // A short timer rather than requestAnimationFrame: the frame callback never fires while the tab is in the background.
@@ -2316,9 +2323,9 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       + (unassigned.length ? rowHtml('No machine', 'unassigned', unassigned, 'not assigned') : '');
     el.innerHTML = `
       <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Rental calendar</h3>
+      <div class="renter-line" style="margin-bottom:10px;">One row per machine. Pinch to zoom from a year down to a week and drag with two fingers to move along time (on a computer: ctrl + scroll to zoom, shift + scroll to move). Each bar shows the renter and the chamber the machine is paired with; empty space is when that machine is free. <span style="color:#5b7fa6;font-weight:700;">Blue</span> = scheduled (confirmed, upcoming), <span style="color:#5c7a34;font-weight:700;">green</span> = active, <span style="color:#a8842c;font-weight:700;">amber hatch</span> = maintenance. The orange line is today. Hover for a date, click a rental for its details.</div>
       <div class="cal-tools"><span class="renter-line">Showing <strong id="calZoomLabel">${zoomLabel}</strong> from ${escape(fmtDate(winStart.toISOString().slice(0, 10)))}</span>
-        <span class="cal-tools-btns"><button type="button" class="btn btn-ghost btn-sm" onclick="calPan(-0.25)" title="Earlier">&#8249;</button><button type="button" class="btn btn-ghost btn-sm" onclick="calZoomAt(0.5, 0.6)" title="Zoom in">+</button><button type="button" class="btn btn-ghost btn-sm" onclick="calZoomAt(0.5, 1 / 0.6)" title="Zoom out">&minus;</button><button type="button" class="btn btn-ghost btn-sm" onclick="calPan(0.25)" title="Later">&#8250;</button><button type="button" class="btn btn-ghost btn-sm" onclick="calReset()">12 months</button></span></div>
-      <div class="renter-line" style="margin-bottom:12px;">One row per machine. Pinch to zoom from a year down to a week and drag with two fingers to move along time (on a computer: ctrl + scroll to zoom, shift + scroll to move). Each bar shows the renter and the chamber the machine is paired with; empty space is when that machine is free. <span style="color:#5b7fa6;font-weight:700;">Blue</span> = scheduled (confirmed, upcoming), <span style="color:#5c7a34;font-weight:700;">green</span> = active, <span style="color:#a8842c;font-weight:700;">amber hatch</span> = maintenance. The orange line is today. Hover for a date, click a rental for its details.</div>
+        <span class="cal-tools-btns"><button type="button" class="btn btn-ghost btn-sm" onclick="calPan(-0.25)" title="Earlier">&#8249;</button><button type="button" class="btn btn-ghost btn-sm" onclick="calZoomAt(0.5, 0.6)" title="Zoom in">+</button><button type="button" class="btn btn-ghost btn-sm" onclick="calZoomAt(0.5, 1 / 0.6)" title="Zoom out">&minus;</button><button type="button" class="btn btn-ghost btn-sm" onclick="calPan(0.25)" title="Later">&#8250;</button><button type="button" class="btn btn-ghost btn-sm" onclick="calReset()">Reset view</button></span></div>
       <div class="cal-wrap">
         <div class="cal">
           <div class="cal-row cal-headrow"><div class="cal-name"></div><div class="cal-track cal-head">${gridLines}${headCells}<div class="cal-today"${todayIn ? '' : ' hidden'} style="left:${todayPct}%;"></div><div class="cal-today-marker"${todayIn ? '' : ' hidden'} style="left:${todayPct}%;">Today</div></div></div>
@@ -2358,6 +2365,9 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     };
     wrap.addEventListener('pointerdown', (e) => {
       if (e.pointerType === 'mouse') return;
+      // Anything still in the map from a gesture that ended elsewhere is stale: a new touch with a fresh id while the
+      // map is already "full" means the old entries never got their pointerup.
+      if (_calPts.size >= 2 && !_calPts.has(e.pointerId)) { _calPts.clear(); _calPinch = null; }
       _calPts.set(e.pointerId, { x: e.clientX, y: e.clientY });
       if (_calPts.size === 2) {
         const [a, b] = [..._calPts.values()]; const w = calWindow(); const midFrac = trackFrac((a.x + b.x) / 2);
@@ -2365,14 +2375,13 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         hideHover();
       }
     });
-    const endPt = (e) => { _calPts.delete(e.pointerId); if (_calPts.size < 2) _calPinch = null; };
-    wrap.addEventListener('pointerup', endPt); wrap.addEventListener('pointercancel', endPt);
     wrap.addEventListener('wheel', (e) => {
       if (e.ctrlKey || e.metaKey) { e.preventDefault(); calZoomAt(trackFrac(e.clientX), Math.exp(e.deltaY * 0.01)); }
       else if (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) { e.preventDefault(); calPan((e.deltaX || e.deltaY) / geomTrack().getBoundingClientRect().width); }
     }, { passive: false });
     wrap.addEventListener('pointermove', (e) => {
       if (_calPts.has(e.pointerId)) { _calPts.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (_calPinch && _calPts.size === 2) { pinchUpdate(); return; } }
+      if (_calPinch && _calPts.size < 2) _calPinch = null;
       if (_calPinch) return;
       const track = geomTrack(); if (!track) return;
       const tr = track.getBoundingClientRect();
