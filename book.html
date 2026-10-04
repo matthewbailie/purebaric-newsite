@@ -397,7 +397,8 @@ function enterBookMode(j){
   else { eb.textContent='Book a chamber'; h1.textContent='Book your chamber'; hp.textContent='Choose your chamber, rental length, and a delivery date from our calendar. There is no charge today; we text or call to confirm the exact delivery time.'; }
   var lbl=document.querySelector('.book-side-label'); if(lbl)lbl.textContent=BIZ?'Your business booking':'Your booking';
   var head=document.querySelector('#resForm .section-head p'); if(head)head.textContent='Where we deliver and who we are delivering to.';
-  var ack=document.querySelector('#ackReq').parentElement; ack.innerHTML='<input type="checkbox" id="ackReq" required> I understand my delivery date is booked and the exact delivery time will be confirmed by text or call. I\'ve reviewed the <a href="/safety" target="_blank" rel="noopener">safety information</a> and contraindications.';
+  var ack=document.querySelector('#ackReq').parentElement; ack.innerHTML='<input type="checkbox" id="ackReq" required> I understand my delivery date is booked and may be subject to change. The exact delivery time will be confirmed by text or call. I\'ve reviewed the <a href="/safety" target="_blank" rel="noopener">safety information</a>.';
+  document.querySelectorAll('.trust span').forEach(function(sp){ if(/Reply within one business day/.test(sp.textContent)) sp.remove(); });
   document.getElementById('submitBtn').textContent=BIZ?'Book chamber for my business →':'Book chamber →';
   var fine=document.querySelector('.book .fine'); if(fine)fine.textContent=BIZ?'Plus a one-time $500 setup fee · no charge today · we confirm the delivery time by text or call':'No charge today · we confirm the delivery time by text or call · cancel free up to 7 days before delivery';
   var note=document.getElementById('dnote'); if(note&&j.deliveryNote)note.innerHTML='Pick a highlighted day. <strong>'+j.deliveryNote.replace(/</g,'&lt;')+'</strong>';
