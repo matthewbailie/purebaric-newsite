@@ -767,6 +767,9 @@
       </div>
       <p class="renter-line" style="margin:0 0 16px;">Monthly rate for each rental length. Saving updates the website's pricing and calculators and the rate that auto-fills on new rentals.</p>
       <div id="pricingGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px 24px;max-width:720px;"></div>
+      <h3 class="inv-heading" style="margin-top:30px;">Business rental rates</h3>
+      <p class="renter-line" style="margin:0 0 12px;max-width:760px;">Monthly rate per chamber for business rentals by rental length. The 1-month rate is the base; shorter rates at longer lengths show as a percentage discount on the business booking page. Defaults: $979, 10% off from 3 months, 15% from 6, 20% at 12.</p>
+      <div id="bizPricingGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px 24px;max-width:720px;"></div>
 
       <h3 class="inv-heading" style="margin-top:34px;">Payments (Stripe)</h3>
       <p class="renter-line" style="margin:0 0 12px;max-width:760px;">Connect Stripe so a rental's payment link is generated in the portal and paid rentals auto-reconcile. Keys are stored securely and never shown again after saving. <strong>Setup:</strong> in your Stripe dashboard, copy the <em>Secret key</em> (Developers → API keys), and add a webhook endpoint at <code>https://purebaric.com/api/stripe-webhook</code> (events <code>payment_intent.succeeded</code>, <code>checkout.session.completed</code>) then copy its <em>Signing secret</em>.</p>
@@ -3358,7 +3361,7 @@
   // ─── Pricing ───
   async function loadPricing() {
     const data = await api('/api/admin/pricing');
-    _pricing = data.months || {};
+    _bizPricing = (data && data.business) || _bizPricing; _pricing = data.months || {};
     renderPricing();
   }
 
@@ -3733,30 +3736,42 @@
     m = Math.max(1, Math.min(12, parseInt(m, 10) || 1));
     return Number(_pricing[m]) || PRICING_FALLBACK[m];
   }
+  const BIZ_PRICING_FALLBACK = { 1: 979, 2: 979, 3: 881, 4: 881, 5: 881, 6: 832, 7: 832, 8: 832, 9: 832, 10: 832, 11: 832, 12: 783 };
+  let _bizPricing = {};
   function renderPricing() {
-    const grid = document.getElementById('pricingGrid');
-    if (!grid) return;
-    let html = '';
-    for (let m = 1; m <= 12; m++) {
-      const label = m + ' month' + (m > 1 ? 's' : '');
-      const val = _pricing[m] != null ? _pricing[m] : PRICING_FALLBACK[m];
-      html += `<label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#5f544d;">
-        <span style="width:74px;">${label}</span>
-        <span>$</span><input type="number" id="pm-${m}" min="0" step="1" value="${val}" style="width:100px;padding:7px 9px;border:1px solid var(--line,#e6dccd);border-radius:8px;font-family:inherit;">
-        <span style="color:#9a8f85;">/mo</span></label>`;
-    }
-    grid.innerHTML = html;
+    const draw = (gridId, prefix, table, fallback) => {
+      const grid = document.getElementById(gridId);
+      if (!grid) return;
+      let html = '';
+      const base = table[1] != null ? table[1] : fallback[1];
+      for (let m = 1; m <= 12; m++) {
+        const label = m + ' month' + (m > 1 ? 's' : '');
+        const val = table[m] != null ? table[m] : fallback[m];
+        const off = base > 0 && val < base ? Math.round((base - val) / base * 100) : 0;
+        html += `<label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#5f544d;">
+          <span style="width:74px;">${label}</span>
+          <span>$</span><input type="number" id="${prefix}-${m}" min="0" step="1" value="${val}" style="width:100px;padding:7px 9px;border:1px solid var(--line,#e6dccd);border-radius:8px;font-family:inherit;">
+          <span style="color:#9a8f85;">/mo${off ? ` · ${off}% off` : ''}</span></label>`;
+      }
+      grid.innerHTML = html;
+    };
+    draw('pricingGrid', 'pm', _pricing, PRICING_FALLBACK);
+    draw('bizPricingGrid', 'bm', _bizPricing, BIZ_PRICING_FALLBACK);
   }
   async function savePricing() {
-    const months = {};
+    const months = {}, business = {};
     for (let m = 1; m <= 12; m++) {
       const el = document.getElementById('pm-' + m);
       const v = el ? parseInt(el.value, 10) : NaN;
       if (v > 0) months[m] = v;
+      const bel = document.getElementById('bm-' + m);
+      const bv = bel ? parseInt(bel.value, 10) : NaN;
+      if (bv > 0) business[m] = bv;
     }
     try {
-      const data = await api('/api/admin/pricing', { method: 'PUT', body: JSON.stringify({ months }) });
+      const data = await api('/api/admin/pricing', { method: 'PUT', body: JSON.stringify({ months, business }) });
       _pricing = data.months || months;
+      _bizPricing = data.business || business;
       renderPricing();
       toast('Pricing saved, live on the site');
     } catch (err) { toast(err.message, true); }

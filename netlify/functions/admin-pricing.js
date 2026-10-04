@@ -1,4 +1,4 @@
-const { getPricing, setPricing } = require("./_lib/storage");
+const { getPricing, setPricing, getBusinessPricing, setBusinessPricing } = require("./_lib/storage");
 const { requireAuth, parseBody, json } = require("./_lib/admin");
 
 exports.handler = async (event, context) => {
@@ -8,16 +8,17 @@ exports.handler = async (event, context) => {
   const method = event.httpMethod;
   try {
     if (method === "GET") {
-      const months = await getPricing();
-      return json(200, { months });
+      const [months, business] = await Promise.all([getPricing(), getBusinessPricing()]);
+      return json(200, { months, business });
     }
 
     if (method === "PUT" || method === "POST") {
       const body = parseBody(event);
       // Accept { months: {1:..,..12:..} } or a flat { "1":.., "12":.. }.
-      const months = body.months || body;
-      const saved = await setPricing(months);
-      return json(200, { months: saved });
+      const months = body.months || (body.business ? null : body);
+      const saved = months ? await setPricing(months) : await getPricing();
+      const business = body.business ? await setBusinessPricing(body.business) : await getBusinessPricing();
+      return json(200, { months: saved, business });
     }
 
     return json(405, { error: "method_not_allowed" });

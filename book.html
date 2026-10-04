@@ -53,7 +53,7 @@
 .price{font-size:32px;font-weight:800;letter-spacing:-.02em}.permo{font-size:16px;color:var(--muted);font-weight:500}
 .strike{font-size:14px;color:var(--muted);font-weight:500;text-decoration:line-through}
 .svwrap{margin-top:8px}.svwrap.hide{display:none}
-body.biz .slider-block,body.biz #svw,body.biz #strike,body.biz #bizHide,body.biz .msum .mterm{display:none!important}
+/* business mode uses the same calculator with the business rate table */
 .biz-banner{display:none;background:var(--ink);color:#fff;border-radius:12px;padding:14px 18px;margin-bottom:18px;font-size:15px;line-height:1.5}
 body.biz .biz-banner{display:block}.biz-banner strong{color:#f3ead9}.biz-banner a{color:#e0b9a8;text-decoration:underline}
 #bizNameRow{display:none}body.biz #bizNameRow{display:block}
@@ -164,7 +164,7 @@ body.biz.bookmode .slider-block{display:block!important}
 
       <form id="resForm" class="frm book-main" novalidate>
         <div class="result" id="resResult" role="status" aria-live="polite"></div>
-        <div class="biz-banner" id="bizBanner"><strong>Business rental request.</strong> For a chamber placed at your gym, studio, salon, or clinic: $979 a month per chamber, month to month, plus a one-time $500 setup fee. We will reply within one business day to talk through your space. Renting for your home instead? <a href="/book">Switch to a home rental</a>.</div>
+        <div class="biz-banner" id="bizBanner"><strong>Business rental request.</strong> For a chamber placed at your gym, studio, salon, or clinic: from $979 a month per chamber plus a one-time $500 setup fee. Longer rentals cost less per month: 10% off from 3 months, 15% from 6, 20% at 12. We will reply within one business day to talk through your space. Renting for your home instead? <a href="/book">Switch to a home rental</a>.</div>
         <input type="hidden" id="rentalType" name="rental_type" value="residential">
 
         <div class="msum"><div><span class="mp" id="mpr">$659</span><small> /mo</small> <span class="mterm">· <span id="mmo">3 months</span></span></div><a href="#" onclick="document.getElementById('mo').scrollIntoView({block:'center'});return false;">Edit ↓</a></div>
@@ -277,6 +277,11 @@ function money(n){return '$'+n.toLocaleString()}
 function rate(m){m=Math.max(1,Math.min(12,parseInt(m,10)||1));return PB_PRICING[m]||PB_PF[m];}
 var BASE=rate(1);
 function pct(m){return Math.round((BASE-rate(m))/BASE*100)}
+var PB_BIZ_PF={1:979,2:979,3:881,4:881,5:881,6:832,7:832,8:832,9:832,10:832,11:832,12:783};
+var PB_BIZ=Object.assign({},PB_BIZ_PF);
+function rateBiz(m){m=Math.max(1,Math.min(12,parseInt(m,10)||1));return PB_BIZ[m]||PB_BIZ_PF[m];}
+var BASE_BIZ=rateBiz(1);
+function pctBiz(m){return Math.round((BASE_BIZ-rateBiz(m))/BASE_BIZ*100)}
 function mos(m){return m+' month'+(m>1?'s':'')}
 var BIZ=new URLSearchParams(location.search).get('type')==='business';
 function recalc(){
@@ -325,23 +330,31 @@ document.getElementById('resForm').addEventListener('focusin',function(){if(book
   if(z&&/^\d{3,5}$/.test(z))document.getElementById('zip').value=z;
   if(BIZ){document.body.classList.add('biz');document.getElementById('rentalType').value='business';document.getElementById('cbiz').required=true;
     document.querySelector('.page-hero .eyebrow2').textContent='Business rental request';document.querySelector('.page-hero h1').textContent='Request a chamber for your business';
-    document.querySelector('.page-hero p').textContent='Tell us about your business and where the chamber would go. This is a request, not a booking, and there is no charge today. We will reply within one business day.';
+    document.querySelector('.page-hero p').textContent='Tell us about your business, the rental length, and where the chamber would go. From $979 a month per chamber; longer rentals save up to 20%. This is a request, not a booking, and there is no charge today. We will reply within one business day.';
     document.querySelector('.book-side-label').textContent='Your business rental';}
   recalc();checkZip();
 })();
 /* Business mode: fixed business rate, no term discount, no length slider. */
 function recalcBiz(){
-  document.getElementById('pr').textContent='$979';
-  var mp=document.getElementById('mpr');if(mp)mp.textContent='$979';
-  var bm=window.BOOKMODE?(+document.getElementById('mo').value||1):0;
-  document.getElementById('bd').textContent=bm?('$979 × '+mos(bm)):'Month to month, per chamber';
-  document.getElementById('sub').textContent=bm?money(979*bm):'$979/mo';
-  var mol=document.getElementById('mol');if(mol&&bm)mol.textContent=mos(bm);
-  var fine=document.querySelector('.book .fine');if(fine)fine.textContent='Plus a one-time $500 setup fee (install, staff training, initial supplies) · no long-term contract, 30 days\' notice to end';
+  var m=+document.getElementById('mo').value||1,r=rateBiz(m),pp=pctBiz(m);
+  document.getElementById('pr').textContent='$'+r;
+  var strikeEl=document.getElementById('strike');strikeEl.textContent='$'+BASE_BIZ;strikeEl.style.display=r<BASE_BIZ?'inline':'none';
+  document.getElementById('mol').textContent=mos(m);
+  var mp=document.getElementById('mpr');if(mp)mp.textContent='$'+r;
+  var mm2=document.getElementById('mmo');if(mm2)mm2.textContent=mos(m);
+  document.getElementById('bd').textContent='$'+r+' × '+mos(m)+', per chamber';
+  document.getElementById('sub').textContent=money(r*m);
+  document.getElementById('tot').textContent=money((BASE_BIZ-r)*m);
+  var mo=document.getElementById('mo'),f=Math.round((m-1)/11*100);
+  mo.style.background='linear-gradient(90deg,var(--terra) '+f+'%,var(--cream2) '+f+'%)';
+  var w=document.getElementById('svw');
+  if(pp<=0){w.classList.add('hide');}
+  else{w.classList.remove('hide');document.getElementById('badge').textContent='Save '+pp+'%';document.getElementById('save').textContent=money(BASE_BIZ-r)+'/mo off';}
+  var fine=document.querySelector('.book .fine');if(fine&&!window.BOOKMODE)fine.textContent='Plus a one-time $500 setup fee (install, staff training, initial supplies) · no charge until we confirm · 30 days\' notice to end';
 }
 
 /* live pricing so the calculator matches the admin-managed rates */
-fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){if(j&&j.months){PB_PRICING=j.months;BASE=rate(1);recalc();}}).catch(function(){});
+fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){if(j&&j.months){PB_PRICING=j.months;BASE=rate(1);}if(j&&j.business){PB_BIZ=j.business;BASE_BIZ=rateBiz(1);}recalc();}).catch(function(){});
 
 /* Custom chamber dropdown. Options come from live availability; unavailable
    styles stay selectable (they route to the waitlist server-side) but are shown
@@ -465,14 +478,15 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   _submitting=true;
   var m=+document.getElementById('mo').value,r=rate(m),p=pct(m),total=r*m,save=(BASE-r)*m;
   var months=mos(m);
-  var plan=BIZ?('Business rental: Soft-Shell 1.5 ATA at $979/mo per chamber, month to month, plus $500 setup. Business: '+document.getElementById('cbiz').value.trim()+'. Location ZIP '+document.getElementById('zip').value+'.')
+  var rb=rateBiz(m),pb=pctBiz(m);
+  var plan=BIZ?('Business rental: Soft-Shell 1.5 ATA, '+months+' at $'+rb+'/mo per chamber'+(pb>0?(' (save '+pb+'%, $'+((BASE_BIZ-rb)*m).toLocaleString()+' total off)'):'')+', plus $500 setup. Est. rental total '+money(rb*m)+'. Business: '+document.getElementById('cbiz').value.trim()+'. Location ZIP '+document.getElementById('zip').value+'.')
     :('Selected plan: Soft-Shell 1.5 ATA, '+months+' rental at $'+r+'/mo'+(p>0?(' (save '+p+'%, $'+save.toLocaleString()+' total off)'):'')+'. Est. rental total '+money(total)+'. Delivery ZIP '+document.getElementById('zip').value+'.');
   var notes=document.getElementById('cnotes').value.trim();
   var ack='Acknowledged: reviewed safety/contraindications; understands this is a request pending confirmation.';
   var full=(notes?(notes+'\n\n'):'')+plan+'\n'+ack;
   var data=new URLSearchParams();
   data.set('chamber_id',document.getElementById('ch').value);
-  data.set('rental-length',BIZ?'month to month':months);
+  data.set('rental-length',months);
   data.set('rental_type',BIZ?'business':'residential');
   if(BIZ)data.set('business_name',document.getElementById('cbiz').value.trim());
   data.set('customer_name',document.getElementById('cn').value);
@@ -481,7 +495,7 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   data.set('city',document.getElementById('ccity').value);
   data.set('zip_code',document.getElementById('zip').value);
   data.set('preferred_date',window.BOOKMODE?document.getElementById('bookDate').value:document.getElementById('cdate').value);
-  if(window.BOOKMODE){ data.set('booking_mode','book'); data.set('chamber_style',selectedStyle()); data.set('months',String(m)); if(BIZ)data.set('rental-length',months); }
+  if(window.BOOKMODE){ data.set('booking_mode','book'); data.set('chamber_style',selectedStyle()); data.set('months',String(m)); }
   data.set('notes',full);
   data.set('gclid',window.getPurebaricGclid?window.getPurebaricGclid():'');
   var analyticsContext=window.getPurebaricAnalyticsContext

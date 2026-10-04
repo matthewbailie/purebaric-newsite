@@ -1,17 +1,17 @@
-const { getPricing } = require("./_lib/storage");
+const { getPricing, getBusinessPricing } = require("./_lib/storage");
 
 // Public: current monthly rate per rental length (1-12). The whole website reads
 // this so a price change in the admin reflects everywhere.
 exports.handler = async () => {
   try {
-    const months = await getPricing();
+    const [months, business] = await Promise.all([getPricing(), getBusinessPricing()]);
     return {
       statusCode: 200,
       headers: {
         "Content-Type": "application/json",
         "Cache-Control": "public, max-age=60",
       },
-      body: JSON.stringify({ months }),
+      body: JSON.stringify({ months, business }),
     };
   } catch (err) {
     console.error("pricing-public error", err);

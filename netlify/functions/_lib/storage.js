@@ -33,6 +33,12 @@ const DEFAULT_PRICING = {
   7: 579, 8: 579, 9: 579, 10: 579, 11: 579, 12: 529,
 };
 
+// Business rentals: $979 base, 10% off from 3 months, 15% from 6, 20% at 12 (editable in the admin Pricing tab).
+const DEFAULT_BUSINESS_PRICING = {
+  1: 979, 2: 979, 3: 881, 4: 881, 5: 881, 6: 832,
+  7: 832, 8: 832, 9: 832, 10: 832, 11: 832, 12: 783,
+};
+
 function newId() {
   return crypto.randomUUID();
 }
@@ -715,6 +721,23 @@ async function getPricing() {
   return normalizePricing(doc && doc.months);
 }
 
+function normalizeBusinessPricing(months) {
+  const out = {};
+  for (let m = 1; m <= 12; m++) {
+    const v = Number(months && months[m]);
+    out[m] = Number.isFinite(v) && v > 0 ? Math.round(v) : DEFAULT_BUSINESS_PRICING[m];
+  }
+  return out;
+}
+async function getBusinessPricing() {
+  const doc = await getOne(STORES.settings, "businessPricing");
+  return normalizeBusinessPricing(doc && doc.months);
+}
+async function setBusinessPricing(months) {
+  const clean = normalizeBusinessPricing(months);
+  await store(STORES.settings).setJSON("businessPricing", { id: "businessPricing", months: clean, updatedAt: nowIso() });
+  return clean;
+}
 async function setPricing(months) {
   const clean = normalizePricing(months);
   await store(STORES.settings).setJSON("pricing", { id: "pricing", months: clean, updatedAt: nowIso() });
@@ -838,6 +861,9 @@ module.exports = {
   createReview,
   updateReview,
   DEFAULT_PRICING,
+  DEFAULT_BUSINESS_PRICING,
+  getBusinessPricing,
+  setBusinessPricing,
   getPricing,
   setPricing,
   getServiceArea,
