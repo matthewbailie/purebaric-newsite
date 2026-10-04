@@ -375,7 +375,7 @@
       <div id="renewalsList"></div>
       <h3 class="inv-heading">Operations</h3>
       <div class="stat-row" data-sortable="home-operations">
-        <button type="button" class="stat-block" data-card-key="active-chambers" data-jump-tab="chambers"><div class="stat-label">Active chambers</div><div class="stat-val" id="statActive"></div></button>
+        <button type="button" class="stat-block" data-card-key="active-chambers" data-jump-tab="chambers"><div class="stat-label">Active + maintenance chambers</div><div class="stat-val" id="statActive"></div></button>
         <button type="button" class="stat-block" data-card-key="bookable-now" data-jump-tab="chambers"><div class="stat-label">Bookable now</div><div class="stat-val" id="statAvailable"></div></button>
         <button type="button" class="stat-block" data-card-key="new-requests" data-jump-tab="bookings"><div class="stat-label">New rental requests</div><div class="stat-val" id="statBookings"></div></button>
         <button type="button" class="stat-block" data-card-key="waitlist-queued" data-jump-tab="waitlist"><div class="stat-label">Waitlist queued</div><div class="stat-val" id="statWaitlist"></div></button>
@@ -1406,13 +1406,14 @@
     const committedC = committed('chamberId');
     const committedM = committed('machineId');
     const active = _chambers.filter(c => c.status === 'active').length;
+    const inMaintenance = _chambers.filter(c => c.status === 'maintenance').length;
     const freeChambers = _chambers.filter(c => c.status === 'active' && !committedC.has(c.id)).length;
     const freeMachines = (_machines || []).filter(m => m.status === 'active' && !committedM.has(m.id)).length;
     const available = Math.min(freeChambers, freeMachines); // bookable = free chamber AND free machine
     const queued = _waitlist.filter(w => w.status === 'queued' || w.status === 'hold').length;
     const newBookings = _bookings.filter(b => b.status === 'new').length;
     const pendingReviews = (_reviews || []).filter(r => r.status === 'pending').length;
-    document.getElementById('statActive').textContent = active;
+    document.getElementById('statActive').textContent = inMaintenance ? `${active} + ${inMaintenance}` : String(active);
     document.getElementById('statAvailable').textContent = available;
     document.getElementById('statWaitlist').textContent = queued;
     document.getElementById('statBookings').textContent = newBookings;
@@ -1481,6 +1482,8 @@
       const pct = Math.round(((o.mrr - o.yearAgo.mrr) / o.yearAgo.mrr) * 100);
       sub += ` · ${pct >= 0 ? '+' : '−'}${Math.abs(pct)}% vs ${MONTH_NAMES[monthIdx]} ${year - 1}`;
     }
+    const uncollected = (_rentals || []).filter(r => (r.status === 'active' || r.status === 'scheduled') && r.endDate >= today && (r.paymentStatus === 'unpaid' || r.paymentStatus === 'partial'));
+    if (uncollected.length) sub += ` · <span style="color:#82402f;">${money(uncollected.reduce((a, r) => a + M.monthlyEquivalent(r), 0))} of this not yet collected (${uncollected.length} rental${uncollected.length === 1 ? '' : 's'})</span>`;
     document.getElementById('kpiMrrSub').innerHTML = sub;
     setText('kpiSubs', o.subscribers);
     const bizNow = (_rentals || []).filter(r => r.rentalType === 'business' && (r.status === 'active' || r.status === 'scheduled')).length;
