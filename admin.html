@@ -925,8 +925,8 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <h3>Website visits</h3>
         <p class="viz-note" id="anTotalNote">Visits (sessions) per day on purebaric.com.</p>
         <div class="traffic-kpis" id="anKpis" hidden>
-          <div class="kpi"><div class="kpi-label">Visits per day, this month</div><div class="kpi-val" id="akMonth"></div><div class="kpi-sub" id="akMonthSub"></div></div>
-          <div class="kpi"><div class="kpi-label">Visits per day, year to date</div><div class="kpi-val" id="akYtd"></div><div class="kpi-sub" id="akYtdSub"></div></div>
+          <div class="kpi"><div class="kpi-label" id="akAvgLabel">Visits per day</div><div class="kpi-val" id="akAvg"></div><div class="kpi-sub" id="akAvgSub"></div></div>
+          <div class="kpi"><div class="kpi-label" id="akTotalLabel">Total visits</div><div class="kpi-val" id="akTotal"></div><div class="kpi-sub" id="akTotalSub"></div></div>
         </div>
         <div id="chartAnTotal"></div>
       </div>
@@ -935,7 +935,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <p class="viz-note" id="anPageNote">Views of each page per day. Pick a page to chart it.</p>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0 10px;"><label class="renter-line" for="anPage">Page</label><select id="anPage" onchange="renderPageChart()" style="padding:7px 10px;border:1px solid var(--line,#e6dccd);border-radius:8px;background:var(--card,#fffdf9);font-family:inherit;"></select></div>
         <div id="chartAnPage"></div>
-        <div class="table-wrap" style="margin-top:14px;"><table class="data-table an-table"><thead><tr><th>Page</th><th class="n">Views/day this month</th><th class="n">Last month</th><th class="n">Change</th><th class="n">Views/day this year</th><th class="n">Same days last year</th><th class="n">Change</th></tr></thead><tbody id="anPagesBody"></tbody></table></div>
+        <div class="table-wrap" style="margin-top:14px;"><table class="data-table an-table"><thead><tr><th>Page</th><th class="n" id="anThAvg">Views/day</th><th class="n" id="anThPrev">Previous period</th><th class="n">Change</th><th class="n" id="anThTotal">Total views</th></tr></thead><tbody id="anPagesBody"></tbody></table></div>
         <div class="renter-line" id="anMeta" style="margin-top:8px;"></div>
       </div>
       <style>
@@ -1678,35 +1678,63 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   }
   function paintAnRange() { document.querySelectorAll('#anRange button').forEach(b => b.classList.toggle('on', +b.dataset.r === _anRange)); }
   function anRangeLabel() { return _anRange === 365 ? 'every day of this year' : _anRange === 7 ? 'the last 7 days' : _anRange === 30 ? 'the last 30 days' : 'the last 90 days'; }
-  // Cut a full-year daily chart down to the last N days ending today (this year only; the window
-  // shortens in January rather than reaching into last year's series).
-  function _windowChart(c, days) {
-    if (!days || days >= 365) return c;
-    const todayIdx = c.thisYear.map((v, i) => v == null ? -1 : i).reduce((a, b) => Math.max(a, b), -1);
-    if (todayIdx < 0) return c;
-    const start = Math.max(0, todayIdx - days + 1);
-    const slice = a => a.slice(start, todayIdx + 1);
-    const labels = slice(c.labels);
-    const n = labels.length;
-    const every = n <= 7 ? 1 : n <= 31 ? 5 : 15;
+  // The selected window = the last N days ending today; it is compared with the N days before it.
+  // Both are cut from one timeline that runs from Jan 1 of last year to today, so a window can
+  // reach back across New Year. Null = no data (before tracking began).
+  const _MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const _DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  function _dayLabel(c, i, withDow) { const d = new Date(Date.UTC(c.year - 1, 0, 1) + i * 86400000); return (withDow ? _DOW[d.getUTCDay()] + ' ' : '') + d.getUTCDate() + ' ' + _MON[d.getUTCMonth()]; }
+  function _window(c, days) {
+    const values = [...(c.lastYear || []), ...c.thisYear];
+    let todayIdx = -1; values.forEach((v, i) => { if (v != null) todayIdx = i; });
+    if (todayIdx < 0) return null;
+    const start = Math.max(0, todayIdx - days + 1), pStart = Math.max(0, start - days);
+    const cur = values.slice(start, todayIdx + 1), prev = start > 0 ? values.slice(pStart, start) : [];
+    const avg = a => { const v = a.filter(x => x != null); return v.length ? v.reduce((x, y) => x + y, 0) / v.length : null; };
+    const total = a => a.filter(x => x != null).reduce((x, y) => x + y, 0);
+    const n = cur.length, every = n <= 7 ? 1 : n <= 31 ? 5 : n <= 92 ? 15 : 0;
+    const labels = cur.map((v, i) => _dayLabel(c, start + i, n <= 7));
     const ticks = [];
-    if (n <= 7) {
-      const dow = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      for (let i = 0; i < n; i += 1) { const d = new Date(Date.UTC(c.year, 0, 1) + (start + i) * 86400000); ticks.push({ i, label: dow[d.getUTCDay()] + ' ' + d.getUTCDate() }); }
-    } else {
-      for (let i = n - 1; i >= 0; i -= every) ticks.push({ i, label: labels[i] });
-      ticks.reverse();
-    }
-    return { year: c.year, labels, ticks, thisYear: slice(c.thisYear), lastYear: slice(c.lastYear || []) };
+    if (every) { for (let i = n - 1; i >= 0; i -= every) ticks.push({ i, label: labels[i] }); ticks.reverse(); }
+    else { for (let i = 0; i < n; i += 1) { const d = new Date(Date.UTC(c.year - 1, 0, 1) + (start + i) * 86400000); if (d.getUTCDate() === 1) ticks.push({ i, label: _MON[d.getUTCMonth()] }); } }
+    // Previous-period line aligned day-for-day under the current one (right-aligned when it is short).
+    const prevAligned = new Array(n).fill(null); prev.forEach((v, i) => { prevAligned[n - prev.length + i] = v; });
+    const hasPrev = prev.some(v => v != null);
+    return { cur, prev, prevAligned, hasPrev, labels, ticks, avg: avg(cur), total: total(cur), prevAvg: hasPrev ? avg(prev) : null, prevTotal: hasPrev ? total(prev) : null, days: n,
+      pct: hasPrev && avg(prev) > 0 && avg(cur) != null ? Math.round(((avg(cur) - avg(prev)) / avg(prev)) * 100) : null };
+  }
+  function _rangeWords() { return _anRange === 365 ? 'last 12 months' : _anRange === 7 ? 'last 7 days' : _anRange === 30 ? 'last 30 days' : 'last 90 days'; }
+  function _prevWords() { return _anRange === 365 ? 'the 12 months before' : `the ${_anRange} days before`; }
+  function _windowChartEl(el, c, w, unit, what) {
+    if (!el || !w) return;
+    const series = [{ label: 'This period', values: w.cur }];
+    if (w.hasPrev) series.push({ label: 'Previous period', values: w.prevAligned });
+    const last = w.cur.filter(v => v != null).pop();
+    window.PurebaricCharts.lineChart(el, { series, labels: w.labels, ticks: w.ticks, format: v => Math.round(v) + ' ' + (Math.round(v) === 1 ? unit : unit + 's'), axisFormat: v => String(Math.round(v)),
+      ariaLabel: `${what}, ${_rangeWords()}${w.hasPrev ? ', with the previous period' : ''}. Latest day: ${last == null ? 'no data' : Math.round(last)}.` });
   }
   function renderAnalyticsCharts() {
-    const r = _traffic; if (!r || !r.summary) return;
-    const s = r.summary;
+    const r = _traffic; if (!r || !r.chart) return;
+    const w = _window(r.chart, _anRange);
     const note = document.getElementById('anTotalNote');
-    if (note) note.textContent = 'Visits (sessions) per day on purebaric.com, ' + anRangeLabel() + (s.lastYearHasData ? ', against the same days last year.' : '.');
-    _dailyChart(document.getElementById('chartAnTotal'), _windowChart(r.chart, _anRange), s.lastYearHasData, 'visit', 'Website visits');
+    if (note) note.textContent = 'Visits (sessions) per day on purebaric.com over the ' + _rangeWords() + (w && w.hasPrev ? ', with ' + _prevWords() + ' dashed.' : '.');
+    if (w) {
+      document.getElementById('akAvgLabel').textContent = 'Visits per day, ' + _rangeWords();
+      document.getElementById('akAvg').textContent = _n1(w.avg);
+      document.getElementById('akAvgSub').innerHTML = w.hasPrev ? `${_n1(w.prevAvg)} per day in ${escape(_prevWords())}${_delta(w.pct)}` : `No data for ${escape(_prevWords())} yet`;
+      document.getElementById('akTotalLabel').textContent = 'Total visits, ' + _rangeWords();
+      document.getElementById('akTotal').textContent = w.total.toLocaleString('en-US');
+      document.getElementById('akTotalSub').innerHTML = w.hasPrev ? `${w.prevTotal.toLocaleString('en-US')} in ${escape(_prevWords())}` : `${w.days} day${w.days === 1 ? '' : 's'} of data so far`;
+    }
+    _windowChartEl(document.getElementById('chartAnTotal'), r.chart, w, 'visit', 'Website visits');
     const pn = document.getElementById('anPageNote');
-    if (pn) pn.textContent = 'Views of each page per day, ' + anRangeLabel() + '. Pick a page to chart it.';
+    if (pn) pn.textContent = 'Views of each page per day over the ' + _rangeWords() + '. Pick a page to chart it.';
+    document.getElementById('anThAvg').textContent = 'Views/day, ' + _rangeWords();
+    document.getElementById('anThPrev').textContent = _prevWords().replace(/^the /, 'The ');
+    document.getElementById('anThTotal').textContent = 'Total views, ' + _rangeWords();
+    const rows = (r.pages || []).map(p => { const pw = _window(r.pageCharts[p.label], _anRange); return { label: p.label, w: pw }; });
+    document.getElementById('anPagesBody').innerHTML = rows.map(({ label, w: pw }) => `<tr><td><strong>${escape(label)}</strong></td><td class="n">${_n1(pw && pw.avg)}</td><td class="n">${pw && pw.hasPrev ? _n1(pw.prevAvg) : '—'}</td><td class="n">${pw ? (_delta(pw.pct) || '—') : '—'}</td><td class="n">${pw ? pw.total.toLocaleString('en-US') : '—'}</td></tr>`).join('')
+      || '<tr><td colspan="5" class="renter-line">No page data yet.</td></tr>';
     renderPageChart();
   }
   function _dailyChart(el, c, hasPrev, unit, what) {
@@ -1742,20 +1770,11 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     // Site analytics tab: full comparison plus pages.
     if (anKpis) {
       anKpis.hidden = false;
-      anNote.innerHTML = source;
-      document.getElementById('akMonth').textContent = _n1(s.thisMonth.avgPerDay);
-      document.getElementById('akMonthSub').innerHTML = `${s.thisMonth.total.toLocaleString('en-US')} visits in ${escape(s.thisMonth.label)} so far · ${_n1(s.lastMonth.avgPerDay)} per day in ${escape(s.lastMonth.label)}${_delta(s.monthChangePct)}`;
-      document.getElementById('akYtd').textContent = _n1(s.ytd.avgPerDay);
-      document.getElementById('akYtdSub').innerHTML = s.lastYearHasData
-        ? `${s.ytd.total.toLocaleString('en-US')} visits in ${escape(s.ytd.label)} · ${_n1(s.lastYtd.avgPerDay)} per day over the ${escape(s.lastYtd.label)}${_delta(s.yearChangePct)}`
-        : `${s.ytd.total.toLocaleString('en-US')} visits in ${escape(s.ytd.label)} · no ${c.year - 1} data to compare yet`;
-      if (s.ytd.since) document.getElementById('akYtdSub').innerHTML += ` · tracking since ${escape(fmtDate(s.ytd.since))}`;
+      anNote.innerHTML = source + (s.ytd.since ? ` · tracking since ${escape(fmtDate(s.ytd.since))}` : '');
       paintAnRange();
       const sel = document.getElementById('anPage'), keep = sel.value;
       sel.innerHTML = (r.pages || []).map(p => `<option value="${escape(p.label)}">${escape(p.label)}</option>`).join('');
       if (keep && (r.pages || []).some(p => p.label === keep)) sel.value = keep;
-      document.getElementById('anPagesBody').innerHTML = (r.pages || []).map(p => `<tr><td><strong>${escape(p.label)}</strong></td><td class="n">${_n1(p.thisMonthAvg)}</td><td class="n">${_n1(p.lastMonthAvg)}</td><td class="n">${_delta(p.monthChangePct) || '—'}</td><td class="n">${_n1(p.ytdAvg)}</td><td class="n">${p.lastYearHasData ? _n1(p.lastYtdAvg) : '—'}</td><td class="n">${_delta(p.yearChangePct) || '—'}</td></tr>`).join('')
-        || '<tr><td colspan="7" class="renter-line">No page data yet.</td></tr>';
       document.getElementById('anMeta').innerHTML = source;
       renderAnalyticsCharts();
     }
@@ -1764,8 +1783,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     if (!_traffic || !_traffic.pageCharts) return;
     const label = document.getElementById('anPage').value;
     const c = _traffic.pageCharts[label]; if (!c) return;
-    const row = (_traffic.pages || []).find(p => p.label === label);
-    _dailyChart(document.getElementById('chartAnPage'), _windowChart(c, _anRange), !!(row && row.lastYearHasData), 'view', label + ' page views');
+    _windowChartEl(document.getElementById('chartAnPage'), c, _window(c, _anRange), 'view', label + ' page views');
   }
   function paintStats() {
     const today = new Date().toISOString().slice(0, 10);
