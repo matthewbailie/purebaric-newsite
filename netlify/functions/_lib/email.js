@@ -134,8 +134,15 @@ function wrap(bodyHtml) {
 </html>`;
 }
 
-function signoff() {
-  return `<p style="margin:24px 0 0;">Matthew<br><span style="color:#6f635b;">Purebaric</span></p>`;
+function signoff(name = "Matthew") {
+  return name === "Matthew"
+    ? `<p style="margin:24px 0 0;">Matthew<br><span style="color:#6f635b;">Purebaric</span></p>`
+    : `<p style="margin:24px 0 0;">${escapeHtml(name)}</p>`;
+}
+// "a lying chamber" / "a sitting chamber" for the unit being held, or just "a chamber".
+function chamberKind(chamber) {
+  const style = chamber && String(chamber.style || "").toLowerCase();
+  return style === "sitting" || style === "lying" ? `a ${style} chamber` : "a chamber";
 }
 
 function escapeHtml(s) {
@@ -172,17 +179,17 @@ function waitlistHoldSmsText(entry, chamber) {
   const first = String(entry.name || "there").split(" ")[0];
   const expires = entry.holdExpiresAt ? new Date(entry.holdExpiresAt).toLocaleString("en-US", { timeZone: "America/Denver", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "";
   const rate = waitlistRateLine(entry);
-  return `Purebaric: Hi ${first}, a chamber just opened up for you${chamber && chamber.name ? ` (${chamber.name})` : ""}. We are holding it until ${expires || "tomorrow"}.${rate ? " " + rate : ""} Reply or call (801) 901-0873 to claim it.`;
+  return `Purebaric: Hi ${first}, ${chamberKind(chamber)} is now available for you. We are holding it until ${expires || "tomorrow"}.${rate ? " " + rate : ""} To claim this offer, reply to this text or call (801) 901-0873 to confirm your booking.`;
 }
 async function notifyWaitlistChamberAvailable(entry, chamber) {
   const expires = new Date(entry.holdExpiresAt).toLocaleString("en-US", { timeZone: "America/Denver", dateStyle: "long", timeStyle: "short" });
   const html = wrap(`
     <p style="margin:0 0 16px;">Hi ${escapeHtml(entry.name.split(" ")[0])},</p>
-    <p style="margin:0 0 16px;">Good news, a chamber just opened up. We're holding <strong style="color:#2b2320;">${escapeHtml(chamber.name)}</strong>${chamber.style ? ` (${escapeHtml(chamber.style)} chamber)` : ""} for you until <strong style="color:#2b2320;">${expires} Mountain Time</strong>.</p>
+    <p style="margin:0 0 16px;">Good news: ${chamberKind(chamber)} is now available. We are holding <strong style="color:#2b2320;">${chamberKind(chamber)}</strong> for you until <strong style="color:#2b2320;">${expires} Mountain Time</strong>.</p>
     ${waitlistRateLine(entry) ? `<p style="margin:0 0 16px;"><strong style="color:#2b2320;">${escapeHtml(waitlistRateLine(entry))}</strong></p>` : ""}
-    <p style="margin:0 0 16px;">To claim it, reply to this email or call us at <a href="tel:+18019010873" style="color:#b8654d;">(801) 901-0873</a> and we'll get you set up.</p>
-    <p style="margin:0;">If we don't hear back by then, the chamber will roll to the next person on the list.</p>
-    ${signoff()}
+    <p style="margin:0 0 16px;">To claim this offer, reply to this email or call us at <a href="tel:+18019010873" style="color:#b8654d;">(801) 901-0873</a> to confirm your booking.</p>
+    <p style="margin:0;">This hold is reserved for you until the time above. If we have not heard from you by then, we will release the chamber to the next person on the waitlist.</p>
+    ${signoff("The Purebaric team")}
   `);
   return send({
     to: entry.email,
