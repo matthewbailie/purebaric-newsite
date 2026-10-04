@@ -151,7 +151,7 @@
       cross.appendChild(svg('line', { y1: m.t, y2: m.t + ph, class: 'viz-crossline' }));
       o.series.forEach((s, i) => cross.appendChild(svg('circle', { r: 4.5, class: i === 0 ? 'viz-end' : 'viz-end prev' })));
       svgEl.appendChild(cross);
-      const hit = svg('rect', { x: m.l - 10, y: 0, width: pw + 20, height: HEIGHT - m.b + 6, fill: 'transparent', class: 'viz-hit' });
+      const hit = svg('rect', { x: m.l - 10, y: 0, width: pw + 20, height: HEIGHT - m.b + 6, fill: 'transparent', class: 'viz-hit', style: 'touch-action: pan-y; cursor: crosshair;' });
       svgEl.appendChild(hit);
 
       const idxFromEvent = (e) => {
@@ -159,8 +159,11 @@
         return Math.max(0, Math.min(n - 1, Math.round(((e.clientX - r.left - m.l) / pw) * (n - 1))));
       };
       hit.addEventListener('pointermove', (e) => { focusIdx = idxFromEvent(e); showAt(focusIdx); });
-      hit.addEventListener('pointerdown', (e) => { focusIdx = idxFromEvent(e); showAt(focusIdx); });
-      hit.addEventListener('pointerleave', hideTip);
+      // Capture the pointer on press so a finger sliding across the chart keeps scrubbing days (touch
+      // would otherwise hand the gesture to the page after the first move).
+      hit.addEventListener('pointerdown', (e) => { try { hit.setPointerCapture(e.pointerId); } catch (err) { /* older browsers */ } focusIdx = idxFromEvent(e); showAt(focusIdx); });
+      hit.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') hideTip(); });
+      hit.addEventListener('pointercancel', hideTip);
       svgEl.addEventListener('blur', hideTip);
       svgEl.addEventListener('keydown', (e) => {
         if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;

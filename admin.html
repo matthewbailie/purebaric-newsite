@@ -1571,7 +1571,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       delivery: () => loadDelivery(),
       notifications: () => Promise.all([loadNotifications(), loadTwilioConfig()]),
       outreach: () => loadOutreach(),
-      analytics: () => loadTraffic(false),
+      analytics: () => loadTraffic(true),
     };
     const loader = loaders[tab];
     if (!loader || (!force && _tabDataLoaded.has(tab))) return;
@@ -1724,6 +1724,13 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     _windowChartEl(document.getElementById('chartTraffic'), r.chart, w, 'visitor', 'Site visitors');
   }
   function paintAnRange() { document.querySelectorAll('.an-range button').forEach(b => b.classList.toggle('on', +b.dataset.r === _anRange)); }
+  // While the Site analytics tab is open and visible, pull fresh numbers from Google Analytics every minute.
+  let _anBusy = false;
+  setInterval(() => {
+    const panel = document.querySelector('[data-panel="analytics"]');
+    if (!panel || !panel.classList.contains('active') || document.hidden || _anBusy) return;
+    _anBusy = true; loadTraffic(true).catch(() => {}).finally(() => { _anBusy = false; });
+  }, 60 * 1000);
   // Shadow under a pinned filter bar only while it is actually stuck at the top.
   (function () {
     const check = () => document.querySelectorAll('.tab-panel.active .pin-bar').forEach(bar => bar.classList.toggle('stuck', window.scrollY > 0 && bar.getBoundingClientRect().top <= 0));
@@ -1774,7 +1781,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const note = document.getElementById('anTotalNote');
     if (note) note.textContent = 'Visits (sessions) per day on purebaric.com over the ' + _rangeWords() + (w && w.hasPrev ? ', with ' + _prevWords() + ' dashed.' : '.');
     if (w) {
-      document.getElementById('akAvgLabel').textContent = 'Visits per day, ' + _rangeWords();
+      document.getElementById('akAvgLabel').textContent = 'Average visits per day, ' + _rangeWords();
       document.getElementById('akAvg').textContent = _n1(w.avg);
       document.getElementById('akAvgSub').innerHTML = w.hasPrev ? `${_n1(w.prevAvg)} per day in ${escape(_prevWords())}${_delta(w.pct)}` : `No data for ${escape(_prevWords())} yet`;
       document.getElementById('akTotalLabel').textContent = 'Total visits, ' + _rangeWords();
@@ -2289,7 +2296,8 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const geomTrack = () => (el.querySelector('.cal-head') || el.querySelector('.cal-track'));
 
     function hideHover() { line.hidden = true; dateLbl.hidden = true; }
-    wrap.addEventListener('mousemove', (e) => {
+    wrap.style.touchAction = 'pan-y';
+    wrap.addEventListener('pointermove', (e) => {
       const track = geomTrack(); if (!track) return;
       const tr = track.getBoundingClientRect();
       const wr = wrap.getBoundingClientRect();
@@ -2302,7 +2310,8 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       dateLbl.textContent = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       dateLbl.hidden = false;
     });
-    wrap.addEventListener('mouseleave', hideHover);
+    wrap.addEventListener('pointerleave', hideHover);
+    wrap.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') wrap.dispatchEvent(new PointerEvent('pointermove', e)); });
 
     function showPopup(bar) {
       const wr = wrap.getBoundingClientRect();
