@@ -291,7 +291,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Purebaric. All rights reserved.</span>
+      <span>© <span class="foot-year">2026</span> Purebaric. All rights reserved.</span>
       <span class="disclaimer">Purebaric chambers are provided for general wellness and relaxation only. They are not medical devices and are not intended to diagnose, treat, cure, or prevent any disease. Consult your physician before use.</span>
     </div>
   </div>
@@ -325,5 +325,6 @@
 
               });
 </script>
+<script>(function(){var y=String(new Date().getFullYear());document.querySelectorAll(".foot-year").forEach(function(e){e.textContent=y;});})();</script>
 </body>
 </html>

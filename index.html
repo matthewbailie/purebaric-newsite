@@ -465,7 +465,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
         <li class="foot-muted">Lehi, UT</li></ul></div>
     </div>
     <div class="foot-bottom">
-      <span>© 2026 Purebaric. All rights reserved.</span>
+      <span>© <span class="foot-year">2026</span> Purebaric. All rights reserved.</span>
       <span class="foot-disc">Provided for general wellness and relaxation only. Not a medical device; not intended to diagnose, treat, cure, or prevent any disease. Consult your physician before use.</span>
       <span class="foot-disc" id="studyNote">* The studies linked on this page are independent research, shared for education only. They were done with other equipment, at different pressures and oxygen levels, and often in a clinic under medical supervision. They are not claims about Purebaric chambers and do not predict what a rental will do for you.</span>
     </div>
@@ -681,4 +681,5 @@ fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){
   }catch(e){}
 })();
 </script>
+<script>(function(){var y=String(new Date().getFullYear());document.querySelectorAll(".foot-year").forEach(function(e){e.textContent=y;});})();</script>
 </body></html>

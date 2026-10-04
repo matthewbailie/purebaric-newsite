@@ -24,3 +24,5 @@ function toggleMenu(){var m=document.getElementById('mobileMenu'),b=document.que
     }).catch(function(){});
   }catch(e){}
 })();
+// Footer copyright year follows the clock (every warm page has a .foot-year span).
+(function(){var y=String(new Date().getFullYear());document.querySelectorAll(".foot-year").forEach(function(e){e.textContent=y;});})();

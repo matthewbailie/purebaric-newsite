@@ -1667,6 +1667,17 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   });
   window.addEventListener('focus', refreshSession);
   setInterval(refreshSession, 40 * 60 * 1000); // 40 min < 60 min token life
+  // Left open across midnight (or the New Year), every "today"-based view would be stale until a reload:
+  // re-fetch everything when the calendar day has changed since the last full load.
+  let _loadedDay = localToday();
+  function rolloverIfNewDay() {
+    if (!shell.classList.contains('authed') || localToday() === _loadedDay) return;
+    _loadedDay = localToday();
+    if (typeof loadAll === 'function') loadAll().catch(() => {});
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) rolloverIfNewDay(); });
+  window.addEventListener('focus', rolloverIfNewDay);
+  setInterval(rolloverIfNewDay, 5 * 60 * 1000);
 
   // ─── Website visits (Google Analytics sessions by day; see netlify/functions/admin-ga-traffic.js) ───
   async function loadTraffic(refresh) {

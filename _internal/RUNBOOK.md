@@ -568,6 +568,36 @@ Individual units, both managed on the admin **Chambers** tab. No "types" or pool
 
 ---
 
+## 13a. Time, dates and year rollover — audit + plan (2026-10-04)
+
+**Goal:** every calendar, chart, date view and date-dependent rule keeps working unattended for years, rolling over on its own at midnight and on 1 January. The audit below is the plan; items marked *done* ship with this section, *rule* is how to keep it true, *owner* needs a decision.
+
+**Where "today" comes from (keep it this way).** Server code reads the clock once per request through `mountainToday()` / `mountainNow()` (`_lib/delivery.js`, `_lib/outreach.js`, America/Denver) — never a hard-coded date. The admin uses `localToday()` (the browser's clock; the owner is in Utah). Nothing in shipped code names a year except content (below). Tests pin fixture dates (e.g. "2026-10-05") and pass `today` in, so they do not drift; `test/session.test.js` uses `Date.now()` only relatively. *Rule:* new code takes `today`/`now` as a parameter and derives years from it; never write `2026`, `2027` into logic.
+
+**What rolls over by itself (verified in the audit):**
+- *Admin Home revenue charts* (`paintStats` → `dashboard-metrics.yearSeries(rentals, year, today)`): `year` is today's year; on 1 Jan the main line becomes the new year ("No rentals in 2027 yet") and last year becomes the dashed line; the monthly table headers follow.
+- *Website visits / Site analytics* (`_lib/ga-traffic.js`): GA is queried from 1 Jan of *last* year to today, series are rebuilt per request, and the client windows (week/month/3 months/12 months and their previous periods) are cut from one continuous two-year timeline, so they cross New Year. The 6-hour cache is keyed on `today` and refetches on a new day. Leap years handled (`daysInYear`).
+- *Rental calendar* (Chambers + Home): rolling 12 months from the first of the current month; the year suffix on January is computed.
+- *Delivery availability / booking calendars*: customers can book through **31 Dec of next year** (`horizonEnd(today)`), which advances every 1 Jan; the admin calendar draws every month from today through that date; **U.S. holidays are computed per year** (`usHolidays(year)`: fixed dates plus nth-weekday rules), so new years need no data entry. Blocked days are explicit dates and simply age out.
+- *Maintenance return dates*, *holds*, *rental end/renewal dates*, *weekly ending-soon digest*: all compare ISO dates to `today`.
+- *Emails/texts*: dates are formatted from record data at send time.
+- *Admin page left open across midnight* (**done**): `rolloverIfNewDay()` re-runs `loadAll()` when the calendar day has changed, on focus/visibility and every 5 minutes, so no view shows yesterday's "today".
+- *Footer copyright* (**done**): every page's "© 2026" is now `<span class="foot-year">` filled from the clock (`warm.js` on warm pages; a one-line inline script on the legacy template pages and the homepage).
+
+**Content that names a date (owner):**
+- "Coming soon · Late Oct 2026" on the sitting-chamber card (`index.html`, `chambers.html`, `business.html`, and the disabled option in the homepage booking widget). This is product status, not code. *Recommendation:* drop the month ("Coming soon") or, when the chamber ships, remove the card; if a date must show, keep it in one place (a `settings` value edited in the admin) rather than four pages.
+- "Last updated" lines on `/privacy` and `/sms-consent` are factual history and should only change when the text does.
+
+**Rules for future work:**
+1. Derive every year/month from `today`; compute holidays and horizons, never list them.
+2. Any new chart that compares years must take `year` from `today` and label series from it (`String(year)`, `String(year - 1)`), as the revenue charts do.
+3. Daily series must handle 365/366 days (`daysInYear`) and must not index into a fixed-length array of 365.
+4. Client-side views that depend on the day should re-render on day change (hook into `rolloverIfNewDay`).
+5. Don't put dates in marketing copy unless they are owner-managed data.
+6. When adding a page, use the `.foot-year` span (copy a warm page's footer) so the copyright follows the clock.
+
+---
+
 ## 14. Health-content policy (important for the blog/marketing)
 
 This is a wellness rental business, **not a medical provider** ("not a medical device; general wellness only" disclaimer sitewide; schema is `LocalBusiness`). Keep marketing claims precise: distinguish mild home hyperbaric (1.3–1.5 ATA) from clinical HBOT, don't present research or testimonials as guaranteed outcomes, and keep the "consult your physician" framing. A qualified medical/regulatory reviewer should approve any new health claims.
