@@ -458,7 +458,7 @@
           <div class="form-row">
             <div class="form-group"><label>Status</label>
               <select name="status" onchange="syncMaintField(this.form)"><option value="active">Active</option><option value="maintenance">In maintenance</option></select></div>
-            <div class="form-group unit-maint"><label>Back in service on</label><input type="date" name="maintenanceUntil">
+            <div class="form-group unit-maint"><label>Back in service on</label><input type="date" name="maintenanceUntil"><input type="hidden" name="maintenanceSince">
               <div class="renter-line" style="margin-top:4px;">From this day the chamber can be booked again, for home or business, and it returns to service on its own. Leave blank to keep it out until you return it by hand.</div></div>
           </div>
           <div class="form-group"><label>Notes</label><textarea name="notes" rows="2"></textarea></div>
@@ -486,7 +486,7 @@
           <div class="form-row">
             <div class="form-group"><label>Status</label>
               <select name="status" onchange="syncMaintField(this.form)"><option value="active">Active</option><option value="maintenance">In maintenance</option></select></div>
-            <div class="form-group unit-maint"><label>Back in service on</label><input type="date" name="maintenanceUntil">
+            <div class="form-group unit-maint"><label>Back in service on</label><input type="date" name="maintenanceUntil"><input type="hidden" name="maintenanceSince">
               <div class="renter-line" style="margin-top:4px;">From this day the machine can be booked again and it returns to service on its own. Leave blank to keep it out until you return it by hand.</div></div>
           </div>
           <div class="form-buttons">
@@ -525,6 +525,8 @@
         .cal-bar{position:absolute;top:6px;bottom:6px;border-radius:6px;display:flex;align-items:center;padding:0 8px;overflow:hidden;font-size:11px;font-weight:600;color:#fff;white-space:nowrap;}
         .cal-bar.scheduled{background:#5b7fa6;}
         .cal-bar.active{background:#5c7a34;}
+        .cal-bar.maint{background:repeating-linear-gradient(135deg,#c9a24a 0 5px,#a8842c 5px 10px);color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.25);}
+        .cal-bar.maint.open-ended{-webkit-mask-image:linear-gradient(to right,#000 70%,transparent);mask-image:linear-gradient(to right,#000 70%,transparent);}
         .cal-bar span{overflow:hidden;text-overflow:ellipsis;}
         .cal-today{position:absolute;top:0;bottom:0;width:2px;background:var(--terracotta,#b8654d);z-index:2;pointer-events:none;}
         .cal-bar{cursor:pointer;}
@@ -1788,7 +1790,7 @@
     const m = _machines.find(x => x.id === id); if (!m) return;
     document.getElementById('machineForm').classList.remove('open');
     placeInlineForm('machineForm', `#machinesList tr[data-id="${id}"]`, 4);
-    toggleForm('machineForm', { id: m.id, name: m.name, notes: m.notes, status: m.status === 'maintenance' ? 'maintenance' : 'active', maintenanceUntil: m.maintenanceUntil || '' });
+    toggleForm('machineForm', { id: m.id, name: m.name, notes: m.notes, status: m.status === 'maintenance' ? 'maintenance' : 'active', maintenanceUntil: m.maintenanceUntil || '', maintenanceSince: m.maintenanceSince || '' });
     const form = document.getElementById('machineFormEl');
     form.querySelector('[name="status"]').disabled = m.status === 'archived';
     syncMaintField(form);
@@ -1798,7 +1800,7 @@
     const data = Object.fromEntries(new FormData(e.target));
     try {
       if (data.id) { const { id, ...patch } = data; await api(`/api/admin/machines/${id}`, { method: 'PATCH', body: JSON.stringify(patch) }); toast('Machine updated'); }
-      else { delete data.id; delete data.status; delete data.maintenanceUntil; await api('/api/admin/machines', { method: 'POST', body: JSON.stringify(data) }); toast('Machine added'); }
+      else { delete data.id; delete data.status; delete data.maintenanceUntil; delete data.maintenanceSince; await api('/api/admin/machines', { method: 'POST', body: JSON.stringify(data) }); toast('Machine added'); }
       toggleForm('machineForm'); await loadAll();
     } catch (err) { toast(err.message, true); }
     return false;
@@ -1945,18 +1947,29 @@
     }
     const LANE = 34;
     // One row: its rentals laid out in lanes so any overlap stays visible instead of hiding a bar.
-    const rowHtml = (label, sub, rentals, machineName) => {
-      const drawn = rentals
-        .map(r => ({ r, s: new Date(r.startDate + 'T00:00:00'), e: new Date(new Date(r.endDate + 'T00:00:00').getTime() + 86400000) })) // inclusive end
-        .filter(x => x.e > winStart && x.s < winEnd)
-        .sort((x, y) => x.s - y.s);
+    const today0 = localToday();
+    const rowHtml = (label, sub, rentals, machineName, maint) => {
+      const items = rentals
+        .map(r => ({ r, s: new Date(r.startDate + 'T00:00:00'), e: new Date(new Date(r.endDate + 'T00:00:00').getTime() + 86400000) })); // inclusive end
+      // A maintenance outage is drawn from the day it began (today if unknown) up to the day the unit is back;
+      // with no return date it runs to the end of the window with an open end.
+      if (maint && !(maint.until && maint.until <= today0)) {
+        const since = maint.since && maint.since <= today0 ? maint.since : today0;
+        items.push({ maint: true, since, until: maint.until || '', s: new Date(since + 'T00:00:00'), e: maint.until ? new Date(maint.until + 'T00:00:00') : winEnd });
+      }
+      const drawn = items.filter(x => x.e > winStart && x.s < winEnd).sort((x, y) => x.s - y.s);
       const laneEnds = [];
-      const bars = drawn.map(({ r, s, e }) => {
+      const bars = drawn.map(({ r, s, e, maint: isMaint, since, until }) => {
         let lane = laneEnds.findIndex(end => end <= s);
         if (lane === -1) { lane = laneEnds.length; laneEnds.push(e); } else laneEnds[lane] = e;
         const left = Math.max(0, (s - winStart) / span * 100);
         const right = Math.min(100, (e - winStart) / span * 100);
         const w = Math.max(0.6, right - left);
+        if (isMaint) {
+          const back = until ? 'back ' + fmtDate(until) : 'no return date yet';
+          return `<div class="cal-bar maint${until ? '' : ' open-ended'}" style="left:${left}%;width:${w}%;top:${6 + lane * LANE}px;bottom:auto;height:${LANE - 6}px;"
+          data-name="Maintenance" data-start="${escape(fmtDate(since))}" data-end="${escape(until ? fmtDate(until) : '')}" data-status="maintenance" data-chamber="" data-machine="${escape(machineName)}"><span>Maintenance · ${escape(back)}</span></div>`;
+        }
         const chamber = (_chambers || []).find(c => c.id === r.chamberId);
         const chamberName = chamber ? chamber.name : 'no chamber';
         const name = (r.renter && r.renter.name) ? r.renter.name : 'Rental';
@@ -1966,11 +1979,13 @@
       const height = Math.max(1, laneEnds.length) * LANE + 8;
       return `<div class="cal-row" style="min-height:${height}px;"><div class="cal-name">${escape(label)}${sub ? `<div class="cal-machine">${escape(sub)}</div>` : ''}</div><div class="cal-track">${bars}<div class="cal-today" style="left:${todayPct}%;"></div></div></div>`;
     };
-    const rowsHtml = machines.map(m => rowHtml(m.name, m.status === 'maintenance' ? 'maintenance' : (m.status === 'archived' ? 'archived' : ''), live.filter(r => r.machineId === m.id), m.name)).join('')
+    const shortDay = (iso) => new Date(iso + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const rowsHtml = machines.map(m => rowHtml(m.name, m.status === 'maintenance' ? 'maintenance' + (m.maintenanceUntil ? ' · back ' + shortDay(m.maintenanceUntil) : '') : (m.status === 'archived' ? 'archived' : ''), live.filter(r => r.machineId === m.id), m.name,
+      m.status === 'maintenance' ? { since: m.maintenanceSince || '', until: m.maintenanceUntil || '' } : null)).join('')
       + (unassigned.length ? rowHtml('No machine', 'unassigned', unassigned, 'not assigned') : '');
     el.innerHTML = `
       <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Rental calendar</h3>
-      <div class="renter-line" style="margin-bottom:12px;">One row per machine, rolling 12 months from this month. Each bar shows the renter and the chamber the machine is paired with; empty space is when that machine is free. <span style="color:#5b7fa6;font-weight:700;">Blue</span> = scheduled (confirmed, upcoming), <span style="color:#5c7a34;font-weight:700;">green</span> = active. The orange line is today. Hover for a date, click a rental for its details.</div>
+      <div class="renter-line" style="margin-bottom:12px;">One row per machine, rolling 12 months from this month. Each bar shows the renter and the chamber the machine is paired with; empty space is when that machine is free. <span style="color:#5b7fa6;font-weight:700;">Blue</span> = scheduled (confirmed, upcoming), <span style="color:#5c7a34;font-weight:700;">green</span> = active, <span style="color:#a8842c;font-weight:700;">amber hatch</span> = maintenance. The orange line is today. Hover for a date, click a rental for its details.</div>
       <div class="cal-wrap">
         <div class="cal">
           <div class="cal-row cal-headrow"><div class="cal-name"></div><div class="cal-track cal-head">${headCells}<div class="cal-today" style="left:${todayPct}%;"></div><div class="cal-today-marker" style="left:${todayPct}%;">Today</div></div></div>
@@ -2015,7 +2030,11 @@
     function showPopup(bar) {
       const wr = wrap.getBoundingClientRect();
       const br = bar.getBoundingClientRect();
-      popup.innerHTML =
+      popup.innerHTML = bar.dataset.status === 'maintenance' ?
+        `<span class="cp-close" title="Close">×</span>` +
+        `<div class="cp-name">Maintenance</div>` +
+        `<div class="renter-line">Machine ${escape(bar.dataset.machine)}</div>` +
+        `<div class="cp-dates">${escape(bar.dataset.start)} → ${bar.dataset.end ? 'back in service ' + escape(bar.dataset.end) : 'until returned to service'}</div>` :
         `<span class="cp-close" title="Close">×</span>` +
         `<div class="cp-name">${escape(bar.dataset.name)}</div>` +
         `<div class="renter-line">Chamber ${escape(bar.dataset.chamber)} · Machine ${escape(bar.dataset.machine)}</div>` +
@@ -2079,7 +2098,7 @@
     if (!c) return;
     document.getElementById('chamberForm').classList.remove('open');
     placeInlineForm('chamberForm', `#chambersList tr[data-id="${id}"]`, 5);
-    toggleForm('chamberForm', { id: c.id, name: c.name, style: c.style || 'lying', notes: c.notes, status: c.status === 'maintenance' ? 'maintenance' : 'active', maintenanceUntil: c.maintenanceUntil || '' });
+    toggleForm('chamberForm', { id: c.id, name: c.name, style: c.style || 'lying', notes: c.notes, status: c.status === 'maintenance' ? 'maintenance' : 'active', maintenanceUntil: c.maintenanceUntil || '', maintenanceSince: c.maintenanceSince || '' });
     const form = document.getElementById('chamberFormEl');
     form.querySelector('[name="status"]').disabled = c.status === 'archived';
     syncMaintField(form);
@@ -2095,7 +2114,7 @@
         await api(`/api/admin/chambers/${id}`, { method: 'PATCH', body: JSON.stringify(patch) });
         toast('Chamber updated');
       } else {
-        delete data.id; delete data.status; delete data.maintenanceUntil;
+        delete data.id; delete data.status; delete data.maintenanceUntil; delete data.maintenanceSince;
         await api('/api/admin/chambers', { method: 'POST', body: JSON.stringify(data) });
         toast('Chamber added');
       }

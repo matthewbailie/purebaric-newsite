@@ -254,7 +254,7 @@ async function autoTransitionRentals() {
   for (const [storeName, update] of [[STORES.chambers, updateChamber], [STORES.machines, updateMachine]]) {
     for (const u of await listAll(storeName)) {
       if (u.status === "maintenance" && u.maintenanceUntil && u.maintenanceUntil <= today) {
-        await update(u.id, { status: "active", maintenanceUntil: "" });
+        await update(u.id, { status: "active", maintenanceUntil: "", maintenanceSince: "" });
         transitioned.push({ id: u.id, from: "maintenance", to: "active" });
       }
     }

@@ -5,6 +5,7 @@ const {
   archiveChamber,
 } = require("./_lib/storage");
 const { requireAuth, parseBody, parsePathSegments, json } = require("./_lib/admin");
+const { mountainToday } = require("./_lib/delivery");
 
 exports.handler = async (event, context) => {
   const authErr = await requireAuth(event, context);
@@ -40,8 +41,12 @@ exports.handler = async (event, context) => {
       if (["active", "maintenance", "archived"].includes(body.status)) {
         patch.status = body.status;
         // Optional date the unit comes back from maintenance; cleared when it returns to service.
-        if (body.status === "maintenance") patch.maintenanceUntil = /^\d{4}-\d{2}-\d{2}$/.test(String(body.maintenanceUntil || "")) ? body.maintenanceUntil : "";
-        else patch.maintenanceUntil = "";
+        const isoDay = (v) => (/^\d{4}-\d{2}-\d{2}$/.test(String(v || "")) ? v : "");
+        if (body.status === "maintenance") {
+          patch.maintenanceUntil = isoDay(body.maintenanceUntil);
+          // When the outage began: kept from the client when it is just re-saving a unit already in maintenance.
+          patch.maintenanceSince = isoDay(body.maintenanceSince) || mountainToday();
+        } else { patch.maintenanceUntil = ""; patch.maintenanceSince = ""; }
         if (body.status === "archived") patch.archivedAt = new Date().toISOString();
       }
       const updated = await updateChamber(id, patch);
