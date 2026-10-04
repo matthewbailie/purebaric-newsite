@@ -556,9 +556,8 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         .cal-gl{position:absolute;top:0;bottom:0;width:1px;background:var(--line,#efe7db);pointer-events:none;}
         .cal-head{position:relative;height:34px;}
         .cal-mh{position:absolute;top:0;height:34px;line-height:34px;text-align:center;font-size:11px;font-weight:600;color:var(--muted,#6f635b);text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;overflow:hidden;}
-        .cal-tools{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 8px;}
-        .cal-tools-btns{display:inline-flex;gap:6px;}
-        .cal-tools-btns .btn{min-width:34px;padding:4px 9px;}
+        .cal-tools{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 8px;}
+        .cal-tools .btn{flex:none;padding:4px 9px;}
         /* No padding on the bar itself: padding would set a minimum width (16px) that outruns a short bar at phone scale.
            The label carries the padding instead, so the bar's edges are always the real start and end dates. */
         .cal-bar{position:absolute;top:6px;bottom:6px;border-radius:6px;display:flex;align-items:center;padding:0;overflow:hidden;font-size:11px;font-weight:600;color:#fff;white-space:nowrap;}
@@ -2325,7 +2324,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Rental calendar</h3>
       <div class="renter-line" style="margin-bottom:10px;">One row per machine. Pinch to zoom from a year down to a week and drag with two fingers to move along time (on a computer: ctrl + scroll to zoom, shift + scroll to move). Each bar shows the renter and the chamber the machine is paired with; empty space is when that machine is free. <span style="color:#5b7fa6;font-weight:700;">Blue</span> = scheduled (confirmed, upcoming), <span style="color:#5c7a34;font-weight:700;">green</span> = active, <span style="color:#a8842c;font-weight:700;">amber hatch</span> = maintenance. The orange line is today. Hover for a date, click a rental for its details.</div>
       <div class="cal-tools"><span class="renter-line">Showing <strong id="calZoomLabel">${zoomLabel}</strong> from ${escape(fmtDate(winStart.toISOString().slice(0, 10)))}</span>
-        <span class="cal-tools-btns"><button type="button" class="btn btn-ghost btn-sm" onclick="calPan(-0.25)" title="Earlier">&#8249;</button><button type="button" class="btn btn-ghost btn-sm" onclick="calZoomAt(0.5, 0.6)" title="Zoom in">+</button><button type="button" class="btn btn-ghost btn-sm" onclick="calZoomAt(0.5, 1 / 0.6)" title="Zoom out">&minus;</button><button type="button" class="btn btn-ghost btn-sm" onclick="calPan(0.25)" title="Later">&#8250;</button><button type="button" class="btn btn-ghost btn-sm" onclick="calReset()">Reset view</button></span></div>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="calReset()">Reset view</button></div>
       <div class="cal-wrap">
         <div class="cal">
           <div class="cal-row cal-headrow"><div class="cal-name"></div><div class="cal-track cal-head">${gridLines}${headCells}<div class="cal-today"${todayIn ? '' : ' hidden'} style="left:${todayPct}%;"></div><div class="cal-today-marker"${todayIn ? '' : ' hidden'} style="left:${todayPct}%;">Today</div></div></div>
