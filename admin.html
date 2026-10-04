@@ -2219,7 +2219,8 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   const _calPts = new Map(); let _calPinch = null; // live pointers + pinch state survive re-renders
   function calDefaultWindow() { const n = new Date(); const s = new Date(n.getFullYear(), n.getMonth(), 1); const e = new Date(s.getFullYear(), s.getMonth() + 12, 1); return { start: s, days: Math.round((e - s) / CAL_DAY) }; }
   function calWindow() { if (!_calWin) _calWin = calDefaultWindow(); return { start: _calWin.start, end: new Date(_calWin.start.getTime() + _calWin.days * CAL_DAY), days: _calWin.days }; }
-  function calScheduleRender() { if (_calRaf) return; _calRaf = requestAnimationFrame(() => { _calRaf = 0; renderCalendar(); }); }
+  // A short timer rather than requestAnimationFrame: the frame callback never fires while the tab is in the background.
+  function calScheduleRender() { if (_calRaf) return; _calRaf = setTimeout(() => { _calRaf = 0; renderCalendar(); }, 16); }
   function calSetWindow(start, days) { _calWin = { start: new Date(start), days: Math.max(CAL_MIN_DAYS, Math.min(CAL_MAX_DAYS, days)) }; calScheduleRender(); }
   // Zoom by `factor` keeping the date at `frac` (0..1 across the track) under the finger/cursor.
   function calZoomAt(frac, factor) { const w = calWindow(); const anchor = w.start.getTime() + frac * w.days * CAL_DAY; const days = Math.max(CAL_MIN_DAYS, Math.min(CAL_MAX_DAYS, w.days * factor)); calSetWindow(new Date(anchor - frac * days * CAL_DAY), days); }
