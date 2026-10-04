@@ -405,6 +405,11 @@ function enterBookMode(j){
     window.__pbSetChamberOptions(j.styles.map(function(t){ var lbl='1.5 ATA '+(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:!t.available,soon:!t.available}; }));
   }
   applyDelivery(j);
+  var steps=document.querySelectorAll('.next li div');
+  if(steps.length>=3){
+    steps[0].textContent='Your delivery date is booked. We text or call shortly to set the delivery time; deliveries run until 9 p.m.';
+    steps[1].textContent=BIZ?'We send the business rental agreement to review and collect the one-time $500 setup fee before delivery. Nothing is charged until then.':'We send the rental agreement to review and collect the first month before delivery. Nothing is charged until then.';
+  }
   if(BIZ)recalcBiz();
 }
 function applyDelivery(j){
