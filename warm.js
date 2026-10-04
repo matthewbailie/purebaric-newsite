@@ -9,8 +9,8 @@ function toggleMenu(){var m=document.getElementById('mobileMenu'),b=document.que
   function apply(mode){
     var req=mode==='request';
     document.documentElement.classList.toggle('reqmode-site',req);
-    var map=req?[[/^Book a business rental( →)?$/,'Request a business rental$1'],[/^Book a chamber( →)?$/,'Reserve a chamber$1'],[/^Book now$/,'Reserve'],[/^Book →$/,'Reserve →']]
-               :[[/^Request a business rental( →)?$/,'Book a business rental$1'],[/^Request reservation$/,'Book a chamber'],[/^Reserve a chamber( →)?$/,'Book a chamber$1'],[/^Reserve$/,'Book now'],[/^Reserve →$/,'Book →']];
+    var map=req?[[/^Book a chamber for your business( →)?$/,'Request a business rental$1'],[/^Book for your business$/,'Request a business rental'],[/^Book a chamber( →)?$/,'Reserve a chamber$1'],[/^Book now$/,'Reserve'],[/^Book →$/,'Reserve →']]
+               :[[/^Request a business rental( →)?$/,'Book a chamber for your business$1'],[/^Request reservation$/,'Book a chamber'],[/^Reserve a chamber( →)?$/,'Book a chamber$1'],[/^Reserve$/,'Book now'],[/^Reserve →$/,'Book →']];
     document.querySelectorAll('a[href^="/book"]').forEach(function(a){ var t=a.textContent.trim(); map.forEach(function(m){ if(m[0].test(t)) a.textContent=t.replace(m[0],m[1]); }); });
     document.querySelectorAll('[data-request-text]').forEach(function(el){ if(!el.dataset.bookText)el.dataset.bookText=el.textContent; el.textContent=req?el.getAttribute('data-request-text'):el.dataset.bookText; });
   }

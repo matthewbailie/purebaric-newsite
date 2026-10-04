@@ -76,17 +76,17 @@
 .faq details[open] summary::after{content:"\2013"}
 .faq details[open] summary{border-bottom:1px solid var(--line)}
 .faq .a{padding:16px 20px 18px;color:#5f544d;font-size:15px;line-height:1.65}
-@media(max-width:820px){.biz-hero,.num-grid{grid-template-columns:1fr;gap:26px}.biz-slides{order:-1}.tiles{grid-template-columns:1fr 1fr}.tile.hero{grid-column:1/-1;order:-1}.cards{grid-template-columns:1fr}.page-hero h1{font-size:32px}.tbl{font-size:13px}}
+@media(max-width:820px){.biz-hero,.num-grid{grid-template-columns:1fr;gap:26px}.biz-slides{order:-1;width:calc(100% + 48px);margin:0 -24px;border-radius:0;border:none}.tiles{grid-template-columns:1fr 1fr}.tile.hero{grid-column:1/-1;order:-1}.cards{grid-template-columns:1fr}.page-hero h1{font-size:32px}.tbl{font-size:13px}}
 @media(max-width:520px){.tiles{grid-template-columns:1fr}}
 /* Business page palette: graphite and oak (from the gym photos), terracotta kept for primary buttons */
-:root{--cream:#f7f6f3;--cream2:#eeede9;--line:#dfdcd5;--card:#ffffff;--terra-bg:#f3f1ec;--muted:#6b6a66}
-body{background:#f7f6f3}
-.page-hero{background:#eeede9;border-bottom-color:#dfdcd5}
+:root{--cream:#f6f4f0;--cream2:#ece8e1;--line:#e0dad1;--card:#ffffff;--terra-bg:#f2eee7;--muted:#6b6a66}
+body{background:#f6f4f0}
+.page-hero{background:#ece8e1;border-bottom-color:#e0dad1}
 .eyebrow2{background:#efe6d6;color:#7a5a2c}
 .page-hero .eyebrow2{background:transparent;color:#7a5a2c}
 .contact-cta{background:#2f3337}
 .contact-cta p{color:#d6d3cc}
-.tile{background:#f3f1ec;border-top-color:#59707f}
+.tile{background:#f2eee7;border-top-color:#59707f}
 .tile .k{color:#46606f}
 .tile.hero{background:#3b4a55;border-top-color:var(--terra)}
 .tile.hero .v{color:#fff}
@@ -94,9 +94,9 @@ body{background:#f7f6f3}
 .tbl td.b{color:#8a6a3a}
 .steps li:before{background:#2f3337}
 .checks li:before{background:#c89b5a}
-.cta-band{background:#eeede9}
+.cta-band{background:#ece8e1}
 .faq summary::after{color:#8a6a3a}
-.biz-slides{border-color:#dfdcd5}
+.biz-slides{border-color:#e0dad1}
 .bizbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(43,35,32,.08);transform:translateY(110%);transition:transform .35s ease}
 .bizbar.show{transform:none}
 .bizbar-in{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 24px}
@@ -308,7 +308,7 @@ body.bizbar-on{padding-bottom:84px}
       <div class="cta-text">
         <h2>See if a chamber fits your business</h2>
         <p>Call us and we will talk you through your space, your clients, and the numbers for your business, with no obligation. Call <a href="tel:+18019010873" style="font-weight:700">(801) 901-0873</a> or send us a message.</p>
-        <a class="btn btn-primary" href="/book?type=business" onclick="window.trackPurebaricEvent?.('business_cta',{method:'request'})">Book a business rental →</a>
+        <a class="btn btn-primary" href="/book?type=business" onclick="window.trackPurebaricEvent?.('business_cta',{method:'request'})">Book a chamber for your business →</a>
       </div>
     </div>
   </div>
@@ -344,7 +344,7 @@ body.bizbar-on{padding-bottom:84px}
     <div><div class="mb-price">$979<small> /mo</small></div><span class="mb-sub">$200 one-time training and supplies · no charge until we confirm</span></div>
     <div class="bizbar-btns">
       <a class="btn btn-ghost" href="tel:+18019010873" onclick="window.trackPurebaricEvent?.('business_cta',{method:'call'})">Call (801) 901-0873</a>
-      <a class="btn btn-primary" href="/book?type=business" onclick="window.trackPurebaricEvent?.('business_cta',{method:'request'})">Book a business rental</a>
+      <a class="btn btn-primary" href="/book?type=business" onclick="window.trackPurebaricEvent?.('business_cta',{method:'request'})">Book for your business</a>
     </div>
   </div>
 </div>
