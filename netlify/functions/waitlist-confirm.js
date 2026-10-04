@@ -15,7 +15,7 @@ const { smsForEvent, smsNumbersForEvent, emailsForEvent } = require("./_lib/noti
 
 const CALL = '<a href="tel:+18019010873">(801) 901-0873</a>';
 
-function page(title, body, extraHead = "") {
+function page(title, body, script = "") {
   return {
     statusCode: 200,
     headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
@@ -23,8 +23,8 @@ function page(title, body, extraHead = "") {
 <style>body{margin:0;background:#efe7db;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#2b2320}
 .card{max-width:520px;margin:48px auto;background:#fffdf9;border:1px solid #e6dccd;border-radius:16px;padding:32px 36px}
 h1{font-family:Georgia,'Times New Roman',serif;font-size:24px;margin:0 0 12px}p{font-size:16px;line-height:1.6;margin:0 0 10px;color:#5f544d}a{color:#9a4f3a}
-.btn{display:inline-block;padding:12px 22px;background:#b8654d;color:#fff!important;text-decoration:none;border-radius:8px;font-weight:700;border:0;font-size:15px;cursor:pointer;font-family:inherit}</style>${extraHead}</head>
-<body><div class="card"><h1 id="t">${title}</h1><div id="b">${body}</div><p style="margin-top:18px;font-size:13px">Purebaric &nbsp;|&nbsp; <a href="https://purebaric.com">purebaric.com</a> &nbsp;|&nbsp; ${CALL}</p></div></body></html>`,
+.btn{display:inline-block;padding:12px 22px;background:#b8654d;color:#fff!important;text-decoration:none;border-radius:8px;font-weight:700;border:0;font-size:15px;cursor:pointer;font-family:inherit}</style></head>
+<body><div class="card"><h1 id="t">${title}</h1><div id="b">${body}</div><p style="margin-top:18px;font-size:13px">Purebaric &nbsp;|&nbsp; <a href="https://purebaric.com">purebaric.com</a> &nbsp;|&nbsp; ${CALL}</p></div>${script}</body></html>`,
   };
 }
 const json = (statusCode, obj) => ({ statusCode, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" }, body: JSON.stringify(obj) });
