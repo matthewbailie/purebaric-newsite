@@ -406,7 +406,7 @@ function enterBookMode(j){
   document.getElementById('dateReqRow').hidden=true; document.getElementById('dateBookRow').hidden=false;
   document.getElementById('cdate').removeAttribute('name');
   var eb=document.querySelector('.page-hero .eyebrow2'), h1=document.querySelector('.page-hero h1'), hp=document.querySelector('.page-hero p');
-  if(BIZ){ eb.textContent='Business booking'; h1.textContent='Book a chamber for your business'; hp.textContent='Choose the chamber, your rental length, and a delivery date from our calendar. $979 a month per chamber plus a one-time $500 setup fee. There is no charge today; we text or call to confirm the delivery time.'; }
+  if(BIZ){ eb.textContent='Business booking'; h1.textContent='Book a chamber for your business'; hp.textContent='Choose the chamber, your rental length, and a delivery date from our calendar. From $979 a month per chamber plus a one-time $500 setup fee; longer rentals save up to 20%. There is no charge today; we text or call to confirm the delivery time.'; }
   else { eb.textContent='Book a chamber'; h1.textContent='Book your chamber'; hp.textContent='Choose your chamber, rental length, and a delivery date from our calendar. There is no charge today; we text or call to confirm the exact delivery time.'; }
   var lbl=document.querySelector('.book-side-label'); if(lbl)lbl.textContent=BIZ?'Your business booking':'Your booking';
   var head=document.querySelector('#resForm .section-head p'); if(head)head.textContent='Where we deliver and who we are delivering to.';
