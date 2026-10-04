@@ -49,13 +49,13 @@ children.push(...blank());
 children.push(h1("1. Equipment and Services"));
 children.push(p("1.1 **Equipment.** Purebaric rents to the Business the equipment listed in Exhibit A (the \"Equipment\"): one soft-shell mild hyperbaric chamber rated to 1.5 atmospheres absolute (ATA), one air compressor, one oxygen concentrator, and the accessories listed. The Equipment remains Purebaric's property at all times. The Business acquires no ownership interest and will keep the Equipment free of liens."));
 children.push(p("1.2 **Services included.** Purebaric will (a) deliver and install the Equipment at the Installation Location; (b) provide initial hands-on training to the Business's designated staff; (c) supply a written operating runbook; (d) supply template client consent and waiver forms; (e) assist the Business in preparing a client-facing informational pamphlet in the Business's branding; (f) service and maintain the Equipment as described in Section 6; and (g) provide ongoing phone and text support during business hours."));
-children.push(p("1.3 **Initial supplies.** The one-time setup fee covers the initial supplies listed in Exhibit A. Replacement masks, cleaning supplies, and other consumables are the Business's responsibility after the initial supplies are used."));
+children.push(p("1.3 **Initial supplies.** The one-time training and supplies fee covers the initial supplies listed in Exhibit A. Replacement masks, cleaning supplies, and other consumables are the Business's responsibility after the initial supplies are used."));
 
 // ---------- 2 ----------
 children.push(h1("2. Term, Fees, and Termination"));
 children.push(p("2.1 **Term.** This Agreement begins on the Effective Date and continues month to month until terminated under this Section. There is no minimum term unless one is written in Exhibit A."));
-children.push(p("2.2 **Fees.** The Business will pay the monthly rental fee and the one-time setup fee stated in Exhibit A. The first month's rental fee and the setup fee are due before installation. Each later monthly fee is due in advance on the same day of each month. Fees are payable by the method stated in Exhibit A. Fees more than 10 days late accrue a late charge of 1.5% per month (or the highest rate allowed by law, if lower) and Purebaric may suspend service or remove the Equipment."));
-children.push(p("2.3 **Setup fee is non-refundable.** The setup fee covers installation, training, and initial supplies that are provided before or at installation and is not refundable once installation has occurred."));
+children.push(p("2.2 **Fees.** The Business will pay the monthly rental fee and the one-time training and supplies fee stated in Exhibit A. The first month's rental fee and the training and supplies fee are due before installation. Each later monthly fee is due in advance on the same day of each month. Fees are payable by the method stated in Exhibit A. Fees more than 10 days late accrue a late charge of 1.5% per month (or the highest rate allowed by law, if lower) and Purebaric may suspend service or remove the Equipment."));
+children.push(p("2.3 **Training and supplies fee is non-refundable.** The fee covers staff training and initial supplies that are provided before or at installation and is not refundable once installation has occurred."));
 children.push(p("2.4 **Termination for convenience.** Either party may end this Agreement for any reason with at least 30 days' written notice (email is sufficient). Rental fees are prorated to the removal date. Purebaric will remove the Equipment on or within 7 days after the termination date at no charge."));
 children.push(p("2.5 **Termination for cause.** Purebaric may end this Agreement immediately, and remove the Equipment, if the Business (a) fails to pay fees when due; (b) uses or permits use of the Equipment in violation of Section 4 or Exhibit C; (c) makes medical or health claims in violation of Section 5; (d) damages the Equipment through misuse or neglect; or (e) becomes insolvent or ceases operating at the Installation Location."));
 children.push(p("2.6 **Access for removal.** The Business will give Purebaric reasonable access to the Installation Location during business hours to inspect, service, or remove the Equipment. The Business will not move the Equipment to another location without Purebaric's written consent."));
@@ -156,7 +156,7 @@ children.push(...blank());
 children.push(h2("Fees"));
 children.push(kv([
   ["Monthly rental fee", "$979.00 per chamber per month, due in advance"],
-  ["One-time setup fee", "$500.00 per chamber (installation, staff training, initial supplies). Non-refundable after installation."],
+  ["One-time training and supplies fee", "$200.00 per chamber (staff training and initial supplies). Delivery and installation are included in the rental. Non-refundable after installation."],
   ["Minimum term", "None (month to month; 30 days' notice to end) unless stated here: ______________"],
   ["Additional staff training", "$__________ per session, on request"],
   ["Payment method", "☐ Card on file (Stripe)   ☐ ACH / bank transfer   ☐ Other: ______________"],

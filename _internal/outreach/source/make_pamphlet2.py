@@ -191,7 +191,7 @@ for k,(a,b,c) in enumerate([("Light: 2 a day","52","$3,900"),("Moderate: 4 a day
 y = sub(1, pdf.get_y()+3.5, "What it costs you", size=9.6)
 y = bullets(1, y+2, [
   "**Chamber rental:** $979 a month on a 12-month term. About 14 sessions a month covers it.",
-  "**Install, training, and initial supplies:** one-time $500 fee.",
+  "**Training and initial supplies:** one-time $200 fee. Delivery and installation are included.",
   "**Staff time:** about 15 minutes per session.",
   "**Masks and cleaning supplies:** about $1.30 per use.",
 ], size=8.3, lh=3.8, gap=1.2)
@@ -207,7 +207,7 @@ for l,v in rows:
 pdf.set_draw_color(*TERRA); pdf.line(px(1)+M+4, yy+0.6, px(1)+M+CW-4, yy+0.6)
 pdf.set_xy(px(1)+M+4, yy+1.8); pdf.set_font("Helvetica","B",9.2); pdf.set_text_color(*TERRA_D)
 pdf.cell(CW-30, 5, "Net revenue each month"); pdf.cell(22, 5, "$6,686", align="R")
-para(1, yy+8, "First month only: subtract the one-time $500 fee for install, training, and initial supplies.", size=7.6, color=MUTED, lh=3.5, dx=4, w=CW-8)
+para(1, yy+8, "First month only: subtract the one-time $200 fee for training and initial supplies.", size=7.6, color=MUTED, lh=3.5, dx=4, w=CW-8)
 para(1, by+45, "(1) Published 2026 prices from facilities in Lehi, Orem, and Salt Lake City. All figures are "
   "estimates before staff time, facility overhead, and taxes. Adjust the example with your own price.",
   size=6.5, color=MUTED, lh=3.0)

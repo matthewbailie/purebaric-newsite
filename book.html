@@ -164,7 +164,7 @@ body.biz.bookmode .slider-block{display:block!important}
 
       <form id="resForm" class="frm book-main" novalidate>
         <div class="result" id="resResult" role="status" aria-live="polite"></div>
-        <div class="biz-banner" id="bizBanner"><strong>Business rental request.</strong> For a chamber placed at your gym, studio, salon, or clinic: from $979 a month per chamber plus a one-time $500 setup fee. Longer rentals cost less per month: 10% off from 3 months, 15% from 6, 20% at 12. We will reply within one business day to talk through your space. Renting for your home instead? <a href="/book">Switch to a home rental</a>.</div>
+        <div class="biz-banner" id="bizBanner"><strong>Business rental request.</strong> For a chamber placed at your gym, studio, salon, or clinic: from $979 a month per chamber plus a one-time $200 fee for staff training and initial supplies. Longer rentals cost less per month: 10% off from 3 months, 15% from 6, 20% at 12. We will reply within one business day to talk through your space. Renting for your home instead? <a href="/book">Switch to a home rental</a>.</div>
         <input type="hidden" id="rentalType" name="rental_type" value="residential">
 
         <div class="msum"><div><span class="mp" id="mpr">$659</span><small> /mo</small> <span class="mterm">· <span id="mmo">3 months</span></span></div><a href="#" onclick="document.getElementById('mo').scrollIntoView({block:'center'});return false;">Edit ↓</a></div>
@@ -224,7 +224,7 @@ body.biz.bookmode .slider-block{display:block!important}
             <input type="range" min="1" max="12" step="1" value="3" id="mo" oninput="recalc()" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
           <div class="brow"><span id="bd">$659 × 3 months</span><span id="sub">$1,977</span></div>
           <div class="brow" id="bizHide"><span>You save</span><span class="amt" id="tot">$210</span></div>
-          <div class="brow"><span>Delivery, install &amp; training</span><span class="amt">Included</span></div>
+          <div class="brow"><span>Delivery and install</span><span class="amt">Included</span></div>
           <div class="total"><span>Due today</span><span>$0</span></div>
           <div class="fine">No deposit until we confirm availability · cancel free up to 7 days before delivery</div>
         </div>
@@ -350,7 +350,7 @@ function recalcBiz(){
   var w=document.getElementById('svw');
   if(pp<=0){w.classList.add('hide');}
   else{w.classList.remove('hide');document.getElementById('badge').textContent='Save '+pp+'%';document.getElementById('save').textContent=money(BASE_BIZ-r)+'/mo off';}
-  var fine=document.querySelector('.book .fine');if(fine&&!window.BOOKMODE)fine.textContent='Plus a one-time $500 setup fee (install, staff training, initial supplies) · no charge until we confirm · 30 days\' notice to end';
+  var fine=document.querySelector('.book .fine');if(fine&&!window.BOOKMODE)fine.textContent='Plus a one-time $200 fee for staff training and initial supplies · delivery and install included · no charge until we confirm';
 }
 
 /* live pricing so the calculator matches the admin-managed rates */
@@ -406,14 +406,14 @@ function enterBookMode(j){
   document.getElementById('dateReqRow').hidden=true; document.getElementById('dateBookRow').hidden=false;
   document.getElementById('cdate').removeAttribute('name');
   var eb=document.querySelector('.page-hero .eyebrow2'), h1=document.querySelector('.page-hero h1'), hp=document.querySelector('.page-hero p');
-  if(BIZ){ eb.textContent='Business booking'; h1.textContent='Book a chamber for your business'; hp.textContent='Choose the chamber, your rental length, and a delivery date from our calendar. From $979 a month per chamber plus a one-time $500 setup fee; longer rentals save up to 20%. There is no charge today; we text or call to confirm the delivery time.'; }
+  if(BIZ){ eb.textContent='Business booking'; h1.textContent='Book a chamber for your business'; hp.textContent='Choose the chamber, your rental length, and a delivery date from our calendar. From $979 a month per chamber plus a one-time $200 fee for staff training and initial supplies; longer rentals save up to 20%. There is no charge today; we text or call to confirm the delivery time.'; }
   else { eb.textContent='Book a chamber'; h1.textContent='Book your chamber'; hp.textContent='Choose your chamber, rental length, and a delivery date from our calendar. There is no charge today; we text or call to confirm the exact delivery time.'; }
   var lbl=document.querySelector('.book-side-label'); if(lbl)lbl.textContent=BIZ?'Your business booking':'Your booking';
   var head=document.querySelector('#resForm .section-head p'); if(head)head.textContent='Where we deliver and who we are delivering to.';
   var ack=document.querySelector('#ackReq').parentElement; ack.innerHTML='<input type="checkbox" id="ackReq" required> I understand my delivery date is booked and may be subject to change. The exact delivery time will be confirmed by text or call. I\'ve reviewed the <a href="/safety" target="_blank" rel="noopener">safety information</a>.';
   document.querySelectorAll('.trust span').forEach(function(sp){ if(/Reply within one business day/.test(sp.textContent)) sp.remove(); });
   document.getElementById('submitBtn').textContent=BIZ?'Book chamber for my business →':'Book chamber →';
-  var fine=document.querySelector('.book .fine'); if(fine)fine.textContent=BIZ?'Plus a one-time $500 setup fee · no charge today · we confirm the delivery time by text or call':'No charge today · we confirm the delivery time by text or call · cancel free up to 7 days before delivery';
+  var fine=document.querySelector('.book .fine'); if(fine)fine.textContent=BIZ?'Plus a one-time $200 fee for staff training and initial supplies · no charge today · we confirm the delivery time by text or call':'No charge today · we confirm the delivery time by text or call · cancel free up to 7 days before delivery';
   var note=document.getElementById('dnote'); if(note&&j.deliveryNote)note.innerHTML='<strong>'+j.deliveryNote.replace(/</g,'&lt;')+'</strong>';
   if(j.styles&&j.styles.length){
     window.__pbSetChamberOptions(j.styles.map(function(t){ var lbl='1.5 ATA '+(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:t.status!=='available'&&t.status!=='later',soon:t.status==='soon',status:t.status,next:t.nextAvailable}; }));
@@ -423,7 +423,7 @@ function enterBookMode(j){
   if(steps.length>=3){
     steps[0].textContent='Your delivery date is booked. We will text or call shortly to schedule the delivery time.';
     steps[2].textContent=BIZ?'We deliver, install, and train your team hands-on. You start scheduling sessions for your clients, we support you throughout the rental, and we pick up the chamber at the end.':'We deliver, install, and train you hands-on. You start your sessions, we support you throughout the rental, and we pick up the chamber at the end.';
-    steps[1].textContent=BIZ?'We send the business rental agreement to review and collect the one-time $500 setup fee before delivery. Nothing is charged until then.':'We send the rental agreement to review and collect the first month before delivery. Nothing is charged until then.';
+    steps[1].textContent=BIZ?'We send the business rental agreement to review and collect the one-time $200 training and supplies fee before delivery. Nothing is charged until then.':'We send the rental agreement to review and collect the first month before delivery. Nothing is charged until then.';
   }
   if(BIZ)recalcBiz();
 }
@@ -488,7 +488,7 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   var m=+document.getElementById('mo').value,r=rate(m),p=pct(m),total=r*m,save=(BASE-r)*m;
   var months=mos(m);
   var rb=rateBiz(m),pb=pctBiz(m);
-  var plan=BIZ?('Business rental: Soft-Shell 1.5 ATA, '+months+' at $'+rb+'/mo per chamber'+(pb>0?(' (save '+pb+'%, $'+((BASE_BIZ-rb)*m).toLocaleString()+' total off)'):'')+', plus $500 setup. Est. rental total '+money(rb*m)+'. Business: '+document.getElementById('cbiz').value.trim()+'. Location ZIP '+document.getElementById('zip').value+'.')
+  var plan=BIZ?('Business rental: Soft-Shell 1.5 ATA, '+months+' at $'+rb+'/mo per chamber'+(pb>0?(' (save '+pb+'%, $'+((BASE_BIZ-rb)*m).toLocaleString()+' total off)'):'')+', plus $200 training and initial supplies. Est. rental total '+money(rb*m)+'. Business: '+document.getElementById('cbiz').value.trim()+'. Location ZIP '+document.getElementById('zip').value+'.')
     :('Selected plan: Soft-Shell 1.5 ATA, '+months+' rental at $'+r+'/mo'+(p>0?(' (save '+p+'%, $'+save.toLocaleString()+' total off)'):'')+'. Est. rental total '+money(total)+'. Delivery ZIP '+document.getElementById('zip').value+'.');
   var notes=document.getElementById('cnotes').value.trim();
   var ack='Acknowledged: reviewed safety/contraindications; understands this is a request pending confirmation.';

@@ -11,7 +11,7 @@ TERRA=(184,101,77); TERRA_D=(154,79,58); TERRA_BG=(244,231,223); LINE=(230,220,2
 SOFT=(230,218,200)
 
 # ---- the numbers, in one place
-PRICE=75; RENT=979; SUPPLY=1.30; FEE=500; DAYS=26
+PRICE=75; RENT=979; SUPPLY=1.30; FEE=200; DAYS=26
 def money(n): return "${:,.0f}".format(round(n))
 def scen(per_day, price=PRICE):
     n = per_day*DAYS; gross = n*price; sup = n*SUPPLY
@@ -190,7 +190,7 @@ xr = M+COL+GUT
 yr = h2(y0, "What it costs you", x=xr, w=COL)
 yr = bullets(yr+2.5, [
   "**Chamber rental:** %s a month. No long-term contract; cancel with 30 days' notice." % money(RENT),
-  "**Install, training, and initial supplies:** one-time %s fee. Supplies include 50 masks, a foam pad, two washable cover sheets, initial cleaning supplies, and the instructions and runbook." % money(FEE),
+  "**Training and initial supplies:** one-time %s fee. Supplies include 50 masks, a foam pad, two washable cover sheets, initial cleaning supplies, and the instructions and runbook." % money(FEE),
   "**Masks and cleaning supplies:** about $1.30 per use.",
   "**Staff time:** about 15 minutes per session. Not included in the estimates below.",
 ], x=xr, w=COL, size=9.1, lh=4.2, gap=1.5)
@@ -260,7 +260,7 @@ yr = bullets(yr+3.5, [
 y = max(yl,yr)+5
 y = h1(y, "Questions Owners Ask", size=16, lh=7)
 faq = [
- ("What is the commitment?", "The rental is %s a month with no long-term contract. Cancel with 30 days' notice and we remove the chamber. There is a one-time, non-refundable %s fee that covers installation, staff training, and your initial supplies: 50 masks, a foam pad, two washable cover sheets, initial cleaning supplies, and the instructions and runbook." % (money(RENT), money(FEE))),
+ ("What is the commitment?", "The rental is %s a month with no long-term contract. Cancel with 30 days' notice and we remove the chamber. There is a one-time, non-refundable %s fee that covers staff training and your initial supplies: 50 masks, a foam pad, two washable cover sheets, initial cleaning supplies, and the instructions and runbook." % (money(RENT), money(FEE))),
  ("Do I have to buy or maintain anything?", "No. You rent the chamber and machine, and Purebaric services and maintains them. Your ongoing purchase is masks and cleaning supplies, about $1.30 per use."),
  ("How does my staff learn to run it?", "We train your team in person on the chamber itself, and leave a written runbook they can follow and use to train new hires."),
  ("How do I handle consent and liability?", "We provide template consent and waiver forms. Have your own counsel review them for your business, and confirm coverage with your insurer before you launch."),

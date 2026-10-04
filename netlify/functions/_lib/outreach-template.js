@@ -5,7 +5,7 @@
 'use strict';
 
 // ---- the numbers, in one place (same assumptions as make_prospectus.py and business.html)
-const PRICE = 75, RENT = 979, SUPPLY = 1.30, FEE = 500, DAYS = 26;
+const PRICE = 75, RENT = 979, SUPPLY = 1.30, FEE = 200, DAYS = 26;
 const money = n => '$' + Math.round(n).toLocaleString('en-US');
 const scen = perDay => { const n = perDay * DAYS; const gross = n * PRICE; return { n, gross, net: gross - RENT - n * SUPPLY }; };
 const LIGHT = scen(2), MOD = scen(4);
@@ -84,7 +84,7 @@ const CATEGORIES = [
     headline: 'A hyperbaric chamber in your training room for $979 a month, no capital purchase',
     opener: 'Your athletes ask for hyperbaric, and today the answer is a clinic across town or a six-figure chamber that has to clear procurement. A monthly rental puts one in your training room this month, with no capital request.',
     tiles: {
-      hero: { k: 'Your cost', v: N.rent, unit: 'per month', p: `12-month rental of the chamber and oxygen machine, service included. One-time ${N.fee} for delivery, installation, training, and starting supplies.` },
+      hero: { k: 'Your cost', v: N.rent, unit: 'per month', p: `12-month rental of the chamber and oxygen machine, service included. Delivery and installation included. One-time ${N.fee} for staff training and starting supplies.` },
       small: [
         { k: 'Capacity', v: 'Up to 8', unit: 'sessions', p: 'a day, one athlete at a time' },
         { k: 'Session', v: '60 min', unit: '', p: 'at 1.5 ATA, breathing 95 to 99.9% oxygen' },
@@ -150,7 +150,7 @@ const SHARED = {
   ],
   ctaTitle: 'Ready to add it to [Business name]?',
   ctaBody: 'Reserve a chamber and we will confirm a delivery date and walk your team through setup. There is no charge until we confirm your booking. Prefer to talk through your space first? Call or text.',
-  fine: 'Purebaric provides general-wellness equipment. Our chambers are not medical devices and are not intended to diagnose, treat, cure, or prevent any disease. Revenue figures are estimates, not guarantees. They assume $75 a session, subtract rental and supplies, and do not include staff time, overhead, taxes, or the one-time setup fee. Local prices are published 2026 prices from businesses in Lehi, Orem, and Salt Lake City.',
+  fine: 'Purebaric provides general-wellness equipment. Our chambers are not medical devices and are not intended to diagnose, treat, cure, or prevent any disease. Revenue figures are estimates, not guarantees. They assume $75 a session, subtract rental and supplies, and do not include staff time, overhead, taxes, or the one-time $200 training and supplies fee. Local prices are published 2026 prices from businesses in Lehi, Orem, and Salt Lake City.',
 };
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
