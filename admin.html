@@ -137,6 +137,9 @@
   .pill-hold     { background: #f2cfa1; color: #6b3f12; }
   .pill-notified { background: #d9e2eb; color: #2e4a66; }
   .pill-out-of-area { background: #e3d4ec; color: #4a2e66; }
+  .pill-discount { background: #fdf0d2; color: #7a5a12; }
+  #waitlistFormEl input[type="checkbox"], #waitlistDiscountEdit { width: 18px; height: 18px; margin: 0; padding: 0; flex: none; accent-color: var(--terracotta, #b8654d); cursor: pointer; }
+  #waitlistFormEl .da-check { white-space: nowrap; margin: 0; }
   .pill-converted{ background: #dbeacd; color: #3d5a26; }
   .pill-expired  { background: #e8e2d6; color: #6b6357; }
   .row-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
@@ -715,8 +718,34 @@
           <option value="notified">Notified</option>
           <option value="converted">Converted</option>
           <option value="expired">Expired</option>
+          <option value="discount">Requesting discount</option>
         </select>
+        <button class="btn btn-primary btn-sm" onclick="openAddWaitlist()">+ Add to waitlist</button>
         </div>
+      </div>
+      <div class="form-card" id="waitlistForm">
+        <h3>New waitlist entry</h3>
+        <form id="waitlistFormEl" onsubmit="return submitWaitlistEntry(event)">
+          <div class="form-row">
+            <div class="form-group"><label>Name<span class="req">*</span></label><input name="name" required></div>
+            <div class="form-group"><label>Email</label><input type="email" name="email" placeholder="Email or phone required"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Phone</label><input type="tel" name="phone"></div>
+            <div class="form-group"><label>ZIP</label><input name="zip" inputmode="numeric" maxlength="5"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Preferred start</label><input type="date" name="preferredStartDate"></div>
+            <div class="form-group"><label>What they are looking for</label><input name="reason" placeholder="e.g. 3 months at a reduced rate"></div>
+          </div>
+          <div class="form-group"><label class="da-check" style="display:inline-flex;"><input type="checkbox" name="wantsDiscount" checked><span>Requesting a discount</span></label>
+            <div class="renter-line" style="margin-top:6px;">Flags people who want a steep discount so you can reach out when a lot of chambers are available. Filter by it above.</div></div>
+          <div class="form-group"><label>Internal notes</label><textarea name="adminNotes" rows="2" placeholder="Follow-ups, conversations, what price they mentioned…"></textarea></div>
+          <div class="form-buttons">
+            <button type="submit" class="btn btn-primary btn-sm">Add to waitlist</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="toggleForm('waitlistForm')">Cancel</button>
+          </div>
+        </form>
       </div>
       <div id="waitlistList"></div>
     </section>
@@ -3079,7 +3108,7 @@
   // ─── Waitlist ───
   async function loadWaitlist() {
     const status = document.getElementById('waitlistStatusFilter').value;
-    const qs = status ? `?status=${status}` : '';
+    const qs = status && status !== 'discount' ? `?status=${status}` : '';
     const data = await api(`/api/admin/waitlist${qs}`);
     _waitlist = data.waitlist;
     renderWaitlist();
@@ -3098,9 +3127,10 @@
     const positionMap = new Map(queuedOrder.map((w, i) => [w.id, i + 1]));
     const totalQueued = queuedOrder.length;
     const wq = document.getElementById('waitlistSearch').value;
-    const shownWaitlist = _waitlist.filter(w => window.PurebaricAdminUtils.matchesSearch(wq, [w.name, w.email, w.phone]));
+    const discountOnly = document.getElementById('waitlistStatusFilter').value === 'discount';
+    const shownWaitlist = _waitlist.filter(w => (!discountOnly || w.wantsDiscount) && window.PurebaricAdminUtils.matchesSearch(wq, [w.name, w.email, w.phone]));
     if (!shownWaitlist.length) {
-      list.innerHTML = `<div class="empty-state">No waitlist entries match that search.</div>`;
+      list.innerHTML = `<div class="empty-state">${discountOnly ? 'Nobody is flagged as requesting a discount yet.' : 'No waitlist entries match that search.'}</div>`;
       return;
     }
     const rows = shownWaitlist.map(w => {
@@ -3113,7 +3143,7 @@
       return `
       <tr>
         <td>${escape(created)}</td>
-        <td><strong>${escape(w.name)}</strong>${w.category === 'out-of-area' ? ' <span class="pill pill-out-of-area">Out-of-area</span>' : ''}<div class="renter-line">${escape(w.email)}${w.phone ? ' · ' + escape(w.phone) : ''}${w.zip ? ' · ' + escape(w.zip) : ''}</div></td>
+        <td><strong>${escape(w.name)}</strong>${w.wantsDiscount ? ' <span class="pill pill-discount">Requesting discount</span>' : ''}${w.category === 'out-of-area' ? ' <span class="pill pill-out-of-area">Out-of-area</span>' : ''}<div class="renter-line">${escape(w.email)}${w.phone ? ' · ' + escape(w.phone) : ''}${w.zip ? ' · ' + escape(w.zip) : ''}</div></td>
         <td>${escape(w.preferredStartDate || ', ')}<div class="renter-line">${escape((w.reason || '').slice(0, 80))}</div>${notesPreview}</td>
         <td><span class="pill pill-${w.status}">${w.status}</span>${holdNote}${positionNote}</td>
         <td>
@@ -3129,11 +3159,27 @@
     list.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Added</th><th>Contact</th><th>Preferred / reason</th><th>Status</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
   }
 
+  function openAddWaitlist() { toggleForm('waitlistForm'); document.querySelector('#waitlistFormEl [name="wantsDiscount"]').checked = true; }
+  async function submitWaitlistEntry(e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = Object.fromEntries(new FormData(form));
+    data.wantsDiscount = form.querySelector('[name="wantsDiscount"]').checked;
+    if (!data.email && !data.phone) { toast('Add an email or a phone number', true); return false; }
+    try {
+      await api('/api/admin/waitlist', { method: 'POST', body: JSON.stringify(data) });
+      toast('Added to waitlist');
+      toggleForm('waitlistForm');
+      await loadWaitlist();
+    } catch (err) { toast(err.message, true); }
+    return false;
+  }
   function viewWaitlistDetails(id) {
     const w = _waitlist.find(x => x.id === id);
     if (!w) return;
     const body = `
-      <div class="modal-row"><strong>Contact</strong><div>${escape(w.name)}<br>${escape(w.email)}<br>${escape(w.phone || ', ')}</div></div>
+      <div class="modal-row"><strong>Contact</strong><div>${escape(w.name)}<br>${escape(w.email || ', ')}<br>${escape(w.phone || ', ')}</div></div>
+      <div class="modal-row"><strong>Discount</strong><div><label class="da-check" style="display:inline-flex;min-height:34px;"><input type="checkbox" id="waitlistDiscountEdit"${w.wantsDiscount ? ' checked' : ''}><span>Requesting a discount</span></label></div></div>
       <div class="modal-row"><strong>ZIP</strong><div>${escape(w.zip || ', ')}</div></div>
       <div class="modal-row"><strong>Preferred start</strong><div>${escape(w.preferredStartDate || ', ')}</div></div>
       <div class="modal-row"><strong>Reason / context</strong><div>${escape(w.reason || ', ')}</div></div>
@@ -3145,9 +3191,9 @@
         <textarea id="waitlistNotesEdit" placeholder="Follow-ups, conversations, preferences…">${escape(w.adminNotes || '')}</textarea>
       </div>
       <div class="modal-actions">
-        <button class="btn btn-primary btn-sm" onclick='saveWaitlistNotes(${JSON.stringify(w.id)})'>Save notes</button>
+        <button class="btn btn-primary btn-sm" onclick='saveWaitlistNotes(${JSON.stringify(w.id)})'>Save</button>
         ${w.status !== 'converted' && w.status !== 'expired' ? `<button class="btn btn-primary btn-sm" onclick='convertWaitlistToRental(${JSON.stringify(w.id)})'>Convert → rental</button>` : ''}
-        <a href="mailto:${escape(w.email)}" class="btn btn-ghost btn-sm">Email</a>
+        ${w.email ? `<a href="mailto:${escape(w.email)}" class="btn btn-ghost btn-sm">Email</a>` : ''}
         ${w.phone ? `<a href="tel:${escape(w.phone)}" class="btn btn-ghost btn-sm">Call</a>` : ''}
       </div>
     `;
@@ -3156,9 +3202,11 @@
 
   async function saveWaitlistNotes(id) {
     const notes = document.getElementById('waitlistNotesEdit').value;
+    const wantsDiscount = !!(document.getElementById('waitlistDiscountEdit') || {}).checked;
     try {
-      await api(`/api/admin/waitlist/${id}`, { method: 'PATCH', body: JSON.stringify({ adminNotes: notes }) });
-      toast('Notes saved');
+      await api(`/api/admin/waitlist/${id}`, { method: 'PATCH', body: JSON.stringify({ adminNotes: notes, wantsDiscount }) });
+      toast('Saved');
+      closeModal();
       await loadWaitlist();
     } catch (err) { toast(err.message, true); }
   }

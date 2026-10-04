@@ -1,5 +1,6 @@
 const {
   listWaitlist,
+  createWaitlistEntry,
   updateWaitlistEntry,
   STORES,
   store,
@@ -28,6 +29,25 @@ exports.handler = async (event, context) => {
     if (method === "GET" && !id) {
       const entries = await listWaitlist({ status: q.status || undefined });
       return json(200, { waitlist: entries });
+    }
+
+    // POST (no id): an entry added by hand in the admin, e.g. someone asking for a discount
+    // to be contacted when chambers are sitting idle. Name plus an email or phone is enough.
+    if (method === "POST" && !id) {
+      const body = parseBody(event);
+      const str = (v) => String(v || "").trim();
+      const name = str(body.name), email = str(body.email).toLowerCase(), phone = str(body.phone);
+      if (!name || (!email && !phone)) return json(400, { error: "name and an email or phone are required" });
+      const entry = await createWaitlistEntry({
+        name, email, phone,
+        zip: str(body.zip),
+        reason: str(body.reason),
+        preferredStartDate: /^\d{4}-\d{2}-\d{2}$/.test(str(body.preferredStartDate)) ? str(body.preferredStartDate) : "",
+        wantsDiscount: !!body.wantsDiscount,
+        adminNotes: str(body.adminNotes),
+        source: "admin",
+      });
+      return json(201, { entry });
     }
 
     // POST /:id/hold, offer-hold a chamber to this entry
@@ -73,6 +93,7 @@ exports.handler = async (event, context) => {
       }
       if (typeof body.reason === "string") patch.reason = body.reason;
       if (typeof body.adminNotes === "string") patch.adminNotes = body.adminNotes;
+      if (typeof body.wantsDiscount === "boolean") patch.wantsDiscount = body.wantsDiscount;
       if (typeof body.convertedRentalId === "string") patch.convertedRentalId = body.convertedRentalId;
       const updated = await updateWaitlistEntry(id, patch);
       if (!updated) return json(404, { error: "not_found" });

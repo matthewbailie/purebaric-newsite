@@ -273,7 +273,8 @@ async function updateRental(id, patch) {
 // shape: {
 //   id, name, email, phone, zip, reason, preferredStartDate,
 //   status: "queued"|"hold"|"notified"|"converted"|"expired",
-//   holdExpiresAt, notifiedChamberId, createdAt, notifiedAt, convertedRentalId
+//   holdExpiresAt, notifiedChamberId, createdAt, notifiedAt, convertedRentalId,
+//   wantsDiscount (asked for a reduced rate; contact when chambers sit idle), source ("admin" when added by hand)
 // }
 
 async function listWaitlist({ status } = {}) {
