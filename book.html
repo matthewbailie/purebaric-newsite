@@ -96,6 +96,27 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 #reserveSection.submitted .book-main > *:not(#resResult){display:none}
 #reserveSection.submitted #resResult{margin-bottom:0}
 #reserveSection.hide-steps .next{display:none}
+/* book mode: delivery-date calendar */
+body.bookmode .biz-banner{display:none!important}
+body.biz.bookmode .slider-block{display:block!important}
+.dcal{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:12px 12px 10px;max-width:420px}
+.dcal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.dcal-head b{font-size:15px}
+.dcal-nav{border:1px solid var(--line);background:#fff;border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:16px;line-height:1;color:var(--ink)}
+.dcal-nav:disabled{opacity:.35;cursor:default}
+.dcal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dcal-dow{font-size:11px;font-weight:700;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.04em;padding:2px 0 4px}
+.dcal-day{border:1px solid transparent;background:transparent;border-radius:8px;height:38px;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;font-family:inherit}
+.dcal-day.ok{background:var(--ok-bg);border-color:#cfdcb6;color:var(--ok)}
+.dcal-day.ok:hover{border-color:var(--ok)}
+.dcal-day.off{color:#b9b0a6;cursor:default;text-decoration:line-through}
+.dcal-day.pad{visibility:hidden}
+.dcal-day.sel{background:var(--terra);border-color:var(--terra-d);color:#fff}
+.dcal-key{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:8px}
+.dcal-key i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px}
+.dnote{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.5}
+.dnote strong{color:var(--ink)}
+.cdd-badge.soon{background:#efe6d6;color:#7a5a2c}
 @media(max-width:900px){
   .book-layout{grid-template-columns:1fr;gap:26px}
   .book-main{order:2}.book-side{order:1}.book-sticky{position:static}
@@ -165,7 +186,13 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
           <div class="fg"><label for="ccity">City <span class="req">*</span></label><input type="text" id="ccity" name="city" autocomplete="address-level2" required></div>
           <div class="fg"><label for="zip">Delivery ZIP <span class="req">*</span></label><input type="text" id="zip" name="zip_code" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Enter your ZIP code" required><div id="zipNote" class="zipnote" hidden></div></div>
         </div>
-        <div class="fg"><label for="cdate">Preferred start date</label><input type="date" id="cdate" name="preferred_date"></div>
+        <div class="fg" id="dateReqRow"><label for="cdate">Preferred start date</label><input type="date" id="cdate" name="preferred_date"></div>
+        <div class="fg" id="dateBookRow" hidden>
+          <label>Delivery date <span class="req">*</span></label>
+          <div class="dcal" id="dcal"></div>
+          <input type="hidden" id="bookDate" value="">
+          <div class="dnote" id="dnote">Pick a highlighted day. <strong>We will text or call to confirm the exact delivery time.</strong> Deliveries run until 9 p.m.</div>
+        </div>
         <div class="fg"><label for="cnotes">Notes (optional)</label><textarea id="cnotes" name="notes" placeholder="Ground floor setup, stairs, morning delivery preference..."></textarea></div>
 
         <div class="screen">
@@ -306,8 +333,10 @@ document.getElementById('resForm').addEventListener('focusin',function(){if(book
 function recalcBiz(){
   document.getElementById('pr').textContent='$979';
   var mp=document.getElementById('mpr');if(mp)mp.textContent='$979';
-  document.getElementById('bd').textContent='Month to month, per chamber';
-  document.getElementById('sub').textContent='$979/mo';
+  var bm=window.BOOKMODE?(+document.getElementById('mo').value||1):0;
+  document.getElementById('bd').textContent=bm?('$979 × '+mos(bm)):'Month to month, per chamber';
+  document.getElementById('sub').textContent=bm?money(979*bm):'$979/mo';
+  var mol=document.getElementById('mol');if(mol&&bm)mol.textContent=mos(bm);
   var fine=document.querySelector('.book .fine');if(fine)fine.textContent='Plus a one-time $500 setup fee (install, staff training, initial supplies) · no long-term contract, 30 days\' notice to end';
 }
 
@@ -328,20 +357,22 @@ fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){if(j&
   function render(){
     listEl.innerHTML=options.map(function(o,i){
       var sel=hidden.value===o.value;
-      var badge=o.out?'<span class="cdd-badge no">Unavailable</span>':'<span class="cdd-badge ok">Available</span>';
+      var badge=o.soon?'<span class="cdd-badge soon">Coming soon</span>':(o.out?'<span class="cdd-badge no">Unavailable</span>':'<span class="cdd-badge ok">Available</span>');
       return '<li class="cdd-opt'+(o.out?' out':'')+'" role="option" data-i="'+i+'" aria-selected="'+sel+'"><span>'+o.label+'</span>'+badge+'</li>';
     }).join('');
   }
   function open(){ render(); listEl.hidden=false; dd.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
   function close(){ listEl.hidden=true; dd.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
   btn.addEventListener('click',function(){ listEl.hidden?open():close(); });
-  listEl.addEventListener('click',function(e){ var li=e.target.closest('.cdd-opt'); if(!li)return; var o=options[+li.dataset.i]; setValue(o.value,o.label); close(); btn.focus(); });
+  listEl.addEventListener('click',function(e){ var li=e.target.closest('.cdd-opt'); if(!li)return; var o=options[+li.dataset.i]; if(o.soon)return; setValue(o.value,o.label); close(); btn.focus(); if(window.__pbOnChamberChange)window.__pbOnChamberChange(); });
+  window.__pbSetChamberOptions=function(list){ options=list; var first=options.filter(function(o){return !o.out;})[0]||options[0]; setValue(first.value,first.label); if(!listEl.hidden)render(); };
   document.addEventListener('click',function(e){ if(!dd.contains(e.target)) close(); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
   // seed with the fallback so the form works before/without the availability fetch
   setValue(options[0].value, options[0].label);
 
   fetch('/api/availability').then(function(r){return r.json();}).then(function(j){
+    if(window.BOOKMODE) return;
     if(!j||!Array.isArray(j.byType)||!j.byType.length) return;
     options=j.byType.map(function(t){ var lbl='1.5 ATA '+(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:(t.available|0)<=0}; });
     var firstAvail=options.filter(function(o){return !o.out;})[0] || options[0];
@@ -350,6 +381,72 @@ fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){if(j&
   }).catch(function(){});
 })();
 
+/* ───── Book mode: the owner's delivery calendar decides which days can be booked ───── */
+window.BOOKMODE=false; var DELIV=null, DCAL_MONTH=null, DELIV_TIMER=null;
+function selectedStyle(){ return /sitting/i.test(document.getElementById('ch').value)?'sitting':'lying'; }
+function fetchDelivery(){
+  var m=+document.getElementById('mo').value||1;
+  return fetch('/api/delivery-availability?style='+selectedStyle()+'&months='+m).then(function(r){return r.json();});
+}
+function enterBookMode(j){
+  window.BOOKMODE=true; document.body.classList.add('bookmode');
+  document.getElementById('dateReqRow').hidden=true; document.getElementById('dateBookRow').hidden=false;
+  document.getElementById('cdate').removeAttribute('name');
+  var eb=document.querySelector('.page-hero .eyebrow2'), h1=document.querySelector('.page-hero h1'), hp=document.querySelector('.page-hero p');
+  if(BIZ){ eb.textContent='Business booking'; h1.textContent='Book a chamber for your business'; hp.textContent='Choose the chamber, your rental length, and a delivery date from our calendar. $979 a month per chamber plus a one-time $500 setup fee. There is no charge today; we text or call to confirm the delivery time.'; }
+  else { eb.textContent='Book a chamber'; h1.textContent='Book your chamber'; hp.textContent='Choose your chamber, rental length, and a delivery date from our calendar. There is no charge today; we text or call to confirm the exact delivery time.'; }
+  var lbl=document.querySelector('.book-side-label'); if(lbl)lbl.textContent=BIZ?'Your business booking':'Your booking';
+  var head=document.querySelector('#resForm .section-head p'); if(head)head.textContent='Where we deliver and who we are delivering to.';
+  var ack=document.querySelector('#ackReq').parentElement; ack.innerHTML='<input type="checkbox" id="ackReq" required> I understand my delivery date is booked and the exact delivery time will be confirmed by text or call. I\'ve reviewed the <a href="/safety" target="_blank" rel="noopener">safety information</a> and contraindications.';
+  document.getElementById('submitBtn').textContent=BIZ?'Book chamber for my business →':'Book chamber →';
+  var fine=document.querySelector('.book .fine'); if(fine)fine.textContent=BIZ?'Plus a one-time $500 setup fee · no charge today · we confirm the delivery time by text or call':'No charge today · we confirm the delivery time by text or call · cancel free up to 7 days before delivery';
+  var note=document.getElementById('dnote'); if(note&&j.deliveryNote)note.innerHTML='Pick a highlighted day. <strong>'+j.deliveryNote.replace(/</g,'&lt;')+'</strong>';
+  if(j.styles&&j.styles.length){
+    window.__pbSetChamberOptions(j.styles.map(function(t){ var lbl='1.5 ATA '+(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:!t.available,soon:!t.available}; }));
+  }
+  applyDelivery(j);
+  if(BIZ)recalcBiz();
+}
+function applyDelivery(j){
+  DELIV=j; var sel=document.getElementById('bookDate').value;
+  if(sel && !(j.dates||[]).some(function(d){return d.date===sel&&d.ok;})){ document.getElementById('bookDate').value=''; }
+  if(!DCAL_MONTH && j.dates && j.dates.length) DCAL_MONTH=j.dates[0].date.slice(0,7);
+  renderDcal();
+}
+function refetchDelivery(){
+  if(!window.BOOKMODE)return;
+  clearTimeout(DELIV_TIMER);
+  DELIV_TIMER=setTimeout(function(){ fetchDelivery().then(applyDelivery).catch(function(){}); },150);
+}
+window.__pbOnChamberChange=refetchDelivery;
+document.getElementById('mo').addEventListener('input',refetchDelivery);
+function renderDcal(){
+  var el=document.getElementById('dcal'); if(!el||!DELIV)return;
+  var dates=DELIV.dates||[]; if(!dates.length){ el.innerHTML='<div class="dnote">No delivery dates are open right now. <a href="/waitlist">Join the waitlist</a> or call (801) 901-0873.</div>'; return; }
+  var byDate={}; dates.forEach(function(d){byDate[d.date]=d.ok;});
+  var first=dates[0].date.slice(0,7), last=dates[dates.length-1].date.slice(0,7);
+  if(DCAL_MONTH<first)DCAL_MONTH=first; if(DCAL_MONTH>last)DCAL_MONTH=last;
+  var y=+DCAL_MONTH.slice(0,4), mo=+DCAL_MONTH.slice(5,7)-1;
+  var start=new Date(Date.UTC(y,mo,1)), daysIn=new Date(Date.UTC(y,mo+1,0)).getUTCDate();
+  var title=start.toLocaleDateString('en-US',{month:'long',year:'numeric',timeZone:'UTC'});
+  var sel=document.getElementById('bookDate').value;
+  var cells=''; var dows=['Su','Mo','Tu','We','Th','Fr','Sa'];
+  for(var i=0;i<7;i++)cells+='<div class="dcal-dow">'+dows[i]+'</div>';
+  for(var p=0;p<start.getUTCDay();p++)cells+='<button type="button" class="dcal-day pad" tabindex="-1"></button>';
+  for(var d=1;d<=daysIn;d++){
+    var iso=DCAL_MONTH+'-'+(d<10?'0':'')+d; var ok=byDate[iso]===true;
+    cells+='<button type="button" class="dcal-day '+(ok?'ok':'off')+(iso===sel?' sel':'')+'" data-d="'+iso+'" '+(ok?'':'disabled aria-disabled="true"')+' aria-label="'+iso+(ok?' available':' not available')+'">'+d+'</button>';
+  }
+  var pm=DCAL_MONTH>first, nm=DCAL_MONTH<last;
+  el.innerHTML='<div class="dcal-head"><button type="button" class="dcal-nav" id="dcalPrev" '+(pm?'':'disabled')+' aria-label="Previous month">&#8249;</button><b>'+title+'</b><button type="button" class="dcal-nav" id="dcalNext" '+(nm?'':'disabled')+' aria-label="Next month">&#8250;</button></div><div class="dcal-grid">'+cells+'</div><div class="dcal-key"><span><i style="background:var(--ok-bg);border:1px solid #cfdcb6"></i>Open</span><span><i style="background:var(--terra)"></i>Your date</span><span><i style="background:#eee"></i>Not available</span></div>';
+  function shift(n){ var dt=new Date(Date.UTC(y,mo+n,1)); DCAL_MONTH=dt.toISOString().slice(0,7); renderDcal(); }
+  el.querySelector('#dcalPrev').addEventListener('click',function(){shift(-1);});
+  el.querySelector('#dcalNext').addEventListener('click',function(){shift(1);});
+  el.querySelectorAll('.dcal-day.ok').forEach(function(b){ b.addEventListener('click',function(){ document.getElementById('bookDate').value=b.dataset.d; renderDcal(); var r=document.getElementById('resResult'); if(r.className==='result err'){r.className='result';r.textContent='';} window.trackPurebaricEvent?.('select_delivery_date'); }); });
+  if(sel){ var dsel=new Date(sel+'T00:00:00'); var hint=el.parentElement.querySelector('.dnote'); if(hint&&!hint.dataset.base)hint.dataset.base=hint.innerHTML; if(hint)hint.innerHTML='<strong>Delivery on '+dsel.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'.</strong> '+hint.dataset.base; }
+}
+fetchDelivery().then(function(j){ if(j&&j.mode==='book')enterBookMode(j); }).catch(function(){});
+
 var _submitting=false; // idempotency guard: blocks double-clicks / re-entry for one submission
 document.getElementById('resForm').addEventListener('submit',async function(e){
   e.preventDefault();
@@ -357,6 +454,7 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   var f=e.target,btn=document.getElementById('submitBtn'),res=document.getElementById('resResult');
   if(document.getElementById('botField').value)return;
   if(!f.checkValidity()){f.reportValidity();return;}
+  if(window.BOOKMODE&&!document.getElementById('bookDate').value){ res.className='result err'; res.textContent='Please pick a delivery date on the calendar.'; document.getElementById('dcal').scrollIntoView({block:'center',behavior:'smooth'}); return; }
   _submitting=true;
   var m=+document.getElementById('mo').value,r=rate(m),p=pct(m),total=r*m,save=(BASE-r)*m;
   var months=mos(m);
@@ -375,7 +473,8 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   data.set('customer_phone',document.getElementById('cp').value);
   data.set('city',document.getElementById('ccity').value);
   data.set('zip_code',document.getElementById('zip').value);
-  data.set('preferred_date',document.getElementById('cdate').value);
+  data.set('preferred_date',window.BOOKMODE?document.getElementById('bookDate').value:document.getElementById('cdate').value);
+  if(window.BOOKMODE){ data.set('booking_mode','book'); data.set('chamber_style',selectedStyle()); data.set('months',String(m)); if(BIZ)data.set('rental-length',months); }
   data.set('notes',full);
   data.set('gclid',window.getPurebaricGclid?window.getPurebaricGclid():'');
   var analyticsContext=window.getPurebaricAnalyticsContext
@@ -396,11 +495,17 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
        f.reset();document.getElementById('mo').value=m;recalc();document.getElementById('zipNote').hidden=true;
        document.getElementById('reserveSection').classList.add('submitted','hide-steps');
        window.scrollTo({top:0,behavior:'smooth'});
+     }else if(j&&j.error==='date_unavailable'){
+       res.className='result err';
+       res.textContent=j.message||'That delivery date was just taken. Please pick another date.';
+       document.getElementById('bookDate').value=''; refetchDelivery();
+       document.getElementById('dcal').scrollIntoView({block:'center',behavior:'smooth'});
      }else if(j&&(j.success||j.ok)){
        // The backend records the canonical booking_request_submit event once,
        // after accepting the request, using this visitor's anonymous GA context.
        res.className='result ok';
-       res.innerHTML='Reservation received'+(j.booking_number?(' ('+j.booking_number+')'):'')+'. '+(j.message||"Our team will contact you shortly to confirm delivery.");
+       if(j.booked){ var bd=new Date(j.startDate+'T00:00:00'); res.innerHTML='<strong>Your chamber is booked</strong>'+(j.booking_number?(' ('+j.booking_number+')'):'')+' for delivery on '+bd.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'. We emailed your confirmation and will text or call to set the delivery time.'; document.getElementById('bookDate').value=''; }
+       else res.innerHTML='Reservation received'+(j.booking_number?(' ('+j.booking_number+')'):'')+'. '+(j.message||"Our team will contact you shortly to confirm delivery.");
        f.reset();document.getElementById('mo').value=m;recalc();document.getElementById('zipNote').hidden=true;
        document.getElementById('reserveSection').classList.add('submitted');
        window.scrollTo({top:0,behavior:'smooth'});

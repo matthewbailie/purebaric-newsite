@@ -1,6 +1,6 @@
 const { Resend } = require("resend");
 const { isComplete, sendSms } = require("./sms");
-const { buildFollowUpText } = require("./followup");
+const { buildFollowUpText, formatDeliveryDate } = require("./followup");
 const { daysUntil, cancelLink, endingSoonLink, shortDate, endingSmsText } = require("./rental-ending");
 
 const FROM = "Purebaric <noreply@purebaric.com>";
@@ -227,6 +227,31 @@ async function notifyCustomerPendingAvailability(booking) {
   });
 }
 
+// Customer-facing: book mode. The delivery date is chosen from the owner's calendar, so this confirms
+// the booking itself: chamber, rental length, anticipated delivery day, and that we call or text to set the time.
+async function notifyCustomerBookingConfirmed(booking, { deliveryNote } = {}) {
+  const first = (booking.firstName || "there").split(" ")[0];
+  const style = booking.chamberStyle === "sitting" ? "1.5 ATA sitting chamber" : "1.5 ATA lying chamber";
+  const months = Number(booking.months) || 1;
+  const length = months === 1 ? "1 month" : `${months} months`;
+  const when = formatDeliveryDate(booking.startDate);
+  const note = deliveryNote || "We will text or call to confirm the exact delivery time. Deliveries run until 9 p.m.";
+  const isBiz = booking.rentalType === "business";
+  const html = wrap(`
+    <p style="margin:0 0 16px;">Hi ${escapeHtml(first)},</p>
+    <p style="margin:0 0 16px;"><strong style="color:#2b2320;">Your chamber is booked.</strong>${isBiz ? ` Thank you for choosing Purebaric for ${escapeHtml(booking.businessName || "your business")}.` : " Thank you for choosing Purebaric."}</p>
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 16px; font-size:15px;">
+      <tr><td style="padding:4px 14px 4px 0; color:#6f635b;">Chamber</td><td style="padding:4px 0; font-weight:700;">${escapeHtml(style)}</td></tr>
+      <tr><td style="padding:4px 14px 4px 0; color:#6f635b;">Rental length</td><td style="padding:4px 0; font-weight:700;">${escapeHtml(length)}${booking.endDate ? ` <span style="font-weight:400; color:#6f635b;">(through ${escapeHtml(formatDeliveryDate(booking.endDate))})</span>` : ""}</td></tr>
+      <tr><td style="padding:4px 14px 4px 0; color:#6f635b;">Anticipated delivery</td><td style="padding:4px 0; font-weight:700;">${escapeHtml(when)}</td></tr>
+    </table>
+    <p style="margin:0 0 16px;">We will contact you shortly to coordinate a delivery time. ${escapeHtml(note)}</p>
+    <p style="margin:0;">Questions before then? Reply to this email or call us at <a href="tel:+18019010873" style="color:#b8654d;">(801) 901-0873</a>.</p>
+    ${signoff()}
+  `);
+  return send({ to: booking.email, subject: `Purebaric, your chamber is booked for ${when}`, html });
+}
+
 // Admin recipient list for a given event: the configured emails, or the default
 // admin address when none are configured (so alerts never silently stop).
 function adminTo(to) {
@@ -245,6 +270,8 @@ async function notifyAdminBooking(b, routing = {}, to) {
     routingBlock = `<p style="padding:12px 14px; background:#ebf2da; color:#4a5d24; border-radius:8px; margin:0 0 16px;"><strong>Auto-routed: chamber available.</strong><br>Customer was emailed that we'll be in contact shortly to arrange delivery. Action: reach out to confirm.</p>`;
   } else if (routing.autoNotified === "pending") {
     routingBlock = `<p style="padding:12px 14px; background:#f4e7df; color:#7a4a1e; border-radius:8px; margin:0 0 16px;"><strong>Auto-routed: pending availability.</strong><br>Chambers exist but are already spoken for by earlier untriaged requests, so no chamber was auto-assigned. Customer was emailed that we'll contact them shortly. Action: triage and confirm.</p>`;
+  } else if (routing.autoNotified === "booked") {
+    routingBlock = `<p style="padding:12px 14px; background:#e4ebe1; color:#2f4a2a; border-radius:8px; margin:0 0 16px;"><strong>Booked online (book mode).</strong><br>Chamber: ${escapeHtml(b.chamberStyle === "sitting" ? "sitting" : "lying")}. Delivery ${escapeHtml(formatDeliveryDate(b.startDate))}, ${Number(b.months) || 1} month${Number(b.months) === 1 ? "" : "s"} through ${escapeHtml(formatDeliveryDate(b.endDate))}. The customer was emailed a confirmation and told we will text or call to set the delivery time. This date is held for them until you convert or reject the request.</p>`;
   } else if (routing.autoNotified === "waitlist") {
     routingBlock = `<p style="padding:12px 14px; background:#f4e7df; color:#7a4a1e; border-radius:8px; margin:0 0 16px;"><strong>Auto-routed: no chambers available.</strong><br>Customer was added to the waitlist and emailed about it. Linked waitlist id: <code>${or(routing.linkedWaitlistId)}</code></p>`;
   }
@@ -254,7 +281,8 @@ async function notifyAdminBooking(b, routing = {}, to) {
     const text = buildFollowUpText({ firstName: b.firstName, rentalLength: b.rentalLength, startDate: b.startDate, monthlyRate: routing.monthlyRate });
     followUpBlock = `<div style="margin:0 0 16px; padding:12px 14px; background:#f6efe4; border:1px solid #e6dccd; border-radius:8px;"><p style="margin:0 0 8px; font-size:12px; color:#7a6f63;"><strong>Follow-up text to copy and send${name ? ` to ${escapeHtml(b.firstName || name)}` : ""}</strong></p><div style="white-space:pre-wrap; color:#2b2320;">${escapeHtml(text)}</div></div>`;
   }
-  const subjectTag = routing.autoNotified === "available" ? " [chamber available]" :
+  const subjectTag = routing.autoNotified === "booked" ? ` [booked: ${formatDeliveryDate(b.startDate)}]` :
+                     routing.autoNotified === "available" ? " [chamber available]" :
                      routing.autoNotified === "pending" ? " [pending availability]" :
                      routing.autoNotified === "waitlist" ? " [to waitlist]" : "";
   const isBiz = b.rentalType === "business";
@@ -409,6 +437,7 @@ module.exports = {
   notifyCustomerChamberAvailable,
   notifyCustomerWaitlistAdded,
   notifyCustomerPendingAvailability,
+  notifyCustomerBookingConfirmed,
   notifyAdminOutOfArea,
   notifyAdminSms,
   notifyAdminReviewSms,

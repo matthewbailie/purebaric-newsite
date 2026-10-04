@@ -3,6 +3,7 @@ const { renterKey } = require("./customer-key");
 const crypto = require("crypto");
 const inventory = require("./inventory");
 const serviceArea = require("./servicearea");
+const delivery = require("./delivery");
 const notifications = require("./notifications");
 const layout = require("./layout");
 const sms = require("./sms");
@@ -342,6 +343,21 @@ async function getServiceArea() {
     return { ...serviceArea.DEFAULT_SERVICE_AREA };
   }
   return serviceArea.normalizeServiceArea(doc);
+}
+
+// Delivery availability + website booking mode (settings key "deliveryAvailability"); rules in _lib/delivery.js.
+async function getDeliveryAvailability() {
+  const doc = await getOne(STORES.settings, "deliveryAvailability");
+  return delivery.normalizeConfig(doc || {});
+}
+async function setDeliveryAvailability(input) {
+  const clean = delivery.normalizeConfig(input);
+  await store(STORES.settings).setJSON("deliveryAvailability", { id: "deliveryAvailability", ...clean, updatedAt: nowIso() });
+  return clean;
+}
+// Bookings made in book mode that still reserve their window (see delivery.holdsFrom).
+async function bookingHolds() {
+  return delivery.holdsFrom(await listAll(STORES.bookings));
 }
 
 async function setServiceArea(area) {
@@ -770,6 +786,9 @@ async function deleteAdminSession(sessionId) {
 }
 
 module.exports = {
+  getDeliveryAvailability,
+  setDeliveryAvailability,
+  bookingHolds,
   STORES,
   newId,
   nowIso,

@@ -8,7 +8,11 @@ const {
   getNotifications,
   getTwilioConfig,
   getPricing,
+  getDeliveryAvailability,
+  inventoryInputs,
+  bookingHolds,
 } = require("./_lib/storage");
+const delivery = require("./_lib/delivery");
 const { monthsFromLength } = require("./_lib/followup");
 const { cleanGclid } = require("./_lib/analytics");
 const { cleanRentalType, cleanBusinessName } = require("./_lib/rental-type");
@@ -18,6 +22,7 @@ const {
   notifyAdminBooking,
   notifyCustomerChamberAvailable,
   notifyCustomerWaitlistAdded,
+  notifyCustomerBookingConfirmed,
   notifyCustomerPendingAvailability,
   notifyAdminOutOfArea,
   notifyAdminSms,
@@ -82,6 +87,24 @@ exports.handler = async (event) => {
       ? null
       : bool(body.analytics_consent);
     const rentalType = cleanRentalType(body.rental_type);
+
+    // ─── Book mode: the customer chose a delivery date from the owner's calendar. Re-check it here
+    //     (their calendar may be stale) and reserve the window on the booking record. ───
+    const deliveryCfg = await getDeliveryAvailability();
+    const bookMode = deliveryCfg.mode === "book" && String(body.booking_mode || "") === "book";
+    let booked = null;
+    if (bookMode) {
+      const months = Math.max(1, Math.min(12, parseInt(body.months, 10) || monthsFromLength(body["rental-length"] || "") || 1));
+      const style = delivery.styleOf({ style: body.chamber_style });
+      const [{ chambers, machines, rentals }, holds] = await Promise.all([inventoryInputs(), bookingHolds()]);
+      const check = delivery.dateAvailable({ config: deliveryCfg, chambers, machines, rentals, holds, style, months, today: delivery.mountainToday(), date: (body["start-date"] || body.preferred_date || "").trim() });
+      if (!check.ok) {
+        return { statusCode: 409, headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ error: "date_unavailable", reason: check.reason, message: `That delivery date is no longer available (${check.reason}). Please pick another date.` }) };
+      }
+      booked = { bookingMode: "book", chamberStyle: style, months, endDate: check.endDate };
+    }
+
     const booking = await createBooking({
       firstName, lastName, email,
       rentalType,
@@ -106,6 +129,7 @@ exports.handler = async (event) => {
         clientId: cleanClientId(body.analytics_client_id),
         sessionId: cleanSessionId(body.analytics_session_id),
       },
+      ...(booked || { bookingMode: "request" }),
     });
 
     // ─── Out-of-area: do NOT send the customer a reservation confirmation and do
@@ -141,6 +165,19 @@ exports.handler = async (event) => {
     const emailResults = { customer: null, admin: null };
 
     try {
+      if (booked) {
+        // Book mode: the date is reserved; no waitlist routing. Confirm to the customer.
+        routing.autoNotified = "booked";
+        await updateBooking(booking.id, { autoNotified: "booked" });
+        try {
+          await notifyCustomerBookingConfirmed(booking, { deliveryNote: deliveryCfg.deliveryNote });
+          emailResults.customer = "sent";
+        } catch (err) {
+          console.error("customer 'booked' notify failed", err);
+          emailResults.customer = `failed: ${err.message}`;
+        }
+        throw Object.assign(new Error("booked"), { booked: true });
+      }
       const { available } = await countAvailableToday();
       // Untriaged demand = bookings still "new" (includes the one just created).
       // A chamber is only genuinely free for this request if available capacity
@@ -199,7 +236,7 @@ exports.handler = async (event) => {
       }
     } catch (err) {
       // Don't fail the booking submission if routing fails, admin will still get notified
-      console.error("auto-routing failed", err);
+      if (!err.booked) console.error("auto-routing failed", err);
     }
 
     // When a chamber is available the admin alerts carry a copy-and-paste
@@ -251,7 +288,12 @@ exports.handler = async (event) => {
         success: true,
         id: booking.id,
         booking_number: booking.id.slice(0, 8).toUpperCase(),
-        message: "Your reservation request has been received. Our team will contact you shortly to confirm delivery.",
+        message: booked
+          ? `Your chamber is booked for delivery on ${booking.startDate}. We emailed your confirmation and will text or call to set the delivery time.`
+          : "Your reservation request has been received. Our team will contact you shortly to confirm delivery.",
+        booked: !!booked,
+        startDate: booking.startDate,
+        endDate: booking.endDate || null,
         autoNotified: routing.autoNotified,
         emailResults,
       }),

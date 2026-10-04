@@ -340,6 +340,7 @@
       <button class="tab-btn" data-tab="reviews">Reviews</button>
       <button class="tab-btn" data-tab="pricing">Pricing &amp; Payments</button>
       <button class="tab-btn" data-tab="servicearea">Service Area</button>
+      <button class="tab-btn" data-tab="delivery">Delivery availability</button>
       <button class="tab-btn" data-tab="notifications">Notifications</button>
       <button class="tab-btn" data-tab="outreach">Outreach</button>
     </nav>
@@ -378,6 +379,7 @@
         <button type="button" class="stat-block" data-card-key="active-chambers" data-jump-tab="chambers"><div class="stat-label">Active + maintenance chambers</div><div class="stat-val" id="statActive"></div></button>
         <button type="button" class="stat-block" data-card-key="bookable-now" data-jump-tab="chambers"><div class="stat-label">Bookable now</div><div class="stat-val" id="statAvailable"></div></button>
         <button type="button" class="stat-block" data-card-key="new-requests" data-jump-tab="bookings"><div class="stat-label">New rental requests</div><div class="stat-val" id="statBookings"></div></button>
+        <button type="button" class="stat-block" data-card-key="scheduled-bookings" data-jump-tab="bookings" id="statScheduledWrap" hidden><div class="stat-label">Scheduled bookings</div><div class="stat-val" id="statScheduled"></div></button>
         <button type="button" class="stat-block" data-card-key="waitlist-queued" data-jump-tab="waitlist"><div class="stat-label">Waitlist queued</div><div class="stat-val" id="statWaitlist"></div></button>
         <button type="button" class="stat-block" data-card-key="pending-reviews" data-jump-tab="reviews"><div class="stat-label">Pending reviews</div><div class="stat-val" id="statReviews"></div></button>
       </div>
@@ -804,6 +806,63 @@
         .sa-chip button:hover{color:var(--terracotta,#b8654d);}
         .sa-add input{padding:6px 8px;border:1px solid var(--line,#e6dccd);border-radius:8px;font-size:13px;margin-right:8px;}
         .sa-empty{color:var(--muted,#8a7d70);font-size:13px;}
+      </style>
+    </section>
+
+    <!-- ───── Delivery availability + booking mode ───── -->
+    <section class="tab-panel" data-panel="delivery">
+      <div class="panel-actions">
+        <h2>Delivery availability</h2>
+        <button class="btn btn-primary btn-sm" onclick="saveDelivery()">Save</button>
+      </div>
+      <p class="renter-line" style="margin:0 0 16px;max-width:760px;">Which days you deliver, and whether the website lets customers book a delivery date or only send a request. In book mode the booking page shows a calendar built from these rules and from what is actually free: a chamber of the chosen style and a machine, both unbooked for the whole rental. Booked dates are held until you convert or reject the request on the Rental requests tab.</p>
+      <div class="form-card open" id="daCard" style="display:block;max-width:900px;margin-bottom:18px;">
+        <div class="keyform">
+          <div class="keyrow"><label>Website booking mode</label>
+            <select id="daMode"><option value="request">Reservation requests (customers ask, you confirm)</option><option value="book">Book with a delivery date (customers pick an open day from your calendar)</option></select></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+            <div class="keyrow"><label>Earliest delivery (days from today)</label><input id="daLead" type="number" min="0" max="60"></div>
+            <div class="keyrow"><label>How far ahead customers can book (days)</label><input id="daHorizon" type="number" min="7" max="180"></div>
+            <div class="keyrow"><label>Today (Mountain)</label><input id="daToday" readonly style="background:transparent;border-color:transparent;"></div>
+          </div>
+          <div class="keyrow"><label>Days of the week you never deliver</label>
+            <div id="daDays" style="display:flex;gap:12px;flex-wrap:wrap;padding:6px 0;">
+              <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="1"> Mon</label>
+              <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="2"> Tue</label>
+              <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="3"> Wed</label>
+              <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="4"> Thu</label>
+              <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="5"> Fri</label>
+              <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="6"> Sat</label>
+              <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="0"> Sun</label>
+            </div></div>
+          <div class="keyrow"><label>Note shown to customers next to the calendar and in their confirmation email</label><input id="daNote" maxlength="300"></div>
+        </div>
+      </div>
+      <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Blocked days</h3>
+      <p class="renter-line" style="margin:0 0 10px;max-width:760px;">Click a day to block or unblock it (vacations, a full delivery day, anything). Weekly days off are shown struck through. Or block a range below.</p>
+      <div id="daCal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;max-width:900px;margin-bottom:12px;"></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+        <button type="button" class="btn btn-ghost btn-sm" onclick="shiftDaCal(-1)">&#8249; Earlier</button>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="shiftDaCal(1)">Later &#8250;</button>
+        <span style="width:16px;"></span>
+        <label class="renter-line">Block a range</label><input type="date" id="daFrom" style="padding:5px 8px;"><span class="renter-line">to</span><input type="date" id="daTo" style="padding:5px 8px;">
+        <button type="button" class="btn btn-ghost btn-sm" onclick="addDaRange()">Block range</button>
+      </div>
+      <div id="daBlocked" class="sa-list" style="margin-bottom:16px;"></div>
+      <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">What customers would see</h3>
+      <div id="daPreview" class="renter-line" style="margin-bottom:10px;"></div>
+      <style>
+        .da-month{background:var(--card,#fffdf9);border:1px solid var(--line,#e6dccd);border-radius:12px;padding:10px 10px 8px;}
+        .da-month h4{font-size:14px;font-weight:700;margin:0 0 6px;text-align:center;}
+        .da-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+        .da-dow{font-size:10px;font-weight:700;color:var(--muted,#8a7d70);text-align:center;text-transform:uppercase;}
+        .da-day{border:1px solid transparent;background:transparent;border-radius:6px;height:30px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--ink,#2b2320);}
+        .da-day.pad{visibility:hidden;}
+        .da-day.past{color:#c4bbb0;cursor:default;}
+        .da-day.weekoff{color:#b9b0a6;text-decoration:line-through;cursor:default;}
+        .da-day.blocked{background:#f4e7df;border-color:#e0b9a8;color:#82402f;text-decoration:line-through;}
+        .da-day:not(.pad):not(.past):not(.weekoff):hover{border-color:var(--terracotta,#b8654d);}
+        .da-day.today{box-shadow:inset 0 0 0 2px var(--terracotta,#b8654d);}
       </style>
     </section>
 
@@ -1292,6 +1351,7 @@
       customers: () => loadCustomers(),
       pricing: () => Promise.all([loadPricing(), loadStripeConfig()]),
       servicearea: () => loadServiceArea(),
+      delivery: () => loadDelivery(),
       notifications: () => Promise.all([loadNotifications(), loadTwilioConfig()]),
       outreach: () => loadOutreach(),
     };
@@ -1315,6 +1375,7 @@
 
   async function loadAll() {
     clearLoadError();
+    fetchDeliveryCfg().then(() => { if (typeof paintStats === 'function' && _chambers) paintStats(); }).catch(() => {});
     // Any inline-positioned edit form must be moved back out
     // of its table row *before* loadChambers()/loadMachines() below replace
     // that row's whole subtree via innerHTML — otherwise the form node (which
@@ -1415,6 +1476,10 @@
     const newBookings = _bookings.filter(b => b.status === 'new').length;
     const pendingReviews = (_reviews || []).filter(r => r.status === 'pending').length;
     document.getElementById('statActive').textContent = inMaintenance ? `${active} + ${inMaintenance}` : String(active);
+    const bookMode = _deliveryCfg && _deliveryCfg.mode === 'book';
+    const scheduled = (_bookings || []).filter(b => b.bookingMode === 'book' && ['new', 'contacted', 'approved'].includes(b.status) && (b.startDate || '') >= today).length;
+    const schedWrap = document.getElementById('statScheduledWrap');
+    if (schedWrap) { schedWrap.hidden = !bookMode; document.getElementById('statScheduled').textContent = scheduled; }
     document.getElementById('statAvailable').textContent = available;
     document.getElementById('statWaitlist').textContent = queued;
     document.getElementById('statBookings').textContent = newBookings;
@@ -3049,7 +3114,7 @@
           ${outOfAreaBadge}
           ${routingBadge}
         </td>
-        <td>${escape(b.startDate || ', ')} · ${escape(b.rentalLength || ', ')}${/ata/i.test(b.requestedType || '') ? `<div class="renter-line">Style: ${escape(b.requestedType)}</div>` : ''}<div class="renter-line">${escape((b.reason || '').slice(0, 120))}</div>${flags}</td>
+        <td>${b.bookingMode === 'book' ? `<span class="pill pill-approved">Booked online</span><div style="margin-top:4px;"><strong>Delivery ${escape(fmtDate(b.startDate))}</strong> · ${Number(b.months) || 1} month${Number(b.months) === 1 ? '' : 's'}${b.endDate ? ' through ' + escape(fmtDate(b.endDate)) : ''} · ${b.chamberStyle === 'sitting' ? 'sitting' : 'lying'} chamber</div>` : `${escape(b.startDate || ', ')} · ${escape(b.rentalLength || ', ')}`}${/ata/i.test(b.requestedType || '') && b.bookingMode !== 'book' ? `<div class="renter-line">Style: ${escape(b.requestedType)}</div>` : ''}<div class="renter-line">${escape((b.reason || '').slice(0, 120))}</div>${flags}</td>
         <td><select class="booking-status-sel" data-id="${b.id}" style="padding: 0.3rem 0.5rem; font-size: 0.85rem;">${statusOptions}</select></td>
         <td>
           <div class="row-actions">
@@ -3288,6 +3353,80 @@
 
   // ───────── Service area (delivery ZIP rule) ─────────
   let _serviceArea = { prefixes: [], zips: [] };
+  // ─── Delivery availability + booking mode (rules: netlify/functions/_lib/delivery.js) ───
+  let _deliveryCfg = null, _daPreview = {}, _daToday = '', _daMonth = null;
+  async function fetchDeliveryCfg() {
+    const r = await api('/api/admin/delivery-availability');
+    _deliveryCfg = r.config; _daPreview = r.preview || {}; _daToday = r.today || localToday();
+    return r;
+  }
+  async function loadDelivery() { await fetchDeliveryCfg(); renderDelivery(); }
+  function renderDelivery() {
+    const c = _deliveryCfg; if (!c) return;
+    const setIf = (id, v) => { const el = document.getElementById(id); if (el && document.activeElement !== el) el.value = v == null ? '' : v; };
+    setIf('daMode', c.mode); setIf('daLead', c.leadDays); setIf('daHorizon', c.horizonDays); setIf('daNote', c.deliveryNote); setIf('daToday', fmtDate(_daToday));
+    document.querySelectorAll('#daDays input').forEach(cb => { cb.checked = (c.weekdaysOff || []).includes(parseInt(cb.value, 10)); });
+    if (!_daMonth) _daMonth = _daToday.slice(0, 7);
+    renderDaCal();
+    document.getElementById('daBlocked').innerHTML = (c.blockedDates || []).length
+      ? c.blockedDates.map(d => `<span class="sa-chip">${escape(fmtDate(d))}<button type="button" title="Unblock" onclick="toggleDaDay('${d}')">&times;</button></span>`).join('')
+      : '<span class="sa-empty">No blocked days.</span>';
+    const parts = [];
+    for (const [style, dates] of Object.entries(_daPreview)) parts.push(`<div><strong>${style === 'sitting' ? 'Sitting' : 'Lying'} chamber, 1 month:</strong> ${dates.length ? dates.map(d => fmtDate(d)).join(', ') : '<span style="color:#82402f;">no open delivery days in the booking window</span>'}</div>`);
+    document.getElementById('daPreview').innerHTML = (c.mode === 'book' ? '<div style="margin-bottom:6px;"><span class="pill pill-approved">Book mode is on</span> The booking page shows the calendar.</div>' : '<div style="margin-bottom:6px;"><span class="pill pill-new">Request mode</span> Customers send a request; the calendar is not shown. Save with book mode on to switch.</div>')
+      + (parts.length ? '<div>Next open delivery days (saved settings): ' + parts.join('') + '</div>' : '<div>Add an active chamber to see open days.</div>');
+  }
+  function daCurrentDays() { return [...document.querySelectorAll('#daDays input:checked')].map(cb => parseInt(cb.value, 10)); }
+  function renderDaCal() {
+    const el = document.getElementById('daCal'); if (!el || !_deliveryCfg) return;
+    const blocked = new Set(_deliveryCfg.blockedDates || []), off = new Set(daCurrentDays());
+    const y0 = +_daMonth.slice(0, 4), m0 = +_daMonth.slice(5, 7) - 1;
+    const dows = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+    let html = '';
+    for (let k = 0; k < 3; k++) {
+      const first = new Date(Date.UTC(y0, m0 + k, 1)), days = new Date(Date.UTC(y0, m0 + k + 1, 0)).getUTCDate();
+      const ym = first.toISOString().slice(0, 7);
+      let cells = dows.map(d => `<div class="da-dow">${d}</div>`).join('');
+      for (let p = 0; p < first.getUTCDay(); p++) cells += '<button type="button" class="da-day pad" tabindex="-1"></button>';
+      for (let d = 1; d <= days; d++) {
+        const iso = `${ym}-${d < 10 ? '0' : ''}${d}`;
+        const past = iso < _daToday, weekoff = off.has(first.getUTCDay() ? (first.getUTCDay() + d - 1) % 7 : (d - 1) % 7);
+        const cls = ['da-day', past ? 'past' : '', weekoff ? 'weekoff' : '', blocked.has(iso) ? 'blocked' : '', iso === _daToday ? 'today' : ''].filter(Boolean).join(' ');
+        cells += `<button type="button" class="${cls}" ${past || weekoff ? 'disabled' : `onclick="toggleDaDay('${iso}')"`} title="${iso}${blocked.has(iso) ? ' (blocked)' : ''}">${d}</button>`;
+      }
+      html += `<div class="da-month"><h4>${first.toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' })}</h4><div class="da-grid">${cells}</div></div>`;
+    }
+    el.innerHTML = html;
+  }
+  function shiftDaCal(n) { const y = +_daMonth.slice(0, 4), m = +_daMonth.slice(5, 7) - 1; _daMonth = new Date(Date.UTC(y, m + n, 1)).toISOString().slice(0, 7); renderDaCal(); }
+  function toggleDaDay(iso) {
+    const list = new Set(_deliveryCfg.blockedDates || []);
+    list.has(iso) ? list.delete(iso) : list.add(iso);
+    _deliveryCfg.blockedDates = [...list].sort();
+    renderDelivery();
+  }
+  function addDaRange() {
+    const from = document.getElementById('daFrom').value, to = document.getElementById('daTo').value || from;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(from) || to < from) { toast('Pick a start date (and an end date on or after it)', true); return; }
+    const list = new Set(_deliveryCfg.blockedDates || []);
+    let d = new Date(from + 'T00:00:00Z'); const end = new Date(to + 'T00:00:00Z'); let n = 0;
+    while (d <= end && n < 400) { list.add(d.toISOString().slice(0, 10)); d.setUTCDate(d.getUTCDate() + 1); n++; }
+    _deliveryCfg.blockedDates = [...list].sort();
+    document.getElementById('daFrom').value = ''; document.getElementById('daTo').value = '';
+    renderDelivery();
+  }
+  document.addEventListener('change', e => { if (e.target && e.target.closest && e.target.closest('#daDays')) renderDaCal(); });
+  async function saveDelivery() {
+    const body = { mode: document.getElementById('daMode').value, leadDays: document.getElementById('daLead').value, horizonDays: document.getElementById('daHorizon').value,
+      deliveryNote: document.getElementById('daNote').value, weekdaysOff: daCurrentDays(), blockedDates: (_deliveryCfg && _deliveryCfg.blockedDates) || [] };
+    try {
+      const r = await api('/api/admin/delivery-availability', { method: 'PUT', body: JSON.stringify(body) });
+      _deliveryCfg = r.config; _daPreview = r.preview || {}; _daToday = r.today || _daToday;
+      renderDelivery(); if (typeof paintStats === 'function' && _chambers) paintStats();
+      toast(`Saved. Website is in ${r.config.mode === 'book' ? 'book' : 'request'} mode.`);
+    } catch (e) { toast(e.message, true); }
+  }
+
   async function loadServiceArea() {
     const data = await api('/api/admin/service-area');
     _serviceArea = { prefixes: data.prefixes || [], zips: data.zips || [] };

@@ -68,6 +68,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/delivery-availability"
+  to = "/.netlify/functions/delivery-availability-public"
+  status = 200
+
+[[redirects]]
   from = "/api/service-area"
   to = "/.netlify/functions/service-area-public"
   status = 200
@@ -156,6 +161,11 @@
   to = "/.netlify/functions/admin-pricing"
   status = 200
 
+
+[[redirects]]
+  from = "/api/admin/delivery-availability"
+  to = "/.netlify/functions/admin-delivery-availability"
+  status = 200
 
 [[redirects]]
   from = "/api/admin/service-area"

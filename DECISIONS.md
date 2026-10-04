@@ -118,3 +118,14 @@
 **Context:** Resend prohibits unsolicited outreach regardless of volume. The owner requested shutdown and then asked for instructions for another agent rather than a new live provider connection.
 **Alternatives considered:** Only toggling the UI leaves stale settings/manual routes capable of sending; removing the shared Resend mailer would break customer notifications. This supersedes the earlier decision to use the site's mailer for business outreach.
 **Status:** Confirmed
+
+
+## Two booking modes: request and book (2026-10-04)
+
+**Decision:** The website runs in one of two modes chosen in the admin Delivery availability tab. Request mode is the original reservation-request flow. Book mode lets a customer choose a chamber style, a rental length in whole months, and a delivery date from a calendar built from the owner's availability (weekdays off, blocked days, lead time, horizon) and from real inventory (a chamber of that style and a machine free for the whole window). A book-mode booking holds its window until the owner converts or rejects it; the owner still converts it into a rental, as today.
+
+**Context:** The owner wants customers to self-serve a delivery date, but a delivery still needs a phone call to set the time, and the owner wants to stay in control of inventory assignment. Holding the window on the booking (rather than auto-creating a rental) prevents double booking without removing the owner's review step.
+
+**Alternatives:** Auto-create a scheduled rental on booking (rejected: assigns units without the owner, and a rental is a contract). Time-limited holds that expire (rejected for now: a customer who was told "booked" must not silently lose the date; the Scheduled bookings tile and request list surface what needs action).
+
+**Status:** Implemented. Request mode remains the default until the owner switches.
