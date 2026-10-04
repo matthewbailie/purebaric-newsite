@@ -428,10 +428,18 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <div id="chartLen"></div>
       </div>
       <div class="viz-card viz" style="margin-top:1rem;" id="trafficCard">
-        <h3>Daily site visitors</h3>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+          <h3>Daily site visitors</h3>
+          <div class="seg an-range" role="group" aria-label="Chart range">
+            <button type="button" data-r="365" onclick="setAnRange(365)">Year</button>
+            <button type="button" data-r="90" onclick="setAnRange(90)">3 months</button>
+            <button type="button" data-r="30" onclick="setAnRange(30)">Month</button>
+            <button type="button" data-r="7" onclick="setAnRange(7)">Week</button>
+          </div>
+        </div>
         <p class="viz-note" id="trafficNote">Loading website visits…</p>
         <div class="traffic-kpis one" id="trafficKpis" hidden>
-          <div class="kpi"><div class="kpi-label">Visitors per day, this month</div><div class="kpi-val" id="tkMonth"></div><div class="kpi-sub" id="tkMonthSub"></div></div>
+          <div class="kpi"><div class="kpi-label" id="tkLabel">Average visitors per day</div><div class="kpi-val" id="tkMonth"></div><div class="kpi-sub" id="tkMonthSub"></div></div>
         </div>
         <div id="chartTraffic"></div>
         <div class="renter-line" id="trafficMeta" style="margin-top:6px;">Page-by-page numbers are on the <a href="#analytics" onclick="document.querySelector('.tab-btn[data-tab=analytics]').click();return false;" style="color:var(--terracotta);">Site analytics</a> tab.</div>
@@ -915,7 +923,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <button class="btn btn-ghost btn-sm" onclick="loadTraffic(true)">Refresh from Google Analytics</button>
       </div>
       <p class="renter-line" id="anNote" style="margin:0 0 14px;max-width:760px;">Loading…</p>
-      <div class="seg" id="anRange" role="group" aria-label="Chart range" style="margin-bottom:1.25rem;">
+      <div class="seg an-range" id="anRange" role="group" aria-label="Chart range" style="margin-bottom:1.25rem;">
         <button type="button" data-r="365" onclick="setAnRange(365)">Year</button>
         <button type="button" data-r="90" onclick="setAnRange(90)">3 months</button>
         <button type="button" data-r="30" onclick="setAnRange(30)">Month</button>
@@ -1674,9 +1682,23 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   function setAnRange(r) {
     _anRange = AN_RANGES.includes(r) ? r : 365;
     try { localStorage.setItem('pb_analytics_range', String(_anRange)); } catch (e) { /* not critical */ }
-    paintAnRange(); renderAnalyticsCharts();
+    paintAnRange(); renderHomeTraffic(); renderAnalyticsCharts();
   }
-  function paintAnRange() { document.querySelectorAll('#anRange button').forEach(b => b.classList.toggle('on', +b.dataset.r === _anRange)); }
+  // Home card: one figure and the trend line for the selected window, previous period dashed.
+  function renderHomeTraffic() {
+    const r = _traffic; if (!r || !r.chart) return;
+    const kpis = document.getElementById('trafficKpis'), note = document.getElementById('trafficNote');
+    if (!kpis) return;
+    const w = _window(r.chart, _anRange);
+    kpis.hidden = !w;
+    note.textContent = 'Visitors (sessions) per day on purebaric.com over the ' + _rangeWords() + (w && w.hasPrev ? ', with ' + _prevWords() + ' dashed.' : '.');
+    if (!w) return;
+    document.getElementById('tkLabel').textContent = 'Average visitors per day, ' + _rangeWords();
+    document.getElementById('tkMonth').textContent = _n1(w.avg);
+    document.getElementById('tkMonthSub').innerHTML = `${w.total.toLocaleString('en-US')} visitors in the ${escape(_rangeWords())}` + (w.hasPrev ? ` · ${_n1(w.prevAvg)} per day in ${escape(_prevWords())}${_delta(w.pct)}` : ` · no data for ${escape(_prevWords())} yet`);
+    _windowChartEl(document.getElementById('chartTraffic'), r.chart, w, 'visitor', 'Site visitors');
+  }
+  function paintAnRange() { document.querySelectorAll('.an-range button').forEach(b => b.classList.toggle('on', +b.dataset.r === _anRange)); }
   function anRangeLabel() { return _anRange === 365 ? 'every day of this year' : _anRange === 7 ? 'the last 7 days' : _anRange === 30 ? 'the last 30 days' : 'the last 90 days'; }
   // The selected window = the last N days ending today; it is compared with the N days before it.
   // Both are cut from one timeline that runs from Jan 1 of last year to today, so a window can
@@ -1737,14 +1759,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       || '<tr><td colspan="5" class="renter-line">No page data yet.</td></tr>';
     renderPageChart();
   }
-  function _dailyChart(el, c, hasPrev, unit, what) {
-    if (!el) return;
-    const series = [{ label: String(c.year), values: c.thisYear }];
-    if (hasPrev) series.push({ label: String(c.year - 1), values: c.lastYear });
-    const last = c.thisYear.filter(v => v != null).pop();
-    window.PurebaricCharts.lineChart(el, { series, labels: c.labels, ticks: c.ticks, format: v => Math.round(v) + ' ' + (Math.round(v) === 1 ? unit : unit + 's'), axisFormat: v => String(Math.round(v)),
-      ariaLabel: `${what} by day, ${c.year}${hasPrev ? ` compared with ${c.year - 1}` : ''}. Today so far: ${last == null ? 'no data' : Math.round(last)}.` });
-  }
+
   function renderTraffic(r) {
     _traffic = r;
     const note = document.getElementById('trafficNote'), kpis = document.getElementById('trafficKpis');
@@ -1759,14 +1774,8 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const s = r.summary, c = r.chart;
     const when = r.fetchedAt ? new Date(r.fetchedAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) : '';
     const source = `Source: Google Analytics${when ? ' · updated ' + escape(when) : ''}${r.stale ? ' · <span style="color:#9a4f3a;">showing the last good copy, refresh failed: ' + escape(String(r.stale)) + '</span>' : ''}`;
-    // Home: one number and the trend line.
-    if (kpis) {
-      kpis.hidden = false;
-      note.textContent = 'Visitors (sessions) per day on purebaric.com, every day of ' + c.year + (s.lastYearHasData ? ' against the same day in ' + (c.year - 1) + '.' : '. Last year\'s line will appear once Google Analytics has data for ' + (c.year - 1) + '.');
-      document.getElementById('tkMonth').textContent = _n1(s.thisMonth.avgPerDay);
-      document.getElementById('tkMonthSub').innerHTML = `${s.thisMonth.total.toLocaleString('en-US')} visitors in ${escape(s.thisMonth.label)} so far · ${_n1(s.lastMonth.avgPerDay)} per day in ${escape(s.lastMonth.label)}${_delta(s.monthChangePct)}`;
-      _dailyChart(document.getElementById('chartTraffic'), c, s.lastYearHasData, 'visitor', 'Site visitors');
-    }
+    // Home: one number and the trend line, for the same window as the Site analytics tab.
+    if (kpis) { paintAnRange(); renderHomeTraffic(); }
     // Site analytics tab: full comparison plus pages.
     if (anKpis) {
       anKpis.hidden = false;
