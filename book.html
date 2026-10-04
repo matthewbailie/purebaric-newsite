@@ -139,7 +139,7 @@ body.biz.bookmode .slider-block{display:block!important}
     </nav>
     <div class="nav-cta">
       <a class="nav-biz" href="/business">For businesses</a>
-      <a class="btn btn-primary" href="/book">Reserve a chamber</a>
+      <a class="btn btn-primary" href="/book">Book a chamber</a>
     </div>
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   </div>
@@ -147,7 +147,7 @@ body.biz.bookmode .slider-block{display:block!important}
     <a href="/">Home</a>
     <a href="/how-it-works">How it works</a><a href="/chambers">Chambers</a><a href="/pricing">Pricing</a><a href="/about">About</a><a href="/reviews">Reviews</a><a href="/faq">FAQ</a><a href="/contact">Contact</a>
     <a href="/business">For businesses</a>
-    <a class="btn btn-primary mm-cta" href="/book">Reserve a chamber</a>
+    <a class="btn btn-primary mm-cta" href="/book">Book a chamber</a>
   </nav>
 </header>
 
@@ -254,7 +254,7 @@ body.biz.bookmode .slider-block{display:block!important}
         <p class="foot-desc">Professional-grade mild hyperbaric oxygen therapy brought to your home, delivery, setup, and support included, for less than the cost of a single month at a clinic.</p>
       </div>
       <div class="foot-col"><h5>Service</h5><ul>
-        <li><a href="/how-it-works">How it works</a></li><li><a href="/chambers">Chambers</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/service-area">Service area</a></li><li><a href="/business">For businesses</a></li><li><a href="/book">Reserve</a></li><li><a href="/waitlist">Waitlist</a></li></ul></div>
+        <li><a href="/how-it-works">How it works</a></li><li><a href="/chambers">Chambers</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/service-area">Service area</a></li><li><a href="/business">For businesses</a></li><li><a href="/book">Book now</a></li><li><a href="/waitlist">Waitlist</a></li></ul></div>
       <div class="foot-col"><h5>Company</h5><ul>
         <li><a href="/about">About</a></li><li><a href="/reviews">Reviews</a></li><li><a href="/faq">FAQ</a></li><li><a href="/contact">Contact</a></li><li><a href="/safety">Safety &amp; disclosures</a></li><li><a href="/terms">Terms</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/sms-consent">SMS Consent</a></li></ul></div>
       <div class="foot-col"><h5>Get in touch</h5><ul>
@@ -419,7 +419,7 @@ function enterBookMode(j){
   if(j.styles&&j.styles.length){
     window.__pbSetChamberOptions(j.styles.map(function(t){ var lbl='1.5 ATA '+(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:t.status!=='available'&&t.status!=='later',soon:t.status==='soon',status:t.status,next:t.nextAvailable}; }));
   }
-  applyDelivery(j);
+  if(j.dates&&j.dates.length)applyDelivery(j);
   var steps=document.querySelectorAll('.next li div');
   if(steps.length>=3){
     steps[0].textContent='Your delivery date is booked. We will text or call shortly to schedule the delivery time.';
@@ -478,7 +478,9 @@ function renderDcal(){
   el.querySelectorAll('.dcal-day.ok').forEach(function(b){ b.addEventListener('click',function(){ document.getElementById('bookDate').value=b.dataset.d; renderDcal(); var r=document.getElementById('resResult'); if(r.className==='result err'){r.className='result';r.textContent='';} window.trackPurebaricEvent?.('select_delivery_date'); }); });
   var hint=el.parentElement.querySelector('.dnote'); if(hint){ if(!hint.dataset.base)hint.dataset.base=hint.innerHTML; hint.innerHTML=(sel?'<strong>Delivery on '+fmtLong(sel)+'.</strong> ':(hint.dataset.lead||''))+hint.dataset.base; }
 }
-fetchDelivery().then(function(j){ if(j&&j.mode==='book')enterBookMode(j); }).catch(function(){});
+var CACHED_MODE=null; try{CACHED_MODE=localStorage.getItem('pb_booking_mode');}catch(e){}
+if(CACHED_MODE==='book'){ enterBookMode({dates:[],styles:[]}); var dc=document.getElementById('dcal'); if(dc)dc.innerHTML='<div class="dnote">Loading open delivery dates…</div>'; }
+fetchDelivery().then(function(j){ if(j&&j.mode==='book'){ if(!window.BOOKMODE)enterBookMode(j); else { if(j.styles&&j.styles.length)window.__pbSetChamberOptions(j.styles.map(function(t){ var lbl='1.5 ATA '+(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:t.status!=='available'&&t.status!=='later',soon:t.status==='soon',status:t.status,next:t.nextAvailable}; })); var note=document.getElementById('dnote'); if(note&&j.deliveryNote){note.innerHTML='<strong>'+j.deliveryNote.replace(/</g,'&lt;')+'</strong>';delete note.dataset.base;} applyDelivery(j); } } }).catch(function(){});
 
 var _submitting=false; // idempotency guard: blocks double-clicks / re-entry for one submission
 document.getElementById('resForm').addEventListener('submit',async function(e){
