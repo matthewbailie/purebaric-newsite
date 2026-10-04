@@ -830,7 +830,7 @@
             <select id="daMode"><option value="request">Reservation requests (customers ask, you confirm)</option><option value="book">Book with a delivery date (customers pick an open day from your calendar)</option></select></div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
             <div class="keyrow"><label>Earliest delivery (days from today)</label><input id="daLead" type="number" min="0" max="60"></div>
-            <div class="keyrow"><label>How far ahead customers can book (days)</label><input id="daHorizon" type="number" min="7" max="180"></div>
+            <div class="keyrow"><label>How far ahead customers can book (days)</label><input id="daHorizon" type="number" min="7" max="400"></div>
             <div class="keyrow"><label>Today (Mountain)</label><input id="daToday" readonly style="background:transparent;border-color:transparent;"></div>
           </div>
           <div class="keyrow"><label>Days of the week you never deliver</label>
@@ -850,11 +850,13 @@
       </div>
       <h3 style="font-size:16px;font-weight:700;margin:0 0 4px;">Blocked days</h3>
       <p class="renter-line" style="margin:0 0 10px;max-width:760px;">Click a day to block or unblock it (vacations, a full delivery day, anything). Weekly days off are shown struck through. Or block a range below.</p>
-      <div id="daCal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;max-width:900px;margin-bottom:12px;"></div>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+        <label class="renter-line">Jump to</label><select id="daJump" onchange="_daMonth=this.value;renderDaCal();" style="padding:5px 8px;"></select>
         <button type="button" class="btn btn-ghost btn-sm" onclick="shiftDaCal(-1)">&#8249; Earlier</button>
         <button type="button" class="btn btn-ghost btn-sm" onclick="shiftDaCal(1)">Later &#8250;</button>
-        <span style="width:16px;"></span>
+      </div>
+      <div id="daCal" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;max-width:1100px;margin-bottom:12px;"></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
         <label class="renter-line">Block a range</label><input type="date" id="daFrom" style="padding:5px 8px;"><span class="renter-line">to</span><input type="date" id="daTo" style="padding:5px 8px;">
         <button type="button" class="btn btn-ghost btn-sm" onclick="addDaRange()">Block range</button>
       </div>
@@ -3402,8 +3404,13 @@
     const holOn = !!(document.getElementById('daHolidays') || {}).checked;
     const holidays = holOn ? usHolidaysClient(y0, m0) : {};
     const dows = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+    const jump = document.getElementById('daJump');
+    if (jump) {
+      const ty = +_daToday.slice(0, 4), tm = +_daToday.slice(5, 7) - 1;
+      jump.innerHTML = Array.from({ length: 24 }, (_, i) => { const dt = new Date(Date.UTC(ty, tm + i, 1)); const ym = dt.toISOString().slice(0, 7); return `<option value="${ym}"${ym === _daMonth ? ' selected' : ''}>${dt.toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' })}</option>`; }).join('');
+    }
     let html = '';
-    for (let k = 0; k < 3; k++) {
+    for (let k = 0; k < 12; k++) {
       const first = new Date(Date.UTC(y0, m0 + k, 1)), days = new Date(Date.UTC(y0, m0 + k + 1, 0)).getUTCDate();
       const ym = first.toISOString().slice(0, 7);
       let cells = dows.map(d => `<div class="da-dow">${d}</div>`).join('');
@@ -3421,7 +3428,7 @@
   // Mirror of usHolidays in netlify/functions/_lib/delivery.js, for the three months on screen.
   function usHolidaysClient(y0, m0) {
     const out = {};
-    const years = new Set([y0, new Date(Date.UTC(y0, m0 + 2, 1)).getUTCFullYear()]);
+    const years = new Set([y0, new Date(Date.UTC(y0, m0 + 11, 1)).getUTCFullYear()]);
     years.forEach(year => {
       const pad = n => String(n).padStart(2, '0'), iso = (m, d) => `${year}-${pad(m)}-${pad(d)}`;
       const nth = (month, wd, n) => { if (n > 0) { const f = new Date(Date.UTC(year, month - 1, 1)).getUTCDay(); return iso(month, 1 + ((wd - f + 7) % 7) + (n - 1) * 7); } const last = new Date(Date.UTC(year, month, 0)); return iso(month, last.getUTCDate() - ((last.getUTCDay() - wd + 7) % 7)); };

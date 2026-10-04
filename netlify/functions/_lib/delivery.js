@@ -9,7 +9,7 @@ const DEFAULTS = {
   weekdaysOff: [0, 6],        // 0 = Sunday ... 6 = Saturday; never deliver on these
   blockedDates: [],           // specific YYYY-MM-DD days with no deliveries
   leadDays: 2,                // earliest delivery is this many days out
-  horizonDays: 90,            // how far ahead a customer may book
+  horizonDays: 365,           // how far ahead a customer may book (a full year of calendar)
   deliveryNote: "We will text or call to confirm the exact delivery time.",
   holidaysOff: false,         // block the major U.S. holidays (see usHolidays)
 };
@@ -26,7 +26,7 @@ function normalizeConfig(input) {
   const lead = parseInt(c.leadDays, 10);
   c.leadDays = Number.isFinite(lead) ? Math.max(0, Math.min(60, lead)) : DEFAULTS.leadDays;
   const hz = parseInt(c.horizonDays, 10);
-  c.horizonDays = Number.isFinite(hz) ? Math.max(7, Math.min(180, hz)) : DEFAULTS.horizonDays;
+  c.horizonDays = Number.isFinite(hz) ? Math.max(7, Math.min(400, hz)) : DEFAULTS.horizonDays;
   c.deliveryNote = String(c.deliveryNote || DEFAULTS.deliveryNote).trim().slice(0, 300) || DEFAULTS.deliveryNote;
   c.holidaysOff = c.holidaysOff === true || c.holidaysOff === 1 || c.holidaysOff === "1" || c.holidaysOff === "true";
   return c;

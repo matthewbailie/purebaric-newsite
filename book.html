@@ -102,6 +102,7 @@ body.biz.bookmode .slider-block{display:block!important}
 .dcal{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:12px 12px 10px;max-width:420px}
 .dcal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .dcal-head b{font-size:15px}
+.dcal-month{font:inherit;font-size:15px;font-weight:700;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:8px;padding:5px 8px;max-width:220px;cursor:pointer}
 .dcal-nav{border:1px solid var(--line);background:#fff;border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:16px;line-height:1;color:var(--ink)}
 .dcal-nav:disabled{opacity:.35;cursor:default}
 .dcal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
@@ -467,8 +468,11 @@ function renderDcal(){
     cells+='<button type="button" class="dcal-day '+(ok?'ok':'off')+(iso===sel?' sel':'')+'" data-d="'+iso+'" '+(ok?'':'disabled aria-disabled="true"')+' aria-label="'+iso+(ok?' available':' not available')+'">'+d+'</button>';
   }
   var pm=DCAL_MONTH>first, nm=DCAL_MONTH<last;
-  el.innerHTML='<div class="dcal-head"><button type="button" class="dcal-nav" id="dcalPrev" '+(pm?'':'disabled')+' aria-label="Previous month">&#8249;</button><b>'+title+'</b><button type="button" class="dcal-nav" id="dcalNext" '+(nm?'':'disabled')+' aria-label="Next month">&#8250;</button></div><div class="dcal-grid">'+cells+'</div><div class="dcal-key"><span><i style="background:var(--ok-bg);border:1px solid #cfdcb6"></i>Open</span><span><i style="background:var(--terra)"></i>Your date</span><span><i style="background:#eee"></i>Not available</span></div>';
+  var monthsList=[]; dates.forEach(function(d){ var ym=d.date.slice(0,7); if(monthsList.indexOf(ym)<0)monthsList.push(ym); });
+  var monthSel='<select class="dcal-month" id="dcalMonth" aria-label="Choose a month">'+monthsList.map(function(ym){ var dt=new Date(Date.UTC(+ym.slice(0,4),+ym.slice(5,7)-1,1)); var open=dates.some(function(d){return d.ok&&d.date.slice(0,7)===ym;}); return '<option value="'+ym+'"'+(ym===DCAL_MONTH?' selected':'')+'>'+dt.toLocaleDateString('en-US',{month:'long',year:'numeric',timeZone:'UTC'})+(open?'':' (full)')+'</option>'; }).join('')+'</select>';
+  el.innerHTML='<div class="dcal-head"><button type="button" class="dcal-nav" id="dcalPrev" '+(pm?'':'disabled')+' aria-label="Previous month">&#8249;</button>'+monthSel+'<button type="button" class="dcal-nav" id="dcalNext" '+(nm?'':'disabled')+' aria-label="Next month">&#8250;</button></div><div class="dcal-grid">'+cells+'</div><div class="dcal-key"><span><i style="background:var(--ok-bg);border:1px solid #cfdcb6"></i>Open</span><span><i style="background:var(--terra)"></i>Your date</span><span><i style="background:#eee"></i>Not available</span></div>';
   function shift(n){ var dt=new Date(Date.UTC(y,mo+n,1)); DCAL_MONTH=dt.toISOString().slice(0,7); renderDcal(); }
+  el.querySelector('#dcalMonth').addEventListener('change',function(){ DCAL_MONTH=this.value; renderDcal(); });
   el.querySelector('#dcalPrev').addEventListener('click',function(){shift(-1);});
   el.querySelector('#dcalNext').addEventListener('click',function(){shift(1);});
   el.querySelectorAll('.dcal-day.ok').forEach(function(b){ b.addEventListener('click',function(){ document.getElementById('bookDate').value=b.dataset.d; renderDcal(); var r=document.getElementById('resResult'); if(r.className==='result err'){r.className='result';r.textContent='';} window.trackPurebaricEvent?.('select_delivery_date'); }); });
