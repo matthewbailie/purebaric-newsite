@@ -3804,13 +3804,28 @@
         html += `<label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#5f544d;">
           <span style="width:74px;">${label}</span>
           <span>$</span><input type="number" id="${prefix}-${m}" min="0" step="1" value="${val}" style="width:100px;padding:7px 9px;border:1px solid var(--line,#e6dccd);border-radius:8px;font-family:inherit;">
-          <span style="color:#9a8f85;">/mo${off ? ` · ${off}% off` : ''}</span></label>`;
+          <span style="color:#9a8f85;">/mo<span id="${prefix}-off-${m}">${off ? ` · ${off}% off` : ''}</span></span></label>`;
       }
       grid.innerHTML = html;
     };
     draw('pricingGrid', 'pm', _pricing, PRICING_FALLBACK);
     draw('bizPricingGrid', 'bm', _bizPricing, BIZ_PRICING_FALLBACK);
   }
+  // "% off" follows what is typed: each month compared with the 1-month rate in the same table.
+  function refreshPricingOff(prefix) {
+    const base = parseInt((document.getElementById(prefix + '-1') || {}).value, 10);
+    for (let m = 1; m <= 12; m++) {
+      const v = parseInt((document.getElementById(`${prefix}-${m}`) || {}).value, 10), el = document.getElementById(`${prefix}-off-${m}`);
+      if (!el) continue;
+      const off = base > 0 && v > 0 && v < base ? Math.round((base - v) / base * 100) : 0;
+      el.textContent = off ? ` · ${off}% off` : (v > base ? ` · ${Math.round((v - base) / base * 100)}% more` : '');
+    }
+  }
+  document.addEventListener('input', e => {
+    if (!e.target || !e.target.id) return;
+    if (/^pm-\d+$/.test(e.target.id)) refreshPricingOff('pm');
+    if (/^bm-\d+$/.test(e.target.id)) refreshPricingOff('bm');
+  });
   async function savePricing() {
     const months = {}, business = {};
     for (let m = 1; m <= 12; m++) {
