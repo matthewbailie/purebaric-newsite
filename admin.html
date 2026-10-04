@@ -843,6 +843,8 @@
               <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="6"> Sat</label>
               <label style="display:flex;gap:5px;align-items:center;font-weight:500;"><input type="checkbox" value="0"> Sun</label>
             </div></div>
+          <div class="keyrow"><label style="display:flex;gap:8px;align-items:center;font-weight:600;"><input type="checkbox" id="daHolidays"> Block all major U.S. holidays</label>
+            <div class="renter-line" style="margin-top:2px;">New Year's Day, MLK Day, Presidents' Day, Memorial Day, Juneteenth, Independence Day, Labor Day, Columbus Day, Veterans Day, Thanksgiving, and Christmas. They show hatched on the calendar below.</div></div>
           <div class="keyrow"><label>Note shown to customers next to the calendar and in their confirmation email</label><input id="daNote" maxlength="300"></div>
         </div>
       </div>
@@ -869,6 +871,7 @@
         .da-day.past{color:#c4bbb0;cursor:default;}
         .da-day.weekoff{color:#b9b0a6;text-decoration:line-through;cursor:default;}
         .da-day.blocked{background:#f4e7df;border-color:#e0b9a8;color:#82402f;text-decoration:line-through;}
+        .da-day.holiday{background:repeating-linear-gradient(135deg,#f4e7df 0 4px,#fff 4px 8px);color:#82402f;cursor:default;}
         .da-day:not(.pad):not(.past):not(.weekoff):hover{border-color:var(--terracotta,#b8654d);}
         .da-day.today{box-shadow:inset 0 0 0 2px var(--terracotta,#b8654d);}
       </style>
@@ -3379,6 +3382,7 @@
     const c = _deliveryCfg; if (!c) return;
     const setIf = (id, v) => { const el = document.getElementById(id); if (el && document.activeElement !== el) el.value = v == null ? '' : v; };
     setIf('daMode', c.mode); setIf('daLead', c.leadDays); setIf('daHorizon', c.horizonDays); setIf('daNote', c.deliveryNote); setIf('daToday', fmtDate(_daToday));
+    const hol = document.getElementById('daHolidays'); if (hol) hol.checked = !!c.holidaysOff;
     document.querySelectorAll('#daDays input').forEach(cb => { cb.checked = (c.weekdaysOff || []).includes(parseInt(cb.value, 10)); });
     if (!_daMonth) _daMonth = _daToday.slice(0, 7);
     renderDaCal();
@@ -3394,6 +3398,8 @@
   function renderDaCal() {
     const el = document.getElementById('daCal'); if (!el || !_deliveryCfg) return;
     const blocked = new Set(_deliveryCfg.blockedDates || []), off = new Set(daCurrentDays());
+    const holOn = !!(document.getElementById('daHolidays') || {}).checked;
+    const holidays = holOn ? usHolidaysClient(y0, m0) : {};
     const y0 = +_daMonth.slice(0, 4), m0 = +_daMonth.slice(5, 7) - 1;
     const dows = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
     let html = '';
@@ -3404,13 +3410,24 @@
       for (let p = 0; p < first.getUTCDay(); p++) cells += '<button type="button" class="da-day pad" tabindex="-1"></button>';
       for (let d = 1; d <= days; d++) {
         const iso = `${ym}-${d < 10 ? '0' : ''}${d}`;
-        const past = iso < _daToday, weekoff = off.has(first.getUTCDay() ? (first.getUTCDay() + d - 1) % 7 : (d - 1) % 7);
-        const cls = ['da-day', past ? 'past' : '', weekoff ? 'weekoff' : '', blocked.has(iso) ? 'blocked' : '', iso === _daToday ? 'today' : ''].filter(Boolean).join(' ');
-        cells += `<button type="button" class="${cls}" ${past || weekoff ? 'disabled' : `onclick="toggleDaDay('${iso}')"`} title="${iso}${blocked.has(iso) ? ' (blocked)' : ''}">${d}</button>`;
+        const past = iso < _daToday, weekoff = off.has((first.getUTCDay() + d - 1) % 7), holiday = holidays[iso];
+        const cls = ['da-day', past ? 'past' : '', weekoff ? 'weekoff' : '', holiday ? 'holiday' : '', blocked.has(iso) ? 'blocked' : '', iso === _daToday ? 'today' : ''].filter(Boolean).join(' ');
+        cells += `<button type="button" class="${cls}" ${past || weekoff || holiday ? 'disabled' : `onclick="toggleDaDay('${iso}')"`} title="${iso}${holiday ? ' (' + holiday + ')' : ''}${blocked.has(iso) ? ' (blocked)' : ''}">${d}</button>`;
       }
       html += `<div class="da-month"><h4>${first.toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' })}</h4><div class="da-grid">${cells}</div></div>`;
     }
     el.innerHTML = html;
+  }
+  // Mirror of usHolidays in netlify/functions/_lib/delivery.js, for the three months on screen.
+  function usHolidaysClient(y0, m0) {
+    const out = {};
+    const years = new Set([y0, new Date(Date.UTC(y0, m0 + 2, 1)).getUTCFullYear()]);
+    years.forEach(year => {
+      const pad = n => String(n).padStart(2, '0'), iso = (m, d) => `${year}-${pad(m)}-${pad(d)}`;
+      const nth = (month, wd, n) => { if (n > 0) { const f = new Date(Date.UTC(year, month - 1, 1)).getUTCDay(); return iso(month, 1 + ((wd - f + 7) % 7) + (n - 1) * 7); } const last = new Date(Date.UTC(year, month, 0)); return iso(month, last.getUTCDate() - ((last.getUTCDay() - wd + 7) % 7)); };
+      Object.assign(out, { [iso(1, 1)]: "New Year's Day", [nth(1, 1, 3)]: 'MLK Day', [nth(2, 1, 3)]: "Presidents' Day", [nth(5, 1, -1)]: 'Memorial Day', [iso(6, 19)]: 'Juneteenth', [iso(7, 4)]: 'Independence Day', [nth(9, 1, 1)]: 'Labor Day', [nth(10, 1, 2)]: 'Columbus Day', [iso(11, 11)]: 'Veterans Day', [nth(11, 4, 4)]: 'Thanksgiving', [iso(12, 25)]: 'Christmas Day' });
+    });
+    return out;
   }
   function shiftDaCal(n) { const y = +_daMonth.slice(0, 4), m = +_daMonth.slice(5, 7) - 1; _daMonth = new Date(Date.UTC(y, m + n, 1)).toISOString().slice(0, 7); renderDaCal(); }
   function toggleDaDay(iso) {
@@ -3429,10 +3446,10 @@
     document.getElementById('daFrom').value = ''; document.getElementById('daTo').value = '';
     renderDelivery();
   }
-  document.addEventListener('change', e => { if (e.target && e.target.closest && e.target.closest('#daDays')) renderDaCal(); });
+  document.addEventListener('change', e => { if (e.target && e.target.closest && (e.target.closest('#daDays') || e.target.id === 'daHolidays')) renderDaCal(); });
   async function saveDelivery() {
     const body = { mode: document.getElementById('daMode').value, leadDays: document.getElementById('daLead').value, horizonDays: document.getElementById('daHorizon').value,
-      deliveryNote: document.getElementById('daNote').value, weekdaysOff: daCurrentDays(), blockedDates: (_deliveryCfg && _deliveryCfg.blockedDates) || [] };
+      deliveryNote: document.getElementById('daNote').value, weekdaysOff: daCurrentDays(), holidaysOff: document.getElementById('daHolidays').checked, blockedDates: (_deliveryCfg && _deliveryCfg.blockedDates) || [] };
     try {
       const r = await api('/api/admin/delivery-availability', { method: 'PUT', body: JSON.stringify(body) });
       _deliveryCfg = r.config; _daPreview = r.preview || {}; _daToday = r.today || _daToday;

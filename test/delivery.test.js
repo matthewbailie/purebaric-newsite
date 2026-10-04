@@ -90,3 +90,19 @@ test("nextAvailableDate looks past the horizon to the day after a rental ends, a
   assert.equal(d.dateAvailable({ ...args, date: "2027-01-01" }).reason, "beyond the booking window", "without the stretch it is out of range");
   assert.equal(d.nextAvailableDate({ ...args, rentals: [...full, { chamberId: "c3", machineId: "m2", status: "scheduled", startDate: "2027-01-06", endDate: "2028-06-01" }, { chamberId: "c2", machineId: "m1", status: "scheduled", startDate: "2027-01-02", endDate: "2028-06-01" }] }, 120), null);
 });
+
+test("usHolidays lists the major U.S. holidays and holidaysOff blocks them", () => {
+  const h = d.usHolidays(2026);
+  assert.equal(h["2026-01-19"], "Martin Luther King Jr. Day");
+  assert.equal(h["2026-02-16"], "Presidents' Day");
+  assert.equal(h["2026-05-25"], "Memorial Day");
+  assert.equal(h["2026-09-07"], "Labor Day");
+  assert.equal(h["2026-10-12"], "Columbus Day");
+  assert.equal(h["2026-11-26"], "Thanksgiving");
+  assert.equal(h["2026-12-25"], "Christmas Day");
+  assert.equal(Object.keys(h).length, 11);
+  const on = d.normalizeConfig({ weekdaysOff: [], holidaysOff: "1" }), off = d.normalizeConfig({ weekdaysOff: [] });
+  assert.equal(d.isDeliveryDay(on, "2026-11-26"), false);
+  assert.equal(d.isDeliveryDay(off, "2026-11-26"), true);
+  assert.equal(d.isDeliveryDay(on, "2026-11-27"), true);
+});

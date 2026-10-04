@@ -11,6 +11,7 @@ const DEFAULTS = {
   leadDays: 2,                // earliest delivery is this many days out
   horizonDays: 90,            // how far ahead a customer may book
   deliveryNote: "We will text or call to confirm the exact delivery time.",
+  holidaysOff: false,         // block the major U.S. holidays (see usHolidays)
 };
 const ISO = /^(\d{4})-(\d{2})-(\d{2})$/;
 const HOLD_STATUSES = new Set(["new", "contacted", "approved"]);
@@ -27,8 +28,26 @@ function normalizeConfig(input) {
   const hz = parseInt(c.horizonDays, 10);
   c.horizonDays = Number.isFinite(hz) ? Math.max(7, Math.min(180, hz)) : DEFAULTS.horizonDays;
   c.deliveryNote = String(c.deliveryNote || DEFAULTS.deliveryNote).trim().slice(0, 300) || DEFAULTS.deliveryNote;
+  c.holidaysOff = c.holidaysOff === true || c.holidaysOff === 1 || c.holidaysOff === "1" || c.holidaysOff === "true";
   return c;
 }
+
+// Major U.S. holidays for a year, as YYYY-MM-DD: New Year's Day, Martin Luther King Jr. Day, Presidents' Day,
+// Memorial Day, Juneteenth, Independence Day, Labor Day, Columbus Day, Veterans Day, Thanksgiving, Christmas.
+function usHolidays(year) {
+  const pad = n => String(n).padStart(2, "0");
+  const iso = (m, d) => `${year}-${pad(m)}-${pad(d)}`;
+  const nthWeekday = (month, weekday, n) => { // n-th weekday (0 = Sunday) of the month, n = -1 for the last
+    if (n > 0) { const first = new Date(Date.UTC(year, month - 1, 1)).getUTCDay(); return iso(month, 1 + ((weekday - first + 7) % 7) + (n - 1) * 7); }
+    const lastDay = new Date(Date.UTC(year, month, 0)); const back = (lastDay.getUTCDay() - weekday + 7) % 7; return iso(month, lastDay.getUTCDate() - back);
+  };
+  return {
+    [iso(1, 1)]: "New Year's Day", [nthWeekday(1, 1, 3)]: "Martin Luther King Jr. Day", [nthWeekday(2, 1, 3)]: "Presidents' Day",
+    [nthWeekday(5, 1, -1)]: "Memorial Day", [iso(6, 19)]: "Juneteenth", [iso(7, 4)]: "Independence Day", [nthWeekday(9, 1, 1)]: "Labor Day",
+    [nthWeekday(10, 1, 2)]: "Columbus Day", [iso(11, 11)]: "Veterans Day", [nthWeekday(11, 4, 4)]: "Thanksgiving", [iso(12, 25)]: "Christmas Day",
+  };
+}
+function holidayName(iso) { return usHolidays(parseInt(iso.slice(0, 4), 10))[iso] || null; }
 
 function parseIso(iso) {
   const m = ISO.exec(String(iso || ""));
@@ -63,6 +82,7 @@ function mountainToday(now = new Date()) {
 function isDeliveryDay(config, iso) {
   if (!parseIso(iso)) return false;
   if (config.weekdaysOff.includes(weekday(iso))) return false;
+  if (config.holidaysOff && holidayName(iso)) return false;
   return !config.blockedDates.includes(iso);
 }
 
@@ -141,5 +161,5 @@ function dateAvailable(args) {
   return cap > 0 ? { ok: true, endDate: end } : { ok: false, reason: "no chamber free for that window" };
 }
 
-module.exports = { MODES, DEFAULTS, HOLD_STATUSES, normalizeConfig, parseIso, addDays, daysBetween, addMonthsInclusive, mountainToday, isDeliveryDay,
+module.exports = { MODES, DEFAULTS, HOLD_STATUSES, normalizeConfig, usHolidays, holidayName, parseIso, addDays, daysBetween, addMonthsInclusive, mountainToday, isDeliveryDay,
   holdsFrom, capacity, nextAvailableDate, effectiveHorizon, availableDates, dateAvailable, styleOf };
