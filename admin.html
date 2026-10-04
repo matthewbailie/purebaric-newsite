@@ -75,7 +75,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
 <script src="/dashboard-metrics.js"></script>
 <script src="/dashboard-charts.js"></script>
 <style>
-  body { background: var(--cream-warm); }
+  body { background: var(--cream-warm); overflow-x: clip; } /* styles.css sets overflow-x:hidden, which makes body a scroll container and silently disables position:sticky; clip hides sideways overflow without that */
   /* ─── Shell + left sidebar navigation ─── */
   .admin-shell { display: flex; min-height: 100vh; align-items: stretch; }
   .admin-sidebar { width: 236px; flex: 0 0 236px; background: var(--cream); border-right: 1px solid var(--line); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow-y: auto; z-index: 40; }
