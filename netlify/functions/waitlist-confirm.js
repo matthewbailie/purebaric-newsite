@@ -29,8 +29,8 @@ h1{font-family:Georgia,'Times New Roman',serif;font-size:24px;margin:0 0 12px}p{
 }
 const json = (statusCode, obj) => ({ statusCode, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" }, body: JSON.stringify(obj) });
 
-const EXPIRED = { title: "This offer has expired", body: `<p>The hold on this chamber is no longer open. If you would still like a chamber, reply to our email or call us at ${CALL} and we will find the next available one for you.</p>` };
-const INVALID = { title: "We could not find that offer", body: `<p>This link does not match an open chamber offer. If you think that is a mistake, reply to our email or call us at ${CALL}.</p>` };
+const EXPIRED = { title: "This offer has expired", body: `<p>The hold on this chamber has ended, so this link can no longer confirm it. If you would still like a chamber, reply to our email or call us at ${CALL} and we will find the next available one for you.</p>` };
+const INVALID = { title: "This link is no longer active", body: `<p>This confirmation link does not match a current chamber offer. It may be from an older email, or the offer may have been withdrawn.</p><p>If you have a newer email from us, use the button in that one. Otherwise reply to our email or call us at ${CALL} and we will help.</p>` };
 const DONE = { title: "You're confirmed", body: `<p>Thank you. Your chamber request is confirmed and we will reach out shortly to schedule your delivery.</p><p>A confirmation email is on its way to you.</p>` };
 const ALREADY = { title: "Already confirmed", body: `<p>This chamber request is already confirmed. We will be in touch shortly to schedule your delivery.</p>` };
 
