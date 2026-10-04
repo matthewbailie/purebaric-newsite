@@ -188,7 +188,7 @@ async function notifyWaitlistChamberAvailable(entry, chamber) {
     <p style="margin:0 0 16px;">Good news: ${chamberKind(chamber)} is now available. We are holding <strong style="color:#2b2320;">${chamberKind(chamber)}</strong> for you until <strong style="color:#2b2320;">${expires} Mountain Time</strong>.</p>
     ${waitlistRateLine(entry) ? `<p style="margin:0 0 16px;"><strong style="color:#2b2320;">${escapeHtml(waitlistRateLine(entry))}</strong></p>` : ""}
     <p style="margin:0 0 16px;">To claim this offer, reply to this email or call us at <a href="tel:+18019010873" style="color:#b8654d;">(801) 901-0873</a> to confirm your booking.</p>
-    <p style="margin:0;">This hold is reserved for you until the time above. If we have not heard from you by then, we will release the chamber to the next person on the waitlist.</p>
+    <p style="margin:0;">This hold is reserved for you until the time above. If we have not heard from you by then, we will release the chamber to the next person on our waiting list.</p>
     ${signoff("The Purebaric team")}
   `);
   return send({
