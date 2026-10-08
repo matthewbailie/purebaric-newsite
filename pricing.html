@@ -101,12 +101,12 @@
     "name": "Rental lengths (monthly rate)",
     "itemListElement": [
       { "@type": "Offer", "name": "Home, 1 month", "priceCurrency": "USD", "price": "729", "url": "https://purebaric.com/book?months=1" },
-      { "@type": "Offer", "name": "Home, 2 to 3 months", "priceCurrency": "USD", "price": "659", "url": "https://purebaric.com/book?months=3" },
-      { "@type": "Offer", "name": "Home, 4 to 11 months", "priceCurrency": "USD", "price": "579", "url": "https://purebaric.com/book?months=6" },
+      { "@type": "Offer", "name": "Home, 3 months", "priceCurrency": "USD", "price": "659", "url": "https://purebaric.com/book?months=3" },
+      { "@type": "Offer", "name": "Home, 6 months", "priceCurrency": "USD", "price": "579", "url": "https://purebaric.com/book?months=6" },
       { "@type": "Offer", "name": "Home, 12 months", "priceCurrency": "USD", "price": "529", "url": "https://purebaric.com/book?months=12" },
-      { "@type": "Offer", "name": "Business, 1 to 2 months", "priceCurrency": "USD", "price": "979", "url": "https://purebaric.com/book?type=business" },
-      { "@type": "Offer", "name": "Business, 3 to 5 months", "priceCurrency": "USD", "price": "881", "url": "https://purebaric.com/book?type=business" },
-      { "@type": "Offer", "name": "Business, 6 to 11 months", "priceCurrency": "USD", "price": "832", "url": "https://purebaric.com/book?type=business" },
+      { "@type": "Offer", "name": "Business, 1 month", "priceCurrency": "USD", "price": "979", "url": "https://purebaric.com/book?type=business" },
+      { "@type": "Offer", "name": "Business, 3 months", "priceCurrency": "USD", "price": "881", "url": "https://purebaric.com/book?type=business" },
+      { "@type": "Offer", "name": "Business, 6 months", "priceCurrency": "USD", "price": "832", "url": "https://purebaric.com/book?type=business" },
       { "@type": "Offer", "name": "Business, 12 months", "priceCurrency": "USD", "price": "783", "url": "https://purebaric.com/book?type=business" }
     ]
   }
@@ -168,10 +168,10 @@
     </div>
     <div class="ladder" id="homeLadder">
       <div class="step base"><div class="sv">Standard rate</div><div class="bar" style="height:150px">$729</div><div class="lbl">1 month</div></div>
-      <div class="step"><div class="sv">Save 10%</div><div class="bar" style="height:136px">$659</div><div class="lbl">2–3 months</div></div>
-      <div class="step"><div class="sv">Save 21%</div><div class="bar" style="height:119px">$579</div><div class="lbl">4–11 months</div></div>
+      <div class="step"><div class="sv">Save 10%</div><div class="bar" style="height:136px">$659</div><div class="lbl">3 months</div></div>
+      <div class="step"><div class="sv">Save 21%</div><div class="bar" style="height:119px">$579</div><div class="lbl">6 months</div></div>
       <div class="step best"><div class="sv">Save 27%</div><div class="bar" style="height:109px">$529</div><div class="lbl">12 months</div></div>
-      <div class="ladder-note">Monthly rate per rental length. Every rental includes the same delivery, setup, training, and support.</div>
+      <div class="ladder-note">Monthly rate at four common lengths. Any length from 1 to 12 months is available; the booking page shows the exact rate as you choose.</div>
     </div>
     <div class="tiers">
       <div class="tier">
@@ -182,17 +182,17 @@
         <a class="btn btn-ghost" href="/book?months=1">Book 1 month →</a>
       </div>
       <div class="tier">
-        <div class="len">2–3 months</div>
+        <div class="len">3 months</div>
         <div class="amt"><span id="tierAmt3">$659</span><small> /mo</small></div>
         <div class="save" id="tierSave3">Save 10%</div>
         <ul><li id="tierNote3">$70 a month off the standard rate</li><li id="tierTot3">$210 saved over 3 months</li><li>Unlimited daily sessions</li></ul>
         <a class="btn btn-ghost" href="/book?months=3">Book 3 months →</a>
       </div>
       <div class="tier">
-        <div class="len">4–11 months</div>
+        <div class="len">6 months</div>
         <div class="amt"><span id="tierAmt6">$579</span><small> /mo</small></div>
         <div class="save" id="tierSave6">Save 21%</div>
-        <ul><li id="tierNote6">$150 a month off the standard rate</li><li id="tierTot6">$900 saved over 6 months</li><li>Our most popular range</li></ul>
+        <ul><li id="tierNote6">$150 a month off the standard rate</li><li id="tierTot6">$900 saved over 6 months</li><li>Our most popular length</li></ul>
         <a class="btn btn-primary" href="/book?months=6">Book 6 months →</a>
       </div>
       <div class="tier best">
@@ -204,7 +204,7 @@
         <a class="btn btn-primary" href="/book?months=12">Book 12 months →</a>
       </div>
     </div>
-    <p class="finep">Rates are per month for the Soft-Shell 1.5 ATA and include delivery, setup, training, sanitization, and pickup. Savings compare each rate with the 1-month rate over the same number of months. Rentals end at the end of the term, so there is no long-term commitment beyond the length you choose.</p>
+    <p class="finep">Rates are per month for the Soft-Shell 1.5 ATA and include delivery, setup, training, sanitization, and pickup. Lengths between these steps are priced in between, and the <a href="/book" style="color:var(--terra-d);font-weight:600;text-decoration:underline">booking page</a> shows the exact rate for any length. Savings compare each rate with the 1-month rate over the same number of months. Rentals end at the end of the term, so there is no long-term commitment beyond the length you choose.</p>
     <div class="reassure"><strong>Reserve with confidence.</strong> Submitting a request is free, we confirm availability and delivery to your ZIP first. Once confirmed, we send the rental agreement for you to review and collect a deposit to hold your delivery date; your first month is due at delivery and longer rentals are billed monthly after that. Cancel for a full refund any time up to 7 days before your scheduled delivery. Questions before you commit? Call or text <a href="tel:+18019010873">(801) 901-0873</a>.</div>
   </div>
 </section>
@@ -237,15 +237,16 @@
       <div class="biz-grid">
         <div>
           <div class="biz-tiers">
-            <div class="bt"><div class="len">1–2 months</div><div class="amt"><span id="bizAmt1">$979</span><small> /mo</small></div><div class="sv none">Standard rate</div><div class="tot">per chamber</div></div>
-            <div class="bt"><div class="len">3–5 months</div><div class="amt"><span id="bizAmt3">$881</span><small> /mo</small></div><div class="sv" id="bizSave3">Save 10%</div><div class="tot" id="bizTot3">$294 saved over 3 months</div></div>
-            <div class="bt"><div class="len">6–11 months</div><div class="amt"><span id="bizAmt6">$832</span><small> /mo</small></div><div class="sv" id="bizSave6">Save 15%</div><div class="tot" id="bizTot6">$882 saved over 6 months</div></div>
+            <div class="bt"><div class="len">1 month</div><div class="amt"><span id="bizAmt1">$979</span><small> /mo</small></div><div class="sv none">Standard rate</div><div class="tot">per chamber</div></div>
+            <div class="bt"><div class="len">3 months</div><div class="amt"><span id="bizAmt3">$881</span><small> /mo</small></div><div class="sv" id="bizSave3">Save 10%</div><div class="tot" id="bizTot3">$294 saved over 3 months</div></div>
+            <div class="bt"><div class="len">6 months</div><div class="amt"><span id="bizAmt6">$832</span><small> /mo</small></div><div class="sv" id="bizSave6">Save 15%</div><div class="tot" id="bizTot6">$882 saved over 6 months</div></div>
             <div class="bt best"><div class="len">12 months</div><div class="amt"><span id="bizAmt12">$783</span><small> /mo</small></div><div class="sv" id="bizSave12">Save 20%</div><div class="tot" id="bizTot12">$2,352 saved over the year</div></div>
           </div>
           <ul class="biz-inc">
             <li><strong>One-time $200</strong> for staff training and your initial masks and cleaning supplies. Delivery and installation are included.</li>
             <li><strong>Service and support for the whole rental.</strong> Call or text our team, Monday to Saturday; we handle maintenance and swaps.</li>
             <li><strong>Unlimited sessions.</strong> Charge what you like per session; the rental does not change with usage.</li>
+            <li><strong>Any length from 1 to 12 months.</strong> Lengths between these steps are priced in between; the business booking page shows the exact rate.</li>
             <li><strong>Per chamber.</strong> Want two or more? <a href="/contact?topic=custom" style="color:var(--terra-d);font-weight:600;text-decoration:underline">Ask us for a multi-chamber quote.</a></li>
           </ul>
           <div class="biz-cta"><a class="btn btn-primary" href="/book?type=business">Book for your business →</a><a class="btn btn-ghost" href="/business">See the full business page</a></div>
