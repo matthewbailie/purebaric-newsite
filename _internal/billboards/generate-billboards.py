@@ -26,15 +26,33 @@ def wall_fill(ph,w,h,wall_only=False):
     src=ph.crop((40,0,41,min(ph.height,int(ph.height*0.3)))) if wall_only else ph.crop((40,0,41,ph.height))
     return src.resize((w,h),Image.BILINEAR)
 
+
+def top_fill(ph,w,h):
+    """fill derived from the photo's own top rows: stretched, heavily blurred, lightly dithered so it never bands or blocks"""
+    from PIL import ImageFilter
+    import random
+    # sample only the plain navy wall (left 40% of the photo's top rows) so wood and lamp tones don't smear into the band
+    strip=ph.crop((0,0,max(2,int(ph.width*0.4)),6)).resize((w,h),Image.BILINEAR).filter(ImageFilter.GaussianBlur(45))
+    noise=Image.effect_noise((w,h),6).convert('L')          # ~1.5% luminance dither
+    return Image.composite(strip.point(lambda v:min(255,v+4)),strip,noise)
+
+def blend_down(canvas,fill_src,x,top,span,width):
+    """fade the band fill down over the photo's top `span` rows: fill alpha 1 at `top`, 0 at top+span"""
+    span=max(8,span)
+    fill=top_fill(fill_src,width,span)
+    mask=Image.new('L',(width,span),0); md=ImageDraw.Draw(mask)
+    for y in range(span): md.line([(0,y),(width,y)],fill=int(255*(1-y/span)**1.1))
+    canvas.paste(fill,(x,top),mask)
+    return canvas
+
 def place_photo(canvas, pw, x0):
     """scale the photo to width pw; if shorter than H extend the wall upward, if taller crop vertically; paste at x0"""
     r=pw/photo.width; ph=photo.resize((pw,int(photo.height*r)),Image.LANCZOS)
     if ph.height<H:
-        top=H-ph.height; ext=Image.new('RGB',(pw,H)); ext.paste(wall_fill(ph,pw,top+2,True),(0,0)); ext.paste(ph,(0,top))
-        # blend the seam
-        sh_=min(220,ph.height//2); seam=Image.new('L',(pw,sh_),0); sd=ImageDraw.Draw(seam)
-        for y in range(sh_): sd.line([(0,y),(pw,y)],fill=int(255*(y/sh_)**1.4))
-        ext.paste(ph.crop((0,0,pw,sh_)),(0,top),seam); ph=ext
+        top=H-ph.height; ext=Image.new('RGB',(pw,H))
+        ext.paste(top_fill(ph,pw,top+2),(0,0)); ext.paste(ph,(0,top))
+        ext=blend_down(ext,ph,0,top,int(H*0.25),pw)
+        ph=ext
     else:
         cut=ph.height-H; ph=ph.crop((0,int(cut*0.35),pw,int(cut*0.35)+H))
     canvas.paste(ph,(x0,0))
@@ -61,8 +79,15 @@ def shade_left(im,W,reach=0.6):
     return Image.composite(Image.new('RGB',(W,H),(10,18,28)),im,grad)
 
 def photo_scene(W):
-    im=Image.new('RGB',(W,H)); pw=int(W*0.78); im=place_photo(im,pw,W-pw)
-    return shade_left(im,W)
+    r=H/photo.height; pw=int(photo.width*r); ph=photo.resize((pw,H),Image.LANCZOS)
+    x0=W-pw
+    im=Image.new('RGB',(W,H))
+    if x0>=0: place_photo(im,pw,x0)
+    else: im.paste(ph.crop((-x0,0,pw,H)),(0,0))
+    im=shade_left(im,W)
+    im.info['plant_x']=x0+int(pw*0.37)      # olive tree starts here
+    im.info['cushion_x']=x0+int(pw*0.478)   # foam cushion under the chamber starts here
+    return im
 
 def pill(draw,xy,text,font,bg,fg,padx=36,pady=16,r=40):
     x,y=xy; w=draw.textlength(text,font=font); asc,desc=font.getmetrics(); h=asc+desc
@@ -80,11 +105,11 @@ def logo_row(im,d,kind,M,url_style,W,small=False,bottom_pad=None):
 
 NARROW=2.6
 def narrow_scene(W,band):
-    # text band on top, photo bottom-right, wall extended everywhere else
+    # text band on top, photo bottom-right; the band is the photo's own top colour, blurred, and the photo fades up into it
     hp=H-band; r=hp/photo.height; pw=int(photo.width*r); ph=photo.resize((pw,hp),Image.LANCZOS)
-    im=Image.new('RGB',(W,H)); im.paste(wall_fill(ph,W,H,True),(0,0))
     x0=max(0,W-pw)
     if pw>W: ph=ph.crop((pw-W,0,pw,hp)); pw=W
+    im=Image.new('RGB',(W,H)); im.paste(top_fill(ph,W,band+2),(0,0))
     im.paste(ph,(x0,band))
     if x0>0:
         from PIL import ImageFilter
@@ -93,10 +118,7 @@ def narrow_scene(W,band):
         mask=Image.new('L',(sw,hp),0); md=ImageDraw.Draw(mask)
         for x in range(sw): md.line([(x,0),(x,hp)],fill=int(255*(1-x/sw)**1.6))
         im.paste(fade,(x0,band),mask)
-    # soften the top seam of the photo
-    seam=Image.new('L',(W,50),0); sd=ImageDraw.Draw(seam)
-    for y in range(50): sd.line([(0,y),(W,y)],fill=int(255*y/50))
-    im.paste(im.crop((0,band,W,band+50)),(0,band),seam)
+    im=blend_down(im,ph,0,band,int(H*0.25),W)
     return shade_left(im,W,reach=0.9)
 
 def design_a(W):
@@ -169,7 +191,7 @@ CAP=0.72; XH=0.54; ASC=0.97          # Inter: cap height, x-height, ascent as fr
 LOGO_INK=129/192                     # wordmark cap height as a fraction of the logo image height
 def cap_text(d,x,cap_top,text,font,fill):
     """draw text so that its cap top sits exactly at cap_top; returns baseline y"""
-    sz=font.size; d.text((x,cap_top-int(sz*(ASC-CAP))),text,font=font,fill=fill); return cap_top+int(sz*CAP)
+    sz=font.size; d.text((x,cap_top-round(sz*(ASC-CAP))),text,font=font,fill=fill); return cap_top+round(sz*CAP)
 def pill2(d,x,top,text,sz,bg,fg):
     """URL pill: height 2.75 x-heights, side padding and radius half the height, text centred on x-height"""
     f=F('ExtraBold',sz); xh=sz*XH; ph=int(xh*2.75); padx=ph//2
@@ -178,45 +200,59 @@ def pill2(d,x,top,text,sz,bg,fg):
     xtop=top+(ph-xh)/2; d.text((x+padx,xtop-sz*(ASC-XH)),text,font=f,fill=fg)
     return int(tw+2*padx),ph
 
+FINAL_H=[400]   # set by the export loop: final pixel height, used for legibility floors
 def design_d(W):
-    """Hyperbaric at home. / From $529/mo.  Rhythm in units of the headline cap height Hc:
-       line pitch 1.40Hc, price cap 0.48Hc with 0.40Hc above, URL x-height 0.38Hc in a 2.75x pill,
-       wordmark cap 0.40Hc, top margin 12% of board height, bottom margin 10%."""
-    top=int(H*0.12); bot=int(H*0.10); M=100
+    """Hyperbaric at home. / From $529/mo.  Units of the headline cap height Hc:
+       line pitch 1.48Hc, price cap 0.56Hc with 0.40Hc above, URL x-height 0.34Hc (floor 11 final px) in a 2.75x pill,
+       wordmark cap 0.45Hc (floors 14px cap / 10px x-height), top margin 11%, bottom margin 10%."""
+    k=H/FINAL_H[0]                      # master px per final px
+    top=int(H*0.11); bot=int(H*0.10); M=100
+    def parts(sz):
+        Hc=sz*CAP
+        price_sz=round(0.56*Hc/CAP)
+        url_xh=max(0.34*Hc,11*k); url_sz=round(url_xh/XH); pill_h=round(url_sz*XH*2.75)
+        logo_cap=max(0.45*Hc,14*k,10*k/0.72); logo_h=round(1.12*logo_cap/LOGO_INK)   # x1.12: the ink height includes the b ascender
+        return Hc,price_sz,url_sz,pill_h,logo_h
     if W/H<NARROW:
         M=80; colw=W-2*M
         sz=fit(d0(),"Hyperbaric at home.",'ExtraBold',colw,190).size
         while True:
-            Hc=sz*CAP; price_sz=int(0.48*Hc/CAP); url_sz=int(0.38*Hc/XH); pill_h=int(url_sz*XH*2.75)
-            logo_h=int(0.40*Hc/LOGO_INK); gap=int(0.85*Hc)
-            price_base=top+int(Hc)+int(0.40*Hc)+int(0.48*Hc)
+            Hc,price_sz,url_sz,pill_h,logo_h=parts(sz); gap=int(0.85*Hc)
+            price_base=top+round(Hc)+round(0.40*Hc)+round(0.56*Hc)
             need=price_base+gap+pill_h+gap+logo_h+bot
             if need<=H or sz<=60: break
             sz-=4
+        # cap the gap between price and pill at 1.2Hc; leftover goes to the top margin
+        ly=H-bot-logo_h; pill_top=ly-gap-pill_h
+        slack=(pill_top-price_base)-round(1.2*Hc)
+        shift=max(0,slack); top+=shift; price_base+=shift
         band=price_base+int(0.3*Hc)
         im=narrow_scene(W,band); d=ImageDraw.Draw(im)
         base1=cap_text(d,M,top,"Hyperbaric at home.",F('ExtraBold',sz),CREAM)
-        cap_text(d,M,base1+int(0.40*Hc),"From $529/mo",F('Bold',price_sz),(236,226,214))
-        # stack the pill and logo from the bottom with equal gaps; leftover space goes above the pill
-        lg=logo('cream',logo_h); ly=H-bot-lg.height; im.paste(lg,(M,ly),lg)
-        pill2(d,M,ly-gap-pill_h,"purebaric.com",url_sz,TERRA,(255,255,255))
+        cap_text(d,M,base1+round(0.40*Hc),"From $529/mo",F('Bold',price_sz),(236,226,214))
+        lg=logo('cream',logo_h); im.paste(lg,(M,ly),lg)
+        pill2(d,M,pill_top,"purebaric.com",url_sz,TERRA,(255,255,255))
         return im
-    im=photo_scene(W); d=ImageDraw.Draw(im); colw=int(W*0.53)-M
+    im=photo_scene(W); d=ImageDraw.Draw(im)
+    plant_x=im.info.get('plant_x',int(W*0.53)); cushion_x=im.info.get('cushion_x',W)
+    col_right=min(int(W*0.53), plant_x); colw=col_right-M
     sz=fit(d,"Hyperbaric",'ExtraBold',colw,210).size
     while True:
-        Hc=sz*CAP; price_sz=int(0.48*Hc/CAP); url_sz=int(0.38*Hc/XH); pill_h=int(url_sz*XH*2.75)
-        logo_h=int(0.40*Hc/LOGO_INK); row_h=max(pill_h,logo_h)
-        base2=top+int(1.40*Hc)+int(Hc); price_base=base2+int(0.40*Hc)+int(0.48*Hc)
-        need=price_base+int(0.55*Hc)+row_h+bot
-        if need<=H or sz<=80: break
+        Hc,price_sz,url_sz,pill_h,logo_h=parts(sz); row_h=max(pill_h,logo_h)
+        base2=top+round(1.48*Hc)+round(Hc); price_base=base2+round(0.40*Hc)+round(0.56*Hc)
+        need=price_base+round(0.55*Hc)+row_h+bot
+        lgw=round(logo_h*1136/192); fu=F('ExtraBold',url_sz)
+        row_end=M+lgw+round(0.6*Hc)+d.textlength("purebaric.com",font=fu)+pill_h   # pill padding = half its height each side
+        if (need<=H and row_end<=cushion_x-0.6*Hc) or sz<=80: break
         sz-=4
+    top+= max(0,(H-need)//2)   # split any freed height above the headline and below the pill
     f=F('ExtraBold',sz)
     cap_text(d,M,top,"Hyperbaric",f,CREAM)
-    base2=cap_text(d,M,top+int(1.40*Hc),"at home.",f,CREAM)
-    price_base=cap_text(d,M,base2+int(0.40*Hc),"From $529/mo",F('Bold',price_sz),(236,226,214))
-    row_top=price_base+int(0.55*Hc)
+    base2=cap_text(d,M,top+round(1.48*Hc),"at home.",f,CREAM)
+    price_base=cap_text(d,M,base2+round(0.40*Hc),"From $529/mo",F('Bold',price_sz),(236,226,214))
+    row_top=price_base+round(0.55*Hc)
     lg=logo('cream',logo_h); im.paste(lg,(M,row_top+(row_h-lg.height)//2),lg)
-    pill2(d,M+lg.width+int(0.6*Hc),row_top+(row_h-pill_h)//2,"purebaric.com",url_sz,TERRA,(255,255,255))
+    pill2(d,M+lg.width+round(0.6*Hc),row_top+(row_h-pill_h)//2,"purebaric.com",url_sz,TERRA,(255,255,255))
     return im
 
 SIZES=[(1400,400,'lamar-bulletin'),(1536,384,'blip-4x1'),(1160,387,'blip-3x1'),(840,400,'lamar-840x400'),(880,240,'reagan-digital-bulletin'),(432,208,'reagan-digital-poster')]
@@ -224,8 +260,12 @@ DESIGNS=[('A-bring-hyperbaric-home',design_a),('B-hyperbaric-at-home',design_b),
 os.makedirs(os.path.join(OUT,'final'),exist_ok=True)
 for name,fn in DESIGNS:
     for w,h,tag in SIZES:
-        W=int(round(H*w/h)); im=fn(W)
-        im.resize((w,h),Image.LANCZOS).save(os.path.join(OUT,'final','%s-%dx%d-%s.jpg'%(name,w,h,tag)),quality=90)
+        W=int(round(H*w/h)); FINAL_H[0]=h; im=fn(W)
+        out=im.resize((w,h),Image.LANCZOS)
+        if name.startswith('D') and W/H<NARROW:
+            n=Image.effect_noise((w,h),3).convert('L')   # +/-2 levels
+            out=Image.composite(out.point(lambda v:min(255,v+2)),out.point(lambda v:max(0,v-2)),n)
+        out.save(os.path.join(OUT,'final','%s-%dx%d-%s.jpg'%(name,w,h,tag)),quality=94)
         if (w,h)==(1400,400): im.save(os.path.join(OUT,'final','%s-2800x800-master.png'%name))
 # contact sheets: one per design, all sizes stacked
 for name,_ in DESIGNS:
