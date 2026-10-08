@@ -152,7 +152,7 @@
     </div>
     <div class="why">
       <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 13h11V6H3zM14 8h4l3 3v2h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></div><b>All-inclusive, one rate</b><p>Delivery, setup, pressure test, training, sanitization, and pickup are in the monthly price. Nothing is added on.</p></div>
-      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><b>Unlimited daily sessions</b><p>Use it every day, on your schedule. At home that works out to <strong id="whySession">about $17 a session</strong> on a 12-month rental.</p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><b>Unlimited daily sessions</b><p>Use it every day, on your schedule. At home that works out to <strong id="whySession">about $8 a session</strong> at two sessions a day on a 12-month rental.</p></div>
       <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 17l5-5 4 4 7-8"/><path d="M14 8h6v6"/></svg></div><b>Rent longer, pay less</b><p>Every step up in rental length lowers your monthly rate, up to <strong id="whyOffHome">27%</strong> off at home and <strong id="whyOffBiz">20%</strong> off for businesses.</p></div>
       <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div><b>No risk to start</b><p>Requesting a chamber is free. We confirm delivery to your ZIP first, and you can cancel for a full refund up to 7 days before delivery.</p></div>
     </div>
@@ -200,7 +200,7 @@
         <div class="len">12 months</div>
         <div class="amt"><span id="tierAmt12">$529</span><small> /mo</small></div>
         <div class="save" id="tierSave12">Save 27%</div>
-        <ul><li id="tierNote12">$200 a month off the standard rate</li><li id="tierTot12">$2,400 saved over the year</li><li id="tierSess12">About $17 a session with daily use</li></ul>
+        <ul><li id="tierNote12">$200 a month off the standard rate</li><li id="tierTot12">$2,400 saved over the year</li><li id="tierSess12">About $8 a session at two a day</li></ul>
         <a class="btn btn-primary" href="/book?months=12">Book 12 months →</a>
       </div>
     </div>
@@ -219,10 +219,10 @@
     <div class="math">
       <div class="side"><div class="tag">Typical Utah hyperbaric clinic</div><div class="big">$80–$150</div><div class="sub">per mild (1.3 ATA) session, drop-in</div>
         <ul><li>Drive to the clinic</li><li>Stick to their hours</li><li>Pay per visit, so use stays limited</li><li>40-session protocol: $3,200 to $6,000</li></ul></div>
-      <div class="side win"><div class="tag">Purebaric at home</div><div class="big">~$<span id="cmpSession">17</span><small> /session</small></div><div class="sub">at the 12-month rate, with daily use</div>
-        <ul><li>1.5 ATA chamber in your home</li><li>Session whenever you want</li><li>Unlimited daily use, about 365 sessions a year</li><li>12-month rental: $<span id="cmpAnnual">6,348</span> total</li></ul></div>
+      <div class="side win"><div class="tag">Purebaric at home</div><div class="big">~$<span id="cmpSession">8</span><small> /session</small></div><div class="sub">at the 12-month rate with two sessions a day · unlimited daily sessions included</div>
+        <ul><li>1.5 ATA chamber in your home</li><li>Session whenever you want</li><li>Unlimited daily use, about 730 sessions a year at two a day</li><li>12-month rental: $<span id="cmpAnnual">6,348</span> total</li></ul></div>
     </div>
-    <p class="finep">Clinic pricing references public Utah and national rates for mild hyperbaric (1.3 ATA) sessions at wellness clinics. Medical hard-chamber HBOT centers charge $300 to $400 per session. Per-session math for Purebaric assumes daily use across the rental term.</p>
+    <p class="finep">Clinic pricing references public Utah and national rates for mild hyperbaric (1.3 ATA) sessions at wellness clinics. Medical hard-chamber HBOT centers charge $300 to $400 per session. Per-session math for Purebaric assumes two sessions a day across the rental term.</p>
   </div>
 </section>
 
@@ -339,8 +339,8 @@
     set('tierNote3',money(p1-p3)+' a month off the standard rate');set('tierTot3',money((p1-p3)*3)+' saved over 3 months');
     set('tierNote6',money(p1-p6)+' a month off the standard rate');set('tierTot6',money((p1-p6)*6)+' saved over 6 months');
     set('tierNote12',money(p1-p12)+' a month off the standard rate');set('tierTot12',money((p1-p12)*12)+' saved over the year');
-    var sess=Math.round(p12*12/365);
-    set('tierSess12','About $'+sess+' a session with daily use');set('whySession','about $'+sess+' a session');
+    var sess=Math.floor(p12*12/(365*2)); // two sessions a day at the 12-month rate, as on the homepage
+    set('tierSess12','About $'+sess+' a session at two a day');set('whySession','about $'+sess+' a session');
     set('cmpSession',String(sess));set('cmpAnnual',(p12*12).toLocaleString());
     var steps=document.querySelectorAll('#homeLadder .step'),vals=[p1,p3,p6,p12];
     for(var i=0;i<steps.length;i++){var bar=steps[i].querySelector('.bar'),sv=steps[i].querySelector('.sv');

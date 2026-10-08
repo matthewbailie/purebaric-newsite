@@ -411,7 +411,12 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
     .reviews-band .rv-dots button{width:9px;height:9px;border-radius:50%;border:none;background:var(--line);cursor:pointer;padding:0;transition:background .3s,width .3s}
     .reviews-band .rv-dots button.on{background:var(--terra);width:22px;border-radius:999px}
     @media(max-width:1100px){.reviews-band .rv-card{flex-basis:calc((100% - 18px)/2)}}
-    @media(max-width:820px){.reviews-band .rv-card{flex-basis:84%}}
+    @media(max-width:820px){
+      .reviews-band .rv-card,.reviews-band .rv-carousel[data-count] .rv-card{flex-basis:100%}
+      .reviews-band .rv-carousel[data-count="1"] .rv-card{flex-basis:100%}
+      .reviews-band .rv-arrow{width:42px;height:42px;font-size:22px}
+      .reviews-band .rv-controls{gap:18px;margin-top:14px}
+    }
   </style>
   <h2>Hear from our renters</h2><p class="lead">Real experiences from Purebaric renters.</p>
   <div class="rv-carousel" id="rvCarousel">
