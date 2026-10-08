@@ -466,6 +466,8 @@ Customer testimonials with a moderation gate. **No star ratings** by design — 
 | 4–11 months | $579 | Save 21% |
 | 12 months | $529 | Save 27% |
 
+**Pricing page (`pricing.html`, rewritten 2026-10-08).** One page with a "Why rent" benefits strip, a **For your home** section (savings ladder + four tier cards with monthly saving, saving over the term, and about-$17-a-session maths) and a **For your business** section (four business tiers, the one-time $200, and the net-revenue table copied from `business.html`: net = sessions × ($75 − $1.30) − standard monthly rate). Everything with an id is filled by the script at the bottom from `GET /api/pricing` (`months` for home, `business` for business), so a rate change in the admin Pricing tab updates both sections; the static defaults in the HTML and JSON-LD must be updated by hand if the defaults in `storage.js` change.
+
 **Prices are admin-managed (2026-09-23).** Rates are now **per rental length (1–12 months)**, edited in the **admin → Pricing tab**, stored in the `settings` Blobs store (key `pricing`), and served at **`GET /api/pricing`** (`{months:{1..12}}`; admin CRUD at `/api/admin/pricing`). Defaults match the table above. The table above expands per-length as 1:729, 2-3:659, 4-11:579, 12:529.
 
 - **Website reads it live:** `index.html` + `book.html` calculators call `/api/pricing` and use `rate(m)=table[m]` (baked-in fallback if the fetch fails); `pricing.html` tier cards/savings/annual and the `from $X` figures on `index.html`/`chambers.html` update via the same fetch. The `PB_PF` fallback objects and the pricing-page inline `PF` mirror the defaults — keep them in sync if defaults change.

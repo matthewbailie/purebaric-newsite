@@ -3,14 +3,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pricing, Purebaric Hyperbaric Chamber Rentals in Utah</title>
-<meta name="description" content="Rent longer, save more. Purebaric 1.5 ATA mild hyperbaric chamber rentals from $729/mo, dropping to $529/mo on annual rentals. Delivery, setup, and support always included.">
+<meta name="description" content="Purebaric pricing for homes and businesses. 1.5 ATA mild hyperbaric chamber rentals from $729/mo at home, down to $529/mo on a 12-month rental; business chambers from $979/mo, down to $783/mo. Delivery, setup, training and support included.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://purebaric.com/pricing">
 <link rel="icon" type="image/svg+xml" href="/images/favicon.svg?v=2">
 <link rel="icon" href="/images/favicon.ico">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Pricing, Purebaric Hyperbaric Chamber Rentals in Utah">
-<meta property="og:description" content="Rent longer, save more. From $729/mo down to $529/mo on annual rentals, delivery, setup, and support always included.">
+<meta property="og:description" content="The longer you rent, the less you pay. Home rentals from $729/mo down to $529/mo; business chambers from $979/mo down to $783/mo. Delivery, setup, training and support included.">
 <meta property="og:url" content="https://purebaric.com/pricing">
 <meta property="og:image" content="https://purebaric.com/images/chamber-hero.jpg?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,54 +18,96 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/warm.css">
 <style>
+.jump{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.jump .btn{padding:11px 20px}
+.why{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.why .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.why .ic{width:40px;height:40px;border-radius:10px;background:var(--terra-bg);color:var(--terra-d);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.why .ic svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.why b{display:block;font-size:15px;font-weight:700;margin-bottom:4px}.why p{font-size:13px;color:var(--muted);line-height:1.5}
+.seg{display:inline-flex;align-items:center;gap:8px;background:var(--terra-bg);color:var(--terra-d);padding:6px 13px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.02em}
+.seg.biz{background:var(--ink);color:#fff}
+.ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:end;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 22px 14px;margin-bottom:18px}
+.ladder .step{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.ladder .bar{width:100%;max-width:120px;border-radius:10px 10px 4px 4px;background:var(--cream2);border:1px solid var(--line);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;font-weight:800;font-size:18px;letter-spacing:-.01em;transition:height .3s}
+.ladder .step.best .bar{background:var(--terra);border-color:var(--terra-d);color:#fff}
+.ladder .lbl{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.ladder .sv{font-size:12px;font-weight:700;color:var(--ok);min-height:16px}
+.ladder .step.base .sv{color:var(--muted);font-weight:500}
+.ladder-note{grid-column:1/-1;font-size:13px;color:var(--muted);text-align:center;margin-top:6px}
 .tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .tier{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;position:relative}
 .tier.best{border-color:var(--terra);box-shadow:0 0 0 1px var(--terra)}
 .best-tag{display:inline-block;background:var(--terra);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 10px;border-radius:999px;margin-bottom:10px;align-self:flex-start}
 .tier .len{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
-.tier .amt{font-size:30px;font-weight:800;margin:10px 0 8px;letter-spacing:-.02em}.tier .amt small{font-size:14px;color:var(--muted);font-weight:500}
+.tier .amt{font-size:30px;font-weight:800;margin:10px 0 6px;letter-spacing:-.02em}.tier .amt small{font-size:14px;color:var(--muted);font-weight:500}
 .tier .save{align-self:flex-start;background:var(--ok-bg);color:var(--ok);font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;margin-bottom:12px}
 .tier .save.none{background:var(--cream2);color:var(--muted)}
-.tier .note{font-size:13px;color:var(--muted);margin-bottom:18px;flex:1}
-.tier .btn-primary{text-align:center;width:100%}
-.tier .btn-ghost{text-align:center;width:100%}
+.tier ul{list-style:none;font-size:13px;color:#5f544d;margin:0 0 18px;flex:1}
+.tier li{padding:4px 0 4px 18px;position:relative}.tier li:before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
+.tier li.muted{color:var(--muted)}.tier li.muted:before{content:"–";color:var(--muted)}
+.tier .btn{text-align:center;width:100%}
 .math{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);margin-top:8px}
 .math .side{padding:26px}.math .side.win{background:var(--terra-bg)}
 .math .tag{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}.math .win .tag{color:var(--terra-d)}
-.math .big{font-size:28px;font-weight:800;margin:6px 0 2px}.math .sub{font-size:13px;color:var(--muted)}
+.math .big{font-size:28px;font-weight:800;margin:6px 0 2px}.math .big small{font-size:14px;color:var(--muted);font-weight:500}.math .sub{font-size:13px;color:var(--muted)}
 .math ul{list-style:none;margin-top:14px;font-size:14px}
 .math li{padding:5px 0 5px 20px;position:relative;color:#5f544d}
 .math .win li:before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
 .math .side:not(.win) li:before{content:"–";position:absolute;left:0;color:var(--muted)}
 .finep{font-size:12px;color:var(--muted);line-height:1.6;margin-top:14px}
 .reassure{margin-top:18px;background:var(--ok-bg);border:1px solid #cfe0b0;border-radius:12px;padding:16px 18px;font-size:14px;color:#3f5623;line-height:1.55}
-.reassure strong{color:#3f5623}
+.reassure strong,.reassure a{color:#3f5623}.reassure a{font-weight:700;text-decoration:underline}
+.biz-wrap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px}
+.biz-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:26px;align-items:start}
+.biz-tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 14px}
+.bt{border:1px solid var(--line);border-radius:12px;padding:14px 12px;text-align:center;background:var(--cream)}
+.bt.best{border-color:var(--terra);box-shadow:0 0 0 1px var(--terra)}
+.bt .len{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.bt .amt{font-size:22px;font-weight:800;margin:6px 0 2px;letter-spacing:-.01em}.bt .amt small{font-size:12px;color:var(--muted);font-weight:500}
+.bt .sv{font-size:12px;font-weight:700;color:var(--ok)}.bt .sv.none{color:var(--muted);font-weight:500}
+.bt .tot{font-size:11px;color:var(--muted);margin-top:4px}
+.biz-inc{list-style:none;display:grid;gap:8px;font-size:14px;color:#5f544d;margin:0 0 18px}
+.biz-inc li{padding-left:22px;position:relative}.biz-inc li:before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
+.biz-cta{display:flex;gap:10px;flex-wrap:wrap}
+.rev{background:var(--terra-bg);border-top:4px solid var(--terra);border-radius:12px;padding:20px}
+.rev .k{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--terra-d)}
+.rev .v{font-size:34px;font-weight:800;margin:6px 0 2px;letter-spacing:-.01em}.rev .v small{font-size:13px;font-weight:700;color:var(--terra-d)}
+.rev p{font-size:13px;color:#5f544d}
+.rev table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+.rev th,.rev td{text-align:left;padding:7px 0;border-top:1px solid rgba(154,79,58,.18)}.rev th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--terra-d);border-top:none}
+.rev td.n,.rev th.n{text-align:right}.rev td.b{font-weight:800}
 .incl{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .incl .item{display:flex;gap:12px;align-items:flex-start}
 .incl .ic{width:40px;height:40px;border-radius:10px;background:var(--terra-bg);color:var(--terra-d);display:flex;align-items:center;justify-content:center;flex:none}
 .incl .ic svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
 .incl b{display:block;font-weight:600;font-size:15px}.incl span{color:var(--muted);font-size:13px}
-@media(max-width:820px){.tiers{grid-template-columns:1fr 1fr}.math{grid-template-columns:1fr}.incl{grid-template-columns:1fr}}
-@media(max-width:520px){.tiers{grid-template-columns:1fr}}
+@media(max-width:900px){.why{grid-template-columns:1fr 1fr}.biz-grid{grid-template-columns:1fr}}
+@media(max-width:820px){.tiers{grid-template-columns:1fr 1fr}.math{grid-template-columns:1fr}.incl{grid-template-columns:1fr}.biz-tiers{grid-template-columns:1fr 1fr}.ladder{padding:18px 14px 12px}.ladder .bar{font-size:15px}}
+@media(max-width:520px){.tiers{grid-template-columns:1fr}.why{grid-template-columns:1fr}.ladder{gap:6px;padding:16px 10px 10px}.ladder .step{gap:4px}.ladder .lbl,.ladder .sv{font-size:10px;white-space:nowrap}.ladder .bar{font-size:13px;padding-bottom:6px;border-radius:8px 8px 3px 3px}.biz-tiers{grid-template-columns:1fr 1fr}.biz-wrap{padding:18px 14px}}
 </style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Service",
   "name": "Purebaric hyperbaric chamber rental",
-  "serviceType": "At-home mild hyperbaric (1.5 ATA) oxygen chamber rental",
+  "serviceType": "Mild hyperbaric (1.5 ATA) oxygen chamber rental for homes and businesses",
   "provider": { "@type": "LocalBusiness", "name": "Purebaric", "@id": "https://purebaric.com/#business" },
   "areaServed": { "@type": "State", "name": "Utah" },
   "url": "https://purebaric.com/pricing",
-  "description": "Rent a 1.5 ATA mild hyperbaric oxygen chamber for home use in Utah. Every rental includes delivery, installation, hands-on training, sanitization, and pickup.",
+  "description": "Rent a 1.5 ATA mild hyperbaric oxygen chamber in Utah for your home or your business. Every rental includes delivery, installation, hands-on training, sanitization, and pickup.",
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Rental lengths (monthly rate)",
     "itemListElement": [
-      { "@type": "Offer", "name": "1 month", "priceCurrency": "USD", "price": "729", "url": "https://purebaric.com/book?months=1" },
-      { "@type": "Offer", "name": "2 to 3 months", "priceCurrency": "USD", "price": "659", "url": "https://purebaric.com/book?months=3" },
-      { "@type": "Offer", "name": "4 to 11 months", "priceCurrency": "USD", "price": "579", "url": "https://purebaric.com/book?months=6" },
-      { "@type": "Offer", "name": "12 months", "priceCurrency": "USD", "price": "529", "url": "https://purebaric.com/book?months=12" }
+      { "@type": "Offer", "name": "Home, 1 month", "priceCurrency": "USD", "price": "729", "url": "https://purebaric.com/book?months=1" },
+      { "@type": "Offer", "name": "Home, 2 to 3 months", "priceCurrency": "USD", "price": "659", "url": "https://purebaric.com/book?months=3" },
+      { "@type": "Offer", "name": "Home, 4 to 11 months", "priceCurrency": "USD", "price": "579", "url": "https://purebaric.com/book?months=6" },
+      { "@type": "Offer", "name": "Home, 12 months", "priceCurrency": "USD", "price": "529", "url": "https://purebaric.com/book?months=12" },
+      { "@type": "Offer", "name": "Business, 1 to 2 months", "priceCurrency": "USD", "price": "979", "url": "https://purebaric.com/book?type=business" },
+      { "@type": "Offer", "name": "Business, 3 to 5 months", "priceCurrency": "USD", "price": "881", "url": "https://purebaric.com/book?type=business" },
+      { "@type": "Offer", "name": "Business, 6 to 11 months", "priceCurrency": "USD", "price": "832", "url": "https://purebaric.com/book?type=business" },
+      { "@type": "Offer", "name": "Business, 12 months", "priceCurrency": "USD", "price": "783", "url": "https://purebaric.com/book?type=business" }
     ]
   }
 }
@@ -95,68 +137,133 @@
 <section class="page-hero">
   <div class="wrap">
     <span class="eyebrow2">Pricing</span>
-    <h1>Rent longer, save more</h1>
-    <p>Every rental includes delivery, professional installation, hands-on training, sanitization, and pickup. The longer you rent the Soft-Shell 1.5 ATA, the lower your monthly rate.</p>
+    <h1>One simple rule: the longer you rent, the less you pay</h1>
+    <p>Every rental includes delivery, professional installation, hands-on training, sanitization, pickup, and a team you can call or text. No purchase, no maintenance, no charge until we confirm your delivery.</p>
+    <div class="jump"><a class="btn btn-primary" href="#home">For your home</a><a class="btn btn-ghost" href="#business">For your business</a></div>
   </div>
 </section>
 
 <section class="section">
   <div class="wrap">
     <div class="section-head">
-      <span class="eyebrow2">Soft-Shell 1.5 ATA</span>
-      <h2>Monthly rate by rental length</h2>
-      <p>One chamber, and the longer you rent it, the lower your monthly rate.</p>
+      <span class="eyebrow2">Why rent</span>
+      <h2>Everything a chamber owner gets, without the price of owning one</h2>
+      <p>Buying a chamber means a large upfront payment, then storage, upkeep, and resale when you are done. Renting gives you the same unlimited daily access for one monthly rate, and we handle the rest.</p>
+    </div>
+    <div class="why">
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 13h11V6H3zM14 8h4l3 3v2h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></div><b>All-inclusive, one rate</b><p>Delivery, setup, pressure test, training, sanitization, and pickup are in the monthly price. Nothing is added on.</p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><b>Unlimited daily sessions</b><p>Use it every day, on your schedule. At home that works out to <strong id="whySession">about $17 a session</strong> on a 12-month rental.</p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 17l5-5 4 4 7-8"/><path d="M14 8h6v6"/></svg></div><b>Rent longer, pay less</b><p>Every step up in rental length lowers your monthly rate, up to <strong id="whyOffHome">27%</strong> off at home and <strong id="whyOffBiz">20%</strong> off for businesses.</p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div><b>No risk to start</b><p>Requesting a chamber is free. We confirm delivery to your ZIP first, and you can cancel for a full refund up to 7 days before delivery.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="home">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="seg">For your home</span>
+      <h2>Home rentals: from <span id="homeFrom">$729</span> a month, down to <span id="homeLow">$529</span></h2>
+      <p>The Soft-Shell 1.5 ATA in your home, with unlimited daily sessions. Pick a length, and your monthly rate drops as the rental gets longer.</p>
+    </div>
+    <div class="ladder" id="homeLadder">
+      <div class="step base"><div class="sv">Standard rate</div><div class="bar" style="height:150px">$729</div><div class="lbl">1 month</div></div>
+      <div class="step"><div class="sv">Save 10%</div><div class="bar" style="height:136px">$659</div><div class="lbl">2–3 months</div></div>
+      <div class="step"><div class="sv">Save 21%</div><div class="bar" style="height:119px">$579</div><div class="lbl">4–11 months</div></div>
+      <div class="step best"><div class="sv">Save 27%</div><div class="bar" style="height:109px">$529</div><div class="lbl">12 months</div></div>
+      <div class="ladder-note">Monthly rate per rental length. Every rental includes the same delivery, setup, training, and support.</div>
     </div>
     <div class="tiers">
       <div class="tier">
         <div class="len">1 month</div>
         <div class="amt"><span id="tierAmt1">$729</span><small> /mo</small></div>
         <div class="save none">Standard rate</div>
-        <div class="note">Great for trying it out or a short protocol.</div>
-        <a class="btn btn-ghost" href="/book?months=1">Book →</a>
+        <ul><li>Try it out or run a short protocol</li><li>Unlimited daily sessions</li><li class="muted">No length discount</li></ul>
+        <a class="btn btn-ghost" href="/book?months=1">Book 1 month →</a>
       </div>
       <div class="tier">
         <div class="len">2–3 months</div>
         <div class="amt"><span id="tierAmt3">$659</span><small> /mo</small></div>
         <div class="save" id="tierSave3">Save 10%</div>
-        <div class="note" id="tierNote3">$70/mo off the 1-month rate.</div>
-        <a class="btn btn-ghost" href="/book?months=3">Book →</a>
+        <ul><li id="tierNote3">$70 a month off the standard rate</li><li id="tierTot3">$210 saved over 3 months</li><li>Unlimited daily sessions</li></ul>
+        <a class="btn btn-ghost" href="/book?months=3">Book 3 months →</a>
       </div>
       <div class="tier">
         <div class="len">4–11 months</div>
         <div class="amt"><span id="tierAmt6">$579</span><small> /mo</small></div>
         <div class="save" id="tierSave6">Save 21%</div>
-        <div class="note" id="tierNote6">$150/mo off, our most popular range.</div>
-        <a class="btn btn-primary" href="/book?months=6">Book →</a>
+        <ul><li id="tierNote6">$150 a month off the standard rate</li><li id="tierTot6">$900 saved over 6 months</li><li>Our most popular range</li></ul>
+        <a class="btn btn-primary" href="/book?months=6">Book 6 months →</a>
       </div>
       <div class="tier best">
         <span class="best-tag">Best value</span>
         <div class="len">12 months</div>
         <div class="amt"><span id="tierAmt12">$529</span><small> /mo</small></div>
         <div class="save" id="tierSave12">Save 27%</div>
-        <div class="note" id="tierNote12">$200/mo off, about $6,348 for a full year of unlimited daily use.</div>
-        <a class="btn btn-primary" href="/book?months=12">Book →</a>
+        <ul><li id="tierNote12">$200 a month off the standard rate</li><li id="tierTot12">$2,400 saved over the year</li><li id="tierSess12">About $17 a session with daily use</li></ul>
+        <a class="btn btn-primary" href="/book?months=12">Book 12 months →</a>
       </div>
     </div>
-    <p class="finep">Rates are per month for the Soft-Shell 1.5 ATA and include delivery, setup, training, sanitization, and pickup. No charge upfront, we confirm delivery to your ZIP before anything is billed.</p>
-    <div class="reassure"><strong>Reserve with confidence.</strong> Submitting a request is free, we confirm availability and delivery to your ZIP first. Once confirmed, we send the full rental agreement for you to review and collect a deposit to hold your delivery date; your first month is due at delivery and longer rentals are billed monthly after that. Cancel for a full refund any time up to 7 days before your scheduled delivery. Questions before you commit? Call or text <a href="tel:+18019010873" style="color:#3f5623;font-weight:700;text-decoration:underline">(801) 901-0873</a>.</div>
+    <p class="finep">Rates are per month for the Soft-Shell 1.5 ATA and include delivery, setup, training, sanitization, and pickup. Savings compare each rate with the 1-month rate over the same number of months. Rentals end at the end of the term, so there is no long-term commitment beyond the length you choose.</p>
+    <div class="reassure"><strong>Reserve with confidence.</strong> Submitting a request is free, we confirm availability and delivery to your ZIP first. Once confirmed, we send the rental agreement for you to review and collect a deposit to hold your delivery date; your first month is due at delivery and longer rentals are billed monthly after that. Cancel for a full refund any time up to 7 days before your scheduled delivery. Questions before you commit? Call or text <a href="tel:+18019010873">(801) 901-0873</a>.</div>
   </div>
 </section>
 
 <section class="section">
   <div class="wrap">
     <div class="section-head">
-      <span class="eyebrow2">The math</span>
-      <h2>Less than the cost of a single month at a clinic</h2>
-      <p>In Utah, walk-in mild hyperbaric (1.3 ATA) sessions run $80–$150 at wellness clinics. A typical recovery protocol asks for 3–5 sessions a week, costs add up fast.</p>
+      <span class="eyebrow2">The math at home</span>
+      <h2>A year at home costs about the same as one clinic protocol</h2>
+      <p>In Utah, walk-in mild hyperbaric (1.3 ATA) sessions run $80 to $150 at wellness clinics. A typical protocol asks for 3 to 5 sessions a week, and the costs add up fast.</p>
     </div>
     <div class="math">
       <div class="side"><div class="tag">Typical Utah hyperbaric clinic</div><div class="big">$80–$150</div><div class="sub">per mild (1.3 ATA) session, drop-in</div>
-        <ul><li>Drive to the clinic</li><li>Stick to their hours</li><li>High cost per visit, limited use</li><li>40-session protocol: $3,200–$6,000</li></ul></div>
-      <div class="side win"><div class="tag">Purebaric at home</div><div class="big">~$<span id="cmpSession">17</span><small style="font-size:14px;color:var(--muted);font-weight:500"> /session</small></div><div class="sub">at 1-year rate, unlimited daily use</div>
-        <ul><li>1.5 ATA chamber in your home</li><li>Session whenever you want</li><li>Unlimited daily use</li><li>1-year rental: $<span id="cmpAnnual">6,348</span> total</li></ul></div>
+        <ul><li>Drive to the clinic</li><li>Stick to their hours</li><li>Pay per visit, so use stays limited</li><li>40-session protocol: $3,200 to $6,000</li></ul></div>
+      <div class="side win"><div class="tag">Purebaric at home</div><div class="big">~$<span id="cmpSession">17</span><small> /session</small></div><div class="sub">at the 12-month rate, with daily use</div>
+        <ul><li>1.5 ATA chamber in your home</li><li>Session whenever you want</li><li>Unlimited daily use, about 365 sessions a year</li><li>12-month rental: $<span id="cmpAnnual">6,348</span> total</li></ul></div>
     </div>
-    <p class="finep">Clinic pricing references public Utah and national rates for mild hyperbaric (1.3 ATA) sessions at wellness clinics. Medical hard-chamber HBOT centers charge $300–$400 per session. Per-session math for Purebaric assumes daily use across the rental term.</p>
+    <p class="finep">Clinic pricing references public Utah and national rates for mild hyperbaric (1.3 ATA) sessions at wellness clinics. Medical hard-chamber HBOT centers charge $300 to $400 per session. Per-session math for Purebaric assumes daily use across the rental term.</p>
+  </div>
+</section>
+
+<section class="section" id="business">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="seg biz">For your business</span>
+      <h2>Business chambers: from <span id="bizFrom">$979</span> a month per chamber, down to <span id="bizLow">$783</span></h2>
+      <p>For gyms, spas, salons, clinics, and studios that want to sell sessions. We deliver, install, train your staff, and service the chamber for the whole rental. Longer rentals save up to <span id="bizOffMax">20%</span>.</p>
+    </div>
+    <div class="biz-wrap">
+      <div class="biz-grid">
+        <div>
+          <div class="biz-tiers">
+            <div class="bt"><div class="len">1–2 months</div><div class="amt"><span id="bizAmt1">$979</span><small> /mo</small></div><div class="sv none">Standard rate</div><div class="tot">per chamber</div></div>
+            <div class="bt"><div class="len">3–5 months</div><div class="amt"><span id="bizAmt3">$881</span><small> /mo</small></div><div class="sv" id="bizSave3">Save 10%</div><div class="tot" id="bizTot3">$294 saved over 3 months</div></div>
+            <div class="bt"><div class="len">6–11 months</div><div class="amt"><span id="bizAmt6">$832</span><small> /mo</small></div><div class="sv" id="bizSave6">Save 15%</div><div class="tot" id="bizTot6">$882 saved over 6 months</div></div>
+            <div class="bt best"><div class="len">12 months</div><div class="amt"><span id="bizAmt12">$783</span><small> /mo</small></div><div class="sv" id="bizSave12">Save 20%</div><div class="tot" id="bizTot12">$2,352 saved over the year</div></div>
+          </div>
+          <ul class="biz-inc">
+            <li><strong>One-time $200</strong> for staff training and your initial masks and cleaning supplies. Delivery and installation are included.</li>
+            <li><strong>Service and support for the whole rental.</strong> Call or text our team, Monday to Saturday; we handle maintenance and swaps.</li>
+            <li><strong>Unlimited sessions.</strong> Charge what you like per session; the rental does not change with usage.</li>
+            <li><strong>Per chamber.</strong> Want two or more? <a href="/contact?topic=custom" style="color:var(--terra-d);font-weight:600;text-decoration:underline">Ask us for a multi-chamber quote.</a></li>
+          </ul>
+          <div class="biz-cta"><a class="btn btn-primary" href="/book?type=business">Book for your business →</a><a class="btn btn-ghost" href="/business">See the full business page</a></div>
+        </div>
+        <div class="rev">
+          <div class="k">Estimated net revenue, one chamber</div>
+          <div class="v">$<span id="revMod">6,686</span> <small>per month</small></div>
+          <p>at moderate usage, an average of four 60-minute sessions a day, six days a week, at $75 a session and the standard monthly rate.</p>
+          <table>
+            <tr><th>Usage</th><th class="n">Sessions / mo</th><th class="n">Net revenue</th></tr>
+            <tr><td>Light: 2 a day</td><td class="n">52</td><td class="n b">$<span id="revLight">2,853</span></td></tr>
+            <tr><td>Moderate: 4 a day</td><td class="n">104</td><td class="n b">$<span id="revMod2">6,686</span></td></tr>
+            <tr><td>Strong: 6 a day</td><td class="n">156</td><td class="n b">$<span id="revStrong">10,518</span></td></tr>
+          </table>
+          <p style="margin-top:12px;font-size:12px">Net revenue is session revenue less the chamber rental and about $1.30 per use in masks and cleaning supplies, before staff time, overhead, and taxes. Utah businesses publish single sessions from $75 to $150. Estimates, not guarantees.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -164,11 +271,11 @@
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow2">Always included</span>
-      <h2>Every rental includes</h2>
+      <h2>Every rental, home or business, includes</h2>
     </div>
     <div class="incl">
-      <div class="item"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 13h11V6H3zM14 8h4l3 3v2h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></div><div><b>Full-service delivery</b><span>We deliver, set up, and pressure-test your chamber</span></div></div>
-      <div class="item"><div class="ic"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5z"/><path d="M6 12v5c0 1 3 2.5 6 2.5s6-1.5 6-2.5v-5"/></svg></div><div><b>Hands-on training</b><span>Safe operation, session protocols, emergency steps</span></div></div>
+      <div class="item"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 13h11V6H3zM14 8h4l3 3v2h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></div><div><b>Full-service delivery</b><span>We deliver, set up, and pressure-test your chamber, then pick it up when the rental ends</span></div></div>
+      <div class="item"><div class="ic"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5z"/><path d="M6 12v5c0 1 3 2.5 6 2.5s6-1.5 6-2.5v-5"/></svg></div><div><b>Hands-on training</b><span>Safe operation, session protocols, emergency steps, for you or your staff</span></div></div>
       <div class="item"><div class="ic"><svg viewBox="0 0 24 24"><path d="M8 3h8l-1 5H9zM7 8h10l1 11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z"/><path d="M12 12v4"/></svg></div><div><b>Sanitization</b><span>Fully sanitized between every rental</span></div></div>
       <div class="item"><div class="ic"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L20 13l1 4v2a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></div><div><b>Call or text our team</b><span>(801) 901-0873, Mon to Sat, throughout your rental</span></div></div>
     </div>
@@ -180,8 +287,8 @@
     <div class="cta-band">
       <img class="cta-img" src="/images/chamber-side.jpg?v=2" alt="Purebaric hyperbaric chamber">
       <div class="cta-text">
-        <h2>Need a custom length?</h2>
-        <p>1-week to multi-year rentals are available with custom pricing. Get in touch and we'll put together a quote.</p>
+        <h2>Need a custom length or several chambers?</h2>
+        <p>One-week trials, multi-year rentals, and multi-chamber placements are priced individually. Tell us what you have in mind and we will put together a quote.</p>
         <a class="btn btn-primary" href="/contact?topic=custom">Request a custom quote →</a>
       </div>
     </div>
@@ -215,22 +322,42 @@
 
 <script src="/warm.js"></script>
 <script>
-/* live pricing: reflect the admin-managed rate table on the tiers + comparison */
+/* live pricing: both rate tables come from the admin Pricing tab via /api/pricing */
 (function(){
   var PF={1:729,2:659,3:659,4:579,5:579,6:579,7:579,8:579,9:579,10:579,11:579,12:529};
-  function apply(P){
+  var BF={1:979,2:979,3:881,4:881,5:881,6:832,7:832,8:832,9:832,10:832,11:832,12:783};
+  function set(id,t){var e=document.getElementById(id);if(e)e.textContent=t;}
+  function money(n){return '$'+Math.round(n).toLocaleString();}
+  function pct(base,p){return Math.round((base-p)/base*100);}
+  function applyHome(P){
     function r(m){return P[m]||PF[m];}
     var p1=r(1),p3=r(3),p6=r(6),p12=r(12);
-    function off(p){return Math.round((p1-p)/p1*100);}
-    function set(id,t){var e=document.getElementById(id);if(e)e.textContent=t;}
-    set('tierAmt1','$'+p1);set('tierAmt3','$'+p3);set('tierAmt6','$'+p6);set('tierAmt12','$'+p12);
-    set('tierSave3','Save '+off(p3)+'%');set('tierSave6','Save '+off(p6)+'%');set('tierSave12','Save '+off(p12)+'%');
-    set('tierNote3','$'+(p1-p3)+'/mo off the 1-month rate.');
-    set('tierNote6','$'+(p1-p6)+'/mo off, our most popular range.');
-    set('tierNote12','$'+(p1-p12)+'/mo off, about $'+(p12*12).toLocaleString()+' for a full year of unlimited daily use.');
-    set('cmpSession',String(Math.round(p12*12/365)));set('cmpAnnual',(p12*12).toLocaleString());
+    set('homeFrom',money(p1));set('homeLow',money(p12));set('whyOffHome',pct(p1,p12)+'%');
+    set('tierAmt1',money(p1));set('tierAmt3',money(p3));set('tierAmt6',money(p6));set('tierAmt12',money(p12));
+    set('tierSave3','Save '+pct(p1,p3)+'%');set('tierSave6','Save '+pct(p1,p6)+'%');set('tierSave12','Save '+pct(p1,p12)+'%');
+    set('tierNote3',money(p1-p3)+' a month off the standard rate');set('tierTot3',money((p1-p3)*3)+' saved over 3 months');
+    set('tierNote6',money(p1-p6)+' a month off the standard rate');set('tierTot6',money((p1-p6)*6)+' saved over 6 months');
+    set('tierNote12',money(p1-p12)+' a month off the standard rate');set('tierTot12',money((p1-p12)*12)+' saved over the year');
+    var sess=Math.round(p12*12/365);
+    set('tierSess12','About $'+sess+' a session with daily use');set('whySession','about $'+sess+' a session');
+    set('cmpSession',String(sess));set('cmpAnnual',(p12*12).toLocaleString());
+    var steps=document.querySelectorAll('#homeLadder .step'),vals=[p1,p3,p6,p12];
+    for(var i=0;i<steps.length;i++){var bar=steps[i].querySelector('.bar'),sv=steps[i].querySelector('.sv');
+      bar.textContent=money(vals[i]);bar.style.height=Math.round(150*vals[i]/p1)+'px';
+      if(i>0)sv.textContent='Save '+pct(p1,vals[i])+'%';}
   }
-  fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){if(j&&j.months)apply(j.months);}).catch(function(){});
+  function applyBiz(B){
+    function r(m){return B[m]||BF[m];}
+    var b1=r(1),b3=r(3),b6=r(6),b12=r(12);
+    set('bizFrom',money(b1));set('bizLow',money(b12));set('bizOffMax',pct(b1,b12)+'%');set('whyOffBiz',pct(b1,b12)+'%');
+    set('bizAmt1',money(b1));set('bizAmt3',money(b3));set('bizAmt6',money(b6));set('bizAmt12',money(b12));
+    set('bizSave3','Save '+pct(b1,b3)+'%');set('bizSave6','Save '+pct(b1,b6)+'%');set('bizSave12','Save '+pct(b1,b12)+'%');
+    set('bizTot3',money((b1-b3)*3)+' saved over 3 months');set('bizTot6',money((b1-b6)*6)+' saved over 6 months');set('bizTot12',money((b1-b12)*12)+' saved over the year');
+    function net(sessions){return Math.round(sessions*(75-1.30)-b1).toLocaleString();}
+    set('revLight',net(52));set('revMod',net(104));set('revMod2',net(104));set('revStrong',net(156));
+  }
+  applyHome(PF);applyBiz(BF);
+  fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){if(j&&j.months)applyHome(j.months);if(j&&j.business)applyBiz(j.business);}).catch(function(){});
 })();
 </script>
 </body></html>
