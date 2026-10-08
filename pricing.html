@@ -20,33 +20,45 @@
 <style>
 .jump{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
 .jump .btn{padding:11px 20px}
-.why{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.why .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
-.why .ic{width:40px;height:40px;border-radius:10px;background:var(--terra-bg);color:var(--terra-d);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
-.why .ic svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.why b{display:block;font-size:15px;font-weight:700;margin-bottom:4px}.why p{font-size:13px;color:var(--muted);line-height:1.5}
 .seg{display:inline-flex;align-items:center;gap:8px;background:var(--terra-bg);color:var(--terra-d);padding:6px 13px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.02em}
 .seg.biz{background:var(--ink);color:#fff}
-.ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:end;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 22px 14px;margin-bottom:18px}
-.ladder .step{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
-.ladder .bar{width:100%;max-width:120px;border-radius:10px 10px 4px 4px;background:var(--cream2);border:1px solid var(--line);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;font-weight:800;font-size:18px;letter-spacing:-.01em;transition:height .3s}
-.ladder .step.best .bar{background:var(--terra);border-color:var(--terra-d);color:#fff}
-.ladder .lbl{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
-.ladder .sv{font-size:12px;font-weight:700;color:var(--ok);min-height:16px}
-.ladder .step.base .sv{color:var(--muted);font-weight:500}
-.ladder-note{grid-column:1/-1;font-size:13px;color:var(--muted);text-align:center;margin-top:6px}
-.tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.tier{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;position:relative}
-.tier.best{border-color:var(--terra);box-shadow:0 0 0 1px var(--terra)}
-.best-tag{display:inline-block;background:var(--terra);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 10px;border-radius:999px;margin-bottom:10px;align-self:flex-start}
-.tier .len{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
-.tier .amt{font-size:30px;font-weight:800;margin:10px 0 6px;letter-spacing:-.02em}.tier .amt small{font-size:14px;color:var(--muted);font-weight:500}
-.tier .save{align-self:flex-start;background:var(--ok-bg);color:var(--ok);font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;margin-bottom:12px}
-.tier .save.none{background:var(--cream2);color:var(--muted)}
-.tier ul{list-style:none;font-size:13px;color:#5f544d;margin:0 0 18px;flex:1}
-.tier li{padding:4px 0 4px 18px;position:relative}.tier li:before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
-.tier li.muted{color:var(--muted)}.tier li.muted:before{content:"–";color:var(--muted)}
-.tier .btn{text-align:center;width:100%}
+.home-grid{display:grid;grid-template-columns:1fr 420px;gap:34px;align-items:start}
+.home-inc{list-style:none;display:grid;gap:10px;font-size:14px;color:#5f544d;margin:0}
+.home-inc li{padding-left:22px;position:relative}.home-inc li:before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
+/* booking calculator, same module as the homepage */
+.book{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.ptop{display:flex;align-items:baseline;gap:8px}
+.price{font-size:32px;font-weight:800;letter-spacing:-.02em}.permo{font-size:16px;color:var(--muted);font-weight:500}
+.strike{font-size:14px;color:var(--muted);font-weight:500;text-decoration:line-through}
+.svwrap{overflow:hidden;height:36px;opacity:0;transform:translateY(4px);padding:8px 0 0 3px;margin-left:-3px;transition:opacity .35s ease,transform .42s cubic-bezier(.22,1,.36,1)}
+.svwrap.open{opacity:1;transform:translateY(0)}
+.sv1{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:2px 0}
+.pill1{background:var(--ok-bg);color:var(--ok);font-size:12px;font-weight:600;padding:4px 11px;border-radius:999px;white-space:nowrap;transform-origin:left center}
+.txt1{font-size:14px;color:var(--ok);font-weight:500}
+@keyframes pillpop{0%{transform:scale(.86);opacity:.5}60%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
+.pill1.pulse{animation:pillpop .34s cubic-bezier(.22,1,.36,1)}
+.selrow{margin-top:16px}
+.selrow label{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;display:block;margin-bottom:6px}
+.selrow select{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-family:inherit;font-size:14px;font-weight:500;background:#fff;color:var(--ink)}
+.slider-block{margin:20px 0 4px}
+.slider-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.slider-head label{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600}
+.slider-head span{font-size:14px;font-weight:600;color:var(--terra-d);background:var(--terra-bg);padding:3px 12px;border-radius:999px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:999px;background:var(--cream2);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--terra);cursor:pointer;border:3px solid #fff}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--terra);cursor:pointer;border:3px solid #fff}
+.ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:8px}
+.field{margin-top:14px}
+.field label{display:block;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:6px}
+.field input{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-family:inherit;font-size:14px;font-weight:500;background:#fff;color:var(--ink)}
+.field input:focus{outline:none;border-color:var(--terra)}
+.field input::placeholder{color:#b3a89b;font-weight:400}
+.zipnote{font-size:12px;margin-top:8px;line-height:1.5}.zipnote.ok{color:var(--ok)}.zipnote.warn{color:var(--terra-d)}
+.brow{display:flex;justify-content:space-between;font-size:14px;color:#5f544d;font-weight:400;margin-top:12px}
+.brow .amt{color:var(--ok);font-weight:600}
+.total{display:flex;justify-content:space-between;font-weight:700;font-size:16px;border-top:1px solid var(--line);margin-top:16px;padding-top:16px}
+.book .btn-primary{width:100%;margin-top:16px;padding:14px;font-size:16px;text-align:center}
+.fine{font-size:12px;color:var(--muted);text-align:center;margin-top:10px;font-weight:400}
 .math{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card);margin-top:8px}
 .math .side{padding:26px}.math .side.win{background:var(--terra-bg)}
 .math .tag{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}.math .win .tag{color:var(--terra-d)}
@@ -56,8 +68,6 @@
 .math .win li:before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
 .math .side:not(.win) li:before{content:"–";position:absolute;left:0;color:var(--muted)}
 .finep{font-size:12px;color:var(--muted);line-height:1.6;margin-top:14px}
-.reassure{margin-top:18px;background:var(--ok-bg);border:1px solid #cfe0b0;border-radius:12px;padding:16px 18px;font-size:14px;color:#3f5623;line-height:1.55}
-.reassure strong,.reassure a{color:#3f5623}.reassure a{font-weight:700;text-decoration:underline}
 .biz-wrap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px}
 .biz-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:26px;align-items:start}
 .biz-tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 14px}
@@ -66,7 +76,6 @@
 .bt .len{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .bt .amt{font-size:22px;font-weight:800;margin:6px 0 2px;letter-spacing:-.01em}.bt .amt small{font-size:12px;color:var(--muted);font-weight:500}
 .bt .sv{font-size:12px;font-weight:700;color:var(--ok)}.bt .sv.none{color:var(--muted);font-weight:500}
-.bt .tot{font-size:11px;color:var(--muted);margin-top:4px}
 .biz-inc{list-style:none;display:grid;gap:8px;font-size:14px;color:#5f544d;margin:0 0 18px}
 .biz-inc li{padding-left:22px;position:relative}.biz-inc li:before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
 .biz-cta{display:flex;gap:10px;flex-wrap:wrap}
@@ -82,9 +91,9 @@
 .incl .ic{width:40px;height:40px;border-radius:10px;background:var(--terra-bg);color:var(--terra-d);display:flex;align-items:center;justify-content:center;flex:none}
 .incl .ic svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
 .incl b{display:block;font-weight:600;font-size:15px}.incl span{color:var(--muted);font-size:13px}
-@media(max-width:900px){.why{grid-template-columns:1fr 1fr}.biz-grid{grid-template-columns:1fr}}
-@media(max-width:820px){.tiers{grid-template-columns:1fr 1fr}.math{grid-template-columns:1fr}.incl{grid-template-columns:1fr}.biz-tiers{grid-template-columns:1fr 1fr}.ladder{padding:18px 14px 12px}.ladder .bar{font-size:15px}}
-@media(max-width:520px){.tiers{grid-template-columns:1fr}.why{grid-template-columns:1fr}.ladder{gap:6px;padding:16px 10px 10px}.ladder .step{gap:4px}.ladder .lbl,.ladder .sv{font-size:10px;white-space:nowrap}.ladder .bar{font-size:13px;padding-bottom:6px;border-radius:8px 8px 3px 3px}.biz-tiers{grid-template-columns:1fr 1fr}.biz-wrap{padding:18px 14px}}
+@media(max-width:900px){.home-grid{grid-template-columns:1fr}.biz-grid{grid-template-columns:1fr}}
+@media(max-width:820px){.math{grid-template-columns:1fr}.incl{grid-template-columns:1fr}.biz-tiers{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.biz-wrap{padding:18px 14px}}
 </style>
 <script type="application/ld+json">
 {
@@ -138,74 +147,45 @@
   <div class="wrap">
     <span class="eyebrow2">Pricing</span>
     <h1>One simple rule: the longer you rent, the less you pay</h1>
-    <p>Every rental includes delivery, professional installation, hands-on training, sanitization, pickup, and a team you can call or text. No purchase, no maintenance, no charge until we confirm your delivery.</p>
+    <p>Every rental includes delivery, professional installation, hands-on training, sanitization, pickup, and a team you can call or text.</p>
     <div class="jump"><a class="btn btn-primary" href="#home">For your home</a><a class="btn btn-ghost" href="#business">For your business</a></div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow2">Why rent</span>
-      <h2>Everything a chamber owner gets, without the price of owning one</h2>
-      <p>Buying a chamber means a large upfront payment, then storage, upkeep, and resale when you are done. Renting gives you the same unlimited daily access for one monthly rate, and we handle the rest.</p>
-    </div>
-    <div class="why">
-      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 13h11V6H3zM14 8h4l3 3v2h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></div><b>All-inclusive, one rate</b><p>Delivery, setup, pressure test, training, sanitization, and pickup are in the monthly price. Nothing is added on.</p></div>
-      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><b>Unlimited daily sessions</b><p>Use it every day, on your schedule. At home that works out to <strong id="whySession">about $8 a session</strong> at two sessions a day on a 12-month rental.</p></div>
-      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 17l5-5 4 4 7-8"/><path d="M14 8h6v6"/></svg></div><b>Rent longer, pay less</b><p>Every step up in rental length lowers your monthly rate, up to <strong id="whyOffHome">27%</strong> off at home and <strong id="whyOffBiz">20%</strong> off for businesses.</p></div>
-      <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div><b>No risk to start</b><p>Requesting a chamber is free. We confirm delivery to your ZIP first, and you can cancel for a full refund up to 7 days before delivery.</p></div>
-    </div>
   </div>
 </section>
 
 <section class="section" id="home">
   <div class="wrap">
-    <div class="section-head">
-      <span class="seg">For your home</span>
-      <h2>Home rentals: from <span id="homeFrom">$729</span> a month, down to <span id="homeLow">$529</span></h2>
-      <p>The Soft-Shell 1.5 ATA in your home, with unlimited daily sessions. Pick a length, and your monthly rate drops as the rental gets longer.</p>
-    </div>
-    <div class="ladder" id="homeLadder">
-      <div class="step base"><div class="sv">Standard rate</div><div class="bar" style="height:150px">$729</div><div class="lbl">1 month</div></div>
-      <div class="step"><div class="sv">Save 10%</div><div class="bar" style="height:136px">$659</div><div class="lbl">3 months</div></div>
-      <div class="step"><div class="sv">Save 21%</div><div class="bar" style="height:119px">$579</div><div class="lbl">6 months</div></div>
-      <div class="step best"><div class="sv">Save 27%</div><div class="bar" style="height:109px">$529</div><div class="lbl">12 months</div></div>
-      <div class="ladder-note">Monthly rate at four common lengths. Any length from 1 to 12 months is available; the booking page shows the exact rate as you choose.</div>
-    </div>
-    <div class="tiers">
-      <div class="tier">
-        <div class="len">1 month</div>
-        <div class="amt"><span id="tierAmt1">$729</span><small> /mo</small></div>
-        <div class="save none">Standard rate</div>
-        <ul><li>Try it out or run a short protocol</li><li>Unlimited daily sessions</li><li class="muted">No length discount</li></ul>
-        <a class="btn btn-ghost" href="/book?months=1">Book 1 month →</a>
+    <div class="home-grid">
+      <div>
+        <div class="section-head" style="margin-bottom:18px">
+          <span class="seg">For your home</span>
+          <h2>Home rentals: from <span id="homeFrom">$729</span> a month, down to <span id="homeLow">$529</span></h2>
+          <p>The Soft-Shell 1.5 ATA in your home with unlimited daily sessions. Choose any length from 1 to 12 months; the longer you rent, the lower the monthly rate.</p>
+        </div>
+        <ul class="home-inc">
+          <li><strong>Delivery, setup and pickup</strong> are included, with a pressure test on install.</li>
+          <li><strong>Hands-on training</strong> on safe operation and session protocols.</li>
+          <li><strong>Unlimited sessions</strong> for everyone in the household.</li>
+          <li><strong>Support throughout</strong>, call or text (801) 901-0873, Mon to Sat.</li>
+          <li><strong>Nothing due today.</strong> We confirm availability and delivery to your ZIP first.</li>
+        </ul>
       </div>
-      <div class="tier">
-        <div class="len">3 months</div>
-        <div class="amt"><span id="tierAmt3">$659</span><small> /mo</small></div>
-        <div class="save" id="tierSave3">Save 10%</div>
-        <ul><li id="tierNote3">$70 a month off the standard rate</li><li id="tierTot3">$210 saved over 3 months</li><li>Unlimited daily sessions</li></ul>
-        <a class="btn btn-ghost" href="/book?months=3">Book 3 months →</a>
-      </div>
-      <div class="tier">
-        <div class="len">6 months</div>
-        <div class="amt"><span id="tierAmt6">$579</span><small> /mo</small></div>
-        <div class="save" id="tierSave6">Save 21%</div>
-        <ul><li id="tierNote6">$150 a month off the standard rate</li><li id="tierTot6">$900 saved over 6 months</li><li>Our most popular length</li></ul>
-        <a class="btn btn-primary" href="/book?months=6">Book 6 months →</a>
-      </div>
-      <div class="tier best">
-        <span class="best-tag">Best value</span>
-        <div class="len">12 months</div>
-        <div class="amt"><span id="tierAmt12">$529</span><small> /mo</small></div>
-        <div class="save" id="tierSave12">Save 27%</div>
-        <ul><li id="tierNote12">$200 a month off the standard rate</li><li id="tierTot12">$2,400 saved over the year</li><li id="tierSess12">About $8 a session at two a day</li></ul>
-        <a class="btn btn-primary" href="/book?months=12">Book 12 months →</a>
+      <div class="book">
+        <div class="ptop"><span class="price" id="pr">$659</span><span class="permo">/mo</span><span class="strike" id="strike">$729</span></div>
+        <div class="svwrap open" id="svw"><div class="sv1"><span class="pill1" id="badge">Save 10%</span><span class="txt1" id="save">$70/mo off</span></div></div>
+        <div class="selrow"><label>Chamber</label>
+          <select id="ch"><option>1.5 ATA Lying chamber</option><option disabled>1.5 ATA Sitting Chamber, Coming soon</option></select></div>
+        <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol">3 months</span></div>
+          <input type="range" min="1" max="12" step="1" value="3" id="mo" oninput="recalc()" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
+        <div class="field"><label>Delivery ZIP</label><input placeholder="Enter your ZIP code" id="zip" aria-label="Delivery ZIP" autocomplete="postal-code" inputmode="numeric" oninput="checkZip()"></div>
+        <div class="zipnote" id="zipNote" hidden></div>
+        <div class="brow"><span id="bd">$659 × 3 months</span><span id="sub">$1,977</span></div>
+        <div class="brow"><span>You save</span><span class="amt" id="tot">$210</span></div>
+        <div class="brow"><span>Delivery and install</span><span class="amt">Included</span></div>
+        <div class="total"><span>Due today</span><span>$0</span></div>
+        <a class="btn btn-primary" href="/book" onclick="return goBook()">Book a chamber</a>
+        <div class="fine">Free to submit · we confirm availability before any deposit</div>
       </div>
     </div>
-    <p class="finep">Rates are per month for the Soft-Shell 1.5 ATA and include delivery, setup, training, sanitization, and pickup. Lengths between these steps are priced in between, and the <a href="/book" style="color:var(--terra-d);font-weight:600;text-decoration:underline">booking page</a> shows the exact rate for any length. Savings compare each rate with the 1-month rate over the same number of months. Rentals end at the end of the term, so there is no long-term commitment beyond the length you choose.</p>
-    <div class="reassure"><strong>Reserve with confidence.</strong> Submitting a request is free, we confirm availability and delivery to your ZIP first. Once confirmed, we send the rental agreement for you to review and collect a deposit to hold your delivery date; your first month is due at delivery and longer rentals are billed monthly after that. Cancel for a full refund any time up to 7 days before your scheduled delivery. Questions before you commit? Call or text <a href="tel:+18019010873">(801) 901-0873</a>.</div>
   </div>
 </section>
 
@@ -231,22 +211,21 @@
     <div class="section-head">
       <span class="seg biz">For your business</span>
       <h2>Business chambers: from <span id="bizFrom">$979</span> a month per chamber, down to <span id="bizLow">$783</span></h2>
-      <p>For gyms, spas, salons, clinics, and studios that want to sell sessions. We deliver, install, train your staff, and service the chamber for the whole rental. Longer rentals save up to <span id="bizOffMax">20%</span>.</p>
+      <p>For gyms, spas, salons, clinics, and studios that want to sell sessions. We deliver, install, train your staff, and service the chamber for the whole rental. Any length from 1 to 12 months; longer rentals save up to <span id="bizOffMax">20%</span>.</p>
     </div>
     <div class="biz-wrap">
       <div class="biz-grid">
         <div>
           <div class="biz-tiers">
-            <div class="bt"><div class="len">1 month</div><div class="amt"><span id="bizAmt1">$979</span><small> /mo</small></div><div class="sv none">Standard rate</div><div class="tot">per chamber</div></div>
-            <div class="bt"><div class="len">3 months</div><div class="amt"><span id="bizAmt3">$881</span><small> /mo</small></div><div class="sv" id="bizSave3">Save 10%</div><div class="tot" id="bizTot3">$294 saved over 3 months</div></div>
-            <div class="bt"><div class="len">6 months</div><div class="amt"><span id="bizAmt6">$832</span><small> /mo</small></div><div class="sv" id="bizSave6">Save 15%</div><div class="tot" id="bizTot6">$882 saved over 6 months</div></div>
-            <div class="bt best"><div class="len">12 months</div><div class="amt"><span id="bizAmt12">$783</span><small> /mo</small></div><div class="sv" id="bizSave12">Save 20%</div><div class="tot" id="bizTot12">$2,352 saved over the year</div></div>
+            <div class="bt"><div class="len">1 month</div><div class="amt"><span id="bizAmt1">$979</span><small> /mo</small></div><div class="sv none">Standard rate</div></div>
+            <div class="bt"><div class="len">3 months</div><div class="amt"><span id="bizAmt3">$881</span><small> /mo</small></div><div class="sv" id="bizSave3">Save 10%</div></div>
+            <div class="bt"><div class="len">6 months</div><div class="amt"><span id="bizAmt6">$832</span><small> /mo</small></div><div class="sv" id="bizSave6">Save 15%</div></div>
+            <div class="bt best"><div class="len">12 months</div><div class="amt"><span id="bizAmt12">$783</span><small> /mo</small></div><div class="sv" id="bizSave12">Save 20%</div></div>
           </div>
           <ul class="biz-inc">
             <li><strong>One-time $200</strong> for staff training and your initial masks and cleaning supplies. Delivery and installation are included.</li>
             <li><strong>Service and support for the whole rental.</strong> Call or text our team, Monday to Saturday; we handle maintenance and swaps.</li>
             <li><strong>Unlimited sessions.</strong> Charge what you like per session; the rental does not change with usage.</li>
-            <li><strong>Any length from 1 to 12 months.</strong> Lengths between these steps are priced in between; the business booking page shows the exact rate.</li>
             <li><strong>Per chamber.</strong> Want two or more? <a href="/contact?topic=custom" style="color:var(--terra-d);font-weight:600;text-decoration:underline">Ask us for a multi-chamber quote.</a></li>
           </ul>
           <div class="biz-cta"><a class="btn btn-primary" href="/book?type=business">Book for your business →</a><a class="btn btn-ghost" href="/business">See the full business page</a></div>
@@ -323,42 +302,63 @@
 
 <script src="/warm.js"></script>
 <script>
-/* live pricing: both rate tables come from the admin Pricing tab via /api/pricing */
-(function(){
-  var PF={1:729,2:659,3:659,4:579,5:579,6:579,7:579,8:579,9:579,10:579,11:579,12:529};
-  var BF={1:979,2:979,3:881,4:881,5:881,6:832,7:832,8:832,9:832,10:832,11:832,12:783};
-  function set(id,t){var e=document.getElementById(id);if(e)e.textContent=t;}
-  function money(n){return '$'+Math.round(n).toLocaleString();}
-  function pct(base,p){return Math.round((base-p)/base*100);}
-  function applyHome(P){
-    function r(m){return P[m]||PF[m];}
-    var p1=r(1),p3=r(3),p6=r(6),p12=r(12);
-    set('homeFrom',money(p1));set('homeLow',money(p12));set('whyOffHome',pct(p1,p12)+'%');
-    set('tierAmt1',money(p1));set('tierAmt3',money(p3));set('tierAmt6',money(p6));set('tierAmt12',money(p12));
-    set('tierSave3','Save '+pct(p1,p3)+'%');set('tierSave6','Save '+pct(p1,p6)+'%');set('tierSave12','Save '+pct(p1,p12)+'%');
-    set('tierNote3',money(p1-p3)+' a month off the standard rate');set('tierTot3',money((p1-p3)*3)+' saved over 3 months');
-    set('tierNote6',money(p1-p6)+' a month off the standard rate');set('tierTot6',money((p1-p6)*6)+' saved over 6 months');
-    set('tierNote12',money(p1-p12)+' a month off the standard rate');set('tierTot12',money((p1-p12)*12)+' saved over the year');
-    var sess=Math.floor(p12*12/(365*2)); // two sessions a day at the 12-month rate, as on the homepage
-    set('tierSess12','About $'+sess+' a session at two a day');set('whySession','about $'+sess+' a session');
-    set('cmpSession',String(sess));set('cmpAnnual',(p12*12).toLocaleString());
-    var steps=document.querySelectorAll('#homeLadder .step'),vals=[p1,p3,p6,p12];
-    for(var i=0;i<steps.length;i++){var bar=steps[i].querySelector('.bar'),sv=steps[i].querySelector('.sv');
-      bar.textContent=money(vals[i]);bar.style.height=Math.round(150*vals[i]/p1)+'px';
-      if(i>0)sv.textContent='Save '+pct(p1,vals[i])+'%';}
+/* booking calculator, same maths as the homepage; both rate tables come from the admin Pricing tab via /api/pricing */
+var PB_PF={1:729,2:659,3:659,4:579,5:579,6:579,7:579,8:579,9:579,10:579,11:579,12:529};
+var PB_PRICING=Object.assign({},PB_PF);
+var BF={1:979,2:979,3:881,4:881,5:881,6:832,7:832,8:832,9:832,10:832,11:832,12:783};
+function money(n){return '$'+Math.round(n).toLocaleString()}
+function rate(m){m=Math.max(1,Math.min(12,parseInt(m,10)||1));return PB_PRICING[m]||PB_PF[m];}
+var BASE=rate(1);
+function pct(m){return Math.round((BASE-rate(m))/BASE*100)}
+function mos(m){return m+' month'+(m>1?'s':'')}
+function set(id,t){var e=document.getElementById(id);if(e)e.textContent=t;}
+function recalc(){
+  var m=+document.getElementById('mo').value,r=rate(m),pp=pct(m);
+  document.getElementById('pr').textContent='$'+r;
+  document.getElementById('strike').style.display=r<BASE?'inline':'none';
+  document.getElementById('strike').textContent='$'+BASE;
+  document.getElementById('mol').textContent=mos(m);
+  document.getElementById('bd').textContent='$'+r+' × '+mos(m);
+  document.getElementById('sub').textContent=money(r*m);
+  document.getElementById('tot').textContent=money((BASE-r)*m);
+  var mo=document.getElementById('mo'),f=Math.round((m-1)/11*100);
+  mo.style.background='linear-gradient(90deg,var(--terra) '+f+'%,var(--cream2) '+f+'%)';
+  var wrap=document.getElementById('svw'),pill=document.getElementById('badge'),txt=document.getElementById('save');
+  if(pp<=0){wrap.classList.remove('open');}
+  else{
+    var prev=pill.getAttribute('data-p');
+    pill.textContent='Save '+pp+'%';txt.textContent=money(BASE-r)+'/mo off';
+    wrap.classList.add('open');
+    if(prev!==String(pp)){pill.classList.remove('pulse');void pill.offsetWidth;pill.classList.add('pulse');}
+    pill.setAttribute('data-p',pp);
   }
-  function applyBiz(B){
-    function r(m){return B[m]||BF[m];}
-    var b1=r(1),b3=r(3),b6=r(6),b12=r(12);
-    set('bizFrom',money(b1));set('bizLow',money(b12));set('bizOffMax',pct(b1,b12)+'%');set('whyOffBiz',pct(b1,b12)+'%');
-    set('bizAmt1',money(b1));set('bizAmt3',money(b3));set('bizAmt6',money(b6));set('bizAmt12',money(b12));
-    set('bizSave3','Save '+pct(b1,b3)+'%');set('bizSave6','Save '+pct(b1,b6)+'%');set('bizSave12','Save '+pct(b1,b12)+'%');
-    set('bizTot3',money((b1-b3)*3)+' saved over 3 months');set('bizTot6',money((b1-b6)*6)+' saved over 6 months');set('bizTot12',money((b1-b12)*12)+' saved over the year');
-    function net(sessions){return Math.round(sessions*(75-1.30)-b1).toLocaleString();}
-    set('revLight',net(52));set('revMod',net(104));set('revMod2',net(104));set('revStrong',net(156));
-  }
-  applyHome(PF);applyBiz(BF);
-  fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){if(j&&j.months)applyHome(j.months);if(j&&j.business)applyBiz(j.business);}).catch(function(){});
-})();
+}
+function goBook(){var m=+document.getElementById('mo').value;var z=document.getElementById('zip').value.trim();try{if(z)sessionStorage.setItem('pb_zip',z);}catch(e){}location.href='/book?months='+m;return false;}
+var PB_AREA={prefixes:["840","841","844"],zips:["84201","84244","84601","84602","84603","84604","84605","84606","84626","84633","84651","84653","84660","84663","84664","84050","84018","84648","84645","84628","84639","84621","84623","84627","84629","84630","84642","84647","84667","84622","84632","84634","84643","84646","84662","84665"]};
+function servedZip(z){z=String(z||'').trim();if(!/^\d{5}$/.test(z))return false;for(var i=0;i<PB_AREA.prefixes.length;i++){if(z.indexOf(PB_AREA.prefixes[i])===0)return true;}return PB_AREA.zips.indexOf(z)>=0;}
+function checkZip(){var el=document.getElementById('zip'),n=document.getElementById('zipNote');var z=el.value.trim();if(!/^\d{5}$/.test(z)){n.hidden=true;return;}if(servedZip(z)){n.hidden=false;n.className='zipnote ok';n.textContent='✓ We deliver to '+z+'.';}else{n.hidden=false;n.className='zipnote warn';n.textContent=z+' is outside our delivery area. You can still request, we\'ll reach out if we can help.';}}
+fetch('/api/service-area').then(function(r){return r.json();}).then(function(j){if(j&&(j.prefixes||j.zips)){PB_AREA={prefixes:j.prefixes||[],zips:j.zips||[]};checkZip();}}).catch(function(){});
+document.getElementById('mo').addEventListener('change',function(){var mm=+this.value,rr=rate(mm);if(window.trackPurebaricEvent)trackPurebaricEvent('select_rental_plan',{chamber_id:'soft_shell_1_5_ata',rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD'});});
+function applyHome(){
+  var p1=rate(1),p12=rate(12),sess=Math.floor(p12*12/(365*2)); // two sessions a day at the 12-month rate, as on the homepage
+  set('homeFrom',money(p1));set('homeLow',money(p12));
+  set('cmpSession',String(sess));set('cmpAnnual',(p12*12).toLocaleString());
+  recalc();
+}
+function applyBiz(B){
+  function r(m){return B[m]||BF[m];}
+  function off(p){return Math.round((b1-p)/b1*100);}
+  var b1=r(1),b3=r(3),b6=r(6),b12=r(12);
+  set('bizFrom',money(b1));set('bizLow',money(b12));set('bizOffMax',off(b12)+'%');
+  set('bizAmt1',money(b1));set('bizAmt3',money(b3));set('bizAmt6',money(b6));set('bizAmt12',money(b12));
+  set('bizSave3','Save '+off(b3)+'%');set('bizSave6','Save '+off(b6)+'%');set('bizSave12','Save '+off(b12)+'%');
+  function net(sessions){return Math.round(sessions*(75-1.30)-b1).toLocaleString();}
+  set('revLight',net(52));set('revMod',net(104));set('revMod2',net(104));set('revStrong',net(156));
+}
+applyHome();applyBiz(BF);
+fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){
+  if(j&&j.months){PB_PRICING=j.months;BASE=rate(1);applyHome();}
+  if(j&&j.business)applyBiz(j.business);
+}).catch(function(){});
 </script>
 </body></html>
