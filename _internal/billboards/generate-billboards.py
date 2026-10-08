@@ -67,11 +67,11 @@ def place_photo(canvas, pw, x0):
         canvas.paste(fade,(x0,0),mask)
     return canvas
 
-def shade_left(im,W,reach=0.6):
+def shade_left(im,W,reach=0.6,floor_w=0.7):
     grad=Image.new('L',(W,H),0); gd=ImageDraw.Draw(grad); L=int(W*reach)
     for x in range(L): gd.line([(x,0),(x,H)],fill=int(150*(1-x/L)))
     # floor shading that fades out horizontally as well as vertically, so there is no hard edge
-    band=Image.new('L',(W,H),0); bp=band.load(); L2=int(W*0.7)
+    band=Image.new('L',(W,H),0); bp=band.load(); L2=int(W*floor_w)
     for y in range(300,H):
         v=90*min(1,(y-300)/320)
         for x in range(L2): bp[x,y]=int(v*(1-x/L2))
@@ -105,21 +105,26 @@ def logo_row(im,d,kind,M,url_style,W,small=False,bottom_pad=None):
 
 NARROW=2.6
 def narrow_scene(W,band):
-    # text band on top, photo bottom-right; the band is the photo's own top colour, blurred, and the photo fades up into it
-    hp=H-band; r=hp/photo.height; pw=int(photo.width*r); ph=photo.resize((pw,hp),Image.LANCZOS)
-    x0=max(0,W-pw)
-    if pw>W: ph=ph.crop((pw-W,0,pw,hp)); pw=W
+    """text band on top, photo below. The photo is cropped to the chamber (drop 15% ceiling, 5% rug) so the product
+       fills the band, the band colour is the plain wall, the fade into the photo is short, and the left shading stops
+       before the chamber so it is not darkened."""
+    hp=H-band
+    src=photo.crop((0,int(photo.height*0.15),photo.width,int(photo.height*0.95)))
+    r=hp/src.height; pw=int(src.width*r); ph=src.resize((pw,hp),Image.LANCZOS)
+    x0=W-pw
     im=Image.new('RGB',(W,H)); im.paste(top_fill(ph,W,band+2),(0,0))
-    im.paste(ph,(x0,band))
-    if x0>0:
+    if x0>=0:
+        im.paste(ph,(x0,band))
         from PIL import ImageFilter
         im.paste(wall_fill(ph,x0+2,hp).filter(ImageFilter.GaussianBlur(6)),(0,band))
         sw=min(600,max(60,pw//3)); fade=wall_fill(ph,sw,hp).filter(ImageFilter.GaussianBlur(6))
         mask=Image.new('L',(sw,hp),0); md=ImageDraw.Draw(mask)
         for x in range(sw): md.line([(x,0),(x,hp)],fill=int(255*(1-x/sw)**1.6))
         im.paste(fade,(x0,band),mask)
-    im=blend_down(im,ph,0,band,int(H*0.25),W)
-    return shade_left(im,W,reach=0.9)
+    else:
+        im.paste(ph.crop((-x0,0,pw,hp)),(0,band))   # wider than the board: crop the photo's own wall on the left
+    im=blend_down(im,ph,0,band,int(H*0.08),W)
+    return shade_left(im,W,reach=0.5,floor_w=0.42)
 
 def design_a(W):
     if W/H<NARROW:
