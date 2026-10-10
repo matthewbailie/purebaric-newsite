@@ -1,6 +1,6 @@
 # Purebaric in Knoxville, Tennessee: executive brief
 
-**Status: living draft, version 3 (10 October 2026). Updated as research continues; a final review will follow.**
+**Status: living draft, version 4 (10 October 2026). Updated as research continues; a final review will follow.**
 
 ## 1. The question
 Should Purebaric, which rents 1.5 ATA mild hyperbaric chambers to homes ($529 to $729 a month) and businesses ($783 to $979 a month per chamber) along Utah's Wasatch Front, open a second market within 25 miles of downtown Knoxville, Tennessee?
@@ -40,6 +40,15 @@ Should Purebaric, which rents 1.5 ATA mild hyperbaric chambers to homes ($529 to
 6. Market with Google search, one 4-week digital billboard flight near Turkey Creek (about $2,500), and Knoxville Track Club co-marketing.
 7. Decision gate at 90 days: both business chambers rented at list price means add two to three more; otherwise bring them home.
 
+
+## 4a. New channel under evaluation: schools and athletic programs (Utah and Tennessee)
+A separate proposal (`../channels/schools-athletic-recovery/PROPOSAL-schools-athletic-recovery.md`, with a 53-organization target list) examined renting chambers to athletic departments for recovery.
+- **Precedent exists at the top of college sport, not below it.** Clemson, Penn State, Georgia Tech, Wake Forest and South Carolina have chambers in their recovery rooms; LSU's is funded by a $1M donor gift; Mississippi State uses a hospital's. No high school or prep academy with a chamber was found, IMG Academy included, and no vendor was found renting chambers to schools by season. That is the opening.
+- **Offer**: a three-chamber academic-year "Recovery Room" at $849 per chamber per month ($2,547 a month, $25,470 for August to May, plus the $200 training fee), entered through a 90-day three-chamber pilot at $8,750. Both figures sit under the roughly $10,000 line where Utah districts need written quotes and UT Knoxville needs bids, and nothing is priced below the $783 business floor.
+- **Targets**: 33 in Utah (10 colleges, 13 public high schools, 4 private schools, 6 clubs and academies) and 20 in Tennessee (8 colleges, 5 public and 4 private high schools, 3 clubs); 46 have a named contact and 29 a published email, far better coverage than the Knoxville business list because athletic staff directories are public. Ranking: Division I and club programs first, private schools next, public high schools last.
+- **Two risks the owner must settle before pitching a school.** (1) Oxygen: the research reports that soft chambers are FDA-cleared to run on air and that adding oxygen is prohibited by the clearance, that fire marshals in two states have applied hospital fire codes to mild chambers, and that a fatal oxygen-chamber fire in Michigan in 2025 is headed to trial; the proposal recommends an air-only configuration for schools. Purebaric's standard package includes an oxygen concentrator, so this needs a decision and legal review. (2) Minors: parents cannot waive a child's injury claims in Utah or Tennessee, and the current agreement requires a parent present for anyone under 18, which is why high schools rank last and why every session should be run by a licensed athletic trainer under a team physician's signed protocol. Most high-school trainers are employed by health systems (Intermountain, University of Utah Health, Knoxville Orthopaedic Clinic), so those systems are gatekeepers and should be approached as partners.
+- **Unit economics**: three chambers at one school earn the same monthly revenue as three business placements with one delivery and one training session instead of three; the proposal leaves the payback figure for the owner to fill in with the chamber cost.
+
 ## 5. Facts to verify in person
 - Will two Knoxville businesses commit at list price? Bell's published $100 a session sets the local ceiling; KnOxygen's unpublished rate should be confirmed by phone.
 - Is there a reliable local delivery and repair contractor, and at what cost per visit?
@@ -49,6 +58,7 @@ Should Purebaric, which rents 1.5 ATA mild hyperbaric chambers to homes ($529 to
 All supporting material is in this folder: `market_analysis.md` (scorecard and sources), `purebaric_knoxville_hbot_providers.xlsx` (providers, renters, dealers, prices), `purebaric_knoxville_prospects.xlsx` (prospect list), `prospect_list_critique.md` (due-diligence review), `classifieds_check.md`, and `research/` (raw research JSON, overrides and the compile script).
 
 ## 7. Change log
+- v4, 10 Oct 2026: schools and athletic programs channel added (section 4a) from the separate proposal; oxygen-configuration and minors risks flagged for owner decision.
 - v3, 10 Oct 2026: round-2 critique applied; Call-first column added; competitor sheet reduced to confirmed providers; Marketplace listing links recorded.
 - v2, 10 Oct 2026: prospect list expanded to 177 after three follow-up passes; email-discovery ceiling documented; Marketplace dealer finding added; second critique in progress. New channel under research: schools and athletic programs (separate proposal, see `../channels/schools-athletic-recovery/` once delivered).
 - v1, 10 Oct 2026: first draft after the provider inventory, market scoring, prospect list and first adversarial critique. Open items: follow-up research passes, second critique pass, manual Google Trends check, Reagan/YESCO-style local billboard rates.
