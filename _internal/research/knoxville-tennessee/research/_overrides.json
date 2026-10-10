@@ -5,7 +5,8 @@
   "Studio P Pilates (Lenoir City)",
   "Gallaher Plastic Surgery & Spa - Tellico Village",
   "Loudon Chiropractic",
-  "Bryan Ardis, DC"
+  "Bryan Ardis, DC",
+  "Advanced Dermatology & Ameliore Medispa"
  ],
  "flag": {
   "Christian Academy of Knoxville": "REVIEW 2026-10: CAK's own media page lists Chad Speck as Director of Athletics; Ried Estus is stale. Email is a generic HS office inbox, not the AD - do not mark high.",
@@ -22,7 +23,7 @@
   "Gold's Gym Oak Ridge": "REVIEW 2026-10: Gold's East TN gyms are corporate (ex-Rush Fitness, acquired 2014); no local owner. Low value.",
   "Blount Memorial Medical Fitness Center": "REVIEW 2026-10: hospital-system facility; decision is system-level. Low value.",
   "Blount Memorial Wellness Center at Cherokee": "REVIEW 2026-10: hospital-system facility; 1412 Sevierville Rd is also the CrossFit CHF lead address - one of the two addresses is wrong.",
-  "CrossFit CHF": "REVIEW 2026-10: street address unconfirmed; 1410/1412 Sevierville Rd lead is a real-estate listing that does not name the gym.",
+  "CrossFit CHF": "Address on file (1412 Sevierville Rd) belongs to Blount Memorial Wellness Center at Cherokee, not the gym; confirm location.",
   "Koa Strength and Fitness": "REVIEW 2026-10: exists (Livability Jul 2025) but no phone or website - fails the brief's phone-or-website rule.",
   "Performance Training Inc.": "REVIEW 2026-10: address confirmed (Knoxville Chamber); no phone/website found. Founder Jackie Ansley; strong sports-performance fit if a contact is found.",
   "Tristar Physical Therapy (Maryville)": "REVIEW 2026-10: also on the competitor list. HBOT appears only on a Fresha aggregator page; call to confirm. Regional chain (8 clinics).",
@@ -50,7 +51,11 @@
   "Knoxville Smokies (Double-A, Chicago Cubs affiliate)": "REVIEW 2026-10: owned by Boyd Sports (new CEO Chris Allen, Nov 2025); GM Tim Volk unconfirmed. Corporate decision.",
   "YogaSix Bearden": "REVIEW 2026-10: Xponential franchise reportedly for sale; owner unknown.",
   "Advanced Dermatology & Ameliore Medispa": "REVIEW 2026-10: no phone, ZIP or own website; fails the phone-or-website rule unless the chamber page counts.",
-  "Bentley Medical": "REVIEW 2026-10: phone (865) 288-0911 per NewPatients directory (row has none)."
+  "Bentley Medical": "REVIEW 2026-10: phone (865) 288-0911 per NewPatients directory (row has none).",
+  "Smoky Mountain Hydration": "UNVERIFIED: no listing, site or owner found in two passes; confirm it exists before contacting.",
+  "Holt Physical Therapy": "Two addresses in sources: 1005 E Broadway or 501 Adesa Pkwy A100 (Lenoir City); confirm.",
+  "Oak Ridge Chiropractic": "Two addresses in sources: 550 Oak Ridge Tpke or 176 Randolph Rd; confirm.",
+  "Rocky Top CrossFit": "Owner uncertain: Deborah Ragland (earlier pass) vs Jeremy McDonnell (2014 article); confirm."
  },
  "add": [
   {
@@ -168,9 +173,20 @@
   "Sola Salon Studios - Bearden": "(865) 327-0922",
   "Gold's Gym Lenoir City": "(865) 988-0036",
   "Bentley Medical": "(865) 288-0911",
-  "Fox Den Country Club": "(865) 966-9771"
+  "Fox Den Country Club": "(865) 966-9771",
+  "Marino Physiotherapy": "(865) 236-0340"
  },
  "fix_notes": {
   "Webb School of Knoxville": "Earlier note mixed in staff from The Webb School in Bell Buckle TN (a different school); ignore those names. Dan Gill's email checks out."
+ },
+ "set_address": {
+  "Bentley Medical": "11668 Parkside Dr, Farragut, TN 37934",
+  "Gallaher Plastic Surgery & Spa - Maryville": "225 Greenway Village Ln, Maryville, TN 37801",
+  "Stretch Fusion": "11533 Kingston Pike, Farragut, TN",
+  "Vital Hydration": "10932 Murdock Dr #102b, Knoxville, TN 37932",
+  "Marino Physiotherapy": "9000 Executive Park Dr, Suite C150, Knoxville, TN 37923",
+  "CrossFit Knoxville": "9311 Kingston Pike, Knoxville, TN 37922",
+  "Bright Futures": "1780 W Lamar Alexander Pkwy, Maryville, TN 37801",
+  "Balanced You Clinic": "6512 Baum Dr SW #12, Knoxville, TN 37919"
  }
 }

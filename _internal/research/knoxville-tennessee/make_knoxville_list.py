@@ -118,11 +118,12 @@ def apply_enrichment(r):
     return r, flags.upper()
 
 OVR = os.path.join(SRC, "_overrides.json")
-DROP, FLAG, ADD, HOLD, SETPHONE, FIXNOTES = set(), {}, [], {}, {}, {}
+DROP, FLAG, ADD, HOLD, SETPHONE, FIXNOTES, SETADDR = set(), {}, [], {}, {}, {}, {}
 if os.path.exists(OVR):
     o = json.load(open(OVR)); DROP = {NORM(x) for x in o.get("drop", [])}; FLAG = {NORM(k): v for k, v in o.get("flag", {}).items()}
     ADD = o.get("add", []); HOLD = {k.lower(): v for k, v in o.get("hold_email", {}).items()}
     SETPHONE = {NORM(k): v for k, v in o.get("set_phone", {}).items()}; FIXNOTES = {NORM(k): v for k, v in o.get("fix_notes", {}).items()}
+    SETADDR = {NORM(k): v for k, v in o.get("set_address", {}).items()}
 def apply_overrides(r):
     k = NORM(r["business"])
     if r["email"] and r["email"].lower() in HOLD:
@@ -130,6 +131,9 @@ def apply_overrides(r):
         r["notes"] = (f"EMAIL HELD BACK ({r['email']}): {why} | " + r["notes"]).strip(" |"); r["email"] = ""; r["email_confidence"] = "none"
     for pk, ph in SETPHONE.items():
         if pk and (pk in k or k in pk): r["phone"] = ph; r["notes"] = ("Phone corrected after critique. | " + r["notes"]).strip(" |")
+    for ak, addr in SETADDR.items():
+        if ak and (ak in k or k in ak):
+            r["address"] = addr; r["notes"] = ("Address corrected after the email pass. | " + r["notes"]).strip(" |")
     for nk, note in FIXNOTES.items():
         if nk and (nk in k or k in nk): r["notes"] = (note + " | " + r["notes"]).strip(" |")
     return r
