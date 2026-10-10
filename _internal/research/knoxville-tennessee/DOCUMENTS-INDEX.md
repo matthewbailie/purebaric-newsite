@@ -5,7 +5,7 @@ Folder: `~/Desktop/Tennessee Research/`. Canonical git copy: `~/projects/purebar
 ## Decision documents
 | Document | Path | What it is |
 |---|---|---|
-| Executive brief (v6) | `knoxville/EXECUTIVE-BRIEF.md` | Verdict, score (62 of 100), likelihood of success, findings, recommended entry model, legal check, change log. Living document; final review pending. |
+| Executive brief (v7) | `knoxville/EXECUTIVE-BRIEF.md` | Verdict, score (62 of 100), likelihood of success, findings, recommended entry model, legal check, change log. Living document; final review pending. |
 | Market analysis | `knoxville/market_analysis.md` | Ten-indicator scorecard vs the Wasatch Front and comparison markets, with sources. |
 | Legal blockers summary | `knoxville/legal_blockers_summary.md` | One page: what blocks home and business rentals in Tennessee and what would change the answer. |
 | Tennessee state-law memo | `knoxville/legal_state_tennessee.md` | Licensing, oxygen and device rules, prescription rules, consumer protection, waivers, taxes, legislation, fire code; nine questions for counsel. |
@@ -25,12 +25,18 @@ Folder: `~/Desktop/Tennessee Research/`. Canonical git copy: `~/projects/purebar
 | Document | Path | What it is |
 |---|---|---|
 | Knoxville prospect list | `knoxville/purebaric_knoxville_prospects.xlsx` | 263 prospects in seven industries incl. 42 schools and colleges and 88 recovery, IV and med spa businesses; Call-first flag; Hyperbaric-on-website column; dropped and competitor sheets. Rebuilt by `knoxville/make_knoxville_list.py` from `knoxville/research/*.json` and `_overrides.json`. |
-| Hyperbaric providers | `knoxville/purebaric_knoxville_hbot_providers.xlsx` + `hbot_providers.md` | 24 existing chamber operators with prices and contacts; rental businesses; dealers (incl. Marketplace listings); regional price references. |
+| Hyperbaric providers | `knoxville/purebaric_knoxville_hbot_providers.xlsx` + `hbot_providers.md` | 25 provider entries (5 confirmed wellness, 7 hospital, 13 unverified) with prices and contacts; rental businesses; dealers (incl. Marketplace listings); regional price references. The prospect workbook's competitor sheet (8 rows) is the outreach skip list. |
 | Schools and colleges targets | `channel-schools-athletic-recovery/schools_athletic_targets.xlsx` + `targets.json` | 53 athletic programs for the schools channel. |
 | Prospect list critique | `knoxville/prospect_list_critique.md` | Two rounds of adversarial review and the corrections applied. |
 | Classifieds check | `knoxville/classifieds_check.md` | Facebook Marketplace, Craigslist and OfferUp sweep for chambers for sale or rent. |
 | Google Trends check | `knoxville/google_trends_check.md` | Search-interest comparison: Knoxville vs Salt Lake City vs Nashville, Tennessee vs Utah. |
 | Raw research | `knoxville/research/` | Source JSON per category (gyms, CrossFit, teams, recovery, PT, salons, schools, recovery re-sweep), overrides, review CSVs. |
+
+## Critique
+| Document | Path | What it is |
+|---|---|---|
+| Round-1 document critique | `knoxville/critique_documents_round1_sales.md`, `knoxville/critique_documents_round1_decision.md` | Adversarial review of the pamphlets, training, runbook, brief, legal files, LOI and schools proposal. |
+| Round-1 response | `knoxville/critique_documents_round1_response.md` | What was fixed and what needs the owner's decision. |
 
 ## Still open
 - Final review of the executive brief (owner to request).

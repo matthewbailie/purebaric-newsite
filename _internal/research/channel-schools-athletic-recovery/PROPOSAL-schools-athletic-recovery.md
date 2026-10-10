@@ -1,6 +1,8 @@
 # Purebaric: Schools and Athletic Programs as a Rental Channel
 
-**Business proposal, Utah and Knoxville, Tennessee. Draft 1, 10 October 2026.** Bracketed numbers point to the source appendix. "Not found" means the research looked and found no source. `targets.json` in this folder lists 53 organizations (33 Utah, 20 Tennessee), 46 with a named contact and 29 with an email printed on the source page.
+> **Tennessee note (10 Oct 2026):** this proposal is the Utah channel draft. In Tennessee the pilot is one chamber at the published three-month business rate ($929 a month plus sales tax, plus the $200 training and supplies fee), air-only, adult athletes first; the three-chamber pricing, home-rental, QR-code and NIL elements below do not apply in Tennessee. Use the Tennessee schools pamphlet with Tennessee programs.
+
+**Business proposal, Utah and Knoxville, Tennessee. Draft 2, 10 October 2026 (repriced from the published table; parent-present rule restored; Tennessee gates added).** Bracketed numbers point to the source appendix. "Not found" means the research looked and found no source. `targets.json` in this folder lists 53 organizations (33 Utah, 20 Tennessee), 46 with a named contact and 29 with an email printed on the source page.
 
 ## 1. Channel thesis
 
@@ -39,7 +41,7 @@ The sale is wellness only: recovery routine, relaxation and performance support,
 
 | Rank | Segment | Fit | Ease | Why |
 |---|---|---|---|---|
-| 1 | Mid-size college programs: UVU, Westminster, SLCC, Snow, Utah Tech, SUU, Weber; Carson-Newman, Maryville College, Johnson, Tennessee Tech | 4 | 5 | Adult athletes, one decision-maker (the head athletic trainer), no chamber today, pilot fits under $10k |
+| 1 | Mid-size college programs: UVU, Westminster, SLCC, Snow, Utah Tech, SUU, Weber; Maryville College and Johnson (inside the Knoxville radius); Carson-Newman and Tennessee Tech are outside the 25-mile radius and not serviceable in the Knoxville pilot | 4 | 5 | Adult athletes, one decision-maker (the head athletic trainer), no chamber today, pilot fits under $10k |
 | 2 | Adult pro and semi-pro clubs: Utah Royals, RSL first team, Knoxville Ice Bears, One Knoxville SC | 4 | 4 | Adults, private budgets, fast decisions, mid-season start possible |
 | 3 | Power programs: Utah, BYU, Utah State; UT Knoxville | 5 | 2 | Brand halo and sponsorship value, but long procurement, existing medical partners and the option to buy their own |
 | 4 | Private high schools and ski academies: Juan Diego, Judge Memorial, Waterford, Rowland Hall, Rowmark, PCSS; Webb, Knoxville Catholic, CAK, Grace | 3 | 3 | Booster money and recovery culture, but athletes are minors |
@@ -51,15 +53,15 @@ The sale is wellness only: recovery routine, relaxation and performance support,
 
 | Offer | Term | Price per chamber per month | Example | Reasoning |
 |---|---|---|---|---|
-| **90-day Recovery Pilot** | 3 months | $950 | 3 chambers: **$8,550 + $200 = $8,750** | Stays under the $10k line at both state and UT purchasing [38][40]. Pilot payments credit toward an academic-year contract |
-| Season rental | 4 months (e.g. Aug to Nov football, Nov to Feb basketball, wrestling or ski) | $979 (top of the business band) | 1 chamber: $3,916. 3 chambers: $11,748 | Short term and two delivery trips justify the top rate |
-| **Academic-year Recovery Room** | 10 months, Aug to May | **$849** | 3 chambers: **$2,547 a month, $25,470 a year** | Mid-band. Under the $30k two-written-quote tier (Utah LEA) and the $49,999 informal ceiling (UTK) |
+| **90-day Recovery Pilot** | 3 months | $929 (published 3-month rate) | 3 chambers: $8,361 + $600 training and supplies ($200 per chamber) = **$8,961** | Under the $10,000 line where Utah districts need written quotes and UT Knoxville needs bids |
+| Season rental | 4 months (one sport season) | $881 (published 4-month rate) | 3 chambers: $2,643 a month, $10,572 a season, plus $600 | Just over $10,000: two written quotes in Utah districts |
+| **Academic-year Recovery Room** | 10 months, Aug to May | **$810** (published 10-month rate) | 3 chambers: **$2,430 a month, $24,300 a year**, plus $600 | Needs two written quotes in Utah districts ($10,000 to $30,000 tier) and informal bids with approval at UT Knoxville ($10,000 to $49,999) |
 | Full-year college package | 12 months | $783 (business floor) | 3 chambers: $28,188 a year | Matches the business floor; never priced below it |
 
 - **Why anchor to the business rate:** Schools do not resell sessions the way businesses do, so they will push on price. But they bring heavy use and many users, which means more cleaning, wear and training than a business placement. The floor holds at $783. Discounts are given only for longer terms, not volume.
 - **Branding:** "Recovery Room presented by Purebaric" covers signage, a social post at launch and a QR code for athletes' families to rent for home. At D1 programs, these rights can buy the drop from $849 to the $783 floor. College athletes 18 and over can join NIL ambassador deals that trade posts for home-chamber access [46], with each school's compliance office approving.
-- **Training:** A 90-minute on-site certification for every athletic trainer and student trainer who will operate the chamber, plus the existing runbook, a session log and a quarterly refresher.
-- **Supervision and waiver protocol:** The team physician signs a one-page standing protocol covering screening, exclusions (the existing Exhibit C list) and session length. A licensed athletic trainer must be in the room for every session. Athletes 18 and over sign Purebaric's consent and release. Under-18 use happens only where the insurer approves it, with written parent consent and athletic-trainer supervision, and the waiver is not relied on [35][36]. Phones and electronics stay outside the chamber, and grounding is checked daily, a lesson from Troy [30].
+- **Training:** A 90-minute on-site certification for every licensed athletic trainer who will operate the chamber (student trainers do not operate it), plus the existing runbook, a session log and a quarterly refresher.
+- **Supervision and waiver protocol:** The team physician signs a one-page standing protocol covering screening, exclusions (the existing Exhibit C list) and session length. A licensed athletic trainer must be in the room for every session. Athletes 18 and over sign Purebaric's consent and release. Under-18 use happens only where Purebaric's insurer approves it in writing, with a parent's signed consent and a parent present for the session (the rule in the current rental agreement, section 4.4) as well as athletic-trainer supervision, and the waiver is not relied on [35][36]. Phones and electronics stay outside the chamber, and grounding is checked daily, a lesson from Troy [30].
 
 ## 5. Sales motion
 
@@ -76,9 +78,9 @@ The sale is wellness only: recovery routine, relaxation and performance support,
 
 | Per year | 3 business placements | School, academic-year Recovery Room | School, one season |
 |---|---|---|---|
-| Rental revenue | $28,188 to $35,244 (3 × $783 to $979 × 12) | $25,470 (10 months) | $11,748 (4 months) |
+| Rental revenue | $28,188 to $35,244 (3 × $783 to $979 × 12) | $24,300 (10 months at $810) | $10,572 (4 months at $881) |
 | Training fees | $600 (3 sites) | $200 | $200 |
-| Summer or idle redeployment | n/a | 2 months as home rentals: 3 × $529 to $729 × 2 = $3,174 to $4,374 | 8 idle months: must redeploy |
+| Summer or idle redeployment | n/a | Utah: 2 months as home rentals at the published 2-month rate: 3 × $659 × 2 = $3,954. Tennessee: $0 (home rentals not offered) | 8 idle months: must redeploy |
 | Total potential | **$28,788 to $35,844** | **$28,844 to $30,044** | $11,948 plus redeployment |
 | Sites to serve | 3 | 1 | 1 |
 | Delivery trips | 3 | 2 to 4 (in, summer out and back) | 2 |
@@ -99,7 +101,7 @@ Payback: capex per chamber was not found in Purebaric's files. Payback in months
 | Health-system athletic trainers block access [41][43] | Offer the health system co-branding or protocol review, not a fight |
 | Procurement delays and net-60 payment | Keep the pilot under $10k. Invoice monthly against a purchase order |
 | Knoxville distance, with no local technician | Pilot only alongside the Knoxville launch. Sign a local service contractor first |
-| Seasonal idle chambers | Prefer academic-year contracts. Fill summers with home rentals |
+| Seasonal idle chambers | Prefer academic-year contracts. Fill summers with home rentals in Utah only; redeploy to businesses in Tennessee |
 
 ## 8. 90-day pilot plans (12 October 2026 to 9 January 2027)
 
@@ -109,7 +111,8 @@ Payback: capex per chamber was not found in Purebaric's files. Payback in months
 - **Days 46 to 90:** Run the pilots with weekly usage logs. Day-75 reviews. Convert at least 1 pilot to an academic-year contract starting in January. Book spring meetings with Utah, BYU and USU for fall 2027.
 
 **Knoxville (in parallel, tied to the Knoxville pilot)**
-- **Days 1 to 30:** Remote outreach to Carson-Newman, Maryville College, Johnson, Tennessee Tech, the Ice Bears (in season) and One Knoxville SC (preseason in winter). Line up a local service contractor.
+- **Legal gates:** Knoxville days 1 to 90 are conditional on Phase 0 of `TENNESSEE-OUTREACH-RUNBOOK.md` (counsel's answers to the 21 questions in the legal memos, written fire-marshal answers, insurance confirmation including under-18 use, and the contracting entity). Nothing is pitched to a Tennessee program before those gates.
+- **Days 1 to 30:** Remote outreach to Maryville College, Johnson, the Ice Bears (in season) and One Knoxville SC (first team only). Line up a local service contractor.
 - **Days 31 to 60:** A single in-person demo week using the Knoxville demo chamber.
 - **Days 61 to 90:** 1 pilot running. Pitch UT Knoxville's sports medicine leadership for fall 2027.
 

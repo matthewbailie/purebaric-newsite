@@ -1,6 +1,6 @@
 # Tennessee business pamphlets (trifold, letter landscape, print double-sided and fold)
 
-One pamphlet per industry, generated 10 October 2026 by `_internal/outreach/source/make_pamphlets_tn.py` in the site repo. Contact on every pamphlet: (801) 602-2134, mlebailie@hotmail.com, purebaric.com. No hello@purebaric.com address appears.
+One pamphlet per industry, generated 10 October 2026 by `_internal/outreach/source/make_pamphlets_tn.py` in the site repo. Contact on every pamphlet: (801) 884-2113, mlebailie@hotmail.com, purebaric.com. No hello@purebaric.com address appears.
 
 | File | Industry | Cover headline |
 |---|---|---|

@@ -19,7 +19,7 @@ BRANDED = os.path.join(HERE, "..", "branded-images")
 OUT_DIR = sys.argv[1] if len(sys.argv) > 1 else os.path.expanduser("~/Desktop/Tennessee Research/pamphlets")
 CROP = os.path.join(os.environ.get("TMPDIR", "/tmp"), "pb_tn_crops"); os.makedirs(CROP, exist_ok=True); os.makedirs(OUT_DIR, exist_ok=True)
 
-CONTACT_PHONE = "(801) 602-2134"
+CONTACT_PHONE = "(801) 884-2113"
 CONTACT_EMAIL = "mlebailie@hotmail.com"
 CONTACT_WEB = "purebaric.com"
 
@@ -43,7 +43,7 @@ INDUSTRIES = {
     tagline="Offer recovery sessions to the members you already have. You keep the session revenue.",
     who=[("Members between hard workouts", "Lifters, runners and class regulars who want a quiet hour to recharge."),
          ("Personal-training clients", "Add a session to a training package or a premium membership tier."),
-         ("Weekend competitors", "Race, tournament and league athletes in the days before and after an event."),
+         ("Weekend competitors", "Race, tournament and league athletes who want a quiet hour in their routine."),
          ("Early and late regulars", "Members who fill the quiet hours when the chamber is free.")],
     why=["**Add-on revenue from members you already have.** Sell sessions, packages or a premium tier to people already walking through your door.",
          "**Fill quiet afternoons.** A chamber sells sixty-minute blocks in the hours your floor is empty.",
@@ -53,11 +53,11 @@ INDUSTRIES = {
          "**No capital outlay.** You rent the chamber. There is no equipment to buy, finance or resell."]),
   "crossfit-and-performance": dict(
     label="CROSSFIT AND PERFORMANCE GYMS", cover_img="chamber-gym-branded.jpg",
-    title="A Recovery Room\nfor Your Athletes",
-    tagline="Your athletes already believe in recovery. Give them a session where they train, and keep the revenue.",
-    who=[("Athletes in a competition block", "Open, qualifier and meet prep, when recovery sessions sell themselves."),
+    title="A Quiet Hour Your\nAthletes Will Book",
+    tagline="Your athletes already spend on recovery amenities. Give them a session where they train, and keep the revenue.",
+    who=[("Athletes in a competition block", "Open, qualifier and meet prep, when athletes look for a quiet hour between sessions."),
          ("Members training five or more days", "The people who already buy massage, compression and cold plunge."),
-         ("Masters athletes", "Members over forty who book recovery more than anyone else in the box."),
+         ("Masters athletes", "Members over forty, who book quiet time more than anyone else in the box."),
          ("Your coaches", "Staff use between classes; a coach runs the sessions.")],
     why=["**Your athletes talk.** One member's session becomes the whole 6 a.m. class asking about it.",
          "**Bundle it.** Add sessions to an athlete tier, a comp-prep package or a monthly recovery add-on.",
@@ -71,9 +71,9 @@ INDUSTRIES = {
     tagline="A supervised recovery amenity in your training room or clubhouse, rented by the season.",
     who=[("Players in season", "Adult players under the supervision of your trainer or sports-medicine lead."),
          ("Adult club members", "Swim, tennis, rowing and country-club members who pay for premium amenities."),
-         ("Academy and youth athletes", "Only with a parent present and the program's medical approval."),
+         ("Youth athletes", "Only after written insurer approval, with a parent's signed consent and a parent present."),
          ("Coaches and staff", "A quiet hour between sessions for the people who run the program.")],
-    why=["**A player amenity that signals you take recovery seriously.** Placed in the training room, run under your trainer's protocol.",
+    why=["**A player amenity in your training room.** Run under your trainer's supervision, for adult players first.",
          "**Member value.** Clubs sell sessions, include them in a premium tier, or offer them at tournaments and events.",
          "**Rent by the season.** Three, six or twelve months; we remove it when the season ends.",
          "**Simple to run.** Your trainer or fitness staff start and end every session.",
@@ -81,15 +81,15 @@ INDUSTRIES = {
          "**No capital outlay.** No equipment to buy, store in the off-season or resell."]),
   "high-schools-and-colleges": dict(
     label="ATHLETIC DEPARTMENTS: HIGH SCHOOLS AND COLLEGES", cover_img="chamber-gym-branded.jpg",
-    title="A Recovery Room\nfor Your Athletic\nProgram",
+    title="A Quiet Room for\nYour Athletic\nProgram",
     tagline="A supervised, trainer-run recovery amenity in your training room, offered first as a 90-day pilot.",
-    who=[("Varsity athletes in season", "Run by your athletic trainer under the team physician's protocol."),
-         ("Athletes under 18", "Only with a parent's signed consent and a parent present for the session."),
+    who=[("Adult athletes first", "College athletes and 18-plus high-school athletes, run by your athletic trainer under your program's policy."),
+         ("Athletes under 18", "Only after Purebaric's insurer confirms coverage in writing, with a parent's signed consent and a parent present."),
          ("Club-sport and intramural athletes (colleges)", "A wellness amenity the recreation department can schedule."),
          ("Coaching and training staff", "Staff sessions between practices.")],
-    why=["**Trainer-run, protocol-based.** Your athletic trainer starts and ends every session and keeps the log.",
+    why=["**Trainer-run.** Your athletic trainer starts and ends every session and keeps the log.",
          "**A pilot, not a commitment.** Ninety days, one chamber, then your staff decide with real usage numbers.",
-         "**Funded from athletics or boosters.** A season of chamber rental costs less than one travel tournament.",
+         "**Funded from athletics or boosters.** The 90-day pilot costs under $3,000 plus sales tax.",
          "**Air-only configuration.** No oxygen enrichment in school placements.",
          "**Small footprint.** A 4 x 8 foot corner of the training room and a wall outlet.",
          "**We handle the equipment.** Delivery, training, maintenance, consent-form templates and removal."],
@@ -97,29 +97,29 @@ INDUSTRIES = {
   "recovery-studios-and-med-spas": dict(
     label="RECOVERY STUDIOS, IV LOUNGES AND MED SPAS", cover_img="chamber-clinic-branded.jpg",
     title="The Next Service\non Your Recovery\nMenu",
-    tagline="Your clients already buy recovery. Add a sixty-minute chamber session this month, with nothing to purchase.",
+    tagline="Your clients already buy recovery services. Add a sixty-minute chamber session without buying anything.",
     who=[("Clients who book cryo, sauna or cold plunge", "The same people, the same price expectation, one more service."),
-         ("IV and vitamin clients", "Pair a drip with a session as a recovery bundle."),
+         ("IV and vitamin clients", "Offer a session in the same visit as a drip."),
          ("Members", "Add sessions to a monthly membership to lift its value."),
-         ("Athletes and weekend competitors", "Pre- and post-event sessions sold as a package.")],
+         ("Athletes and weekend competitors", "Sessions sold as a package alongside what they already book.")],
     why=["**Your clients already pay for recovery.** A chamber session fits the menu at the same price point as cryo or IV.",
          "**Packages and memberships.** Ten-session packs and monthly add-ons turn one visit into repeat revenue.",
          "**Cheaper to run than cryo.** A wall outlet, fifteen minutes of staff time and a fresh mask per client.",
-         "**Be first in Knoxville.** Almost no studio in the area offers a chamber; yours can be the one clients drive to.",
+         "**Be one of the first.** Few Knoxville businesses offer chamber sessions, and almost none are recovery studios; yours can be the one clients drive to.",
          "**Fits a treatment room.** A 4 x 8 foot area in a quiet room with a wall outlet.",
          "**No capital outlay.** Rent by the month; no equipment to buy, maintain or resell."]),
   "physical-therapy-and-chiropractic": dict(
-    label="PHYSICAL THERAPY, CHIROPRACTIC AND SPORTS MEDICINE", cover_img="chamber-clinic-branded.jpg",
+    label="CHIROPRACTIC AND WELLNESS PRACTICES", cover_img="chamber-clinic-branded.jpg",
     title="A Cash-Pay Wellness\nAmenity for Your\nPractice",
     tagline="A wellness service on the cash side of the practice, run by your front-desk or massage staff.",
-    who=[("Patients between episodes of care", "A reason to keep coming in once the treatment plan ends."),
+    who=[("Clients between appointments", "A reason to keep coming in on the wellness side of the practice."),
          ("Cash-pay wellness clients", "People who already buy massage, sauna, red light or supplements from you."),
          ("Athletes you see", "Weekend competitors and team athletes who want a recovery routine."),
          ("Your staff", "Sessions in the room that sits empty part of the day.")],
-    why=["**Cash-pay, not insurance.** A wellness amenity that never touches billing or a treatment plan.",
-         "**Keeps patients coming in.** A weekly session between episodes of care keeps the relationship active.",
+    why=["**Cash-pay, not insurance.** A wellness amenity that never touches billing or treatment.",
+         "**Keeps clients coming in.** A weekly wellness session gives them a reason to visit between appointments.",
          "**Front-desk simple.** Staff start and end sessions; fifteen minutes of time each.",
-         "**Stand out.** Only one practice in the Knoxville area offers chamber sessions today.",
+         "**Stand out.** Few Knoxville businesses offer chamber sessions, and almost none of them are chiropractic or wellness practices.",
          "**Uses an empty room.** A 4 x 8 foot area and a wall outlet.",
          "**No capital outlay.** Rent by the month; no equipment to buy, maintain or resell."]),
   "salons-and-day-spas": dict(
@@ -193,15 +193,15 @@ def build(key, cfg):
     pdf.set_xy(px(1)+M+5, y+10); pdf.set_font("Helvetica","B",12.5); pdf.set_text_color(*WHITE)
     pdf.multi_cell(CW-10, 6.2, f"{CONTACT_PHONE}\n{CONTACT_EMAIL}\n{CONTACT_WEB}", align="L")
     y = y + 6 + 27
-    y = para(1, y+9, "**Coming to Knoxville.** Purebaric chambers are in use across Utah's Wasatch Front today, and we are placing our first Knoxville-area chambers with a small group of businesses. You work directly with the owner, from the first call through installation and ongoing support.", size=9, color=(230,218,200), lh=4.3)
-    para(1, PH-33, "Purebaric provides general-wellness equipment. As offered here it is not a medical device and is not intended to diagnose, treat, cure or prevent any disease. Figures in this pamphlet are illustrations, not guarantees. Prices exclude Tennessee sales tax. Chamber configuration is confirmed at the site check.", size=6.8, color=(170,158,146), lh=3.2)
+    y = para(1, y+9, "**Coming to Knoxville.** Purebaric chambers are in use at gyms, studios and clinics today, and we are placing our first Knoxville-area chambers with a small group of businesses. You work directly with the owner, from the first call through installation and ongoing support.", size=9, color=(230,218,200), lh=4.3)
+    para(1, PH-33, "Purebaric rents this equipment as a general-wellness amenity. It is not offered to diagnose, treat, cure or prevent any disease. Figures in this pamphlet are illustrations, not guarantees. Prices exclude Tennessee sales tax. Knoxville placements are air-only; configuration is confirmed at the site check.", size=6.8, color=(170,158,146), lh=3.2)
     # cover
     cy = logo(2, 13, w=34)
     src = os.path.join(BRANDED, cfg["cover_img"]); src_im = Image.open(src); ih = W * src_im.height / src_im.width
     img = crop(src, key+"_cover.jpg", W, ih); pdf.image(img, x=px(2), y=cy+8, w=W, h=ih)
     pdf.set_xy(px(2)+M, cy+8+ih+9); pdf.set_font("Georgia","B",18.5); pdf.set_text_color(*INK); pdf.multi_cell(CW, 7.7, cfg["title"], align="L")
     y = para(2, pdf.get_y()+3.5, cfg["tagline"], size=9.6, color=MUTED, lh=4.6)
-    y = bullets(2, y+5, ["**Installed and serviced** by Purebaric", "**Staff training and runbook** included", "**Template consent forms** for your intake",
+    y = bullets(2, y+5, ["**Installed and serviced** by Purebaric", "**Staff training, runbook** and refreshers", "**Template consent forms** for your intake",
                          "**Client pamphlet** crafted for your brand", "**No equipment to buy** or maintain"], size=9.2, lh=4.3, gap=2.0)
     pdf.set_fill_color(*TERRA); pdf.rect(px(2), PH-10, W, 10, "F")
     lbl = "CHAMBER RENTALS FOR " + cfg["label"]; fs = 8.2
@@ -233,12 +233,12 @@ def build(key, cfg):
             if n:
                 pdf.set_xy(px(1)+M, yy+3.7); pdf.set_font("Helvetica","",7.1); pdf.set_text_color(*MUTED); pdf.cell(CW, 3.4, n, align="R"); yy += 3.2
             yy += 5.0; pdf.line(px(1)+M, yy-0.6, px(1)+M+CW, yy-0.6)
-        y = para(1, yy+1.5, "**Our assumptions:** 60-minute sessions, open 6 days a week (26 days a month), at a blended **$75 a session**, below the local single-session price. One chamber can run up to 8 sessions in a 10-hour day.", size=8.1, color=MUTED, lh=3.7)
+        y = para(1, yy+1.5, "**Our assumptions:** 60-minute sessions, open 6 days a week (26 days a month), at **$75 a session**, below the local single-session price. One chamber can run up to 8 sessions in a 10-hour day; most new amenities start well below that.", size=8.1, color=MUTED, lh=3.7)
         ty = y+3; cw = [CW*0.35, CW*0.25, CW*0.40]; rh = 6.6
         pdf.set_xy(px(1)+M, ty); pdf.set_fill_color(*INK); pdf.set_text_color(*WHITE); pdf.set_font("Helvetica","B",7.6)
         for w_, h_ in zip(cw, ["Usage","Sessions / mo","Gross revenue / mo"]): pdf.cell(w_, rh, h_, align="C", fill=True)
         pdf.ln(rh)
-        for k,(a,b,c) in enumerate([("Light: 2 a day","52","$3,900"),("Moderate: 4 a day","104","$7,800"),("Strong: 6 a day","156","$11,700")]):
+        for k,(a,b,c) in enumerate([("1 a day","26","$1,950"),("2 a day","52","$3,900"),("4 a day","104","$7,800")]):
             pdf.set_x(px(1)+M); pdf.set_fill_color(*(CREAM if k%2==0 else WHITE)); pdf.set_draw_color(*LINE); pdf.set_font("Helvetica","",8.4); pdf.set_text_color(*INK)
             pdf.cell(cw[0], rh, a, border=1, align="C", fill=True); pdf.cell(cw[1], rh, b, border=1, align="C", fill=True)
             pdf.set_font("Helvetica","B",8.6); pdf.set_text_color(*TERRA_D); pdf.cell(cw[2], rh, c, border=1, align="C", fill=True); pdf.ln(rh)
@@ -246,33 +246,34 @@ def build(key, cfg):
         y = bullets(1, y+2, ["**Chamber rental:** from $783 a month on a 12-month term ($929 on 3 months), plus sales tax. About 11 sessions a month covers it.",
                              "**Training and initial supplies:** one-time $200 fee. Delivery and installation are included.",
                              "**Staff time:** about 15 minutes per session.",
-                             "**Masks and cleaning supplies:** about $1.30 per use."], size=8.3, lh=3.8, gap=1.2)
+                             "**Cleaning supplies and liners:** about $1.30 per use.",
+                             "**Knoxville placements are air-only** (no oxygen enrichment)."], size=8.3, lh=3.8, gap=1.2)
         by = y+1.5
         pdf.set_fill_color(*TERRA_BG); pdf.rect(px(1)+M, by, CW, 43, "F")
-        pdf.set_xy(px(1)+M+4, by+3.5); pdf.set_font("Georgia","B",10); pdf.set_text_color(*TERRA_D); pdf.cell(CW-8, 5, "Example: moderate usage")
+        pdf.set_xy(px(1)+M+4, by+3.5); pdf.set_font("Georgia","B",10); pdf.set_text_color(*TERRA_D); pdf.cell(CW-8, 5, "Example: 2 sessions a day")
         pdf.set_font("Helvetica","",8.3); pdf.set_text_color(*INK); yy = by+9.5
-        for l,v in [("Session revenue (104 x $75)","$7,800"),("Chamber rental (12-month rate)","- $783"),("Masks and cleaning (104 x $1.30)","- $135")]:
+        for l,v in [("Session revenue (52 x $75)","$3,900"),("Chamber rental (12-month rate)","- $783"),("Cleaning supplies and liners (52 x $1.30)","- $68")]:
             pdf.set_xy(px(1)+M+4, yy); pdf.cell(CW-30, 4.6, l); pdf.cell(22, 4.6, v, align="R"); yy += 4.5
         pdf.set_draw_color(*TERRA); pdf.line(px(1)+M+4, yy+0.6, px(1)+M+CW-4, yy+0.6)
-        pdf.set_xy(px(1)+M+4, yy+1.8); pdf.set_font("Helvetica","B",9.2); pdf.set_text_color(*TERRA_D); pdf.cell(CW-30, 5, "Net revenue each month"); pdf.cell(22, 5, "$6,882", align="R")
-        para(1, yy+8, "First month only: subtract the one-time $200 fee. Sales tax applies to the rental.", size=7.6, color=MUTED, lh=3.5, dx=4, w=CW-8)
-        para(1, by+45, "(1) Published 2026 prices from a Knoxville-area provider of wellness chamber sessions. All figures are illustrations before staff time, overhead and taxes; set your own price.", size=6.5, color=MUTED, lh=3.0)
+        pdf.set_xy(px(1)+M+4, yy+1.8); pdf.set_font("Helvetica","B",9.2); pdf.set_text_color(*TERRA_D); pdf.cell(CW-30, 5, "After rental and supplies"); pdf.cell(22, 5, "$3,049", align="R")
+        para(1, yy+8, "Before sales tax on the rental, card fees and staff time. First month only: subtract the one-time $200 fee.", size=7.6, color=MUTED, lh=3.5, dx=4, w=CW-8)
+        para(1, by+45, "(1) Published prices at a Knoxville-area chiropractic office for oxygen-enriched sessions; $125 is a first visit with consultation. Purebaric's Knoxville placements are air-only. All figures are illustrations before staff time, overhead and taxes; set your own price.", size=6.5, color=MUTED, lh=3.0)
     else:
         y = heading(1, 12, "The 90-Day Pilot")
         y = para(1, y+3, "One chamber in your athletic training room for ninety days, run by your athletic trainer, so your staff can decide with real usage numbers.", size=8.9, lh=4.1)
         y = sub(1, y+3, "What the pilot includes", size=9.6)
         y = bullets(1, y+2, ["**One chamber, compressor and accessories,** air-only configuration, installed in your training room.",
-                             "**Training for your athletic trainer and two staff,** a written runbook, a session log and consent-form templates (parent consent and presence for athletes under 18).",
-                             "**A protocol template** for your team physician to adapt and sign.",
+                             "**Training for your athletic trainer and two staff,** a written runbook, a session log and consent-form templates.",
+                             "**A written session policy template** for your program to adapt.",
                              "**Maintenance, support and removal** at the end of the pilot, with no obligation to continue."], size=8.4, lh=3.9, gap=1.5)
         y = sub(1, y+2, "What it costs", size=9.6)
         y = bullets(1, y+2, ["**Chamber rental:** $929 a month on the three-month pilot term, plus sales tax; from $783 a month if you continue on a twelve-month term.",
                              "**Training and initial supplies:** one-time $200 fee. Delivery and installation are included.",
                              "**Staff time:** about 15 minutes of the trainer's time per session."], size=8.4, lh=3.9, gap=1.5)
         by = y+2
-        pilot_items = ["Your athletic trainer and team physician review the protocol and the screening list.",
+        pilot_items = ["Your athletic trainer reviews the session policy and the screening list.",
                   "Your athletic director confirms funding (athletics budget or boosters) and the room.",
-                  "Purebaric's insurer confirms coverage for supervised use, including athletes under 18 with a parent present.",
+                  "Purebaric's insurer confirms coverage in writing for supervised use; athletes under 18 join only after that confirmation, with a parent's signed consent and a parent present.",
                   "A short letter of intent sets the start date; the rental agreement follows."]
         ph = 10.5 + sum(lines(t, 8.2, CW-12, "")*3.8 + 1.6 for t in pilot_items) + 3
         pdf.set_fill_color(*TERRA_BG); pdf.rect(px(1)+M, by, CW, ph, "F")
@@ -300,7 +301,7 @@ def build(key, cfg):
                            "**Consent-form templates.** Client consent, screening and release forms ready for your intake. Have your own counsel review them.",
                            "**A client pamphlet in your brand.** We help you craft the piece that signs up " + ("athletes and parents" if program else "new clients") + ".",
                            "**Equipment service.** We maintain the chamber and compressor and respond within two business days.",
-                           "**Ongoing support.** Call or text with questions. If something is not working, we fix it."], size=8.5, lh=3.9, gap=1.6)
+                           "**Ongoing support.** Call or text with questions. If something is not working, we repair or replace it."], size=8.5, lh=3.9, gap=1.6)
     pdf.set_fill_color(*INK); pdf.rect(px(2), PH-24, W, 24, "F")
     pdf.set_xy(px(2)+M, PH-20); pdf.set_font("Georgia","B",10.5); pdf.set_text_color(*CREAM2); pdf.cell(CW, 5.5, "Ready to talk?")
     pdf.set_xy(px(2)+M, PH-13.5); pdf.set_font("Helvetica","B",9.2); pdf.set_text_color(*WHITE); pdf.cell(CW, 5, f"{CONTACT_PHONE}  |  {CONTACT_EMAIL}")

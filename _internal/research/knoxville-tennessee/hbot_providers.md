@@ -1,3 +1,5 @@
+> **Superseded note (10 Oct 2026):** the provider workbook and the prospect workbook's "Already offer HBOT" sheet are the current records. Since this file was written, the Marketplace dealer (Christine Wozniak Runyan, Knoxville) was found, and the recovery re-sweep found two more operators (The Functional Medicine MD, The Osteopathic Center). Counts below are as of the first research pass.
+
 # Knoxville 25-mile radius: HBOT providers, renters, dealers (research 2026-10-10)
 
 Source method: WebSearch only (no direct site fetches). Prices are quoted from search snippets; every price row cites its source. 'not published' means no price surfaced; call or consultation needed.
