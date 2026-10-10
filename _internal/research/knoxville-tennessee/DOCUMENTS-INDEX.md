@@ -18,6 +18,7 @@ Folder: `~/Desktop/Tennessee Research/`. Canonical git copy: `~/projects/purebar
 | Sales representative training | `SALES-REP-TRAINING.md` / `.docx` | Product, pricing, key terms, claims rules, visit method, objections, and talk tracks for seven industries; Tennessee notes. |
 | Letter of intent, Tennessee | `knoxville/legal/Purebaric_LOI_Business_Chamber_Rental_Tennessee.docx` / `.pdf` + `README-LOI-Tennessee.md` | Non-binding term sheet for business placements with Tennessee tax, registration and fire-code conditions. |
 | Letter of intent, Utah | repo `_internal/outreach/Purebaric_LOI_Business_Chamber_Rental_Utah.docx` / `.pdf` + `README-LOI-Utah.md` | Utah counterpart. |
+| Tennessee business pamphlets (7) | `pamphlets/` | One trifold per industry with Tennessee contact details, air-only wording and Knoxville price anchors; see `pamphlets/README.md`. |
 | Schools channel proposal | `channel-schools-athletic-recovery/PROPOSAL-schools-athletic-recovery.md` | "Recovery Room" pilot for athletic programs (Utah and Tennessee), risks for minors, air-only recommendation. |
 
 ## Lists and data
