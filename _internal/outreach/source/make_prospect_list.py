@@ -304,3 +304,7 @@ with open(FEED, "w") as fh:
 print(f"wrote {FEED}: {len(feed)} prospects")
 print(f"wrote {OUT}: {len(prospects)} prospects ({sum(1 for r in prospects if r['email'])} with email), "
       f"{len(competitors)} already-HBOT, {len(dropped)} outside area")
+
+# add the "Hyperbaric on website" column from the crawl cache (see hbot_site_check.py)
+import subprocess
+subprocess.run([sys.executable, os.path.join(os.path.dirname(__file__), "hbot_site_check.py"), "apply", OUT], check=False)

@@ -249,3 +249,9 @@ s.append([]); s.append(["Already offer HBOT (competitors / references)", len(com
 s.column_dimensions["A"].width = 52
 wb.save(OUT)
 print(f"{len(prospects)} prospects ({sum(1 for r in prospects if r['email'])} with email), {len(competitors)} competitors, {len(outside)} outside -> {OUT}")
+
+# add the "Hyperbaric on website" column from the crawl cache kept with the Utah tooling
+import subprocess, sys
+CHECKER = os.path.expanduser("~/projects/purebaric-newsite/_internal/outreach/source/hbot_site_check.py")
+if os.path.exists(CHECKER):
+    subprocess.run([sys.executable, CHECKER, "apply", OUT], check=False)

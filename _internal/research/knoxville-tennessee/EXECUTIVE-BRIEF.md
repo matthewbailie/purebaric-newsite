@@ -1,6 +1,6 @@
 # Purebaric in Knoxville, Tennessee: executive brief
 
-**Status: living draft, version 4 (10 October 2026). Updated as research continues; a final review will follow.**
+**Status: living draft, version 5 (10 October 2026). Updated as research continues; a final review will follow.**
 
 ## 1. The question
 Should Purebaric, which rents 1.5 ATA mild hyperbaric chambers to homes ($529 to $729 a month) and businesses ($783 to $979 a month per chamber) along Utah's Wasatch Front, open a second market within 25 miles of downtown Knoxville, Tennessee?
@@ -20,7 +20,7 @@ Should Purebaric, which rents 1.5 ATA mild hyperbaric chambers to homes ($529 to
 
 **Demand signals are mixed.**
 - For: 6,959 Knoxville Marathon registrants in 2026 (about 7 per 1,000 metro residents), a 2,000-member track club, triathlons, a 50K, 60+ miles of urban trails, the most-visited national park next door, a sold-out 101,915-seat stadium, and three hospital systems that already explain hyperbaric to patients. 19% of the metro is over 65 (12% in Salt Lake), a longevity audience with lower housing costs.
-- Against: median household income in Knox County is $74,222 against $97,494 in Salt Lake County; 37% of households earn over $100k against 49%. Adjusted for cost of living the gap is about 4%. No local news coverage, Facebook group or Restore-type chain signals hyperbaric awareness; Google Trends still needs a manual check (links in the market analysis). Metro growth is 7.2% since 2020 but slowing each year since 2022.
+- Against: median household income in Knox County is $74,222 against $97,494 in Salt Lake County; 37% of households earn over $100k against 49%. Adjusted for cost of living the gap is about 4%. Google Trends (checked 10 Oct 2026) puts five-year search interest for "hyperbaric chamber" at Knoxville 1 vs Salt Lake City 6 vs Nashville 2 on one scale, and Tennessee at about half of Utah's per-capita rate; in the most recent weeks Knoxville runs at 55 to 60% of Salt Lake City. Knoxville ranks third of six Tennessee metros. Its rising queries are "benefits" and "what is a hyperbaric chamber", while Utah's are "how much does it cost": Knoxville marketing must educate before it can sell. No local news coverage, Facebook group or Restore-type chain, and no reportable searches for hyperbaric rentals anywhere. Metro growth is 7.2% since 2020 but slowing each year since 2022.
 
 **Prospects exist, and the list should be worked by phone and contact form, not email.**
 - 177 businesses compiled across Knox (110), Blount (33), Anderson (15), Sevier (8), Loudon (7) and Union (4): 46 physical therapy and chiropractic, 43 gyms and fitness studios, 37 recovery studios and med spas, 19 sports programs, 17 salons, 15 CrossFit and performance gyms. The second pass added the locally owned franchise studios the first pass missed (D1 Training, Pure Barre, F45, TITLE Boxing, Fit Body Boot Camp, Workout Anytime), eight of them with a named local owner, and filled the empty east and north edges of the radius.
@@ -58,6 +58,7 @@ A separate proposal (`../channels/schools-athletic-recovery/PROPOSAL-schools-ath
 All supporting material is in this folder: `market_analysis.md` (scorecard and sources), `purebaric_knoxville_hbot_providers.xlsx` (providers, renters, dealers, prices), `purebaric_knoxville_prospects.xlsx` (prospect list), `prospect_list_critique.md` (due-diligence review), `classifieds_check.md`, and `research/` (raw research JSON, overrides and the compile script).
 
 ## 7. Change log
+- v5, 10 Oct 2026: Google Trends measured (google_trends_check.md); indicator 7 and the demand section updated. Website crawl added a "Hyperbaric on website" column to both prospect lists (Utah: 5 prospects already advertise a chamber). Schools research for both markets in progress.
 - v4, 10 Oct 2026: schools and athletic programs channel added (section 4a) from the separate proposal; oxygen-configuration and minors risks flagged for owner decision.
 - v3, 10 Oct 2026: round-2 critique applied; Call-first column added; competitor sheet reduced to confirmed providers; Marketplace listing links recorded.
 - v2, 10 Oct 2026: prospect list expanded to 177 after three follow-up passes; email-discovery ceiling documented; Marketplace dealer finding added; second critique in progress. New channel under research: schools and athletic programs (separate proposal, see `../channels/schools-athletic-recovery/` once delivered).
