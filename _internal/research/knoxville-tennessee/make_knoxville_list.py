@@ -41,7 +41,7 @@ CITIES = {
     "tazewell": (36.4540, -83.5690, "Claiborne"), "newport": (35.9670, -83.1880, "Cocke"), "heiskell": (36.1120, -84.0400, "Knox"),
 }
 INDUSTRIES = ["Gyms and fitness centers", "CrossFit and performance gyms", "Sports teams and athletic programs",
-              "Recovery studios and med spas", "Physical therapy, chiropractic, and sports medicine", "Salons and beauty studios"]
+              "High schools and colleges (athletics)", "Recovery studios and med spas", "Physical therapy, chiropractic, and sports medicine", "Salons and beauty studios"]
 KEYS = ["business", "industry", "owner", "owner_title", "email", "email_confidence", "email_source", "phone",
         "website", "address", "city", "zip", "county", "notes", "personal_note_hook"]
 EMAIL_RE = re.compile(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$")
@@ -209,7 +209,7 @@ for r in sorted(prospects, key=lambda r: (r["email"] == "", r["email_confidence"
 prospects = uniq
 by_addr = {}
 for r in prospects:
-    if r["industry"] == "Sports teams and athletic programs": continue
+    if r["industry"] in ("Sports teams and athletic programs", "High schools and colleges (athletics)"): continue
     k = keyaddr(r["address"])
     if len(k) > 6: by_addr.setdefault(k, []).append(r)
 for g in by_addr.values():

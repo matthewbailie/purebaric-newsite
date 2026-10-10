@@ -31,6 +31,7 @@ INDUSTRIES = [
     "Gyms and fitness centers",
     "CrossFit and performance gyms",
     "Sports teams and athletic programs",
+    "High schools and colleges (athletics)",
     "Recovery studios and med spas",
     "Physical therapy, chiropractic, and sports medicine",
     "Salons and beauty studios",
@@ -39,6 +40,7 @@ TEMPLATE = {
     "Gyms and fitness centers": "gyms-and-fitness",
     "CrossFit and performance gyms": "crossfit-and-performance",
     "Sports teams and athletic programs": "sports-teams-and-athletics",
+    "High schools and colleges (athletics)": "sports-teams-and-athletics",
     "Recovery studios and med spas": "recovery-studios-and-med-spas",
     "Physical therapy, chiropractic, and sports medicine": "physical-therapy-and-sports-medicine",
     "Salons and beauty studios": "salons-and-beauty",
@@ -188,7 +190,7 @@ def suite(a):
     return m.group(1) if m else ""
 by_addr = {}
 for r in prospects:
-    if r["industry"] == "Sports teams and athletic programs":
+    if r["industry"] in ("Sports teams and athletic programs", "High schools and colleges (athletics)"):
         continue  # teams share stadiums and campuses by design
     k = (keyaddr(r["address"]), keycity(r["city"]))
     if len(k[0]) > 6:

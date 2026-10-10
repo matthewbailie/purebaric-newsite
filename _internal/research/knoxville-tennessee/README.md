@@ -15,3 +15,4 @@ Market-research only; nothing here touches the website.
 Rebuild the prospect workbook: `python3 make_knoxville_list.py` (needs openpyxl). Edit `research/_overrides.json` to drop, flag, add rows, hold back an email, or correct a phone, then rerun.
 
 Status after two critique rounds: 174 businesses, a Call-first column marking the reviewer's top 20, 9 verified emails, about a quarter of rows with no phone. It is a call and contact-form list, not an email list (a dedicated email pass found zero verbatim addresses). Remaining known gaps: distances are measured from city centres, four rows have conflicting addresses, and D1 Training and TITLE Boxing have no street address.
+- `research/schools_knox.json`: 44 high schools and colleges with athletic programs within about 25 miles (TSSAA and college athletics sites); compiled into the prospects workbook under "High schools and colleges (athletics)". Loudon and Roane State fall outside the radius.
