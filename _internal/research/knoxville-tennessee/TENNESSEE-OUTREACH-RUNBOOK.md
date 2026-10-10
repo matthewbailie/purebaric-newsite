@@ -63,7 +63,7 @@ The list has 210 prospects. Do not work it top to bottom. Work it in the order b
 | 9 | Prime IV Hydration and Wellness, Farragut and Knoxville | B / A | (865) 200-4070 | Franchise with cryo and infrared sauna; ask the franchisee whether add-ons need franchisor approval. |
 | 10 | The Wellness Room, Medispa at Choto, Grow Wellness, Smoky Mountain Hydration (Maryville), MC Wellness and Aesthetics, Knox Aesthetics | A / D | see list | Second pass once the first nine have answered; strong reviews and IV menus. |
 
-Any new names from the recovery re-sweep (`research/recovery_resweep.json`) join this wave in the same order logic: named owner and email first.
+The recovery re-sweep (10 Oct 2026) added 54 businesses to this category, now 88 rows. Of the additions, visit first: Peak IV Hydration (906 Sevier Ave, physician-founded, info@peakivhydration.com), Rocky Top Vitality (Farragut, Melissa Osborne, NP), Bloom Functional Wellness (Maryville, Angela Chaffin, info@healatbloom.com), CryoStretch (9411 S Northshore Dr), SweatHouz Farragut (sauna and cold plunge franchise; confirm address) and Brooke Nix Medical Aesthetics (Maryville and West Knoxville). Twenty-eight of the additions are weight-loss, hormone and testosterone clinics from a single directory with no website check; treat them as wave 6 fill-ins. Three more businesses were found already offering hyperbaric (The Functional Medicine MD, ThermoDynamic Health in Oak Ridge, The Osteopathic Center) and sit on the competitor sheet.
 
 ### Wave 2: performance gyms and CrossFit (target: 2 LOIs)
 

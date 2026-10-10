@@ -42,7 +42,7 @@
   "CORA Physical Therapy - Clinton": "REVIEW 2026-10: national PT chain; same address as Take Charge Fitness. Low value.",
   "CrossFit Courageous": "REVIEW 2026-10: address conflict (Threadstone Ln vs 10420 Kingston Pike per ClassPass); no phone.",
   "La Vita E Bella Spa": "REVIEW 2026-10: address conflict (10321 Kingston Pike vs 11324 Parkside Dr, inside Sola Turkey Creek?) and Michigan 586 phone.",
-  "BioworX Knoxville (CryoFit)": "REVIEW 2026-10: only a Lantern directory listing; no own site found. Multi-state brand.",
+  "BioworX Knoxville (CryoFit)": "REVIEW 2026-10: only a Lantern directory listing; no own site found. Multi-state brand. RESWEEP 2026-10 (notes (phone overlap)): Its phone (865) 240-4639 also appears on a directory listing for Peak IV Hydration (906 Sevier Ave); Peak IV's own site uses (865) 281-5263, so the overlap is likely a directory error. Source: https://www.fresha.com/lp/fi/bt/kylpylät/us-knoxville",
   "Studio P Pilates (Maryville)": "REVIEW 2026-10: same owner/phone as the Lenoir City studio (row merged). 256 area code consistent across listings; likely owner cell.",
   "Pilates With Susie": "REVIEW 2026-10: single-source listing, 661 (California) phone; verify before calling.",
   "Skin by Jenn": "REVIEW 2026-10: solo esthetician with 925 (CA) phone; weak fit for a $783+/mo chamber.",
@@ -56,7 +56,7 @@
   "YogaSix Bearden": "REVIEW 2026-10: Xponential franchise reportedly for sale; owner unknown.",
   "Advanced Dermatology & Ameliore Medispa": "REVIEW 2026-10: no phone, ZIP or own website; fails the phone-or-website rule unless the chamber page counts.",
   "Bentley Medical": "REVIEW 2026-10: phone (865) 288-0911 per NewPatients directory (row has none).",
-  "Smoky Mountain Hydration": "UNVERIFIED: no listing, site or owner found in two passes; confirm it exists before contacting.",
+  "Smoky Mountain Hydration": "UNVERIFIED: no listing, site or owner found in two passes; confirm it exists before contacting. RESWEEP 2026-10 (phone (possible alternate)): (865) 280-0208 per Fresha listing 'Maryville / Alcoa', 1628 W Broadway Ave, Maryville 37801; CSV has (865) 233-8330. Unverified which is current. Source: https://www.fresha.com/lp/en/bt/spas/in/us-knoxville RESWEEP 2026-10 (notes (status/services)): Yelp describes it as nurse-owned, offering IV therapy, semaglutide/tirzepatide weight-loss injections and vitamin shots; one Yelp snapshot shows it as closed, so confirm it is still operating. Source: https://www.yelp.com/biz/smoky-mountain-hydration-maryville-2",
   "Holt Physical Therapy": "Two addresses in sources: 1005 E Broadway or 501 Adesa Pkwy A100 (Lenoir City); confirm.",
   "Oak Ridge Chiropractic": "Two addresses in sources: 550 Oak Ridge Tpke or 176 Randolph Rd; confirm.",
   "Rocky Top CrossFit": "Owner uncertain: Deborah Ragland (earlier pass) vs Jeremy McDonnell (2014 article); confirm.",
@@ -87,17 +87,19 @@
   "D1 Training Hardin Valley": "REVIEW R2: still no street number after more searches (only 'Hardin Valley Rd'); the row fails the address rule, but it is a top call. Get the address on the call.",
   "TITLE Boxing Club West Knoxville": "REVIEW R2: owners York and Williamson confirmed by WATE, but there is no street address or phone anywhere. Not callable as is.",
   "Triple F Elite Sports Training": "REVIEW R2: Guinn Rd address comes only from WellnessLiving; WVLT (Mar 2022) said 'opening later this summer'; no phone. Confirm it operates.",
-  "Vibrance IV Hydration & Wellness (Oak Ridge)": "REVIEW R2: jennifer@vibranceiv.com and 865-902-2172 are on its own Jane page, but the page still says 'Opening Soon!' (founded 2024). Confirm it is open.",
+  "Vibrance IV Hydration & Wellness (Oak Ridge)": "REVIEW R2: jennifer@vibranceiv.com and 865-902-2172 are on its own Jane page, but the page still says 'Opening Soon!' (founded 2024). Confirm it is open. RESWEEP 2026-10 (notes (status/contacts)): Jane booking page still shows an Opening Soon banner; Yelp page now has a listing for 189 Lafayette Dr Ste B describing IV, vitamin infusions and weight loss. Prospeo lists Tayler Turlock as marketing director; founded 2024. Jennifer (email already in CSV) is not confirmed as owner. Source: https://vibranceiv.janeapp.com ; https://prospeo.io/c/vibrance-iv-hydration-wellness",
   "MC Wellness and Aesthetics": "REVIEW R2: email confirmed on its own Jane page. The Jane landing page says it is inside Saah Suites, 102 S Campbell Station Rd Ste 26, Farragut 37934; the booking page says 1750 Commons Point Dr. Ask which is current.",
   "Old City Medspa": "REVIEW R2: owner Dr. Stephen Daniel (DDS) is from 2019 coverage only; current listings name Medical Director Mark Davenport MD. Ask for the owner.",
   "Curves Maynardville": "REVIEW R2: the only source is city-data.com, and most Curves locations have closed. Treat as probably closed until called.",
-  "Thriving to a New You": "REVIEW R2: no phone or website (Lantern only). Fails the brief's rule.",
+  "Thriving to a New You": "REVIEW R2: no phone or website (Lantern only). Fails the brief's rule. RESWEEP 2026-10 (phone / website): (865) 232-3169; thrivingnewyou.com. Offers IV therapy, NAD+, weight loss; Google 5.0 (60 reviews) per Lantern. Source: https://lantern.llc/b/thriving-to-a-new-you-powell",
   "Union County Chiropractic Clinic": "REVIEW R2: NPI record last updated 2007; confirm it still operates.",
   "New You Hair Salon": "REVIEW R2: same phone as Janet's Hair & Nail Salon (3625 Maynardville Hwy); one is wrong.",
   "Simply Ageless Aesthetics, LLC": "REVIEW R2: phone conflict between Fresha and another directory.",
   "Daniel Giammo, DC": "REVIEW R2: Healthgrades-derived solo practitioner with no website; low priority.",
   "Dr. David Berry, D.C.": "REVIEW R2: NPI-derived solo practitioner with no website; low priority.",
-  "Knox Aesthetics": "REVIEW R2: same address (9320 Kingston Pike) and phone (865) 801-9501 as the dropped Knox Wellness row; one business. Offers IV, hormone pellets, chelation and ketamine."
+  "Knox Aesthetics": "REVIEW R2: same address (9320 Kingston Pike) and phone (865) 801-9501 as the dropped Knox Wellness row; one business. Offers IV, hormone pellets, chelation and ketamine.",
+  "Pure Luxe Salon, Spa and MedSpa": "RESWEEP 2026-10 (notes (second location)): TrustAnalytica lists a 'Pure Luxe Medspa' at 1645 Downtown W Blvd, Unit 18, Knoxville, TN 37919, same phone (865) 474-7873, in addition to 10780 Hardin Valley Rd. Source: https://trustanalytica.org/us/tn/knoxville/best-medspa",
+  "Sauna House Knoxville": "RESWEEP 2026-10 (notes (open status)): Inside of Knoxville (Feb 2026) toured the permanent bathhouse at 126 Jennings Ave as 'nearly ready'; Yelp now shows reviews of visits (Happy Holler), so it appears to be open. ZIP for Jennings Ave is likely 37917 (unverified). Source: https://insideofknoxville.com/2026/02/step-inside-sauna-house-for-a-sneak-peek-before-opening/"
  },
  "add": [
   {
@@ -233,7 +235,8 @@
   "Gold's Gym Lenoir City": "(865) 988-0036",
   "Bentley Medical": "(865) 288-0911",
   "Fox Den Country Club": "(865) 966-9771",
-  "Marino Physiotherapy": "(865) 236-0340"
+  "Marino Physiotherapy": "(865) 236-0340",
+  "Thriving to a New You": "(865) 232-3169"
  },
  "fix_notes": {
   "Webb School of Knoxville": "Earlier note mixed in staff from The Webb School in Bell Buckle TN (a different school); ignore those names. Dan Gill's email checks out. | FIX R2: the Notes body still contains the Bell Buckle text (Bill McClain, Carlos Gonzalez, webbschool.com); delete it in teams.json. Also verify the hook's 'hiring a full-time athletic trainer for 2026-27', which may come from the Bell Buckle school.",

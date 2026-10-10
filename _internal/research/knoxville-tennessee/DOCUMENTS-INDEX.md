@@ -23,7 +23,7 @@ Folder: `~/Desktop/Tennessee Research/`. Canonical git copy: `~/projects/purebar
 ## Lists and data
 | Document | Path | What it is |
 |---|---|---|
-| Knoxville prospect list | `knoxville/purebaric_knoxville_prospects.xlsx` | 210 prospects in seven industries incl. 42 schools and colleges; Call-first flag; Hyperbaric-on-website column; dropped and competitor sheets. Rebuilt by `knoxville/make_knoxville_list.py` from `knoxville/research/*.json` and `_overrides.json`. |
+| Knoxville prospect list | `knoxville/purebaric_knoxville_prospects.xlsx` | 263 prospects in seven industries incl. 42 schools and colleges and 88 recovery, IV and med spa businesses; Call-first flag; Hyperbaric-on-website column; dropped and competitor sheets. Rebuilt by `knoxville/make_knoxville_list.py` from `knoxville/research/*.json` and `_overrides.json`. |
 | Hyperbaric providers | `knoxville/purebaric_knoxville_hbot_providers.xlsx` + `hbot_providers.md` | 24 existing chamber operators with prices and contacts; rental businesses; dealers (incl. Marketplace listings); regional price references. |
 | Schools and colleges targets | `channel-schools-athletic-recovery/schools_athletic_targets.xlsx` + `targets.json` | 53 athletic programs for the schools channel. |
 | Prospect list critique | `knoxville/prospect_list_critique.md` | Two rounds of adversarial review and the corrections applied. |
@@ -34,4 +34,4 @@ Folder: `~/Desktop/Tennessee Research/`. Canonical git copy: `~/projects/purebar
 ## Still open
 - Final review of the executive brief (owner to request).
 - Counsel and fire-marshal answers (runbook Phase 0).
-- Recovery, wellness and IV re-sweep results merged into the prospect list (in progress 10 Oct 2026).
+- Recovery, wellness and IV re-sweep: merged 10 Oct 2026 (54 added, 3 new competitors, 7 corrections; 13 closed businesses recorded in `knoxville/research/recovery_resweep.json`).
