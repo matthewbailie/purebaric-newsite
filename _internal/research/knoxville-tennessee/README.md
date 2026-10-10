@@ -14,4 +14,4 @@ Market-research only; nothing here touches the website.
 
 Rebuild the prospect workbook: `python3 make_knoxville_list.py` (needs openpyxl). Edit `research/_overrides.json` to drop, flag, add rows, hold back an email, or correct a phone, then rerun.
 
-Status: the prospect list is a call list, not yet an email list. 8 verified emails of 121 rows; 31 rows carry an unverified or conflicting-detail flag in Notes. Follow-up passes would add franchise-owner gyms (Burn Boot Camp, Orangetheory, F45, Club Pilates, D1 Training Hardin Valley), Seymour/Kodak/Union County, and street-address-based distances.
+Status after two critique rounds: 174 businesses, a Call-first column marking the reviewer's top 20, 9 verified emails, about a quarter of rows with no phone. It is a call and contact-form list, not an email list (a dedicated email pass found zero verbatim addresses). Remaining known gaps: distances are measured from city centres, four rows have conflicting addresses, and D1 Training and TITLE Boxing have no street address.

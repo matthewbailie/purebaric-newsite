@@ -1,6 +1,6 @@
 # Purebaric in Knoxville, Tennessee: executive brief
 
-**Status: living draft, version 2 (10 October 2026). Updated as research continues; a final review will follow.**
+**Status: living draft, version 3 (10 October 2026). Updated as research continues; a final review will follow.**
 
 ## 1. The question
 Should Purebaric, which rents 1.5 ATA mild hyperbaric chambers to homes ($529 to $729 a month) and businesses ($783 to $979 a month per chamber) along Utah's Wasatch Front, open a second market within 25 miles of downtown Knoxville, Tennessee?
@@ -25,7 +25,7 @@ Should Purebaric, which rents 1.5 ATA mild hyperbaric chambers to homes ($529 to
 **Prospects exist, and the list should be worked by phone and contact form, not email.**
 - 177 businesses compiled across Knox (110), Blount (33), Anderson (15), Sevier (8), Loudon (7) and Union (4): 46 physical therapy and chiropractic, 43 gyms and fitness studios, 37 recovery studios and med spas, 19 sports programs, 17 salons, 15 CrossFit and performance gyms. The second pass added the locally owned franchise studios the first pass missed (D1 Training, Pure Barre, F45, TITLE Boxing, Fit Body Boot Camp, Workout Anytime), eight of them with a named local owner, and filled the empty east and north edges of the radius.
 - Email discovery has hit a hard ceiling: a dedicated pass on the 30 best-fit businesses found zero verbatim addresses in 60 searches, because small-business sites and franchise directories hide addresses behind forms and buttons. Nine verified emails remain, about four reaching a decision-maker. Treat the list as a call list; budget sales time accordingly rather than chasing emails.
-- Two adversarial reviews have been run against the list (the second is in progress as this version is written). Round one spot-checked 26 rows (9 pass, 6 fail, 11 unclear), dropped 6, flagged 43, held back 6 unverified emails and added 6 businesses. Subsequent passes corrected a further 9 addresses and phones and removed a Missouri business that had slipped in as "Maryville".
+- Two adversarial reviews have been run against the list. Round one spot-checked 26 rows (9 pass, 6 fail, 11 unclear), dropped 6, flagged 43, held back 6 unverified emails and added 6 businesses. Round two spot-checked 23 of the new rows (10 pass, 5 fail, 8 unclear), dropped 4 more (two duplicates, one unconfirmable, one resort that already owns a chamber), flagged 38, and named a top-20 call list. Final list: 174 businesses, 21 marked "Call first", 9 verified emails, roughly a quarter of rows without a phone (contact form or website only). The reviewer's verdict: good enough to start calling the top 20 for a three-chamber pilot; not an email list.
 
 **Compliance and logistics.**
 - Tennessee treats equipment rentals as taxable sales (9.25% combined in Knox County), requires a certificate of authority and business-tax registration, and mild chambers are FDA-cleared as prescription devices for acute mountain sickness, so claims must stay wellness-only.
@@ -49,5 +49,6 @@ Should Purebaric, which rents 1.5 ATA mild hyperbaric chambers to homes ($529 to
 All supporting material is in this folder: `market_analysis.md` (scorecard and sources), `purebaric_knoxville_hbot_providers.xlsx` (providers, renters, dealers, prices), `purebaric_knoxville_prospects.xlsx` (prospect list), `prospect_list_critique.md` (due-diligence review), `classifieds_check.md`, and `research/` (raw research JSON, overrides and the compile script).
 
 ## 7. Change log
+- v3, 10 Oct 2026: round-2 critique applied; Call-first column added; competitor sheet reduced to confirmed providers; Marketplace listing links recorded.
 - v2, 10 Oct 2026: prospect list expanded to 177 after three follow-up passes; email-discovery ceiling documented; Marketplace dealer finding added; second critique in progress. New channel under research: schools and athletic programs (separate proposal, see `../channels/schools-athletic-recovery/` once delivered).
 - v1, 10 Oct 2026: first draft after the provider inventory, market scoring, prospect list and first adversarial critique. Open items: follow-up research passes, second critique pass, manual Google Trends check, Reagan/YESCO-style local billboard rates.

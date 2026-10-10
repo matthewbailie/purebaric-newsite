@@ -118,12 +118,15 @@ def apply_enrichment(r):
     return r, flags.upper()
 
 OVR = os.path.join(SRC, "_overrides.json")
-DROP, FLAG, ADD, HOLD, SETPHONE, FIXNOTES, SETADDR = set(), {}, [], {}, {}, {}, {}
+DROP, FLAG, ADD, HOLD, SETPHONE, FIXNOTES, SETADDR, SETOWNER, SETHOOK, SETZIP, COMPADDR, CALLFIRST = set(), {}, [], {}, {}, {}, {}, {}, {}, {}, {}, []
 if os.path.exists(OVR):
     o = json.load(open(OVR)); DROP = {NORM(x) for x in o.get("drop", [])}; FLAG = {NORM(k): v for k, v in o.get("flag", {}).items()}
     ADD = o.get("add", []); HOLD = {k.lower(): v for k, v in o.get("hold_email", {}).items()}
     SETPHONE = {NORM(k): v for k, v in o.get("set_phone", {}).items()}; FIXNOTES = {NORM(k): v for k, v in o.get("fix_notes", {}).items()}
     SETADDR = {NORM(k): v for k, v in o.get("set_address", {}).items()}
+    SETOWNER = {NORM(k): v for k, v in o.get("set_owner", {}).items()}; SETHOOK = {NORM(k): v for k, v in o.get("set_hook", {}).items()}
+    SETZIP = {NORM(k): v for k, v in o.get("set_zip", {}).items()}; COMPADDR = {NORM(k): v for k, v in o.get("competitor_address", {}).items()}
+    CALLFIRST = [NORM(x) for x in o.get("call_first", [])]
 def apply_overrides(r):
     k = NORM(r["business"])
     if r["email"] and r["email"].lower() in HOLD:
@@ -134,6 +137,12 @@ def apply_overrides(r):
     for ak, addr in SETADDR.items():
         if ak and (ak in k or k in ak):
             r["address"] = addr; r["notes"] = ("Address corrected after the email pass. | " + r["notes"]).strip(" |")
+    for ok_, val in SETOWNER.items():
+        if ok_ and (ok_ in k or k in ok_): r["owner"], r["owner_title"] = val[0], val[1]; r["notes"] = ("Contact corrected after critique. | " + r["notes"]).strip(" |")
+    for hk2, val in SETHOOK.items():
+        if hk2 and (hk2 in k or k in hk2): r["personal_note_hook"] = val
+    for zk, val in SETZIP.items():
+        if zk and (zk in k or k in zk): r["zip"] = val
     for nk, note in FIXNOTES.items():
         if nk and (nk in k or k in nk): r["notes"] = (note + " | " + r["notes"]).strip(" |")
     return r
@@ -171,13 +180,24 @@ for row in ADD:
     r["notes"] = ("Added after the adversarial critique. | " + r["notes"]).strip(" |")
     (prospects if in_radius(r) else outside).append(r)
 
-# de-duplicate competitors by name (the same hospital program was found by several research passes)
+# de-duplicate competitors by name (the same hospital program was found by several research passes); a clinic that is
+# also on the prospect list with only a directory listing for HBOT stays a prospect (flagged) and leaves the competitor sheet
+pkeys = {keyname(r["business"])[:18] for r in prospects}
 cseen, cuniq = set(), []
 for r in competitors:
     k = keyname(r["business"])[:18]
     if k in cseen: continue
+    if "unverified" in r["notes"].lower() or "fresha" in (r["notes"] + r["email_source"]).lower():   # directory-only HBOT claims are not competitors
+        for pr in prospects:
+            if keyname(pr["business"])[:18] == k:
+                pr["notes"] = ("A booking directory (Fresha) lists hyperbaric here; not confirmed on its own site. Ask on the call. | " + pr["notes"]).strip(" |")
+        continue
+    for ck, addr in COMPADDR.items():
+        if ck and ck in NORM(r["business"]): r["address"] = addr
     cseen.add(k); cuniq.append(r)
 competitors = cuniq
+for r in prospects:
+    r["call_first"] = "Yes" if any(c and c in NORM(r["business"]) for c in CALLFIRST) else ""
 seen, uniq = set(), []
 for r in sorted(prospects, key=lambda r: (r["email"] == "", r["email_confidence"] != "high")):
     key = (keyname(r["business"]), r["city"].lower()[:12])
@@ -198,12 +218,12 @@ for g in by_addr.values():
             others = [o["business"] for o in g if o is not r]
             r["notes"] = (f"Shares a street address with {', '.join(others)}; confirm before contacting both. | " + r["notes"]).strip(" |")
 RANK = {"high": 0, "medium": 1, "none": 2}
-prospects.sort(key=lambda r: (INDUSTRIES.index(r["industry"]) if r["industry"] in INDUSTRIES else 9, RANK.get(r["email_confidence"], 3), r["county"], r["city"], r["business"]))
+prospects.sort(key=lambda r: (r.get("call_first") != "Yes", INDUSTRIES.index(r["industry"]) if r["industry"] in INDUSTRIES else 9, RANK.get(r["email_confidence"], 3), r["county"], r["city"], r["business"]))
 
-HEADERS = [("Business", 30), ("Industry", 30), ("Owner / contact", 24), ("Title", 22), ("Email", 32), ("Email confidence", 14),
+HEADERS = [("Call first", 9), ("Business", 30), ("Industry", 30), ("Owner / contact", 24), ("Title", 22), ("Email", 32), ("Email confidence", 14),
            ("Email source", 40), ("Phone", 15), ("Website", 28), ("Address", 32), ("City", 16), ("ZIP", 8), ("County", 12),
            ("Miles from downtown", 10), ("Personal note hook", 50), ("Notes", 50), ("Source file", 14)]
-FIELDS = ["business", "industry", "owner", "owner_title", "email", "email_confidence", "email_source", "phone", "website",
+FIELDS = ["call_first", "business", "industry", "owner", "owner_title", "email", "email_confidence", "email_source", "phone", "website",
           "address", "city", "zip", "county", "distance_mi", "personal_note_hook", "notes", "_src"]
 def sheet(ws, rows):
     ws.append([h for h, _ in HEADERS])

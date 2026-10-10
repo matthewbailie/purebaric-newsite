@@ -185,3 +185,168 @@ I found 6 businesses that pass the brief's address-plus-phone-or-website rule, s
 - [NewPatients: Stephanie Estes DC, Loudon](https://practicefinder.newpatientsinc.com/chiro/dr-stephanie-estes-dc-loudon-tn/), [BlueHive: Loudon Chiropractic](https://www.bluehive.com/provider/loudon-chiropractic)
 - [Bell Family Chiropractic HBOT press release (2022)](https://business.mammothtimes.com/mammothtimes/news/read/42239991/knoxville_tn_hyperbaric_oxygen_therapy_for_post), [Mobile Hyperbaric Centers](https://mhcenters.com/centers.html)
 - [KnoxTNToday: D1 Training team](https://www.knoxtntoday.com/meet-the-d1-training-team/), [Best Pros in Town: KnoxGlow](https://www.bestprosintown.com/tn/knoxville/knoxglow-aesthetics-/), [Salon Today: Salon Visage](https://www.salontoday.com/articles/salon-visage-pioneers-work-life-integration-adapting-to-modern-client-and-staff-preferences)
+
+---
+
+# Round 2 (2026-10-10, after rebuild to 177 rows)
+
+Inputs: the regenerated `prospects_for_review.csv` (177 rows), `competitors_for_review.csv` (12) and `dropped_for_review.csv` (16), plus `_overrides.json` and `make_knoxville_list.py`.
+Search budget used: 30 of 45. A backup of the overrides file before this round is in the reviewer's scratchpad.
+
+## Verdict in one paragraph
+
+**This is now good enough to start calling for a 3-chamber pilot, provided the call list is the 20 rows below and not all 177.** The recovery and longevity segment roughly doubled in useful depth. It now has real cash-pay IV, cryo, sauna and hormone clinics with named owners, among them RevitalyzeMD, The Wellness Room, Vital Hydration and Drip into Wellness. That segment is where a $783 to $979 a month chamber pays for itself.
+
+The other 157 rows are still weak:
+- **45 of 177 rows (25%) have no phone at all.** That includes 18 of the 25 franchise-gym adds.
+- **PT/chiro is still the largest bucket and the lowest-yield one.** It grew from 38 to 46 rows, with 4 more Seymour solo chiropractors taken from Healthgrades or NPI records.
+- **About half of the new "recovery" rows are aesthetics-first med spas** (Botox and filler), where hyperbaric is a weak add-on.
+- **The competitor file was not touched at all,** and the build has two data-loss bugs.
+
+As an email list it remains unusable: 9 emails, of which 2 are new and both confirmed.
+
+## R2-1. Status of round-1 findings (5 resolved, 2 partial, 9 not resolved)
+
+| # | Round-1 finding | Status | Evidence in the regenerated files |
+|---|---|---|---|
+| 1 | Hold back 5 bad emails | **Resolved** | 6 held, fields blanked, reason in Notes |
+| 2 | Apply 6 drops | **Resolved, with a defect** | All 6 dropped, **but the build also dropped `Healing Hands Spa - Farragut`, the copy I meant to keep.** Cause: `NORM()` strips punctuation, so "Healing Hands Spa (Farragut)" and "Healing Hands Spa - Farragut" become the same key. The business disappeared from the list. **Fix: restored via `add`.** ADD rows skip the drop check. |
+| 3 | 43 flags | **Resolved** | Flags are prepended to Notes. One dangling flag targets the dropped Advanced Dermatology row, and one targets a row that does not exist (`Holt Physical Therapy`). Both are harmless. |
+| 4 | 6 adds | **Resolved, with a defect** | All 6 present, but `Prime IV Hydration & Wellness - Farragut` now appears **twice**. The east-gaps pass found it too, and dedupe keys on name plus city ("Farragut" vs "Knoxville"). **Fix: added to `drop`.** The drop only hits the research-file copy, so the add copy survives. |
+| 5 | Phone corrections | **Resolved** | Sola Bearden, Gold's Lenoir City, Bentley, Fox Den and Marino are set. `set_address` writes "street, city, TN zip" into the Address field, so City and ZIP now appear twice in those rows (cosmetic). |
+| 6 | Webb notes (Bell Buckle staff) | **Partial** | A correction note is prepended, but the McClain, Gonzalez and webbschool.com text is still in the Notes body, and the hook may also come from the Bell Buckle school. |
+| 7 | CAK contact is Chad Speck, not Ried Estus | **Not resolved** | The owner field and the hook still say Estus. The script has no override key for owner or hook, so `teams.json` must be edited. |
+| 8 | Gold's Lenoir City false "since 1965" hook | **Not resolved** | The hook is unchanged, for the same reason as #7. |
+| 9 | Fox Den ZIP 37934 | **Not resolved** | Still 37922. Now set under `set_address`. |
+| 10 | Shared phone 865-209-4713 (Jillian Nicole and Knox Skin Society) | **Not resolved** | Both rows unchanged |
+| 11 | Four HBOT rows listed as both prospect and competitor | **Not resolved** | Tristar, Thrive, ETSS and Marble City are still in both files |
+| 12 | Rebuild the competitor file | **Not resolved** | Identical to round 1: four PT and hospital rows still labeled "CrossFit and performance gyms", Mobile Hyperbaric and Parkwest not merged, no address for Bell Family. **New: Blackberry Mountain belongs here** (see R2-3). |
+| 13 | Geocoded distances | **Not resolved** | Still city centroids. New Farragut-area rows labeled "Knoxville" show 0 miles, while their neighbors labeled "Farragut" show 14. |
+| 14 | One chain rule | **Partial** | Franchises with named local owners were added, which is good. But corporate or out-of-state operators were added too (Crunch, Gold's Farragut, Neighborhood Barre x2, Curate, Select PT, Benchmark x2), while Elements Massage stays dropped. |
+| 15 | Rebalance away from NPI-scraped solo chiropractors | **Not resolved (worse)** | PT/chiro went from 38 to 46, including Giammo, Berry, Jerviss and Buckridge, and Union County Chiro, whose NPI record dates from 2007 |
+| 16 | Address conflicts (CrossFit Courageous, La Vita E Bella, Knox Wellness, Skin Cleric) | **Not resolved** | Unchanged. Knox Wellness now turns out to be a duplicate (see R2-2). |
+
+## R2-2. Structural checks on the 56 new rows
+
+These are the 25 franchise_gyms.json rows, the 32 recovery_east_gaps.json rows, and my own 6 adds. Rows from the new passes that overlap the old ones are counted once.
+
+- **Duplicates:**
+  - `Prime IV ... - Farragut` x2 (same address, same phone).
+  - `Knox Aesthetics` (new) and `Knox Wellness` (old) share an address (9320 Kingston Pike) and a phone ((865) 801-9501), so they are one business. Drop Knox Wellness, which has the wrong "Old Kingston Pike" address.
+  - Same owner, so one call each: Pure Barre x2 (Luftman and Hammett) and Workout Anytime x2 (Heifner).
+  - Probably one franchisee group each: Club Pilates x3, Orangetheory x3 and HOTWORX x5.
+  - `Sessions Wellness Center` was given 6512 Deane Hill Dr, next door to RevitalyzeMD at 6504. Its notes say the address was "supplied by the requester", and nothing confirms it.
+- **Chains or corporate, with no local owner:**
+  - Crunch Fountain City (Florida franchisee CR Fitness Holdings).
+  - Gold's Farragut (corporate).
+  - Neighborhood Barre Farragut and Bearden: the brand was bought by Extraordinary Brands in Aug 2024, and the Bearden studio is listed for sale.
+  - Curate MedAesthetics (Chattanooga chain, no Knoxville phone).
+  - Select PT Strawberry Plains (Select Medical); its Lenoir City sibling is in the competitor file.
+  - Benchmark Kodak and Maynardville (Upstream Rehabilitation).
+  - Anytime Fitness Farragut: owned by Baleo Fitness Inc. since Oct 2024; I could not confirm whether Baleo is local.
+- **No phone AND no website:** Sessions Wellness Center and Thriving to a New You.
+- **No street address:** D1 Training Hardin Valley and TITLE Boxing West Knoxville. Both fail the brief's rule.
+- **No phone (website only):** 18 of 25 franchise rows, plus ASTRA Aesthetics, Curate, Prime IV Knoxville, Benchmark Kodak, Triple F and my Maryville Chiropractic Clinic add.
+- **Out of radius:** none. Blackberry Mountain in Walland is about 17 miles; Maynardville about 21; Kodak about 17; Seymour about 12; Corryton about 14.
+- **Inferred ZIPs:** Burn Boot Camp, Fit Body Boot Camp, F45, Club Pilates Bearden and Parkside, Sessions, and Anytime Farragut.
+- **Non-Tennessee area codes:** none new. Blackberry Mountain uses an 800 number.
+- **Other data problems:**
+  - New You Hair Salon shares its phone with Janet's Hair & Nail Salon.
+  - Simply Ageless has a phone conflict between sources.
+  - Jerviss Family Chiropractic has an address conflict.
+  - Curves Maynardville comes from city-data.com only and is probably closed.
+  - Union County Chiropractic's NPI record dates from 2007.
+- **Build-script hazards** (`make_knoxville_list.py`):
+  1. `DROP` matches after stripping punctuation, which caused the Healing Hands loss.
+  2. `set_phone`, `set_address` and `fix_notes` match by substring (`pk in k or k in pk`). A short key could hit several rows. I checked every current key and each matches exactly one row.
+  3. Overrides cannot change the owner, hook or ZIP fields. Add `set_owner`, `set_hook` and `set_zip` keys, or edit the source JSON.
+  4. There is no override path into the competitor file. Add a `move_to_competitors` key.
+
+## R2-3. Spot checks of new rows (23 rows checked: 10 PASS, 5 FAIL, 8 UNCLEAR)
+
+| # | Row | Result | Finding |
+|---|---|---|---|
+| 1 | Vibrance IV Hydration (Oak Ridge) | UNCLEAR | jennifer@vibranceiv.com and 865-902-2172 are on its own Jane page, so the email is real. But the page still reads "Opening Soon!", and the business was founded in 2024. |
+| 2 | MC Wellness and Aesthetics | **PASS** | mcwellnessclinic@gmail.com is on its own Jane page. The address conflict is real: the Jane landing page says inside Saah Suites, 102 S Campbell Station Rd Ste 26, Farragut. |
+| 3 | Sessions Wellness Center | **FAIL** | Nothing at 6512 Deane Hill Dr, and no listing beyond a Vagaro directory line. No phone or website. Drop until someone has a real address. |
+| 4 | RevitalyzeMD (Dr. Debra Durst) | **PASS** | WATE: Knoxville flagship at 6504 Deane Hill Dr, grand opening Mar 26 2026, footprint more than tripled, adding longevity and regenerative services. No hyperbaric found. |
+| 5 | The Wellness Room | **PASS** | 151 Sherway Rd #1, (865) 274-0199. Owner Stephanie Snowden-Harman, NP, per Lantern and Best Pros in Town; the row had no owner. |
+| 6 | Old City Medspa | UNCLEAR | Address confirmed. The owner (Dr. Stephen Daniel, DDS) comes from 2019 only; current listings name Medical Director Mark Davenport, MD. |
+| 7 | Beautique Medical Anti-Aging (Shara LaTorre) | **PASS** | Address and phone corroborated. Reviews still name "Nurse Shara". Website beautiquebeautiful.com was missing from the row. |
+| 8 | Dolce Medical Spa | **PASS** | 120 Huxley Rd #102, (865) 658-1018 and the website agree across Lantern and Fresha. Owner unknown. |
+| 9 | Workout Anytime (John Heifner) | **PASS**, with caveat | Athletech (Apr 2026) confirms he owns 3 clubs. **A BizQuest listing offers his Farragut, Halls and Powell clubs for sale.** Ownership may change. |
+| 10 | F45 West Knoxville (Chip Gibson) | UNCLEAR | Gibson is named only in 2020. The address is confirmed. |
+| 11 | Pure Barre Farragut (Luftman/Hammett) | UNCLEAR | Only a Feb 2020 pre-opening article. Current listings show only the Bearden studio. |
+| 12 | Fit Body Boot Camp Farragut (Mathers) | UNCLEAR | Only the Nov 2023 "to open soon" article. No phone. |
+| 13 | Burn Boot Camp Farragut | UNCLEAR | Only a Dec 2018 pre-opening article and an undated job post. |
+| 14 | TITLE Boxing West Knoxville | **FAIL** | Owners confirmed (WATE), but no address or phone exists anywhere, so it cannot be called. |
+| 15 | Triple F Elite Sports Training | UNCLEAR | Lee Smith's facility is real (WVLT 2022, App Store), but the Guinn Rd address and current operation are unconfirmed. |
+| 16 | Anytime Fitness Farragut | **PASS** | Farragut Press, Dec 2024: sold to Baleo Fitness Inc. (Michael Chere, John Christopher) on Oct 1 2024. |
+| 17 | Neighborhood Barre (both rows) | **PASS** (facts) | Extraordinary Brands bought the brand in Aug 2024, so it is corporate and low value. The Bearden studio is listed for sale. |
+| 18 | Blackberry Mountain | **FAIL** | **It already offers a hyperbaric oxygen chamber** (Goop: "an hour in the hyperbaric oxygen chamber" after a massage), plus a Recovery Lab with compression and red light. It is a competitor and a high-end price reference. Moved to drop. |
+| 19 | Curves Maynardville | UNCLEAR | city-data.com is the only source. Probably closed. |
+| 20 | D1 Training Hardin Valley | **FAIL** (address) | Still only "Hardin Valley Rd". It fails the rule, but it is a top call, so get the address on the phone. |
+| 21 | Above and Beyond Aesthetics (Seymour) | **PASS** | 124 Maryville Hwy is confirmed on its own Jane page. NP-run, with IV hydration, hormones and weight loss. Owner unnamed. |
+| 22 | ASTRA Aesthetics (Maryville) | **PASS** | 921 Foch St Ste 9. Founder Molly Muecke, APRN (WATE, Evolus). No Maryville phone. |
+| 23 | Knox Aesthetics | **FAIL** (duplicate) | Same address and phone as Knox Wellness; one business |
+
+New emails: 2 of 2 confirmed (Vibrance, MC Wellness). Both reach the clinic directly, and both deserve a send once Vibrance is confirmed open.
+
+## R2-4. Category balance, and whether this works as a call list
+
+| Category | Rows | With phone | Judgment |
+|---|---|---|---|
+| PT / chiro / sports med | 46 | 38 | Biggest bucket, lowest yield. Insurance-billing clinics rarely resell $40 to $80 cash sessions. Most new rows are directory solo practitioners. |
+| Gyms | 43 | 23 | Inflated by 21 franchise rows. About 12 have an unknown owner, and 5 are unstaffed HOTWORX studios, a poor fit for an attended chamber. |
+| Recovery and med spa | 37 | 32 | **The core.** About 18 are true recovery or longevity businesses (IV, cryo, sauna, hormones, NAD+). The rest are aesthetics-first. |
+| Sports programs | 19 | 16 | Slow, budget-cycle buyers. Good for a later phase, not a 3-chamber pilot. |
+| Salons | 17 | 17 | Weak fit, except the Visage day spa. |
+| CrossFit / performance | 15 | 6 | Good fit, but 9 of 15 have no phone. |
+
+**Pilot call list: 20 rows, called in this order.** These are cash-pay recovery businesses, or performance facilities with athletes who already pay out of pocket. Each has a phone, and most have a named owner. 17 of the 20 sit in a West Knoxville and Bearden cluster, which keeps installation and service of 3 chambers simple. At a 10 to 15% meeting-to-yes rate, 20 calls should produce the 2 to 3 hosts the pilot needs.
+
+| # | Business | Phone | Why call first |
+|---|---|---|---|
+| 1 | RevitalyzeMD (Dr. Debra Durst) | (865) 293-5828 | New flagship tripled in size in Mar 2026 to add longevity and regenerative services. Has space and is actively adding modalities. |
+| 2 | Sauna House Knoxville (Peter and Dianna Osickey) | (865) 284-2653 | Contrast-therapy bathhouse at $50 per visit with members. Hyperbaric fits the circuit. Verified email too. |
+| 3 | Vital Hydration (Corina West, RN) | (865) 282-4634 | Already sells IV, cryo and red-light sauna, so the multi-modality recovery buyer profile fits. |
+| 4 | Drip into Wellness (Lauren McCrossin, RN) | (865) 214-6064 | Independent IV studio plus mobile service; owner-operated. |
+| 5 | The Wellness Room (Stephanie Snowden-Harman, NP) | (865) 274-0199 | About 400+ five-star reviews and an IV menu; NP-owned. |
+| 6 | Grow Wellness | (865) 409-9760 | One of Knoxville's first IV clinics; sells a "Recovery & Performance" drip. |
+| 7 | Medispa at Choto | (865) 218-9000 | IV plus NAD+, 213 reviews, affluent Choto/Farragut clientele. |
+| 8 | Knox Aesthetics | (865) 801-9501 | IV, hormone pellets, chelation and ketamine. Longevity-minded patients. |
+| 9 | MC Wellness and Aesthetics | (865) 353-4093 | Concierge hormone, peptide and IV clinic. Email verified. |
+| 10 | Prime IV Hydration & Wellness - Farragut | (865) 200-4070 | Already pairs IV with cryo and infrared sauna. The franchisee runs a second studio (4409 Kingston Pike), so one yes could place two chambers. |
+| 11 | BioworX Knoxville (CryoFit) | (865) 240-4639 | Cryo plus IV aimed at athletes. The listing is unverified, so the call doubles as verification. |
+| 12 | Stretch Fusion (Chad Becker) | (865) 599-3786 | Independent recovery and mobility studio with a recovery-paying clientele. |
+| 13 | D1 Training Hardin Valley (Devin Driscoll) | 865-622-7117 | 33,000 sq ft, trains Vols players, on-site PT. Athletes and parents already pay for performance. |
+| 14 | Athletic Republic Knoxville (Adam Scott) | (865) 855-3278 | 18,000 sq ft athlete speed facility; local franchisee owner. |
+| 15 | Be Somebody Gym (Wes Kitts) | (865) 323-6393 | Owner is a US Olympic weightlifter; a recovery story with credibility. |
+| 16 | CrossFit Knoxville (David LeGault) | (865) 356-9000 | 4.9 stars from 121 reviews; independent; established membership. |
+| 17 | Webb School of Knoxville (Dan Gill) | (865) 693-0011 | Sports-performance center added 2023. Private-school budget and a verified email. |
+| 18 | Balanced You Clinic (Rebekah Knause) | (865) 888-5342 | Already sells infrared sauna; 225 reviews; owner-operated. |
+| 19 | Spa Visage, with Salon Visage (Gambuzza family) | (865) 694-9007 / 694-4000 | Most-awarded day spa. One conversation covers two premium businesses. |
+| 20 | Smoky Mountain Hydration (Maryville) | (865) 233-8330 | Blount coverage. Already pitches IV for "athletic recovery". |
+
+Alternates: Beautique Medical (Shara LaTorre), Vibrance IV in Oak Ridge (once open), CrossFit Pistol Creek (Maryville), Above and Beyond (Seymour), Knoxville Ice Bears (Dave Feather) and One Knoxville SC (Drew McKenna).
+
+Rows **not** to spend pilot calls on: chains with no local owner, HOTWORX, salon-suite buildings, public institutions (UT, Smokies), the NPI-derived solo chiropractors, and anything without a phone.
+
+## R2-5. Changes merged into `_overrides.json`
+
+Nothing existing was removed; values were only appended.
+- **drop (+4):**
+  - `Prime IV Hydration & Wellness - Farragut`: removes only the research-file duplicate; the add copy survives.
+  - `Knox Wellness`: duplicate of Knox Aesthetics.
+  - `Blackberry Mountain (Blackberry Farm sister property)`: has a hyperbaric chamber, so it is a competitor.
+  - `Sessions Wellness Center`: unverified address, no phone or website.
+- **flag (+38):** the chain and corporate rows; franchise rows sourced only from pre-opening articles; Heifner's clubs possibly for sale; owners known only from 2019 or 2020; D1 and TITLE missing addresses; Vibrance "opening soon"; the MC Wellness address conflict; probably-closed Curves; phone conflicts; and low-priority solo chiropractors.
+- **fix_notes (+9, Webb extended):** CAK contact should be Chad Speck; delete the Gold's 1965 hook; Fox Den ZIP; owners for The Wellness Room (Snowden-Harman) and ASTRA (Muecke); Beautique website; move Blackberry Mountain to competitors; Prime IV duplicate explanation; Healing Hands restore explanation.
+- **set_address (+1):** Fox Den, `12284 N Fox Den Dr, Farragut, TN 37934`.
+- **add (+1):** `Healing Hands Spa - Farragut` restored. It was lost through the punctuation-stripping drop match.
+
+**Still needed outside the overrides file:**
+1. Edit `teams.json` to fix the CAK owner and hook and remove the Bell Buckle text from the Webb notes. Edit `expansion_counties.json` to remove the Gold's hook.
+2. Move Blackberry Mountain into the competitor file, and remove Tristar, Thrive, ETSS and Marble City from it. Merge Mobile Hyperbaric into Parkwest, fix the competitor industry labels, and find Bell Family's address and price.
+3. Add `set_owner`, `set_hook`, `set_zip` and `move_to_competitors` override keys to the build script, and make `DROP` match exact names.
+4. Geocode addresses for distance.

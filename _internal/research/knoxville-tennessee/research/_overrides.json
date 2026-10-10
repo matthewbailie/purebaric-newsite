@@ -6,7 +6,11 @@
   "Gallaher Plastic Surgery & Spa - Tellico Village",
   "Loudon Chiropractic",
   "Bryan Ardis, DC",
-  "Advanced Dermatology & Ameliore Medispa"
+  "Advanced Dermatology & Ameliore Medispa",
+  "Prime IV Hydration & Wellness - Farragut",
+  "Knox Wellness",
+  "Blackberry Mountain (Blackberry Farm sister property)",
+  "Sessions Wellness Center"
  ],
  "flag": {
   "Christian Academy of Knoxville": "REVIEW 2026-10: CAK's own media page lists Chad Speck as Director of Athletics; Ried Estus is stale. Email is a generic HS office inbox, not the AD - do not mark high.",
@@ -55,7 +59,45 @@
   "Smoky Mountain Hydration": "UNVERIFIED: no listing, site or owner found in two passes; confirm it exists before contacting.",
   "Holt Physical Therapy": "Two addresses in sources: 1005 E Broadway or 501 Adesa Pkwy A100 (Lenoir City); confirm.",
   "Oak Ridge Chiropractic": "Two addresses in sources: 550 Oak Ridge Tpke or 176 Randolph Rd; confirm.",
-  "Rocky Top CrossFit": "Owner uncertain: Deborah Ragland (earlier pass) vs Jeremy McDonnell (2014 article); confirm."
+  "Rocky Top CrossFit": "Owner uncertain: Deborah Ragland (earlier pass) vs Jeremy McDonnell (2014 article); confirm.",
+  "Blackberry Mountain (Blackberry Farm sister property)": "REVIEW R2: already offers a hyperbaric oxygen chamber (Goop listing: add an hour in the hyperbaric chamber after a massage). Competitor/price reference, not a prospect.",
+  "Sessions Wellness Center": "REVIEW R2: no listing at 6512 Deane Hill Dr found; address was supplied, not sourced. No phone or website. Fails the brief's rule.",
+  "Workout Anytime Knoxville (Kingston Pike)": "REVIEW R2: owner John Heifner confirmed (Athletech Apr 2026), but a BizQuest listing offers his Farragut/Halls/Powell clubs for sale. One owner for both rows; no phone; address from Lyft only.",
+  "Workout Anytime Powell": "REVIEW R2: same owner as the Kingston Pike row (one call). Possible sale per BizQuest. No phone.",
+  "Pure Barre Farragut (Farragut Gateway)": "REVIEW R2: only a Feb 2020 pre-opening article; current listings show only the Bearden studio. Call Bearden (865) 212-0025; same owners.",
+  "Pure Barre Knoxville (Bearden)": "REVIEW R2: owners named in 2020 only; one call covers both studios.",
+  "Neighborhood Barre Farragut": "REVIEW R2: brand bought by Extraordinary Brands (Charlottesville VA) Aug 2024; corporate decision. Low value.",
+  "Neighborhood Barre Bearden": "REVIEW R2: corporate-owned brand (Extraordinary Brands, Aug 2024); LoopNet lists this studio for sale. Low value.",
+  "Crunch Fitness - Fountain City": "REVIEW R2: Florida multi-unit franchisee (CR Fitness Holdings); no local owner, no phone. Low value.",
+  "Gold's Gym Farragut": "REVIEW R2: corporate regional operator; no local owner. Low value.",
+  "Curate MedAesthetics (Knoxville/Farragut)": "REVIEW R2: Chattanooga-based multi-location chain; no Knoxville phone. Low value.",
+  "Select Physical Therapy - Strawberry Plains": "REVIEW R2: national chain (Select Medical). Its Lenoir City sibling sits in the competitor file on a Fresha-only HBOT claim; treat both the same way.",
+  "Benchmark Physical Therapy - Kodak": "REVIEW R2: Upstream Rehabilitation chain (6th Benchmark row); no phone. Low value.",
+  "Benchmark / Independent Physical Therapy - Maynardville": "REVIEW R2: Upstream Rehabilitation chain. Low value.",
+  "Burn Boot Camp Farragut": "REVIEW R2: only source is a Dec 2018 pre-opening article; owner was North Carolina based; no phone. Confirm it opened and is still operating.",
+  "Fit Body Boot Camp Farragut": "REVIEW R2: only source is the Nov 2023 pre-opening article (owners Don and Debra Mather); no phone. Confirm open.",
+  "F45 Training West Knoxville": "REVIEW R2: owner Chip Gibson named only in Sept 2020 coverage; no phone. Confirm current owner.",
+  "Anytime Fitness Farragut": "REVIEW R2: owner confirmed: Baleo Fitness Inc. (Michael Chere, John Christopher) since Oct 1 2024 per Farragut Press Dec 2024; Povlins retired. No phone in row.",
+  "Club Pilates Bearden (N Forest Park Blvd)": "REVIEW R2: probably the same franchisee as the other two Club Pilates rows; find the group owner and make one call. No phone.",
+  "Club Pilates Hardin Valley": "REVIEW R2: probably the same franchisee group as the other Club Pilates rows. No phone.",
+  "Club Pilates Parkside (Farragut area)": "REVIEW R2: probably the same franchisee group as the other Club Pilates rows. No phone. ZIP inferred.",
+  "Orangetheory Fitness - Alcoa-Maryville": "REVIEW R2: franchisee unknown; probably the same group as the other two Orangetheory rows. No phone.",
+  "Orangetheory Fitness - Bearden": "REVIEW R2: franchisee unknown; probably the same group as the other two Orangetheory rows. No phone.",
+  "HOTWORX Fountain City": "REVIEW R2: 5 HOTWORX rows (with Alcoa, Cedar Bluff, Hardin Valley, UT Commons); find the franchisee group. Unstaffed 24/7 studios are a poor fit for an attended chamber.",
+  "D1 Training Hardin Valley": "REVIEW R2: still no street number after more searches (only 'Hardin Valley Rd'); the row fails the address rule, but it is a top call. Get the address on the call.",
+  "TITLE Boxing Club West Knoxville": "REVIEW R2: owners York and Williamson confirmed by WATE, but there is no street address or phone anywhere. Not callable as is.",
+  "Triple F Elite Sports Training": "REVIEW R2: Guinn Rd address comes only from WellnessLiving; WVLT (Mar 2022) said 'opening later this summer'; no phone. Confirm it operates.",
+  "Vibrance IV Hydration & Wellness (Oak Ridge)": "REVIEW R2: jennifer@vibranceiv.com and 865-902-2172 are on its own Jane page, but the page still says 'Opening Soon!' (founded 2024). Confirm it is open.",
+  "MC Wellness and Aesthetics": "REVIEW R2: email confirmed on its own Jane page. The Jane landing page says it is inside Saah Suites, 102 S Campbell Station Rd Ste 26, Farragut 37934; the booking page says 1750 Commons Point Dr. Ask which is current.",
+  "Old City Medspa": "REVIEW R2: owner Dr. Stephen Daniel (DDS) is from 2019 coverage only; current listings name Medical Director Mark Davenport MD. Ask for the owner.",
+  "Curves Maynardville": "REVIEW R2: the only source is city-data.com, and most Curves locations have closed. Treat as probably closed until called.",
+  "Thriving to a New You": "REVIEW R2: no phone or website (Lantern only). Fails the brief's rule.",
+  "Union County Chiropractic Clinic": "REVIEW R2: NPI record last updated 2007; confirm it still operates.",
+  "New You Hair Salon": "REVIEW R2: same phone as Janet's Hair & Nail Salon (3625 Maynardville Hwy); one is wrong.",
+  "Simply Ageless Aesthetics, LLC": "REVIEW R2: phone conflict between Fresha and another directory.",
+  "Daniel Giammo, DC": "REVIEW R2: Healthgrades-derived solo practitioner with no website; low priority.",
+  "Dr. David Berry, D.C.": "REVIEW R2: NPI-derived solo practitioner with no website; low priority.",
+  "Knox Aesthetics": "REVIEW R2: same address (9320 Kingston Pike) and phone (865) 801-9501 as the dropped Knox Wellness row; one business. Offers IV, hormone pellets, chelation and ketamine."
  },
  "add": [
   {
@@ -159,6 +201,23 @@
    "county": "Knox",
    "notes": "Added by review 2026-10. Sister business to Spa Visage (already listed) - pitch both together through the owners. A second number (865) 690-4111 appears on ThreeBestRated.",
    "personal_note_hook": "Profiled by Salon Today for its work-life-integration approach to staff scheduling."
+  },
+  {
+   "business": "Healing Hands Spa - Farragut",
+   "industry": "Recovery studios and med spas",
+   "owner": "Zhou (surname only)",
+   "owner_title": "Owner (per Farragut Press 2022)",
+   "email": "",
+   "email_confidence": "none",
+   "email_source": "",
+   "phone": "(865) 671-3200",
+   "website": "knoxvillemassagespas.com",
+   "address": "10935 Kingston Pike",
+   "city": "Farragut",
+   "zip": "37934",
+   "county": "Knox",
+   "notes": "RESTORED in round 2: dropped by mistake together with its duplicate. Day spa with body wraps and infrared sauna; no hyperbaric found. Second phone (865) 281-5263 on Fresha.",
+   "personal_note_hook": "Owner opened a second Healing Hands Spa in the Stonecrest Shopping Center (Farragut Press, July 2022)."
   }
  ],
  "hold_email": {
@@ -177,7 +236,16 @@
   "Marino Physiotherapy": "(865) 236-0340"
  },
  "fix_notes": {
-  "Webb School of Knoxville": "Earlier note mixed in staff from The Webb School in Bell Buckle TN (a different school); ignore those names. Dan Gill's email checks out."
+  "Webb School of Knoxville": "Earlier note mixed in staff from The Webb School in Bell Buckle TN (a different school); ignore those names. Dan Gill's email checks out. | FIX R2: the Notes body still contains the Bell Buckle text (Bill McClain, Carlos Gonzalez, webbschool.com); delete it in teams.json. Also verify the hook's 'hiring a full-time athletic trainer for 2026-27', which may come from the Bell Buckle school.",
+  "Christian Academy of Knoxville": "FIX R2: owner/contact should be Chad Speck, Director of Athletics (CAK media page). The hook about Ried Estus is stale; delete it. The script cannot change owner or hook fields - edit teams.json.",
+  "Gold's Gym Lenoir City": "FIX R2: delete the hook 'operated since 1965' (Gold's brand founding year). The script cannot change hooks - edit expansion_counties.json.",
+  "Fox Den Country Club": "FIX R2: ZIP should be 37934 (Fox Den Dr), not 37922.",
+  "The Wellness Room": "FIX R2: owner Stephanie Snowden-Harman, board-certified NP (Lantern / Best Pros in Town).",
+  "ASTRA Aesthetics (Maryville)": "FIX R2: founder Molly Muecke, APRN (WATE; Evolus). No Maryville phone; the Knoxville listing (865) 268-4422 at 111 E Jackson Ave may be the same practice.",
+  "Beautique Medical Anti-Aging": "FIX R2: website beautiquebeautiful.com; reviews still name nurse Shara, which supports LaTorre as current owner.",
+  "Blackberry Mountain (Blackberry Farm sister property)": "FIX R2: MOVE to the competitor file (has a hyperbaric chamber).",
+  "Prime IV Hydration & Wellness - Farragut": "FIX R2: two rows had the exact same name; the research-file copy (city Knoxville) is dropped and the critique-add copy kept. Sister studio at 4409 Kingston Pike.",
+  "Healing Hands Spa - Farragut": "FIX R2: wrongly dropped. NORM() made 'Healing Hands Spa (Farragut)' and 'Healing Hands Spa - Farragut' the same key, so both duplicates were removed. Restored via add."
  },
  "set_address": {
   "Bentley Medical": "11668 Parkside Dr, Farragut, TN 37934",
@@ -187,6 +255,44 @@
   "Marino Physiotherapy": "9000 Executive Park Dr, Suite C150, Knoxville, TN 37923",
   "CrossFit Knoxville": "9311 Kingston Pike, Knoxville, TN 37922",
   "Bright Futures": "1780 W Lamar Alexander Pkwy, Maryville, TN 37801",
-  "Balanced You Clinic": "6512 Baum Dr SW #12, Knoxville, TN 37919"
- }
+  "Balanced You Clinic": "6512 Baum Dr SW #12, Knoxville, TN 37919",
+  "Fox Den Country Club": "12284 N Fox Den Dr, Farragut, TN 37934"
+ },
+ "set_owner": {
+  "Christian Academy of Knoxville": [
+   "Chad Speck",
+   "Athletic Director"
+  ]
+ },
+ "set_hook": {
+  "Gold's Gym Lenoir City": ""
+ },
+ "set_zip": {
+  "Fox Den Country Club": "37934"
+ },
+ "competitor_address": {
+  "Bell Family Chiropractic": "111 Sherlake Lane, Suite 101, Knoxville, TN 37922"
+ },
+ "call_first": [
+  "RevitalyzeMD",
+  "Sauna House",
+  "Vital Hydration",
+  "Drip into Wellness",
+  "The Wellness Room",
+  "Grow Wellness",
+  "Medispa at Choto",
+  "Knox Aesthetics",
+  "MC Wellness",
+  "Prime IV",
+  "BioworX",
+  "Stretch Fusion",
+  "D1 Training",
+  "Athletic Republic",
+  "Be Somebody",
+  "CrossFit Knoxville",
+  "Webb School of Knoxville",
+  "Balanced You",
+  "Spa Visage",
+  "Smoky Mountain Hydration"
+ ]
 }
