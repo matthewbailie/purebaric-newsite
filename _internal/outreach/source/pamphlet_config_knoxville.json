@@ -1,0 +1,32 @@
+{
+ "market": "Knoxville",
+ "state": "Tennessee",
+ "state_abbrev": "TN",
+ "air_only": true,
+ "contact_phone": "(801) 884-2113",
+ "contact_email": "mlebailie@hotmail.com",
+ "contact_web": "purebaric.com",
+ "business_rates": {
+  "3": 929,
+  "12": 783
+ },
+ "price_anchors": [
+  [
+   "Single session (60 min)",
+   "$100 - $125",
+   ""
+  ],
+  [
+   "10-session pack",
+   "$800",
+   "$80 a session"
+  ],
+  [
+   "20-session pack",
+   "$1,400",
+   "$70 a session"
+  ]
+ ],
+ "price_anchor_footnote": "(1) Published prices at a Knoxville-area chiropractic office for oxygen-enriched sessions; $125 is a first visit with consultation. Purebaric's Knoxville placements are air-only. All figures are illustrations before staff time, overhead and taxes; set your own price.",
+ "coming_line": "**Coming to Knoxville.** Purebaric chambers are in use at gyms, studios and clinics today, and we are placing our first Knoxville-area chambers with a small group of businesses. You work directly with the owner, from the first call through installation and ongoing support."
+}
