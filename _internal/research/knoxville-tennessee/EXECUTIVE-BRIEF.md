@@ -1,6 +1,6 @@
 # Purebaric in Knoxville, Tennessee: executive brief
 
-**Status: living draft, version 5 (10 October 2026). Updated as research continues; a final review will follow.**
+**Status: living draft, version 6 (10 October 2026). Updated as research continues; a final review will follow.**
 
 ## 1. The question
 Should Purebaric, which rents 1.5 ATA mild hyperbaric chambers to homes ($529 to $729 a month) and businesses ($783 to $979 a month per chamber) along Utah's Wasatch Front, open a second market within 25 miles of downtown Knoxville, Tennessee?
@@ -8,7 +8,7 @@ Should Purebaric, which rents 1.5 ATA mild hyperbaric chambers to homes ($529 to
 ## 2. Verdict and score
 **Market-attractiveness score: 62 out of 100. The Wasatch Front scores 73 on the same rubric.** Comparison markets researched more lightly: Phoenix/Scottsdale 70, Austin 68, Nashville 60.
 
-**Likelihood of success: moderate.** The field is open and demand for active recovery is real, but household income is lower, hyperbaric awareness is not yet visible, and the 1,500-mile supply line adds cost and risk. A small, pre-sold pilot is the right-sized bet; a full launch is not yet justified.
+**Likelihood of success: moderate on market factors, low until legal questions are answered (see section 5a).** The field is open and demand for active recovery is real, but household income is lower, hyperbaric awareness is not yet visible, and the 1,500-mile supply line adds cost and risk. A small, pre-sold pilot is the right-sized bet; a full launch is not yet justified.
 
 ## 3. What we found
 
@@ -54,10 +54,19 @@ A separate proposal (`../channels/schools-athletic-recovery/PROPOSAL-schools-ath
 - Is there a reliable local delivery and repair contractor, and at what cost per visit?
 - Is the field really open? Walk Farragut, Bearden and Maryville wellness clinics for unlisted hyperbaric or rental operators.
 
+## 5a. Legal and regulatory check (10 October 2026)
+Two memos (`legal_state_tennessee.md`, `legal_federal_local_knoxville.md`) and a one-page summary (`legal_blockers_summary.md`) cover federal, Tennessee and Knoxville rules. Research, not legal advice. The headline:
+- **Home rentals with the oxygen concentrator are blocked as run in Utah.** Tennessee licenses home medical equipment providers, and the definition covers oxygen delivery systems and Rx-labelled devices rented for delivery to a Tennessee residence, wherever the provider is based ($1,404 a year, inspection, policies). The 10 L/min mask walkthrough may also be unlicensed respiratory care.
+- **Business placements depend on the Knoxville Fire Marshal.** Knoxville's 2024 International Fire Code sends "hyperbaric facilities" to NFPA 99 chapter 14, which soft chambers generally cannot meet; other fire officials already apply this to mild chambers and three North Carolina cities shut such services in 2022. No Knoxville ruling exists yet. An air-only configuration is the most likely way through.
+- **Federal exposure exists in both states.** The cleared soft chambers and the concentrators are prescription-only, and no clearance covers oxygen inside the chamber; the wellness disclaimer probably does not take them outside FDA's reach. No enforcement against renters was found, but the exposure is real and deserves the same attorney review in Utah.
+- **Requirements, not blockers:** foreign-LLC registration, sales tax on rentals (9.25% Knox, 9.75% Blount and Anderson), $15 city and county licences once there is a base, wellness-only claims (Tennessee counts "professing to treat" as practising medicine), waivers that never cover minors or gross negligence, and the 2024 auto-renewal notice rule.
+- **Effect on the verdict.** Likelihood of success drops from moderate to **low until counsel and the fire marshal answer**; the pre-sold pilot should wait for those answers. The 12 attorney questions and 4 fire-marshal questions are listed in the memos. A Tennessee letter of intent for business placements is drafted in `legal/`, conditioned on these answers.
+
 ## 6. Sources and files
 All supporting material is in this folder: `market_analysis.md` (scorecard and sources), `purebaric_knoxville_hbot_providers.xlsx` (providers, renters, dealers, prices), `purebaric_knoxville_prospects.xlsx` (prospect list), `prospect_list_critique.md` (due-diligence review), `classifieds_check.md`, and `research/` (raw research JSON, overrides and the compile script).
 
 ## 7. Change log
+- v6, 10 Oct 2026: legal and regulatory check added (section 5a, three legal files, Tennessee LOI in legal/); likelihood of success restated as low pending counsel and fire-marshal answers.
 - v5, 10 Oct 2026: Google Trends measured (google_trends_check.md); indicator 7 and the demand section updated. Website crawl added a "Hyperbaric on website" column to both prospect lists (Utah: 5 prospects already advertise a chamber). Added a "High schools and colleges (athletics)" category: 42 Knoxville-area schools and colleges (10 with a printed email; athletic directors from the TSSAA directory) and 99 Utah delivery-area high schools (95 with athletic-director emails from the UHSAA directory; the six Utah colleges were already in the Sports teams category). No school in either market advertises a hyperbaric chamber.
 - v4, 10 Oct 2026: schools and athletic programs channel added (section 4a) from the separate proposal; oxygen-configuration and minors risks flagged for owner decision.
 - v3, 10 Oct 2026: round-2 critique applied; Call-first column added; competitor sheet reduced to confirmed providers; Marketplace listing links recorded.
