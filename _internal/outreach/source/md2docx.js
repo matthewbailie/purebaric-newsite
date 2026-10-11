@@ -3,21 +3,25 @@
 // "1. " numbered lists, pipe tables with a header row, **bold**, *italic*, `code`, "---" rules, "> " quotes.
 // Usage: NODE_PATH=$(npm root -g) node md2docx.js input.md output.docx ["Footer text"]
 const fs = require("fs");
-const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, HeadingLevel, BorderStyle, ShadingType, LevelFormat, PageNumber, Footer } = require("docx");
+const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, HeadingLevel, BorderStyle, ShadingType, LevelFormat, PageNumber, Footer, ExternalHyperlink } = require("docx");
 
 const [,, inPath, outPath, footerText] = process.argv;
 const FONT = "Arial";
 const md = fs.readFileSync(inPath, "utf8").replace(/\r/g, "");
 
 function inline(text, base = {}) {
-  // split on **bold**, *italic*, `code`
+  // split on [links](url), **bold**, *italic*, `code`
   const out = [];
-  const re = /(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g;
+  const re = /(\[[^\]]+\]\((?:https?:\/\/)[^)\s]+\)|\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g;
   let last = 0, m;
   while ((m = re.exec(text))) {
     if (m.index > last) out.push(new TextRun({ text: text.slice(last, m.index), font: FONT, size: 21, ...base }));
     const t = m[0];
-    if (t.startsWith("**")) out.push(new TextRun({ text: t.slice(2, -2), font: FONT, size: 21, bold: true, ...base }));
+    if (t.startsWith("[")) {
+      const lm = t.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+      out.push(new ExternalHyperlink({ link: lm[2], children: [new TextRun({ text: lm[1], font: FONT, size: 21, color: "1F4E79", underline: {}, ...base })] }));
+    }
+    else if (t.startsWith("**")) out.push(new TextRun({ text: t.slice(2, -2), font: FONT, size: 21, bold: true, ...base }));
     else if (t.startsWith("`")) out.push(new TextRun({ text: t.slice(1, -1), font: "Courier New", size: 19, ...base }));
     else out.push(new TextRun({ text: t.slice(1, -1), font: FONT, size: 21, italics: true, ...base }));
     last = m.index + t.length;
