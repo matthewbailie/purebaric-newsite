@@ -111,7 +111,7 @@ Payback: capex per chamber was not found in Purebaric's files. Payback in months
 - **Days 46 to 90:** Run the pilots with weekly usage logs. Day-75 reviews. Convert at least 1 pilot to an academic-year contract starting in January. Book spring meetings with Utah, BYU and USU for fall 2027.
 
 **Knoxville (in parallel, tied to the Knoxville pilot)**
-- **Legal gates:** Knoxville days 1 to 90 are conditional on Phase 0 of `TENNESSEE-OUTREACH-RUNBOOK.md` (counsel's answers to the 21 questions in the legal memos, written fire-marshal answers, insurance confirmation including under-18 use, and the contracting entity). Nothing is pitched to a Tennessee program before those gates.
+- **Legal gates:** Knoxville days 1 to 90 are conditional on Phase 0 of `TENNESSEE-GETTING-STARTED-ACTION-PLAN.md` (counsel's answers to the 21 questions in the legal memos, written fire-marshal answers, insurance confirmation including under-18 use, and the contracting entity). Nothing is pitched to a Tennessee program before those gates.
 - **Days 1 to 30:** Remote outreach to Maryville College, Johnson, the Ice Bears (in season) and One Knoxville SC (first team only). Line up a local service contractor.
 - **Days 31 to 60:** A single in-person demo week using the Knoxville demo chamber.
 - **Days 61 to 90:** 1 pilot running. Pitch UT Knoxville's sports medicine leadership for fall 2027.

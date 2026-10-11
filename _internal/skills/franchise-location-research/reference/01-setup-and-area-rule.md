@@ -6,7 +6,7 @@ Create `~/Desktop/<Area> Research/` with:
 <Area> Research/
   DOCUMENTS-INDEX.md
   SALES-REP-TRAINING.md / .docx        (written in phase 6; one per market)
-  <STATE>-OUTREACH-RUNBOOK.md / .docx  (phase 6)
+  <STATE>-GETTING-STARTED-ACTION-PLAN.md / .docx  (phase 6)
   pamphlets/                           (phase 6)
   <area-slug>/                         (the research folder; Knoxville's is "knoxville")
     BRIEF.md, README.md, EXECUTIVE-BRIEF.md, market_analysis.md
@@ -19,7 +19,7 @@ Create `~/Desktop/<Area> Research/` with:
     research/  (per-category JSON, _overrides.json, *_for_review.csv)
   channel-<name>/                      (phase 5, if any)
 ```
-File names are keyed on the market slug, not the state, so two cities in one state do not collide: `<SLUG>-OUTREACH-RUNBOOK.md`, `SALES-REP-TRAINING-<slug>.md`, `pamphlets/Purebaric_<slug>_pamphlet_<industry>.pdf` (Knoxville predates this rule and uses TN). Mirror the whole Desktop folder to the site repo as `_internal/research/<area-slug>-<state>/` (Knoxville: `knoxville-tennessee`), including the runbook, training, pamphlets and index, plus `_internal/research/channel-<name>/` for channels. Generator scripts live in `_internal/outreach/source/`. The Knoxville training at `_internal/outreach/SALES-REP-TRAINING.md` is the Tennessee working document, not a blank template: copy it, delete the lines marked **TN**, and write the new state's rules.
+File names are keyed on the market slug, not the state, so two cities in one state do not collide: `<SLUG>-GETTING-STARTED-ACTION-PLAN.md`, `SALES-REP-TRAINING-<slug>.md`, `pamphlets/Purebaric_<slug>_pamphlet_<industry>.pdf` (Knoxville predates this rule and uses TN). Mirror the whole Desktop folder to the site repo as `_internal/research/<area-slug>-<state>/` (Knoxville: `knoxville-tennessee`), including the runbook, training, pamphlets and index, plus `_internal/research/channel-<name>/` for channels. Generator scripts live in `_internal/outreach/source/`. The Knoxville training at `_internal/outreach/SALES-REP-TRAINING.md` is the Tennessee working document, not a blank template: copy it, delete the lines marked **TN**, and write the new state's rules.
 
 Update the existing memory note `purebaric-no-adobe-onedrive.md` (in the memory folder named in the system prompt) to add the new market's Desktop and repo folders, and keep its one-line entry in `MEMORY.md`; do not create a second note.
 
