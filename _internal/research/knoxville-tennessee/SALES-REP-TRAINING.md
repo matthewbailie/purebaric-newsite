@@ -1,22 +1,22 @@
-# Purebaric sales representative training: business chamber rentals
+# Purebaric sales training: placing chambers in businesses
 
-Version 2, 10 October 2026 (revised after the round-1 critique). For the representative who visits gyms, studios, clinics, salons, teams and schools to place rented mild hyperbaric chambers. Covers Utah and Tennessee; Tennessee-only rules are marked **TN**. Internal document. Not legal advice; the claims rules in Part 3 were written to keep Purebaric inside its wellness positioning and should be followed exactly.
+Version 3, 10 October 2026. For whoever walks into gyms, studios, clinics, salons and clubs with our pamphlet. Written for Tennessee first; the Utah differences are marked. Internal.
 
 ---
 
-## Part 1. What you are selling
+## 1. What we sell, in plain words
 
-**The product.** A soft-shell mild hyperbaric chamber, rated to 1.5 atmospheres absolute (ATA), with an air compressor. **In Tennessee the chamber is placed air-only**, with no oxygen concentrator, until counsel and the Knoxville Fire Marshal have answered; the Utah standard configuration adds a 10-litre oxygen concentrator with a mask. The business rents it by the month. Purebaric delivers, installs, trains the staff, maintains it, supports it by phone and text, and removes it at the end. The business runs the sessions, sets its own session price, and keeps the session revenue.
+We rent mild hyperbaric chambers. A chamber is a soft-shell pod a person lies down in. A quiet compressor next to it raises the air pressure inside to about one and a half times normal, roughly what you feel ten to fifteen feet underwater. The person inside relaxes, naps, reads or scrolls their phone for an hour, then the pressure comes back down and they step out. Ears pop on the way up and down, like on a plane. That is the whole experience.
 
-**The offer in one sentence.** "You add a recovery amenity your members already ask about, with no purchase, no maintenance and no long contract, and you keep what you charge for it."
+For a business, the pitch is simple: we put a chamber in a spare room, train their staff, and they sell hour-long sessions to the customers they already have. They set the price and keep every dollar from the sessions. We handle delivery, setup, training, maintenance, support and pickup. There is nothing to buy and nothing to maintain.
 
-**Who buys it.** Owners of businesses whose customers already pay for recovery and self-care: performance gyms, CrossFit boxes, recovery and IV studios, med spas, chiropractors and physical therapists with a sports or wellness side, day spas and salons, sports clubs, and athletic departments. The buyer is the owner or the general manager. Nobody else can sign.
+In Utah our chambers run with an oxygen concentrator, a plug-in machine that pulls oxygen from room air and feeds it through a mask. **In Tennessee we are starting without the concentrator** while our attorney and the local fire officials confirm what they want from us. Say it plainly: "In Tennessee we're placing the air-only setup first." If a business asks about oxygen, say we expect to offer it later and that Michael will confirm timing.
 
-**Why they buy.** Three reasons come up in every conversation: a new revenue line without capital, something to retain members and fill quiet hours, and the status of being the first in their area to offer it. Lead with revenue, close on retention.
+**What we are not.** We are not a clinic and we do not treat anything. We are a wellness amenity, the same category as a sauna or a cold plunge. That one sentence keeps us out of trouble and makes the business's life easier too, because they do not have to be a clinic to offer it.
 
-### Pricing you may quote
+## 2. The deal
 
-| Initial term | Business rate, per chamber, per month |
+| If they commit to | They pay per chamber per month |
 |---|---|
 | 1 to 2 months | $979 |
 | 3 months | $929 |
@@ -25,238 +25,126 @@ Version 2, 10 October 2026 (revised after the round-1 critique). For the represe
 | 9 to 11 months | $810 |
 | 12 months | $783 |
 
-Plus a one-time $200 training and supplies fee per chamber. Delivery, installation, maintenance, support and removal are included; the $200 covers the staff training and the first supplies. Rates are set in the admin portal and published at purebaric.com/pricing; quote what is published on the day. **Sales tax:** handled automatically by Stripe at checkout; do not quote tax rates or add tax to any number.
+Plus a one-time $200 for staff training and the first supplies. Rates are set in our admin portal and published at purebaric.com/pricing; quote what is on the site that day. Sales tax, if any applies, is calculated by Stripe at checkout, so never quote a tax rate or add tax to a number.
 
-Home rentals are **not offered in Tennessee** (a state home-medical-equipment licence question is open). If a member or owner asks about renting one for home, say Purebaric does not offer home rentals in Tennessee today and take their details for Michael. Do not quote home rates in Tennessee.
+**What is included.** Delivery and setup. About an hour of hands-on training for their staff, with free refreshers. A printed guide for the front desk. Consent and screening forms for their clients. Help making a one-page pamphlet in their brand. Maintenance and repairs for normal wear, with a response within two business days. Phone and text support. Pickup at the end.
 
-### The revenue illustration (always say "illustration")
+**What they need.** A clean, dry room or corner about 4 by 8 feet (twin-bed size), a normal wall outlet, and one trained staff member on site to start and end each session. No flames, heaters or oil-based products near the chamber.
 
-Use the pamphlet's table and nothing else. At $75 a session with about $1.30 of cleaning supplies and liners per session, each session leaves about $73.70 before tax, card fees and staff time. Break-even on the rental alone is about 11 sessions a month at $783, 13 at $929 and 14 at $979.
+**How it ends.** After the term they chose, it continues month to month. Either side can end it with 30 days' notice and we pick the chamber up at no charge.
 
-| Sessions a month | Gross at $75 | After $783 rental and $1.30 supplies |
+**Insurance.** They keep their normal business liability policy and ask their broker to add us as additional insured. Most brokers do it in a day.
+
+## 3. Talking about money
+
+Use the pamphlet's numbers and nothing else. At $75 a session:
+
+| Sessions a month | Money in | After the $783 rental and about $1.30 of supplies per session |
 |---|---|---|
-| 26 (one a day) | $1,950 | $1,133 |
-| 52 (two a day) | $3,900 | $3,049 |
-| 104 (four a day) | $7,800 | $6,882 |
+| 26 (one a day) | $1,950 | about $1,130 |
+| 52 (two a day) | $3,900 | about $3,050 |
+| 104 (four a day) | $7,800 | about $6,880 |
 
-Say these are illustrations based on stated assumptions and never a forecast. Purebaric's own success bar for a new placement is ten sessions a month by month two, so present one or two a day as the realistic cases and four a day as the ceiling. The agreement says the business is not relying on any revenue projection, and that has to be true.
+The rental pays for itself at about 11 sessions a month on the 12-month rate, 13 at $929, 14 at $979. One or two sessions a day is the realistic early picture; four a day is the ceiling for a popular room.
 
-**Local price anchors.** The only published Knoxville wellness-chamber prices are a chiropractic office's oxygen-enriched sessions at $100 ($125 for a first visit with consultation), with ten for $800 and twenty for $1,400. A hospital-run session is several hundred dollars. An air-only session should sit below those anchors; $75 is the pamphlet's assumption. In Utah, studio sessions run $60 to $150. A business charging $60 to $90 is below the market and still clears the rental in a few sessions a week.
+Local reference points: the one Knoxville business publishing chamber prices charges $100 a session and $125 for a first visit, ten for $800, twenty for $1,400. Hospital sessions are several hundred dollars. So $60 to $90 is well under the market and still clears the rental in a few sessions a week.
 
----
+Say these are examples, not promises. The agreement says the business is making its own judgement about demand, and that has to be true in the conversation too.
 
-## Part 2. Key terms and facts you must know
+## 4. Who buys, and why
 
-| Term | What it means and how to use it |
-|---|---|
-| ATA | Atmospheres absolute. Sea level is 1.0 ATA. Our chambers run 1.3 to 1.5 ATA, about the pressure 10 to 16 feet underwater. Clinical hospital hyperbaric runs 2.0 to 3.0 ATA. Always say "mild" and never compare the two as equivalent. |
-| Mild hyperbaric (mHBOT) | The category name for soft-shell, low-pressure chambers. Use "mild hyperbaric chamber" or "chamber". Avoid "HBOT" and "therapy" with customers; those are clinical words. |
-| Soft-shell chamber | Zippered fabric chamber inflated by the compressor; the user lies down inside. Takes a 4 by 8 foot footprint, a grounded outlet and a temperature-controlled room. |
-| Oxygen concentrator | A plug-in device that pulls oxygen from room air; no tanks, no cylinders, nothing stored. Part of the Utah standard configuration, delivered through a mask. Not placed in Tennessee during the pilot. |
-| Air-only configuration | Chamber and compressor without the concentrator. Offered where a landlord, insurer or fire marshal prefers no oxygen enrichment. **TN:** assume air-only for business placements until the Knoxville Fire Marshal and counsel have answered (see the Tennessee runbook). |
-| Session | Sixty minutes, one person, fully clothed, lying down. Pressurize gradually, equalize ears like on a plane, relax, depressurize gradually. Staff start and end every session and stay on the premises. |
-| Equalizing | Clearing the ears during pressure change by swallowing or yawning. Mention it; it is the one thing first-timers notice. |
-| Contraindications | Conditions that need a physician's written clearance before a session: pregnancy, collapsed lung history, COPD or severe asthma, current cold or sinus or ear infection, ear surgery, seizure disorder, uncontrolled blood pressure or heart disease, pacemaker, fever, claustrophobia, chemotherapy or certain drugs. The screening list is in the agreement; the business screens every client. |
-| Safety rules | No smoking, vaping, flame or heat source near the equipment. No oil or petroleum products on skin or clothing. No lighters, batteries, hand warmers or heating devices inside. Fresh mask each client, wipe-down between sessions, one person per session, stop at any ear pain or distress. |
-| Trained operator | Only staff trained by Purebaric may run sessions. Training takes about an hour at install; refreshers are free. |
-| Client consent form | Signed before a client's first session: wellness-only statement, health screening, risks, release naming Purebaric, safety rules, parent signature and presence for under-18s. Purebaric supplies the template. Keep four years. |
-| Certificate of insurance (COI) | Proof the business carries commercial general liability of at least $1,000,000 per occurrence and $2,000,000 aggregate, naming Michael Bailie d/b/a Purebaric as additional insured. Required before the first session. Most businesses already carry this; the broker adds the additional insured in a day. |
-| Letter of intent (LOI) | The term sheet used when an owner wants to move but is not ready to sign the full agreement. Non-binding except confidentiality, no advertising before install, wellness-only acknowledgment and governing law. Separate Utah and Tennessee versions. |
-| Definitive Agreement | The Business Rental Agreement and Liability Waiver. Month to month, 30 days' notice, first month plus $200 due before install, release and indemnity, insurance, no medical claims. Always offer to send it before the owner asks. |
-| Site check | Photos or a video walk-through of the intended room before install: space, outlet, flooring, access path, temperature. |
-| Runbook | The written operating guide left with the business. Session steps, cleaning, incident reporting, support numbers. |
-| Prescription status | The chamber model is FDA-cleared as a prescription device for a different use (altitude sickness). Purebaric rents it as a general-wellness amenity and does not require a prescription. If asked, say exactly that: "The chamber model is FDA-cleared as a prescription device for a different use. We rent it as a wellness amenity, and Michael can answer regulatory questions directly." Do not say it is not a medical device. |
+- **Recovery studios, IV lounges and med spas.** Easiest conversation. Their clients already pay for recovery and they have treatment rooms. The chamber is one more hour-long service on a menu that already has cryo, sauna and drips.
+- **CrossFit and performance gyms.** Athletes who train five or six days a week and talk to each other. A coach runs sessions between classes.
+- **Chiropractors, physical therapists and sports-medicine practices.** A cash-pay wellness service in a room that sits empty part of the day. Keep it on the wellness menu, not in a treatment plan.
+- **Sports clubs and team facilities.** A player amenity in the training room, run by the trainer, for adults first.
+- **Gyms and fitness centers.** Fill quiet afternoons and give members a reason to stay. Franchisees may need to check their franchise agreement.
+- **Salons and day spas.** A quiet hour clients add to a facial or massage, priced like a body treatment.
+- **Colleges and high schools.** Email the athletic director and trainer first; do not walk in. Adult athletes only until our insurer confirms coverage for minors.
 
-**What Purebaric is not.** Not a clinic, not a medical provider, not a franchise, not a partner in the business's revenue. We are an equipment lessor and service provider. Say that plainly; it is what makes the contract simple. **Contracting party:** use the exact entity name printed on the agreement and LOI (Michael is confirming with counsel whether Tennessee contracts are signed by Purebaric LLC or by Michael Bailie d/b/a Purebaric); never mix the two.
+The three reasons owners say yes, in the order they say them: a new income line with no purchase; something that keeps members coming back; and being the first in their area to have one.
 
----
+## 5. The ten-minute visit
 
-## Part 3. Claims rules: what you may and may not say
+Walk in mid-morning or mid-afternoon, not during a class change or the lunch rush. Ask for the owner or manager by name (it is on the route plan). If they are out, leave the pamphlet with your name and number on the back and ask when they are usually in.
 
-The whole business rests on wellness positioning. In Tennessee, "professing to treat" an ailment is defined as practising medicine, and the FTC requires scientific proof for any health claim in both states. One sentence from you can undo that. Follow this table without exception.
+When you have them, keep it to ten minutes:
 
-| Say | Do not say |
-|---|---|
-| "A relaxing, pressurized hour that many people build into their recovery routine." | "Treats", "heals", "cures", "reduces inflammation", "speeds healing", "boosts immunity", "detox". |
-| "People use it to rest and reset after hard training." | Any disease, injury or condition name as a benefit: concussion, arthritis, diabetes, wounds, long COVID, autism, stroke, TBI. |
-| "Your clients decide what it does for them; we make no medical claims." | "Clinically proven", "doctors recommend", "FDA approved". |
-| "We rent it as a general-wellness amenity, not as a treatment." | "Hyperbaric oxygen therapy" or "HBOT" as the name of what the business will offer. |
-| "Most people use it as a quiet hour in their week." | "You will sleep better", "it improves sleep", and any reported-experience line such as "clients tell us they sleep well"; a testimonial carries the same claim as a promise. |
-| "Ask your physician if you have a health condition." | Anything that sounds like diagnosis or advice. |
+1. **Who you are, in one line.** "I'm [name] with Purebaric. We rent hyperbaric chambers to [gyms / studios / practices] so you can sell sessions to your own clients."
+2. **Two questions, then listen.** What do your members already pay for when it comes to recovery? Is there a room or corner that sits quiet part of the day?
+3. **The pitch, in a breath.** "We bring the chamber, set it up, train your staff and look after it. You charge what you want for a one-hour session and keep it. The 12-month rate is $783 a month; at $75 a session that's paid back in about eleven sessions."
+4. **Show, don't tell.** The pamphlet, a photo of an install, the pricing page on your phone.
+5. **Ask to see the room.** If you are standing in it, you are most of the way there.
+6. **Leave with one of three things:** a signed letter of intent, a date to come back and talk to the decision maker, or a clear no with the reason written down.
 
-**TN extra care.** Do not use "therapy", "recovery therapy" or "treatment" in Tennessee at all, including on the pamphlet and the business's menu. "Recovery session" and "wellness session" are the approved names. A host business that advertises "therapy" risks being reclassified as a medical clinic under Knoxville zoning.
+Log every visit the same day: who you met, what they said, what happens next.
 
-If an owner asks "does it work for X", answer: "I can't make health claims and neither can you once it's on your menu. What I can tell you is what it is, what a session feels like, and what other businesses charge for it. Your clients will tell you the rest."
+## 6. What to say for each kind of business
 
----
+Use the opening line from the route plan when there is one; otherwise use these.
 
-## Part 4. How a visit runs
+**Recovery studio or IV lounge.** "You already sell recovery. A chamber is the one service you can add without buying anything." Ask what their best-selling service is and whether clients buy packages. Angle: it fits their menu at the same price point as cryo and costs less to run. Offer: six months at $832, or twelve at $783 if they are confident. Close: "Which room would it go in?"
 
-1. **Research the night before.** Open the prospect list row: owner name, hook (recent news, award, expansion), whether their website mentions hyperbaric (if yes, they are a competitor or already a customer; skip or ask who supplies them), and the nearest existing chamber.
-2. **Walk in mid-morning or mid-afternoon,** never at class change, never at lunch rush. Ask for the owner by name. If absent, get the owner's name, best time, and leave the industry pamphlet with your name and cell number written on the back panel. Log it.
-3. **Open with the hook, not the product.** Thirty seconds about them. Then one sentence about why you are there.
-4. **Discovery before pitch.** Three questions (in the scripts below). Listen for the quiet hours, what members ask for, and what they already pay for recovery.
-5. **Pitch in under two minutes.** Product, what is included, what they keep, the price for the term they would pick, and the illustration.
-6. **Show, do not tell.** Phone photos of installs, the pamphlet, the pricing page, the agreement on your tablet. Offer the video walk-through.
-7. **Ask for the site check.** "Can I see where it would go?" If you are standing in the room, measure it. That is the close.
-8. **Leave with one of three outcomes:** signed LOI, a dated follow-up with the decision maker, or a clear no with the reason logged.
-9. **Log the visit the same day** in the prospect workbook: status, who you met, objections, next step and date.
+**CrossFit or performance gym.** "Your athletes already spend on recovery. We'd put a chamber here so they do it where they train." Ask how many of their members are competing or training twice a day, and whether they would sell sessions or bundle them into a tier. Angle: a coach runs it between classes; the members sell it to each other. Offer: three months at $929 to start. Close: "Which coach would run it?"
 
-**Visit targets.** Eight to twelve walk-ins a day in one geographic cluster on three walk-in days. A good week is thirty visits, six real owner conversations, one or two site checks and one LOI.
+**Chiropractor or physical therapist.** "A cash-pay wellness service for the room that's empty half the day, run from the front desk." Ask how much of the practice is cash-pay wellness and what non-covered services they already sell. Angle: gives clients a reason to visit between appointments, never touches billing. Say "clients", not "patients". Offer: three months at $929. Close: "Which room, and who at the desk would run it?"
 
----
+**Sports club or team facility.** "A recovery amenity for your players and members, in your training room, run by your trainer." Ask who owns player recovery and whether the facility is theirs. Angle: adults first; season-length terms; we remove it in the off-season. Offer: six months at $832 with the letter of intent first so the trainer and insurer can sign off. Close: "Who should I talk to on the training side?"
 
-## Part 5. Objections you will hear
+**Gym or fitness center.** "An add-on your members will pay for, in the corner that's empty every afternoon." Ask when their quiet hours are and what members ask for that they don't offer. Angle: sell sessions or put them in a premium tier; nothing to buy. Offer: three months at $929. Close: "Can we look at where it would go?"
 
-| Objection | Response |
-|---|---|
-| "My members won't pay for it." | "Your members already pay for cryo, IV drips and massage within two miles of here. A session here is cheaper than any of them. Try it for three months at $929 and let them tell you." |
-| "I don't have the space." | "It needs a 4 by 8 footprint, roughly a massage table. A corner of a stretch area or a treatment room works. Let's look at it together." |
-| "What about liability?" | "Your clients sign a consent and release that names you and us. The agreement asks you to release and indemnify us broadly, including for our ordinary negligence, so please have your attorney read it, and confirm with your insurance broker that your policy covers chamber sessions and can name us as additional insured. We carry our own coverage for the equipment." |
-| "Is this safe? I read about chamber fires." | "Chamber fires have happened, including at wellness clinics, and that is why we take it seriously. In Tennessee we place the air-only configuration with no oxygen enrichment, the safety rules ban flame, heat, oils and electronics in the chamber, a trained staff member starts and ends every session, and nothing is installed until your fire marshal, landlord and insurer have had the chance to say no." |
-| "I need to ask my landlord / fire marshal / insurer." | "Good, you should. Here is a one-page description you can send them, and here is the LOI, which makes the rental conditional on their okay. Nothing proceeds until you have it." |
-| "Too expensive." | "At $75 a session it pays for itself at about three sessions a week. The question is whether you can sell three sessions a week to people who already buy recovery from you. If not, this is not for you, and I would rather you say so now." |
-| "Does it actually do anything?" | Use the Part 3 answer. Never improvise a benefit. |
-| "Can I buy one instead?" | "New soft chambers run about $8,000 to $10,000 before the compressor, service and training, and then you own the maintenance and the liability. Most owners rent for a season first and decide with real session numbers." |
-| "I'll think about it." | "Of course. What would you need to see to decide: the agreement, a site check, or a video of a session?" Set the date. (Once a Knoxville placement is running and its owner agrees, offer a session there.) |
+**Salon or day spa.** "A quiet hour your clients book before a facial or massage." Ask what their most popular add-on is and how they fill weekday mornings. Angle: price it like a body treatment; it turns a visit into a half day. Offer: three months at $929. Close: "Which treatment room?"
 
----
+**College or school athletic department.** By email: "We rent chambers to athletic programs for the training room and are offering a 90-day pilot: one chamber at $929 a month plus the $200 training fee, run by your athletic trainer." Ask for ten minutes with the AD and the trainer together. Adults first; minors only after our insurer confirms and with a parent's signed consent and a parent present.
 
-## Part 6. Industry talk tracks
+## 7. Questions you will get, and straight answers
 
-Each track has an opener, three discovery questions, the pitch angle, proof points, the offer, and the close. Swap in the hook from the prospect list.
+**"Is it safe? I've read about chamber fires."** "Yes, you've probably seen the one in Michigan. That was a hard chamber filled with pure oxygen at a clinic. Ours is a soft chamber at low pressure, and in Tennessee we're starting without any oxygen enrichment at all. The rules are the same ones you'd expect: nothing that burns near it, no oil-based lotions, a staff member starts and ends every session. We'll also make sure your landlord and insurer are comfortable before anything is installed."
 
-### 6.1 Gyms and fitness centres
+**"Does it actually do anything?"** "I can't make health claims and neither can you once it's on your menu. What I can tell you is that it's a quiet, pressurized hour that a lot of people build into their routine, and that businesses charge $75 to $125 for it. Your clients will tell you what it does for them."
 
-**Opener.** "Hi, I'm [name] with Purebaric. [Hook from the prospect list, for example the new studio at the Candy Factory.] I work with gyms that want a recovery amenity they can rent by the month instead of buying. Do you have five minutes, or should I come back at a better time?"
+**"What about liability?"** "Your clients sign a consent form before their first session. You keep your normal liability policy and add us as additional insured. The agreement puts the equipment on us and the running of sessions on you, and it does ask you to release and indemnify us broadly, so have your attorney read it. Most do."
 
-**Discovery.** When are your quiet hours? What do members ask for that you don't offer? What recovery services do your members buy elsewhere (massage, cryo, IV)?
+**"I don't have room."** "It's a 4 by 8 footprint, about a massage table. A corner of the stretch area or a treatment room works. Show me what you've got."
 
-**Pitch angle.** Fill quiet hours and add a paid add-on without capital. A chamber in a corner of the stretch area sells sixty-minute blocks on the slow afternoons. Members who are already paying for cryotherapy down the road will pay you instead. Franchisees: this is a local add-on that does not need corporate approval as a product, but check your franchise agreement for amenity rules.
+**"Too expensive."** "At $75 a session it's paid for by about eleven sessions a month. The real question is whether you can sell three a week to people who already buy recovery from you. If you can't, this isn't for you, and I'd rather you tell me now."
 
-**Proof.** Local recovery studios charge $100-plus a session for the same thing. Photos of a gym install.
+**"Can I just buy one?"** "You can. New soft chambers run about eight to ten thousand before the compressor, service and training, and then you own the maintenance and the liability. Most owners rent for a season first and decide with real numbers."
 
-**Offer.** Three months at $929, first month and $200 fee before install. "You can end it with 30 days' notice and we remove it at no charge." (Quote a term rate only for the term written into the agreement; Michael is finalizing the early-exit rule.)
+**"Can my members rent one for home?"** In Tennessee: "Not yet. We're starting with business placements here. Give me their name and I'll pass it to Michael." In Utah: "Yes, from $729 a month; the website has the details."
 
-**Close.** "Can we look at where it would go?"
+**"Let me think about it."** "Of course. What would help you decide: the agreement, a look at the room, or a video of a session?" Set a date to come back.
 
-### 6.2 CrossFit and performance gyms
+## 8. The few things we never say
 
-**Opener.** "[Hook: Wes, I read the BarBend profile / Devin, the Vols guys train here, right?] I'm [name] with Purebaric. We rent mild hyperbaric chambers to performance gyms so their athletes can get a recovery session where they train instead of driving to a clinic."
+Keep it to this list and the rest takes care of itself.
 
-**Discovery.** How many of your athletes are competing or training twice a day? What do they do for recovery now and where? Would you sell it per session, bundle it into a membership tier, or use it as a retention perk for your top athletes?
+- Don't call it therapy or treatment. It is a "session" or a "wellness amenity". In Tennessee especially, "therapy" on a menu can get a business classified as a medical office.
+- Don't name a condition it helps with. No "inflammation", "healing", "sleep", "immune", "detox", "concussion", or anything a doctor would say. If an owner asks, use the answer in section 7.
+- Don't quote a client's result as proof, even secondhand.
+- Don't promise an install date or an income figure. The numbers are examples.
+- Don't say "not a medical device". If asked, say we rent it as a wellness amenity and that Michael can answer regulatory questions.
+- Don't offer home rentals in Tennessee yet, and don't offer sessions to anyone under 18 until Michael says the insurer has confirmed.
 
-**Pitch angle.** Your athletes already believe in recovery and talk to each other; you do not need to educate them. Position it as the gym's recovery room. A performance gym has the two things that make it work: members with discretionary spend and a coach on the floor to run sessions.
+## 9. After the yes
 
-**Proof.** The illustration (two sessions a day leaves about $3,049 after rental and supplies). Several college programs run chambers; your members read about them. Photos.
+1. Send the letter of intent the same day, with the agreement attached so their attorney can read it.
+2. Book the site check within a week: photos or a video call of the room, outlet and the path in.
+3. Collect the insurance certificate and, if their lease needs it, the landlord's okay. In Tennessee, Michael also gets the fire official's written okay for that address before we schedule.
+4. Agreement signed, first month plus $200 paid, install date set.
+5. Install, train the staff, run a session with them, leave the guide and forms, take photos.
+6. Check in at one week and one month. Ask for session counts; they are your best proof for the next visit.
 
-**Offer.** Six months at $832 if they are confident, three at $929 if not. The $200 fee covers training two coaches.
+## 10. Tennessee at a glance
 
-**Close.** "Which coach would run it? Let's get them in the training at install."
+- Contact on every document: Michael Bailie, (801) 884-2113, mlebailie@hotmail.com. Michael signs the Tennessee agreements.
+- Air-only placements to start; no home rentals yet; adults only until the insurer confirms minors.
+- Use the Tennessee letter of intent and the Tennessee rental agreement. Sales tax is handled by Stripe.
+- "Recovery session" or "wellness session", never "therapy".
+- Anything a landlord, insurer or official says about fire code or oxygen goes to Michael the same day.
+- The home rental waiver is with Matthew Bailie; get it from him before any home-rental conversation.
 
-### 6.3 Sports teams and clubs (pro, semi-pro, youth academies, country clubs)
+**Utah differences.** Chambers come with the oxygen concentrator; home rentals are available from $729 a month; the Utah letter of intent and agreement apply; contact is hello@purebaric.com and (801) 901-0873.
 
-**Opener.** "I'm [name] with Purebaric. [Hook: Dave, congratulations on the GM role.] We rent mild hyperbaric chambers to clubs for their training facilities, and we're looking for one Knoxville club to work with first."
+## 11. What to carry
 
-**Discovery.** Who owns player recovery here: a trainer, a physio, a sports-medicine partner? What does the recovery setup look like now? Is the facility yours or shared?
-
-**Pitch angle.** A recovery amenity the players will use, placed in the training room under the trainer's supervision. For pro and semi-pro teams, the trainer and team physician decide; sell to them, not to the front office. For country clubs and swim clubs, it is a member amenity run by the fitness staff, priced per session or included in a premium tier.
-
-**Proof.** Several college programs run chambers. Simple to run. Air-only configuration.
-
-**Offer.** Season-length term (six months, $832) with the LOI first so the trainer and insurer can sign off.
-
-**Close.** "Who should I sit down with on the medical side, and can you introduce me?"
-
-**Rules.** Adults only unless a parent is present. Youth academies: approach only after Purebaric's insurer has approved under-18 use and only through the club's medical lead.
-
-### 6.4 High schools and colleges (athletic departments)
-
-**Opener (colleges).** "I'm [name] with Purebaric. [Hook: congratulations on the conference title.] We rent mild hyperbaric chambers for athletic training rooms, and we're offering a small number of pilot placements to programs in this area."
-
-**Opener (high schools).** Do not cold-walk a high school. Email or call the athletic director using the list, and ask for ten minutes with the AD and the athletic trainer together.
-
-**Discovery.** Who provides your athletic training coverage (Covenant Health, Knoxville Orthopaedic Clinic, Intermountain, University of Utah Health)? Does the trainer have a say in recovery equipment? What is the approval path: AD, principal or district, booster club?
-
-**Pitch angle.** One chamber in the training room, run by the licensed athletic trainer under the program's own session policy, adult athletes first, offered as a 90-day pilot at the three-month rate ($929 a month plus the $200 fee). The school pays from athletics or booster funds. Use the schools pamphlet; the longer schools proposal in the channel folder is a Utah draft and its three-chamber pricing, home-rental and NIL ideas do not apply in Tennessee.
-
-**Proof.** The schools pamphlet; the air-only configuration; the consent forms; the fact that schools' trainers are already employed by health systems, so the session policy can live with them.
-
-**Offer.** 90-day pilot at the three-month rate, invoice to the school or boosters, LOI first.
-
-**Close.** "Can I send the proposal to you and the trainer, and come back when you've both read it?"
-
-**Rules.** The health system that employs the trainer is the gatekeeper; treat them as the partner. Until Purebaric's insurer confirms coverage for under-18 use in writing, pitch colleges and adult athletes only; when it does, minors need a parent's signed consent and a parent present. Rank schools last in time order; they are slow and the sales cycle crosses a season.
-
-### 6.5 Recovery studios, cryotherapy, IV hydration and med spas
-
-**Opener.** "I'm [name] with Purebaric. [Hook: Corina, saw the Chamber welcome / Lauren, the Farragut Press piece was great.] You already sell recovery services; I'm here because a chamber is the one amenity you can add without buying anything."
-
-**Discovery.** What is your highest-margin service and your most-booked one? Do clients buy packages or single sessions? Do you have a quiet treatment room?
-
-**Pitch angle.** This is the easiest category: the clients, the booking system, the medical oversight (many have a nurse or medical director) and the price expectation ($100-plus) already exist. The chamber slots into the menu as another sixty-minute service. For med spas, it is a non-injectable add-on that brings clients back weekly. For IV bars, pair a drip with a session as a bundle.
-
-**Proof.** A Knoxville chiropractic office charges $100 a session ($125 first visit) for oxygen-enriched sessions with nothing like your clientele. The illustration at your price point. A chamber is cheaper to run than a cryo unit.
-
-**Offer.** Six months at $832 (they are confident sellers) or twelve at $783. Mention the LOI for the owner who wants to hold a chamber while the landlord confirms.
-
-**Close.** "Which room? Let's measure it."
-
-**Rules.** Even with a nurse on staff, the business cannot market it as therapy or for conditions; the medical director's licence does not change Purebaric's wellness positioning. If their website already mentions hyperbaric, they are a competitor or already renting; ask who supplies them and move on.
-
-### 6.6 Chiropractic, physical therapy and wellness practices
-
-**Opener.** "Dr. [name], I'm [name] with Purebaric. [Hook: the new clinic / 27 years in practice.] We rent mild hyperbaric chambers to practices that want a wellness amenity on the cash side of the business."
-
-**Discovery.** How much of your practice is cash-pay wellness versus insured care? Do you already sell non-covered services (massage, red light, sauna, supplements)? Is there a room that sits empty part of the day? (Say "clients", never "patients", and never tie the chamber to a treatment plan.)
-
-**Pitch angle.** A cash-pay wellness service that does not touch insurance billing or treatment, run by front-desk or massage staff, that gives clients a reason to visit between appointments. Keep it on the wellness menu only.
-
-**Proof.** The one local wellness provider that publishes prices charges $100 to $125 and sells packages; a handful of other Knoxville practices and studios run chambers. The illustration. Air-only configuration.
-
-**Offer.** Three months at $929 to test the cash-pay demand.
-
-**Close.** "Which room, and who at the desk would run it?"
-
-**Rules.** This category is the most likely to want to call it therapy or put it in a treatment plan. The agreement prohibits medical claims and the practice's licence does not exempt the marketing. If they insist on clinical use with prescriptions, refer to Michael; that is a different arrangement.
-
-### 6.7 Salons, day spas and beauty studios
-
-**Opener.** "I'm [name] with Purebaric. [Hook: most-awarded day spa in Knoxville.] We rent a relaxation chamber that spas add as a sixty-minute service, and I'd love to show you how it fits in a treatment room."
-
-**Discovery.** What is your most popular add-on? How do you fill weekday mornings? Do clients buy memberships?
-
-**Pitch angle.** Sell the hour, not the science: a quiet, pressurized hour clients book before a facial or massage. Day spas price it like a body treatment. Salons with a spare room use it to turn a hair appointment into a half-day visit.
-
-**Proof.** Photos; the beauty-client pamphlet; the spa price point.
-
-**Offer.** Three months at $929, with the $200 fee covering training for two staff.
-
-**Close.** "Which treatment room, and when could we do a site check?"
-
-**Rules.** Do not link it to skin, anti-ageing or any appearance outcome; in Tennessee an appearance claim can trigger medical-spa registration rules. "Relaxation" is the whole pitch.
-
----
-
-## Part 7. After the yes
-
-1. Send the LOI (state version) the same day, with the agreement attached for review.
-2. Book the site check within seven days; send the one-page site requirements.
-3. Collect the COI (additional insured: the entity named on the agreement) and, where needed, landlord consent. **TN:** the business confirms its lease, zoning and fire code; if Purebaric asks, written confirmation from the fire marshal.
-4. Signed agreement, first month plus $200 collected, install date set.
-5. Install, train, complete the checklist, leave the runbook and consent forms, take photos.
-6. Check in at day 7, day 30 and before each renewal. Ask for session counts; they are your next proof point.
-
----
-
-## Part 8. Tennessee notes for the representative
-
-- Purebaric is a Utah business entering Tennessee. Until counsel and the Knoxville Fire Marshal have answered the questions in the legal memos, Tennessee placements are offered as air-only, conditional on the LOI's Section 3, and no home rentals are offered in Tennessee.
-- Use the Tennessee LOI. Sales tax is handled by Stripe at checkout; never quote a tax rate.
-- Say "recovery session" or "wellness session"; never "therapy".
-- Lead times are longer than Utah (equipment ships from Lehi); do not promise an install date until the runbook's Phase 0 is complete.
-- Report anything a landlord, insurer or official says about fire code or oxygen to Michael the same day; it goes into the legal file.
-
-## Part 9. Documents to carry
-
-The seven Tennessee industry pamphlets (gyms; CrossFit and performance; sports clubs and teams; athletic departments; recovery studios, IV lounges and med spas; chiropractic and wellness practices; salons and day spas), the one-page site requirements, the Tennessee LOI, the Definitive Agreement, a pricing page screenshot, install photos, the prospect list on your phone, and this document. Every document you hand over must show the same contact details as the pamphlet: (801) 884-2113 and mlebailie@hotmail.com.
+The seven industry pamphlets, the one-page room requirements, the letter of intent and the agreement for your state, a screenshot of the pricing page, a few install photos, the route plan on your phone, and this document.

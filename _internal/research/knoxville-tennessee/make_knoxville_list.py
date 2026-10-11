@@ -17,7 +17,7 @@ from openpyxl.utils import get_column_letter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, "research")
-OUT = os.path.join(HERE, "purebaric_knoxville_prospects.xlsx")
+OUT = os.path.join(HERE, "..", "purebaric_knoxville_prospects.xlsx")
 CENTER = (35.9606, -83.9207)   # downtown Knoxville (Gay St and Summit Hill)
 RADIUS_MI = 25
 

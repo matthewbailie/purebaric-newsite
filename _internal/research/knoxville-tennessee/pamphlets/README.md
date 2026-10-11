@@ -1,15 +1,13 @@
 # Tennessee business pamphlets (trifold, letter landscape, print double-sided and fold)
 
-One pamphlet per industry, generated 10 October 2026 by `_internal/outreach/source/make_pamphlets_tn.py` in the site repo. Contact on every pamphlet: (801) 884-2113, mlebailie@hotmail.com, purebaric.com. No hello@purebaric.com address appears.
+One pamphlet per industry, regenerated 10 October 2026 by `_internal/outreach/source/make_pamphlets_tn_v2.py`, which is the Utah facility pamphlet (`make_pamphlet2.py`) with only these changes: title "A New Revenue-Generating Amenity for Your Business" on every pamphlet; contact (801) 884-2113 and mlebailie@hotmail.com; Utah location references replaced with Knoxville, Tennessee; Knoxville price anchors ($100 to $125 a session, $800 for ten, $1,400 for twenty) in place of the Utah ranges; the "you keep the session revenue" line removed; refresher training and the staff runbook removed; the cover photo and footer band vary by industry and the matching line in "Who books sessions?" is marked "(you)". Everything else is the Utah pamphlet's wording.
 
-| File | Industry | Cover headline |
-|---|---|---|
-| `Purebaric_TN_pamphlet_gyms-and-fitness.pdf` | Gyms and fitness centers | A New Revenue-Generating Amenity for Your Gym |
-| `Purebaric_TN_pamphlet_crossfit-and-performance.pdf` | CrossFit and performance gyms | A Recovery Room for Your Athletes |
-| `Purebaric_TN_pamphlet_sports-teams-and-clubs.pdf` | Sports clubs, teams and athletic facilities | Recovery for Your Players and Members |
-| `Purebaric_TN_pamphlet_high-schools-and-colleges.pdf` | Athletic departments (high schools and colleges) | A Recovery Room for Your Athletic Program (90-day pilot panel instead of a revenue panel) |
-| `Purebaric_TN_pamphlet_recovery-studios-and-med-spas.pdf` | Recovery studios, IV lounges and med spas | The Next Service on Your Recovery Menu |
-| `Purebaric_TN_pamphlet_physical-therapy-and-chiropractic.pdf` | Physical therapy, chiropractic and sports medicine | A Cash-Pay Wellness Amenity for Your Practice |
-| `Purebaric_TN_pamphlet_salons-and-day-spas.pdf` | Salons, day spas and beauty studios | A Quiet Hour Your Clients Will Book Again |
-
-Tennessee-specific choices, all deliberate: no oxygen wording (Tennessee placements are offered air-only until counsel and the fire marshal answer; the disclaimer says configuration is confirmed at the site check); "recovery session" and "wellness session", never "therapy"; Knoxville price anchors ($100 to $125 a session, $800 ten-pack, $1,400 twenty-pack, from the one local wellness provider with published prices); current business rates ($783 on twelve months, $929 on three); sales tax is handled by Stripe at checkout and not mentioned beyond one line; the moderate-usage example nets $6,882. Regenerate after any pricing change in the admin portal: run the script with the scratch Python environment that has fpdf2 and Pillow installed.
+| File | Industry |
+|---|---|
+| `Purebaric_TN_pamphlet_gyms-and-fitness.pdf` | Gyms and fitness centers |
+| `Purebaric_TN_pamphlet_crossfit-and-performance.pdf` | CrossFit and performance gyms |
+| `Purebaric_TN_pamphlet_sports-teams-and-clubs.pdf` | Sports teams and athletic programs |
+| `Purebaric_TN_pamphlet_high-schools-and-colleges.pdf` | High school and college athletics |
+| `Purebaric_TN_pamphlet_recovery-studios-and-med-spas.pdf` | Recovery studios and med spas |
+| `Purebaric_TN_pamphlet_physical-therapy-and-chiropractic.pdf` | Physical therapy and chiropractic clinics |
+| `Purebaric_TN_pamphlet_salons-and-day-spas.pdf` | Salons and beauty studios |
