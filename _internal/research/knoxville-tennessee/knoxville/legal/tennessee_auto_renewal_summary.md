@@ -20,6 +20,9 @@ Research, not legal advice. Source read: Tenn. Code Ann. § 47-18-133 as publish
 | Tennessee letter of intent (`Purebaric_LOI_Business_Chamber_Rental_Tennessee.docx/.pdf`) | New Section 1.9a summarizing the same terms and pointing to Section 2.7 of the agreement | Regenerated |
 | Automatic Renewal and Recurring Charge Disclosure (`Purebaric_TN_Automatic_Renewal_Disclosure.docx/.pdf`) | One-page rider with the term, fee, charge date, continuation choice, 60-day notice, cancellation channels, change notice, refund right, consent signature and initials | New; attach to the home rental agreement and waiver and to business agreements, and show before payment in online booking |
 
+## Owner decision, 10 Oct 2026 (evening)
+The business letter of intent and the business rental agreement no longer carry the 7-day refund sentence or any service-response or pickup-time commitment; Michael discusses those if and when a business asks. The one-page disclosure for home customers keeps the refund right, because for a consumer it is the statute's own term.
+
 ## Sales tax
 Owner decision (10 Oct 2026): any applicable sales tax is calculated and collected through Stripe at the time of each charge. No document quotes a tax rate or adds tax to a price; the agreement, LOI, rider and pamphlets say so in one line.
 

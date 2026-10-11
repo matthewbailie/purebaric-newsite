@@ -1,52 +1,96 @@
 # Knoxville launch runbook: getting Purebaric started in Tennessee
 
-Version 3, 10 October 2026. This is the plan for standing up Purebaric in the Knoxville area and signing the first business, school and home customers. It is written for Michael Bailie and whoever works the territory with him. Companion documents in this folder: the daily route plan (`TENNESSEE-ROUTE-PLAN`), the sales training (`SALES-REP-TRAINING`), the seven pamphlets, the Tennessee letter of intent and rental agreement in `knoxville/legal/`, and the prospect list (`purebaric_knoxville_prospects.xlsx`).
-
-> **First call: Matthew Bailie, for the home rental waiver.** The home rental agreement and waiver are not in this folder. Get the current copy from Matthew before the first home-rental conversation.
+Version 4, 10 October 2026. The plan for standing up Purebaric in the Knoxville area and signing the first business, school and home customers. Written for Michael Bailie and whoever works the territory with him. Everything referenced here is in this folder: the daily route plan (`TENNESSEE-ROUTE-PLAN`), the sales training (`SALES-REP-TRAINING`), the seven pamphlets (`pamphlets/`), the Tennessee letter of intent, business rental agreement and renewal disclosure (`knoxville/legal/`), the home rental waiver and the home chamber instructions (`Purebaric - Home - Rental Waiver.docx`, `Purebaric - Home Chamber - Instructions.docx`), the Marketplace listing text and photos (`marketplace-ad/`), and the prospect list (`purebaric_knoxville_prospects.xlsx`).
 
 ---
 
 ## 1. What we are trying to prove
 
-Knoxville is a test. We want to know, within about four months of the first visit, whether businesses here will rent chambers, whether households will rent them, and whether the first customers renew. We are not building a warehouse, hiring a team or buying advertising to find out.
+Knoxville is a test. It is a success when three businesses sign letters of intent. We are after year-long rentals, so lead with the 12-month rate and the three-month rate as the fallback.
 
-**We will call the test a success if, four months after the first visit, we have:**
-
-- six signed letters of intent from businesses, and three chambers installed in at least two different kinds of business;
-- at least two home rentals booked through the website or by referral;
-- at least two of the first three business customers renewing when their first term ends (this one is scored later, when the terms end);
-- total spend on the test under a budget we set from real quotes in week one (freight, storage, Michael's time, the attorney, printing);
-- no incidents, complaints or regulatory contact.
-
-**We will stop and rethink if:** we have fewer than three letters of intent after 60 days of steady visits, or the attorney tells us something that changes the model, or we cannot get insurance for Tennessee.
-
-Sales tax is handled by Stripe at checkout and is not quoted anywhere. How many sessions a business runs per day is their business, not ours; we do not set targets for it.
+If fewer than three letters of intent are signed after 60 days of steady visits, stop and rethink the pitch or the list before pushing on.
 
 ---
 
-## 2. Before the first visit: four weeks of setup
+## 2. Before the first visit
 
-Do these in parallel. Nothing goes to a business until items 1 to 5 are done.
+Michael operates as an individual for now. No company to form, no attorney to hire: the waivers and agreements in this folder have already been through an attorney.
 
-1. **Paperwork.** Decide which entity signs in Tennessee (Purebaric LLC, or Michael Bailie doing business as Purebaric) and register it with the Tennessee Secretary of State. Set Stripe to collect Tennessee sales tax. Ask our insurance broker to confirm in writing that our liability cover applies to Tennessee placements and home rentals, and whether it covers supervised use by athletes under 18 (schools wait until it does).
-2. **The attorney, one engagement.** Hire a Tennessee business attorney for three things: review the Tennessee rental agreement and letter of intent (both drafted and in `knoxville/legal/`); confirm the entity and registrations above; and answer whether renting a chamber with an oxygen concentrator into a Tennessee home needs the state's home medical equipment licence, and if so what it takes to get it. Get a fee quote in week one. The research memos in `knoxville/` are the background; the attorney does not need to read all of them.
-3. **The documents.** Already done and in this folder: the Tennessee letter of intent, the Tennessee rental agreement with the automatic-renewal section, the renewal disclosure for home customers, the seven pamphlets with Michael's contact details, and the sales training. Still needed: the home rental waiver from Matthew, a one-page room-requirements sheet, and the client consent form with Michael's contact details. Print 150 pamphlets (the route plan tells you which industries need the most).
-4. **Equipment.** Get a freight quote from Lehi to Knoxville in week one. Ship two complete kits (chamber, compressor, concentrator, accessories) to a climate-controlled storage unit near West Knoxville (a 10 by 10 unit holds four kits). Keep one kit set up at Michael's place for his own practice and for demonstrations; it is also the first home-rental unit if a household books before the first business install. Order more kits only after the third letter of intent.
-5. **Local presence.** An 865 phone number forwarding to Michael. Add Knoxville ZIP codes to the website's delivery area so home bookings can come in, and add a short Knoxville line to the business page. Set up the Google Business Profile for the Knoxville service area. Carry a demonstration video of a session on your phone.
-6. **Tracking.** Until the first agreement is signed, the prospect workbook is the system of record: add columns for Status, Last contact and Next step, and update it the same day as every visit. Once a customer signs, they go into the admin portal like every Utah customer.
-7. **A backup for service.** Name a second person (a local handyman or contractor, or Matthew flying in) who can swap a compressor or move a chamber if Michael is away, so the two-business-day service promise in the agreement holds.
+1. **Documents.** Everything is in this folder: letter of intent, business rental agreement, renewal disclosure, home rental waiver, home chamber instructions, seven pamphlets, sales training, route plan. Print 150 pamphlets; the route plan's day list shows which industries come first.
+2. **A local phone number.** Set up a free Google Voice number with an 865 area code that rings Michael's own phone:
+   - Go to voice.google.com and sign in with a Google account. Choose "For personal use", then "Web".
+   - Under "Choose a number", search by city or area code: type "Knoxville" or "865" and pick a number.
+   - Enter Michael's mobile number when asked and type in the code Google texts. The mobile is now the linked phone and calls to the Voice number ring it.
+   - Settings, then Calls: confirm the linked phone is on under "Incoming calls". Settings, then Voicemail: record a short greeting ("You've reached Michael at Purebaric...").
+   - Install the Google Voice app on the phone so texts to the number show up and can be answered from the app.
+   - Tell Matthew the number. The pamphlets currently carry (801) 884-2113; say before the big print run if the 865 number should replace it.
+3. **The website.** Matthew adds the Knoxville ZIP codes to purebaric.com's delivery area so a household that finds the listing can book online.
+4. **Tracking.** Until the first agreement is signed, the prospect workbook is the system of record: add columns for Status, Last contact and Next step, and update it the day of every visit. Once a customer signs, they go into the admin portal like every Utah customer.
+5. **Equipment.** Nothing is ordered until a letter of intent is signed. Chambers come from tecnotu.com and take about two to three months to arrive, so the first install is two to three months after the first signature. Say that to every business when they sign.
+6. **The Marketplace listing.** Set it up in week one (section 3).
 
 ---
 
-## 3. Who to visit first, and why
+## 3. Who to visit first
 
-Three kinds of customers, worked at the same time:
+**Businesses, by walking in.** Follow the route plan from Day 1. Days 1 to 11 each include at least one best bet.
+- Day 1, South Knoxville and the Old City: Sauna House Knoxville, Peak IV Hydration, Prime IV, Rocky Top CrossFit, CrossFit First Creek.
+- Day 2, Kingston Pike out to Farragut: CrossFit Knoxville, Healing Hands Spa, Stretch Fusion (Chad Becker), Vital Hydration (Corina West).
+- Days 3 to 11: Sherway Road, Kingston Pike, Powell, Lenoir City, Maryville, Corryton, Oak Ridge.
+- Skip the businesses on the workbook's "Already offer HBOT" sheet; they are competitors.
 
-**Businesses, by walking in.** The route plan turns the prospect list into 31 outings of one to two hours door to door, ordered best prospects first. Follow it from Day 1. The first two days are the recovery studios, IV lounges and performance gyms whose clients already pay for recovery and that have a spare room, which is why they come first. Day 1 covers South Knoxville and the Old City: Sauna House Knoxville, Peak IV Hydration, Prime IV, Rocky Top CrossFit and CrossFit First Creek. Day 2 runs out Kingston Pike to Farragut: CrossFit Knoxville, Healing Hands Spa, Stretch Fusion (Chad Becker) and Vital Hydration (Corina West). The next nine days each include at least one best bet: the Sherway Road and Kingston Pike corridors, Powell, Lenoir City, Maryville, Corryton and Oak Ridge. Colleges, pro clubs and anyone without a street address are listed separately at the end of the plan. Businesses on the workbook's "Already offer HBOT" sheet are competitors and are skipped.
+**Colleges and clubs, by email.** Do not walk in. Send the schools pamphlet and ask for ten minutes with the athletic director and the head athletic trainer together, in this order:
+- Maryville College: Jenny Massey, Director of Athletic Training.
+- Johnson University: LaDawn Wolfe, Head Athletic Trainer.
+- Pellissippi State: Brock Evans, Athletics Director.
+- Carson-Newman: Kelsey Petz, Sports Medicine.
+- One Knoxville SC: Drew McKenna. Knoxville Ice Bears: Dave Feather, General Manager.
+- UT Knoxville: one introduction email to Jason McVeigh, no chasing.
+- High schools: after the insurer confirms cover for minors. Start with Webb School, Knoxville Catholic and Christian Academy of Knoxville, whose trainers come from a hospital system.
 
-**Colleges and clubs, by email first.** Email, do not walk in. Send the schools pamphlet and ask for ten minutes with the athletic director and the head athletic trainer together. In this order: Maryville College (Jenny Massey, Director of Athletic Training), Johnson University (LaDawn Wolfe, Head Athletic Trainer), Pellissippi State (Brock Evans, Athletics Director), Carson-Newman (Kelsey Petz, Sports Medicine), then the pro clubs: One Knoxville SC (Drew McKenna) and the Knoxville Ice Bears (Dave Feather, General Manager). UT Knoxville gets one introduction email to Jason McVeigh and no chasing. High schools come after the insurer confirms cover for minors; start with the private schools whose trainers come from a hospital system (Webb School, Knoxville Catholic, Christian Academy of Knoxville), because the trainer's employer is the real decision maker.
+**Households, through Facebook Marketplace.** Post the same listing Matthew runs in Utah, with Knoxville as the location. The text and the three photos are in `marketplace-ad/`.
+- On Facebook, open Marketplace, choose "Create new listing", then "Item for sale".
+- Add the three photos from `marketplace-ad/` in order: living room, gym, real chamber.
+- Title: `1.5ATA Hyperbaric Oxygen Chamber - Rental`. Price: `529`. Condition: Used - Like New. Category: Health & Beauty (or match Matthew's listing).
+- Description: paste the text from `marketplace-ad/LISTING-TEXT.md`. Change one line: end "Chamber walls are made of thicker TPU materials" there and drop "specifically designed for Utah altitudes".
+- Location: Knoxville, TN. Delivery method: Door dropoff. Availability: List as In Stock.
+- Under "List in more places", tick five Knoxville-area buy-and-sell groups (join them first). Publish.
+- Every seven days, open "Your listings" and tap "Renew listing" so it stays near the top. That is free.
+- To boost it: "Boost listing", audience Knoxville plus 25 miles, $5 a day for 7 days. In Utah, boosted listings cost about $20 per message, so run one boost, count the messages, and decide.
+- Answer every message the same day with the next delivery date and the rate for the term they want. Payment goes through Stripe before delivery, as in Utah.
+- Also ask every business that installs a chamber to mention home rentals to clients who want one at home.
 
-**Households, through the website and referrals.** Once the Knoxville ZIP codes are live, home bookings arrive the same way they do in Utah. Three cheap ways to seed them: ask every business that installs a chamber to mention home rentals to clients who want one at home (the pamphlet in their brand can carry a line about it); post in the Knoxville-area Facebook groups where the Marketplace chamber dealer already sells; and tell the five existing chamber operators in town that we rent to households, since they turn away people who cannot afford sessions three times a week.
+The text of the listing, for reference:
+
+```
+Hyperbaric Oxygen Chamber (mHBOT) - Home Rental.
+
+1.5 ATA
+99.9% Oxygen concentration delivered via mask.
+
+Soft-shell chamber is easy to setup in almost any room. Chamber walls are made of thicker TPU materials.
+
+Rent and save more:
+1 month rental $729
+2 months $659 /month
+6 months $579 /month
+1 year $529 /month
+
+Special offer:
+FREE delivery & setup by a technician.
+
+---
+
+Chamber Details
+Soft TPU chamber (36" x 89").
+Fits one adult.
+Comfortable mattress.
+Internal supportive frame.
+Clear view windows.
+
+---
+For wellness use only. Consult a physician before use. Not intended to diagnose, treat, cure, or prevent any disease.
+```
 
 ---
 
@@ -54,18 +98,19 @@ Three kinds of customers, worked at the same time:
 
 **Business**
 
-1. The day they say yes: send the Tennessee letter of intent with the rental agreement attached so their attorney can read it.
-2. Within a week: site check by photos or a video call. A clean, dry 4 by 8 foot space, a wall outlet, a path in for the chamber bag and compressor.
-3. Within two weeks: their insurance certificate naming Purebaric as additional insured, and the landlord's okay if their lease needs it.
-4. Signing: rental agreement signed, first month plus the $200 training fee collected through Stripe.
-5. Install, usually the following week: set up the chamber, train two staff, run a session with them, leave the consent forms and the pricing suggestion, take photos.
-6. One week later: a check-in call. One month later: another, and ask what they are charging and how it is going; that is the proof you use on the next visit.
+1. Contact Matthew to order the chamber through tecnotu.com. Arrival is about two to three months out; tell the business the install window.
+2. The same day, send the Tennessee letter of intent for signature, with the rental agreement attached.
+3. Within a week: site check by photos or a video call. A clean, dry 4 by 8 foot space, a wall outlet, a path in for the chamber bag and compressor.
+4. Before install: their insurance certificate naming Purebaric as additional insured, and the landlord's okay if their lease needs it.
+5. Signing: rental agreement signed, first month plus the $200 training fee collected through Stripe.
+6. Install when the chamber arrives: set up the chamber, train two staff, run a session with them, leave the consent forms and the pricing suggestion, take photos.
+7. One week later: a check-in call. One month later: another; ask what they are charging and how it is going. That is the proof for the next visit.
 
 **Home**
 
-1. Booking comes in through the website or by phone. Confirm the delivery date and collect payment through Stripe, exactly as in Utah.
-2. Before delivery: the home rental waiver (Matthew's current version) and the Tennessee renewal disclosure, signed.
-3. Delivery, setup and the hour of training, from the storage unit or the demonstration kit.
+1. Enquiry comes in from the Marketplace listing, a referral or the website. Agree the delivery date and collect payment through Stripe, as in Utah. If no chamber is on hand, order one through Matthew the same way.
+2. Before delivery: the home rental waiver and the Tennessee renewal disclosure, signed.
+3. Delivery, setup and the walk-through of the home chamber instructions.
 4. Support by call or text through the rental; pickup on the last day.
 
 ---
@@ -74,9 +119,9 @@ Three kinds of customers, worked at the same time:
 
 | Day | What happens |
 |---|---|
-| Monday | Email the colleges and clubs that are due a touch; confirm the week's route days; update the workbook. |
+| Monday | Email the colleges and clubs that are due a touch; confirm the week's route days; renew the Marketplace listing; update the workbook. |
 | Tuesday to Thursday | One route day each day from the route plan (one to two hours of visits), plus any site checks or installs. |
-| Friday | Follow up every business visited this week with a text or call; send letters of intent; service calls; a short written update to Matthew: visits, conversations, site checks, letters signed, home bookings, anything a customer said that we should hear. |
+| Friday | Follow up every business visited this week with a text or call; send letters of intent; a short written update to Matthew: visits, conversations, site checks, letters signed, home enquiries, anything a customer said that we should hear. |
 
 Each business gets three touches over three weeks: the visit, a follow-up call, and an email with the pamphlet attached. After three touches with no answer, mark it Parked and move on; the route plan has more than enough doors.
 
@@ -86,21 +131,13 @@ Each business gets three touches over three weeks: the visit, a follow-up call, 
 
 Counted from the first visit.
 
-- **Day 30:** the first eight route days done, at least 60 businesses visited, two site checks booked, Knoxville ZIP codes live on the website.
-- **Day 60:** three letters of intent signed. Fewer than two means the pitch or the list is wrong; read the objections in the workbook before pushing on.
-- **Day 90:** first installs done; compare actual freight, storage and time against the week-one budget.
-- **Day 120:** six letters, three installs, two home rentals. Decide: expand (more kits, a second person on the road, a wider radius), hold (keep what is placed, stop new outreach), or exit (collect the chambers and keep the list warm).
-- **When the first terms end:** count renewals.
+- **Day 30:** the first eight route days done, about 60 businesses visited, the Marketplace listing live, the first site checks booked.
+- **Day 60:** three letters of intent signed and the chambers ordered. Fewer than three means the pitch or the list is wrong; read the objections in the workbook before pushing on.
+- **When the chambers arrive:** installs done, then the one-week and one-month check-ins.
 
 ---
 
-## 7. Costs to track from week one
-
-Freight from Lehi (quote), storage unit by the month, Michael's days on the road, the attorney (quote), insurance endorsement, Tennessee registration fees, pamphlet printing, the 865 number, and one trip for Matthew for the first install if needed. Write the numbers into the workbook's Summary sheet as they come in so the day-120 decision uses real figures.
-
----
-
-## 8. House rules for the pilot
+## 7. House rules
 
 - Say "session" or "wellness amenity", never "therapy" or "treatment", on any menu, sign, post or pamphlet. It keeps us and the business on the right side of the line.
 - No sessions for anyone under 18 until the insurer confirms cover, and then only with a parent's signed consent and a parent present.

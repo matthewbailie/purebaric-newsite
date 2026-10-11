@@ -1,20 +1,24 @@
 # Purebaric sales training: placing chambers in businesses
 
-Version 4, 10 October 2026. For whoever walks into gyms, studios, clinics, salons and clubs with our pamphlet. Written for Tennessee; Utah differences are marked. Internal.
+Version 5, 10 October 2026. For whoever walks into gyms, studios, clinics, salons and clubs with our pamphlet. Written for Tennessee; the few Utah differences are marked. Internal.
 
 ---
 
 ## 1. What we sell, in plain words
 
-We rent mild hyperbaric chambers. It's a soft-shell pod a person lies down in. A quiet compressor beside it slowly raises the air pressure inside to about one and a half times normal. Ears may pop, like on a plane. The person relaxes, naps, reads or uses their phone for about an hour. Then the pressure comes down over a few minutes and they step out.
+We rent mild hyperbaric chambers to businesses, by the month, so they can sell sessions to the customers they already have.
 
-The staff member checks that the client signed the consent form, helps them in, zips the chamber closed and starts the pressure. They stay in the building during the session, then let the pressure down, help the client out and wipe the chamber down for the next person. That's about 15 minutes of staff time a session. One person at a time; a chamber can run up to eight sessions in a ten-hour day.
+**The business case.** A chamber turns a 4 by 8 foot patch of floor that earns nothing today into a service the business can charge for. There is nothing to buy: the rental is $979 a month or less, and about 14 sessions a month at $75 covers it. The customers are already walking in the door. The business adds sessions to its menu, its packs and its memberships, and owners use that two ways: as a new revenue line, and as a reason for current members and clients to stay and come back more often. Either way it is paid for by the people they already serve, not by finding new ones.
 
-For a business, the pitch is simple: we put a chamber in a spare room, train their staff, and they sell hour-long sessions to the customers they already have. They set the price. We handle delivery, setup, training, maintenance, support and pickup. There is nothing to buy.
+**What a chamber is, in two sentences.** A soft-shell chamber the client lies down in, with a quiet compressor beside it that raises the air pressure inside to 1.5 ATA, about one and a half times normal, while the client breathes concentrated oxygen through a mask fed by an oxygen concentrator. There are no oxygen tanks. A session usually runs 60 to 90 minutes; the client rests, naps, reads or works on their phone, and a trained staff member starts and ends it.
 
-In Utah the chambers also come with an oxygen concentrator and a mask. In Tennessee we start without it. If a business asks about oxygen, say: "Here we're starting with regular air. Michael can tell you if and when we add oxygen."
+**Why clients book it.** It is a wellness and recovery amenity, in the same family as sauna and cold plunge, and people build it into their routine the same way: a quiet hour to rest and recover between hard workouts, long weeks and travel. Athletes use it between training days. Studio clients pair it with the recovery services they already buy. Everyone else books it as a quiet hour to recharge. The Knoxville business that publishes prices charges $100 a session and sells ten- and twenty-session packs; Utah businesses charge $75 to $150. Clients find it worth the hour.
 
-**What we are not.** We're not a clinic and we don't treat anything. Describe it the way you'd describe a sauna or a cold plunge: something people book to relax. That's also why the business doesn't need to be a clinic to offer it.
+**What we do and what they do.** We deliver and install, train their staff, supply the client consent forms, help them make a pamphlet in their brand, and service and maintain the equipment for as long as they rent it. They schedule the sessions and set the price. Staff time is about 15 minutes a session: check the consent form, help the client in, start the pressure, be in the building during the session, let the pressure down, wipe the chamber down and set out a fresh mask. One client at a time; a chamber can run up to eight sessions in a ten-hour day.
+
+**The same chamber everywhere.** Every placement, in Utah or Tennessee, gets the same package: chamber, compressor, oxygen concentrator, mask kit, pad, cover sheets and the first supplies. Do not tell anyone otherwise.
+
+**What we are not.** We are not a clinic and we do not treat anything, and neither does the business. Say "session" and "wellness amenity", never "therapy" or "treatment". That is also why a gym or a salon can offer it without being a clinic.
 
 ## 2. The deal
 
@@ -29,19 +33,19 @@ In Utah the chambers also come with an oxygen concentrator and a mask. In Tennes
 
 Plus a one-time $200 for staff training and the first supplies. Rates can change; check purebaric.com/pricing each morning before you go out. Stripe adds any sales tax at checkout, so never quote a tax rate.
 
-**What is included.** Delivery and setup. About an hour of hands-on training for their staff. Consent and screening forms for their clients. Help making a one-page pamphlet in their brand. Maintenance and repairs for normal wear, with a response within two business days. Phone and text support. Pickup at the end.
+**What is included.** Delivery and setup. About an hour of hands-on training for their staff. Consent and screening forms for their clients. Help making a one-page pamphlet in their brand. Maintenance and repairs for normal wear; Michael handles timing when something comes up, and we promise no response times. Phone and text support. Pickup at the end.
 
 **What they need.** A clean, dry spot about 4 by 8 feet (twin-bed size), a normal wall outlet, and one trained staff member in the building to start and end each session. No flames, heaters or oil-based products near the chamber.
 
-**How it ends.** They pick a term and the rate is locked for it. After the term it runs month to month. Either side can end it with 30 days' notice by email, and we pick the chamber up free. If they leave before the term is up, the months they used are re-billed at the rate for the length they actually stayed. Example: sign for 12 months at $783, leave after four, and those four months are re-billed at $881, so they owe $392. Tell them this before they pick a term.
+**How it ends.** They pick a term and the rate is locked for it. After the term it runs month to month. Either side can end it with 30 days' notice by email, and we pick the chamber up free. Tennessee agreement only: if they leave before the term is up, the months they used are re-billed at the rate for the length they actually stayed. Example: sign for 12 months at $783, leave after four, and those four months are re-billed at $881, so they owe $392. Tell them this before they pick a term. (The Utah agreement does not have this rule yet; in Utah, do not quote it.)
 
 **Insurance.** They need business liability insurance of at least $1 million per incident and $2 million total that covers the chamber sessions, with Purebaric added as additional insured. They send us the certificate before the first session. Tell them to call their broker this week; some policies need a change before they cover chamber sessions.
 
-**Damage.** We maintain and repair the chamber for normal wear. Damage, loss or theft while it's in their building is on them, like any rented equipment.
+**Damage.** We maintain and repair the chamber for normal wear. Damage, loss or theft while it is in their building is on them, like any rented equipment.
 
 ## 3. Talking about money
 
-Use the numbers below and the pamphlet's, nothing else. The pamphlet assumes $75 a session and the $979 rate:
+Use the numbers below and the pamphlet's, nothing else. The pamphlet assumes 60-minute sessions at $75 and the $979 rate:
 
 | Sessions a month | Money in | After the $979 rental and about $1.30 of supplies per session |
 |---|---|---|
@@ -69,26 +73,26 @@ The three reasons owners say yes, in the order they say them: a new income line 
 
 ## 5. The ten-minute visit
 
-Walk in mid-morning or mid-afternoon, not during a class change or the lunch rush. Ask for the owner or manager by name; it's on the route plan. If they're out, leave the pamphlet with your name and number on the back and ask when they're usually in.
+Walk in mid-morning or mid-afternoon, not during a class change or the lunch rush. Ask for the owner or manager by name; it is in the route plan's "Ask for" column. If they are out, leave the pamphlet with your name and number on the back and ask when they are usually in.
 
 When you have them:
 
 1. **Who you are, in one line.** "I'm [name] with Purebaric. We rent hyperbaric chambers to [gyms / studios / practices] so you can sell sessions to your own clients."
 2. **Two questions, then listen.** "What do your members already pay for when it comes to recovery?" "Is there a room or corner that sits quiet part of the day?"
-3. **The pitch, in a breath.** "We bring the chamber, set it up, train your staff and look after it. You charge what you want for an hour and keep it. It's $929 a month on three months or $783 on a year. Eleven to thirteen sessions a month covers it."
+3. **The pitch, in a breath.** "We bring the chamber, set it up, train your staff and look after it. You charge what you want for a session and you set the schedule. It's $929 a month on three months or $783 on a year. Eleven to thirteen sessions a month covers it."
 4. **Show, don't tell.** The pamphlet and a photo of an install. The pamphlet has the prices.
-5. **Ask to see the room.** If you're standing in it, you're most of the way there.
+5. **Ask to see the room.** If you are standing in it, you are most of the way there.
 6. **Leave with one of three things:** a signed letter of intent, a date to come back and talk to the decision maker, or a clear no with the reason written down.
 
 Log every visit the same day: who you met, what they said, what happens next.
 
 ## 6. What to say for each kind of business
 
-Use the opening line from the route plan when there is one; otherwise use these.
+Use the "Good to know" fact from the route plan to open when there is one; otherwise use these.
 
-**Recovery studio or IV lounge.** "You already sell recovery. A chamber is the one service you can add without buying anything." Ask what their best-selling service is and whether clients buy packages. It fits their menu at the same price point as cryo and costs less to run. Offer six months at $832, or a year at $783 if they're confident. Close: "Which room would it go in?"
+**Recovery studio or IV lounge.** "You already sell recovery. A chamber is the one service you can add without buying anything." Ask what their best-selling service is and whether clients buy packages. It fits their menu at the same price point as cryo and costs less to run. Offer six months at $832, or a year at $783 if they are confident. Close: "Which room would it go in?"
 
-**CrossFit or performance gym.** "Your athletes already spend on recovery. We'd put a chamber here so they do it where they train." Ask how many members compete or train twice a day, and whether they'd sell sessions or bundle them into a tier. A coach runs it between classes; the members sell it to each other. Offer three months at $929 to start. Close: "Which coach would run it?"
+**CrossFit or performance gym.** "Your athletes already spend on recovery. We'd put a chamber here so they do it where they train." Ask how many members compete or train twice a day, and whether they would sell sessions or bundle them into a tier. A coach runs it between classes; the members sell it to each other. Offer three months at $929 to start. Close: "Which coach would run it?"
 
 **Chiropractor or physical therapist.** "A cash-pay wellness service for the room that's empty half the day, run from the front desk." Ask how much of the practice is cash-pay wellness and what non-covered services they already sell. It gives clients a reason to visit between appointments and never touches billing. Say "clients", not "patients". Offer three months at $929. Close: "Which room, and who at the desk would run it?"
 
@@ -102,9 +106,9 @@ Use the opening line from the route plan when there is one; otherwise use these.
 
 ## 7. Questions you will get, and straight answers
 
-**"Is it safe? I've read about chamber fires."** "Fair question. The fire you read about in Michigan was a hard chamber running high-concentration oxygen at a wellness clinic. Ours is a soft chamber at lower pressure, and here in Tennessee it runs on regular air, no added oxygen. The rules are simple: nothing that burns near it, no oil-based lotions, and your staff starts and ends every session." In Utah, swap the middle sentence for: "Ours is a soft chamber at lower pressure. The chamber is filled with air, and the client breathes oxygen through a mask, which is why the no-flame, no-oil rules matter." If they bring up a different incident, don't guess; say Michael will follow up.
+**"Is it safe? I've read about chamber fires."** "Fair question. The fire you read about in Michigan was a hard chamber pressurized with pure oxygen at a clinic. Ours is a soft chamber at much lower pressure. The chamber itself is filled with ordinary air by a compressor, and the client breathes concentrated oxygen through a mask from a concentrator; there are no oxygen tanks. That's why the rules are simple and firm: nothing that burns near it, no oil-based lotions, no lighters or heaters, and your staff starts and ends every session." If they bring up a different incident, do not guess; say Michael will follow up.
 
-**"Does it actually do anything?"** "I'm not going to tell you it fixes anything, and you won't want that on your menu either. What I can tell you is that it's a quiet hour people build into their routine, and the one place in Knoxville that publishes prices charges $100 a session. Your clients decide if it's worth an hour."
+**"Does it actually do anything?"** "I'm not going to tell you it fixes anything, and you won't want that on your menu either. It's a wellness and recovery amenity. People use it the way they use sauna and cold plunge, as a quiet hour to rest and recover, and they build it into a routine. The studios here charge $100 a session and sell packs, so their clients clearly think the hour is worth it. Yours will decide the same way."
 
 **"What about liability?"** "Your clients sign a consent form before their first session. You carry liability insurance that covers the sessions and add us to it. We maintain and repair the chamber. You run the sessions, and damage or theft at your place is on you. If a client sues over a session, the agreement has you cover it, including our legal costs. Have your attorney read it before you sign."
 
@@ -116,6 +120,8 @@ Use the opening line from the route plan when there is one; otherwise use these.
 
 **"Can my members rent one for home?"** "Yes. Home rentals start at $729 a month. Give me their name and number and I'll get them set up." In Tennessee, the home rental waiver comes from Matthew Bailie; get it before the first home delivery.
 
+**"Is it a medical device?"** Answer the way the pamphlet does: "We rent it as a general-wellness amenity, not a medical device, and nobody uses it to diagnose or treat anything. If you want the regulatory detail, Michael can walk you through it."
+
 **"Let me think about it."** "Of course. What would help you decide: the agreement, a look at the room, or a video of a session?" Set a date to come back.
 
 ## 8. The few things we never say
@@ -124,7 +130,7 @@ Use the opening line from the route plan when there is one; otherwise use these.
 - Don't name a condition it helps with. No "inflammation", "healing", "sleep", "immune", "detox", "concussion", or anything a doctor would say. If an owner asks, use the answer in section 7.
 - Don't repeat a client's story as proof, even secondhand.
 - Don't promise an install date or an income figure. The numbers are examples.
-- Don't say "not a medical device". If asked, say we rent it as a wellness amenity and that Michael can answer regulatory questions.
+- Don't say the chambers differ by state. Same package everywhere.
 - No sessions for anyone under 18 until Michael says the insurer has confirmed.
 
 ## 9. After the yes
@@ -134,19 +140,19 @@ Use the opening line from the route plan when there is one; otherwise use these.
 3. Collect the insurance certificate and, if their lease needs it, the landlord's okay.
 4. Agreement signed, first month plus $200 paid through Stripe, install date set.
 5. Install, train the staff, run a session with them, leave the consent forms, take photos.
-6. Check in at one week and one month. Ask what they're charging and how it's going; that's your best proof for the next visit.
+6. Check in at one week and one month. Ask what they are charging and how it is going; that is your best proof for the next visit.
 
 ## 10. Tennessee at a glance
 
 - Contact on every document: Michael Bailie, (801) 884-2113, mlebailie@hotmail.com. Michael signs the Tennessee agreements.
-- Chambers run on regular air for now; adults only until the insurer confirms minors.
+- Adults only until the insurer confirms minors.
 - Use the Tennessee letter of intent and the Tennessee rental agreement. Stripe handles sales tax.
 - "Recovery session" or "wellness session", never "therapy".
 - Home rentals are available; the home rental waiver is with Matthew Bailie.
 - Anything a landlord, insurer or official says that surprises you goes to Michael the same day.
 
-**Utah differences.** Chambers come with the oxygen concentrator and mask; the Utah letter of intent and agreement apply; contact is hello@purebaric.com and (801) 901-0873.
+**Utah differences.** The Utah letter of intent and agreement apply (no early-exit re-billing rule); contact is hello@purebaric.com and (801) 901-0873. The chamber package is the same.
 
 ## 11. What to carry
 
-The seven industry pamphlets, the one-page room requirements, the letter of intent and the agreement for your state, a few install photos, the route plan on your phone, and this document.
+The seven industry pamphlets, the one-page room requirements (when Michael has it), the letter of intent and the agreement for your state, a few install photos, the route plan on your phone, and this document.

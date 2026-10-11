@@ -1,6 +1,6 @@
 # Purebaric: Schools and Athletic Programs as a Rental Channel
 
-> **Tennessee note (10 Oct 2026):** this proposal is the Utah channel draft. In Tennessee the pilot is one chamber at the published three-month business rate ($929 a month plus sales tax, plus the $200 training and supplies fee), air-only, adult athletes first; the three-chamber pricing, home-rental, QR-code and NIL elements below do not apply in Tennessee. Use the Tennessee schools pamphlet with Tennessee programs.
+> **Tennessee note (10 Oct 2026):** this proposal is the Utah channel draft. In Tennessee the pilot is one chamber at the published three-month business rate ($929 a month plus sales tax, plus the $200 training and supplies fee), the standard package, adult athletes first; the three-chamber pricing, home-rental, QR-code and NIL elements below do not apply in Tennessee. Use the Tennessee schools pamphlet with Tennessee programs.
 
 **Business proposal, Utah and Knoxville, Tennessee. Draft 2, 10 October 2026 (repriced from the published table; parent-present rule restored; Tennessee gates added).** Bracketed numbers point to the source appendix. "Not found" means the research looked and found no source. `targets.json` in this folder lists 53 organizations (33 Utah, 20 Tennessee), 46 with a named contact and 29 with an email printed on the source page.
 
@@ -49,7 +49,7 @@ The sale is wellness only: recovery routine, relaxation and performance support,
 
 ## 4. Offer design
 
-**School configuration.** One 1.5 ATA soft chamber with compressor, air only by default, no oxygen concentrator. This avoids the oxygen and fire-code questions in section 2; the owner to confirm. Delivery, setup, service and the $200 training and supplies fee per site are included.
+**School configuration.** One 1.5 ATA soft chamber with compressor, oxygen concentrator and mask kit, the same package Purebaric supplies everywhere (owner decision, 10 Oct 2026). Delivery, setup, service and the $200 training and supplies fee per site are included.
 
 | Offer | Term | Price per chamber per month | Example | Reasoning |
 |---|---|---|---|---|
@@ -94,7 +94,7 @@ Payback: capex per chamber was not found in Purebaric's files. Payback in months
 
 | Risk | Mitigation |
 |---|---|
-| **Oxygen and fire.** FDA clearance assumes air only [24], fire marshals apply NFPA 99 [33][34], and the Troy headlines [30] | Air-only school configuration. Local fire-marshal check before install. Grounding, no electronics, cotton clothing |
+| **Oxygen and fire.** FDA clearance assumes air only [24], fire marshals apply NFPA 99 [33][34], and the Troy headlines [30] | Standard package; the owner has set the fire-code question aside for mild chambers. Grounding, no electronics inside, cotton clothing |
 | Minors and unenforceable waivers [35][36] | Lead with adult programs. Under-18 use only with insurer approval and AT supervision |
 | Claims creep (performance or injury language) | Wellness-only script. No injury or concussion claims. Cite the trial honestly [21] |
 | Insurance exclusions [32] | Get a broker quote for schools before outreach. Confirm product and general liability cover hyperbaric use and allow additional-insured status [37] |
@@ -106,7 +106,7 @@ Payback: capex per chamber was not found in Purebaric's files. Payback in months
 ## 8. 90-day pilot plans (12 October 2026 to 9 January 2027)
 
 **Utah**
-- **Days 1 to 15:** Get an insurer answer on schools and minors. Lock the air-only configuration. Have a physician advisor approve the protocol template. Print a one-page brief.
+- **Days 1 to 15:** Get an insurer answer on schools and minors. Have a physician advisor approve the protocol template. Print a one-page brief.
 - **Days 16 to 45:** Contact all 10 Utah college sports-medicine leads in `targets.json`, plus the Royals and RSL. Hold demo days at UVU, Westminster and SLCC, all within 30 minutes of Lehi. Goal: 2 pilots signed by day 45 for winter sports and football winter conditioning.
 - **Days 46 to 90:** Run the pilots with weekly usage logs. Day-75 reviews. Convert at least 1 pilot to an academic-year contract starting in January. Book spring meetings with Utah, BYU and USU for fall 2027.
 
@@ -127,7 +127,7 @@ Payback: capex per chamber was not found in Purebaric's files. Payback in months
 
 ## 10. Open questions for the owner
 
-1. Which chamber model and 510(k) number does Purebaric place? Will you run schools air-only, without the concentrator?
+1. Which chamber model and 510(k) number does Purebaric place?
 2. Will your insurer cover school placements and users under 18, list schools as additional insured, and write primary coverage at $1M/$3M?
 3. Will you rent to high-school teams at all, or adults only for now?
 4. What is the installed cost per chamber, and how many idle months can you carry?

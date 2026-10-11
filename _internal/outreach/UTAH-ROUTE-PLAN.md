@@ -14,117 +14,123 @@ Not visited on these days: college athletics departments and pro teams (email th
 
 ## The days
 
-- **Day 1, Lehi (84043), part 1:** 8 businesses, 7 best bets. About 1 h 59 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1881%20W%20Traverse%20Pkwy%20Suite%20D%2C%20Lehi%2C%20UT%2084043/1603%20N%20State%20St%20Ste%20B%2C%20Lehi%2C%20UT%2084043/1363%20W%20800%20N%2C%20Lehi%2C%20UT%2084043/401%20S%20850%20E%20Ste%20A3%2C%20Lehi%2C%20UT%2084043/3130%20W%20Maple%20Loop%20Dr%2C%20Lehi%2C%20UT%2084043/50%20E%20Main%20St%2C%20Lehi%2C%20UT%2084043/870%20N%20100%20E%2C%20Lehi%2C%20UT%2084043/247%20S%20Millpond%20Dr%20Suite%20500%2C%20Lehi%2C%20UT%2084043/Lehi)
-- **Day 2, Pleasant Grove and Orem, Lindon:** 6 businesses, all 6 best bets. About 1 h 52 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1410%20W%201200%20N%20%234%2C%20Orem%2C%20UT%2084057/1428%20W%2070%20S%2C%20Lindon%2C%20UT%2084042/2415%20W%20700%20S%20Unit%20G%2C%20Pleasant%20Grove%2C%20UT%2084062/2054%20W%20Grove%20Pkwy%20Suite%20G%2C%20Pleasant%20Grove%2C%20UT%2084062/1983%20W%20680%20N%20%235%2C%20Pleasant%20Grove%2C%20UT%2084062/777%20S%20Auto%20Mall%20Dr%20%23110%2C%20American%20Fork%2C%20UT%2084003/Lehi)
-- **Day 3, Orem and Provo, part 1:** 6 businesses, all 6 best bets. About 1 h 58 min door to door. [Map](https://www.google.com/maps/dir/Lehi/4801%20N%20University%20Ave%2C%20Provo%2C%20UT%2084604/3089%20N%20Canyon%20Rd%2C%20Provo%2C%20UT%2084604/1063%20S%20750%20E%2C%20Orem%2C%20UT%2084097/293%20E%20930%20S%2C%20Orem%2C%20UT%2084058/106%20E%20400%20S%2C%20Orem%2C%20UT%2084058/165%20N%201330%20W%20Unit%20D1%2C%20Orem%2C%20UT%2084057/Lehi)
-- **Day 4, Draper: E Pioneer Rd:** 6 businesses, 5 best bets. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/Lehi/146%20E%2013065%20S%20Suite%20C%2C%20Draper%2C%20UT%2084020/807%20E%20Pioneer%20Rd%20Ste%20101%2C%20Draper%2C%20UT%2084020/807%20E%20Pioneer%20Rd%2C%20Suite%20104%2C%20Draper%2C%20UT%2084020/12176%20S%201000%20E%20Ste%201%2C%20Draper%2C%20UT%2084020/681%20W%20South%20Jordan%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/3709%20W%20South%20Jordan%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/Lehi)
-- **Day 5, Riverton: W 12600 S:** 6 businesses, 5 best bets. About 2 h 00 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1515%20W%2012600%20S%2C%20Ste%20205%2C%20Riverton%2C%20UT%2084065/12472%20S%203670%20W%2C%20Riverton%2C%20UT%2084065/2582%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/3305%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/2184%20W%20Amber%20Blossom%20Way%2C%20South%20Jordan%2C%20UT%2084095/10118%20S%20Redwood%20Rd%2C%20Suite%20C%2C%20South%20Jordan%2C%20UT%2084095/Lehi)
-- **Day 6, Salt Lake City and South Salt Lake, part 1:** 4 businesses, all 4 best bets. About 1 h 51 min door to door. [Map](https://www.google.com/maps/dir/Lehi/4050%20S%20Howick%20St%20%233E%2C%20Salt%20Lake%20City%20%28Murray%29%2C%20UT%2084107/3844%20S%20300%20E%2C%20South%20Salt%20Lake%2C%20UT%2084115/633%20E%203300%20S%20Suite%20B%2C%20Salt%20Lake%20City%20%28South%20Salt%20Lake%29%2C%20UT%2084106/3295%20S%202000%20E%20%23C%2C%20Salt%20Lake%20City%20%28Millcreek%29%2C%20UT%2084109/Lehi)
-- **Day 7, Salt Lake City: S State St:** 4 businesses, all 4 best bets. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/Lehi/675%20E%202100%20S%20Ste%20F%2C%20Salt%20Lake%20City%2C%20UT%2084106/55%20W%20Utopia%20Ave%20Unit%20103%2C%20South%20Salt%20Lake%2C%20UT%2084115/1435%20S%20State%20St%2C%20Salt%20Lake%20City%2C%20UT%2084115/1212%20S%20State%20St%2C%20Salt%20Lake%20City%2C%20UT%2084111/Lehi)
-- **Day 8, West Jordan and Kearns:** 5 businesses, 3 best bets. About 1 h 58 min door to door. [Map](https://www.google.com/maps/dir/Lehi/3105%20W%207800%20S%2C%20West%20Jordan%2C%20UT%2084088/8455%20S%20Welby%20Farm%20Rd%20Ste%20B%2C%20West%20Jordan%2C%20UT%2084088/8018%20Welby%20Park%20Dr%2C%20Ste%203%2C%20West%20Jordan%2C%20UT%2084084/7352%20S%20Airport%20Rd%2C%20Unit%20B%2C%20West%20Jordan%2C%20UT%2084084/5662%20Cougar%20Ln%2C%20Kearns%2C%20UT%2084118/Lehi)
-- **Day 9, Salt Lake City: W Broadway:** 4 businesses, 3 best bets. About 1 h 58 min door to door. [Map](https://www.google.com/maps/dir/Lehi/360%20W%20Broadway%20Suite%20102%2C%20Salt%20Lake%20City%2C%20UT%2084101/336%20W%20Broadway%20Suite%20103%2C%20Salt%20Lake%20City%2C%20UT%2084101/972%20S%20300%20W%2C%20Salt%20Lake%20City%2C%20UT%2084101/2530%20S%20West%20Temple%2C%20South%20Salt%20Lake%2C%20UT%2084115/Lehi)
-- **Day 10, Sandy: S 700 E:** 6 businesses, 3 best bets. About 1 h 59 min door to door. [Map](https://www.google.com/maps/dir/Lehi/8383%20S%20700%20W%2C%20Sandy%2C%20UT%2084070/9442%20S%20670%20W%2C%20Sandy%2C%20UT%2084070/9507%20S%20560%20W%2C%20Sandy%2C%20UT%2084070/9263%20S%20700%20E%2C%20Sandy%2C%20UT%2084070/8720%20S%20700%20E%2C%20Sandy%2C%20UT%2084070/8010%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/Lehi)
-- **Day 11, Holladay and Cottonwood Heights, Murray:** 5 businesses, 2 best bets. About 1 h 58 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1265%20Fort%20Union%20Blvd%2C%20Ste%20110%2C%20Cottonwood%20Heights%2C%20UT%2084047/1996%20E%206400%20S%2C%20Ste%20260%2C%20Murray%2C%20UT%2084121/6151%20S%20Highland%20Dr%2C%20Salt%20Lake%20City%20%28Holladay%29%2C%20UT%2084121/4540%20S%20Highland%20Dr%2C%20Holladay%2C%20UT%2084117/2006%20E%203900%20S%2C%20Holladay%2C%20UT%2084124/Lehi)
-- **Day 12, Lehi and Saratoga Springs, Eagle Mountain:** 7 businesses, 2 best bets. About 1 h 58 min door to door. [Map](https://www.google.com/maps/dir/Lehi/3300%20N%20Running%20Creek%20Way%2C%20Ste%20C200%2C%20Lehi%2C%20UT%2084043/401%20S%20850%20E%2C%20Lehi%2C%20UT%2084043/1560%20Trinnaman%20Ln%20%23B2%2C%20Lehi%2C%20UT%2084043/11%20W%20Hillcrest%20Rd%2C%20Saratoga%20Springs%2C%20UT%2084045/17%20N%20Hillcrest%20Rd%2C%20Saratoga%20Springs%2C%20UT%2084045/18%20W%20Sergeant%20Court%20Dr%2C%20Ste%20101%2C%20Saratoga%20Springs%2C%20UT%2084045/3251%20E%20Stone%20Ct%2C%20Eagle%20Mountain%2C%20UT%2084005/Lehi)
-- **Day 13, Spanish Fork (84660):** 4 businesses, 2 best bets. About 1 h 59 min door to door. [Map](https://www.google.com/maps/dir/Lehi/994%20Expressway%20Ln%2C%20Spanish%20Fork%2C%20UT%2084660/205%20N%20Main%20St%2C%20Spanish%20Fork%2C%20UT%2084660/132%20Volunteer%20Dr%2C%20Spanish%20Fork%2C%20UT%2084660/852%20S%20Spanish%20Fork%20Pkwy%2C%20Spanish%20Fork%2C%20UT%2084660/Lehi)
-- **Day 14, Tooele (84074), part 1:** 3 businesses, 2 best bets. About 1 h 59 min door to door. [Map](https://www.google.com/maps/dir/Lehi/222%20Maple%20St%2C%20Tooele%2C%20UT%2084074/992%20N%20Main%20St%2C%20Tooele%2C%20UT%2084074/210%20Lodestone%20Way%2C%20Tooele%2C%20UT%2084074/Lehi)
-- **Day 15, Elk Ridge and Salem:** 2 businesses, 1 best bet. About 1 h 43 min door to door. [Map](https://www.google.com/maps/dir/Lehi/401%20E%20Salem%20Hills%20Dr%2C%20Elk%20Ridge%2C%20UT%2084651/898%20E%201160%20S%2C%20Salem%2C%20UT%2084653/Lehi)
-- **Day 16, Orem (84097):** 5 businesses, 1 best bet. About 1 h 51 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1245%20S%20800%20E%2C%20Orem%2C%20UT%2084097/1774%20Sandhill%20Rd%2C%20Orem%2C%20UT%2084058/1471%20W%20Business%20Park%20Dr%2C%20Suite%20203%2C%20Orem%2C%20UT%2084057/350%20W%20800%20N%2C%20Orem%2C%20UT%2084057/86%20E%20800%20N%2C%20Orem%2C%20UT%2084057/Lehi)
-- **Day 17, Heber City: N Main St:** 4 businesses, 1 best bet. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/Lehi/476%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/190%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/151%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/544%20Airport%20Rd%2C%20Unit%20B10%2C%20Heber%20City%2C%20UT%2084032/Lehi)
-- **Day 18, Park City: Bonanza Dr:** 4 businesses, 1 best bet. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1776%20Park%20Ave%20Ste%2020%2C%20Park%20City%2C%20UT%2084060/750%20Kearns%20Blvd%2C%20Park%20City%2C%20UT%2084060/1792%20Bonanza%20Dr%2C%20Park%20City%2C%20UT%2084060/1678%20Bonanza%20Dr%2C%20Park%20City%2C%20UT%2084060/Lehi)
-- **Day 19, Salt Lake City and South Salt Lake, part 2:** 4 businesses, 1 best bet. About 1 h 58 min door to door. [Map](https://www.google.com/maps/dir/Lehi/3322%20S%20300%20E%2C%20South%20Salt%20Lake%2C%20UT%2084115/1892%20S%201000%20E%2C%20Salt%20Lake%20City%2C%20UT%2084105/1760%20S%201100%20E%2C%20Ste%203%2C%20Salt%20Lake%20City%2C%20UT%2084105/2261%20E%203300%20S%2C%20Salt%20Lake%20City%20%28Millcreek%29%2C%20UT%2084109/Lehi)
-- **Day 20, Woods Cross and Bountiful:** 2 businesses, 1 best bet. About 1 h 59 min door to door. [Map](https://www.google.com/maps/dir/Lehi/2119%20S%201200%20W%20Ste%20106%2C%20Woods%20Cross%2C%20UT%2084087/439%20S%20425%20W%20Ste%20A%2C%20Bountiful%2C%20UT%2084010/Lehi)
-- **Day 21, Salem: UT-198:** 4 businesses, 1 best bet. About 2 h 00 min door to door. [Map](https://www.google.com/maps/dir/Lehi/28%20E%20100%20N%2C%20Spanish%20Fork%2C%20UT%2084660/741%20UT-198%2C%20Salem%2C%20UT%2084653/583%20UT-198%2C%20Salem%2C%20UT%2084653/139%20UT-198%2C%20Salem%2C%20UT%2084653/Lehi)
+**How to read each line.** *Businesses* is the number of stops that day. *Best bets* is how many of those stops are the kinds of business most likely to sign: recovery studios, IV lounges, sauna, cryotherapy, float, stretch studios and performance gyms. The rest of the day's stops are good fits or businesses that are on the way. *Door to door* is the whole trip, including the drive from home and back. Each day's Google Maps link is in its own section under "Stop by stop" below.
+
+- **Day 1, Lehi (84043), part 1:** 8 businesses, 7 best bets. About 1 h 59 min door to door.
+- **Day 2, Pleasant Grove and Orem, Lindon:** 6 businesses, all 6 best bets. About 1 h 52 min door to door.
+- **Day 3, Orem and Provo, part 1:** 6 businesses, all 6 best bets. About 1 h 58 min door to door.
+- **Day 4, Draper: E Pioneer Rd:** 6 businesses, 5 best bets. About 1 h 54 min door to door.
+- **Day 5, Riverton: W 12600 S:** 6 businesses, 5 best bets. About 2 h 00 min door to door.
+- **Day 6, Salt Lake City and South Salt Lake, part 1:** 4 businesses, all 4 best bets. About 1 h 51 min door to door.
+- **Day 7, Salt Lake City: S State St:** 4 businesses, all 4 best bets. About 1 h 54 min door to door.
+- **Day 8, West Jordan and Kearns:** 5 businesses, 3 best bets. About 1 h 58 min door to door.
+- **Day 9, Salt Lake City: W Broadway:** 4 businesses, 3 best bets. About 1 h 58 min door to door.
+- **Day 10, Sandy: S 700 E:** 6 businesses, 3 best bets. About 1 h 59 min door to door.
+- **Day 11, Holladay and Cottonwood Heights, Murray:** 5 businesses, 2 best bets. About 1 h 58 min door to door.
+- **Day 12, Lehi and Saratoga Springs, Eagle Mountain:** 7 businesses, 2 best bets. About 1 h 58 min door to door.
+- **Day 13, Spanish Fork (84660):** 4 businesses, 2 best bets. About 1 h 59 min door to door.
+- **Day 14, Tooele (84074), part 1:** 3 businesses, 2 best bets. About 1 h 59 min door to door.
+- **Day 15, Elk Ridge and Salem:** 2 businesses, 1 best bet. About 1 h 43 min door to door.
+- **Day 16, Orem (84097):** 5 businesses, 1 best bet. About 1 h 51 min door to door.
+- **Day 17, Heber City: N Main St:** 4 businesses, 1 best bet. About 1 h 54 min door to door.
+- **Day 18, Park City: Bonanza Dr:** 4 businesses, 1 best bet. About 1 h 54 min door to door.
+- **Day 19, Salt Lake City and South Salt Lake, part 2:** 4 businesses, 1 best bet. About 1 h 58 min door to door.
+- **Day 20, Woods Cross and Bountiful:** 2 businesses, 1 best bet. About 1 h 59 min door to door.
+- **Day 21, Salem: UT-198:** 4 businesses, 1 best bet. About 2 h 00 min door to door.
 
 Fill-in days (no best bet):
 
-- **Day 22, American Fork and Cedar Hills:** 2 businesses, 0 best bets. About 1 h 01 min door to door. [Map](https://www.google.com/maps/dir/Lehi/499%20S%20500%20E%20Ste%20A%2C%20American%20Fork%2C%20UT%2084003/10066%20N%204800%20W%20Unit%201%2C%20Cedar%20Hills%2C%20UT%2084062/Lehi)
-- **Day 23, Eagle Mountain (84005):** 2 businesses, 0 best bets. About 1 h 04 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1388%20Eagle%20Mountain%20Blvd%2C%20Eagle%20Mountain%2C%20UT%2084005/5390%20N%20Beckman%20Ln%2C%20Eagle%20Mountain%2C%20UT%2084005/Lehi)
-- **Day 24, Orem and Provo, part 2:** 2 businesses, 0 best bets. About 1 h 12 min door to door. [Map](https://www.google.com/maps/dir/Lehi/157%20N%20State%20St%2C%20Orem%2C%20UT%2084057/460%20N%20900%20E%2C%20Provo%2C%20UT%2084606/Lehi)
-- **Day 25, West Jordan and Cottonwood Heights:** 2 businesses, 0 best bets. About 1 h 25 min door to door. [Map](https://www.google.com/maps/dir/Lehi/7135%20S%20Plaza%20Center%20Dr%2C%20West%20Jordan%2C%20UT%2084084/3418%20E%20Bengal%20Blvd%2C%20Cottonwood%20Heights%2C%20UT%2084121/Lehi)
-- **Day 26, West Jordan and South Jordan:** 3 businesses, 0 best bets. About 1 h 29 min door to door. [Map](https://www.google.com/maps/dir/Lehi/10534%20S%20River%20Heights%20Dr%2C%20South%20Jordan%2C%20UT%2084095/3812%20W%207800%20S%20Ste%20190%2C%20West%20Jordan%2C%20UT%2084088/7759%20S%204800%20W%2C%20West%20Jordan%2C%20UT%2084084/Lehi)
-- **Day 27, Payson (84651):** 2 businesses, 0 best bets. About 1 h 35 min door to door. [Map](https://www.google.com/maps/dir/Lehi/673%20Innovation%20Cir%2C%20Payson%2C%20UT%2084651/742%20Highway%20198%2C%20Payson%2C%20UT%2084651/Lehi)
-- **Day 28, West Valley City and Magna:** 2 businesses, 0 best bets. About 1 h 37 min door to door. [Map](https://www.google.com/maps/dir/Lehi/3420%20S%205600%20W%2C%20West%20Valley%20City%2C%20UT%2084120/8400%20S%20Country%20West%20Dr%2C%20Magna%2C%20UT%2084044/Lehi)
-- **Day 29, Heber City (84032), part 1:** 3 businesses, 0 best bets. About 1 h 39 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1522%20S%20Daniels%20Rd%2C%20Heber%20City%2C%20UT%2084032/376%20Gateway%20Dr%20Ste%20102%2C%20Heber%20City%2C%20UT%2084032/425%20E%201200%20S%2C%20Suite%202%2C%20Heber%20City%2C%20UT%2084032/Lehi)
-- **Day 30, Tooele (84074), part 2:** 2 businesses, 0 best bets. About 1 h 39 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1868%20N%20170%20W%2C%20Tooele%2C%20UT%2084074/250%20N%20Main%20St%2C%20Tooele%2C%20UT%2084074/Lehi)
-- **Day 31, Lehi: E 3500 N:** 6 businesses, 0 best bets. About 1 h 46 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1536%20E%203500%20N%20Ste%20101%2C%20Lehi%2C%20UT%2084043/1640%20E%203500%20N%2C%20Lehi%2C%20UT%2084043/401%20S%20850%20E%2C%20Lehi%2C%20UT%2084043/328%20E%20Crossroads%20Blvd%2C%20Saratoga%20Springs%2C%20UT%2084045/5125%20W%20Hudson%20Way%2C%20Lehi%2C%20UT%2084043/101%20NW%20State%20St%20Ste%20110%2C%20American%20Fork%2C%20UT%2084003/Lehi)
-- **Day 32, Spanish Fork and Mapleton, Springville:** 3 businesses, 0 best bets. About 1 h 46 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1332%20E%20Center%20St%2C%20Spanish%20Fork%2C%20UT%2084660/1885%20W%20Alvey%20Dr%2C%20Unit%203%2C%20Mapleton%2C%20UT%2084664/512%20S%20950%20W%2C%20Springville%2C%20UT%2084663/Lehi)
-- **Day 33, Draper: S State St:** 4 businesses, 0 best bets. About 1 h 47 min door to door. [Map](https://www.google.com/maps/dir/Lehi/12101%20S%20State%20St%2C%20Draper%2C%20UT%2084020/11483%20S%20State%20St%20Ste%20F%2C%20Draper%2C%20UT%2084020/10365%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/13366%20S%20Rosecrest%20Rd%2C%20Herriman%2C%20UT%2084096/Lehi)
-- **Day 34, Draper: E Draper Pkwy:** 6 businesses, 0 best bets. About 1 h 48 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1388%20E%20Draper%20Pkwy%20Ste%20B%2C%20Draper%2C%20UT%2084020/1101%20E%20Draper%20Pkwy%2C%20Draper%2C%20UT%2084020/282%20E%2012200%20S%2C%20Suite%20200%2C%20Draper%2C%20UT%2084020/241%20E%2012300%20S%2C%20Draper%2C%20UT%2084020/10%20W%20Scenic%20Point%20Dr%2C%20Suite%20107%2C%20Draper%2C%20UT%2084020/129%20E%2013800%20S%2C%20%23B3%2C%20Draper%2C%20UT%2084020/Lehi)
-- **Day 35, Salt Lake City (84102):** 3 businesses, 0 best bets. About 1 h 48 min door to door. [Map](https://www.google.com/maps/dir/Lehi/208%20E%20800%20S%2C%20Suite%20101%2C%20Salt%20Lake%20City%2C%20UT%2084102/602%20E%20500%20S%2C%20Salt%20Lake%20City%2C%20UT%2084102/1202%20Wilmington%20Ave%2C%20%23100%2C%20Salt%20Lake%20City%2C%20UT%2084106/Lehi)
-- **Day 36, Park City: N Landmark Dr:** 3 businesses, 0 best bets. About 1 h 49 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1680%20W%20Ute%20Blvd%2C%20Park%20City%2C%20UT%2084098/6546%20N%20Landmark%20Dr%20Ste%20A%2C%20Park%20City%2C%20UT%2084098/6699%20N%20Landmark%20Dr%20Ste%20A-105%2C%20Park%20City%2C%20UT%2084098/Lehi)
-- **Day 37, Mapleton and Spanish Fork:** 3 businesses, 0 best bets. About 1 h 50 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1159%20E%201060%20N%2C%20Spanish%20Fork%2C%20UT%2084660/1623%20W%202400%20S%2C%20Mapleton%2C%20UT%2084664/1615%20N%20850%20E%2C%20Mapleton%2C%20UT%2084664/Lehi)
-- **Day 38, Millcreek and Salt Lake City:** 4 businesses, 0 best bets. About 1 h 50 min door to door. [Map](https://www.google.com/maps/dir/Lehi/3941%20S%20Wasatch%20Blvd%2C%20Millcreek%2C%20UT%2084124/2505%20E%203300%20S%2C%20Suite%20102%2C%20Salt%20Lake%20City%2C%20UT%2084109/3065%20S%20Imperial%20St%2C%20Millcreek%2C%20UT%2084106/3232%20S%20Highland%20Dr%2C%20Salt%20Lake%20City%2C%20UT%2084106/Lehi)
-- **Day 39, Park City (84098), part 1:** 2 businesses, 0 best bets. About 1 h 50 min door to door. [Map](https://www.google.com/maps/dir/Lehi/4942%20Ponderosa%20Dr%2C%20Park%20City%2C%20UT%2084098/1708%20Uinta%20Way%20Ste%20F-2%2C%20Park%20City%2C%20UT%2084098/Lehi)
-- **Day 40, South Jordan and Sandy:** 5 businesses, 0 best bets. About 1 h 50 min door to door. [Map](https://www.google.com/maps/dir/Lehi/9599%20S%20500%20W%2C%20Sandy%2C%20UT%2084070/220%20W%2010600%20S%2C%20Sandy%2C%20UT%2084070/10996%20S%20River%20Front%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/6277%20W%20Crimson%20View%20Dr%20Ste%20106%2C%20South%20Jordan%2C%20UT%2084009/3658%20W%209800%20S%2C%20South%20Jordan%2C%20UT%2084095/Lehi)
-- **Day 41, Salt Lake City and Millcreek, South Salt Lake:** 4 businesses, 0 best bets. About 1 h 50 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1295%20Miller%20Ave%2C%20Millcreek%2C%20UT%2084106/2695%20S%20900%20E%2C%20South%20Salt%20Lake%2C%20UT%2084106/1155%20E%20Wilmington%20Ave%2C%20Ste%20200%2C%20Salt%20Lake%20City%2C%20UT%2084106/2471%20S%201700%20E%2C%20Salt%20Lake%20City%2C%20UT%2084106/Lehi)
-- **Day 42, Saratoga Springs: N Redwood Rd:** 7 businesses, 0 best bets. About 1 h 50 min door to door. [Map](https://www.google.com/maps/dir/Lehi/4118%20Clubhouse%20Ln%20Ste%202%2C%20Eagle%20Mountain%2C%20UT%2084005/4095%20E%20Pony%20Express%20Pkwy%2C%20Eagle%20Mountain%2C%20UT%2084005/1012%20N%20Redwood%20Rd%20Ste%20B%2C%20Saratoga%20Springs%2C%20UT%2084045/1168%20N%20Redwood%20Rd%20Ste%20B-204%2C%20Saratoga%20Springs%2C%20UT%2084045/1320%20S%20Redwood%20Rd%2C%20Saratoga%20Springs%2C%20UT%2084045/2253%20S%20Talonscove%20Dr%2C%20Saratoga%20Springs%2C%20UT%2084045/321%20E%20Crossroads%20Blvd%20Bldg%203%20Ste%20B%2C%20Saratoga%20Springs%2C%20UT%2084045/Lehi)
-- **Day 43, Taylorsville: S Redwood Rd:** 4 businesses, 0 best bets. About 1 h 50 min door to door. [Map](https://www.google.com/maps/dir/Lehi/676%20W%20Auburn%20Dr%2C%20Murray%2C%20UT%2084123/5546%20S%20Redwood%20Rd%2C%20Taylorsville%2C%20UT%2084123/5474%20S%20Redwood%20Rd%2C%20Taylorsville%2C%20UT%2084123/3749%20S%20Constitution%20Blvd%2C%20West%20Valley%20City%2C%20UT%2084119/Lehi)
-- **Day 44, Sandy: S 1300 E:** 6 businesses, 0 best bets. About 1 h 51 min door to door. [Map](https://www.google.com/maps/dir/Lehi/9844%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/9343%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/9245%20Village%20Shop%20Dr%2C%20Sandy%2C%20UT%2084094/8912%20S%20700%20E%2C%20Sandy%2C%20UT%2084070/8734%20S%20700%20E%2C%20Suite%20210%2C%20Sandy%2C%20UT%2084070/8789%20S%20Highland%20Dr%20Ste%20310%2C%20Sandy%2C%20UT%2084093/Lehi)
-- **Day 45, Tooele (84074), part 3:** 3 businesses, 0 best bets. About 1 h 52 min door to door. [Map](https://www.google.com/maps/dir/Lehi/34%20S%20Main%20St%2C%20Tooele%2C%20UT%2084074/227%20N%20Main%20St%2C%20Tooele%2C%20UT%2084074/10%20S%20Garnet%20St%20Bldg%20669%20Ste%204%2C%20Tooele%2C%20UT%2084074/Lehi)
-- **Day 46, Park City (84060):** 3 businesses, 0 best bets. About 1 h 52 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1%20Victory%20Ln%2C%20Park%20City%2C%20UT%2084060/4108%20N%20Forestdale%20Dr%2C%20Park%20City%2C%20UT%2084098/4518%20Forestdale%20Dr%2C%20Bldg%20I%2C%20Unit%2043%2C%20Park%20City%2C%20UT%2084098/Lehi)
-- **Day 47, Murray and Holladay, Cottonwood Heights:** 5 businesses, 0 best bets. About 1 h 52 min door to door. [Map](https://www.google.com/maps/dir/Lehi/5550%20S%20900%20E%2C%20Murray%2C%20UT%2084117/5518%20S%20Van%20Winkle%20Expy%2C%20Murray%2C%20UT%2084117/6263%20S%20Highland%20Dr%2C%20Holladay%2C%20UT%2084121/6953%20S%201300%20E%2C%20Cottonwood%20Heights%2C%20UT%2084121/785%20E%20Fort%20Union%20Blvd%2C%20Midvale%2C%20UT%2084047/Lehi)
-- **Day 48, Cottonwood Heights: S Highland Dr:** 6 businesses, 0 best bets. About 1 h 52 min door to door. [Map](https://www.google.com/maps/dir/Lehi/8645%20S%20Highland%20Dr%2C%20Sandy%2C%20UT%2084093/7831%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/7076%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/2258%20E%20Fort%20Union%20Blvd%20%23B2%2C%20Cottonwood%20Heights%2C%20UT%2084121/2258%20E%20Fort%20Union%20Blvd%2C%20Cottonwood%20Heights%2C%20UT%2084121/2363%20E%206710%20S%2C%20Cottonwood%20Heights%2C%20UT%2084121/Lehi)
-- **Day 49, West Jordan: Welby Park Dr:** 5 businesses, 0 best bets. About 1 h 52 min door to door. [Map](https://www.google.com/maps/dir/Lehi/4602%20W%208400%20S%2C%20West%20Jordan%2C%20UT%2084088/8018%20Welby%20Park%20Dr%20%232%2C%20West%20Jordan%2C%20UT%2084088/8014%20Welby%20Park%20Dr%20Ste%20201%2C%20West%20Jordan%2C%20UT%2084088/7742%20S%20Campus%20View%20Dr%2C%20West%20Jordan%2C%20UT%2084084/4942%20W%206200%20S%2C%20Kearns%2C%20UT%2084118/Lehi)
-- **Day 50, Salt Lake City: Foothill Dr:** 4 businesses, 0 best bets. About 1 h 52 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1790%20S%201100%20E%2C%20Suite%20201%2C%20Salt%20Lake%20City%2C%20UT%2084105/1400%20Foothill%20Dr%2C%20%2320%2C%20Salt%20Lake%20City%2C%20UT%2084108/1400%20S%20Foothill%20Dr%2C%20Ste%2020%2C%20Salt%20Lake%20City%2C%20UT%2084108/1440%20Foothill%20Dr%20%23160%2C%20Salt%20Lake%20City%2C%20UT%2084108/Lehi)
-- **Day 51, Heber City and Midway:** 3 businesses, 0 best bets. About 1 h 53 min door to door. [Map](https://www.google.com/maps/dir/Lehi/2211%20W%203000%20S%2C%20Suite%20A%2C%20Heber%20City%2C%20UT%2084032/428%20W%20Powerline%20Rd%2C%20Units%20A6%20%26%20A7%2C%20Heber%20City%2C%20UT%2084032/65%20N%20200%20W%20Unit%20103%2C%20Midway%2C%20UT%2084049/Lehi)
-- **Day 52, Murray: S 900 E:** 5 businesses, 0 best bets. About 1 h 53 min door to door. [Map](https://www.google.com/maps/dir/Lehi/333%20W%206160%20S%2C%20Murray%2C%20UT%2084107/5914%20S%20350%20W%2C%20Murray%2C%20UT%2084107/4894%20S%20Commerce%20Dr%20Ste%20A%2C%20Murray%2C%20UT%2084107/5445%20S%20900%20E%2C%20Murray%2C%20UT%2084117/5642%20S%20900%20E%20Unit%20B6%2C%20Murray%2C%20UT%2084121/Lehi)
-- **Day 53, Herriman: S 5600 W:** 6 businesses, 0 best bets. About 1 h 53 min door to door. [Map](https://www.google.com/maps/dir/Lehi/4775%20W%20Daybreak%20Pkwy%2C%20Ste%20102%2C%20South%20Jordan%2C%20UT%2084009/12472%20S%20Meadow%20Spring%20Ln%2C%20Riverton%2C%20UT%2084065/13216%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/13276%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/13276%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/5746%20W%2013400%20S%2C%20Herriman%2C%20UT%2084096/Lehi)
-- **Day 54, Woods Cross (84087):** 2 businesses, 0 best bets. About 1 h 53 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1431%20Redwood%20Rd%2C%20Woods%20Cross%2C%20UT%2084087/1181%20S%201800%20W%20Ste%201%2C%20Woods%20Cross%2C%20UT%2084087/Lehi)
-- **Day 55, Orem and Provo, part 3:** 6 businesses, 0 best bets. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/Lehi/3210%20N%20Canyon%20Rd%2C%20Ste%20202%2C%20Provo%2C%20UT%2084604/3601%20N%20University%20Ave%2C%20%23150%2C%20Provo%2C%20UT%2084604/1060%20S%20750%20E%2C%20Orem%2C%20UT%2084097/560%20E%20Park%20Ave%2C%20Orem%2C%20UT%2084097/542%20E%20University%20Pkwy%2C%20Orem%2C%20UT%2084097/1330%20Sandhill%20Rd%2C%20Orem%2C%20UT%2084058/Lehi)
-- **Day 56, Orem and Provo, part 4:** 6 businesses, 0 best bets. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/Lehi/428%20W%202310%20N%2C%20Suite%20103%2C%20Provo%2C%20UT%2084604/2494%20N%20University%20Pkwy%2C%20Provo%2C%20UT%2084604/1523%20S%20State%20St%2C%20Orem%2C%20UT%2084097/371%20E%20800%20S%2C%20Orem%2C%20UT%2084097/665%20W%20400%20S%2C%20Orem%2C%20UT%2084058/147%20W%20400%20N%2C%20Orem%2C%20UT%2084057/Lehi)
-- **Day 57, Lehi: W Main St:** 8 businesses, 0 best bets. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/Lehi/68%20W%20Main%20St%2C%20Lehi%2C%20UT%2084043/68%20W%20Main%20St%2C%20Lehi%2C%20UT%2084043/288%20E%20Main%20St%2C%20Lehi%2C%20UT%2084043/80%20N%20850%20E%20Ste%20A%2C%20Lehi%2C%20UT%2084043/785%20E%20200%20S%2C%20Suite%206%2C%20Lehi%2C%20UT%2084043/120%20S%201350%20E%20Ste%201%2C%20Lehi%2C%20UT%2084043/1438%20E%20Main%20St%20Ste%207%2C%20Lehi%2C%20UT%2084043/5342%20W%20Parkway%20East%20St%2C%20Highland%2C%20UT%2084003/Lehi)
-- **Day 58, Riverton: W Partridge Hill Ln:** 6 businesses, 0 best bets. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/Lehi/11531%20S%20District%20Main%20Dr%20Ste%201000%2C%20South%20Jordan%2C%20UT%2084095/2722%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/4505%20W%20Partridge%20Hill%20Ln%20Ste%20P-110%2C%20Riverton%2C%20UT%2084096/4534%20W%20Partridge%20Hill%20Ln%20Ste%20E120%2C%20Riverton%2C%20UT%2084096/4534%20W%20Partridge%20Hill%20Ln%20Ste%20E150%2C%20Riverton%2C%20UT%2084096/13216%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/Lehi)
-- **Day 59, Salt Lake City: S 700 E:** 4 businesses, 0 best bets. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/Lehi/330%20E%20400%20S%2C%20Suite%20105%2C%20Salt%20Lake%20City%2C%20UT%2084111/515%20S%20700%20E%2C%20Ste%202D%2C%20Salt%20Lake%20City%2C%20UT%2084102/602%20S%20700%20E%2C%20Suite%20106%2C%20Salt%20Lake%20City%2C%20UT%2084102/951%20E%20900%20S%2C%20Salt%20Lake%20City%2C%20UT%2084105/Lehi)
-- **Day 60, Bountiful: W 500 S:** 2 businesses, 0 best bets. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/Lehi/155%20W%20500%20S%20Ste%201A%2C%20Bountiful%2C%20UT%2084010/144%20W%20500%20S%2C%20Bountiful%2C%20UT%2084010/Lehi)
-- **Day 61, Salt Lake City: E 2100 S, part 1:** 4 businesses, 0 best bets. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1511%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084105/1056%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084106/675%20E%202100%20S%2C%20Suite%20Q%2C%20Salt%20Lake%20City%2C%20UT%2084106/1298%20S%20900%20E%2C%20Salt%20Lake%20City%2C%20UT%2084105/Lehi)
-- **Day 62, Bountiful (84010), part 1:** 2 businesses, 0 best bets. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/Lehi/2399%20S%20Main%20St%2C%20Bountiful%2C%20UT%2084010/250%20W%201500%20S%2C%20Bountiful%2C%20UT%2084010/Lehi)
-- **Day 63, Draper and Riverton, Bluffdale:** 5 businesses, 0 best bets. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/Lehi/866%20E%2012300%20S%2C%20Ste%20B%2C%20Draper%2C%20UT%2084020/11576%20S%20State%20St%2C%20Ste%201101%2C%20Draper%2C%20UT%2084020/2478%20W%2012600%20S%20Ste%202%2C%20Riverton%2C%20UT%2084065/2588%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/974%20W%2014420%20S%20Ste%205%2C%20Bluffdale%2C%20UT%2084065/Lehi)
-- **Day 64, Bountiful (84010), part 2:** 2 businesses, 0 best bets. About 1 h 55 min door to door. [Map](https://www.google.com/maps/dir/Lehi/533%20W%20750%20S%2C%20Bountiful%2C%20UT%2084010/530%20W%20500%20S%20Ste%20D%2C%20Bountiful%2C%20UT%2084010/Lehi)
-- **Day 65, Bountiful (84010), part 3:** 2 businesses, 0 best bets. About 1 h 55 min door to door. [Map](https://www.google.com/maps/dir/Lehi/401%20S%20Main%20St%2C%20Bountiful%2C%20UT%2084010/85%20W%20500%20S%2C%20Bountiful%2C%20UT%2084010/Lehi)
-- **Day 66, South Jordan and Riverton, Herriman:** 6 businesses, 0 best bets. About 1 h 55 min door to door. [Map](https://www.google.com/maps/dir/Lehi/10420%20S%20Rubicon%20Rd%20B103%2C%20South%20Jordan%2C%20UT%2084009/4690%20W%20Boardwalk%20Rd%20Ste%20A103%2C%20South%20Jordan%2C%20UT%2084009/11277%20Kestrel%20Rise%20Rd%20Ste%20A%2C%20South%20Jordan%2C%20UT%2084009/11516%20District%20Dr%20%23600%2C%20South%20Jordan%2C%20UT%2084095/12544%20S%20Pasture%20Rd%2C%20Riverton%2C%20UT%2084096/5127%20W%20Miller%20Crossing%20Dr%2C%20Herriman%2C%20UT%2084096/Lehi)
-- **Day 67, Bountiful (84010), part 4:** 2 businesses, 0 best bets. About 1 h 55 min door to door. [Map](https://www.google.com/maps/dir/Lehi/448%20W%201150%20S%2C%20Bountiful%2C%20UT%2084010/273%20W%20500%20S%20%2320%2C%20Bountiful%2C%20UT%2084010/Lehi)
-- **Day 68, Bountiful (84010), part 5:** 2 businesses, 0 best bets. About 1 h 55 min door to door. [Map](https://www.google.com/maps/dir/Lehi/450%20S%20400%20E%2C%20Bountiful%2C%20UT%2084010/51%20E%20400%20S%2C%20Bountiful%2C%20UT%2084010/Lehi)
-- **Day 69, Sandy: E 9400 S:** 6 businesses, 0 best bets. About 1 h 56 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1842%20E%209400%20S%2C%20Sandy%2C%20UT%2084093/2077%20E%209400%20S%2C%20Sandy%2C%20UT%2084093/8679%20S%20Highland%20Dr%2C%20Sandy%2C%20UT%2084093/7817%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/1844%20E%20Fort%20Union%20Blvd%20%238%2C%20Cottonwood%20Heights%2C%20UT%2084121/7690%20Union%20Park%20Ave%2C%20Midvale%2C%20UT%2084047/Lehi)
-- **Day 70, Salt Lake City: S 300 E:** 4 businesses, 0 best bets. About 1 h 56 min door to door. [Map](https://www.google.com/maps/dir/Lehi/660%20S%20400%20W%2C%20Suite%20600%2C%20Salt%20Lake%20City%2C%20UT%2084101/175%20S%20West%20Temple%2C%20Salt%20Lake%20City%2C%20UT%2084101/358%20S%20300%20E%2C%20Salt%20Lake%20City%2C%20UT%2084111/370%20S%20300%20E%2C%20Salt%20Lake%20City%2C%20UT%2084111/Lehi)
-- **Day 71, Lehi (84043), part 2:** 7 businesses, 0 best bets. About 1 h 56 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1600%20N%20Trinnaman%20Ln%2C%20Lehi%2C%20UT%2084043/1657%20N%20State%20St%2C%20Lehi%2C%20UT%2084043/61%20W%203200%20N%2C%20Suite%20%2310%2C%20Lehi%2C%20UT%2084043/2319%20N%203370%20W%2C%20Lehi%2C%20UT%2084043/305%20S%20850%20E%2C%20Lehi%2C%20UT%2084043/1010%20S%201100%20W%2C%20Suite%20104%2C%20Lehi%2C%20UT%2084043/629%20N%20Saratoga%20Rd%20Bldg%202%2C%20Lehi%2C%20UT%2084043/Lehi)
-- **Day 72, Park City: Center Dr:** 3 businesses, 0 best bets. About 1 h 56 min door to door. [Map](https://www.google.com/maps/dir/Lehi/2720%20Rasmussen%20Rd%20Ste%20A4%2C%20Park%20City%2C%20UT%2084098/1241%20Center%20Dr%20Ste%20L-120%2C%20Park%20City%2C%20UT%2084098/1153%20Center%20Dr%20Ste%20G190%2C%20Park%20City%2C%20UT%2084098/Lehi)
-- **Day 73, Park City: N Business Park Loop Rd:** 4 businesses, 0 best bets. About 1 h 56 min door to door. [Map](https://www.google.com/maps/dir/Lehi/6430%20N%20Business%20Park%20Loop%20Rd%20Unit%20D%2C%20Park%20City%2C%20UT%2084098/6430%20N%20Business%20Park%20Loop%20Rd%20Ste%20A%2C%20Park%20City%2C%20UT%2084098/2080%20Gold%20Dust%20Ln%2C%20Park%20City%2C%20UT%2084060/2080%20Gold%20Dust%20Ln%2C%20Park%20City%2C%20UT%2084060/Lehi)
-- **Day 74, Draper and Sandy, Bluffdale:** 5 businesses, 0 best bets. About 1 h 56 min door to door. [Map](https://www.google.com/maps/dir/Lehi/13957%20S%20Bangerter%20Pkwy%20Ste%20102%2C%20Draper%2C%20UT%2084020/13648%20S%20200%20W%20%231%2C%20Draper%2C%20UT%2084020/827%20Pioneer%20Rd%20Ste%20101%2C%20Draper%2C%20UT%2084020/10450%20S%20State%20St%20%231216%2C%20Sandy%2C%20UT%2084070/13863%20S%202700%20W%2C%20Units%20205%20%26%20206%2C%20Bluffdale%2C%20UT%2084065/Lehi)
-- **Day 75, Lindon and Pleasant Grove, Orem:** 7 businesses, 0 best bets. About 1 h 56 min door to door. [Map](https://www.google.com/maps/dir/Lehi/795%20S%20Main%20St%2C%20Pleasant%20Grove%2C%20UT%2084062/346%20E%20State%20Rd%2C%20Pleasant%20Grove%2C%20UT%2084062/537%20W%20550%20N%20Ste%20A%2C%20Lindon%2C%20UT%2084042/139%20S%20State%20St%2C%20Ste%2013%2C%20Lindon%2C%20UT%2084042/972%20N%201430%20W%2C%20Orem%2C%20UT%2084057/236%20S%201250%20W%2C%20Lindon%2C%20UT%2084042/31%20S%201550%20W%20Ste%20112%2C%20Lindon%2C%20UT%2084042/Lehi)
-- **Day 76, Grantsville: E Main St:** 2 businesses, 0 best bets. About 1 h 56 min door to door. [Map](https://www.google.com/maps/dir/Lehi/225%20E%20Main%20St%2C%20Ste%20B%2C%20Grantsville%2C%20UT%2084029/225%20E%20Main%20St%2C%20Grantsville%2C%20UT%2084029/Lehi)
-- **Day 77, Bountiful and Woods Cross:** 2 businesses, 0 best bets. About 1 h 57 min door to door. [Map](https://www.google.com/maps/dir/Lehi/448%20W%201150%20S%2C%20Suite%202%2C%20Bountiful%2C%20UT%2084010/582%20S%201100%20W%2C%20Woods%20Cross%2C%20UT%2084087/Lehi)
-- **Day 78, Orem and Lindon, Vineyard:** 6 businesses, 0 best bets. About 1 h 57 min door to door. [Map](https://www.google.com/maps/dir/Lehi/296%20N%20State%20St%2C%20Lindon%2C%20UT%2084042/259%20N%20290%20W%2C%20Lindon%2C%20UT%2084042/894%20N%20State%20St%2C%20Orem%2C%20UT%2084057/210%20E%20Center%20St%2C%20Orem%2C%20UT%2084057/360%20S%20State%20St%2C%20Ste%20106%2C%20Orem%2C%20UT%2084058/773%20E%20Mill%20Rd%2C%20Vineyard%2C%20UT%2084059/Lehi)
-- **Day 79, Tooele (84074), part 4:** 3 businesses, 0 best bets. About 1 h 57 min door to door. [Map](https://www.google.com/maps/dir/Lehi/2321%20N%20400%20E%2C%20Ste%20400%2C%20Tooele%2C%20UT%2084074/1929%20Aaron%20Dr%2C%20Ste%20L%2C%20Tooele%2C%20UT%2084074/10%20S%20Garnet%20St%20Bldg%20669%20%234%2C%20Tooele%2C%20UT%2084074/Lehi)
-- **Day 80, Herriman: Academy Pkwy:** 6 businesses, 0 best bets. About 1 h 57 min door to door. [Map](https://www.google.com/maps/dir/Lehi/14787%20Academy%20Pkwy%2C%20Herriman%2C%20UT%2084096/14787%20Academy%20Pkwy%2C%20Herriman%2C%20UT%2084096/14352%20S%20Via%20Molvero%20Way%20Ste%20D%2C%20Herriman%2C%20UT%2084096/2936%20W%2012600%20S%20Ste%201%262%2C%20Riverton%2C%20UT%2084065/14003%20S%20Redwood%20Rd%20Ste%20200%2C%20Bluffdale%2C%20UT%2084065/16294%20Bringhurst%20Blvd%20Ste%20700%2C%20Bluffdale%2C%20UT%2084065/Lehi)
-- **Day 81, Heber City (84032), part 2:** 4 businesses, 0 best bets. About 1 h 57 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1244%20S%201040%20E%2C%20Heber%20City%2C%20UT%2084032/2237%20S%20390%20W%20Unit%20B%2C%20Heber%20City%2C%20UT%2084032/55%20E%20Center%20St%20Ste%20140%2C%20Heber%20City%2C%20UT%2084032/151%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/Lehi)
-- **Day 82, West Valley City: W 3500 S:** 4 businesses, 0 best bets. About 1 h 57 min door to door. [Map](https://www.google.com/maps/dir/Lehi/3584%20S%201950%20W%2C%20West%20Valley%20City%2C%20UT%2084119/3952%20W%203500%20S%2C%20West%20Valley%20City%2C%20UT%2084120/3200%20S%20Decker%20Lake%20Dr%2C%20West%20Valley%20City%2C%20UT%2084119/5718%20W%203500%20S%20Unit%20136%2C%20West%20Valley%20City%2C%20UT%2084120/Lehi)
-- **Day 83, Salt Lake City: E 2100 S, part 2:** 5 businesses, 0 best bets. About 1 h 57 min door to door. [Map](https://www.google.com/maps/dir/Lehi/615%20Simpson%20Ave%2C%20Salt%20Lake%20City%2C%20UT%2084106/675%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084106/2020%20S%20700%20E%2C%20Salt%20Lake%20City%2C%20UT%2084105/1057%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084106/1993%201%2F2%20S%201100%20E%2C%20Salt%20Lake%20City%2C%20UT%2084106/Lehi)
-- **Day 84, Sandy and Midvale, West Jordan:** 6 businesses, 0 best bets. About 1 h 57 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1338%20W%207800%20S%2C%20West%20Jordan%2C%20UT%2084088/741%20W%20Smelter%20St%2C%20Midvale%2C%20UT%2084047/8496%20S%20Harrison%20St%20Ste%20108%2C%20Midvale%2C%20UT%2084047/9127%20S%20255%20W%2C%20Sandy%2C%20UT%2084070/9138%20S%20State%20St%2C%20Suite%20102%2C%20Sandy%2C%20UT%2084070/9211%20Village%20Shop%20Dr%2C%20Sandy%2C%20UT%2084094/Lehi)
-- **Day 85, Park City: Quarry Rd:** 3 businesses, 0 best bets. About 1 h 57 min door to door. [Map](https://www.google.com/maps/dir/Lehi/3156%20Quarry%20Rd%20Ste%20M%2C%20Park%20City%2C%20UT%2084098/3156%20Quarry%20Rd%2C%20Park%20City%2C%20UT%2084098/1154%20Center%20Dr%20Ste%20D210%2C%20Park%20City%2C%20UT%2084098/Lehi)
-- **Day 86, Salt Lake City and Millcreek:** 5 businesses, 0 best bets. About 1 h 57 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1227%20E%203300%20S%2C%20Millcreek%2C%20UT%2084106/1180%20Brickyard%20Rd%2C%20Salt%20Lake%20City%2C%20UT%2084106/2682%20S%20Highland%20Dr%20%23201%2C%20Salt%20Lake%20City%2C%20UT%2084106/1142%20Wilmington%20Ave%2C%20Salt%20Lake%20City%2C%20UT%2084106/2188%20Highland%20Dr%2C%20Suite%20104%2C%20Salt%20Lake%20City%2C%20UT%2084106/Lehi)
-- **Day 87, Bountiful (84010), part 6:** 2 businesses, 0 best bets. About 1 h 57 min door to door. [Map](https://www.google.com/maps/dir/Lehi/3052%20S%20Oakwood%20Dr%2C%20Bountiful%2C%20UT%2084010/448%20W%201250%20S%20Ste%201%2C%20Bountiful%2C%20UT%2084010/Lehi)
-- **Day 88, West Jordan: S Redwood Rd:** 5 businesses, 0 best bets. About 1 h 58 min door to door. [Map](https://www.google.com/maps/dir/Lehi/7836%20S%20Redwood%20Rd%2C%20West%20Jordan%2C%20UT%2084088/8860%20S%20Redwood%20Rd%20Ste%20101%2C%20West%20Jordan%2C%20UT%2084088/10467%20S%20Redwood%20Rd%2C%20South%20Jordan%2C%20UT%2084095/10975%20Sterling%20View%20Dr%2C%20South%20Jordan%2C%20UT%2084095/10489%20S%20State%20St%2C%20Sandy%2C%20UT%2084070/Lehi)
-- **Day 89, Park City (84098), part 2:** 3 businesses, 0 best bets. About 1 h 58 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1526%20W%20Ute%20Blvd%2C%20Ste%20110%2C%20Park%20City%2C%20UT%2084098/3126%20Quarry%20Rd%20Suite%20G%2C%20Park%20City%2C%20UT%2084098/3070%20Rasmussen%20Rd%2C%20Ste%20190%2C%20Park%20City%2C%20UT%2084098/Lehi)
-- **Day 90, Lehi: W Traverse Pkwy:** 7 businesses, 0 best bets. About 1 h 58 min door to door. [Map](https://www.google.com/maps/dir/Lehi/2065%20W%20900%20N%2C%20Lehi%2C%20UT%2084043/1873%20W%20Traverse%20Pkwy%20Ste%20C%2C%20Lehi%2C%20UT%2084043/1881%20W%20Traverse%20Pkwy%20Ste%20B%2C%20Lehi%2C%20UT%2084043/3397%20N%201200%20E%2C%20Suite%20107%2C%20Lehi%2C%20UT%2084043/3397%20N%201200%20E%20Ste%20106%2C%20Lehi%2C%20UT%2084043/11117%20N%20Alpine%20Hwy%2C%20Highland%2C%20UT%2084003/235%20S%20Main%20St%2C%20Alpine%2C%20UT%2084004/Lehi)
-- **Day 91, Orem: S State St:** 7 businesses, 0 best bets. About 1 h 58 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1259%20S%20800%20E%2C%20Orem%2C%20UT%2084097/1259%20S%20800%20E%2C%20Orem%2C%20UT%2084097/545%20E%20University%20Pkwy%2C%20Unit%20104%2C%20Orem%2C%20UT%2084097/1345%20S%20State%20St%2C%20Orem%2C%20UT%2084097/1409%20S%20State%20St%2C%20Orem%2C%20UT%2084097/52%20E%20University%20Pkwy%2C%20Orem%2C%20UT%2084058/97%20S%20State%20St%2C%20Orem%2C%20UT%2084058/Lehi)
-- **Day 92, Park City: W Ute Blvd:** 4 businesses, 0 best bets. About 1 h 59 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1154%20Center%20Dr%20Ste%20D200%2C%20Park%20City%2C%20UT%2084098/1675%20W%20Redstone%20Center%20Dr%20Ste%20140%2C%20Park%20City%2C%20UT%2084098/1612%20W%20Ute%20Blvd%20Ste%20115%2C%20Park%20City%2C%20UT%2084098/1612%20W%20Ute%20Blvd%2C%20Park%20City%2C%20UT%2084098/Lehi)
-- **Day 93, Spanish Fork and Springville:** 5 businesses, 0 best bets. About 1 h 59 min door to door. [Map](https://www.google.com/maps/dir/Lehi/443%20E%201000%20N%2C%20Spanish%20Fork%2C%20UT%2084660/652%20N%20800%20E%2C%20Spanish%20Fork%2C%20UT%2084660/1283%20N%20Canyon%20Creek%20Pkwy%2C%20Spanish%20Fork%2C%20UT%2084660/198%20W%203450%20N%2C%20Suite%20103%2C%20Spanish%20Fork%2C%20UT%2084660/2591%20W%20700%20S%2C%20Springville%2C%20UT%2084663/Lehi)
-- **Day 94, Holladay and Millcreek:** 5 businesses, 0 best bets. About 1 h 59 min door to door. [Map](https://www.google.com/maps/dir/Lehi/5266%20Cottonwood%20Club%20Dr%2C%20Holladay%2C%20UT%2084117/2046%20E%20Murray%20Holladay%20Rd%2C%20Holladay%2C%20UT%2084117/4751%20S%20Holladay%20Blvd%2C%20Holladay%2C%20UT%2084117/2505%20E%203300%20S%2C%20Ste%20301%2C%20Millcreek%2C%20UT%2084109/2191%20E%203300%20S%2C%20Millcreek%2C%20UT%2084109/Lehi)
-- **Day 95, Salt Lake City (84115):** 4 businesses, 0 best bets. About 1 h 59 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1470%20S%20400%20W%2C%20Salt%20Lake%20City%2C%20UT%2084115/355%20W%20400%20S%2C%20Salt%20Lake%20City%2C%20UT%2084101/320%20W%20200%20S%2C%20Salt%20Lake%20City%2C%20UT%2084101/244%20W%20300%20N%2C%20Suite%20103%2C%20Salt%20Lake%20City%2C%20UT%2084103/Lehi)
-- **Day 96, North Salt Lake: N Redwood Rd:** 3 businesses, 0 best bets. About 2 h 00 min door to door. [Map](https://www.google.com/maps/dir/Lehi/420%20N%20Redwood%20Rd%20Ste%20G%2C%20North%20Salt%20Lake%2C%20UT%2084054/460%20N%20Redwood%20Rd%20Unit%20B%2C%20North%20Salt%20Lake%2C%20UT%2084054/689%20N%20Redwood%20Rd%20Ste%20110%2C%20North%20Salt%20Lake%2C%20UT%2084054/Lehi)
-- **Day 97, South Salt Lake: S West Temple:** 5 businesses, 0 best bets. About 2 h 00 min door to door. [Map](https://www.google.com/maps/dir/Lehi/3560%20S%20Main%20St%2C%20South%20Salt%20Lake%2C%20UT%2084115/2904%20S%20West%20Temple%2C%20South%20Salt%20Lake%2C%20UT%2084115/2710%20S%20Lemel%20Cir%2C%20South%20Salt%20Lake%2C%20UT%2084115/2394%20S%20West%20Temple%2C%20South%20Salt%20Lake%2C%20UT%2084115/2257%20S%20State%20St%2C%20South%20Salt%20Lake%2C%20UT%2084115/Lehi)
-- **Day 98, Springville: E 400 S:** 5 businesses, 0 best bets. About 2 h 00 min door to door. [Map](https://www.google.com/maps/dir/Lehi/1007%20S%20University%20Ave%2C%20Provo%2C%20UT%2084601/1640%20S%20State%20St%2C%20Provo%2C%20UT%2084606/54%20N%20Main%20St%2C%20Springville%2C%20UT%2084663/655%20E%20400%20S%2C%20Unit%20D%2C%20Springville%2C%20UT%2084663/665%20E%20400%20S%2C%20Springville%2C%20UT%2084663/Lehi)
-- **Day 99, Heber City: W 600 S:** 5 businesses, 0 best bets. About 2 h 00 min door to door. [Map](https://www.google.com/maps/dir/Lehi/550%20W%20100%20S%2C%20Suite%20A2%2C%20Heber%20City%2C%20UT%2084032/345%20W%20600%20S%2C%20Ste%20200%2C%20Heber%20City%2C%20UT%2084032/345%20W%20600%20S%20Ste%20409%2C%20Heber%20City%2C%20UT%2084032/345%20W%20600%20S%20Ste%20200%2C%20Heber%20City%2C%20UT%2084032/1099%20S%20Main%20St%20Ste%20160%2C%20Heber%20City%2C%20UT%2084032/Lehi)
-- **Day 100, American Fork: E State St:** 8 businesses, 0 best bets. About 2 h 00 min door to door. [Map](https://www.google.com/maps/dir/Lehi/2415%20W%20700%20S%20Ste%20G%2C%20Pleasant%20Grove%2C%20UT%2084062/312%20S%202000%20W%2C%20Pleasant%20Grove%2C%20UT%2084062/1809%20W%20State%20St%2C%20Unit%20A5%2C%20Pleasant%20Grove%2C%20UT%2084062/920%20E%20State%20St%2C%20American%20Fork%2C%20UT%2084003/636%20E%20State%20Rd%2C%20American%20Fork%2C%20UT%2084003/634%20E%20State%20St%2C%20American%20Fork%2C%20UT%2084003/710%20S%20Utah%20Valley%20Dr%2C%20American%20Fork%2C%20UT%2084003/1375%20S%20500%20E%2C%20Unit%20123%2C%20American%20Fork%2C%20UT%2084003/Lehi)
+- **Day 22, American Fork and Cedar Hills:** 2 businesses, 0 best bets. About 1 h 01 min door to door.
+- **Day 23, Eagle Mountain (84005):** 2 businesses, 0 best bets. About 1 h 04 min door to door.
+- **Day 24, Orem and Provo, part 2:** 2 businesses, 0 best bets. About 1 h 12 min door to door.
+- **Day 25, West Jordan and Cottonwood Heights:** 2 businesses, 0 best bets. About 1 h 25 min door to door.
+- **Day 26, West Jordan and South Jordan:** 3 businesses, 0 best bets. About 1 h 29 min door to door.
+- **Day 27, Payson (84651):** 2 businesses, 0 best bets. About 1 h 35 min door to door.
+- **Day 28, West Valley City and Magna:** 2 businesses, 0 best bets. About 1 h 37 min door to door.
+- **Day 29, Heber City (84032), part 1:** 3 businesses, 0 best bets. About 1 h 39 min door to door.
+- **Day 30, Tooele (84074), part 2:** 2 businesses, 0 best bets. About 1 h 39 min door to door.
+- **Day 31, Lehi: E 3500 N:** 6 businesses, 0 best bets. About 1 h 46 min door to door.
+- **Day 32, Spanish Fork and Mapleton, Springville:** 3 businesses, 0 best bets. About 1 h 46 min door to door.
+- **Day 33, Draper: S State St:** 4 businesses, 0 best bets. About 1 h 47 min door to door.
+- **Day 34, Draper: E Draper Pkwy:** 6 businesses, 0 best bets. About 1 h 48 min door to door.
+- **Day 35, Salt Lake City (84102):** 3 businesses, 0 best bets. About 1 h 48 min door to door.
+- **Day 36, Park City: N Landmark Dr:** 3 businesses, 0 best bets. About 1 h 49 min door to door.
+- **Day 37, Mapleton and Spanish Fork:** 3 businesses, 0 best bets. About 1 h 50 min door to door.
+- **Day 38, Millcreek and Salt Lake City:** 4 businesses, 0 best bets. About 1 h 50 min door to door.
+- **Day 39, Park City (84098), part 1:** 2 businesses, 0 best bets. About 1 h 50 min door to door.
+- **Day 40, South Jordan and Sandy:** 5 businesses, 0 best bets. About 1 h 50 min door to door.
+- **Day 41, Salt Lake City and Millcreek, South Salt Lake:** 4 businesses, 0 best bets. About 1 h 50 min door to door.
+- **Day 42, Saratoga Springs: N Redwood Rd:** 7 businesses, 0 best bets. About 1 h 50 min door to door.
+- **Day 43, Taylorsville: S Redwood Rd:** 4 businesses, 0 best bets. About 1 h 50 min door to door.
+- **Day 44, Sandy: S 1300 E:** 6 businesses, 0 best bets. About 1 h 51 min door to door.
+- **Day 45, Tooele (84074), part 3:** 3 businesses, 0 best bets. About 1 h 52 min door to door.
+- **Day 46, Park City (84060):** 3 businesses, 0 best bets. About 1 h 52 min door to door.
+- **Day 47, Murray and Holladay, Cottonwood Heights:** 5 businesses, 0 best bets. About 1 h 52 min door to door.
+- **Day 48, Cottonwood Heights: S Highland Dr:** 6 businesses, 0 best bets. About 1 h 52 min door to door.
+- **Day 49, West Jordan: Welby Park Dr:** 5 businesses, 0 best bets. About 1 h 52 min door to door.
+- **Day 50, Salt Lake City: Foothill Dr:** 4 businesses, 0 best bets. About 1 h 52 min door to door.
+- **Day 51, Heber City and Midway:** 3 businesses, 0 best bets. About 1 h 53 min door to door.
+- **Day 52, Murray: S 900 E:** 5 businesses, 0 best bets. About 1 h 53 min door to door.
+- **Day 53, Herriman: S 5600 W:** 6 businesses, 0 best bets. About 1 h 53 min door to door.
+- **Day 54, Woods Cross (84087):** 2 businesses, 0 best bets. About 1 h 53 min door to door.
+- **Day 55, Orem and Provo, part 3:** 6 businesses, 0 best bets. About 1 h 54 min door to door.
+- **Day 56, Orem and Provo, part 4:** 6 businesses, 0 best bets. About 1 h 54 min door to door.
+- **Day 57, Lehi: W Main St:** 8 businesses, 0 best bets. About 1 h 54 min door to door.
+- **Day 58, Riverton: W Partridge Hill Ln:** 6 businesses, 0 best bets. About 1 h 54 min door to door.
+- **Day 59, Salt Lake City: S 700 E:** 4 businesses, 0 best bets. About 1 h 54 min door to door.
+- **Day 60, Bountiful: W 500 S:** 2 businesses, 0 best bets. About 1 h 54 min door to door.
+- **Day 61, Salt Lake City: E 2100 S, part 1:** 4 businesses, 0 best bets. About 1 h 54 min door to door.
+- **Day 62, Bountiful (84010), part 1:** 2 businesses, 0 best bets. About 1 h 54 min door to door.
+- **Day 63, Draper and Riverton, Bluffdale:** 5 businesses, 0 best bets. About 1 h 54 min door to door.
+- **Day 64, Bountiful (84010), part 2:** 2 businesses, 0 best bets. About 1 h 55 min door to door.
+- **Day 65, Bountiful (84010), part 3:** 2 businesses, 0 best bets. About 1 h 55 min door to door.
+- **Day 66, South Jordan and Riverton, Herriman:** 6 businesses, 0 best bets. About 1 h 55 min door to door.
+- **Day 67, Bountiful (84010), part 4:** 2 businesses, 0 best bets. About 1 h 55 min door to door.
+- **Day 68, Bountiful (84010), part 5:** 2 businesses, 0 best bets. About 1 h 55 min door to door.
+- **Day 69, Sandy: E 9400 S:** 6 businesses, 0 best bets. About 1 h 56 min door to door.
+- **Day 70, Salt Lake City: S 300 E:** 4 businesses, 0 best bets. About 1 h 56 min door to door.
+- **Day 71, Lehi (84043), part 2:** 7 businesses, 0 best bets. About 1 h 56 min door to door.
+- **Day 72, Park City: Center Dr:** 3 businesses, 0 best bets. About 1 h 56 min door to door.
+- **Day 73, Park City: N Business Park Loop Rd:** 4 businesses, 0 best bets. About 1 h 56 min door to door.
+- **Day 74, Draper and Sandy, Bluffdale:** 5 businesses, 0 best bets. About 1 h 56 min door to door.
+- **Day 75, Lindon and Pleasant Grove, Orem:** 7 businesses, 0 best bets. About 1 h 56 min door to door.
+- **Day 76, Grantsville: E Main St:** 2 businesses, 0 best bets. About 1 h 56 min door to door.
+- **Day 77, Bountiful and Woods Cross:** 2 businesses, 0 best bets. About 1 h 57 min door to door.
+- **Day 78, Orem and Lindon, Vineyard:** 6 businesses, 0 best bets. About 1 h 57 min door to door.
+- **Day 79, Tooele (84074), part 4:** 3 businesses, 0 best bets. About 1 h 57 min door to door.
+- **Day 80, Herriman: Academy Pkwy:** 6 businesses, 0 best bets. About 1 h 57 min door to door.
+- **Day 81, Heber City (84032), part 2:** 4 businesses, 0 best bets. About 1 h 57 min door to door.
+- **Day 82, West Valley City: W 3500 S:** 4 businesses, 0 best bets. About 1 h 57 min door to door.
+- **Day 83, Salt Lake City: E 2100 S, part 2:** 5 businesses, 0 best bets. About 1 h 57 min door to door.
+- **Day 84, Sandy and Midvale, West Jordan:** 6 businesses, 0 best bets. About 1 h 57 min door to door.
+- **Day 85, Park City: Quarry Rd:** 3 businesses, 0 best bets. About 1 h 57 min door to door.
+- **Day 86, Salt Lake City and Millcreek:** 5 businesses, 0 best bets. About 1 h 57 min door to door.
+- **Day 87, Bountiful (84010), part 6:** 2 businesses, 0 best bets. About 1 h 57 min door to door.
+- **Day 88, West Jordan: S Redwood Rd:** 5 businesses, 0 best bets. About 1 h 58 min door to door.
+- **Day 89, Park City (84098), part 2:** 3 businesses, 0 best bets. About 1 h 58 min door to door.
+- **Day 90, Lehi: W Traverse Pkwy:** 7 businesses, 0 best bets. About 1 h 58 min door to door.
+- **Day 91, Orem: S State St:** 7 businesses, 0 best bets. About 1 h 58 min door to door.
+- **Day 92, Park City: W Ute Blvd:** 4 businesses, 0 best bets. About 1 h 59 min door to door.
+- **Day 93, Spanish Fork and Springville:** 5 businesses, 0 best bets. About 1 h 59 min door to door.
+- **Day 94, Holladay and Millcreek:** 5 businesses, 0 best bets. About 1 h 59 min door to door.
+- **Day 95, Salt Lake City (84115):** 4 businesses, 0 best bets. About 1 h 59 min door to door.
+- **Day 96, North Salt Lake: N Redwood Rd:** 3 businesses, 0 best bets. About 2 h 00 min door to door.
+- **Day 97, South Salt Lake: S West Temple:** 5 businesses, 0 best bets. About 2 h 00 min door to door.
+- **Day 98, Springville: E 400 S:** 5 businesses, 0 best bets. About 2 h 00 min door to door.
+- **Day 99, Heber City: W 600 S:** 5 businesses, 0 best bets. About 2 h 00 min door to door.
+- **Day 100, American Fork: E State St:** 8 businesses, 0 best bets. About 2 h 00 min door to door.
 
 100 days in all: 428 businesses, 61 best bets, about 187 hours on the road.
 
 ## Stop by stop
 
+In the tables, **Chance of a yes** means: **Best bet**, the kind of business most likely to sign; **Good fit**, worth the stop; **Also nearby**, on the way, so hand them a pamphlet too. Tap the Google Maps link to open the day's route in order, starting and ending at home.
+
 ### Day 1: Lehi (84043), part 1
 
-8 businesses, about 1 h 59 min door to door (12 min out from Lehi, 4 min back). [Map](https://www.google.com/maps/dir/Lehi/1881%20W%20Traverse%20Pkwy%20Suite%20D%2C%20Lehi%2C%20UT%2084043/1603%20N%20State%20St%20Ste%20B%2C%20Lehi%2C%20UT%2084043/1363%20W%20800%20N%2C%20Lehi%2C%20UT%2084043/401%20S%20850%20E%20Ste%20A3%2C%20Lehi%2C%20UT%2084043/3130%20W%20Maple%20Loop%20Dr%2C%20Lehi%2C%20UT%2084043/50%20E%20Main%20St%2C%20Lehi%2C%20UT%2084043/870%20N%20100%20E%2C%20Lehi%2C%20UT%2084043/247%20S%20Millpond%20Dr%20Suite%20500%2C%20Lehi%2C%20UT%2084043/Lehi)
+8 businesses, about 1 h 59 min door to door (12 min out from Lehi, 4 min back).
+
+[Open Day 1 in Google Maps](https://www.google.com/maps/dir/Lehi/1881%20W%20Traverse%20Pkwy%20Suite%20D%2C%20Lehi%2C%20UT%2084043/1603%20N%20State%20St%20Ste%20B%2C%20Lehi%2C%20UT%2084043/1363%20W%20800%20N%2C%20Lehi%2C%20UT%2084043/401%20S%20850%20E%20Ste%20A3%2C%20Lehi%2C%20UT%2084043/3130%20W%20Maple%20Loop%20Dr%2C%20Lehi%2C%20UT%2084043/50%20E%20Main%20St%2C%20Lehi%2C%20UT%2084043/870%20N%20100%20E%2C%20Lehi%2C%20UT%2084043/247%20S%20Millpond%20Dr%20Suite%20500%2C%20Lehi%2C%20UT%2084043/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -139,7 +145,9 @@ Fill-in days (no best bet):
 
 ### Day 2: Pleasant Grove and Orem, Lindon
 
-6 businesses, about 1 h 52 min door to door (17 min out from Lehi, 14 min back). [Map](https://www.google.com/maps/dir/Lehi/1410%20W%201200%20N%20%234%2C%20Orem%2C%20UT%2084057/1428%20W%2070%20S%2C%20Lindon%2C%20UT%2084042/2415%20W%20700%20S%20Unit%20G%2C%20Pleasant%20Grove%2C%20UT%2084062/2054%20W%20Grove%20Pkwy%20Suite%20G%2C%20Pleasant%20Grove%2C%20UT%2084062/1983%20W%20680%20N%20%235%2C%20Pleasant%20Grove%2C%20UT%2084062/777%20S%20Auto%20Mall%20Dr%20%23110%2C%20American%20Fork%2C%20UT%2084003/Lehi)
+6 businesses, about 1 h 52 min door to door (17 min out from Lehi, 14 min back).
+
+[Open Day 2 in Google Maps](https://www.google.com/maps/dir/Lehi/1410%20W%201200%20N%20%234%2C%20Orem%2C%20UT%2084057/1428%20W%2070%20S%2C%20Lindon%2C%20UT%2084042/2415%20W%20700%20S%20Unit%20G%2C%20Pleasant%20Grove%2C%20UT%2084062/2054%20W%20Grove%20Pkwy%20Suite%20G%2C%20Pleasant%20Grove%2C%20UT%2084062/1983%20W%20680%20N%20%235%2C%20Pleasant%20Grove%2C%20UT%2084062/777%20S%20Auto%20Mall%20Dr%20%23110%2C%20American%20Fork%2C%20UT%2084003/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -152,7 +160,9 @@ Fill-in days (no best bet):
 
 ### Day 3: Orem and Provo, part 1
 
-6 businesses, about 1 h 58 min door to door (17 min out from Lehi, 19 min back). [Map](https://www.google.com/maps/dir/Lehi/4801%20N%20University%20Ave%2C%20Provo%2C%20UT%2084604/3089%20N%20Canyon%20Rd%2C%20Provo%2C%20UT%2084604/1063%20S%20750%20E%2C%20Orem%2C%20UT%2084097/293%20E%20930%20S%2C%20Orem%2C%20UT%2084058/106%20E%20400%20S%2C%20Orem%2C%20UT%2084058/165%20N%201330%20W%20Unit%20D1%2C%20Orem%2C%20UT%2084057/Lehi)
+6 businesses, about 1 h 58 min door to door (17 min out from Lehi, 19 min back).
+
+[Open Day 3 in Google Maps](https://www.google.com/maps/dir/Lehi/4801%20N%20University%20Ave%2C%20Provo%2C%20UT%2084604/3089%20N%20Canyon%20Rd%2C%20Provo%2C%20UT%2084604/1063%20S%20750%20E%2C%20Orem%2C%20UT%2084097/293%20E%20930%20S%2C%20Orem%2C%20UT%2084058/106%20E%20400%20S%2C%20Orem%2C%20UT%2084058/165%20N%201330%20W%20Unit%20D1%2C%20Orem%2C%20UT%2084057/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -165,7 +175,9 @@ Fill-in days (no best bet):
 
 ### Day 4: Draper: E Pioneer Rd
 
-6 businesses, about 1 h 54 min door to door (18 min out from Lehi, 17 min back). [Map](https://www.google.com/maps/dir/Lehi/146%20E%2013065%20S%20Suite%20C%2C%20Draper%2C%20UT%2084020/807%20E%20Pioneer%20Rd%20Ste%20101%2C%20Draper%2C%20UT%2084020/807%20E%20Pioneer%20Rd%2C%20Suite%20104%2C%20Draper%2C%20UT%2084020/12176%20S%201000%20E%20Ste%201%2C%20Draper%2C%20UT%2084020/681%20W%20South%20Jordan%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/3709%20W%20South%20Jordan%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/Lehi)
+6 businesses, about 1 h 54 min door to door (18 min out from Lehi, 17 min back).
+
+[Open Day 4 in Google Maps](https://www.google.com/maps/dir/Lehi/146%20E%2013065%20S%20Suite%20C%2C%20Draper%2C%20UT%2084020/807%20E%20Pioneer%20Rd%20Ste%20101%2C%20Draper%2C%20UT%2084020/807%20E%20Pioneer%20Rd%2C%20Suite%20104%2C%20Draper%2C%20UT%2084020/12176%20S%201000%20E%20Ste%201%2C%20Draper%2C%20UT%2084020/681%20W%20South%20Jordan%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/3709%20W%20South%20Jordan%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -178,7 +190,9 @@ Fill-in days (no best bet):
 
 ### Day 5: Riverton: W 12600 S
 
-6 businesses, about 2 h 00 min door to door (21 min out from Lehi, 18 min back). [Map](https://www.google.com/maps/dir/Lehi/1515%20W%2012600%20S%2C%20Ste%20205%2C%20Riverton%2C%20UT%2084065/12472%20S%203670%20W%2C%20Riverton%2C%20UT%2084065/2582%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/3305%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/2184%20W%20Amber%20Blossom%20Way%2C%20South%20Jordan%2C%20UT%2084095/10118%20S%20Redwood%20Rd%2C%20Suite%20C%2C%20South%20Jordan%2C%20UT%2084095/Lehi)
+6 businesses, about 2 h 00 min door to door (21 min out from Lehi, 18 min back).
+
+[Open Day 5 in Google Maps](https://www.google.com/maps/dir/Lehi/1515%20W%2012600%20S%2C%20Ste%20205%2C%20Riverton%2C%20UT%2084065/12472%20S%203670%20W%2C%20Riverton%2C%20UT%2084065/2582%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/3305%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/2184%20W%20Amber%20Blossom%20Way%2C%20South%20Jordan%2C%20UT%2084095/10118%20S%20Redwood%20Rd%2C%20Suite%20C%2C%20South%20Jordan%2C%20UT%2084095/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -191,7 +205,9 @@ Fill-in days (no best bet):
 
 ### Day 6: Salt Lake City and South Salt Lake, part 1
 
-4 businesses, about 1 h 51 min door to door (28 min out from Lehi, 29 min back). [Map](https://www.google.com/maps/dir/Lehi/4050%20S%20Howick%20St%20%233E%2C%20Salt%20Lake%20City%20%28Murray%29%2C%20UT%2084107/3844%20S%20300%20E%2C%20South%20Salt%20Lake%2C%20UT%2084115/633%20E%203300%20S%20Suite%20B%2C%20Salt%20Lake%20City%20%28South%20Salt%20Lake%29%2C%20UT%2084106/3295%20S%202000%20E%20%23C%2C%20Salt%20Lake%20City%20%28Millcreek%29%2C%20UT%2084109/Lehi)
+4 businesses, about 1 h 51 min door to door (28 min out from Lehi, 29 min back).
+
+[Open Day 6 in Google Maps](https://www.google.com/maps/dir/Lehi/4050%20S%20Howick%20St%20%233E%2C%20Salt%20Lake%20City%20%28Murray%29%2C%20UT%2084107/3844%20S%20300%20E%2C%20South%20Salt%20Lake%2C%20UT%2084115/633%20E%203300%20S%20Suite%20B%2C%20Salt%20Lake%20City%20%28South%20Salt%20Lake%29%2C%20UT%2084106/3295%20S%202000%20E%20%23C%2C%20Salt%20Lake%20City%20%28Millcreek%29%2C%20UT%2084109/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -202,7 +218,9 @@ Fill-in days (no best bet):
 
 ### Day 7: Salt Lake City: S State St
 
-4 businesses, about 1 h 54 min door to door (32 min out from Lehi, 34 min back). [Map](https://www.google.com/maps/dir/Lehi/675%20E%202100%20S%20Ste%20F%2C%20Salt%20Lake%20City%2C%20UT%2084106/55%20W%20Utopia%20Ave%20Unit%20103%2C%20South%20Salt%20Lake%2C%20UT%2084115/1435%20S%20State%20St%2C%20Salt%20Lake%20City%2C%20UT%2084115/1212%20S%20State%20St%2C%20Salt%20Lake%20City%2C%20UT%2084111/Lehi)
+4 businesses, about 1 h 54 min door to door (32 min out from Lehi, 34 min back).
+
+[Open Day 7 in Google Maps](https://www.google.com/maps/dir/Lehi/675%20E%202100%20S%20Ste%20F%2C%20Salt%20Lake%20City%2C%20UT%2084106/55%20W%20Utopia%20Ave%20Unit%20103%2C%20South%20Salt%20Lake%2C%20UT%2084115/1435%20S%20State%20St%2C%20Salt%20Lake%20City%2C%20UT%2084115/1212%20S%20State%20St%2C%20Salt%20Lake%20City%2C%20UT%2084111/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -213,7 +231,9 @@ Fill-in days (no best bet):
 
 ### Day 8: West Jordan and Kearns
 
-5 businesses, about 1 h 58 min door to door (22 min out from Lehi, 27 min back). [Map](https://www.google.com/maps/dir/Lehi/3105%20W%207800%20S%2C%20West%20Jordan%2C%20UT%2084088/8455%20S%20Welby%20Farm%20Rd%20Ste%20B%2C%20West%20Jordan%2C%20UT%2084088/8018%20Welby%20Park%20Dr%2C%20Ste%203%2C%20West%20Jordan%2C%20UT%2084084/7352%20S%20Airport%20Rd%2C%20Unit%20B%2C%20West%20Jordan%2C%20UT%2084084/5662%20Cougar%20Ln%2C%20Kearns%2C%20UT%2084118/Lehi)
+5 businesses, about 1 h 58 min door to door (22 min out from Lehi, 27 min back).
+
+[Open Day 8 in Google Maps](https://www.google.com/maps/dir/Lehi/3105%20W%207800%20S%2C%20West%20Jordan%2C%20UT%2084088/8455%20S%20Welby%20Farm%20Rd%20Ste%20B%2C%20West%20Jordan%2C%20UT%2084088/8018%20Welby%20Park%20Dr%2C%20Ste%203%2C%20West%20Jordan%2C%20UT%2084084/7352%20S%20Airport%20Rd%2C%20Unit%20B%2C%20West%20Jordan%2C%20UT%2084084/5662%20Cougar%20Ln%2C%20Kearns%2C%20UT%2084118/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -225,7 +245,9 @@ Fill-in days (no best bet):
 
 ### Day 9: Salt Lake City: W Broadway
 
-4 businesses, about 1 h 58 min door to door (36 min out from Lehi, 31 min back). [Map](https://www.google.com/maps/dir/Lehi/360%20W%20Broadway%20Suite%20102%2C%20Salt%20Lake%20City%2C%20UT%2084101/336%20W%20Broadway%20Suite%20103%2C%20Salt%20Lake%20City%2C%20UT%2084101/972%20S%20300%20W%2C%20Salt%20Lake%20City%2C%20UT%2084101/2530%20S%20West%20Temple%2C%20South%20Salt%20Lake%2C%20UT%2084115/Lehi)
+4 businesses, about 1 h 58 min door to door (36 min out from Lehi, 31 min back).
+
+[Open Day 9 in Google Maps](https://www.google.com/maps/dir/Lehi/360%20W%20Broadway%20Suite%20102%2C%20Salt%20Lake%20City%2C%20UT%2084101/336%20W%20Broadway%20Suite%20103%2C%20Salt%20Lake%20City%2C%20UT%2084101/972%20S%20300%20W%2C%20Salt%20Lake%20City%2C%20UT%2084101/2530%20S%20West%20Temple%2C%20South%20Salt%20Lake%2C%20UT%2084115/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -236,7 +258,9 @@ Fill-in days (no best bet):
 
 ### Day 10: Sandy: S 700 E
 
-6 businesses, about 1 h 59 min door to door (20 min out from Lehi, 20 min back). [Map](https://www.google.com/maps/dir/Lehi/8383%20S%20700%20W%2C%20Sandy%2C%20UT%2084070/9442%20S%20670%20W%2C%20Sandy%2C%20UT%2084070/9507%20S%20560%20W%2C%20Sandy%2C%20UT%2084070/9263%20S%20700%20E%2C%20Sandy%2C%20UT%2084070/8720%20S%20700%20E%2C%20Sandy%2C%20UT%2084070/8010%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/Lehi)
+6 businesses, about 1 h 59 min door to door (20 min out from Lehi, 20 min back).
+
+[Open Day 10 in Google Maps](https://www.google.com/maps/dir/Lehi/8383%20S%20700%20W%2C%20Sandy%2C%20UT%2084070/9442%20S%20670%20W%2C%20Sandy%2C%20UT%2084070/9507%20S%20560%20W%2C%20Sandy%2C%20UT%2084070/9263%20S%20700%20E%2C%20Sandy%2C%20UT%2084070/8720%20S%20700%20E%2C%20Sandy%2C%20UT%2084070/8010%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -249,7 +273,9 @@ Fill-in days (no best bet):
 
 ### Day 11: Holladay and Cottonwood Heights, Murray
 
-5 businesses, about 1 h 58 min door to door (22 min out from Lehi, 28 min back). [Map](https://www.google.com/maps/dir/Lehi/1265%20Fort%20Union%20Blvd%2C%20Ste%20110%2C%20Cottonwood%20Heights%2C%20UT%2084047/1996%20E%206400%20S%2C%20Ste%20260%2C%20Murray%2C%20UT%2084121/6151%20S%20Highland%20Dr%2C%20Salt%20Lake%20City%20%28Holladay%29%2C%20UT%2084121/4540%20S%20Highland%20Dr%2C%20Holladay%2C%20UT%2084117/2006%20E%203900%20S%2C%20Holladay%2C%20UT%2084124/Lehi)
+5 businesses, about 1 h 58 min door to door (22 min out from Lehi, 28 min back).
+
+[Open Day 11 in Google Maps](https://www.google.com/maps/dir/Lehi/1265%20Fort%20Union%20Blvd%2C%20Ste%20110%2C%20Cottonwood%20Heights%2C%20UT%2084047/1996%20E%206400%20S%2C%20Ste%20260%2C%20Murray%2C%20UT%2084121/6151%20S%20Highland%20Dr%2C%20Salt%20Lake%20City%20%28Holladay%29%2C%20UT%2084121/4540%20S%20Highland%20Dr%2C%20Holladay%2C%20UT%2084117/2006%20E%203900%20S%2C%20Holladay%2C%20UT%2084124/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -261,7 +287,9 @@ Fill-in days (no best bet):
 
 ### Day 12: Lehi and Saratoga Springs, Eagle Mountain
 
-7 businesses, about 1 h 58 min door to door (1 min out from Lehi, 14 min back). [Map](https://www.google.com/maps/dir/Lehi/3300%20N%20Running%20Creek%20Way%2C%20Ste%20C200%2C%20Lehi%2C%20UT%2084043/401%20S%20850%20E%2C%20Lehi%2C%20UT%2084043/1560%20Trinnaman%20Ln%20%23B2%2C%20Lehi%2C%20UT%2084043/11%20W%20Hillcrest%20Rd%2C%20Saratoga%20Springs%2C%20UT%2084045/17%20N%20Hillcrest%20Rd%2C%20Saratoga%20Springs%2C%20UT%2084045/18%20W%20Sergeant%20Court%20Dr%2C%20Ste%20101%2C%20Saratoga%20Springs%2C%20UT%2084045/3251%20E%20Stone%20Ct%2C%20Eagle%20Mountain%2C%20UT%2084005/Lehi)
+7 businesses, about 1 h 58 min door to door (1 min out from Lehi, 14 min back).
+
+[Open Day 12 in Google Maps](https://www.google.com/maps/dir/Lehi/3300%20N%20Running%20Creek%20Way%2C%20Ste%20C200%2C%20Lehi%2C%20UT%2084043/401%20S%20850%20E%2C%20Lehi%2C%20UT%2084043/1560%20Trinnaman%20Ln%20%23B2%2C%20Lehi%2C%20UT%2084043/11%20W%20Hillcrest%20Rd%2C%20Saratoga%20Springs%2C%20UT%2084045/17%20N%20Hillcrest%20Rd%2C%20Saratoga%20Springs%2C%20UT%2084045/18%20W%20Sergeant%20Court%20Dr%2C%20Ste%20101%2C%20Saratoga%20Springs%2C%20UT%2084045/3251%20E%20Stone%20Ct%2C%20Eagle%20Mountain%2C%20UT%2084005/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -275,7 +303,9 @@ Fill-in days (no best bet):
 
 ### Day 13: Spanish Fork (84660)
 
-4 businesses, about 1 h 59 min door to door (30 min out from Lehi, 33 min back). [Map](https://www.google.com/maps/dir/Lehi/994%20Expressway%20Ln%2C%20Spanish%20Fork%2C%20UT%2084660/205%20N%20Main%20St%2C%20Spanish%20Fork%2C%20UT%2084660/132%20Volunteer%20Dr%2C%20Spanish%20Fork%2C%20UT%2084660/852%20S%20Spanish%20Fork%20Pkwy%2C%20Spanish%20Fork%2C%20UT%2084660/Lehi)
+4 businesses, about 1 h 59 min door to door (30 min out from Lehi, 33 min back).
+
+[Open Day 13 in Google Maps](https://www.google.com/maps/dir/Lehi/994%20Expressway%20Ln%2C%20Spanish%20Fork%2C%20UT%2084660/205%20N%20Main%20St%2C%20Spanish%20Fork%2C%20UT%2084660/132%20Volunteer%20Dr%2C%20Spanish%20Fork%2C%20UT%2084660/852%20S%20Spanish%20Fork%20Pkwy%2C%20Spanish%20Fork%2C%20UT%2084660/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -286,7 +316,9 @@ Fill-in days (no best bet):
 
 ### Day 14: Tooele (84074), part 1
 
-3 businesses, about 1 h 59 min door to door (35 min out from Lehi, 38 min back). [Map](https://www.google.com/maps/dir/Lehi/222%20Maple%20St%2C%20Tooele%2C%20UT%2084074/992%20N%20Main%20St%2C%20Tooele%2C%20UT%2084074/210%20Lodestone%20Way%2C%20Tooele%2C%20UT%2084074/Lehi)
+3 businesses, about 1 h 59 min door to door (35 min out from Lehi, 38 min back).
+
+[Open Day 14 in Google Maps](https://www.google.com/maps/dir/Lehi/222%20Maple%20St%2C%20Tooele%2C%20UT%2084074/992%20N%20Main%20St%2C%20Tooele%2C%20UT%2084074/210%20Lodestone%20Way%2C%20Tooele%2C%20UT%2084074/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -296,7 +328,9 @@ Fill-in days (no best bet):
 
 ### Day 15: Elk Ridge and Salem
 
-2 businesses, about 1 h 43 min door to door (39 min out from Lehi, 37 min back). [Map](https://www.google.com/maps/dir/Lehi/401%20E%20Salem%20Hills%20Dr%2C%20Elk%20Ridge%2C%20UT%2084651/898%20E%201160%20S%2C%20Salem%2C%20UT%2084653/Lehi)
+2 businesses, about 1 h 43 min door to door (39 min out from Lehi, 37 min back).
+
+[Open Day 15 in Google Maps](https://www.google.com/maps/dir/Lehi/401%20E%20Salem%20Hills%20Dr%2C%20Elk%20Ridge%2C%20UT%2084651/898%20E%201160%20S%2C%20Salem%2C%20UT%2084653/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -305,7 +339,9 @@ Fill-in days (no best bet):
 
 ### Day 16: Orem (84097)
 
-5 businesses, about 1 h 51 min door to door (17 min out from Lehi, 20 min back). [Map](https://www.google.com/maps/dir/Lehi/1245%20S%20800%20E%2C%20Orem%2C%20UT%2084097/1774%20Sandhill%20Rd%2C%20Orem%2C%20UT%2084058/1471%20W%20Business%20Park%20Dr%2C%20Suite%20203%2C%20Orem%2C%20UT%2084057/350%20W%20800%20N%2C%20Orem%2C%20UT%2084057/86%20E%20800%20N%2C%20Orem%2C%20UT%2084057/Lehi)
+5 businesses, about 1 h 51 min door to door (17 min out from Lehi, 20 min back).
+
+[Open Day 16 in Google Maps](https://www.google.com/maps/dir/Lehi/1245%20S%20800%20E%2C%20Orem%2C%20UT%2084097/1774%20Sandhill%20Rd%2C%20Orem%2C%20UT%2084058/1471%20W%20Business%20Park%20Dr%2C%20Suite%20203%2C%20Orem%2C%20UT%2084057/350%20W%20800%20N%2C%20Orem%2C%20UT%2084057/86%20E%20800%20N%2C%20Orem%2C%20UT%2084057/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -317,7 +353,9 @@ Fill-in days (no best bet):
 
 ### Day 17: Heber City: N Main St
 
-4 businesses, about 1 h 54 min door to door (34 min out from Lehi, 32 min back). [Map](https://www.google.com/maps/dir/Lehi/476%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/190%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/151%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/544%20Airport%20Rd%2C%20Unit%20B10%2C%20Heber%20City%2C%20UT%2084032/Lehi)
+4 businesses, about 1 h 54 min door to door (34 min out from Lehi, 32 min back).
+
+[Open Day 17 in Google Maps](https://www.google.com/maps/dir/Lehi/476%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/190%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/151%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/544%20Airport%20Rd%2C%20Unit%20B10%2C%20Heber%20City%2C%20UT%2084032/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -328,7 +366,9 @@ Fill-in days (no best bet):
 
 ### Day 18: Park City: Bonanza Dr
 
-4 businesses, about 1 h 54 min door to door (36 min out from Lehi, 36 min back). [Map](https://www.google.com/maps/dir/Lehi/1776%20Park%20Ave%20Ste%2020%2C%20Park%20City%2C%20UT%2084060/750%20Kearns%20Blvd%2C%20Park%20City%2C%20UT%2084060/1792%20Bonanza%20Dr%2C%20Park%20City%2C%20UT%2084060/1678%20Bonanza%20Dr%2C%20Park%20City%2C%20UT%2084060/Lehi)
+4 businesses, about 1 h 54 min door to door (36 min out from Lehi, 36 min back).
+
+[Open Day 18 in Google Maps](https://www.google.com/maps/dir/Lehi/1776%20Park%20Ave%20Ste%2020%2C%20Park%20City%2C%20UT%2084060/750%20Kearns%20Blvd%2C%20Park%20City%2C%20UT%2084060/1792%20Bonanza%20Dr%2C%20Park%20City%2C%20UT%2084060/1678%20Bonanza%20Dr%2C%20Park%20City%2C%20UT%2084060/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -339,7 +379,9 @@ Fill-in days (no best bet):
 
 ### Day 19: Salt Lake City and South Salt Lake, part 2
 
-4 businesses, about 1 h 58 min door to door (29 min out from Lehi, 29 min back). [Map](https://www.google.com/maps/dir/Lehi/3322%20S%20300%20E%2C%20South%20Salt%20Lake%2C%20UT%2084115/1892%20S%201000%20E%2C%20Salt%20Lake%20City%2C%20UT%2084105/1760%20S%201100%20E%2C%20Ste%203%2C%20Salt%20Lake%20City%2C%20UT%2084105/2261%20E%203300%20S%2C%20Salt%20Lake%20City%20%28Millcreek%29%2C%20UT%2084109/Lehi)
+4 businesses, about 1 h 58 min door to door (29 min out from Lehi, 29 min back).
+
+[Open Day 19 in Google Maps](https://www.google.com/maps/dir/Lehi/3322%20S%20300%20E%2C%20South%20Salt%20Lake%2C%20UT%2084115/1892%20S%201000%20E%2C%20Salt%20Lake%20City%2C%20UT%2084105/1760%20S%201100%20E%2C%20Ste%203%2C%20Salt%20Lake%20City%2C%20UT%2084105/2261%20E%203300%20S%2C%20Salt%20Lake%20City%20%28Millcreek%29%2C%20UT%2084109/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -350,7 +392,9 @@ Fill-in days (no best bet):
 
 ### Day 20: Woods Cross and Bountiful
 
-2 businesses, about 1 h 59 min door to door (47 min out from Lehi, 47 min back). [Map](https://www.google.com/maps/dir/Lehi/2119%20S%201200%20W%20Ste%20106%2C%20Woods%20Cross%2C%20UT%2084087/439%20S%20425%20W%20Ste%20A%2C%20Bountiful%2C%20UT%2084010/Lehi)
+2 businesses, about 1 h 59 min door to door (47 min out from Lehi, 47 min back).
+
+[Open Day 20 in Google Maps](https://www.google.com/maps/dir/Lehi/2119%20S%201200%20W%20Ste%20106%2C%20Woods%20Cross%2C%20UT%2084087/439%20S%20425%20W%20Ste%20A%2C%20Bountiful%2C%20UT%2084010/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -359,7 +403,9 @@ Fill-in days (no best bet):
 
 ### Day 21: Salem: UT-198
 
-4 businesses, about 2 h 00 min door to door (30 min out from Lehi, 35 min back). [Map](https://www.google.com/maps/dir/Lehi/28%20E%20100%20N%2C%20Spanish%20Fork%2C%20UT%2084660/741%20UT-198%2C%20Salem%2C%20UT%2084653/583%20UT-198%2C%20Salem%2C%20UT%2084653/139%20UT-198%2C%20Salem%2C%20UT%2084653/Lehi)
+4 businesses, about 2 h 00 min door to door (30 min out from Lehi, 35 min back).
+
+[Open Day 21 in Google Maps](https://www.google.com/maps/dir/Lehi/28%20E%20100%20N%2C%20Spanish%20Fork%2C%20UT%2084660/741%20UT-198%2C%20Salem%2C%20UT%2084653/583%20UT-198%2C%20Salem%2C%20UT%2084653/139%20UT-198%2C%20Salem%2C%20UT%2084653/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -370,7 +416,9 @@ Fill-in days (no best bet):
 
 ### Day 22: American Fork and Cedar Hills
 
-2 businesses, about 1 h 01 min door to door (14 min out from Lehi, 16 min back). [Map](https://www.google.com/maps/dir/Lehi/499%20S%20500%20E%20Ste%20A%2C%20American%20Fork%2C%20UT%2084003/10066%20N%204800%20W%20Unit%201%2C%20Cedar%20Hills%2C%20UT%2084062/Lehi)
+2 businesses, about 1 h 01 min door to door (14 min out from Lehi, 16 min back).
+
+[Open Day 22 in Google Maps](https://www.google.com/maps/dir/Lehi/499%20S%20500%20E%20Ste%20A%2C%20American%20Fork%2C%20UT%2084003/10066%20N%204800%20W%20Unit%201%2C%20Cedar%20Hills%2C%20UT%2084062/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -379,7 +427,9 @@ Fill-in days (no best bet):
 
 ### Day 23: Eagle Mountain (84005)
 
-2 businesses, about 1 h 04 min door to door (22 min out from Lehi, 21 min back). [Map](https://www.google.com/maps/dir/Lehi/1388%20Eagle%20Mountain%20Blvd%2C%20Eagle%20Mountain%2C%20UT%2084005/5390%20N%20Beckman%20Ln%2C%20Eagle%20Mountain%2C%20UT%2084005/Lehi)
+2 businesses, about 1 h 04 min door to door (22 min out from Lehi, 21 min back).
+
+[Open Day 23 in Google Maps](https://www.google.com/maps/dir/Lehi/1388%20Eagle%20Mountain%20Blvd%2C%20Eagle%20Mountain%2C%20UT%2084005/5390%20N%20Beckman%20Ln%2C%20Eagle%20Mountain%2C%20UT%2084005/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -388,7 +438,9 @@ Fill-in days (no best bet):
 
 ### Day 24: Orem and Provo, part 2
 
-2 businesses, about 1 h 12 min door to door (21 min out from Lehi, 21 min back). [Map](https://www.google.com/maps/dir/Lehi/157%20N%20State%20St%2C%20Orem%2C%20UT%2084057/460%20N%20900%20E%2C%20Provo%2C%20UT%2084606/Lehi)
+2 businesses, about 1 h 12 min door to door (21 min out from Lehi, 21 min back).
+
+[Open Day 24 in Google Maps](https://www.google.com/maps/dir/Lehi/157%20N%20State%20St%2C%20Orem%2C%20UT%2084057/460%20N%20900%20E%2C%20Provo%2C%20UT%2084606/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -397,7 +449,9 @@ Fill-in days (no best bet):
 
 ### Day 25: West Jordan and Cottonwood Heights
 
-2 businesses, about 1 h 25 min door to door (24 min out from Lehi, 21 min back). [Map](https://www.google.com/maps/dir/Lehi/7135%20S%20Plaza%20Center%20Dr%2C%20West%20Jordan%2C%20UT%2084084/3418%20E%20Bengal%20Blvd%2C%20Cottonwood%20Heights%2C%20UT%2084121/Lehi)
+2 businesses, about 1 h 25 min door to door (24 min out from Lehi, 21 min back).
+
+[Open Day 25 in Google Maps](https://www.google.com/maps/dir/Lehi/7135%20S%20Plaza%20Center%20Dr%2C%20West%20Jordan%2C%20UT%2084084/3418%20E%20Bengal%20Blvd%2C%20Cottonwood%20Heights%2C%20UT%2084121/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -406,7 +460,9 @@ Fill-in days (no best bet):
 
 ### Day 26: West Jordan and South Jordan
 
-3 businesses, about 1 h 29 min door to door (18 min out from Lehi, 24 min back). [Map](https://www.google.com/maps/dir/Lehi/10534%20S%20River%20Heights%20Dr%2C%20South%20Jordan%2C%20UT%2084095/3812%20W%207800%20S%20Ste%20190%2C%20West%20Jordan%2C%20UT%2084088/7759%20S%204800%20W%2C%20West%20Jordan%2C%20UT%2084084/Lehi)
+3 businesses, about 1 h 29 min door to door (18 min out from Lehi, 24 min back).
+
+[Open Day 26 in Google Maps](https://www.google.com/maps/dir/Lehi/10534%20S%20River%20Heights%20Dr%2C%20South%20Jordan%2C%20UT%2084095/3812%20W%207800%20S%20Ste%20190%2C%20West%20Jordan%2C%20UT%2084088/7759%20S%204800%20W%2C%20West%20Jordan%2C%20UT%2084084/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -416,7 +472,9 @@ Fill-in days (no best bet):
 
 ### Day 27: Payson (84651)
 
-2 businesses, about 1 h 35 min door to door (35 min out from Lehi, 35 min back). [Map](https://www.google.com/maps/dir/Lehi/673%20Innovation%20Cir%2C%20Payson%2C%20UT%2084651/742%20Highway%20198%2C%20Payson%2C%20UT%2084651/Lehi)
+2 businesses, about 1 h 35 min door to door (35 min out from Lehi, 35 min back).
+
+[Open Day 27 in Google Maps](https://www.google.com/maps/dir/Lehi/673%20Innovation%20Cir%2C%20Payson%2C%20UT%2084651/742%20Highway%20198%2C%20Payson%2C%20UT%2084651/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -425,7 +483,9 @@ Fill-in days (no best bet):
 
 ### Day 28: West Valley City and Magna
 
-2 businesses, about 1 h 37 min door to door (32 min out from Lehi, 34 min back). [Map](https://www.google.com/maps/dir/Lehi/3420%20S%205600%20W%2C%20West%20Valley%20City%2C%20UT%2084120/8400%20S%20Country%20West%20Dr%2C%20Magna%2C%20UT%2084044/Lehi)
+2 businesses, about 1 h 37 min door to door (32 min out from Lehi, 34 min back).
+
+[Open Day 28 in Google Maps](https://www.google.com/maps/dir/Lehi/3420%20S%205600%20W%2C%20West%20Valley%20City%2C%20UT%2084120/8400%20S%20Country%20West%20Dr%2C%20Magna%2C%20UT%2084044/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -434,7 +494,9 @@ Fill-in days (no best bet):
 
 ### Day 29: Heber City (84032), part 1
 
-3 businesses, about 1 h 39 min door to door (33 min out from Lehi, 34 min back). [Map](https://www.google.com/maps/dir/Lehi/1522%20S%20Daniels%20Rd%2C%20Heber%20City%2C%20UT%2084032/376%20Gateway%20Dr%20Ste%20102%2C%20Heber%20City%2C%20UT%2084032/425%20E%201200%20S%2C%20Suite%202%2C%20Heber%20City%2C%20UT%2084032/Lehi)
+3 businesses, about 1 h 39 min door to door (33 min out from Lehi, 34 min back).
+
+[Open Day 29 in Google Maps](https://www.google.com/maps/dir/Lehi/1522%20S%20Daniels%20Rd%2C%20Heber%20City%2C%20UT%2084032/376%20Gateway%20Dr%20Ste%20102%2C%20Heber%20City%2C%20UT%2084032/425%20E%201200%20S%2C%20Suite%202%2C%20Heber%20City%2C%20UT%2084032/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -444,7 +506,9 @@ Fill-in days (no best bet):
 
 ### Day 30: Tooele (84074), part 2
 
-2 businesses, about 1 h 39 min door to door (37 min out from Lehi, 35 min back). [Map](https://www.google.com/maps/dir/Lehi/1868%20N%20170%20W%2C%20Tooele%2C%20UT%2084074/250%20N%20Main%20St%2C%20Tooele%2C%20UT%2084074/Lehi)
+2 businesses, about 1 h 39 min door to door (37 min out from Lehi, 35 min back).
+
+[Open Day 30 in Google Maps](https://www.google.com/maps/dir/Lehi/1868%20N%20170%20W%2C%20Tooele%2C%20UT%2084074/250%20N%20Main%20St%2C%20Tooele%2C%20UT%2084074/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -453,7 +517,9 @@ Fill-in days (no best bet):
 
 ### Day 31: Lehi: E 3500 N
 
-6 businesses, about 1 h 46 min door to door (1 min out from Lehi, 11 min back). [Map](https://www.google.com/maps/dir/Lehi/1536%20E%203500%20N%20Ste%20101%2C%20Lehi%2C%20UT%2084043/1640%20E%203500%20N%2C%20Lehi%2C%20UT%2084043/401%20S%20850%20E%2C%20Lehi%2C%20UT%2084043/328%20E%20Crossroads%20Blvd%2C%20Saratoga%20Springs%2C%20UT%2084045/5125%20W%20Hudson%20Way%2C%20Lehi%2C%20UT%2084043/101%20NW%20State%20St%20Ste%20110%2C%20American%20Fork%2C%20UT%2084003/Lehi)
+6 businesses, about 1 h 46 min door to door (1 min out from Lehi, 11 min back).
+
+[Open Day 31 in Google Maps](https://www.google.com/maps/dir/Lehi/1536%20E%203500%20N%20Ste%20101%2C%20Lehi%2C%20UT%2084043/1640%20E%203500%20N%2C%20Lehi%2C%20UT%2084043/401%20S%20850%20E%2C%20Lehi%2C%20UT%2084043/328%20E%20Crossroads%20Blvd%2C%20Saratoga%20Springs%2C%20UT%2084045/5125%20W%20Hudson%20Way%2C%20Lehi%2C%20UT%2084043/101%20NW%20State%20St%20Ste%20110%2C%20American%20Fork%2C%20UT%2084003/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -466,7 +532,9 @@ Fill-in days (no best bet):
 
 ### Day 32: Spanish Fork and Mapleton, Springville
 
-3 businesses, about 1 h 46 min door to door (31 min out from Lehi, 27 min back). [Map](https://www.google.com/maps/dir/Lehi/1332%20E%20Center%20St%2C%20Spanish%20Fork%2C%20UT%2084660/1885%20W%20Alvey%20Dr%2C%20Unit%203%2C%20Mapleton%2C%20UT%2084664/512%20S%20950%20W%2C%20Springville%2C%20UT%2084663/Lehi)
+3 businesses, about 1 h 46 min door to door (31 min out from Lehi, 27 min back).
+
+[Open Day 32 in Google Maps](https://www.google.com/maps/dir/Lehi/1332%20E%20Center%20St%2C%20Spanish%20Fork%2C%20UT%2084660/1885%20W%20Alvey%20Dr%2C%20Unit%203%2C%20Mapleton%2C%20UT%2084664/512%20S%20950%20W%2C%20Springville%2C%20UT%2084663/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -476,7 +544,9 @@ Fill-in days (no best bet):
 
 ### Day 33: Draper: S State St
 
-4 businesses, about 1 h 47 min door to door (20 min out from Lehi, 18 min back). [Map](https://www.google.com/maps/dir/Lehi/12101%20S%20State%20St%2C%20Draper%2C%20UT%2084020/11483%20S%20State%20St%20Ste%20F%2C%20Draper%2C%20UT%2084020/10365%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/13366%20S%20Rosecrest%20Rd%2C%20Herriman%2C%20UT%2084096/Lehi)
+4 businesses, about 1 h 47 min door to door (20 min out from Lehi, 18 min back).
+
+[Open Day 33 in Google Maps](https://www.google.com/maps/dir/Lehi/12101%20S%20State%20St%2C%20Draper%2C%20UT%2084020/11483%20S%20State%20St%20Ste%20F%2C%20Draper%2C%20UT%2084020/10365%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/13366%20S%20Rosecrest%20Rd%2C%20Herriman%2C%20UT%2084096/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -487,7 +557,9 @@ Fill-in days (no best bet):
 
 ### Day 34: Draper: E Draper Pkwy
 
-6 businesses, about 1 h 48 min door to door (19 min out from Lehi, 16 min back). [Map](https://www.google.com/maps/dir/Lehi/1388%20E%20Draper%20Pkwy%20Ste%20B%2C%20Draper%2C%20UT%2084020/1101%20E%20Draper%20Pkwy%2C%20Draper%2C%20UT%2084020/282%20E%2012200%20S%2C%20Suite%20200%2C%20Draper%2C%20UT%2084020/241%20E%2012300%20S%2C%20Draper%2C%20UT%2084020/10%20W%20Scenic%20Point%20Dr%2C%20Suite%20107%2C%20Draper%2C%20UT%2084020/129%20E%2013800%20S%2C%20%23B3%2C%20Draper%2C%20UT%2084020/Lehi)
+6 businesses, about 1 h 48 min door to door (19 min out from Lehi, 16 min back).
+
+[Open Day 34 in Google Maps](https://www.google.com/maps/dir/Lehi/1388%20E%20Draper%20Pkwy%20Ste%20B%2C%20Draper%2C%20UT%2084020/1101%20E%20Draper%20Pkwy%2C%20Draper%2C%20UT%2084020/282%20E%2012200%20S%2C%20Suite%20200%2C%20Draper%2C%20UT%2084020/241%20E%2012300%20S%2C%20Draper%2C%20UT%2084020/10%20W%20Scenic%20Point%20Dr%2C%20Suite%20107%2C%20Draper%2C%20UT%2084020/129%20E%2013800%20S%2C%20%23B3%2C%20Draper%2C%20UT%2084020/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -500,7 +572,9 @@ Fill-in days (no best bet):
 
 ### Day 35: Salt Lake City (84102)
 
-3 businesses, about 1 h 48 min door to door (36 min out from Lehi, 32 min back). [Map](https://www.google.com/maps/dir/Lehi/208%20E%20800%20S%2C%20Suite%20101%2C%20Salt%20Lake%20City%2C%20UT%2084102/602%20E%20500%20S%2C%20Salt%20Lake%20City%2C%20UT%2084102/1202%20Wilmington%20Ave%2C%20%23100%2C%20Salt%20Lake%20City%2C%20UT%2084106/Lehi)
+3 businesses, about 1 h 48 min door to door (36 min out from Lehi, 32 min back).
+
+[Open Day 35 in Google Maps](https://www.google.com/maps/dir/Lehi/208%20E%20800%20S%2C%20Suite%20101%2C%20Salt%20Lake%20City%2C%20UT%2084102/602%20E%20500%20S%2C%20Salt%20Lake%20City%2C%20UT%2084102/1202%20Wilmington%20Ave%2C%20%23100%2C%20Salt%20Lake%20City%2C%20UT%2084106/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -510,7 +584,9 @@ Fill-in days (no best bet):
 
 ### Day 36: Park City: N Landmark Dr
 
-3 businesses, about 1 h 49 min door to door (39 min out from Lehi, 39 min back). [Map](https://www.google.com/maps/dir/Lehi/1680%20W%20Ute%20Blvd%2C%20Park%20City%2C%20UT%2084098/6546%20N%20Landmark%20Dr%20Ste%20A%2C%20Park%20City%2C%20UT%2084098/6699%20N%20Landmark%20Dr%20Ste%20A-105%2C%20Park%20City%2C%20UT%2084098/Lehi)
+3 businesses, about 1 h 49 min door to door (39 min out from Lehi, 39 min back).
+
+[Open Day 36 in Google Maps](https://www.google.com/maps/dir/Lehi/1680%20W%20Ute%20Blvd%2C%20Park%20City%2C%20UT%2084098/6546%20N%20Landmark%20Dr%20Ste%20A%2C%20Park%20City%2C%20UT%2084098/6699%20N%20Landmark%20Dr%20Ste%20A-105%2C%20Park%20City%2C%20UT%2084098/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -520,7 +596,9 @@ Fill-in days (no best bet):
 
 ### Day 37: Mapleton and Spanish Fork
 
-3 businesses, about 1 h 50 min door to door (30 min out from Lehi, 31 min back). [Map](https://www.google.com/maps/dir/Lehi/1159%20E%201060%20N%2C%20Spanish%20Fork%2C%20UT%2084660/1623%20W%202400%20S%2C%20Mapleton%2C%20UT%2084664/1615%20N%20850%20E%2C%20Mapleton%2C%20UT%2084664/Lehi)
+3 businesses, about 1 h 50 min door to door (30 min out from Lehi, 31 min back).
+
+[Open Day 37 in Google Maps](https://www.google.com/maps/dir/Lehi/1159%20E%201060%20N%2C%20Spanish%20Fork%2C%20UT%2084660/1623%20W%202400%20S%2C%20Mapleton%2C%20UT%2084664/1615%20N%20850%20E%2C%20Mapleton%2C%20UT%2084664/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -530,7 +608,9 @@ Fill-in days (no best bet):
 
 ### Day 38: Millcreek and Salt Lake City
 
-4 businesses, about 1 h 50 min door to door (28 min out from Lehi, 29 min back). [Map](https://www.google.com/maps/dir/Lehi/3941%20S%20Wasatch%20Blvd%2C%20Millcreek%2C%20UT%2084124/2505%20E%203300%20S%2C%20Suite%20102%2C%20Salt%20Lake%20City%2C%20UT%2084109/3065%20S%20Imperial%20St%2C%20Millcreek%2C%20UT%2084106/3232%20S%20Highland%20Dr%2C%20Salt%20Lake%20City%2C%20UT%2084106/Lehi)
+4 businesses, about 1 h 50 min door to door (28 min out from Lehi, 29 min back).
+
+[Open Day 38 in Google Maps](https://www.google.com/maps/dir/Lehi/3941%20S%20Wasatch%20Blvd%2C%20Millcreek%2C%20UT%2084124/2505%20E%203300%20S%2C%20Suite%20102%2C%20Salt%20Lake%20City%2C%20UT%2084109/3065%20S%20Imperial%20St%2C%20Millcreek%2C%20UT%2084106/3232%20S%20Highland%20Dr%2C%20Salt%20Lake%20City%2C%20UT%2084106/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -541,7 +621,9 @@ Fill-in days (no best bet):
 
 ### Day 39: Park City (84098), part 1
 
-2 businesses, about 1 h 50 min door to door (38 min out from Lehi, 39 min back). [Map](https://www.google.com/maps/dir/Lehi/4942%20Ponderosa%20Dr%2C%20Park%20City%2C%20UT%2084098/1708%20Uinta%20Way%20Ste%20F-2%2C%20Park%20City%2C%20UT%2084098/Lehi)
+2 businesses, about 1 h 50 min door to door (38 min out from Lehi, 39 min back).
+
+[Open Day 39 in Google Maps](https://www.google.com/maps/dir/Lehi/4942%20Ponderosa%20Dr%2C%20Park%20City%2C%20UT%2084098/1708%20Uinta%20Way%20Ste%20F-2%2C%20Park%20City%2C%20UT%2084098/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -550,7 +632,9 @@ Fill-in days (no best bet):
 
 ### Day 40: South Jordan and Sandy
 
-5 businesses, about 1 h 50 min door to door (18 min out from Lehi, 20 min back). [Map](https://www.google.com/maps/dir/Lehi/9599%20S%20500%20W%2C%20Sandy%2C%20UT%2084070/220%20W%2010600%20S%2C%20Sandy%2C%20UT%2084070/10996%20S%20River%20Front%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/6277%20W%20Crimson%20View%20Dr%20Ste%20106%2C%20South%20Jordan%2C%20UT%2084009/3658%20W%209800%20S%2C%20South%20Jordan%2C%20UT%2084095/Lehi)
+5 businesses, about 1 h 50 min door to door (18 min out from Lehi, 20 min back).
+
+[Open Day 40 in Google Maps](https://www.google.com/maps/dir/Lehi/9599%20S%20500%20W%2C%20Sandy%2C%20UT%2084070/220%20W%2010600%20S%2C%20Sandy%2C%20UT%2084070/10996%20S%20River%20Front%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/6277%20W%20Crimson%20View%20Dr%20Ste%20106%2C%20South%20Jordan%2C%20UT%2084009/3658%20W%209800%20S%2C%20South%20Jordan%2C%20UT%2084095/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -562,7 +646,9 @@ Fill-in days (no best bet):
 
 ### Day 41: Salt Lake City and Millcreek, South Salt Lake
 
-4 businesses, about 1 h 50 min door to door (30 min out from Lehi, 31 min back). [Map](https://www.google.com/maps/dir/Lehi/1295%20Miller%20Ave%2C%20Millcreek%2C%20UT%2084106/2695%20S%20900%20E%2C%20South%20Salt%20Lake%2C%20UT%2084106/1155%20E%20Wilmington%20Ave%2C%20Ste%20200%2C%20Salt%20Lake%20City%2C%20UT%2084106/2471%20S%201700%20E%2C%20Salt%20Lake%20City%2C%20UT%2084106/Lehi)
+4 businesses, about 1 h 50 min door to door (30 min out from Lehi, 31 min back).
+
+[Open Day 41 in Google Maps](https://www.google.com/maps/dir/Lehi/1295%20Miller%20Ave%2C%20Millcreek%2C%20UT%2084106/2695%20S%20900%20E%2C%20South%20Salt%20Lake%2C%20UT%2084106/1155%20E%20Wilmington%20Ave%2C%20Ste%20200%2C%20Salt%20Lake%20City%2C%20UT%2084106/2471%20S%201700%20E%2C%20Salt%20Lake%20City%2C%20UT%2084106/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -573,7 +659,9 @@ Fill-in days (no best bet):
 
 ### Day 42: Saratoga Springs: N Redwood Rd
 
-7 businesses, about 1 h 50 min door to door (13 min out from Lehi, 11 min back). [Map](https://www.google.com/maps/dir/Lehi/4118%20Clubhouse%20Ln%20Ste%202%2C%20Eagle%20Mountain%2C%20UT%2084005/4095%20E%20Pony%20Express%20Pkwy%2C%20Eagle%20Mountain%2C%20UT%2084005/1012%20N%20Redwood%20Rd%20Ste%20B%2C%20Saratoga%20Springs%2C%20UT%2084045/1168%20N%20Redwood%20Rd%20Ste%20B-204%2C%20Saratoga%20Springs%2C%20UT%2084045/1320%20S%20Redwood%20Rd%2C%20Saratoga%20Springs%2C%20UT%2084045/2253%20S%20Talonscove%20Dr%2C%20Saratoga%20Springs%2C%20UT%2084045/321%20E%20Crossroads%20Blvd%20Bldg%203%20Ste%20B%2C%20Saratoga%20Springs%2C%20UT%2084045/Lehi)
+7 businesses, about 1 h 50 min door to door (13 min out from Lehi, 11 min back).
+
+[Open Day 42 in Google Maps](https://www.google.com/maps/dir/Lehi/4118%20Clubhouse%20Ln%20Ste%202%2C%20Eagle%20Mountain%2C%20UT%2084005/4095%20E%20Pony%20Express%20Pkwy%2C%20Eagle%20Mountain%2C%20UT%2084005/1012%20N%20Redwood%20Rd%20Ste%20B%2C%20Saratoga%20Springs%2C%20UT%2084045/1168%20N%20Redwood%20Rd%20Ste%20B-204%2C%20Saratoga%20Springs%2C%20UT%2084045/1320%20S%20Redwood%20Rd%2C%20Saratoga%20Springs%2C%20UT%2084045/2253%20S%20Talonscove%20Dr%2C%20Saratoga%20Springs%2C%20UT%2084045/321%20E%20Crossroads%20Blvd%20Bldg%203%20Ste%20B%2C%20Saratoga%20Springs%2C%20UT%2084045/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -587,7 +675,9 @@ Fill-in days (no best bet):
 
 ### Day 43: Taylorsville: S Redwood Rd
 
-4 businesses, about 1 h 50 min door to door (25 min out from Lehi, 30 min back). [Map](https://www.google.com/maps/dir/Lehi/676%20W%20Auburn%20Dr%2C%20Murray%2C%20UT%2084123/5546%20S%20Redwood%20Rd%2C%20Taylorsville%2C%20UT%2084123/5474%20S%20Redwood%20Rd%2C%20Taylorsville%2C%20UT%2084123/3749%20S%20Constitution%20Blvd%2C%20West%20Valley%20City%2C%20UT%2084119/Lehi)
+4 businesses, about 1 h 50 min door to door (25 min out from Lehi, 30 min back).
+
+[Open Day 43 in Google Maps](https://www.google.com/maps/dir/Lehi/676%20W%20Auburn%20Dr%2C%20Murray%2C%20UT%2084123/5546%20S%20Redwood%20Rd%2C%20Taylorsville%2C%20UT%2084123/5474%20S%20Redwood%20Rd%2C%20Taylorsville%2C%20UT%2084123/3749%20S%20Constitution%20Blvd%2C%20West%20Valley%20City%2C%20UT%2084119/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -598,7 +688,9 @@ Fill-in days (no best bet):
 
 ### Day 44: Sandy: S 1300 E
 
-6 businesses, about 1 h 51 min door to door (17 min out from Lehi, 19 min back). [Map](https://www.google.com/maps/dir/Lehi/9844%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/9343%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/9245%20Village%20Shop%20Dr%2C%20Sandy%2C%20UT%2084094/8912%20S%20700%20E%2C%20Sandy%2C%20UT%2084070/8734%20S%20700%20E%2C%20Suite%20210%2C%20Sandy%2C%20UT%2084070/8789%20S%20Highland%20Dr%20Ste%20310%2C%20Sandy%2C%20UT%2084093/Lehi)
+6 businesses, about 1 h 51 min door to door (17 min out from Lehi, 19 min back).
+
+[Open Day 44 in Google Maps](https://www.google.com/maps/dir/Lehi/9844%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/9343%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/9245%20Village%20Shop%20Dr%2C%20Sandy%2C%20UT%2084094/8912%20S%20700%20E%2C%20Sandy%2C%20UT%2084070/8734%20S%20700%20E%2C%20Suite%20210%2C%20Sandy%2C%20UT%2084070/8789%20S%20Highland%20Dr%20Ste%20310%2C%20Sandy%2C%20UT%2084093/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -611,7 +703,9 @@ Fill-in days (no best bet):
 
 ### Day 45: Tooele (84074), part 3
 
-3 businesses, about 1 h 52 min door to door (35 min out from Lehi, 38 min back). [Map](https://www.google.com/maps/dir/Lehi/34%20S%20Main%20St%2C%20Tooele%2C%20UT%2084074/227%20N%20Main%20St%2C%20Tooele%2C%20UT%2084074/10%20S%20Garnet%20St%20Bldg%20669%20Ste%204%2C%20Tooele%2C%20UT%2084074/Lehi)
+3 businesses, about 1 h 52 min door to door (35 min out from Lehi, 38 min back).
+
+[Open Day 45 in Google Maps](https://www.google.com/maps/dir/Lehi/34%20S%20Main%20St%2C%20Tooele%2C%20UT%2084074/227%20N%20Main%20St%2C%20Tooele%2C%20UT%2084074/10%20S%20Garnet%20St%20Bldg%20669%20Ste%204%2C%20Tooele%2C%20UT%2084074/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -621,7 +715,9 @@ Fill-in days (no best bet):
 
 ### Day 46: Park City (84060)
 
-3 businesses, about 1 h 52 min door to door (39 min out from Lehi, 40 min back). [Map](https://www.google.com/maps/dir/Lehi/1%20Victory%20Ln%2C%20Park%20City%2C%20UT%2084060/4108%20N%20Forestdale%20Dr%2C%20Park%20City%2C%20UT%2084098/4518%20Forestdale%20Dr%2C%20Bldg%20I%2C%20Unit%2043%2C%20Park%20City%2C%20UT%2084098/Lehi)
+3 businesses, about 1 h 52 min door to door (39 min out from Lehi, 40 min back).
+
+[Open Day 46 in Google Maps](https://www.google.com/maps/dir/Lehi/1%20Victory%20Ln%2C%20Park%20City%2C%20UT%2084060/4108%20N%20Forestdale%20Dr%2C%20Park%20City%2C%20UT%2084098/4518%20Forestdale%20Dr%2C%20Bldg%20I%2C%20Unit%2043%2C%20Park%20City%2C%20UT%2084098/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -631,7 +727,9 @@ Fill-in days (no best bet):
 
 ### Day 47: Murray and Holladay, Cottonwood Heights
 
-5 businesses, about 1 h 52 min door to door (25 min out from Lehi, 22 min back). [Map](https://www.google.com/maps/dir/Lehi/5550%20S%20900%20E%2C%20Murray%2C%20UT%2084117/5518%20S%20Van%20Winkle%20Expy%2C%20Murray%2C%20UT%2084117/6263%20S%20Highland%20Dr%2C%20Holladay%2C%20UT%2084121/6953%20S%201300%20E%2C%20Cottonwood%20Heights%2C%20UT%2084121/785%20E%20Fort%20Union%20Blvd%2C%20Midvale%2C%20UT%2084047/Lehi)
+5 businesses, about 1 h 52 min door to door (25 min out from Lehi, 22 min back).
+
+[Open Day 47 in Google Maps](https://www.google.com/maps/dir/Lehi/5550%20S%20900%20E%2C%20Murray%2C%20UT%2084117/5518%20S%20Van%20Winkle%20Expy%2C%20Murray%2C%20UT%2084117/6263%20S%20Highland%20Dr%2C%20Holladay%2C%20UT%2084121/6953%20S%201300%20E%2C%20Cottonwood%20Heights%2C%20UT%2084121/785%20E%20Fort%20Union%20Blvd%2C%20Midvale%2C%20UT%2084047/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -643,7 +741,9 @@ Fill-in days (no best bet):
 
 ### Day 48: Cottonwood Heights: S Highland Dr
 
-6 businesses, about 1 h 52 min door to door (19 min out from Lehi, 23 min back). [Map](https://www.google.com/maps/dir/Lehi/8645%20S%20Highland%20Dr%2C%20Sandy%2C%20UT%2084093/7831%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/7076%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/2258%20E%20Fort%20Union%20Blvd%20%23B2%2C%20Cottonwood%20Heights%2C%20UT%2084121/2258%20E%20Fort%20Union%20Blvd%2C%20Cottonwood%20Heights%2C%20UT%2084121/2363%20E%206710%20S%2C%20Cottonwood%20Heights%2C%20UT%2084121/Lehi)
+6 businesses, about 1 h 52 min door to door (19 min out from Lehi, 23 min back).
+
+[Open Day 48 in Google Maps](https://www.google.com/maps/dir/Lehi/8645%20S%20Highland%20Dr%2C%20Sandy%2C%20UT%2084093/7831%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/7076%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/2258%20E%20Fort%20Union%20Blvd%20%23B2%2C%20Cottonwood%20Heights%2C%20UT%2084121/2258%20E%20Fort%20Union%20Blvd%2C%20Cottonwood%20Heights%2C%20UT%2084121/2363%20E%206710%20S%2C%20Cottonwood%20Heights%2C%20UT%2084121/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -656,7 +756,9 @@ Fill-in days (no best bet):
 
 ### Day 49: West Jordan: Welby Park Dr
 
-5 businesses, about 1 h 52 min door to door (23 min out from Lehi, 26 min back). [Map](https://www.google.com/maps/dir/Lehi/4602%20W%208400%20S%2C%20West%20Jordan%2C%20UT%2084088/8018%20Welby%20Park%20Dr%20%232%2C%20West%20Jordan%2C%20UT%2084088/8014%20Welby%20Park%20Dr%20Ste%20201%2C%20West%20Jordan%2C%20UT%2084088/7742%20S%20Campus%20View%20Dr%2C%20West%20Jordan%2C%20UT%2084084/4942%20W%206200%20S%2C%20Kearns%2C%20UT%2084118/Lehi)
+5 businesses, about 1 h 52 min door to door (23 min out from Lehi, 26 min back).
+
+[Open Day 49 in Google Maps](https://www.google.com/maps/dir/Lehi/4602%20W%208400%20S%2C%20West%20Jordan%2C%20UT%2084088/8018%20Welby%20Park%20Dr%20%232%2C%20West%20Jordan%2C%20UT%2084088/8014%20Welby%20Park%20Dr%20Ste%20201%2C%20West%20Jordan%2C%20UT%2084088/7742%20S%20Campus%20View%20Dr%2C%20West%20Jordan%2C%20UT%2084084/4942%20W%206200%20S%2C%20Kearns%2C%20UT%2084118/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -668,7 +770,9 @@ Fill-in days (no best bet):
 
 ### Day 50: Salt Lake City: Foothill Dr
 
-4 businesses, about 1 h 52 min door to door (32 min out from Lehi, 33 min back). [Map](https://www.google.com/maps/dir/Lehi/1790%20S%201100%20E%2C%20Suite%20201%2C%20Salt%20Lake%20City%2C%20UT%2084105/1400%20Foothill%20Dr%2C%20%2320%2C%20Salt%20Lake%20City%2C%20UT%2084108/1400%20S%20Foothill%20Dr%2C%20Ste%2020%2C%20Salt%20Lake%20City%2C%20UT%2084108/1440%20Foothill%20Dr%20%23160%2C%20Salt%20Lake%20City%2C%20UT%2084108/Lehi)
+4 businesses, about 1 h 52 min door to door (32 min out from Lehi, 33 min back).
+
+[Open Day 50 in Google Maps](https://www.google.com/maps/dir/Lehi/1790%20S%201100%20E%2C%20Suite%20201%2C%20Salt%20Lake%20City%2C%20UT%2084105/1400%20Foothill%20Dr%2C%20%2320%2C%20Salt%20Lake%20City%2C%20UT%2084108/1400%20S%20Foothill%20Dr%2C%20Ste%2020%2C%20Salt%20Lake%20City%2C%20UT%2084108/1440%20Foothill%20Dr%20%23160%2C%20Salt%20Lake%20City%2C%20UT%2084108/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -679,7 +783,9 @@ Fill-in days (no best bet):
 
 ### Day 51: Heber City and Midway
 
-3 businesses, about 1 h 53 min door to door (30 min out from Lehi, 30 min back). [Map](https://www.google.com/maps/dir/Lehi/2211%20W%203000%20S%2C%20Suite%20A%2C%20Heber%20City%2C%20UT%2084032/428%20W%20Powerline%20Rd%2C%20Units%20A6%20%26%20A7%2C%20Heber%20City%2C%20UT%2084032/65%20N%20200%20W%20Unit%20103%2C%20Midway%2C%20UT%2084049/Lehi)
+3 businesses, about 1 h 53 min door to door (30 min out from Lehi, 30 min back).
+
+[Open Day 51 in Google Maps](https://www.google.com/maps/dir/Lehi/2211%20W%203000%20S%2C%20Suite%20A%2C%20Heber%20City%2C%20UT%2084032/428%20W%20Powerline%20Rd%2C%20Units%20A6%20%26%20A7%2C%20Heber%20City%2C%20UT%2084032/65%20N%20200%20W%20Unit%20103%2C%20Midway%2C%20UT%2084049/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -689,7 +795,9 @@ Fill-in days (no best bet):
 
 ### Day 52: Murray: S 900 E
 
-5 businesses, about 1 h 53 min door to door (24 min out from Lehi, 25 min back). [Map](https://www.google.com/maps/dir/Lehi/333%20W%206160%20S%2C%20Murray%2C%20UT%2084107/5914%20S%20350%20W%2C%20Murray%2C%20UT%2084107/4894%20S%20Commerce%20Dr%20Ste%20A%2C%20Murray%2C%20UT%2084107/5445%20S%20900%20E%2C%20Murray%2C%20UT%2084117/5642%20S%20900%20E%20Unit%20B6%2C%20Murray%2C%20UT%2084121/Lehi)
+5 businesses, about 1 h 53 min door to door (24 min out from Lehi, 25 min back).
+
+[Open Day 52 in Google Maps](https://www.google.com/maps/dir/Lehi/333%20W%206160%20S%2C%20Murray%2C%20UT%2084107/5914%20S%20350%20W%2C%20Murray%2C%20UT%2084107/4894%20S%20Commerce%20Dr%20Ste%20A%2C%20Murray%2C%20UT%2084107/5445%20S%20900%20E%2C%20Murray%2C%20UT%2084117/5642%20S%20900%20E%20Unit%20B6%2C%20Murray%2C%20UT%2084121/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -701,7 +809,9 @@ Fill-in days (no best bet):
 
 ### Day 53: Herriman: S 5600 W
 
-6 businesses, about 1 h 53 min door to door (18 min out from Lehi, 17 min back). [Map](https://www.google.com/maps/dir/Lehi/4775%20W%20Daybreak%20Pkwy%2C%20Ste%20102%2C%20South%20Jordan%2C%20UT%2084009/12472%20S%20Meadow%20Spring%20Ln%2C%20Riverton%2C%20UT%2084065/13216%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/13276%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/13276%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/5746%20W%2013400%20S%2C%20Herriman%2C%20UT%2084096/Lehi)
+6 businesses, about 1 h 53 min door to door (18 min out from Lehi, 17 min back).
+
+[Open Day 53 in Google Maps](https://www.google.com/maps/dir/Lehi/4775%20W%20Daybreak%20Pkwy%2C%20Ste%20102%2C%20South%20Jordan%2C%20UT%2084009/12472%20S%20Meadow%20Spring%20Ln%2C%20Riverton%2C%20UT%2084065/13216%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/13276%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/13276%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/5746%20W%2013400%20S%2C%20Herriman%2C%20UT%2084096/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -714,7 +824,9 @@ Fill-in days (no best bet):
 
 ### Day 54: Woods Cross (84087)
 
-2 businesses, about 1 h 53 min door to door (47 min out from Lehi, 47 min back). [Map](https://www.google.com/maps/dir/Lehi/1431%20Redwood%20Rd%2C%20Woods%20Cross%2C%20UT%2084087/1181%20S%201800%20W%20Ste%201%2C%20Woods%20Cross%2C%20UT%2084087/Lehi)
+2 businesses, about 1 h 53 min door to door (47 min out from Lehi, 47 min back).
+
+[Open Day 54 in Google Maps](https://www.google.com/maps/dir/Lehi/1431%20Redwood%20Rd%2C%20Woods%20Cross%2C%20UT%2084087/1181%20S%201800%20W%20Ste%201%2C%20Woods%20Cross%2C%20UT%2084087/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -723,7 +835,9 @@ Fill-in days (no best bet):
 
 ### Day 55: Orem and Provo, part 3
 
-6 businesses, about 1 h 54 min door to door (18 min out from Lehi, 23 min back). [Map](https://www.google.com/maps/dir/Lehi/3210%20N%20Canyon%20Rd%2C%20Ste%20202%2C%20Provo%2C%20UT%2084604/3601%20N%20University%20Ave%2C%20%23150%2C%20Provo%2C%20UT%2084604/1060%20S%20750%20E%2C%20Orem%2C%20UT%2084097/560%20E%20Park%20Ave%2C%20Orem%2C%20UT%2084097/542%20E%20University%20Pkwy%2C%20Orem%2C%20UT%2084097/1330%20Sandhill%20Rd%2C%20Orem%2C%20UT%2084058/Lehi)
+6 businesses, about 1 h 54 min door to door (18 min out from Lehi, 23 min back).
+
+[Open Day 55 in Google Maps](https://www.google.com/maps/dir/Lehi/3210%20N%20Canyon%20Rd%2C%20Ste%20202%2C%20Provo%2C%20UT%2084604/3601%20N%20University%20Ave%2C%20%23150%2C%20Provo%2C%20UT%2084604/1060%20S%20750%20E%2C%20Orem%2C%20UT%2084097/560%20E%20Park%20Ave%2C%20Orem%2C%20UT%2084097/542%20E%20University%20Pkwy%2C%20Orem%2C%20UT%2084097/1330%20Sandhill%20Rd%2C%20Orem%2C%20UT%2084058/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -736,7 +850,9 @@ Fill-in days (no best bet):
 
 ### Day 56: Orem and Provo, part 4
 
-6 businesses, about 1 h 54 min door to door (18 min out from Lehi, 21 min back). [Map](https://www.google.com/maps/dir/Lehi/428%20W%202310%20N%2C%20Suite%20103%2C%20Provo%2C%20UT%2084604/2494%20N%20University%20Pkwy%2C%20Provo%2C%20UT%2084604/1523%20S%20State%20St%2C%20Orem%2C%20UT%2084097/371%20E%20800%20S%2C%20Orem%2C%20UT%2084097/665%20W%20400%20S%2C%20Orem%2C%20UT%2084058/147%20W%20400%20N%2C%20Orem%2C%20UT%2084057/Lehi)
+6 businesses, about 1 h 54 min door to door (18 min out from Lehi, 21 min back).
+
+[Open Day 56 in Google Maps](https://www.google.com/maps/dir/Lehi/428%20W%202310%20N%2C%20Suite%20103%2C%20Provo%2C%20UT%2084604/2494%20N%20University%20Pkwy%2C%20Provo%2C%20UT%2084604/1523%20S%20State%20St%2C%20Orem%2C%20UT%2084097/371%20E%20800%20S%2C%20Orem%2C%20UT%2084097/665%20W%20400%20S%2C%20Orem%2C%20UT%2084058/147%20W%20400%20N%2C%20Orem%2C%20UT%2084057/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -749,7 +865,9 @@ Fill-in days (no best bet):
 
 ### Day 57: Lehi: W Main St
 
-8 businesses, about 1 h 54 min door to door (1 min out from Lehi, 15 min back). [Map](https://www.google.com/maps/dir/Lehi/68%20W%20Main%20St%2C%20Lehi%2C%20UT%2084043/68%20W%20Main%20St%2C%20Lehi%2C%20UT%2084043/288%20E%20Main%20St%2C%20Lehi%2C%20UT%2084043/80%20N%20850%20E%20Ste%20A%2C%20Lehi%2C%20UT%2084043/785%20E%20200%20S%2C%20Suite%206%2C%20Lehi%2C%20UT%2084043/120%20S%201350%20E%20Ste%201%2C%20Lehi%2C%20UT%2084043/1438%20E%20Main%20St%20Ste%207%2C%20Lehi%2C%20UT%2084043/5342%20W%20Parkway%20East%20St%2C%20Highland%2C%20UT%2084003/Lehi)
+8 businesses, about 1 h 54 min door to door (1 min out from Lehi, 15 min back).
+
+[Open Day 57 in Google Maps](https://www.google.com/maps/dir/Lehi/68%20W%20Main%20St%2C%20Lehi%2C%20UT%2084043/68%20W%20Main%20St%2C%20Lehi%2C%20UT%2084043/288%20E%20Main%20St%2C%20Lehi%2C%20UT%2084043/80%20N%20850%20E%20Ste%20A%2C%20Lehi%2C%20UT%2084043/785%20E%20200%20S%2C%20Suite%206%2C%20Lehi%2C%20UT%2084043/120%20S%201350%20E%20Ste%201%2C%20Lehi%2C%20UT%2084043/1438%20E%20Main%20St%20Ste%207%2C%20Lehi%2C%20UT%2084043/5342%20W%20Parkway%20East%20St%2C%20Highland%2C%20UT%2084003/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -764,7 +882,9 @@ Fill-in days (no best bet):
 
 ### Day 58: Riverton: W Partridge Hill Ln
 
-6 businesses, about 1 h 54 min door to door (17 min out from Lehi, 17 min back). [Map](https://www.google.com/maps/dir/Lehi/11531%20S%20District%20Main%20Dr%20Ste%201000%2C%20South%20Jordan%2C%20UT%2084095/2722%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/4505%20W%20Partridge%20Hill%20Ln%20Ste%20P-110%2C%20Riverton%2C%20UT%2084096/4534%20W%20Partridge%20Hill%20Ln%20Ste%20E120%2C%20Riverton%2C%20UT%2084096/4534%20W%20Partridge%20Hill%20Ln%20Ste%20E150%2C%20Riverton%2C%20UT%2084096/13216%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/Lehi)
+6 businesses, about 1 h 54 min door to door (17 min out from Lehi, 17 min back).
+
+[Open Day 58 in Google Maps](https://www.google.com/maps/dir/Lehi/11531%20S%20District%20Main%20Dr%20Ste%201000%2C%20South%20Jordan%2C%20UT%2084095/2722%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/4505%20W%20Partridge%20Hill%20Ln%20Ste%20P-110%2C%20Riverton%2C%20UT%2084096/4534%20W%20Partridge%20Hill%20Ln%20Ste%20E120%2C%20Riverton%2C%20UT%2084096/4534%20W%20Partridge%20Hill%20Ln%20Ste%20E150%2C%20Riverton%2C%20UT%2084096/13216%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -777,7 +897,9 @@ Fill-in days (no best bet):
 
 ### Day 59: Salt Lake City: S 700 E
 
-4 businesses, about 1 h 54 min door to door (35 min out from Lehi, 34 min back). [Map](https://www.google.com/maps/dir/Lehi/330%20E%20400%20S%2C%20Suite%20105%2C%20Salt%20Lake%20City%2C%20UT%2084111/515%20S%20700%20E%2C%20Ste%202D%2C%20Salt%20Lake%20City%2C%20UT%2084102/602%20S%20700%20E%2C%20Suite%20106%2C%20Salt%20Lake%20City%2C%20UT%2084102/951%20E%20900%20S%2C%20Salt%20Lake%20City%2C%20UT%2084105/Lehi)
+4 businesses, about 1 h 54 min door to door (35 min out from Lehi, 34 min back).
+
+[Open Day 59 in Google Maps](https://www.google.com/maps/dir/Lehi/330%20E%20400%20S%2C%20Suite%20105%2C%20Salt%20Lake%20City%2C%20UT%2084111/515%20S%20700%20E%2C%20Ste%202D%2C%20Salt%20Lake%20City%2C%20UT%2084102/602%20S%20700%20E%2C%20Suite%20106%2C%20Salt%20Lake%20City%2C%20UT%2084102/951%20E%20900%20S%2C%20Salt%20Lake%20City%2C%20UT%2084105/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -788,7 +910,9 @@ Fill-in days (no best bet):
 
 ### Day 60: Bountiful: W 500 S
 
-2 businesses, about 1 h 54 min door to door (47 min out from Lehi, 47 min back). [Map](https://www.google.com/maps/dir/Lehi/155%20W%20500%20S%20Ste%201A%2C%20Bountiful%2C%20UT%2084010/144%20W%20500%20S%2C%20Bountiful%2C%20UT%2084010/Lehi)
+2 businesses, about 1 h 54 min door to door (47 min out from Lehi, 47 min back).
+
+[Open Day 60 in Google Maps](https://www.google.com/maps/dir/Lehi/155%20W%20500%20S%20Ste%201A%2C%20Bountiful%2C%20UT%2084010/144%20W%20500%20S%2C%20Bountiful%2C%20UT%2084010/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -797,7 +921,9 @@ Fill-in days (no best bet):
 
 ### Day 61: Salt Lake City: E 2100 S, part 1
 
-4 businesses, about 1 h 54 min door to door (32 min out from Lehi, 33 min back). [Map](https://www.google.com/maps/dir/Lehi/1511%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084105/1056%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084106/675%20E%202100%20S%2C%20Suite%20Q%2C%20Salt%20Lake%20City%2C%20UT%2084106/1298%20S%20900%20E%2C%20Salt%20Lake%20City%2C%20UT%2084105/Lehi)
+4 businesses, about 1 h 54 min door to door (32 min out from Lehi, 33 min back).
+
+[Open Day 61 in Google Maps](https://www.google.com/maps/dir/Lehi/1511%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084105/1056%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084106/675%20E%202100%20S%2C%20Suite%20Q%2C%20Salt%20Lake%20City%2C%20UT%2084106/1298%20S%20900%20E%2C%20Salt%20Lake%20City%2C%20UT%2084105/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -808,7 +934,9 @@ Fill-in days (no best bet):
 
 ### Day 62: Bountiful (84010), part 1
 
-2 businesses, about 1 h 54 min door to door (45 min out from Lehi, 46 min back). [Map](https://www.google.com/maps/dir/Lehi/2399%20S%20Main%20St%2C%20Bountiful%2C%20UT%2084010/250%20W%201500%20S%2C%20Bountiful%2C%20UT%2084010/Lehi)
+2 businesses, about 1 h 54 min door to door (45 min out from Lehi, 46 min back).
+
+[Open Day 62 in Google Maps](https://www.google.com/maps/dir/Lehi/2399%20S%20Main%20St%2C%20Bountiful%2C%20UT%2084010/250%20W%201500%20S%2C%20Bountiful%2C%20UT%2084010/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -817,7 +945,9 @@ Fill-in days (no best bet):
 
 ### Day 63: Draper and Riverton, Bluffdale
 
-5 businesses, about 1 h 54 min door to door (19 min out from Lehi, 16 min back). [Map](https://www.google.com/maps/dir/Lehi/866%20E%2012300%20S%2C%20Ste%20B%2C%20Draper%2C%20UT%2084020/11576%20S%20State%20St%2C%20Ste%201101%2C%20Draper%2C%20UT%2084020/2478%20W%2012600%20S%20Ste%202%2C%20Riverton%2C%20UT%2084065/2588%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/974%20W%2014420%20S%20Ste%205%2C%20Bluffdale%2C%20UT%2084065/Lehi)
+5 businesses, about 1 h 54 min door to door (19 min out from Lehi, 16 min back).
+
+[Open Day 63 in Google Maps](https://www.google.com/maps/dir/Lehi/866%20E%2012300%20S%2C%20Ste%20B%2C%20Draper%2C%20UT%2084020/11576%20S%20State%20St%2C%20Ste%201101%2C%20Draper%2C%20UT%2084020/2478%20W%2012600%20S%20Ste%202%2C%20Riverton%2C%20UT%2084065/2588%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/974%20W%2014420%20S%20Ste%205%2C%20Bluffdale%2C%20UT%2084065/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -829,7 +959,9 @@ Fill-in days (no best bet):
 
 ### Day 64: Bountiful (84010), part 2
 
-2 businesses, about 1 h 55 min door to door (47 min out from Lehi, 47 min back). [Map](https://www.google.com/maps/dir/Lehi/533%20W%20750%20S%2C%20Bountiful%2C%20UT%2084010/530%20W%20500%20S%20Ste%20D%2C%20Bountiful%2C%20UT%2084010/Lehi)
+2 businesses, about 1 h 55 min door to door (47 min out from Lehi, 47 min back).
+
+[Open Day 64 in Google Maps](https://www.google.com/maps/dir/Lehi/533%20W%20750%20S%2C%20Bountiful%2C%20UT%2084010/530%20W%20500%20S%20Ste%20D%2C%20Bountiful%2C%20UT%2084010/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -838,7 +970,9 @@ Fill-in days (no best bet):
 
 ### Day 65: Bountiful (84010), part 3
 
-2 businesses, about 1 h 55 min door to door (47 min out from Lehi, 47 min back). [Map](https://www.google.com/maps/dir/Lehi/401%20S%20Main%20St%2C%20Bountiful%2C%20UT%2084010/85%20W%20500%20S%2C%20Bountiful%2C%20UT%2084010/Lehi)
+2 businesses, about 1 h 55 min door to door (47 min out from Lehi, 47 min back).
+
+[Open Day 65 in Google Maps](https://www.google.com/maps/dir/Lehi/401%20S%20Main%20St%2C%20Bountiful%2C%20UT%2084010/85%20W%20500%20S%2C%20Bountiful%2C%20UT%2084010/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -847,7 +981,9 @@ Fill-in days (no best bet):
 
 ### Day 66: South Jordan and Riverton, Herriman
 
-6 businesses, about 1 h 55 min door to door (20 min out from Lehi, 18 min back). [Map](https://www.google.com/maps/dir/Lehi/10420%20S%20Rubicon%20Rd%20B103%2C%20South%20Jordan%2C%20UT%2084009/4690%20W%20Boardwalk%20Rd%20Ste%20A103%2C%20South%20Jordan%2C%20UT%2084009/11277%20Kestrel%20Rise%20Rd%20Ste%20A%2C%20South%20Jordan%2C%20UT%2084009/11516%20District%20Dr%20%23600%2C%20South%20Jordan%2C%20UT%2084095/12544%20S%20Pasture%20Rd%2C%20Riverton%2C%20UT%2084096/5127%20W%20Miller%20Crossing%20Dr%2C%20Herriman%2C%20UT%2084096/Lehi)
+6 businesses, about 1 h 55 min door to door (20 min out from Lehi, 18 min back).
+
+[Open Day 66 in Google Maps](https://www.google.com/maps/dir/Lehi/10420%20S%20Rubicon%20Rd%20B103%2C%20South%20Jordan%2C%20UT%2084009/4690%20W%20Boardwalk%20Rd%20Ste%20A103%2C%20South%20Jordan%2C%20UT%2084009/11277%20Kestrel%20Rise%20Rd%20Ste%20A%2C%20South%20Jordan%2C%20UT%2084009/11516%20District%20Dr%20%23600%2C%20South%20Jordan%2C%20UT%2084095/12544%20S%20Pasture%20Rd%2C%20Riverton%2C%20UT%2084096/5127%20W%20Miller%20Crossing%20Dr%2C%20Herriman%2C%20UT%2084096/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -860,7 +996,9 @@ Fill-in days (no best bet):
 
 ### Day 67: Bountiful (84010), part 4
 
-2 businesses, about 1 h 55 min door to door (46 min out from Lehi, 47 min back). [Map](https://www.google.com/maps/dir/Lehi/448%20W%201150%20S%2C%20Bountiful%2C%20UT%2084010/273%20W%20500%20S%20%2320%2C%20Bountiful%2C%20UT%2084010/Lehi)
+2 businesses, about 1 h 55 min door to door (46 min out from Lehi, 47 min back).
+
+[Open Day 67 in Google Maps](https://www.google.com/maps/dir/Lehi/448%20W%201150%20S%2C%20Bountiful%2C%20UT%2084010/273%20W%20500%20S%20%2320%2C%20Bountiful%2C%20UT%2084010/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -869,7 +1007,9 @@ Fill-in days (no best bet):
 
 ### Day 68: Bountiful (84010), part 5
 
-2 businesses, about 1 h 55 min door to door (47 min out from Lehi, 47 min back). [Map](https://www.google.com/maps/dir/Lehi/450%20S%20400%20E%2C%20Bountiful%2C%20UT%2084010/51%20E%20400%20S%2C%20Bountiful%2C%20UT%2084010/Lehi)
+2 businesses, about 1 h 55 min door to door (47 min out from Lehi, 47 min back).
+
+[Open Day 68 in Google Maps](https://www.google.com/maps/dir/Lehi/450%20S%20400%20E%2C%20Bountiful%2C%20UT%2084010/51%20E%20400%20S%2C%20Bountiful%2C%20UT%2084010/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -878,7 +1018,9 @@ Fill-in days (no best bet):
 
 ### Day 69: Sandy: E 9400 S
 
-6 businesses, about 1 h 56 min door to door (18 min out from Lehi, 21 min back). [Map](https://www.google.com/maps/dir/Lehi/1842%20E%209400%20S%2C%20Sandy%2C%20UT%2084093/2077%20E%209400%20S%2C%20Sandy%2C%20UT%2084093/8679%20S%20Highland%20Dr%2C%20Sandy%2C%20UT%2084093/7817%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/1844%20E%20Fort%20Union%20Blvd%20%238%2C%20Cottonwood%20Heights%2C%20UT%2084121/7690%20Union%20Park%20Ave%2C%20Midvale%2C%20UT%2084047/Lehi)
+6 businesses, about 1 h 56 min door to door (18 min out from Lehi, 21 min back).
+
+[Open Day 69 in Google Maps](https://www.google.com/maps/dir/Lehi/1842%20E%209400%20S%2C%20Sandy%2C%20UT%2084093/2077%20E%209400%20S%2C%20Sandy%2C%20UT%2084093/8679%20S%20Highland%20Dr%2C%20Sandy%2C%20UT%2084093/7817%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/1844%20E%20Fort%20Union%20Blvd%20%238%2C%20Cottonwood%20Heights%2C%20UT%2084121/7690%20Union%20Park%20Ave%2C%20Midvale%2C%20UT%2084047/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -891,7 +1033,9 @@ Fill-in days (no best bet):
 
 ### Day 70: Salt Lake City: S 300 E
 
-4 businesses, about 1 h 56 min door to door (35 min out from Lehi, 35 min back). [Map](https://www.google.com/maps/dir/Lehi/660%20S%20400%20W%2C%20Suite%20600%2C%20Salt%20Lake%20City%2C%20UT%2084101/175%20S%20West%20Temple%2C%20Salt%20Lake%20City%2C%20UT%2084101/358%20S%20300%20E%2C%20Salt%20Lake%20City%2C%20UT%2084111/370%20S%20300%20E%2C%20Salt%20Lake%20City%2C%20UT%2084111/Lehi)
+4 businesses, about 1 h 56 min door to door (35 min out from Lehi, 35 min back).
+
+[Open Day 70 in Google Maps](https://www.google.com/maps/dir/Lehi/660%20S%20400%20W%2C%20Suite%20600%2C%20Salt%20Lake%20City%2C%20UT%2084101/175%20S%20West%20Temple%2C%20Salt%20Lake%20City%2C%20UT%2084101/358%20S%20300%20E%2C%20Salt%20Lake%20City%2C%20UT%2084111/370%20S%20300%20E%2C%20Salt%20Lake%20City%2C%20UT%2084111/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -902,7 +1046,9 @@ Fill-in days (no best bet):
 
 ### Day 71: Lehi (84043), part 2
 
-7 businesses, about 1 h 56 min door to door (5 min out from Lehi, 8 min back). [Map](https://www.google.com/maps/dir/Lehi/1600%20N%20Trinnaman%20Ln%2C%20Lehi%2C%20UT%2084043/1657%20N%20State%20St%2C%20Lehi%2C%20UT%2084043/61%20W%203200%20N%2C%20Suite%20%2310%2C%20Lehi%2C%20UT%2084043/2319%20N%203370%20W%2C%20Lehi%2C%20UT%2084043/305%20S%20850%20E%2C%20Lehi%2C%20UT%2084043/1010%20S%201100%20W%2C%20Suite%20104%2C%20Lehi%2C%20UT%2084043/629%20N%20Saratoga%20Rd%20Bldg%202%2C%20Lehi%2C%20UT%2084043/Lehi)
+7 businesses, about 1 h 56 min door to door (5 min out from Lehi, 8 min back).
+
+[Open Day 71 in Google Maps](https://www.google.com/maps/dir/Lehi/1600%20N%20Trinnaman%20Ln%2C%20Lehi%2C%20UT%2084043/1657%20N%20State%20St%2C%20Lehi%2C%20UT%2084043/61%20W%203200%20N%2C%20Suite%20%2310%2C%20Lehi%2C%20UT%2084043/2319%20N%203370%20W%2C%20Lehi%2C%20UT%2084043/305%20S%20850%20E%2C%20Lehi%2C%20UT%2084043/1010%20S%201100%20W%2C%20Suite%20104%2C%20Lehi%2C%20UT%2084043/629%20N%20Saratoga%20Rd%20Bldg%202%2C%20Lehi%2C%20UT%2084043/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -916,7 +1062,9 @@ Fill-in days (no best bet):
 
 ### Day 72: Park City: Center Dr
 
-3 businesses, about 1 h 56 min door to door (40 min out from Lehi, 39 min back). [Map](https://www.google.com/maps/dir/Lehi/2720%20Rasmussen%20Rd%20Ste%20A4%2C%20Park%20City%2C%20UT%2084098/1241%20Center%20Dr%20Ste%20L-120%2C%20Park%20City%2C%20UT%2084098/1153%20Center%20Dr%20Ste%20G190%2C%20Park%20City%2C%20UT%2084098/Lehi)
+3 businesses, about 1 h 56 min door to door (40 min out from Lehi, 39 min back).
+
+[Open Day 72 in Google Maps](https://www.google.com/maps/dir/Lehi/2720%20Rasmussen%20Rd%20Ste%20A4%2C%20Park%20City%2C%20UT%2084098/1241%20Center%20Dr%20Ste%20L-120%2C%20Park%20City%2C%20UT%2084098/1153%20Center%20Dr%20Ste%20G190%2C%20Park%20City%2C%20UT%2084098/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -926,7 +1074,9 @@ Fill-in days (no best bet):
 
 ### Day 73: Park City: N Business Park Loop Rd
 
-4 businesses, about 1 h 56 min door to door (35 min out from Lehi, 37 min back). [Map](https://www.google.com/maps/dir/Lehi/6430%20N%20Business%20Park%20Loop%20Rd%20Unit%20D%2C%20Park%20City%2C%20UT%2084098/6430%20N%20Business%20Park%20Loop%20Rd%20Ste%20A%2C%20Park%20City%2C%20UT%2084098/2080%20Gold%20Dust%20Ln%2C%20Park%20City%2C%20UT%2084060/2080%20Gold%20Dust%20Ln%2C%20Park%20City%2C%20UT%2084060/Lehi)
+4 businesses, about 1 h 56 min door to door (35 min out from Lehi, 37 min back).
+
+[Open Day 73 in Google Maps](https://www.google.com/maps/dir/Lehi/6430%20N%20Business%20Park%20Loop%20Rd%20Unit%20D%2C%20Park%20City%2C%20UT%2084098/6430%20N%20Business%20Park%20Loop%20Rd%20Ste%20A%2C%20Park%20City%2C%20UT%2084098/2080%20Gold%20Dust%20Ln%2C%20Park%20City%2C%20UT%2084060/2080%20Gold%20Dust%20Ln%2C%20Park%20City%2C%20UT%2084060/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -937,7 +1087,9 @@ Fill-in days (no best bet):
 
 ### Day 74: Draper and Sandy, Bluffdale
 
-5 businesses, about 1 h 56 min door to door (16 min out from Lehi, 19 min back). [Map](https://www.google.com/maps/dir/Lehi/13957%20S%20Bangerter%20Pkwy%20Ste%20102%2C%20Draper%2C%20UT%2084020/13648%20S%20200%20W%20%231%2C%20Draper%2C%20UT%2084020/827%20Pioneer%20Rd%20Ste%20101%2C%20Draper%2C%20UT%2084020/10450%20S%20State%20St%20%231216%2C%20Sandy%2C%20UT%2084070/13863%20S%202700%20W%2C%20Units%20205%20%26%20206%2C%20Bluffdale%2C%20UT%2084065/Lehi)
+5 businesses, about 1 h 56 min door to door (16 min out from Lehi, 19 min back).
+
+[Open Day 74 in Google Maps](https://www.google.com/maps/dir/Lehi/13957%20S%20Bangerter%20Pkwy%20Ste%20102%2C%20Draper%2C%20UT%2084020/13648%20S%20200%20W%20%231%2C%20Draper%2C%20UT%2084020/827%20Pioneer%20Rd%20Ste%20101%2C%20Draper%2C%20UT%2084020/10450%20S%20State%20St%20%231216%2C%20Sandy%2C%20UT%2084070/13863%20S%202700%20W%2C%20Units%20205%20%26%20206%2C%20Bluffdale%2C%20UT%2084065/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -949,7 +1101,9 @@ Fill-in days (no best bet):
 
 ### Day 75: Lindon and Pleasant Grove, Orem
 
-7 businesses, about 1 h 56 min door to door (13 min out from Lehi, 13 min back). [Map](https://www.google.com/maps/dir/Lehi/795%20S%20Main%20St%2C%20Pleasant%20Grove%2C%20UT%2084062/346%20E%20State%20Rd%2C%20Pleasant%20Grove%2C%20UT%2084062/537%20W%20550%20N%20Ste%20A%2C%20Lindon%2C%20UT%2084042/139%20S%20State%20St%2C%20Ste%2013%2C%20Lindon%2C%20UT%2084042/972%20N%201430%20W%2C%20Orem%2C%20UT%2084057/236%20S%201250%20W%2C%20Lindon%2C%20UT%2084042/31%20S%201550%20W%20Ste%20112%2C%20Lindon%2C%20UT%2084042/Lehi)
+7 businesses, about 1 h 56 min door to door (13 min out from Lehi, 13 min back).
+
+[Open Day 75 in Google Maps](https://www.google.com/maps/dir/Lehi/795%20S%20Main%20St%2C%20Pleasant%20Grove%2C%20UT%2084062/346%20E%20State%20Rd%2C%20Pleasant%20Grove%2C%20UT%2084062/537%20W%20550%20N%20Ste%20A%2C%20Lindon%2C%20UT%2084042/139%20S%20State%20St%2C%20Ste%2013%2C%20Lindon%2C%20UT%2084042/972%20N%201430%20W%2C%20Orem%2C%20UT%2084057/236%20S%201250%20W%2C%20Lindon%2C%20UT%2084042/31%20S%201550%20W%20Ste%20112%2C%20Lindon%2C%20UT%2084042/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -963,7 +1117,9 @@ Fill-in days (no best bet):
 
 ### Day 76: Grantsville: E Main St
 
-2 businesses, about 1 h 56 min door to door (48 min out from Lehi, 48 min back). [Map](https://www.google.com/maps/dir/Lehi/225%20E%20Main%20St%2C%20Ste%20B%2C%20Grantsville%2C%20UT%2084029/225%20E%20Main%20St%2C%20Grantsville%2C%20UT%2084029/Lehi)
+2 businesses, about 1 h 56 min door to door (48 min out from Lehi, 48 min back).
+
+[Open Day 76 in Google Maps](https://www.google.com/maps/dir/Lehi/225%20E%20Main%20St%2C%20Ste%20B%2C%20Grantsville%2C%20UT%2084029/225%20E%20Main%20St%2C%20Grantsville%2C%20UT%2084029/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -972,7 +1128,9 @@ Fill-in days (no best bet):
 
 ### Day 77: Bountiful and Woods Cross
 
-2 businesses, about 1 h 57 min door to door (46 min out from Lehi, 46 min back). [Map](https://www.google.com/maps/dir/Lehi/448%20W%201150%20S%2C%20Suite%202%2C%20Bountiful%2C%20UT%2084010/582%20S%201100%20W%2C%20Woods%20Cross%2C%20UT%2084087/Lehi)
+2 businesses, about 1 h 57 min door to door (46 min out from Lehi, 46 min back).
+
+[Open Day 77 in Google Maps](https://www.google.com/maps/dir/Lehi/448%20W%201150%20S%2C%20Suite%202%2C%20Bountiful%2C%20UT%2084010/582%20S%201100%20W%2C%20Woods%20Cross%2C%20UT%2084087/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -981,7 +1139,9 @@ Fill-in days (no best bet):
 
 ### Day 78: Orem and Lindon, Vineyard
 
-6 businesses, about 1 h 57 min door to door (16 min out from Lehi, 18 min back). [Map](https://www.google.com/maps/dir/Lehi/296%20N%20State%20St%2C%20Lindon%2C%20UT%2084042/259%20N%20290%20W%2C%20Lindon%2C%20UT%2084042/894%20N%20State%20St%2C%20Orem%2C%20UT%2084057/210%20E%20Center%20St%2C%20Orem%2C%20UT%2084057/360%20S%20State%20St%2C%20Ste%20106%2C%20Orem%2C%20UT%2084058/773%20E%20Mill%20Rd%2C%20Vineyard%2C%20UT%2084059/Lehi)
+6 businesses, about 1 h 57 min door to door (16 min out from Lehi, 18 min back).
+
+[Open Day 78 in Google Maps](https://www.google.com/maps/dir/Lehi/296%20N%20State%20St%2C%20Lindon%2C%20UT%2084042/259%20N%20290%20W%2C%20Lindon%2C%20UT%2084042/894%20N%20State%20St%2C%20Orem%2C%20UT%2084057/210%20E%20Center%20St%2C%20Orem%2C%20UT%2084057/360%20S%20State%20St%2C%20Ste%20106%2C%20Orem%2C%20UT%2084058/773%20E%20Mill%20Rd%2C%20Vineyard%2C%20UT%2084059/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -994,7 +1154,9 @@ Fill-in days (no best bet):
 
 ### Day 79: Tooele (84074), part 4
 
-3 businesses, about 1 h 57 min door to door (36 min out from Lehi, 38 min back). [Map](https://www.google.com/maps/dir/Lehi/2321%20N%20400%20E%2C%20Ste%20400%2C%20Tooele%2C%20UT%2084074/1929%20Aaron%20Dr%2C%20Ste%20L%2C%20Tooele%2C%20UT%2084074/10%20S%20Garnet%20St%20Bldg%20669%20%234%2C%20Tooele%2C%20UT%2084074/Lehi)
+3 businesses, about 1 h 57 min door to door (36 min out from Lehi, 38 min back).
+
+[Open Day 79 in Google Maps](https://www.google.com/maps/dir/Lehi/2321%20N%20400%20E%2C%20Ste%20400%2C%20Tooele%2C%20UT%2084074/1929%20Aaron%20Dr%2C%20Ste%20L%2C%20Tooele%2C%20UT%2084074/10%20S%20Garnet%20St%20Bldg%20669%20%234%2C%20Tooele%2C%20UT%2084074/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1004,7 +1166,9 @@ Fill-in days (no best bet):
 
 ### Day 80: Herriman: Academy Pkwy
 
-6 businesses, about 1 h 57 min door to door (19 min out from Lehi, 17 min back). [Map](https://www.google.com/maps/dir/Lehi/14787%20Academy%20Pkwy%2C%20Herriman%2C%20UT%2084096/14787%20Academy%20Pkwy%2C%20Herriman%2C%20UT%2084096/14352%20S%20Via%20Molvero%20Way%20Ste%20D%2C%20Herriman%2C%20UT%2084096/2936%20W%2012600%20S%20Ste%201%262%2C%20Riverton%2C%20UT%2084065/14003%20S%20Redwood%20Rd%20Ste%20200%2C%20Bluffdale%2C%20UT%2084065/16294%20Bringhurst%20Blvd%20Ste%20700%2C%20Bluffdale%2C%20UT%2084065/Lehi)
+6 businesses, about 1 h 57 min door to door (19 min out from Lehi, 17 min back).
+
+[Open Day 80 in Google Maps](https://www.google.com/maps/dir/Lehi/14787%20Academy%20Pkwy%2C%20Herriman%2C%20UT%2084096/14787%20Academy%20Pkwy%2C%20Herriman%2C%20UT%2084096/14352%20S%20Via%20Molvero%20Way%20Ste%20D%2C%20Herriman%2C%20UT%2084096/2936%20W%2012600%20S%20Ste%201%262%2C%20Riverton%2C%20UT%2084065/14003%20S%20Redwood%20Rd%20Ste%20200%2C%20Bluffdale%2C%20UT%2084065/16294%20Bringhurst%20Blvd%20Ste%20700%2C%20Bluffdale%2C%20UT%2084065/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1017,7 +1181,9 @@ Fill-in days (no best bet):
 
 ### Day 81: Heber City (84032), part 2
 
-4 businesses, about 1 h 57 min door to door (34 min out from Lehi, 34 min back). [Map](https://www.google.com/maps/dir/Lehi/1244%20S%201040%20E%2C%20Heber%20City%2C%20UT%2084032/2237%20S%20390%20W%20Unit%20B%2C%20Heber%20City%2C%20UT%2084032/55%20E%20Center%20St%20Ste%20140%2C%20Heber%20City%2C%20UT%2084032/151%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/Lehi)
+4 businesses, about 1 h 57 min door to door (34 min out from Lehi, 34 min back).
+
+[Open Day 81 in Google Maps](https://www.google.com/maps/dir/Lehi/1244%20S%201040%20E%2C%20Heber%20City%2C%20UT%2084032/2237%20S%20390%20W%20Unit%20B%2C%20Heber%20City%2C%20UT%2084032/55%20E%20Center%20St%20Ste%20140%2C%20Heber%20City%2C%20UT%2084032/151%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1028,7 +1194,9 @@ Fill-in days (no best bet):
 
 ### Day 82: West Valley City: W 3500 S
 
-4 businesses, about 1 h 57 min door to door (30 min out from Lehi, 32 min back). [Map](https://www.google.com/maps/dir/Lehi/3584%20S%201950%20W%2C%20West%20Valley%20City%2C%20UT%2084119/3952%20W%203500%20S%2C%20West%20Valley%20City%2C%20UT%2084120/3200%20S%20Decker%20Lake%20Dr%2C%20West%20Valley%20City%2C%20UT%2084119/5718%20W%203500%20S%20Unit%20136%2C%20West%20Valley%20City%2C%20UT%2084120/Lehi)
+4 businesses, about 1 h 57 min door to door (30 min out from Lehi, 32 min back).
+
+[Open Day 82 in Google Maps](https://www.google.com/maps/dir/Lehi/3584%20S%201950%20W%2C%20West%20Valley%20City%2C%20UT%2084119/3952%20W%203500%20S%2C%20West%20Valley%20City%2C%20UT%2084120/3200%20S%20Decker%20Lake%20Dr%2C%20West%20Valley%20City%2C%20UT%2084119/5718%20W%203500%20S%20Unit%20136%2C%20West%20Valley%20City%2C%20UT%2084120/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1039,7 +1207,9 @@ Fill-in days (no best bet):
 
 ### Day 83: Salt Lake City: E 2100 S, part 2
 
-5 businesses, about 1 h 57 min door to door (32 min out from Lehi, 32 min back). [Map](https://www.google.com/maps/dir/Lehi/615%20Simpson%20Ave%2C%20Salt%20Lake%20City%2C%20UT%2084106/675%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084106/2020%20S%20700%20E%2C%20Salt%20Lake%20City%2C%20UT%2084105/1057%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084106/1993%201%2F2%20S%201100%20E%2C%20Salt%20Lake%20City%2C%20UT%2084106/Lehi)
+5 businesses, about 1 h 57 min door to door (32 min out from Lehi, 32 min back).
+
+[Open Day 83 in Google Maps](https://www.google.com/maps/dir/Lehi/615%20Simpson%20Ave%2C%20Salt%20Lake%20City%2C%20UT%2084106/675%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084106/2020%20S%20700%20E%2C%20Salt%20Lake%20City%2C%20UT%2084105/1057%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084106/1993%201%2F2%20S%201100%20E%2C%20Salt%20Lake%20City%2C%20UT%2084106/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1051,7 +1221,9 @@ Fill-in days (no best bet):
 
 ### Day 84: Sandy and Midvale, West Jordan
 
-6 businesses, about 1 h 57 min door to door (22 min out from Lehi, 18 min back). [Map](https://www.google.com/maps/dir/Lehi/1338%20W%207800%20S%2C%20West%20Jordan%2C%20UT%2084088/741%20W%20Smelter%20St%2C%20Midvale%2C%20UT%2084047/8496%20S%20Harrison%20St%20Ste%20108%2C%20Midvale%2C%20UT%2084047/9127%20S%20255%20W%2C%20Sandy%2C%20UT%2084070/9138%20S%20State%20St%2C%20Suite%20102%2C%20Sandy%2C%20UT%2084070/9211%20Village%20Shop%20Dr%2C%20Sandy%2C%20UT%2084094/Lehi)
+6 businesses, about 1 h 57 min door to door (22 min out from Lehi, 18 min back).
+
+[Open Day 84 in Google Maps](https://www.google.com/maps/dir/Lehi/1338%20W%207800%20S%2C%20West%20Jordan%2C%20UT%2084088/741%20W%20Smelter%20St%2C%20Midvale%2C%20UT%2084047/8496%20S%20Harrison%20St%20Ste%20108%2C%20Midvale%2C%20UT%2084047/9127%20S%20255%20W%2C%20Sandy%2C%20UT%2084070/9138%20S%20State%20St%2C%20Suite%20102%2C%20Sandy%2C%20UT%2084070/9211%20Village%20Shop%20Dr%2C%20Sandy%2C%20UT%2084094/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1064,7 +1236,9 @@ Fill-in days (no best bet):
 
 ### Day 85: Park City: Quarry Rd
 
-3 businesses, about 1 h 57 min door to door (38 min out from Lehi, 39 min back). [Map](https://www.google.com/maps/dir/Lehi/3156%20Quarry%20Rd%20Ste%20M%2C%20Park%20City%2C%20UT%2084098/3156%20Quarry%20Rd%2C%20Park%20City%2C%20UT%2084098/1154%20Center%20Dr%20Ste%20D210%2C%20Park%20City%2C%20UT%2084098/Lehi)
+3 businesses, about 1 h 57 min door to door (38 min out from Lehi, 39 min back).
+
+[Open Day 85 in Google Maps](https://www.google.com/maps/dir/Lehi/3156%20Quarry%20Rd%20Ste%20M%2C%20Park%20City%2C%20UT%2084098/3156%20Quarry%20Rd%2C%20Park%20City%2C%20UT%2084098/1154%20Center%20Dr%20Ste%20D210%2C%20Park%20City%2C%20UT%2084098/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1074,7 +1248,9 @@ Fill-in days (no best bet):
 
 ### Day 86: Salt Lake City and Millcreek
 
-5 businesses, about 1 h 57 min door to door (29 min out from Lehi, 32 min back). [Map](https://www.google.com/maps/dir/Lehi/1227%20E%203300%20S%2C%20Millcreek%2C%20UT%2084106/1180%20Brickyard%20Rd%2C%20Salt%20Lake%20City%2C%20UT%2084106/2682%20S%20Highland%20Dr%20%23201%2C%20Salt%20Lake%20City%2C%20UT%2084106/1142%20Wilmington%20Ave%2C%20Salt%20Lake%20City%2C%20UT%2084106/2188%20Highland%20Dr%2C%20Suite%20104%2C%20Salt%20Lake%20City%2C%20UT%2084106/Lehi)
+5 businesses, about 1 h 57 min door to door (29 min out from Lehi, 32 min back).
+
+[Open Day 86 in Google Maps](https://www.google.com/maps/dir/Lehi/1227%20E%203300%20S%2C%20Millcreek%2C%20UT%2084106/1180%20Brickyard%20Rd%2C%20Salt%20Lake%20City%2C%20UT%2084106/2682%20S%20Highland%20Dr%20%23201%2C%20Salt%20Lake%20City%2C%20UT%2084106/1142%20Wilmington%20Ave%2C%20Salt%20Lake%20City%2C%20UT%2084106/2188%20Highland%20Dr%2C%20Suite%20104%2C%20Salt%20Lake%20City%2C%20UT%2084106/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1086,7 +1262,9 @@ Fill-in days (no best bet):
 
 ### Day 87: Bountiful (84010), part 6
 
-2 businesses, about 1 h 57 min door to door (44 min out from Lehi, 46 min back). [Map](https://www.google.com/maps/dir/Lehi/3052%20S%20Oakwood%20Dr%2C%20Bountiful%2C%20UT%2084010/448%20W%201250%20S%20Ste%201%2C%20Bountiful%2C%20UT%2084010/Lehi)
+2 businesses, about 1 h 57 min door to door (44 min out from Lehi, 46 min back).
+
+[Open Day 87 in Google Maps](https://www.google.com/maps/dir/Lehi/3052%20S%20Oakwood%20Dr%2C%20Bountiful%2C%20UT%2084010/448%20W%201250%20S%20Ste%201%2C%20Bountiful%2C%20UT%2084010/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1095,7 +1273,9 @@ Fill-in days (no best bet):
 
 ### Day 88: West Jordan: S Redwood Rd
 
-5 businesses, about 1 h 58 min door to door (22 min out from Lehi, 24 min back). [Map](https://www.google.com/maps/dir/Lehi/7836%20S%20Redwood%20Rd%2C%20West%20Jordan%2C%20UT%2084088/8860%20S%20Redwood%20Rd%20Ste%20101%2C%20West%20Jordan%2C%20UT%2084088/10467%20S%20Redwood%20Rd%2C%20South%20Jordan%2C%20UT%2084095/10975%20Sterling%20View%20Dr%2C%20South%20Jordan%2C%20UT%2084095/10489%20S%20State%20St%2C%20Sandy%2C%20UT%2084070/Lehi)
+5 businesses, about 1 h 58 min door to door (22 min out from Lehi, 24 min back).
+
+[Open Day 88 in Google Maps](https://www.google.com/maps/dir/Lehi/7836%20S%20Redwood%20Rd%2C%20West%20Jordan%2C%20UT%2084088/8860%20S%20Redwood%20Rd%20Ste%20101%2C%20West%20Jordan%2C%20UT%2084088/10467%20S%20Redwood%20Rd%2C%20South%20Jordan%2C%20UT%2084095/10975%20Sterling%20View%20Dr%2C%20South%20Jordan%2C%20UT%2084095/10489%20S%20State%20St%2C%20Sandy%2C%20UT%2084070/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1107,7 +1287,9 @@ Fill-in days (no best bet):
 
 ### Day 89: Park City (84098), part 2
 
-3 businesses, about 1 h 58 min door to door (39 min out from Lehi, 40 min back). [Map](https://www.google.com/maps/dir/Lehi/1526%20W%20Ute%20Blvd%2C%20Ste%20110%2C%20Park%20City%2C%20UT%2084098/3126%20Quarry%20Rd%20Suite%20G%2C%20Park%20City%2C%20UT%2084098/3070%20Rasmussen%20Rd%2C%20Ste%20190%2C%20Park%20City%2C%20UT%2084098/Lehi)
+3 businesses, about 1 h 58 min door to door (39 min out from Lehi, 40 min back).
+
+[Open Day 89 in Google Maps](https://www.google.com/maps/dir/Lehi/1526%20W%20Ute%20Blvd%2C%20Ste%20110%2C%20Park%20City%2C%20UT%2084098/3126%20Quarry%20Rd%20Suite%20G%2C%20Park%20City%2C%20UT%2084098/3070%20Rasmussen%20Rd%2C%20Ste%20190%2C%20Park%20City%2C%20UT%2084098/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1117,7 +1299,9 @@ Fill-in days (no best bet):
 
 ### Day 90: Lehi: W Traverse Pkwy
 
-7 businesses, about 1 h 58 min door to door (6 min out from Lehi, 11 min back). [Map](https://www.google.com/maps/dir/Lehi/2065%20W%20900%20N%2C%20Lehi%2C%20UT%2084043/1873%20W%20Traverse%20Pkwy%20Ste%20C%2C%20Lehi%2C%20UT%2084043/1881%20W%20Traverse%20Pkwy%20Ste%20B%2C%20Lehi%2C%20UT%2084043/3397%20N%201200%20E%2C%20Suite%20107%2C%20Lehi%2C%20UT%2084043/3397%20N%201200%20E%20Ste%20106%2C%20Lehi%2C%20UT%2084043/11117%20N%20Alpine%20Hwy%2C%20Highland%2C%20UT%2084003/235%20S%20Main%20St%2C%20Alpine%2C%20UT%2084004/Lehi)
+7 businesses, about 1 h 58 min door to door (6 min out from Lehi, 11 min back).
+
+[Open Day 90 in Google Maps](https://www.google.com/maps/dir/Lehi/2065%20W%20900%20N%2C%20Lehi%2C%20UT%2084043/1873%20W%20Traverse%20Pkwy%20Ste%20C%2C%20Lehi%2C%20UT%2084043/1881%20W%20Traverse%20Pkwy%20Ste%20B%2C%20Lehi%2C%20UT%2084043/3397%20N%201200%20E%2C%20Suite%20107%2C%20Lehi%2C%20UT%2084043/3397%20N%201200%20E%20Ste%20106%2C%20Lehi%2C%20UT%2084043/11117%20N%20Alpine%20Hwy%2C%20Highland%2C%20UT%2084003/235%20S%20Main%20St%2C%20Alpine%2C%20UT%2084004/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1131,7 +1315,9 @@ Fill-in days (no best bet):
 
 ### Day 91: Orem: S State St
 
-7 businesses, about 1 h 58 min door to door (17 min out from Lehi, 22 min back). [Map](https://www.google.com/maps/dir/Lehi/1259%20S%20800%20E%2C%20Orem%2C%20UT%2084097/1259%20S%20800%20E%2C%20Orem%2C%20UT%2084097/545%20E%20University%20Pkwy%2C%20Unit%20104%2C%20Orem%2C%20UT%2084097/1345%20S%20State%20St%2C%20Orem%2C%20UT%2084097/1409%20S%20State%20St%2C%20Orem%2C%20UT%2084097/52%20E%20University%20Pkwy%2C%20Orem%2C%20UT%2084058/97%20S%20State%20St%2C%20Orem%2C%20UT%2084058/Lehi)
+7 businesses, about 1 h 58 min door to door (17 min out from Lehi, 22 min back).
+
+[Open Day 91 in Google Maps](https://www.google.com/maps/dir/Lehi/1259%20S%20800%20E%2C%20Orem%2C%20UT%2084097/1259%20S%20800%20E%2C%20Orem%2C%20UT%2084097/545%20E%20University%20Pkwy%2C%20Unit%20104%2C%20Orem%2C%20UT%2084097/1345%20S%20State%20St%2C%20Orem%2C%20UT%2084097/1409%20S%20State%20St%2C%20Orem%2C%20UT%2084097/52%20E%20University%20Pkwy%2C%20Orem%2C%20UT%2084058/97%20S%20State%20St%2C%20Orem%2C%20UT%2084058/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1145,7 +1331,9 @@ Fill-in days (no best bet):
 
 ### Day 92: Park City: W Ute Blvd
 
-4 businesses, about 1 h 59 min door to door (39 min out from Lehi, 39 min back). [Map](https://www.google.com/maps/dir/Lehi/1154%20Center%20Dr%20Ste%20D200%2C%20Park%20City%2C%20UT%2084098/1675%20W%20Redstone%20Center%20Dr%20Ste%20140%2C%20Park%20City%2C%20UT%2084098/1612%20W%20Ute%20Blvd%20Ste%20115%2C%20Park%20City%2C%20UT%2084098/1612%20W%20Ute%20Blvd%2C%20Park%20City%2C%20UT%2084098/Lehi)
+4 businesses, about 1 h 59 min door to door (39 min out from Lehi, 39 min back).
+
+[Open Day 92 in Google Maps](https://www.google.com/maps/dir/Lehi/1154%20Center%20Dr%20Ste%20D200%2C%20Park%20City%2C%20UT%2084098/1675%20W%20Redstone%20Center%20Dr%20Ste%20140%2C%20Park%20City%2C%20UT%2084098/1612%20W%20Ute%20Blvd%20Ste%20115%2C%20Park%20City%2C%20UT%2084098/1612%20W%20Ute%20Blvd%2C%20Park%20City%2C%20UT%2084098/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1156,7 +1344,9 @@ Fill-in days (no best bet):
 
 ### Day 93: Spanish Fork and Springville
 
-5 businesses, about 1 h 59 min door to door (30 min out from Lehi, 26 min back). [Map](https://www.google.com/maps/dir/Lehi/443%20E%201000%20N%2C%20Spanish%20Fork%2C%20UT%2084660/652%20N%20800%20E%2C%20Spanish%20Fork%2C%20UT%2084660/1283%20N%20Canyon%20Creek%20Pkwy%2C%20Spanish%20Fork%2C%20UT%2084660/198%20W%203450%20N%2C%20Suite%20103%2C%20Spanish%20Fork%2C%20UT%2084660/2591%20W%20700%20S%2C%20Springville%2C%20UT%2084663/Lehi)
+5 businesses, about 1 h 59 min door to door (30 min out from Lehi, 26 min back).
+
+[Open Day 93 in Google Maps](https://www.google.com/maps/dir/Lehi/443%20E%201000%20N%2C%20Spanish%20Fork%2C%20UT%2084660/652%20N%20800%20E%2C%20Spanish%20Fork%2C%20UT%2084660/1283%20N%20Canyon%20Creek%20Pkwy%2C%20Spanish%20Fork%2C%20UT%2084660/198%20W%203450%20N%2C%20Suite%20103%2C%20Spanish%20Fork%2C%20UT%2084660/2591%20W%20700%20S%2C%20Springville%2C%20UT%2084663/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1168,7 +1358,9 @@ Fill-in days (no best bet):
 
 ### Day 94: Holladay and Millcreek
 
-5 businesses, about 1 h 59 min door to door (25 min out from Lehi, 29 min back). [Map](https://www.google.com/maps/dir/Lehi/5266%20Cottonwood%20Club%20Dr%2C%20Holladay%2C%20UT%2084117/2046%20E%20Murray%20Holladay%20Rd%2C%20Holladay%2C%20UT%2084117/4751%20S%20Holladay%20Blvd%2C%20Holladay%2C%20UT%2084117/2505%20E%203300%20S%2C%20Ste%20301%2C%20Millcreek%2C%20UT%2084109/2191%20E%203300%20S%2C%20Millcreek%2C%20UT%2084109/Lehi)
+5 businesses, about 1 h 59 min door to door (25 min out from Lehi, 29 min back).
+
+[Open Day 94 in Google Maps](https://www.google.com/maps/dir/Lehi/5266%20Cottonwood%20Club%20Dr%2C%20Holladay%2C%20UT%2084117/2046%20E%20Murray%20Holladay%20Rd%2C%20Holladay%2C%20UT%2084117/4751%20S%20Holladay%20Blvd%2C%20Holladay%2C%20UT%2084117/2505%20E%203300%20S%2C%20Ste%20301%2C%20Millcreek%2C%20UT%2084109/2191%20E%203300%20S%2C%20Millcreek%2C%20UT%2084109/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1180,7 +1372,9 @@ Fill-in days (no best bet):
 
 ### Day 95: Salt Lake City (84115)
 
-4 businesses, about 1 h 59 min door to door (33 min out from Lehi, 37 min back). [Map](https://www.google.com/maps/dir/Lehi/1470%20S%20400%20W%2C%20Salt%20Lake%20City%2C%20UT%2084115/355%20W%20400%20S%2C%20Salt%20Lake%20City%2C%20UT%2084101/320%20W%20200%20S%2C%20Salt%20Lake%20City%2C%20UT%2084101/244%20W%20300%20N%2C%20Suite%20103%2C%20Salt%20Lake%20City%2C%20UT%2084103/Lehi)
+4 businesses, about 1 h 59 min door to door (33 min out from Lehi, 37 min back).
+
+[Open Day 95 in Google Maps](https://www.google.com/maps/dir/Lehi/1470%20S%20400%20W%2C%20Salt%20Lake%20City%2C%20UT%2084115/355%20W%20400%20S%2C%20Salt%20Lake%20City%2C%20UT%2084101/320%20W%20200%20S%2C%20Salt%20Lake%20City%2C%20UT%2084101/244%20W%20300%20N%2C%20Suite%20103%2C%20Salt%20Lake%20City%2C%20UT%2084103/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1191,7 +1385,9 @@ Fill-in days (no best bet):
 
 ### Day 96: North Salt Lake: N Redwood Rd
 
-3 businesses, about 2 h 00 min door to door (44 min out from Lehi, 44 min back). [Map](https://www.google.com/maps/dir/Lehi/420%20N%20Redwood%20Rd%20Ste%20G%2C%20North%20Salt%20Lake%2C%20UT%2084054/460%20N%20Redwood%20Rd%20Unit%20B%2C%20North%20Salt%20Lake%2C%20UT%2084054/689%20N%20Redwood%20Rd%20Ste%20110%2C%20North%20Salt%20Lake%2C%20UT%2084054/Lehi)
+3 businesses, about 2 h 00 min door to door (44 min out from Lehi, 44 min back).
+
+[Open Day 96 in Google Maps](https://www.google.com/maps/dir/Lehi/420%20N%20Redwood%20Rd%20Ste%20G%2C%20North%20Salt%20Lake%2C%20UT%2084054/460%20N%20Redwood%20Rd%20Unit%20B%2C%20North%20Salt%20Lake%2C%20UT%2084054/689%20N%20Redwood%20Rd%20Ste%20110%2C%20North%20Salt%20Lake%2C%20UT%2084054/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1201,7 +1397,9 @@ Fill-in days (no best bet):
 
 ### Day 97: South Salt Lake: S West Temple
 
-5 businesses, about 2 h 00 min door to door (29 min out from Lehi, 32 min back). [Map](https://www.google.com/maps/dir/Lehi/3560%20S%20Main%20St%2C%20South%20Salt%20Lake%2C%20UT%2084115/2904%20S%20West%20Temple%2C%20South%20Salt%20Lake%2C%20UT%2084115/2710%20S%20Lemel%20Cir%2C%20South%20Salt%20Lake%2C%20UT%2084115/2394%20S%20West%20Temple%2C%20South%20Salt%20Lake%2C%20UT%2084115/2257%20S%20State%20St%2C%20South%20Salt%20Lake%2C%20UT%2084115/Lehi)
+5 businesses, about 2 h 00 min door to door (29 min out from Lehi, 32 min back).
+
+[Open Day 97 in Google Maps](https://www.google.com/maps/dir/Lehi/3560%20S%20Main%20St%2C%20South%20Salt%20Lake%2C%20UT%2084115/2904%20S%20West%20Temple%2C%20South%20Salt%20Lake%2C%20UT%2084115/2710%20S%20Lemel%20Cir%2C%20South%20Salt%20Lake%2C%20UT%2084115/2394%20S%20West%20Temple%2C%20South%20Salt%20Lake%2C%20UT%2084115/2257%20S%20State%20St%2C%20South%20Salt%20Lake%2C%20UT%2084115/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1213,7 +1411,9 @@ Fill-in days (no best bet):
 
 ### Day 98: Springville: E 400 S
 
-5 businesses, about 2 h 00 min door to door (21 min out from Lehi, 29 min back). [Map](https://www.google.com/maps/dir/Lehi/1007%20S%20University%20Ave%2C%20Provo%2C%20UT%2084601/1640%20S%20State%20St%2C%20Provo%2C%20UT%2084606/54%20N%20Main%20St%2C%20Springville%2C%20UT%2084663/655%20E%20400%20S%2C%20Unit%20D%2C%20Springville%2C%20UT%2084663/665%20E%20400%20S%2C%20Springville%2C%20UT%2084663/Lehi)
+5 businesses, about 2 h 00 min door to door (21 min out from Lehi, 29 min back).
+
+[Open Day 98 in Google Maps](https://www.google.com/maps/dir/Lehi/1007%20S%20University%20Ave%2C%20Provo%2C%20UT%2084601/1640%20S%20State%20St%2C%20Provo%2C%20UT%2084606/54%20N%20Main%20St%2C%20Springville%2C%20UT%2084663/655%20E%20400%20S%2C%20Unit%20D%2C%20Springville%2C%20UT%2084663/665%20E%20400%20S%2C%20Springville%2C%20UT%2084663/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1225,7 +1425,9 @@ Fill-in days (no best bet):
 
 ### Day 99: Heber City: W 600 S
 
-5 businesses, about 2 h 00 min door to door (33 min out from Lehi, 33 min back). [Map](https://www.google.com/maps/dir/Lehi/550%20W%20100%20S%2C%20Suite%20A2%2C%20Heber%20City%2C%20UT%2084032/345%20W%20600%20S%2C%20Ste%20200%2C%20Heber%20City%2C%20UT%2084032/345%20W%20600%20S%20Ste%20409%2C%20Heber%20City%2C%20UT%2084032/345%20W%20600%20S%20Ste%20200%2C%20Heber%20City%2C%20UT%2084032/1099%20S%20Main%20St%20Ste%20160%2C%20Heber%20City%2C%20UT%2084032/Lehi)
+5 businesses, about 2 h 00 min door to door (33 min out from Lehi, 33 min back).
+
+[Open Day 99 in Google Maps](https://www.google.com/maps/dir/Lehi/550%20W%20100%20S%2C%20Suite%20A2%2C%20Heber%20City%2C%20UT%2084032/345%20W%20600%20S%2C%20Ste%20200%2C%20Heber%20City%2C%20UT%2084032/345%20W%20600%20S%20Ste%20409%2C%20Heber%20City%2C%20UT%2084032/345%20W%20600%20S%20Ste%20200%2C%20Heber%20City%2C%20UT%2084032/1099%20S%20Main%20St%20Ste%20160%2C%20Heber%20City%2C%20UT%2084032/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1237,7 +1439,9 @@ Fill-in days (no best bet):
 
 ### Day 100: American Fork: E State St
 
-8 businesses, about 2 h 00 min door to door (11 min out from Lehi, 16 min back). [Map](https://www.google.com/maps/dir/Lehi/2415%20W%20700%20S%20Ste%20G%2C%20Pleasant%20Grove%2C%20UT%2084062/312%20S%202000%20W%2C%20Pleasant%20Grove%2C%20UT%2084062/1809%20W%20State%20St%2C%20Unit%20A5%2C%20Pleasant%20Grove%2C%20UT%2084062/920%20E%20State%20St%2C%20American%20Fork%2C%20UT%2084003/636%20E%20State%20Rd%2C%20American%20Fork%2C%20UT%2084003/634%20E%20State%20St%2C%20American%20Fork%2C%20UT%2084003/710%20S%20Utah%20Valley%20Dr%2C%20American%20Fork%2C%20UT%2084003/1375%20S%20500%20E%2C%20Unit%20123%2C%20American%20Fork%2C%20UT%2084003/Lehi)
+8 businesses, about 2 h 00 min door to door (11 min out from Lehi, 16 min back).
+
+[Open Day 100 in Google Maps](https://www.google.com/maps/dir/Lehi/2415%20W%20700%20S%20Ste%20G%2C%20Pleasant%20Grove%2C%20UT%2084062/312%20S%202000%20W%2C%20Pleasant%20Grove%2C%20UT%2084062/1809%20W%20State%20St%2C%20Unit%20A5%2C%20Pleasant%20Grove%2C%20UT%2084062/920%20E%20State%20St%2C%20American%20Fork%2C%20UT%2084003/636%20E%20State%20Rd%2C%20American%20Fork%2C%20UT%2084003/634%20E%20State%20St%2C%20American%20Fork%2C%20UT%2084003/710%20S%20Utah%20Valley%20Dr%2C%20American%20Fork%2C%20UT%2084003/1375%20S%20500%20E%2C%20Unit%20123%2C%20American%20Fork%2C%20UT%2084003/Lehi)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|

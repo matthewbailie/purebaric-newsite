@@ -54,8 +54,8 @@ Scores 1 to 5; points = weight × (score ÷ 5); weights sum to 100. "nr" = not r
 
   Skip Bell Family Chiropractic, Sessions Wellness Center and ThermoDynamic Health, which already have chambers.
 - **Ship 3 chambers by freight:** two for business placements and one for home rental and demos.
-- **Local contractor** (a Knoxville-based representative who installs and services, with a named backup); keep a spare compressor locally. No oxygen concentrators in Tennessee during the pilot (see legal_blockers_summary.md).
-- No home rentals in Tennessee until the home-medical-equipment licence question is answered by counsel (legal_blockers_summary.md); the entry model is business and athletic-program placements only, air-only.
+- **Local contractor** (a Knoxville-based representative who installs and services, with a named backup); keep a spare compressor locally. The package is the same as Utah (chamber, compressor, oxygen concentrator, mask kit).
+- Home rentals are offered (owner decision, 10 Oct 2026); the home-medical-equipment licence question in legal_blockers_summary.md stays with counsel.
 - **Compliance.** Certificate of authority and tax registration before the first invoice; collect 9.25%; wellness claims only.
 - **Marketing.** Google search ads, one digital billboard flight (about $2,500 for 4 weeks) near Turkey Creek, Track Club co-marketing.
 - **Decision gate.** Both business chambers rented at list after 90 days: add 2 to 3. Otherwise bring them home.

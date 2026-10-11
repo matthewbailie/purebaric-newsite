@@ -14,48 +14,54 @@ Not visited on these days: college athletics departments and pro teams (email th
 
 ## The days
 
-- **Day 1, Knoxville (37920):** 7 businesses, 5 best bets. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/906%20Sevier%20Ave%2C%20Suite%20120%2C%20Knoxville%2C%20TN%2037920/104%20W%20Summit%20Hill%20Dr%20SW%2C%20Knoxville%2C%20TN%2037902/126%20Jennings%20Ave%2C%20Knoxville%2C%20TN%2037917/941%20North%20Broadway%2C%20Knoxville%2C%20TN%2037917/1412%20N.%206th%20Ave%2C%20Knoxville%2C%20TN%2037917/2404%20Dutch%20Valley%20Dr%2C%20Knoxville%2C%20TN%2037918/4409%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
-- **Day 2, Knoxville and Farragut, part 1:** 5 businesses, all 5 best bets. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/9311%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922%2C%20Knoxville%2C%20TN%2037922/10426%20Jackson%20Oaks%20Way%2C%20Suite%20103%2C%20Knoxville%2C%20TN%2037922/10935%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11533%20Kingston%20Pike%2C%20Farragut%2C%20TN%2C%20Farragut%2C%20TN%2037934/10932%20Murdock%20Dr%20%23102b%2C%20Knoxville%2C%20TN%2037932%2C%20Knoxville%2C%20TN%2037932/downtown%20Knoxville)
-- **Day 3, Knoxville: Sherway Rd:** 5 businesses, 4 best bets. About 1 h 53 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/120%20Huxley%20Rd%2C%20Suite%20102%2C%20Knoxville%2C%20TN%2037922/151%20Sherway%20Rd%20%231%2C%20Knoxville%2C%20TN%2037922/155%20Sherway%20Rd%2C%20Suite%202%2C%20Knoxville%2C%20TN%2037922/222%20S%20Peters%20Rd%2C%20Knoxville%2C%20TN%2037923/9411%20S%20Northshore%20Dr%2C%20Suite%20101%2C%20Knoxville%2C%20TN%2037922/downtown%20Knoxville)
-- **Day 4, Knoxville: Kingston Pike, part 1:** 7 businesses, 4 best bets. About 1 h 53 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/318%20Erin%20Dr%2C%20%235%2C%20Knoxville%2C%20TN%2037919/403%20Bearden%20Park%20Circle%2C%20Knoxville%2C%20TN%2037919/6512%20Baum%20Dr%20SW%20%2312%2C%20Knoxville%2C%20TN%2037919%2C%20Knoxville%2C%20TN%2037919/6504%20Deane%20Hill%20Dr%2C%20Knoxville%2C%20TN%2037919/224%20Brookview%20Centre%20Way%2C%20Suite%20208%2C%20Knoxville%2C%20TN%2037919/7015%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/8425%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
-- **Day 5, Powell: Clinton Highway:** 6 businesses, 2 best bets. About 1 h 50 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/7311%20Clinton%20Highway%2C%20Suite%20A%2C%20Powell%2C%20TN%2037849/7217%20Clinton%20Highway%2C%20Suite%20D%2C%20Powell%2C%20TN%2037849/7525%20Brickyard%20Rd%2C%20Powell%2C%20TN%2037849/906%20Callahan%20Dr%20%23112%2C%20Knoxville%2C%20TN%2037912/1639%20Dry%20Gap%20Pike%2C%20Knoxville%2C%20TN%2037918/4652%20Fennel%20Rd%2C%20Knoxville%2C%20TN%2037912/downtown%20Knoxville)
-- **Day 6, Farragut and Lenoir City:** 5 businesses, 2 best bets. About 1 h 58 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/102%20South%20Campbell%20Station%20Rd%2C%20Suite%2021%2C%20Farragut%2C%20TN%2037934/11668%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934%2C%20Farragut%2C%20TN%2037934/11416%20Grigsby%20Chapel%20Rd%2C%20Farragut%2C%20TN%2037934/10420%20Kingston%20Pike%2C%20Suite%20M%2C%20Farragut%2C%20TN%2037922/1149%20Kevin%20Ln%2C%20Lenoir%20City%2C%20TN%2037772/downtown%20Knoxville)
-- **Day 7, Maryville: E Broadway Ave:** 6 businesses, 2 best bets. About 1 h 58 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/2706%20E%20Broadway%20Ave%2C%20Maryville%2C%20TN%2037804/1410%20Sevierville%20Rd%2C%20Maryville%2C%20TN%2037804/801%20E%20Broadway%20Ave%2C%20Maryville%2C%20TN%2037804/402%20Greenbelt%20Dr%2C%20Maryville%2C%20TN%2037804/209%20Greenway%20Village%20Lane%2C%20Suite%20100%2C%20Maryville%2C%20TN%2037801/325%20West%20Broadway%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
-- **Day 8, Knoxville and Corryton:** 3 businesses, 1 best bet. About 1 h 33 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/5200%20Holston%20Hills%20Road%2C%20Knoxville%2C%20TN%2037914/8309%20Asheville%20Hwy%2C%20Knoxville%2C%20TN%2037924/7307%20Tazewell%20Pike%2C%20Corryton%2C%20TN%2037721/downtown%20Knoxville)
-- **Day 9, Maryville: US-411:** 5 businesses, 1 best bet. About 1 h 52 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/1632%20West%20Broadway%20Avenue%2C%20Maryville%2C%20TN%2037801/133%20Cherokee%20Heights%20Dr%2C%20Maryville%2C%20TN%2037801/2602%20US-411%2C%20Suite%20103%2C%20Maryville%2C%20TN%2037801/2732%20US-411%2C%20Maryville%2C%20TN%2037801/1780%20W%20Lamar%20Alexander%20Pkwy%2C%20Maryville%2C%20TN%2037801%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
-- **Day 10, Knoxville and Farragut, part 2:** 6 businesses, 1 best bet. About 1 h 55 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/1750%20Commons%20Point%20Dr%2C%20Lower%20Building%205%2C%20Suite%20102%2C%20Knoxville%2C%20TN%2037932/11245%20Threadstone%20Lane%2C%20Knoxville%2C%20TN%2037932/11324%20Parkside%20Dr%2C%20Knoxville%2C%20TN%2037934/11673%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/10843%20Kingston%20Pike%2C%20Suite%207%2C%20Farragut%2C%20TN%2037934/10542%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922/downtown%20Knoxville)
-- **Day 11, Oak Ridge (37830):** 5 businesses, 1 best bet. About 1 h 58 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/697%20Melton%20Lake%20Dr%2C%20Oak%20Ridge%2C%20TN%2037830/2388%20Brisbane%20Road%2C%20Oak%20Ridge%2C%20TN%2037830/780%20Briarcliff%20Ave%2C%20Oak%20Ridge%2C%20TN%2037830/697%20Emory%20Valley%20Rd%2C%20Oak%20Ridge%2C%20TN%2037830/176%20Randolph%20Road%2C%20Oak%20Ridge%2C%20TN%2037830/downtown%20Knoxville)
+**How to read each line.** *Businesses* is the number of stops that day. *Best bets* is how many of those stops are the kinds of business most likely to sign: recovery studios, IV lounges, sauna, cryotherapy, float, stretch studios and performance gyms. The rest of the day's stops are good fits or businesses that are on the way. *Door to door* is the whole trip, including the drive from home and back. Each day's Google Maps link is in its own section under "Stop by stop" below.
+
+- **Day 1, Knoxville (37920):** 7 businesses, 5 best bets. About 1 h 54 min door to door.
+- **Day 2, Knoxville and Farragut, part 1:** 5 businesses, all 5 best bets. About 1 h 54 min door to door.
+- **Day 3, Knoxville: Sherway Rd:** 5 businesses, 4 best bets. About 1 h 53 min door to door.
+- **Day 4, Knoxville: Kingston Pike, part 1:** 7 businesses, 4 best bets. About 1 h 53 min door to door.
+- **Day 5, Powell: Clinton Highway:** 6 businesses, 2 best bets. About 1 h 50 min door to door.
+- **Day 6, Farragut and Lenoir City:** 5 businesses, 2 best bets. About 1 h 58 min door to door.
+- **Day 7, Maryville: E Broadway Ave:** 6 businesses, 2 best bets. About 1 h 58 min door to door.
+- **Day 8, Knoxville and Corryton:** 3 businesses, 1 best bet. About 1 h 33 min door to door.
+- **Day 9, Maryville: US-411:** 5 businesses, 1 best bet. About 1 h 52 min door to door.
+- **Day 10, Knoxville and Farragut, part 2:** 6 businesses, 1 best bet. About 1 h 55 min door to door.
+- **Day 11, Oak Ridge (37830):** 5 businesses, 1 best bet. About 1 h 58 min door to door.
 
 Fill-in days (no best bet):
 
-- **Day 12, Knoxville (37918):** 3 businesses, 0 best bets. About 1 h 04 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/4660%20Old%20Broadway%2C%20Knoxville%2C%20TN%2037918/2605%20Adair%20Dr%2C%20%23101%2C%20Knoxville%2C%20TN%2037918/5003%20N%20Broadway%2C%20Knoxville%2C%20TN%2037918/downtown%20Knoxville)
-- **Day 13, Maryville (37804), part 1:** 3 businesses, 0 best bets. About 1 h 11 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/911%20East%20Broadway%2C%20Maryville%2C%20TN%2037804/907%20E%20Lamar%20Alexander%20Pkwy%2C%20Maryville%2C%20TN%2037804/1412%20Sevierville%20Rd%2C%20Maryville%2C%20TN%2037804/downtown%20Knoxville)
-- **Day 14, Knoxville: Kingston Pike, part 2:** 5 businesses, 0 best bets. About 1 h 17 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/3337%20Sutherland%20Ave%2C%20Knoxville%2C%20TN%2037919/4445%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/4467%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/122%20N%20Forest%20Park%20Blvd%2C%20Knoxville%2C%20TN%2037919/2467%20University%20Commons%20Way%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
-- **Day 15, Farragut: Kingston Pike, part 1:** 3 businesses, 0 best bets. About 1 h 26 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/10951%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11674%20Parkside%20Dr%2C%20Suite%20674%2C%20Knoxville%2C%20TN%2037934/12572%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/downtown%20Knoxville)
-- **Day 16, Clinton: N Charles G Seivers Blvd:** 3 businesses, 0 best bets. About 1 h 28 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/134%20W%20Broad%20St%2C%20Clinton%2C%20TN%2037716/1921%20N%20Charles%20G%20Seivers%20Blvd%2C%20Clinton%2C%20TN%2037716/1921%20N%20Charles%20G%20Seivers%20Blvd%2C%20Clinton%2C%20TN%2037716/downtown%20Knoxville)
-- **Day 17, Knoxville and Powell:** 3 businesses, 0 best bets. About 1 h 32 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/3547%20W%20Emory%20Rd%2C%20Powell%2C%20TN%2037849/10708%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037934/9405%20S%20Northshore%20Dr%2C%20Suite%20102%2C%20Knoxville%2C%20TN%2037922/downtown%20Knoxville)
-- **Day 18, Maynardville: Maynardville Hwy:** 3 businesses, 0 best bets. About 1 h 36 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/110%20Skyline%20Dr%2C%20Suite%201%2C%20Maynardville%2C%20TN%2037807/2915%20Maynardville%20Hwy%2C%20Maynardville%2C%20TN%2037807/4356%20Maynardville%20Hwy%2C%20Suite%203%2C%20Maynardville%2C%20TN%2037807/downtown%20Knoxville)
-- **Day 19, Maryville (37804), part 2:** 4 businesses, 0 best bets. About 1 h 42 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/200%20E%20Broadway%20Ave%2C%20Suite%20506%2C%20Maryville%2C%20TN%2037804/1012%20Alcoa%20Mkt%20St%2C%20Maryville%2C%20TN%2037801/2336%20Market%20Place%20Dr%2C%20Maryville%2C%20TN%2037801/1010%20William%20Blount%20Dr%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
-- **Day 20, Knoxville (37932):** 4 businesses, 0 best bets. About 1 h 43 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/10254%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/701%20Racquet%20Club%20Way%2C%20Knoxville%2C%20TN%2037923/130%20N%20Cedar%20Bluff%20Rd%2C%20Knoxville%2C%20TN%2037923/10901%20Parkside%20Dr%2C%20Suite%20103%2C%20Knoxville%2C%20TN%2037934/downtown%20Knoxville)
-- **Day 21, Maryville (37804), part 3:** 5 businesses, 0 best bets. About 1 h 51 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/2724%20East%20Broadway%20Avenue%2C%20Maryville%2C%20TN%2037804/1812%20East%20Lamar%20Alexander%20Pkwy%2C%20Maryville%2C%20TN%2037804/605%20Smithview%20Dr%2C%20Ste.%203%2C%20Maryville%2C%20TN%2037803/520%20W%20Broadway%20Ave%2C%20Maryville%2C%20TN%2037801/424%20Home%20Avenue%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
-- **Day 22, Knoxville: Kingston Pike, part 3:** 7 businesses, 0 best bets. About 1 h 53 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/133%20S%20Forest%20Park%20Blvd%2C%20Knoxville%2C%20TN%2037919/101%20Westwood%20Rd%2C%20Ste.%20109%2C%20Knoxville%2C%20TN%2037919/224%20Brookview%20Centre%20Way%2C%20Ste.%20200%2C%20Knoxville%2C%20TN%2037919/6450%20Kingston%20Pike%2C%20Ste.%20B%2C%20Knoxville%2C%20TN%2037919/302%20Westfield%20Road%2C%20Knoxville%2C%20TN%2037919/10001%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922/7575%20S%20Northshore%20Dr%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
-- **Day 23, Knoxville and Farragut, part 3:** 5 businesses, 0 best bets. About 1 h 53 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/11439%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/153%20Brooklawn%20Street%2C%20Suite%20153%2C%20Farragut%2C%20TN%2037934/10321%20Kingston%20Pike%2C%20Ste%20124%2C%20Knoxville%2C%20TN%2037922/8915%20George%20Williams%20Rd%2C%20Knoxville%2C%20TN%2037923/245%20S%20Peters%20Road%2C%20Knoxville%2C%20TN%2037923/downtown%20Knoxville)
-- **Day 24, Oak Ridge: Oak Ridge Turnpike:** 4 businesses, 0 best bets. About 1 h 53 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/1116%20E%20Tri%20County%20Blvd%2C%20Oliver%20Springs%2C%20TN%2037840/1403%20Oak%20Ridge%20Turnpike%2C%20Oak%20Ridge%2C%20TN%2037830/302%20S%20Illinois%20Ave%2C%20Oak%20Ridge%2C%20TN%2037830/1153%20Oak%20Ridge%20Turnpike%2C%20Oak%20Ridge%2C%20TN%2037830/downtown%20Knoxville)
-- **Day 25, Farragut: Kingston Pike, part 2:** 6 businesses, 0 best bets. About 1 h 54 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/12284%20N%20Fox%20Den%20Dr%2C%20Farragut%2C%20TN%2037934%2C%20Farragut%2C%20TN%2037934/11560%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11521%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/102%20S%20Campbell%20Station%20Rd%2C%20Farragut%2C%20TN%2037934/11672%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/623%20N%20Campbell%20Station%20Rd%2C%20Farragut%2C%20TN%2037934/downtown%20Knoxville)
-- **Day 26, Seymour: Chapman Hwy:** 6 businesses, 0 best bets. About 1 h 55 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/11653%20Chapman%20Hwy%2C%20Seymour%2C%20TN%2037865/119%20Maryville%20Hwy%2C%20Suite%20A%2C%20Seymour%2C%20TN%2037865/124%20Maryville%20Hwy%2C%20Seymour%2C%20TN%2037865/11642%20Chapman%20Hwy%2C%20Seymour%2C%20TN%2037865/11729%20Chapman%20Hwy%2C%20Suite%205%2C%20Seymour%2C%20TN%2037865/10233%20Chapman%20Hwy%2C%20Seymour%2C%20TN%2037865/downtown%20Knoxville)
-- **Day 27, Maryville and Alcoa:** 5 businesses, 0 best bets. About 1 h 55 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/636%20Vose%20Rd%2C%20Alcoa%2C%20TN%2037701/35%20Executive%20Plaza%20Court%2C%20Maryville%2C%20TN%2037801/213%20Greenway%20Village%20Ln%2C%20Suite%2010%2C%20Maryville%2C%20TN%2037801/921%20Foch%20St%2C%20Suite%209%2C%20Maryville%2C%20TN%2037801/1009%20Hampshire%20Drive%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
-- **Day 28, Knoxville: Kingston Pike, part 4:** 7 businesses, 0 best bets. About 1 h 57 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/248%20N%20Peters%20Rd%2C%20Suite%203%2C%20Knoxville%2C%20TN%2037923/9000%20Executive%20Park%20Dr%2C%20Suite%20C150%2C%20Knoxville%2C%20TN%2037923%2C%20Knoxville%2C%20TN%2037923/8805%20Kingston%20Pike%2C%20Suite%20105%2C%20Knoxville%2C%20TN%2037923/1645%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/1701%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/8042%20Ray%20Mears%20Blvd%2C%20Knoxville%2C%20TN%2037919/7347%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
-- **Day 29, Knoxville: Hardin Valley Rd:** 5 businesses, 0 best bets. About 1 h 58 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/10966%20Spring%20Bluff%20Way%2C%20Knoxville%2C%20TN%2037932/10839%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/10780%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/4900%20Guinn%20Rd%2C%20Knoxville%2C%20TN%2037931/700%20S%20Illinois%20Ave%2C%20Suite%20A103%2C%20Oak%20Ridge%2C%20TN%2037830/downtown%20Knoxville)
-- **Day 30, Knoxville: Kingston Pike, part 5:** 8 businesses, 0 best bets. About 1 h 59 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/6718%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/6209%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/5908%20Toole%20Drive%20NW%2C%20Suite%20EF%2C%20Knoxville%2C%20TN%2037919/5138%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/4928%20Homberg%20Dr%2C%20Building%20B%2C%20Knoxville%2C%20TN%2037919/2317%20Lakemoor%20Drive%2C%20Knoxville%2C%20TN%2037920/2325%20Sutherland%20Ave%2C%20Knoxville%2C%20TN%2037919/1060%20Worlds%20Fair%20Park%20Dr%2C%20Unit%20104%2C%20Knoxville%2C%20TN%2037916/downtown%20Knoxville)
-- **Day 31, Lenoir City: Highway 321 N:** 5 businesses, 0 best bets. About 1 h 59 min door to door. [Map](https://www.google.com/maps/dir/downtown%20Knoxville/10000%20Martel%20Rd%2C%20Lenoir%20City%2C%20TN%2037772/1005%20E%20Broadway%2C%20Lenoir%20City%2C%20TN%2037771/785%20Highway%20321%20N%2C%20Suite%2020%2C%20Lenoir%20City%2C%20TN%2037771/300%20Market%20Dr%2C%20Suite%20102A%2C%20Lenoir%20City%2C%20TN%2037771/835%20Highway%20321%20N%2C%20Lenoir%20City%2C%20TN%2037771/downtown%20Knoxville)
+- **Day 12, Knoxville (37918):** 3 businesses, 0 best bets. About 1 h 04 min door to door.
+- **Day 13, Maryville (37804), part 1:** 3 businesses, 0 best bets. About 1 h 11 min door to door.
+- **Day 14, Knoxville: Kingston Pike, part 2:** 5 businesses, 0 best bets. About 1 h 17 min door to door.
+- **Day 15, Farragut: Kingston Pike, part 1:** 3 businesses, 0 best bets. About 1 h 26 min door to door.
+- **Day 16, Clinton: N Charles G Seivers Blvd:** 3 businesses, 0 best bets. About 1 h 28 min door to door.
+- **Day 17, Knoxville and Powell:** 3 businesses, 0 best bets. About 1 h 32 min door to door.
+- **Day 18, Maynardville: Maynardville Hwy:** 3 businesses, 0 best bets. About 1 h 36 min door to door.
+- **Day 19, Maryville (37804), part 2:** 4 businesses, 0 best bets. About 1 h 42 min door to door.
+- **Day 20, Knoxville (37932):** 4 businesses, 0 best bets. About 1 h 43 min door to door.
+- **Day 21, Maryville (37804), part 3:** 5 businesses, 0 best bets. About 1 h 51 min door to door.
+- **Day 22, Knoxville: Kingston Pike, part 3:** 7 businesses, 0 best bets. About 1 h 53 min door to door.
+- **Day 23, Knoxville and Farragut, part 3:** 5 businesses, 0 best bets. About 1 h 53 min door to door.
+- **Day 24, Oak Ridge: Oak Ridge Turnpike:** 4 businesses, 0 best bets. About 1 h 53 min door to door.
+- **Day 25, Farragut: Kingston Pike, part 2:** 6 businesses, 0 best bets. About 1 h 54 min door to door.
+- **Day 26, Seymour: Chapman Hwy:** 6 businesses, 0 best bets. About 1 h 55 min door to door.
+- **Day 27, Maryville and Alcoa:** 5 businesses, 0 best bets. About 1 h 55 min door to door.
+- **Day 28, Knoxville: Kingston Pike, part 4:** 7 businesses, 0 best bets. About 1 h 57 min door to door.
+- **Day 29, Knoxville: Hardin Valley Rd:** 5 businesses, 0 best bets. About 1 h 58 min door to door.
+- **Day 30, Knoxville: Kingston Pike, part 5:** 8 businesses, 0 best bets. About 1 h 59 min door to door.
+- **Day 31, Lenoir City: Highway 321 N:** 5 businesses, 0 best bets. About 1 h 59 min door to door.
 
 31 days in all: 154 businesses, 28 best bets, about 55 hours on the road.
 
 ## Stop by stop
 
+In the tables, **Chance of a yes** means: **Best bet**, the kind of business most likely to sign; **Good fit**, worth the stop; **Also nearby**, on the way, so hand them a pamphlet too. Tap the Google Maps link to open the day's route in order, starting and ending at home.
+
 ### Day 1: Knoxville (37920)
 
-7 businesses, about 1 h 54 min door to door (3 min out from downtown Knoxville, 12 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/906%20Sevier%20Ave%2C%20Suite%20120%2C%20Knoxville%2C%20TN%2037920/104%20W%20Summit%20Hill%20Dr%20SW%2C%20Knoxville%2C%20TN%2037902/126%20Jennings%20Ave%2C%20Knoxville%2C%20TN%2037917/941%20North%20Broadway%2C%20Knoxville%2C%20TN%2037917/1412%20N.%206th%20Ave%2C%20Knoxville%2C%20TN%2037917/2404%20Dutch%20Valley%20Dr%2C%20Knoxville%2C%20TN%2037918/4409%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
+7 businesses, about 1 h 54 min door to door (3 min out from downtown Knoxville, 12 min back).
+
+[Open Day 1 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/906%20Sevier%20Ave%2C%20Suite%20120%2C%20Knoxville%2C%20TN%2037920/104%20W%20Summit%20Hill%20Dr%20SW%2C%20Knoxville%2C%20TN%2037902/126%20Jennings%20Ave%2C%20Knoxville%2C%20TN%2037917/941%20North%20Broadway%2C%20Knoxville%2C%20TN%2037917/1412%20N.%206th%20Ave%2C%20Knoxville%2C%20TN%2037917/2404%20Dutch%20Valley%20Dr%2C%20Knoxville%2C%20TN%2037918/4409%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -69,7 +75,9 @@ Fill-in days (no best bet):
 
 ### Day 2: Knoxville and Farragut, part 1
 
-5 businesses, about 1 h 54 min door to door (21 min out from downtown Knoxville, 18 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/9311%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922%2C%20Knoxville%2C%20TN%2037922/10426%20Jackson%20Oaks%20Way%2C%20Suite%20103%2C%20Knoxville%2C%20TN%2037922/10935%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11533%20Kingston%20Pike%2C%20Farragut%2C%20TN%2C%20Farragut%2C%20TN%2037934/10932%20Murdock%20Dr%20%23102b%2C%20Knoxville%2C%20TN%2037932%2C%20Knoxville%2C%20TN%2037932/downtown%20Knoxville)
+5 businesses, about 1 h 54 min door to door (21 min out from downtown Knoxville, 18 min back).
+
+[Open Day 2 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/9311%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922%2C%20Knoxville%2C%20TN%2037922/10426%20Jackson%20Oaks%20Way%2C%20Suite%20103%2C%20Knoxville%2C%20TN%2037922/10935%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11533%20Kingston%20Pike%2C%20Farragut%2C%20TN%2C%20Farragut%2C%20TN%2037934/10932%20Murdock%20Dr%20%23102b%2C%20Knoxville%2C%20TN%2037932%2C%20Knoxville%2C%20TN%2037932/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -81,7 +89,9 @@ Fill-in days (no best bet):
 
 ### Day 3: Knoxville: Sherway Rd
 
-5 businesses, about 1 h 53 min door to door (18 min out from downtown Knoxville, 21 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/120%20Huxley%20Rd%2C%20Suite%20102%2C%20Knoxville%2C%20TN%2037922/151%20Sherway%20Rd%20%231%2C%20Knoxville%2C%20TN%2037922/155%20Sherway%20Rd%2C%20Suite%202%2C%20Knoxville%2C%20TN%2037922/222%20S%20Peters%20Rd%2C%20Knoxville%2C%20TN%2037923/9411%20S%20Northshore%20Dr%2C%20Suite%20101%2C%20Knoxville%2C%20TN%2037922/downtown%20Knoxville)
+5 businesses, about 1 h 53 min door to door (18 min out from downtown Knoxville, 21 min back).
+
+[Open Day 3 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/120%20Huxley%20Rd%2C%20Suite%20102%2C%20Knoxville%2C%20TN%2037922/151%20Sherway%20Rd%20%231%2C%20Knoxville%2C%20TN%2037922/155%20Sherway%20Rd%2C%20Suite%202%2C%20Knoxville%2C%20TN%2037922/222%20S%20Peters%20Rd%2C%20Knoxville%2C%20TN%2037923/9411%20S%20Northshore%20Dr%2C%20Suite%20101%2C%20Knoxville%2C%20TN%2037922/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -93,7 +103,9 @@ Fill-in days (no best bet):
 
 ### Day 4: Knoxville: Kingston Pike, part 1
 
-7 businesses, about 1 h 53 min door to door (10 min out from downtown Knoxville, 17 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/318%20Erin%20Dr%2C%20%235%2C%20Knoxville%2C%20TN%2037919/403%20Bearden%20Park%20Circle%2C%20Knoxville%2C%20TN%2037919/6512%20Baum%20Dr%20SW%20%2312%2C%20Knoxville%2C%20TN%2037919%2C%20Knoxville%2C%20TN%2037919/6504%20Deane%20Hill%20Dr%2C%20Knoxville%2C%20TN%2037919/224%20Brookview%20Centre%20Way%2C%20Suite%20208%2C%20Knoxville%2C%20TN%2037919/7015%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/8425%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
+7 businesses, about 1 h 53 min door to door (10 min out from downtown Knoxville, 17 min back).
+
+[Open Day 4 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/318%20Erin%20Dr%2C%20%235%2C%20Knoxville%2C%20TN%2037919/403%20Bearden%20Park%20Circle%2C%20Knoxville%2C%20TN%2037919/6512%20Baum%20Dr%20SW%20%2312%2C%20Knoxville%2C%20TN%2037919%2C%20Knoxville%2C%20TN%2037919/6504%20Deane%20Hill%20Dr%2C%20Knoxville%2C%20TN%2037919/224%20Brookview%20Centre%20Way%2C%20Suite%20208%2C%20Knoxville%2C%20TN%2037919/7015%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/8425%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -107,7 +119,9 @@ Fill-in days (no best bet):
 
 ### Day 5: Powell: Clinton Highway
 
-6 businesses, about 1 h 50 min door to door (16 min out from downtown Knoxville, 14 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/7311%20Clinton%20Highway%2C%20Suite%20A%2C%20Powell%2C%20TN%2037849/7217%20Clinton%20Highway%2C%20Suite%20D%2C%20Powell%2C%20TN%2037849/7525%20Brickyard%20Rd%2C%20Powell%2C%20TN%2037849/906%20Callahan%20Dr%20%23112%2C%20Knoxville%2C%20TN%2037912/1639%20Dry%20Gap%20Pike%2C%20Knoxville%2C%20TN%2037918/4652%20Fennel%20Rd%2C%20Knoxville%2C%20TN%2037912/downtown%20Knoxville)
+6 businesses, about 1 h 50 min door to door (16 min out from downtown Knoxville, 14 min back).
+
+[Open Day 5 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/7311%20Clinton%20Highway%2C%20Suite%20A%2C%20Powell%2C%20TN%2037849/7217%20Clinton%20Highway%2C%20Suite%20D%2C%20Powell%2C%20TN%2037849/7525%20Brickyard%20Rd%2C%20Powell%2C%20TN%2037849/906%20Callahan%20Dr%20%23112%2C%20Knoxville%2C%20TN%2037912/1639%20Dry%20Gap%20Pike%2C%20Knoxville%2C%20TN%2037918/4652%20Fennel%20Rd%2C%20Knoxville%2C%20TN%2037912/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -120,7 +134,9 @@ Fill-in days (no best bet):
 
 ### Day 6: Farragut and Lenoir City
 
-5 businesses, about 1 h 58 min door to door (20 min out from downtown Knoxville, 27 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/102%20South%20Campbell%20Station%20Rd%2C%20Suite%2021%2C%20Farragut%2C%20TN%2037934/11668%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934%2C%20Farragut%2C%20TN%2037934/11416%20Grigsby%20Chapel%20Rd%2C%20Farragut%2C%20TN%2037934/10420%20Kingston%20Pike%2C%20Suite%20M%2C%20Farragut%2C%20TN%2037922/1149%20Kevin%20Ln%2C%20Lenoir%20City%2C%20TN%2037772/downtown%20Knoxville)
+5 businesses, about 1 h 58 min door to door (20 min out from downtown Knoxville, 27 min back).
+
+[Open Day 6 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/102%20South%20Campbell%20Station%20Rd%2C%20Suite%2021%2C%20Farragut%2C%20TN%2037934/11668%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934%2C%20Farragut%2C%20TN%2037934/11416%20Grigsby%20Chapel%20Rd%2C%20Farragut%2C%20TN%2037934/10420%20Kingston%20Pike%2C%20Suite%20M%2C%20Farragut%2C%20TN%2037922/1149%20Kevin%20Ln%2C%20Lenoir%20City%2C%20TN%2037772/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -132,7 +148,9 @@ Fill-in days (no best bet):
 
 ### Day 7: Maryville: E Broadway Ave
 
-6 businesses, about 1 h 58 min door to door (24 min out from downtown Knoxville, 20 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/2706%20E%20Broadway%20Ave%2C%20Maryville%2C%20TN%2037804/1410%20Sevierville%20Rd%2C%20Maryville%2C%20TN%2037804/801%20E%20Broadway%20Ave%2C%20Maryville%2C%20TN%2037804/402%20Greenbelt%20Dr%2C%20Maryville%2C%20TN%2037804/209%20Greenway%20Village%20Lane%2C%20Suite%20100%2C%20Maryville%2C%20TN%2037801/325%20West%20Broadway%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
+6 businesses, about 1 h 58 min door to door (24 min out from downtown Knoxville, 20 min back).
+
+[Open Day 7 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/2706%20E%20Broadway%20Ave%2C%20Maryville%2C%20TN%2037804/1410%20Sevierville%20Rd%2C%20Maryville%2C%20TN%2037804/801%20E%20Broadway%20Ave%2C%20Maryville%2C%20TN%2037804/402%20Greenbelt%20Dr%2C%20Maryville%2C%20TN%2037804/209%20Greenway%20Village%20Lane%2C%20Suite%20100%2C%20Maryville%2C%20TN%2037801/325%20West%20Broadway%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -145,7 +163,9 @@ Fill-in days (no best bet):
 
 ### Day 8: Knoxville and Corryton
 
-3 businesses, about 1 h 33 min door to door (10 min out from downtown Knoxville, 23 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/5200%20Holston%20Hills%20Road%2C%20Knoxville%2C%20TN%2037914/8309%20Asheville%20Hwy%2C%20Knoxville%2C%20TN%2037924/7307%20Tazewell%20Pike%2C%20Corryton%2C%20TN%2037721/downtown%20Knoxville)
+3 businesses, about 1 h 33 min door to door (10 min out from downtown Knoxville, 23 min back).
+
+[Open Day 8 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/5200%20Holston%20Hills%20Road%2C%20Knoxville%2C%20TN%2037914/8309%20Asheville%20Hwy%2C%20Knoxville%2C%20TN%2037924/7307%20Tazewell%20Pike%2C%20Corryton%2C%20TN%2037721/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -155,7 +175,9 @@ Fill-in days (no best bet):
 
 ### Day 9: Maryville: US-411
 
-5 businesses, about 1 h 52 min door to door (22 min out from downtown Knoxville, 21 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/1632%20West%20Broadway%20Avenue%2C%20Maryville%2C%20TN%2037801/133%20Cherokee%20Heights%20Dr%2C%20Maryville%2C%20TN%2037801/2602%20US-411%2C%20Suite%20103%2C%20Maryville%2C%20TN%2037801/2732%20US-411%2C%20Maryville%2C%20TN%2037801/1780%20W%20Lamar%20Alexander%20Pkwy%2C%20Maryville%2C%20TN%2037801%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
+5 businesses, about 1 h 52 min door to door (22 min out from downtown Knoxville, 21 min back).
+
+[Open Day 9 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/1632%20West%20Broadway%20Avenue%2C%20Maryville%2C%20TN%2037801/133%20Cherokee%20Heights%20Dr%2C%20Maryville%2C%20TN%2037801/2602%20US-411%2C%20Suite%20103%2C%20Maryville%2C%20TN%2037801/2732%20US-411%2C%20Maryville%2C%20TN%2037801/1780%20W%20Lamar%20Alexander%20Pkwy%2C%20Maryville%2C%20TN%2037801%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -167,7 +189,9 @@ Fill-in days (no best bet):
 
 ### Day 10: Knoxville and Farragut, part 2
 
-6 businesses, about 1 h 55 min door to door (18 min out from downtown Knoxville, 18 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/1750%20Commons%20Point%20Dr%2C%20Lower%20Building%205%2C%20Suite%20102%2C%20Knoxville%2C%20TN%2037932/11245%20Threadstone%20Lane%2C%20Knoxville%2C%20TN%2037932/11324%20Parkside%20Dr%2C%20Knoxville%2C%20TN%2037934/11673%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/10843%20Kingston%20Pike%2C%20Suite%207%2C%20Farragut%2C%20TN%2037934/10542%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922/downtown%20Knoxville)
+6 businesses, about 1 h 55 min door to door (18 min out from downtown Knoxville, 18 min back).
+
+[Open Day 10 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/1750%20Commons%20Point%20Dr%2C%20Lower%20Building%205%2C%20Suite%20102%2C%20Knoxville%2C%20TN%2037932/11245%20Threadstone%20Lane%2C%20Knoxville%2C%20TN%2037932/11324%20Parkside%20Dr%2C%20Knoxville%2C%20TN%2037934/11673%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/10843%20Kingston%20Pike%2C%20Suite%207%2C%20Farragut%2C%20TN%2037934/10542%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -180,7 +204,9 @@ Fill-in days (no best bet):
 
 ### Day 11: Oak Ridge (37830)
 
-5 businesses, about 1 h 58 min door to door (22 min out from downtown Knoxville, 27 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/697%20Melton%20Lake%20Dr%2C%20Oak%20Ridge%2C%20TN%2037830/2388%20Brisbane%20Road%2C%20Oak%20Ridge%2C%20TN%2037830/780%20Briarcliff%20Ave%2C%20Oak%20Ridge%2C%20TN%2037830/697%20Emory%20Valley%20Rd%2C%20Oak%20Ridge%2C%20TN%2037830/176%20Randolph%20Road%2C%20Oak%20Ridge%2C%20TN%2037830/downtown%20Knoxville)
+5 businesses, about 1 h 58 min door to door (22 min out from downtown Knoxville, 27 min back).
+
+[Open Day 11 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/697%20Melton%20Lake%20Dr%2C%20Oak%20Ridge%2C%20TN%2037830/2388%20Brisbane%20Road%2C%20Oak%20Ridge%2C%20TN%2037830/780%20Briarcliff%20Ave%2C%20Oak%20Ridge%2C%20TN%2037830/697%20Emory%20Valley%20Rd%2C%20Oak%20Ridge%2C%20TN%2037830/176%20Randolph%20Road%2C%20Oak%20Ridge%2C%20TN%2037830/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -192,7 +218,9 @@ Fill-in days (no best bet):
 
 ### Day 12: Knoxville (37918)
 
-3 businesses, about 1 h 04 min door to door (14 min out from downtown Knoxville, 17 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/4660%20Old%20Broadway%2C%20Knoxville%2C%20TN%2037918/2605%20Adair%20Dr%2C%20%23101%2C%20Knoxville%2C%20TN%2037918/5003%20N%20Broadway%2C%20Knoxville%2C%20TN%2037918/downtown%20Knoxville)
+3 businesses, about 1 h 04 min door to door (14 min out from downtown Knoxville, 17 min back).
+
+[Open Day 12 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/4660%20Old%20Broadway%2C%20Knoxville%2C%20TN%2037918/2605%20Adair%20Dr%2C%20%23101%2C%20Knoxville%2C%20TN%2037918/5003%20N%20Broadway%2C%20Knoxville%2C%20TN%2037918/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -202,7 +230,9 @@ Fill-in days (no best bet):
 
 ### Day 13: Maryville (37804), part 1
 
-3 businesses, about 1 h 11 min door to door (19 min out from downtown Knoxville, 19 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/911%20East%20Broadway%2C%20Maryville%2C%20TN%2037804/907%20E%20Lamar%20Alexander%20Pkwy%2C%20Maryville%2C%20TN%2037804/1412%20Sevierville%20Rd%2C%20Maryville%2C%20TN%2037804/downtown%20Knoxville)
+3 businesses, about 1 h 11 min door to door (19 min out from downtown Knoxville, 19 min back).
+
+[Open Day 13 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/911%20East%20Broadway%2C%20Maryville%2C%20TN%2037804/907%20E%20Lamar%20Alexander%20Pkwy%2C%20Maryville%2C%20TN%2037804/1412%20Sevierville%20Rd%2C%20Maryville%2C%20TN%2037804/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -212,7 +242,9 @@ Fill-in days (no best bet):
 
 ### Day 14: Knoxville: Kingston Pike, part 2
 
-5 businesses, about 1 h 17 min door to door (11 min out from downtown Knoxville, 4 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/3337%20Sutherland%20Ave%2C%20Knoxville%2C%20TN%2037919/4445%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/4467%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/122%20N%20Forest%20Park%20Blvd%2C%20Knoxville%2C%20TN%2037919/2467%20University%20Commons%20Way%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
+5 businesses, about 1 h 17 min door to door (11 min out from downtown Knoxville, 4 min back).
+
+[Open Day 14 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/3337%20Sutherland%20Ave%2C%20Knoxville%2C%20TN%2037919/4445%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/4467%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/122%20N%20Forest%20Park%20Blvd%2C%20Knoxville%2C%20TN%2037919/2467%20University%20Commons%20Way%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -224,7 +256,9 @@ Fill-in days (no best bet):
 
 ### Day 15: Farragut: Kingston Pike, part 1
 
-3 businesses, about 1 h 26 min door to door (19 min out from downtown Knoxville, 23 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/10951%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11674%20Parkside%20Dr%2C%20Suite%20674%2C%20Knoxville%2C%20TN%2037934/12572%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/downtown%20Knoxville)
+3 businesses, about 1 h 26 min door to door (19 min out from downtown Knoxville, 23 min back).
+
+[Open Day 15 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/10951%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11674%20Parkside%20Dr%2C%20Suite%20674%2C%20Knoxville%2C%20TN%2037934/12572%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -234,7 +268,9 @@ Fill-in days (no best bet):
 
 ### Day 16: Clinton: N Charles G Seivers Blvd
 
-3 businesses, about 1 h 28 min door to door (21 min out from downtown Knoxville, 23 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/134%20W%20Broad%20St%2C%20Clinton%2C%20TN%2037716/1921%20N%20Charles%20G%20Seivers%20Blvd%2C%20Clinton%2C%20TN%2037716/1921%20N%20Charles%20G%20Seivers%20Blvd%2C%20Clinton%2C%20TN%2037716/downtown%20Knoxville)
+3 businesses, about 1 h 28 min door to door (21 min out from downtown Knoxville, 23 min back).
+
+[Open Day 16 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/134%20W%20Broad%20St%2C%20Clinton%2C%20TN%2037716/1921%20N%20Charles%20G%20Seivers%20Blvd%2C%20Clinton%2C%20TN%2037716/1921%20N%20Charles%20G%20Seivers%20Blvd%2C%20Clinton%2C%20TN%2037716/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -244,7 +280,9 @@ Fill-in days (no best bet):
 
 ### Day 17: Knoxville and Powell
 
-3 businesses, about 1 h 32 min door to door (17 min out from downtown Knoxville, 21 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/3547%20W%20Emory%20Rd%2C%20Powell%2C%20TN%2037849/10708%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037934/9405%20S%20Northshore%20Dr%2C%20Suite%20102%2C%20Knoxville%2C%20TN%2037922/downtown%20Knoxville)
+3 businesses, about 1 h 32 min door to door (17 min out from downtown Knoxville, 21 min back).
+
+[Open Day 17 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/3547%20W%20Emory%20Rd%2C%20Powell%2C%20TN%2037849/10708%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037934/9405%20S%20Northshore%20Dr%2C%20Suite%20102%2C%20Knoxville%2C%20TN%2037922/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -254,7 +292,9 @@ Fill-in days (no best bet):
 
 ### Day 18: Maynardville: Maynardville Hwy
 
-3 businesses, about 1 h 36 min door to door (26 min out from downtown Knoxville, 29 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/110%20Skyline%20Dr%2C%20Suite%201%2C%20Maynardville%2C%20TN%2037807/2915%20Maynardville%20Hwy%2C%20Maynardville%2C%20TN%2037807/4356%20Maynardville%20Hwy%2C%20Suite%203%2C%20Maynardville%2C%20TN%2037807/downtown%20Knoxville)
+3 businesses, about 1 h 36 min door to door (26 min out from downtown Knoxville, 29 min back).
+
+[Open Day 18 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/110%20Skyline%20Dr%2C%20Suite%201%2C%20Maynardville%2C%20TN%2037807/2915%20Maynardville%20Hwy%2C%20Maynardville%2C%20TN%2037807/4356%20Maynardville%20Hwy%2C%20Suite%203%2C%20Maynardville%2C%20TN%2037807/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -264,7 +304,9 @@ Fill-in days (no best bet):
 
 ### Day 19: Maryville (37804), part 2
 
-4 businesses, about 1 h 42 min door to door (20 min out from downtown Knoxville, 23 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/200%20E%20Broadway%20Ave%2C%20Suite%20506%2C%20Maryville%2C%20TN%2037804/1012%20Alcoa%20Mkt%20St%2C%20Maryville%2C%20TN%2037801/2336%20Market%20Place%20Dr%2C%20Maryville%2C%20TN%2037801/1010%20William%20Blount%20Dr%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
+4 businesses, about 1 h 42 min door to door (20 min out from downtown Knoxville, 23 min back).
+
+[Open Day 19 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/200%20E%20Broadway%20Ave%2C%20Suite%20506%2C%20Maryville%2C%20TN%2037804/1012%20Alcoa%20Mkt%20St%2C%20Maryville%2C%20TN%2037801/2336%20Market%20Place%20Dr%2C%20Maryville%2C%20TN%2037801/1010%20William%20Blount%20Dr%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -275,7 +317,9 @@ Fill-in days (no best bet):
 
 ### Day 20: Knoxville (37932)
 
-4 businesses, about 1 h 43 min door to door (17 min out from downtown Knoxville, 18 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/10254%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/701%20Racquet%20Club%20Way%2C%20Knoxville%2C%20TN%2037923/130%20N%20Cedar%20Bluff%20Rd%2C%20Knoxville%2C%20TN%2037923/10901%20Parkside%20Dr%2C%20Suite%20103%2C%20Knoxville%2C%20TN%2037934/downtown%20Knoxville)
+4 businesses, about 1 h 43 min door to door (17 min out from downtown Knoxville, 18 min back).
+
+[Open Day 20 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/10254%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/701%20Racquet%20Club%20Way%2C%20Knoxville%2C%20TN%2037923/130%20N%20Cedar%20Bluff%20Rd%2C%20Knoxville%2C%20TN%2037923/10901%20Parkside%20Dr%2C%20Suite%20103%2C%20Knoxville%2C%20TN%2037934/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -286,7 +330,9 @@ Fill-in days (no best bet):
 
 ### Day 21: Maryville (37804), part 3
 
-5 businesses, about 1 h 51 min door to door (24 min out from downtown Knoxville, 20 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/2724%20East%20Broadway%20Avenue%2C%20Maryville%2C%20TN%2037804/1812%20East%20Lamar%20Alexander%20Pkwy%2C%20Maryville%2C%20TN%2037804/605%20Smithview%20Dr%2C%20Ste.%203%2C%20Maryville%2C%20TN%2037803/520%20W%20Broadway%20Ave%2C%20Maryville%2C%20TN%2037801/424%20Home%20Avenue%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
+5 businesses, about 1 h 51 min door to door (24 min out from downtown Knoxville, 20 min back).
+
+[Open Day 21 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/2724%20East%20Broadway%20Avenue%2C%20Maryville%2C%20TN%2037804/1812%20East%20Lamar%20Alexander%20Pkwy%2C%20Maryville%2C%20TN%2037804/605%20Smithview%20Dr%2C%20Ste.%203%2C%20Maryville%2C%20TN%2037803/520%20W%20Broadway%20Ave%2C%20Maryville%2C%20TN%2037801/424%20Home%20Avenue%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -298,7 +344,9 @@ Fill-in days (no best bet):
 
 ### Day 22: Knoxville: Kingston Pike, part 3
 
-7 businesses, about 1 h 53 min door to door (13 min out from downtown Knoxville, 14 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/133%20S%20Forest%20Park%20Blvd%2C%20Knoxville%2C%20TN%2037919/101%20Westwood%20Rd%2C%20Ste.%20109%2C%20Knoxville%2C%20TN%2037919/224%20Brookview%20Centre%20Way%2C%20Ste.%20200%2C%20Knoxville%2C%20TN%2037919/6450%20Kingston%20Pike%2C%20Ste.%20B%2C%20Knoxville%2C%20TN%2037919/302%20Westfield%20Road%2C%20Knoxville%2C%20TN%2037919/10001%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922/7575%20S%20Northshore%20Dr%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
+7 businesses, about 1 h 53 min door to door (13 min out from downtown Knoxville, 14 min back).
+
+[Open Day 22 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/133%20S%20Forest%20Park%20Blvd%2C%20Knoxville%2C%20TN%2037919/101%20Westwood%20Rd%2C%20Ste.%20109%2C%20Knoxville%2C%20TN%2037919/224%20Brookview%20Centre%20Way%2C%20Ste.%20200%2C%20Knoxville%2C%20TN%2037919/6450%20Kingston%20Pike%2C%20Ste.%20B%2C%20Knoxville%2C%20TN%2037919/302%20Westfield%20Road%2C%20Knoxville%2C%20TN%2037919/10001%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922/7575%20S%20Northshore%20Dr%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -312,7 +360,9 @@ Fill-in days (no best bet):
 
 ### Day 23: Knoxville and Farragut, part 3
 
-5 businesses, about 1 h 53 min door to door (20 min out from downtown Knoxville, 20 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/11439%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/153%20Brooklawn%20Street%2C%20Suite%20153%2C%20Farragut%2C%20TN%2037934/10321%20Kingston%20Pike%2C%20Ste%20124%2C%20Knoxville%2C%20TN%2037922/8915%20George%20Williams%20Rd%2C%20Knoxville%2C%20TN%2037923/245%20S%20Peters%20Road%2C%20Knoxville%2C%20TN%2037923/downtown%20Knoxville)
+5 businesses, about 1 h 53 min door to door (20 min out from downtown Knoxville, 20 min back).
+
+[Open Day 23 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/11439%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/153%20Brooklawn%20Street%2C%20Suite%20153%2C%20Farragut%2C%20TN%2037934/10321%20Kingston%20Pike%2C%20Ste%20124%2C%20Knoxville%2C%20TN%2037922/8915%20George%20Williams%20Rd%2C%20Knoxville%2C%20TN%2037923/245%20S%20Peters%20Road%2C%20Knoxville%2C%20TN%2037923/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -324,7 +374,9 @@ Fill-in days (no best bet):
 
 ### Day 24: Oak Ridge: Oak Ridge Turnpike
 
-4 businesses, about 1 h 53 min door to door (31 min out from downtown Knoxville, 26 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/1116%20E%20Tri%20County%20Blvd%2C%20Oliver%20Springs%2C%20TN%2037840/1403%20Oak%20Ridge%20Turnpike%2C%20Oak%20Ridge%2C%20TN%2037830/302%20S%20Illinois%20Ave%2C%20Oak%20Ridge%2C%20TN%2037830/1153%20Oak%20Ridge%20Turnpike%2C%20Oak%20Ridge%2C%20TN%2037830/downtown%20Knoxville)
+4 businesses, about 1 h 53 min door to door (31 min out from downtown Knoxville, 26 min back).
+
+[Open Day 24 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/1116%20E%20Tri%20County%20Blvd%2C%20Oliver%20Springs%2C%20TN%2037840/1403%20Oak%20Ridge%20Turnpike%2C%20Oak%20Ridge%2C%20TN%2037830/302%20S%20Illinois%20Ave%2C%20Oak%20Ridge%2C%20TN%2037830/1153%20Oak%20Ridge%20Turnpike%2C%20Oak%20Ridge%2C%20TN%2037830/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -335,7 +387,9 @@ Fill-in days (no best bet):
 
 ### Day 25: Farragut: Kingston Pike, part 2
 
-6 businesses, about 1 h 54 min door to door (23 min out from downtown Knoxville, 21 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/12284%20N%20Fox%20Den%20Dr%2C%20Farragut%2C%20TN%2037934%2C%20Farragut%2C%20TN%2037934/11560%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11521%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/102%20S%20Campbell%20Station%20Rd%2C%20Farragut%2C%20TN%2037934/11672%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/623%20N%20Campbell%20Station%20Rd%2C%20Farragut%2C%20TN%2037934/downtown%20Knoxville)
+6 businesses, about 1 h 54 min door to door (23 min out from downtown Knoxville, 21 min back).
+
+[Open Day 25 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/12284%20N%20Fox%20Den%20Dr%2C%20Farragut%2C%20TN%2037934%2C%20Farragut%2C%20TN%2037934/11560%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11521%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/102%20S%20Campbell%20Station%20Rd%2C%20Farragut%2C%20TN%2037934/11672%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/623%20N%20Campbell%20Station%20Rd%2C%20Farragut%2C%20TN%2037934/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -348,7 +402,9 @@ Fill-in days (no best bet):
 
 ### Day 26: Seymour: Chapman Hwy
 
-6 businesses, about 1 h 55 min door to door (24 min out from downtown Knoxville, 19 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/11653%20Chapman%20Hwy%2C%20Seymour%2C%20TN%2037865/119%20Maryville%20Hwy%2C%20Suite%20A%2C%20Seymour%2C%20TN%2037865/124%20Maryville%20Hwy%2C%20Seymour%2C%20TN%2037865/11642%20Chapman%20Hwy%2C%20Seymour%2C%20TN%2037865/11729%20Chapman%20Hwy%2C%20Suite%205%2C%20Seymour%2C%20TN%2037865/10233%20Chapman%20Hwy%2C%20Seymour%2C%20TN%2037865/downtown%20Knoxville)
+6 businesses, about 1 h 55 min door to door (24 min out from downtown Knoxville, 19 min back).
+
+[Open Day 26 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/11653%20Chapman%20Hwy%2C%20Seymour%2C%20TN%2037865/119%20Maryville%20Hwy%2C%20Suite%20A%2C%20Seymour%2C%20TN%2037865/124%20Maryville%20Hwy%2C%20Seymour%2C%20TN%2037865/11642%20Chapman%20Hwy%2C%20Seymour%2C%20TN%2037865/11729%20Chapman%20Hwy%2C%20Suite%205%2C%20Seymour%2C%20TN%2037865/10233%20Chapman%20Hwy%2C%20Seymour%2C%20TN%2037865/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -361,7 +417,9 @@ Fill-in days (no best bet):
 
 ### Day 27: Maryville and Alcoa
 
-5 businesses, about 1 h 55 min door to door (25 min out from downtown Knoxville, 21 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/636%20Vose%20Rd%2C%20Alcoa%2C%20TN%2037701/35%20Executive%20Plaza%20Court%2C%20Maryville%2C%20TN%2037801/213%20Greenway%20Village%20Ln%2C%20Suite%2010%2C%20Maryville%2C%20TN%2037801/921%20Foch%20St%2C%20Suite%209%2C%20Maryville%2C%20TN%2037801/1009%20Hampshire%20Drive%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
+5 businesses, about 1 h 55 min door to door (25 min out from downtown Knoxville, 21 min back).
+
+[Open Day 27 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/636%20Vose%20Rd%2C%20Alcoa%2C%20TN%2037701/35%20Executive%20Plaza%20Court%2C%20Maryville%2C%20TN%2037801/213%20Greenway%20Village%20Ln%2C%20Suite%2010%2C%20Maryville%2C%20TN%2037801/921%20Foch%20St%2C%20Suite%209%2C%20Maryville%2C%20TN%2037801/1009%20Hampshire%20Drive%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -373,7 +431,9 @@ Fill-in days (no best bet):
 
 ### Day 28: Knoxville: Kingston Pike, part 4
 
-7 businesses, about 1 h 57 min door to door (20 min out from downtown Knoxville, 13 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/248%20N%20Peters%20Rd%2C%20Suite%203%2C%20Knoxville%2C%20TN%2037923/9000%20Executive%20Park%20Dr%2C%20Suite%20C150%2C%20Knoxville%2C%20TN%2037923%2C%20Knoxville%2C%20TN%2037923/8805%20Kingston%20Pike%2C%20Suite%20105%2C%20Knoxville%2C%20TN%2037923/1645%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/1701%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/8042%20Ray%20Mears%20Blvd%2C%20Knoxville%2C%20TN%2037919/7347%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
+7 businesses, about 1 h 57 min door to door (20 min out from downtown Knoxville, 13 min back).
+
+[Open Day 28 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/248%20N%20Peters%20Rd%2C%20Suite%203%2C%20Knoxville%2C%20TN%2037923/9000%20Executive%20Park%20Dr%2C%20Suite%20C150%2C%20Knoxville%2C%20TN%2037923%2C%20Knoxville%2C%20TN%2037923/8805%20Kingston%20Pike%2C%20Suite%20105%2C%20Knoxville%2C%20TN%2037923/1645%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/1701%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/8042%20Ray%20Mears%20Blvd%2C%20Knoxville%2C%20TN%2037919/7347%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -387,7 +447,9 @@ Fill-in days (no best bet):
 
 ### Day 29: Knoxville: Hardin Valley Rd
 
-5 businesses, about 1 h 58 min door to door (19 min out from downtown Knoxville, 25 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/10966%20Spring%20Bluff%20Way%2C%20Knoxville%2C%20TN%2037932/10839%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/10780%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/4900%20Guinn%20Rd%2C%20Knoxville%2C%20TN%2037931/700%20S%20Illinois%20Ave%2C%20Suite%20A103%2C%20Oak%20Ridge%2C%20TN%2037830/downtown%20Knoxville)
+5 businesses, about 1 h 58 min door to door (19 min out from downtown Knoxville, 25 min back).
+
+[Open Day 29 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/10966%20Spring%20Bluff%20Way%2C%20Knoxville%2C%20TN%2037932/10839%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/10780%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/4900%20Guinn%20Rd%2C%20Knoxville%2C%20TN%2037931/700%20S%20Illinois%20Ave%2C%20Suite%20A103%2C%20Oak%20Ridge%2C%20TN%2037830/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -399,7 +461,9 @@ Fill-in days (no best bet):
 
 ### Day 30: Knoxville: Kingston Pike, part 5
 
-8 businesses, about 1 h 59 min door to door (12 min out from downtown Knoxville, 1 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/6718%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/6209%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/5908%20Toole%20Drive%20NW%2C%20Suite%20EF%2C%20Knoxville%2C%20TN%2037919/5138%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/4928%20Homberg%20Dr%2C%20Building%20B%2C%20Knoxville%2C%20TN%2037919/2317%20Lakemoor%20Drive%2C%20Knoxville%2C%20TN%2037920/2325%20Sutherland%20Ave%2C%20Knoxville%2C%20TN%2037919/1060%20Worlds%20Fair%20Park%20Dr%2C%20Unit%20104%2C%20Knoxville%2C%20TN%2037916/downtown%20Knoxville)
+8 businesses, about 1 h 59 min door to door (12 min out from downtown Knoxville, 1 min back).
+
+[Open Day 30 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/6718%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/6209%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/5908%20Toole%20Drive%20NW%2C%20Suite%20EF%2C%20Knoxville%2C%20TN%2037919/5138%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/4928%20Homberg%20Dr%2C%20Building%20B%2C%20Knoxville%2C%20TN%2037919/2317%20Lakemoor%20Drive%2C%20Knoxville%2C%20TN%2037920/2325%20Sutherland%20Ave%2C%20Knoxville%2C%20TN%2037919/1060%20Worlds%20Fair%20Park%20Dr%2C%20Unit%20104%2C%20Knoxville%2C%20TN%2037916/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -414,7 +478,9 @@ Fill-in days (no best bet):
 
 ### Day 31: Lenoir City: Highway 321 N
 
-5 businesses, about 1 h 59 min door to door (29 min out from downtown Knoxville, 30 min back). [Map](https://www.google.com/maps/dir/downtown%20Knoxville/10000%20Martel%20Rd%2C%20Lenoir%20City%2C%20TN%2037772/1005%20E%20Broadway%2C%20Lenoir%20City%2C%20TN%2037771/785%20Highway%20321%20N%2C%20Suite%2020%2C%20Lenoir%20City%2C%20TN%2037771/300%20Market%20Dr%2C%20Suite%20102A%2C%20Lenoir%20City%2C%20TN%2037771/835%20Highway%20321%20N%2C%20Lenoir%20City%2C%20TN%2037771/downtown%20Knoxville)
+5 businesses, about 1 h 59 min door to door (29 min out from downtown Knoxville, 30 min back).
+
+[Open Day 31 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/10000%20Martel%20Rd%2C%20Lenoir%20City%2C%20TN%2037772/1005%20E%20Broadway%2C%20Lenoir%20City%2C%20TN%2037771/785%20Highway%20321%20N%2C%20Suite%2020%2C%20Lenoir%20City%2C%20TN%2037771/300%20Market%20Dr%2C%20Suite%20102A%2C%20Lenoir%20City%2C%20TN%2037771/835%20Highway%20321%20N%2C%20Lenoir%20City%2C%20TN%2037771/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|

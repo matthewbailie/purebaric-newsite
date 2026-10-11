@@ -51,9 +51,9 @@ Extract text with pypdf (PDF) or by stripping `word/document.xml` (docx). Match 
 - Must not contain: `hello@purebaric.com`; any other phone number; the home state's name or city (`Utah`, `Wasatch`, `Lehi`) or any other market's name; `therapy` (except inside the exact disclaimer sentence); `HBOT`; `patients`; `episodes of care`; `treatment plan`; `inflammation`; `sleep`; `detox`; `immunity`; `cure`; `heals` or `healing`; `this month`; `only one`; `first in`; `not a medical device`.
 - Allowed despite containing a banned stem: the fixed disclaimer sentence ("not offered to diagnose, treat, cure or prevent any disease"), "treatment room", "body treatment", "not a medical treatment". Match `treat` only as the whole word `treat` outside the disclaimer sentence, and `heal` only as `heals`/`healing`, so "health" does not trip it.
 
-**Letter of intent (state version):** market contact details present; no `hello@purebaric.com`; no "Standard: with oxygen" option; no tax rate percentage; no other state's name except the home-state entity line and the Utah comparison, if any (`grep -i` for the previous market's state and city).
+**Letter of intent (state version):** market contact details present; no `hello@purebaric.com`; the standard-package configuration line (no state-specific configuration); no tax rate percentage; no other state's name except the home-state entity line and the Utah comparison, if any (`grep -i` for the previous market's state and city).
 
-**Rental agreement (state version):** the renewal section present where the state has a renewal statute; the air-only Exhibit A line where that is the decision; market contact details; the state's law and venue; no `hello@purebaric.com`.
+**Rental agreement (state version):** the renewal section present where the state has a renewal statute; the standard-package Exhibit A (concentrator model and serial lines present); market contact details; the state's law and venue; no `hello@purebaric.com`.
 
 **Counts:** workbook Summary sheet = executive brief = research README = documents index = runbook.
 
