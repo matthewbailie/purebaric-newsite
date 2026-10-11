@@ -3,7 +3,6 @@
  "state_abbrev": "TN",
  "state_name": "Tennessee",
  "market_label": "Knoxville, Tennessee",
- "home_base_note": "Drive time from your starting point to the first stop and home from the last stop is not counted, so pick the day whose area is nearest you.",
  "out_md": "/Users/bailie/Desktop/Tennessee Research/TENNESSEE-ROUTE-PLAN.md",
  "out_xlsx": "/Users/bailie/Desktop/Tennessee Research/TENNESSEE-ROUTE-PLAN.xlsx",
  "max_minutes": 120,
@@ -14,5 +13,12 @@
  "exclude_industries": [
   "High schools and colleges (athletics)"
  ],
- "min_anchor_score": 6
+ "min_anchor_score": 6,
+ "home": [
+  35.9606,
+  -83.9207
+ ],
+ "home_label": "downtown Knoxville",
+ "min_day_minutes": 60,
+ "home_note": "Downtown is a placeholder: put your actual start address in route_config_knoxville.json and rerun, and the days and times will follow."
 }

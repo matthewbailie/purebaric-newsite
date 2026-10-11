@@ -3,7 +3,6 @@
  "state_abbrev": "UT",
  "state_name": "Utah",
  "market_label": "Utah (Wasatch Front, Park City, Heber and Tooele)",
- "home_base_note": "Drive time from Lehi to the first stop and home from the last stop is not counted, so pair far-off days (Ogden, Park City, Tooele) with other errands in that direction.",
  "out_md": "/Users/bailie/projects/purebaric-newsite/_internal/outreach/UTAH-ROUTE-PLAN.md",
  "out_xlsx": "/Users/bailie/projects/purebaric-newsite/_internal/outreach/UTAH-ROUTE-PLAN.xlsx",
  "max_minutes": 120,
@@ -14,5 +13,12 @@
  "exclude_industries": [
   "High schools and colleges (athletics)"
  ],
- "min_anchor_score": 6
+ "min_anchor_score": 6,
+ "home": [
+  40.3916,
+  -111.8508
+ ],
+ "home_label": "Lehi",
+ "min_day_minutes": 60,
+ "home_note": ""
 }
