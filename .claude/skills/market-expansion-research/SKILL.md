@@ -7,7 +7,7 @@ description: Full new-market research package for Purebaric chamber rentals (mar
 
 This skill reproduces the Knoxville, Tennessee research package of 10 October 2026 for any new area. The finished package is a folder the owner can hand to a sales representative and an attorney: a scored market analysis, a legal blockers memo, a master list of businesses and schools to contact in a set order, a state-specific letter of intent, one pamphlet per industry, a sales training document with industry talk tracks, an outreach runbook, and a documents index. Every document goes through adversarial critique before it is called done.
 
-The worked example lives in the site repo at `_internal/research/knoxville-tennessee/` (with `_internal/research/channel-schools-athletic-recovery/` and `_internal/outreach/`). Read its `DOCUMENTS-INDEX.md` first; it shows the finished shape. Every reference file below points at the Knoxville file to copy from.
+A human-readable mirror of this skill is kept at `_internal/skills/market-expansion-research/` in the site repo (update the `.claude/skills/` copy first, then mirror it there and to `~/.claude/skills/`). The worked example lives in the site repo at `_internal/research/knoxville-tennessee/` (with `_internal/research/channel-schools-athletic-recovery/` and `_internal/outreach/`). Read its `DOCUMENTS-INDEX.md` first; it shows the finished shape. Every reference file below points at the Knoxville file to copy from.
 
 ## Step 0. Intake (ask before doing anything)
 

@@ -632,3 +632,7 @@ This is a wellness rental business, **not a medical provider** ("not a medical d
 - **Sitting-chamber image:** the "coming soon" card reuses the current chamber photo, heavily blurred; replace with a real rendering/photo when available.
 - **Finish the design migration:** Safety, Terms, Practitioners, Blog + posts, and Use-case pages still use the legacy teal template (+ jQuery/Toastr/Vite). Migrating them to warm would also drop that legacy JS/CSS weight.
 - **Stripe / instant paid booking / real-time availability** — the reservation is request-only today.
+
+## 15. Reusable AI playbooks
+
+`_internal/skills/` holds the human-readable copies of the Claude Code skills used to run the business's research and sales-asset work. `market-expansion-research` reproduces the Knoxville, Tennessee package (market scan and score, legal check, prospect list, LOI and agreement, pamphlets, training, runbook, route plan, critiques) for any new city; the executable copy is `.claude/skills/market-expansion-research/`. See `_internal/skills/README.md`.
