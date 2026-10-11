@@ -23,5 +23,5 @@ Research, not legal advice. Source read: Tenn. Code Ann. § 47-18-133 as publish
 ## Owner actions
 - **Home rental agreement and waiver.** Those documents are not in the site repo, so the rider is the Tennessee statement for home rentals until the home documents themselves are revised. Decide which continuation option applies to home rentals (ends on the end date unless extended, or continues month to month) and tick it on the rider.
 - **Online booking.** When booking is opened to Tennessee addresses, the booking page must show the renewal terms before payment, capture affirmative consent (a checkbox is the usual form), send the acknowledgment email, and offer online cancellation. That is a website change and is not made here.
-- **Contracting entity and governing law.** The Tennessee agreement keeps "Matthew Bailie, doing business as Purebaric" and uses Tennessee law and Knox County venue to match the LOI; both are flagged for counsel in `README-LOI-Tennessee.md`.
+- **Contracting entity and governing law.** The Tennessee agreement keeps "Michael Bailie, doing business as Purebaric" and uses Tennessee law and Knox County venue to match the LOI; both are flagged for counsel in `README-LOI-Tennessee.md`.
 - **Utah documents are unchanged.** The generator now carries the term-rate rule and the state switch, but the Utah agreement file was not regenerated.

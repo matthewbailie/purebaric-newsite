@@ -3,9 +3,9 @@ const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table
 
 const STATE_KEY = (process.env.STATE || "utah").toLowerCase();
 const STATES = {
-  utah: { name: "Utah", contact: "hello@purebaric.com \u00b7 (801) 901-0873", noticeEmail: "hello@purebaric.com", noticePhone: "(801) 901-0873",
+  utah: { name: "Utah", person: "Matthew Bailie", contact: "hello@purebaric.com \u00b7 (801) 901-0873", noticeEmail: "hello@purebaric.com", noticePhone: "(801) 901-0873",
     law: "the laws of the State of Utah", venue: "Utah County, Utah", airOnly: false, renewalSection: false, subtitleSuffix: "" },
-  tennessee: { name: "Tennessee", contact: "mlebailie@hotmail.com \u00b7 (801) 884-2113", noticeEmail: "mlebailie@hotmail.com", noticePhone: "(801) 884-2113",
+  tennessee: { name: "Tennessee", person: "Michael Bailie", contact: "mlebailie@hotmail.com \u00b7 (801) 884-2113", noticeEmail: "mlebailie@hotmail.com", noticePhone: "(801) 884-2113",
     law: "the laws of the State of Tennessee", venue: "Knox County, Tennessee", airOnly: true, renewalSection: true, subtitleSuffix: " (Tennessee)" },
 };
 const ST = STATES[STATE_KEY]; if (!ST) throw new Error("unknown STATE " + STATE_KEY);
@@ -44,7 +44,7 @@ children.push(new Paragraph({ spacing: { after: 200 }, border: { top: { style: B
 
 children.push(p("This Business Rental Agreement and Liability Waiver (the \"Agreement\") is made on the Effective Date below between:"));
 children.push(kv([
-  ["Purebaric", "Matthew Bailie, doing business as Purebaric, Lehi, Utah (\"Purebaric\", \"we\", \"us\"). " + ST.contact],
+  ["Purebaric", ST.person + ", doing business as Purebaric, Lehi, Utah (\"Purebaric\", \"we\", \"us\"). " + ST.contact],
   ["Business", "______________________________________ (legal name), a ______________ (entity type and state), doing business as ______________________________ (\"Business\", \"you\")"],
   ["Business address", "______________________________________________________________"],
   ["Authorized signer", "Name: ______________________________  Title: ______________________"],
@@ -82,7 +82,7 @@ children.push(p("3.3 **Acceptance.** The Business will inspect the Equipment at 
 children.push(h1("4. Operation of the Equipment and Client Sessions"));
 children.push(p("4.1 **Business operates the sessions.** The Business, not Purebaric, offers sessions to its clients, sets prices, schedules sessions, collects payment, and supervises every session. Purebaric is an equipment lessor and service provider only and has no relationship with the Business's clients."));
 children.push(p("4.2 **Trained staff present.** A trained staff member will be on the premises and available for the whole of every session, will start and end each session, and will be able to depressurize and open the chamber at any time."));
-children.push(p("4.3 **Client consent before every first session.** Before a client's first session, the Business will obtain the client's signature on a client consent, assumption of risk, and release form that (a) is at least as protective of Purebaric as the template Purebaric supplies; (b) names Purebaric and Matthew Bailie as released parties; and (c) requires the client to confirm that none of the conditions in Exhibit C apply, or that a physician has cleared the client. The Business will keep each signed form for at least four years and will give Purebaric a copy within 5 business days of any request."));
+children.push(p("4.3 **Client consent before every first session.** Before a client's first session, the Business will obtain the client's signature on a client consent, assumption of risk, and release form that (a) is at least as protective of Purebaric as the template Purebaric supplies; (b) names Purebaric and " + ST.person + " as released parties; and (c) requires the client to confirm that none of the conditions in Exhibit C apply, or that a physician has cleared the client. The Business will keep each signed form for at least four years and will give Purebaric a copy within 5 business days of any request."));
 children.push(p("4.4 **Who may not use the chamber.** The Business will not allow a session for any person who (a) is under 18 unless a parent or legal guardian signs the consent form and is present; (b) reports any condition listed in Exhibit C without written physician clearance; (c) appears ill, intoxicated, or impaired; or (d) refuses to sign the consent form."));
 children.push(p("4.5 **Operating rules.** The Business will operate the Equipment only as trained and as described in the runbook and the manufacturer's instructions, and will follow the safety rules in Exhibit C, including the rules on flammable and oil-based products, items brought into the chamber, maximum session length, and cleaning between sessions."));
 children.push(p("4.6 **Incidents.** If a client or staff member experiences distress, injury, or a medical symptom during or after a session, the Business will stop the session, depressurize and open the chamber, obtain appropriate medical help (calling 911 in an emergency), and notify Purebaric by phone within 24 hours and in writing within 3 days. The Business will preserve the Equipment and any records relating to the incident."));
@@ -92,7 +92,7 @@ children.push(p("4.7 **Records.** The Business will keep a session log (date, ti
 children.push(h1("5. No Medical Claims; Compliance with Law"));
 children.push(p("5.1 **Wellness amenity only.** The Equipment is offered as a general wellness and relaxation amenity. It is not a medical device as used here, and neither Purebaric nor the Business provides medical diagnosis, treatment, or advice through it."));
 children.push(p("5.2 **Business's marketing.** The Business is solely responsible for everything it says about the sessions to clients and the public, in any medium. The Business will not state or imply that sessions diagnose, treat, cure, prevent, or mitigate any disease or medical condition, or make any claim that would require regulatory approval, and will describe the sessions as a wellness amenity. The Business will not use Purebaric's name or logo in marketing without Purebaric's written approval, except for the pamphlet prepared with Purebaric under Section 1.2."));
-children.push(p("5.3 **Laws, licenses, and insurance.** The Business will comply with all laws applicable to its offering of sessions, including consumer protection, advertising, health and safety, privacy, and any licensing requirements, and will obtain any permits required for its premises. The Business will maintain commercial general liability insurance of at least $1,000,000 per occurrence and $2,000,000 aggregate that covers the sessions, will name Matthew Bailie d/b/a Purebaric as an additional insured, and will give Purebaric a certificate of insurance before the first session and on each renewal."));
+children.push(p("5.3 **Laws, licenses, and insurance.** The Business will comply with all laws applicable to its offering of sessions, including consumer protection, advertising, health and safety, privacy, and any licensing requirements, and will obtain any permits required for its premises. The Business will maintain commercial general liability insurance of at least $1,000,000 per occurrence and $2,000,000 aggregate that covers the sessions, will name " + ST.person + " d/b/a Purebaric as an additional insured, and will give Purebaric a certificate of insurance before the first session and on each renewal."));
 
 // ---------- 6 ----------
 children.push(h1("6. Care, Maintenance, Damage, and Loss"));
@@ -107,7 +107,7 @@ children.push(p("7.2 The Business voluntarily assumes all risks of offering sess
 
 // ---------- 8 ----------
 children.push(h1("8. Release of Liability"));
-children.push(caps("8.1 TO THE FULLEST EXTENT PERMITTED BY LAW, THE BUSINESS, FOR ITSELF AND ITS OWNERS, OFFICERS, EMPLOYEES, CONTRACTORS, INSURERS, SUCCESSORS, AND ASSIGNS, RELEASES, WAIVES, AND DISCHARGES MATTHEW BAILIE, PUREBARIC, AND THEIR RESPECTIVE AGENTS, CONTRACTORS, HEIRS, AND ASSIGNS (THE \"RELEASED PARTIES\") FROM ALL CLAIMS, DEMANDS, LOSSES, AND LIABILITIES OF EVERY KIND, INCLUDING CLAIMS FOR PERSONAL INJURY, ILLNESS, DEATH, PROPERTY DAMAGE, LOST PROFITS, OR BUSINESS INTERRUPTION, ARISING OUT OF OR RELATED TO THE EQUIPMENT, ITS INSTALLATION, USE, MALFUNCTION, OR REMOVAL, OR THE SESSIONS OFFERED BY THE BUSINESS, INCLUDING CLAIMS CAUSED IN WHOLE OR IN PART BY THE ORDINARY NEGLIGENCE OF A RELEASED PARTY."));
+children.push(caps("8.1 TO THE FULLEST EXTENT PERMITTED BY LAW, THE BUSINESS, FOR ITSELF AND ITS OWNERS, OFFICERS, EMPLOYEES, CONTRACTORS, INSURERS, SUCCESSORS, AND ASSIGNS, RELEASES, WAIVES, AND DISCHARGES " + ST.person.toUpperCase() + ", PUREBARIC, AND THEIR RESPECTIVE AGENTS, CONTRACTORS, HEIRS, AND ASSIGNS (THE \"RELEASED PARTIES\") FROM ALL CLAIMS, DEMANDS, LOSSES, AND LIABILITIES OF EVERY KIND, INCLUDING CLAIMS FOR PERSONAL INJURY, ILLNESS, DEATH, PROPERTY DAMAGE, LOST PROFITS, OR BUSINESS INTERRUPTION, ARISING OUT OF OR RELATED TO THE EQUIPMENT, ITS INSTALLATION, USE, MALFUNCTION, OR REMOVAL, OR THE SESSIONS OFFERED BY THE BUSINESS, INCLUDING CLAIMS CAUSED IN WHOLE OR IN PART BY THE ORDINARY NEGLIGENCE OF A RELEASED PARTY."));
 children.push(p("8.2 This release does not apply to liability that cannot be released under applicable law, including liability for a Released Party's gross negligence, willful misconduct, or fraud."));
 children.push(p("8.3 The Business will not bring, and will not permit anyone claiming through it to bring, any claim against a Released Party that has been released under this Section."));
 
@@ -149,7 +149,7 @@ const sigTable = new Table({ width: { size: 9360, type: WidthType.DXA }, columnW
       line("Signature:", 4300), line("Name:", 4300), line("Title:", 4300), line("Date:", 4300)] }),
     new TableCell({ width: { size: 4680, type: WidthType.DXA }, margins: { left: 300 }, children: [
       new Paragraph({ spacing: { after: 300 }, children: [new TextRun({ text: "PUREBARIC", bold: true, font: FONT, size: 22 })] }),
-      line("Signature:", 4300), new Paragraph({ spacing: { after: 160 }, children: [new TextRun({ text: "Name: Matthew Bailie", font: FONT, size: 22 })] }), new Paragraph({ spacing: { after: 160 }, children: [new TextRun({ text: "Title: Owner, Purebaric", font: FONT, size: 22 })] }), line("Date:", 4300)] }),
+      line("Signature:", 4300), new Paragraph({ spacing: { after: 160 }, children: [new TextRun({ text: "Name: " + ST.person + "", font: FONT, size: 22 })] }), new Paragraph({ spacing: { after: 160 }, children: [new TextRun({ text: "Title: Owner, Purebaric", font: FONT, size: 22 })] }), line("Date:", 4300)] }),
   ] })] });
 children.push(sigTable);
 
@@ -190,7 +190,7 @@ children.push(p("Before a client's first session, the Business will have the cli
 children.push(num("A statement that the session is a general wellness and relaxation amenity, is not a medical treatment, and that no diagnosis, treatment, or cure is offered."));
 children.push(num("The health screening in Exhibit C, with the client's confirmation that none of the listed conditions apply, or a physician's written clearance."));
 children.push(num("A description of the risks in Section 7.1 and the client's voluntary assumption of those risks."));
-children.push(num("A release of liability and covenant not to sue in favor of the Business, Matthew Bailie, and Purebaric, covering ordinary negligence to the extent permitted by applicable law."));
+children.push(num("A release of liability and covenant not to sue in favor of the Business, " + ST.person + ", and Purebaric, covering ordinary negligence to the extent permitted by applicable law."));
 children.push(num("The safety rules in Exhibit C and the client's agreement to follow them and to follow staff instructions."));
 children.push(num("Emergency contact information and an acknowledgment that staff may end a session at any time."));
 children.push(num("For a client under 18, the signature of a parent or legal guardian who will be present during the session."));
