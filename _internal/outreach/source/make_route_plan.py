@@ -87,6 +87,38 @@ while unassigned:
     for b in ordered: unassigned.remove(b)
     days.append({"stops": ordered, "legs": legs, "minutes": total})
 
+# merge pass: a day with fewer than 3 stops joins the nearest day (anchor within MERGE_RAD miles) if the combined time fits
+MERGE_RAD = CFG.get("merge_radius_mi", 9.0)
+def route_time(stops):
+    cur, total = stops[0]["pt"], STOP
+    legs = [0.0]
+    for b in stops[1:]:
+        dm = drive_min(cur, b["pt"]); legs.append(dm); total += dm + STOP; cur = b["pt"]
+    return total, legs
+def nn_order(stops):
+    first = max(stops, key=lambda b: b["score"]); ordered, rest, cur = [first], [b for b in stops if b is not first], first["pt"]
+    while rest:
+        nxt = min(rest, key=lambda b: miles(cur, b["pt"])); ordered.append(nxt); rest.remove(nxt); cur = nxt["pt"]
+    return ordered
+changed = True
+while changed:
+    changed = False
+    small = [d for d in days if len(d["stops"]) < 3]
+    for d in small:
+        if d not in days: continue
+        best = None
+        for e in days:
+            if e is d: continue
+            dist = min(miles(s1["pt"], s2["pt"]) for s1 in d["stops"] for s2 in e["stops"])
+            if dist > MERGE_RAD: continue
+            merged = nn_order(e["stops"] + d["stops"]); t, legs = route_time(merged)
+            if t <= MAXM and (best is None or t < best[0]): best = (t, e, merged, legs)
+        if best:
+            t, e, merged, legs = best; e["stops"], e["legs"], e["minutes"] = merged, legs, t; days.remove(d); changed = True
+days.sort(key=lambda d: -max(b["score"] for b in d["stops"]))
+singles = [d for d in days if len(d["stops"]) == 1]
+days = [d for d in days if len(d["stops"]) > 1]
+
 # area label: most common city; if one city, add the ZIP(s)
 for d in days:
     cities = {}
@@ -94,7 +126,7 @@ for d in days:
     main = max(cities, key=cities.get)
     zips = sorted({str(s["zip"]) for s in d["stops"] if s["city"] == main and s["zip"]})
     d["area"] = main + ((" " + ", ".join(zips[:3])) if len(cities) == 1 and zips else (" and " + ", ".join(c for c in cities if c != main) if len(cities) > 1 else ""))
-    d["maps"] = "https://www.google.com/maps/dir/" + "/".join(urllib.parse.quote(f"{s['address']}, {s['city']}, {ST}") for s in d["stops"])
+    d["maps"] = "https://www.google.com/maps/dir/" + "/".join(urllib.parse.quote(s["address"] if s["city"].lower() in s["address"].lower() else f"{s['address']}, {s['city']}, {ST}") for s in d["stops"])
     d["high"] = sum(1 for s in d["stops"] if tier(s["score"]) == "High")
     d["anchor_score"] = d["stops"][0]["score"]
 
@@ -114,7 +146,7 @@ for i, d in enumerate(days, 1):
     L.append(f"| {i} | {d['area']} | {len(d['stops'])} | {d['high']} | {round(d['minutes'])} | [Google Maps]({d['maps']}) |")
 L.append("")
 tot_stops = sum(len(d["stops"]) for d in days)
-L.append(f"{len(days)} days, {tot_stops} stops, {sum(1 for b in biz if tier(b['score'])=='High')} high-potential businesses, {sum(d['minutes'] for d in days)/60:.1f} hours of visiting time in total.")
+L.append(f"{len(days)} days, {tot_stops} stops, {sum(1 for b in biz if tier(b['score'])=='High')} high-potential businesses, {sum(d['minutes'] for d in days)/60:.1f} hours of visiting time in total, plus {len(singles)} single stops listed at the end.")
 L.append("")
 L.append("## Day by day")
 for i, d in enumerate(days, 1):
@@ -130,6 +162,17 @@ for i, d in enumerate(days, 1):
         why = ("Call first. " if s["callfirst"] else "") + s["hook"]
         addr = f"{s['address']}, {s['city']}" + (" (address approximate)" if s["approx"] else "")
         L.append(f"| {n} | {s['name']} | {s['industry']} | {tier(s['score'])} | {addr} | {who} | {why} | {'start' if n == 1 else str(round(leg)) + ' min'} |")
+if singles:
+    L.append("")
+    L.append("## Single stops to combine with errands")
+    L.append("")
+    L.append("These businesses have no other prospect within reach of a two-hour loop. Visit one when you are already in that town.")
+    L.append("")
+    L.append("| Business | Industry | Tier | Address | Contact | Why this one |")
+    L.append("|---|---|---|---|---|---|")
+    for d in singles:
+        s = d["stops"][0]; who = s["owner"] + (f", {s['phone']}" if s["phone"] else "")
+        L.append(f"| {s['name']} | {s['industry']} | {tier(s['score'])} | {s['address']}, {s['city']} | {who} | {('Call first. ' if s['callfirst'] else '') + s['hook']} |")
 if skipped:
     L.append("")
     L.append("## Not on a route (reason)")
@@ -147,6 +190,9 @@ for i, d in enumerate(days, 1):
 for c in so[1]: c.font = Font(bold=True, color="FFFFFF"); c.fill = PatternFill("solid", fgColor="2B2320")
 for i, w in enumerate([5, 24, 5, 32, 28, 8, 6, 30, 16, 8, 24, 16, 50, 10, 8, 40], 1): so.column_dimensions[get_column_letter(i)].width = w
 so.freeze_panes = "A2"
+sg = wbo.create_sheet("Single stops"); sg.append(["Business", "Industry", "Tier", "Address", "City", "Owner / contact", "Phone", "Hook"])
+for d in singles:
+    s = d["stops"][0]; sg.append([s["name"], s["industry"], tier(s["score"]), s["address"], s["city"], s["owner"], s["phone"], s["hook"]])
 sk = wbo.create_sheet("Not on a route"); sk.append(["Business", "Reason"]); [sk.append(list(x)) for x in sorted(skipped)]
 wbo.save(CFG["out_xlsx"])
 print(f"{len(days)} days, {tot_stops} stops, skipped {len(skipped)} -> {CFG['out_md']}")

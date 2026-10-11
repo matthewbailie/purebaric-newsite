@@ -58,8 +58,10 @@ while (i < lines.length) {
     else { // proportional to content, with a floor so short columns stay readable
       const lens = Array(ncol).fill(0).map((_, ci) => Math.max(6, ...cells.map(r => Math.min(60, (r[ci] || "").length))));
       const sum = lens.reduce((a, b) => a + b, 0);
-      widths = lens.map(l => Math.max(900, Math.floor(total * l / sum)));
-      const over = widths.reduce((a, b) => a + b, 0) - total; if (over > 0) { const bi = widths.indexOf(Math.max(...widths)); widths[bi] -= over; }
+      const minW = Math.min(900, Math.floor(total / ncol));
+      widths = lens.map(l => Math.max(minW, Math.floor(total * l / sum)));
+      let over = widths.reduce((a, b) => a + b, 0) - total;
+      while (over > 0) { const bi = widths.indexOf(Math.max(...widths)); const cut = Math.min(over, widths[bi] - minW); if (cut <= 0) break; widths[bi] -= cut; over -= cut; }
     }
     kids.push(new Table({ width: { size: widths.reduce((a, b) => a + b, 0), type: WidthType.DXA }, columnWidths: widths, rows: cells.map((c, ri) => new TableRow({ tableHeader: ri === 0, children: widths.map((wd, ci) => new TableCell({ width: { size: wd, type: WidthType.DXA }, borders, margins: { top: 60, bottom: 60, left: 100, right: 100 }, shading: ri === 0 ? { type: ShadingType.CLEAR, fill: "EEF2F7", color: "auto" } : undefined, children: [new Paragraph({ spacing: { after: 0 }, children: inline(c[ci] || "", ri === 0 ? { bold: true } : {}) })] })) })) }));
     kids.push(new Paragraph({ spacing: { after: 120 }, children: [] }));

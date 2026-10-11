@@ -19,6 +19,8 @@ There is no Tennessee or Knoxville law that names mild hyperbaric chambers or ba
 - **Base and zoning.** A Knoxville home base works if stock stays indoors and vans do not stage there; unincorporated Knox County is stricter. Warehousing is allowed in the I-MU, I-RD, I-G and I-H districts.
 - **Auto-renewal.** Tennessee's 2024 automatic-renewal notice rule may apply to month-to-month continuation; state the renewal and the cancellation method plainly in every agreement.
 
+Owner decision (10 Oct 2026): sales tax collection is handled through Stripe at checkout; no document quotes a rate. Registration questions stay with counsel.
+
 ## No issue found
 State fire code (no hyperbaric mention), DOT hazmat for electric concentrators, OSHA beyond the general-duty clause, Knox County Health Department (no wellness-equipment program), 2023 to 2026 Tennessee legislation (only a resolution supporting veteran HBOT funding), and local news or enforcement.
 

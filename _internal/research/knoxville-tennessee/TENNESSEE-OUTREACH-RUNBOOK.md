@@ -1,5 +1,7 @@
 # Tennessee outreach runbook: proof of concept for business and school chamber rentals in the Knoxville area
 
+> **Before anything else: contact Matthew Bailie to get the home rental waiver.** The home rental agreement and waiver are not in the site repo; the representative needs the current copy from Matthew before any home-rental conversation or any Tennessee document that references it. Sales tax is handled by Stripe at checkout and is not quoted in any document.
+
 Version 2, 10 October 2026 (revised after the round-1 critique). Scope: placing rented mild hyperbaric chambers at businesses and athletic programs within about 25 miles of downtown Knoxville, without billboards or paid marketing. Goal of the phase: prove that Knoxville businesses will rent and that their clients will buy sessions, at a cost and risk small enough to walk away from. Companion documents: `SALES-REP-TRAINING.md` (scripts), `knoxville/legal_blockers_summary.md` (what must be cleared first), `knoxville/legal/Purebaric_LOI_Business_Chamber_Rental_Tennessee.docx`, `knoxville/purebaric_knoxville_prospects.xlsx` (the list), `channel-schools-athletic-recovery/PROPOSAL-schools-athletic-recovery.md`.
 
 ---
@@ -31,7 +33,7 @@ Nothing is sent to a business until the first four items are done. The rest run 
 2. **Fire marshal inquiry, in writing.** Email the City of Knoxville Fire Prevention Bureau, the Knox County Fire Prevention Bureau and the Town of Farragut (which adopts its own codes and holds much of wave 1) with a one-page description of the soft chamber (1.3 to 1.5 ATA, air-only, no stored oxygen) and ask questions 4 to 7 from the federal/local memo: is it a "hyperbaric facility" under IFC 2024 §609 in a gym or studio, what is required if so, and is any permit or inspection triggered. Keep the replies in the legal file. No reply from a jurisdiction by the end of week 4 means no outreach in that jurisdiction until there is one. Ask Maryville and Oak Ridge only if a prospect there reaches the LOI stage.
 3. **Configuration decision.** Decide, with counsel, what is offered in Tennessee during the pilot. Default: air-only for businesses and schools. If counsel and the fire marshal clear the concentrator, add it as an upgrade later.
 4. **Insurance.** Ask the current carrier or a broker to confirm general and product liability coverage for Tennessee placements, air-only and standard, and for use by minors under supervision. Get it in writing. Without this, schools and youth programs are off the list and the schools pamphlet is used for colleges and adult athletes only.
-5. **Registrations.** Tennessee Secretary of State certificate of authority for the LLC ($300 minimum); TNTAP registration for sales and use tax and business tax; franchise and excise tax registration. City of Knoxville and Knox County business licences ($15 each) are needed only once there is a local base or stock. Decide whether the representative's home counts as a base (ask counsel; keep stock off-site in a storage unit if that avoids it).
+5. **Registrations.** Tennessee Secretary of State certificate of authority for the LLC ($300 minimum); registrations with the Department of Revenue as counsel directs (sales tax itself is collected by Stripe at checkout). City of Knoxville and Knox County business licences ($15 each) are needed only once there is a local base or stock. Decide whether the representative's home counts as a base (ask counsel; keep stock off-site in a storage unit if that avoids it).
 6. **Local presence.** An 865 phone number forwarding to the representative; a Knoxville service-area entry on the Google Business Profile; a "Knoxville" line on the business page of the website that says "coming soon, by invitation" and nothing more; the facility pamphlet reprinted with Tennessee wording ("recovery session", tax line, Knoxville contact).
 7. **Documents.** Tennessee LOI (done), Definitive Agreement reviewed by Tennessee counsel, client consent form with Tennessee wording, one-page site requirements, one-page "for your landlord and fire marshal" description, Tennessee pricing sheet with tax.
 8. **Representative.** Hire or contract one Knoxville-based representative (commission plus a stated day rate, written into the budget) who can also deliver, install and service, and name a backup service contact (a second contractor or Michael on a flight) so the agreement's two-business-day response can be met when the representative is unavailable. Train them on `SALES-REP-TRAINING.md`, a video install, and a session in a chamber. Ship one chamber to them for their own familiarization and staff demonstrations only; no customer sessions on it until Tennessee insurance is bound.
@@ -100,7 +102,7 @@ The recovery re-sweep (10 Oct 2026) added 54 businesses to this category, now 88
 | 4 | Pellissippi State | Brock Evans, Athletics Director, btevans@pstcc.edu | New programs, building facilities. |
 | 5 | University of Tennessee | Jason McVeigh, Sr. Assoc. AD Sports Medicine, (865) 974-9098 | Long shot; one introduction email with the proposal, no follow-up pressure. |
 
-Use the 90-day pilot as described on the schools pamphlet (one chamber at $929 a month plus tax, plus the $200 fee), air-only, adult athletes, LOI first, invoice to athletics.
+Use the 90-day pilot as described on the schools pamphlet (one chamber at $929 a month plus the $200 fee), air-only, adult athletes, LOI first, invoice to athletics.
 
 ### Wave 5: high schools (only after waves 1 to 4 and insurer approval)
 
@@ -117,7 +119,7 @@ Work by cluster as fill-in visits on wave 1 to 3 days. Spa Visage (most-awarded 
 1. **Day 0, interest.** Send the Tennessee LOI and the agreement the same day. Log it.
 2. **Day 1 to 7, site check.** Photos or a video walk-through: 4 by 8 feet clear, grounded outlet, no flame or heat source in the room, temperature control, access path for a 60 lb chamber bag and a compressor.
 3. **Day 7 to 14, approvals.** Business sends its COI (additional insured: the entity named on the agreement, settled in Phase 0) and landlord consent. Business confirms lease, zoning and fire code. If the fire marshal's general answer from Phase 0 was conditional, the business asks its inspector in writing using the one-page description.
-4. **Day 14, sign.** Definitive Agreement signed; first month plus $200 collected by Stripe or ACH; sales tax applied.
+4. **Day 14, sign.** Definitive Agreement signed; first month plus $200 collected by Stripe (any sales tax is calculated by Stripe at checkout).
 5. **Day 14 to 21, install.** Representative installs, trains two staff, runs a session with them, leaves the runbook, consent forms and pricing suggestion, completes the checklist, takes photos.
 6. **Day 28, first check-in.** Session count, questions, menu wording check (no "therapy").
 7. **Day 60, renewal conversation.** Session count, revenue, staff feedback, upgrade to a longer term.

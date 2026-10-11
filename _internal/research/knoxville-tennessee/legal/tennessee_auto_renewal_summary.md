@@ -20,6 +20,9 @@ Research, not legal advice. Source read: Tenn. Code Ann. § 47-18-133 as publish
 | Tennessee letter of intent (`Purebaric_LOI_Business_Chamber_Rental_Tennessee.docx/.pdf`) | New Section 1.9a summarizing the same terms and pointing to Section 2.7 of the agreement | Regenerated |
 | Automatic Renewal and Recurring Charge Disclosure (`Purebaric_TN_Automatic_Renewal_Disclosure.docx/.pdf`) | One-page rider with the term, fee, charge date, continuation choice, 60-day notice, cancellation channels, change notice, refund right, consent signature and initials | New; attach to the home rental agreement and waiver and to business agreements, and show before payment in online booking |
 
+## Sales tax
+Owner decision (10 Oct 2026): any applicable sales tax is calculated and collected through Stripe at the time of each charge. No document quotes a tax rate or adds tax to a price; the agreement, LOI, rider and pamphlets say so in one line.
+
 ## Owner actions
 - **Home rental agreement and waiver.** Those documents are not in the site repo, so the rider is the Tennessee statement for home rentals until the home documents themselves are revised. Decide which continuation option applies to home rentals (ends on the end date unless extended, or continues month to month) and tick it on the rider.
 - **Online booking.** When booking is opened to Tennessee addresses, the booking page must show the renewal terms before payment, capture affirmative consent (a checkbox is the usual form), send the acknowledgment email, and offer online cancellation. That is a website change and is not made here.

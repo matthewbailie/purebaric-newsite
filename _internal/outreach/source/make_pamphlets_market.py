@@ -100,7 +100,7 @@ INDUSTRIES = {
          ("Coaching and training staff", "Staff sessions between practices.")],
     why=["**Trainer-run.** Your athletic trainer starts and ends every session and keeps the log.",
          "**A pilot, not a commitment.** Ninety days, one chamber, then your staff decide with real usage numbers.",
-         "**Funded from athletics or boosters.** The 90-day pilot costs about $" + f"{R3*3+200:,}" + " plus sales tax.",
+         "**Funded from athletics or boosters.** The 90-day pilot costs about $" + f"{R3*3+200:,}" + ".",
          "**Air-only configuration.** No oxygen enrichment in school placements.",
          "**Small footprint.** A 4 x 8 foot corner of the training room and a wall outlet.",
          "**We handle the equipment.** Delivery, training, maintenance, consent-form templates and removal."],
@@ -205,7 +205,7 @@ def build(key, cfg):
     pdf.multi_cell(CW-10, 6.2, f"{CONTACT_PHONE}\n{CONTACT_EMAIL}\n{CONTACT_WEB}", align="L")
     y = y + 6 + 27
     y = para(1, y+9, COMING, size=9, color=(230,218,200), lh=4.3)
-    para(1, PH-33, "Purebaric rents this equipment as a general-wellness amenity. It is not offered to diagnose, treat, cure or prevent any disease. Figures in this pamphlet are illustrations, not guarantees. Prices exclude " + STATE + " sales tax. " + (MARKET + " placements are air-only; configuration is confirmed at the site check." if AIR_ONLY else "Configuration is confirmed at the site check."), size=6.8, color=(170,158,146), lh=3.2)
+    para(1, PH-33, "Purebaric rents this equipment as a general-wellness amenity. It is not offered to diagnose, treat, cure or prevent any disease. Figures in this pamphlet are illustrations, not guarantees. Any applicable sales tax is applied at payment. " + (MARKET + " placements are air-only; configuration is confirmed at the site check." if AIR_ONLY else "Configuration is confirmed at the site check."), size=6.8, color=(170,158,146), lh=3.2)
     # cover
     cy = logo(2, 13, w=34)
     src = os.path.join(BRANDED, cfg["cover_img"]); src_im = Image.open(src); ih = W * src_im.height / src_im.width
@@ -255,7 +255,7 @@ def build(key, cfg):
             pdf.set_font("Helvetica","B",8.6); pdf.set_text_color(*TERRA_D); pdf.cell(cw[2], rh, c, border=1, align="C", fill=True); pdf.ln(rh)
         y = sub(1, pdf.get_y()+3.5, "What it costs you", size=9.6)
         import math
-        cost_items = ["**Chamber rental:** from $" + f"{R12:,}" + " a month on a 12-month term ($" + f"{R3:,}" + " on 3 months), plus sales tax. About " + str(math.ceil(R12/73.7)) + " sessions a month covers it.",
+        cost_items = ["**Chamber rental:** from $" + f"{R12:,}" + " a month on a 12-month term ($" + f"{R3:,}" + " on 3 months). About " + str(math.ceil(R12/73.7)) + " sessions a month covers it.",
                       "**Training and initial supplies:** one-time $200 fee. Delivery and installation are included.",
                       "**Staff time:** about 15 minutes per session.",
                       "**Cleaning supplies and liners:** about $1.30 per use."]
@@ -269,7 +269,7 @@ def build(key, cfg):
             pdf.set_xy(px(1)+M+4, yy); pdf.cell(CW-30, 4.6, l); pdf.cell(22, 4.6, v, align="R"); yy += 4.5
         pdf.set_draw_color(*TERRA); pdf.line(px(1)+M+4, yy+0.6, px(1)+M+CW-4, yy+0.6)
         pdf.set_xy(px(1)+M+4, yy+1.8); pdf.set_font("Helvetica","B",9.2); pdf.set_text_color(*TERRA_D); pdf.cell(CW-30, 5, "After rental and supplies"); pdf.cell(22, 5, "$" + f"{3900-R12-68:,}", align="R")
-        para(1, yy+8, "Before sales tax on the rental, card fees and staff time. First month only: subtract the one-time $200 fee.", size=7.6, color=MUTED, lh=3.5, dx=4, w=CW-8)
+        para(1, yy+8, "Before card fees and staff time. First month only: subtract the one-time $200 fee.", size=7.6, color=MUTED, lh=3.5, dx=4, w=CW-8)
         para(1, by+45, ANCHOR_FOOT, size=6.5, color=MUTED, lh=3.0)
     else:
         y = heading(1, 12, "The 90-Day Pilot")
@@ -280,7 +280,7 @@ def build(key, cfg):
                              "**A written session policy template** for your program to adapt.",
                              "**Maintenance, support and removal** at the end of the pilot, with no obligation to continue."], size=8.4, lh=3.9, gap=1.5)
         y = sub(1, y+2, "What it costs", size=9.6)
-        y = bullets(1, y+2, ["**Chamber rental:** $" + f"{R3:,}" + " a month on the three-month pilot term, plus sales tax; from $" + f"{R12:,}" + " a month if you continue on a twelve-month term.",
+        y = bullets(1, y+2, ["**Chamber rental:** $" + f"{R3:,}" + " a month on the three-month pilot term; from $" + f"{R12:,}" + " a month if you continue on a twelve-month term.",
                              "**Training and initial supplies:** one-time $200 fee. Delivery and installation are included.",
                              "**Staff time:** about 15 minutes of the trainer's time per session."], size=8.4, lh=3.9, gap=1.5)
         by = y+2

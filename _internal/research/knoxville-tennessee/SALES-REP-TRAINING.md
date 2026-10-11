@@ -25,13 +25,13 @@ Version 2, 10 October 2026 (revised after the round-1 critique). For the represe
 | 9 to 11 months | $810 |
 | 12 months | $783 |
 
-Plus a one-time $200 training and supplies fee per chamber. Delivery, installation, maintenance, support and removal are included; the $200 covers the staff training and the first supplies. Rates are set in the admin portal and published at purebaric.com/pricing; quote what is published on the day. **TN:** add sales tax to every quote (9.25 percent in Knox County, 9.75 percent in Blount, Anderson and Jefferson counties).
+Plus a one-time $200 training and supplies fee per chamber. Delivery, installation, maintenance, support and removal are included; the $200 covers the staff training and the first supplies. Rates are set in the admin portal and published at purebaric.com/pricing; quote what is published on the day. **Sales tax:** handled automatically by Stripe at checkout; do not quote tax rates or add tax to any number.
 
 Home rentals are **not offered in Tennessee** (a state home-medical-equipment licence question is open). If a member or owner asks about renting one for home, say Purebaric does not offer home rentals in Tennessee today and take their details for Michael. Do not quote home rates in Tennessee.
 
 ### The revenue illustration (always say "illustration")
 
-Use the pamphlet's table and nothing else. At $75 a session with about $1.30 of cleaning supplies and liners per session, each session leaves about $73.70 before tax, card fees and staff time. Break-even on the rental alone is about 11 sessions a month at $783, 13 at $929 and 14 at $979; add one session for Tennessee sales tax on the rental.
+Use the pamphlet's table and nothing else. At $75 a session with about $1.30 of cleaning supplies and liners per session, each session leaves about $73.70 before tax, card fees and staff time. Break-even on the rental alone is about 11 sessions a month at $783, 13 at $929 and 14 at $979.
 
 | Sessions a month | Gross at $75 | After $783 rental and $1.30 supplies |
 |---|---|---|
@@ -178,7 +178,7 @@ Each track has an opener, three discovery questions, the pitch angle, proof poin
 
 **Discovery.** Who provides your athletic training coverage (Covenant Health, Knoxville Orthopaedic Clinic, Intermountain, University of Utah Health)? Does the trainer have a say in recovery equipment? What is the approval path: AD, principal or district, booster club?
 
-**Pitch angle.** One chamber in the training room, run by the licensed athletic trainer under the program's own session policy, adult athletes first, offered as a 90-day pilot at the three-month rate ($929 a month plus tax, plus the $200 fee). The school pays from athletics or booster funds. Use the schools pamphlet; the longer schools proposal in the channel folder is a Utah draft and its three-chamber pricing, home-rental and NIL ideas do not apply in Tennessee.
+**Pitch angle.** One chamber in the training room, run by the licensed athletic trainer under the program's own session policy, adult athletes first, offered as a 90-day pilot at the three-month rate ($929 a month plus the $200 fee). The school pays from athletics or booster funds. Use the schools pamphlet; the longer schools proposal in the channel folder is a Utah draft and its three-chamber pricing, home-rental and NIL ideas do not apply in Tennessee.
 
 **Proof.** The schools pamphlet; the air-only configuration; the consent forms; the fact that schools' trainers are already employed by health systems, so the session policy can live with them.
 
@@ -252,7 +252,7 @@ Each track has an opener, three discovery questions, the pitch angle, proof poin
 ## Part 8. Tennessee notes for the representative
 
 - Purebaric is a Utah business entering Tennessee. Until counsel and the Knoxville Fire Marshal have answered the questions in the legal memos, Tennessee placements are offered as air-only, conditional on the LOI's Section 3, and no home rentals are offered in Tennessee.
-- Use the Tennessee LOI and quote sales tax on every number. Rates: 9.25 percent in Knox County (Knoxville, Farragut), 9.75 percent in Blount, Anderson and Jefferson counties; confirm any other address on the Department of Revenue lookup. Whether the local portion applies to every monthly payment is pending counsel.
+- Use the Tennessee LOI. Sales tax is handled by Stripe at checkout; never quote a tax rate.
 - Say "recovery session" or "wellness session"; never "therapy".
 - Lead times are longer than Utah (equipment ships from Lehi); do not promise an install date until the runbook's Phase 0 is complete.
 - Report anything a landlord, insurer or official says about fire code or oxygen to Michael the same day; it goes into the legal file.
