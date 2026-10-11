@@ -45,6 +45,7 @@ Folder: `~/Desktop/Tennessee Research/`. Canonical git copy: `~/projects/purebar
 | Round-1 response | `knoxville/critique_documents_round1_response.md` | What was fixed and what needs the owner's decision. |
 | Route-plan critique and response | `knoxville/critique_route_plans_round1.md`, `knoxville/critique_route_plans_round1_response.md` | Why the planner was rewritten (door-to-door timing, scoring by service, map links). |
 | Sales-training critiques | `knoxville/critique_sales_training_v3.md`, `knoxville/critique_sales_training_v4.md` | Findings behind training v4 and v5. |
+| Who-books-sessions critique, round 2 | `knoxville/critique_pamphlets_who_books_round2.md` | Sales-minded rewrite of every "Who books sessions?" box; applied. |
 | Pamphlet genre-content critique and response | `knoxville/critique_pamphlets_genre_content_round1.md`, `knoxville/critique_pamphlets_genre_content_round1_response.md` | Review of the per-genre "Who books sessions?" rows and the team pamphlet panels, and what was applied. |
 
 ## Still open

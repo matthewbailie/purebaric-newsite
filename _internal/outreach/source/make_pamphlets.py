@@ -49,43 +49,43 @@ TEAM_TITLE = "Help Your Athletes\nRecover Faster"
 GENRES = [
   dict(key="gyms-and-fitness", kind="business", label="GYMS AND FITNESS CENTERS", cover="chamber-gym-branded.jpg",
        who_title="Who books sessions?", who=[
-         ("Members between hard workouts", "A quiet hour to recover after a heavy week of training."),
-         ("Weekend competitors", "Runners, cyclists and rec-league players preparing for and recovering from events."),
-         ("Personal-training clients", "Trainers add a session to a program as the recovery day."),
-         ("Premium-tier members", "People who already pay for sauna, massage or other recovery add-ons."),
-         ("Lunchtime and after-work members", "Members who add a quiet hour to the workout they already fit around a long work day."),
+         ("Members who already buy extras", "The people paying for training, classes or massage are the first to add a chamber pack."),
+         ("Weekend competitors", "Runners, cyclists and rec-league players who book sessions around race weekends and tournaments."),
+         ("Personal-training clients", "Trainers sell a session as the recovery day in a program, a new line on the trainer's package too."),
+         ("Premium-tier members", "Put sessions in the top tier and give the members paying the most one more reason to stay."),
+         ("Midday members", "The quiet hours between the morning and evening rush are the easiest sessions to sell."),
        ]),
   dict(key="crossfit-and-performance", kind="business", label="CROSSFIT AND PERFORMANCE GYMS", cover="chamber-gym-branded.jpg",
        who_title="Who books sessions?", who=[
-         ("Members who train twice a day", "Competitors who double up on training days and want one quiet hour between sessions."),
-         ("Members in a heavy block", "Anyone pushing volume before the Open, a meet or a race."),
-         ("Masters athletes", "Members over 40 who want more recovery between sessions."),
-         ("Members in a lighter week", "A rest hour in a planned deload week, alongside their coach's programming."),
-         ("Coaches and staff", "Your team, who train on top of coaching all day."),
+         ("Members who train twice a day", "Competitors who double up on training days and already pay for recovery somewhere else."),
+         ("Members in a heavy block", "Volume before the Open, a meet or a race; sell a 10-pack for the block."),
+         ("Masters athletes", "Members over 40 who need more recovery between sessions and have the budget for it."),
+         ("Members on a deload week", "A reason to come in and spend during the week they would otherwise skip."),
+         ("Your coaches", "Members buy what their coach does, so coaches who use it sell it."),
        ]),
   dict(key="recovery-studios-and-med-spas", kind="business", label="RECOVERY STUDIOS AND MED SPAS", cover="chamber-clinic-branded.jpg",
        who_title="Who books sessions?", who=[
-         ("Your recovery regulars", "Clients already buying sauna, cold plunge, contrast, massage or IV sessions, adding a chamber session to the same visit."),
+         ("Your recovery regulars", "Clients already buying sauna, cold plunge, contrast, massage or IV, adding a chamber session to the same visit at the same price point."),
          ("Athletes on a recovery day", "Runners, lifters and weekend competitors who come in after hard training."),
-         ("Clients booking a reset", "A quiet hour of rest after travel or a busy week."),
-         ("Spa-day clients", "A quiet hour of rest paired with a facial, body or other spa service."),
-         ("Package and membership buyers", "Clients who want one more service in their monthly plan."),
+         ("Clients who want a reset", "The same reason they book a float or a massage, sold the same way."),
+         ("Spa-day clients", "A session paired with a facial or body service makes a longer, higher-ticket visit."),
+         ("Package and membership buyers", "The clients on monthly plans; a chamber adds a tier above the one they have."),
        ]),
   dict(key="physical-therapy-and-chiropractic", kind="business", label="PHYSICAL THERAPY AND CHIROPRACTIC CLINICS", cover="chamber-clinic-branded.jpg",
        who_title="Who books sessions?", who=[
-         ("Clients who ask for more", "People who want a cash-pay wellness add-on alongside their visits, separate from their plan of care."),
-         ("Active clients and athletes", "Clients who come in for maintenance care and want a recovery hour on the same trip."),
-         ("Clients who have finished care", "People who book a monthly wellness hour after their visits end, as a standing appointment."),
-         ("People who wait", "Parents, spouses and training partners who come to visits and book a session while they wait."),
-         ("Your front desk, therapists and providers", "A rest hour on a full clinic day, at a staff rate."),
+         ("Maintenance patients", "The patients who come in monthly for an adjustment or tune-up and pay out of pocket; they add a session the way they add massage."),
+         ("Patients who already buy extras", "People buying massage, supplements or other add-ons from you are your proven wellness buyers."),
+         ("Patients finishing a course of visits", "When the visits end, the revenue ends. A monthly session keeps them coming back and paying."),
+         ("Athletes and active patients", "The runners, lifters and weekend athletes who come in for tune-ups and book sessions around their events."),
+         ("Spouses and parents who come along", "The person in your waiting room is an easy sale for a session while they wait."),
        ]),
   dict(key="salons-and-day-spas", kind="business", label="SALONS AND BEAUTY STUDIOS", cover="chamber-salon-branded.jpg",
        who_title="Who books sessions?", who=[
-         ("Self-care day clients", "A chamber session paired with a hair, nail or facial appointment."),
+         ("Facial and massage clients", "Clients who already buy a treatment-room service and will add a quiet hour to it, priced like a body treatment."),
          ("Event and wedding clients", "Brides, bridal parties and clients preparing for photos who want a rested hour before the day."),
-         ("Regulars", "Clients with a standing appointment who add a monthly session."),
-         ("Clients between appointments", "A rest hour between a cut and a facial in one visit."),
-         ("Gift buyers and groups", "Sessions sell as gift cards and as part of spa-day packages."),
+         ("Your regulars", "Clients with a standing appointment who add a monthly session to it."),
+         ("Clients who want a longer visit", "Hair, nails, a facial and a session in one half-day booking."),
+         ("Gift buyers and groups", "Sessions sell as gift cards and in spa-day packages for groups."),
        ]),
   dict(key="sports-teams-and-clubs", kind="team", label="SPORTS TEAMS AND ATHLETIC PROGRAMS", cover="chamber-gym-branded.jpg",
        who_title="Who uses the chamber?", who=[
@@ -182,15 +182,16 @@ for G in GENRES:
         im = Image.open(f); h = w*im.height/im.width
         pdf.image(f, x=px(i)+M, y=y, w=w, h=h); return y+h
 
-    def who_box(i, y, title, rows, size_t=8.3, size_d=8.1):
+    def who_box(i, y, title, rows, size_t=8.3, size_d=8.1, intro=""):
         """Tinted box listing who books/uses, sized to its content."""
-        h = 10.5 + 2.5
+        h = 10.5 + 2.5 + (mheight(intro, 7.9, 3.6, CW-8) + 1.5 if intro else 0)
         for t, d in rows:
             h += mheight("**"+t+"**", size_t, 3.8, CW-8) + mheight(d, size_d, 3.7, CW-8) + 1.6
         pdf.set_fill_color(*TERRA_BG); pdf.rect(px(i)+M, y, CW, h, "F")
         pdf.set_xy(px(i)+M+4, y+3.5); pdf.set_font("Georgia","B",10); pdf.set_text_color(*TERRA_D)
         pdf.cell(CW-8, 5, title)
         yy = y+10.5
+        if intro: yy = para(i, yy, intro, size=7.9, lh=3.6, dx=4, w=CW-8, color=MUTED, style="I") + 1.5
         for t, d in rows:
             yy = para(i, yy, "**"+t+"**", size=size_t, lh=3.8, dx=4, w=CW-8)
             yy = para(i, yy, d, size=size_d, lh=3.7, dx=4, w=CW-8, color=MUTED) + 1.6
@@ -280,7 +281,7 @@ for G in GENRES:
     if TEAM:
         y = heading(0, 13, "Why It Helps\nYour Team")
         y = bullets(0, y+4, [b.format(notice=G["notice"], lead=G["lead"], lead_lc=G["lead"][0].lower()+G["lead"][1:]) for b in TEAM_WHY], size=8.4, lh=3.8, gap=1.5)
-        who_box(0, y+2, G["who_title"], G["who"], size_t=8.1, size_d=7.9)
+        who_box(0, y+2, G["who_title"], G["who"], size_t=8.1, size_d=7.9, intro="Who the chamber is for.")
     else:
         y = heading(0, 13, "Why It Makes\nMoney for You")
         y = bullets(0, y+4, [
@@ -291,7 +292,7 @@ for G in GENRES:
           "**Earn from idle space.** A chamber needs only a 4 x 8 foot area and a wall outlet.",
           "**No capital outlay.** You rent the chamber. There is no equipment to buy, finance, or resell.",
         ], size=8.6, lh=3.9, gap=1.7)
-        who_box(0, y+2, G["who_title"], G["who"])
+        who_box(0, y+2, G["who_title"], G["who"], intro="The customers you already have who will pay for sessions.")
 
     # ---- Inside middle: the numbers (businesses) or the cost (teams)
     if TEAM:
