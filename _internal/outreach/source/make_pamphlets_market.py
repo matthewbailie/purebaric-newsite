@@ -244,7 +244,7 @@ def build(key, cfg):
             if n:
                 pdf.set_xy(px(1)+M, yy+3.7); pdf.set_font("Helvetica","",7.1); pdf.set_text_color(*MUTED); pdf.cell(CW, 3.4, n, align="R"); yy += 3.2
             yy += 5.0; pdf.line(px(1)+M, yy-0.6, px(1)+M+CW, yy-0.6)
-        y = para(1, yy+1.5, "**Our assumptions:** 60-minute sessions, open 6 days a week (26 days a month), at **$75 a session**, below the local single-session price. One chamber can run up to 8 sessions in a 10-hour day; most new amenities start well below that.", size=8.1, color=MUTED, lh=3.7)
+        y = para(1, yy+1.5, "**Our assumptions:** 60-minute sessions, open 6 days a week (26 days a month), at **$75 a session**" + (CFG.get("assumption_vs_local", ", below the local single-session price")) + ". One chamber can run up to 8 sessions in a 10-hour day; most new amenities start well below that.", size=8.1, color=MUTED, lh=3.7)
         ty = y+3; cw = [CW*0.35, CW*0.25, CW*0.40]; rh = 6.6
         pdf.set_xy(px(1)+M, ty); pdf.set_fill_color(*INK); pdf.set_text_color(*WHITE); pdf.set_font("Helvetica","B",7.6)
         for w_, h_ in zip(cw, ["Usage","Sessions / mo","Gross revenue / mo"]): pdf.cell(w_, rh, h_, align="C", fill=True)

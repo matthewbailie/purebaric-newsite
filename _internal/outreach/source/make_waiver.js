@@ -1,7 +1,15 @@
 const fs = require("fs");
 const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType, LevelFormat, PageBreak, Footer, PageNumber, TabStopType } = require("docx");
 
-const OUT = process.env.WAIVER_OUT || "/Users/bailie/Library/CloudStorage/OneDrive-Adobe/DMe-C&P/Claude_AI/purebaric-outreach/purebaric_business_rental_agreement_and_liability_waiver.docx";
+const STATE_KEY = (process.env.STATE || "utah").toLowerCase();
+const STATES = {
+  utah: { name: "Utah", contact: "hello@purebaric.com \u00b7 (801) 901-0873", noticeEmail: "hello@purebaric.com", noticePhone: "(801) 901-0873",
+    law: "the laws of the State of Utah", venue: "Utah County, Utah", airOnly: false, renewalSection: false, subtitleSuffix: "" },
+  tennessee: { name: "Tennessee", contact: "mlebailie@hotmail.com \u00b7 (801) 884-2113", noticeEmail: "mlebailie@hotmail.com", noticePhone: "(801) 884-2113",
+    law: "the laws of the State of Tennessee", venue: "Knox County, Tennessee", airOnly: true, renewalSection: true, subtitleSuffix: " (Tennessee)" },
+};
+const ST = STATES[STATE_KEY]; if (!ST) throw new Error("unknown STATE " + STATE_KEY);
+const OUT = process.env.WAIVER_OUT || "/Users/bailie/projects/purebaric-newsite/_internal/outreach/purebaric_business_rental_agreement_and_liability_waiver.docx";
 const FONT = "Calibri";
 const INK = "2B2320", TERRA = "9A4F3A", MUTED = "6F635B";
 
@@ -31,12 +39,12 @@ const children = [];
 // ---------- Title ----------
 children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 60 }, children: [new TextRun({ text: "PUREBARIC", bold: true, font: FONT, size: 40, color: INK })] }));
 children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 60 }, children: [new TextRun({ text: "BUSINESS RENTAL AGREEMENT AND LIABILITY WAIVER", bold: true, font: FONT, size: 28, color: TERRA })] }));
-children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 240 }, children: [new TextRun({ text: "Mild Hyperbaric Chamber Placed at a Business Location", font: FONT, size: 22, color: MUTED })] }));
+children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 240 }, children: [new TextRun({ text: "Mild Hyperbaric Chamber Placed at a Business Location" + ST.subtitleSuffix, font: FONT, size: 22, color: MUTED })] }));
 children.push(new Paragraph({ spacing: { after: 200 }, border: { top: { style: BorderStyle.SINGLE, size: 6, color: "E6DCCD" }, bottom: { style: BorderStyle.SINGLE, size: 6, color: "E6DCCD" } }, children: [new TextRun({ text: "THIS AGREEMENT CONTAINS A RELEASE OF LIABILITY, AN ASSUMPTION OF RISK, AND AN INDEMNITY. IT LIMITS PUREBARIC'S LIABILITY AND AFFECTS YOUR LEGAL RIGHTS. READ IT CAREFULLY BEFORE SIGNING.", bold: true, font: FONT, size: 20 })] }));
 
 children.push(p("This Business Rental Agreement and Liability Waiver (the \"Agreement\") is made on the Effective Date below between:"));
 children.push(kv([
-  ["Purebaric", "Matthew Bailie, doing business as Purebaric, Lehi, Utah (\"Purebaric\", \"we\", \"us\"). hello@purebaric.com · (801) 901-0873"],
+  ["Purebaric", "Matthew Bailie, doing business as Purebaric, Lehi, Utah (\"Purebaric\", \"we\", \"us\"). " + ST.contact],
   ["Business", "______________________________________ (legal name), a ______________ (entity type and state), doing business as ______________________________ (\"Business\", \"you\")"],
   ["Business address", "______________________________________________________________"],
   ["Authorized signer", "Name: ______________________________  Title: ______________________"],
@@ -47,18 +55,22 @@ children.push(...blank());
 
 // ---------- 1 ----------
 children.push(h1("1. Equipment and Services"));
-children.push(p("1.1 **Equipment.** Purebaric rents to the Business the equipment listed in Exhibit A (the \"Equipment\"): one soft-shell mild hyperbaric chamber rated to 1.5 atmospheres absolute (ATA), one air compressor, one oxygen concentrator, and the accessories listed. The Equipment remains Purebaric's property at all times. The Business acquires no ownership interest and will keep the Equipment free of liens."));
+children.push(p("1.1 **Equipment.** Purebaric rents to the Business the equipment listed in Exhibit A (the \"Equipment\"): one soft-shell mild hyperbaric chamber rated to 1.5 atmospheres absolute (ATA), one air compressor, " + (ST.airOnly ? "no oxygen concentrator (air-only configuration), " : "one oxygen concentrator, ") + "and the accessories listed. The Equipment remains Purebaric's property at all times. The Business acquires no ownership interest and will keep the Equipment free of liens."));
 children.push(p("1.2 **Services included.** Purebaric will (a) deliver and install the Equipment at the Installation Location; (b) provide initial hands-on training to the Business's designated staff; (c) supply a written operating runbook; (d) supply template client consent and waiver forms; (e) assist the Business in preparing a client-facing informational pamphlet in the Business's branding; (f) service and maintain the Equipment as described in Section 6; and (g) provide ongoing phone and text support during business hours."));
 children.push(p("1.3 **Initial supplies.** The one-time training and supplies fee covers the initial supplies listed in Exhibit A. Replacement masks, cleaning supplies, and other consumables are the Business's responsibility after the initial supplies are used."));
 
 // ---------- 2 ----------
 children.push(h1("2. Term, Fees, and Termination"));
-children.push(p("2.1 **Term.** This Agreement begins on the Effective Date and continues month to month until terminated under this Section. There is no minimum term unless one is written in Exhibit A."));
+children.push(p("2.1 **Term.** This Agreement begins on the Effective Date and runs for the initial term written in Exhibit A (if none is written, there is no minimum term). After the initial term it continues month to month until terminated under this Section. The monthly rental fee in Exhibit A is the rate for the initial term chosen; if the Business ends this Agreement before the initial term is complete, the months already used are re-rated at Purebaric's published rate for the term actually completed and the difference is due with the final invoice."));
 children.push(p("2.2 **Fees.** The Business will pay the monthly rental fee and the one-time training and supplies fee stated in Exhibit A. The first month's rental fee and the training and supplies fee are due before installation. Each later monthly fee is due in advance on the same day of each month. Fees are payable by the method stated in Exhibit A. Fees more than 10 days late accrue a late charge of 1.5% per month (or the highest rate allowed by law, if lower) and Purebaric may suspend service or remove the Equipment."));
 children.push(p("2.3 **Training and supplies fee is non-refundable.** The fee covers staff training and initial supplies that are provided before or at installation and is not refundable once installation has occurred."));
 children.push(p("2.4 **Termination for convenience.** Either party may end this Agreement for any reason with at least 30 days' written notice (email is sufficient). Rental fees are prorated to the removal date. Purebaric will remove the Equipment on or within 7 days after the termination date at no charge."));
 children.push(p("2.5 **Termination for cause.** Purebaric may end this Agreement immediately, and remove the Equipment, if the Business (a) fails to pay fees when due; (b) uses or permits use of the Equipment in violation of Section 4 or Exhibit C; (c) makes medical or health claims in violation of Section 5; (d) damages the Equipment through misuse or neglect; or (e) becomes insolvent or ceases operating at the Installation Location."));
 children.push(p("2.6 **Access for removal.** The Business will give Purebaric reasonable access to the Installation Location during business hours to inspect, service, or remove the Equipment. The Business will not move the Equipment to another location without Purebaric's written consent."));
+
+if (ST.renewalSection) {
+  children.push(p("2.7 **Automatic continuation and recurring charges (Tennessee).** The Business acknowledges and affirmatively consents to the following, which Purebaric presents here before this Agreement is signed and will also provide in a copy the Business can keep: (a) after the initial term, this Agreement continues month to month automatically until either party ends it under Section 2.4; (b) the monthly rental fee stated in Exhibit A, plus applicable Tennessee sales and use tax, will be charged in advance on the same day of each month to the card or bank account the Business places on file, and the one-time training and supplies fee is charged once before installation; (c) if any charge will occur more than 60 days after the date of this consent (for example the first charge after an initial term of three months or longer), Purebaric will send clear notice of the amount and the date of that charge before it is made; (d) the Business may cancel at any time by email to " + ST.noticeEmail + ", by phone at " + ST.noticePhone + ", or by mail to the Purebaric address in this Agreement, and, if it signed this Agreement online, by replying to the acknowledgment email with the word CANCEL, with the 30-day notice in Section 2.4 then applying; (e) Purebaric will give clear notice of any material change to the fees, the charge date, or these terms, and how to cancel, before the change takes effect; and (f) if a charge is made without the Business's affirmative consent, Purebaric will refund it on request made within 7 days of the charge. The Business's initials here confirm this consent: ________"));
+}
 
 // ---------- 3 ----------
 children.push(h1("3. Delivery, Installation, and Training"));
@@ -96,7 +108,7 @@ children.push(p("7.2 The Business voluntarily assumes all risks of offering sess
 // ---------- 8 ----------
 children.push(h1("8. Release of Liability"));
 children.push(caps("8.1 TO THE FULLEST EXTENT PERMITTED BY LAW, THE BUSINESS, FOR ITSELF AND ITS OWNERS, OFFICERS, EMPLOYEES, CONTRACTORS, INSURERS, SUCCESSORS, AND ASSIGNS, RELEASES, WAIVES, AND DISCHARGES MATTHEW BAILIE, PUREBARIC, AND THEIR RESPECTIVE AGENTS, CONTRACTORS, HEIRS, AND ASSIGNS (THE \"RELEASED PARTIES\") FROM ALL CLAIMS, DEMANDS, LOSSES, AND LIABILITIES OF EVERY KIND, INCLUDING CLAIMS FOR PERSONAL INJURY, ILLNESS, DEATH, PROPERTY DAMAGE, LOST PROFITS, OR BUSINESS INTERRUPTION, ARISING OUT OF OR RELATED TO THE EQUIPMENT, ITS INSTALLATION, USE, MALFUNCTION, OR REMOVAL, OR THE SESSIONS OFFERED BY THE BUSINESS, INCLUDING CLAIMS CAUSED IN WHOLE OR IN PART BY THE ORDINARY NEGLIGENCE OF A RELEASED PARTY."));
-children.push(p("8.2 This release does not apply to liability that cannot be released under Utah law, including liability for a Released Party's gross negligence, willful misconduct, or fraud."));
+children.push(p("8.2 This release does not apply to liability that cannot be released under applicable law, including liability for a Released Party's gross negligence, willful misconduct, or fraud."));
 children.push(p("8.3 The Business will not bring, and will not permit anyone claiming through it to bring, any claim against a Released Party that has been released under this Section."));
 
 // ---------- 9 ----------
@@ -115,9 +127,9 @@ children.push(caps("10.3 TO THE FULLEST EXTENT PERMITTED BY LAW, PUREBARIC WILL 
 // ---------- 11 ----------
 children.push(h1("11. General Terms"));
 children.push(p("11.1 **Independent parties.** The parties are independent contractors. Nothing in this Agreement creates a partnership, joint venture, franchise, agency, or employment relationship. Neither party may bind the other."));
-children.push(p("11.2 **Notices.** Notices must be in writing and sent by email with confirmation of receipt, or by mail, to the addresses in this Agreement (for Purebaric: hello@purebaric.com)."));
+children.push(p("11.2 **Notices.** Notices must be in writing and sent by email with confirmation of receipt, or by mail, to the addresses in this Agreement (for Purebaric: " + ST.noticeEmail + ")."));
 children.push(p("11.3 **Assignment.** The Business may not assign this Agreement or sublet the Equipment without Purebaric's written consent. Purebaric may assign this Agreement to a successor to its business."));
-children.push(p("11.4 **Governing law and venue.** This Agreement is governed by the laws of the State of Utah, without regard to conflict-of-law rules. Any dispute will be brought exclusively in the state or federal courts located in Utah County, Utah, and each party consents to that jurisdiction."));
+children.push(p("11.4 **Governing law and venue.** This Agreement is governed by " + ST.law + ", without regard to conflict-of-law rules. Any dispute will be brought exclusively in the state or federal courts located in " + ST.venue + ", and each party consents to that jurisdiction."));
 children.push(p("11.5 **Attorney fees.** In any action to enforce this Agreement, the prevailing party may recover its reasonable attorney fees and costs."));
 children.push(p("11.6 **Severability.** If any provision is held unenforceable, it will be enforced to the maximum extent permitted and the rest of the Agreement remains in effect. The parties intend the release, indemnity, and limitation of liability to be enforced to the fullest extent the law allows."));
 children.push(p("11.7 **Survival.** Sections 4.3 (record keeping), 5, 6.3, 7, 8, 9, 10, and 11 survive termination."));
@@ -148,16 +160,16 @@ children.push(h2("Equipment"));
 children.push(kv([
   ["Chamber", "Soft-shell mild hyperbaric chamber, 1.5 ATA.  Serial no.: ______________  Replacement value: $__________"],
   ["Compressor", "Model: ______________  Serial no.: ______________  Replacement value: $__________"],
-  ["Oxygen concentrator", "Model: ______________  Serial no.: ______________  Replacement value: $__________"],
+  ["Oxygen concentrator", ST.airOnly ? "Not supplied (air-only configuration)" : "Model: ______________  Serial no.: ______________  Replacement value: $__________"],
   ["Accessories", "Mattress pad, pillow, tubing, pressure gauge, mask kit, owner's manual, runbook."],
   ["Initial supplies", "50 single-use masks, 1 foam pad, 2 washable cover sheets, initial cleaning supplies, printed instructions and runbook."],
 ]));
 children.push(...blank());
 children.push(h2("Fees"));
 children.push(kv([
-  ["Monthly rental fee", "$979.00 per chamber per month, due in advance"],
+  ["Monthly rental fee", "$__________ per chamber per month, due in advance (the published rate for the initial term below; " + (ST.renewalSection ? "plus Tennessee sales and use tax" : "plus applicable sales tax") + ")"],
   ["One-time training and supplies fee", "$200.00 per chamber (staff training and initial supplies). Delivery and installation are included in the rental. Non-refundable after installation."],
-  ["Minimum term", "None (month to month; 30 days' notice to end) unless stated here: ______________"],
+  ["Initial term", "☐ Month to month   ☐ ______ months (rate fixed for this term; see Section 2.1). 30 days' notice to end after the initial term."],
   ["Additional staff training", "$__________ per session, on request"],
   ["Payment method", "☐ Card on file (Stripe)   ☐ ACH / bank transfer   ☐ Other: ______________"],
   ["Number of chambers", "______"],
@@ -178,7 +190,7 @@ children.push(p("Before a client's first session, the Business will have the cli
 children.push(num("A statement that the session is a general wellness and relaxation amenity, is not a medical treatment, and that no diagnosis, treatment, or cure is offered."));
 children.push(num("The health screening in Exhibit C, with the client's confirmation that none of the listed conditions apply, or a physician's written clearance."));
 children.push(num("A description of the risks in Section 7.1 and the client's voluntary assumption of those risks."));
-children.push(num("A release of liability and covenant not to sue in favor of the Business, Matthew Bailie, and Purebaric, covering ordinary negligence to the extent permitted by Utah law."));
+children.push(num("A release of liability and covenant not to sue in favor of the Business, Matthew Bailie, and Purebaric, covering ordinary negligence to the extent permitted by applicable law."));
 children.push(num("The safety rules in Exhibit C and the client's agreement to follow them and to follow staff instructions."));
 children.push(num("Emergency contact information and an acknowledgment that staff may end a session at any time."));
 children.push(num("For a client under 18, the signature of a parent or legal guardian who will be present during the session."));

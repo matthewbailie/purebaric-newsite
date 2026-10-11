@@ -1,3 +1,4 @@
+import csv
 #!/usr/bin/env python3
 """Compile the Knoxville research JSON files into purebaric_knoxville_prospects.xlsx (market research only).
 
@@ -255,3 +256,23 @@ import subprocess, sys
 CHECKER = os.path.expanduser("~/projects/purebaric-newsite/_internal/outreach/source/hbot_site_check.py")
 if os.path.exists(CHECKER):
     subprocess.run([sys.executable, CHECKER, "apply", OUT], check=False)
+
+# ---- review exports for the critique and re-sweep agents (one CSV per sheet, plus the recovery exclusion list) ----
+def export_review_csvs():
+    import openpyxl
+    wb = openpyxl.load_workbook(OUT)
+    names = {"Prospects": "prospects_for_review.csv", "Already offer HBOT": "competitors_for_review.csv", "Dropped or outside radius": "dropped_for_review.csv"}
+    rec = []
+    for title, fn in names.items():
+        ws = wb[title]; rows = list(ws.iter_rows(values_only=True))
+        with open(os.path.join(SRC, fn), "w", newline="") as f:
+            w = csv.writer(f); [w.writerow(r) for r in rows]
+        h = rows[0] if rows else []
+        for r in rows[1:]:
+            d = dict(zip(h, r))
+            if d.get("Business") and (title != "Prospects" or d.get("Industry") == "Recovery studios and med spas"):
+                rec.append([title, d.get("Business"), d.get("Industry"), d.get("City"), d.get("Address"), d.get("Website"), d.get("Email"), d.get("Phone")])
+    with open(os.path.join(SRC, "_recovery_existing.csv"), "w", newline="") as f:
+        w = csv.writer(f); w.writerow(["sheet", "business", "industry", "city", "address", "website", "email", "phone"]); [w.writerow(r) for r in rec]
+    print("review CSVs written to", SRC)
+export_review_csvs()

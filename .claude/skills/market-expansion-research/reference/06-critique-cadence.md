@@ -10,10 +10,11 @@ Critique is not a final step; it runs at fixed points. Every critique uses the a
 | After the legal memos | Does the summary match the memos; are buckets softened; which items are unverified | Part of the document critique | `critique_documents_round1_decision.md` |
 | When the sales assets exist | Pamphlets (extracted text), training, runbook, LOI, proposal, brief, market analysis, legal files, index and READMEs, in two parallel critiques (sales documents; decision documents) | Two Opus critics | `critique_documents_round1_sales.md`, `critique_documents_round1_decision.md` |
 | After fixes | Re-extract pamphlet text and rescan; re-render; confirm counts agree across the brief, README, index and workbook | You | `critique_documents_round1_response.md` |
+| After the response file | An independent check of only the fixes marked applied and the scan output; any document still "Not ready" goes on the owner-decision list with the reason | One Opus critic, budget 10 | `critique_documents_round2_check.md` |
 
 ## Applying a critique
 1. Read the whole critique file, not the agent's summary.
-2. Apply every fix you can make yourself, by editing the generator or the Markdown source, never by hand-editing an output file.
+2. Apply every fix you can make yourself, by editing the generator or the Markdown source, never by hand-editing an output file. A disputed finding is recorded in the response file with the reason, not silently dropped.
 3. Regenerate outputs, render, rescan.
 4. Write the response file: a table of verdicts before and after, a numbered list of what was fixed per document, and a list of what needs the owner's decision (contracting entity, agreement versions, chamber model, tax rulings, contact details on shared documents, score changes).
 5. Bump the brief's version and add a change-log line; update the index.
@@ -31,3 +32,4 @@ Critique is not a final step; it runs at fixed points. Every critique uses the a
 - Counts (prospects, emails, competitors, questions for counsel) that differed between the brief, README, index, runbook and workbook.
 - The contracting entity named differently in the contracts and the memos.
 - Conditions in an LOI that could never be met as written (a business licence the county does not issue to a business with no location).
+- A state consumer-contract rule (Tennessee's automatic-renewal statute) that the memo mentioned but no contract carried; the check is not done until the statement is in the documents.
