@@ -38,8 +38,9 @@ def miles(a, b):
     h = math.sin((la2-la1)/2)**2 + math.cos(la1)*math.cos(la2)*math.sin((lo2-lo1)/2)**2
     return 3958.8 * 2 * math.asin(math.sqrt(h))
 def dmin(a, b):
-    m = miles(a, b) * RF
-    speed = MPH if m < 5 else (35 if m < 12 else 50)   # city streets, arterials, highway
+    d = miles(a, b)
+    m = d * (RF if d < 5 else (1.2 if d < 12 else 1.15))      # road factor shrinks on longer, straighter legs
+    speed = MPH if d < 5 else (35 if d < 12 else 50)         # city streets, arterials, highway
     return m / speed * 60
 def hm(m):
     m = int(round(m)); return f"{m//60} h {m%60:02d} min" if m >= 60 else f"{m} min"
@@ -47,7 +48,9 @@ def hm(m):
 # ---------- classification ----------
 TOP_RECOVERY = re.compile(r"cryo|float|sauna|cold plunge|contrast|\bIV\b|hydration|drip|stretch|recovery|red light|compression|infrared|biohack|longevity|performance", re.I)
 AESTHETIC = re.compile(r"aesthetic|medspa|med spa|skin|laser|botox|injectab|lash|brow|beauty bar|facial", re.I)
-MEDICAL_WEAK = re.compile(r"weight[- ]?loss|weigh to go|slim|testosterone|\blow t\b|\btrt\b|hormone|plastic surg|ketamine|primary care|men's health|mens health|vitality clinic", re.I)
+MEDICAL_WEAK = re.compile(r"weight[- ]?loss|weigh to go|\bslim\b|testosterone|\blow t\b|\btrt\b|hormone pellet|hormone (therapy|clinic|replacement)|plastic surg|ketamine|chelation|primary care|men's health|mens health|vitality clinic|semaglutide|tirzepatide", re.I)
+WEAK_FIT = re.compile(r"functional medicine|hormone|thyroid|anti-aging|wellness clinic|family medicine|urgent care", re.I)
+RECOVERY_SERVICE = re.compile(r"cryo|float|sauna|cold plunge|contrast|stretch|compression|red light|infrared|recovery lounge|recovery studio", re.I)
 CHAIN_GYM = re.compile(r"planet fitness|anytime fitness|crunch|vasa|eos fitness|la fitness|24 hour|gold's|workout anytime|snap fitness|orangetheory|f45|burn boot camp|fit body boot camp|pure barre|club pilates|title boxing|9round", re.I)
 EMAIL_FIRST = re.compile(r"universit|college|athletics|\bbyu\b|\buvu\b|\bslcc\b|utah state|westminster|football|\bsc\b|\bfc\b|ice bears|smokies|jazz|real salt lake|\bbees\b|grizzlies|royals|mammoth|utah warriors", re.I)
 STATUS_BAD = [(re.compile(r"\bUNVERIFIED\b"), "research marks the business itself as unverified"),
@@ -60,10 +63,13 @@ def classify(d):
     ind = d.get("Industry") or ""; name = d.get("Business") or ""; notes = d.get("Notes") or ""; text = name + " " + notes
     for rx, why in STATUS_BAD:
         if rx.search(notes): return 0, why, None
-    if MEDICAL_WEAK.search(name): return 0, "weight-loss, hormone, plastic-surgery or similar medical practice", None
+    if MEDICAL_WEAK.search(name) or MEDICAL_WEAK.search(notes): return 0, "weight-loss, hormone, ketamine, plastic-surgery or similar medical practice", None
     if ind == "Sports teams and athletic programs" and EMAIL_FIRST.search(name): return 3, None, "email"
     if ind == "Recovery studios and med spas":
-        base = 6 if TOP_RECOVERY.search(text) else (3 if AESTHETIC.search(name) else 4)
+        hook = d.get("Personal note hook") or ""
+        if TOP_RECOVERY.search(name) or RECOVERY_SERVICE.search(notes + " " + hook): base = 6
+        elif AESTHETIC.search(name) or WEAK_FIT.search(name + " " + hook): base = 3
+        else: base = 4
     elif ind == "CrossFit and performance gyms": base = 5
     elif ind == "Physical therapy, chiropractic, and sports medicine": base = 4 if re.search(r"sport|performance|athlet", text, re.I) else 3
     elif ind == "Sports teams and athletic programs": base = 3
@@ -221,12 +227,13 @@ L.append("## Stop by stop")
 for i, d in enumerate(ordered_days, 1):
     L.append(""); L.append(f"### Day {i}: {d['area']}"); L.append("")
     L.append(f"{len(d['stops'])} businesses, about {hm(d['minutes'])} door to door ({round(d['home_out'])} min out from {HOME_LABEL.split(' (')[0]}, {round(d['home_back'])} min back). [Map]({d['maps']})"); L.append("")
-    L.append("| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Phone | Top pick | Good to know | Drive to get here |")
-    L.append("|---|---|---|---|---|---|---|---|---|---|")
+    L.append("| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |")
+    L.append("|---|---|---|---|---|---|---|---|")
     for n, (s, leg) in enumerate(zip(d["stops"], d["legs"]), 1):
         also = (" (also here: " + ", ".join(s["also"]) + ")") if s.get("also") else ""
         addr = s["address"] + (f", {s['city']}" if s["city"].lower() not in s["address"].lower() else "") + (" (map point approximate)" if s.get("approx") else "")
-        L.append(f"| {n} | {s['name']}{also} | {s['industry']} | {tier(s['score'])} | {addr} | {s['owner'] or 'the manager'} | {s['phone']} | {'Yes' if s['top'] else ''} | {s['hook']} | {round(leg)} min from {HOME_LABEL.split(' (')[0] if n == 1 else 'stop ' + str(n-1)} |")
+        who = (s['owner'] or 'the manager') + (f", {s['phone']}" if s['phone'] else "")
+        L.append(f"| {n} | {s['name']}{' (top pick)' if s['top'] else ''}{also} | {s['industry']} | {tier(s['score'])} | {addr} | {who} | {s['hook']} | {round(leg)} min from {HOME_LABEL if n == 1 else 'stop ' + str(n-1)} |")
 if far_by_town:
     L.append(""); L.append("## Far trips: more than two hours round trip"); L.append("")
     L.append(f"These are beyond a two-hour loop from {HOME_LABEL.split(' (')[0]}. Plan each town as a half day, or visit when you are already there.")

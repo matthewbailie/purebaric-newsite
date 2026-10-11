@@ -3,7 +3,7 @@
 // "1. " numbered lists, pipe tables with a header row, **bold**, *italic*, `code`, "---" rules, "> " quotes.
 // Usage: NODE_PATH=$(npm root -g) node md2docx.js input.md output.docx ["Footer text"]
 const fs = require("fs");
-const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, HeadingLevel, BorderStyle, ShadingType, LevelFormat, PageNumber, Footer, ExternalHyperlink } = require("docx");
+const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, HeadingLevel, BorderStyle, ShadingType, LevelFormat, PageNumber, Footer, ExternalHyperlink, TableLayoutType } = require("docx");
 
 const [,, inPath, outPath, footerText] = process.argv;
 const FONT = "Arial";
@@ -67,7 +67,8 @@ while (i < lines.length) {
       let over = widths.reduce((a, b) => a + b, 0) - total;
       while (over > 0) { const bi = widths.indexOf(Math.max(...widths)); const cut = Math.min(over, widths[bi] - minW); if (cut <= 0) break; widths[bi] -= cut; over -= cut; }
     }
-    kids.push(new Table({ width: { size: widths.reduce((a, b) => a + b, 0), type: WidthType.DXA }, columnWidths: widths, rows: cells.map((c, ri) => new TableRow({ tableHeader: ri === 0, children: widths.map((wd, ci) => new TableCell({ width: { size: wd, type: WidthType.DXA }, borders, margins: { top: 60, bottom: 60, left: 100, right: 100 }, shading: ri === 0 ? { type: ShadingType.CLEAR, fill: "EEF2F7", color: "auto" } : undefined, children: [new Paragraph({ spacing: { after: 0 }, children: inline(c[ci] || "", ri === 0 ? { bold: true } : {}) })] })) })) }));
+    const small = ncol >= 7 ? { size: 17 } : {};
+    kids.push(new Table({ layout: TableLayoutType.FIXED, width: { size: widths.reduce((a, b) => a + b, 0), type: WidthType.DXA }, columnWidths: widths, rows: cells.map((c, ri) => new TableRow({ tableHeader: ri === 0, children: widths.map((wd, ci) => new TableCell({ width: { size: wd, type: WidthType.DXA }, borders, margins: { top: 50, bottom: 50, left: 70, right: 70 }, shading: ri === 0 ? { type: ShadingType.CLEAR, fill: "EEF2F7", color: "auto" } : undefined, children: [new Paragraph({ spacing: { after: 0 }, children: inline(c[ci] || "", ri === 0 ? { bold: true, ...small } : small) })] })) })) }));
     kids.push(new Paragraph({ spacing: { after: 120 }, children: [] }));
     continue;
   }
