@@ -1,4 +1,4 @@
-# Critique, round 1: market-expansion-research skill (10 October 2026)
+# Critique, round 1: franchise-location-research skill (10 October 2026)
 
 Read: SKILL.md and all nine reference files; the Knoxville worked example (DOCUMENTS-INDEX.md, knoxville/README.md, BRIEF.md, EXECUTIVE-BRIEF.md sections 6 and 7, critique_documents_round1_response.md, TENNESSEE-OUTREACH-RUNBOOK.md section 2); the generator headers named in the brief, plus the parts of those scripts the skill's instructions depend on (make_loi.js body and CLI, make_pamphlets_market.py revenue and disclaimer panels, make_knoxville_list.py radius, dedupe, overrides and Summary code). Nothing was run.
 

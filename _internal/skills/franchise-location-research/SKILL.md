@@ -1,13 +1,13 @@
 ---
-name: market-expansion-research
-description: Full new-market research package for Purebaric chamber rentals (market scan and score, legal check, master prospect list, sales assets, critique rounds). Use when the owner asks to evaluate, research or prepare a new city or region for business, school or home rentals.
+name: franchise-location-research
+description: Franchise location research agent for Purebaric. Produces the full research and launch package for a new city or region (market scan and score, legal check, master prospect list, state legal documents, pamphlets, sales training, outreach runbook, daily route plan, critique rounds). Use when the owner asks to evaluate, research or prepare a new franchise location or market.
 ---
 
-# Market expansion research for Purebaric
+# Franchise location research agent for Purebaric
 
 This skill reproduces the Knoxville, Tennessee research package of 10 October 2026 for any new area. The finished package is a folder the owner can hand to a sales representative and an attorney: a scored market analysis, a legal blockers memo, a master list of businesses and schools to contact in a set order, a state-specific letter of intent, one pamphlet per industry, a sales training document with industry talk tracks, an outreach runbook, and a documents index. Every document goes through adversarial critique before it is called done.
 
-A human-readable mirror of this skill is kept at `_internal/skills/market-expansion-research/` in the site repo (update the `.claude/skills/` copy first, then mirror it there and to `~/.claude/skills/`). The worked example lives in the site repo at `_internal/research/knoxville-tennessee/` (with `_internal/research/channel-schools-athletic-recovery/` and `_internal/outreach/`). Read its `DOCUMENTS-INDEX.md` first; it shows the finished shape. Every reference file below points at the Knoxville file to copy from.
+A human-readable mirror of this skill is kept at `_internal/skills/franchise-location-research/` in the site repo (update the `.claude/skills/` copy first, then mirror it there and to `~/.claude/skills/`). The worked example lives in the site repo at `_internal/research/knoxville-tennessee/` (with `_internal/research/channel-schools-athletic-recovery/` and `_internal/outreach/`). Read its `DOCUMENTS-INDEX.md` first; it shows the finished shape. Every reference file below points at the Knoxville file to copy from.
 
 ## Step 0. Intake (ask before doing anything)
 

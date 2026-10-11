@@ -635,4 +635,4 @@ This is a wellness rental business, **not a medical provider** ("not a medical d
 
 ## 15. Reusable AI playbooks
 
-`_internal/skills/` holds the human-readable copies of the Claude Code skills used to run the business's research and sales-asset work. `market-expansion-research` reproduces the Knoxville, Tennessee package (market scan and score, legal check, prospect list, LOI and agreement, pamphlets, training, runbook, route plan, critiques) for any new city; the executable copy is `.claude/skills/market-expansion-research/`. See `_internal/skills/README.md`.
+`_internal/skills/` holds the human-readable copies of the Claude Code skills used to run the business's research and sales-asset work. `franchise-location-research` reproduces the Knoxville, Tennessee package (market scan and score, legal check, prospect list, LOI and agreement, pamphlets, training, runbook, route plan, critiques) for any new city; the executable copy is `.claude/skills/franchise-location-research/`. See `_internal/skills/README.md`.
