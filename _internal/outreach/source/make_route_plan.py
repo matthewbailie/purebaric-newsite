@@ -57,7 +57,9 @@ for r in rows[1:]:
     biz.append({"name": d["Business"], "industry": ind, "owner": d.get("Owner / contact") or "", "phone": d.get("Phone") or "",
                 "address": d["Address"], "city": d.get("City") or "", "zip": d.get("ZIP") or "", "hook": (d.get("Personal note hook") or "")[:140],
                 "score": score, "pt": (g["lat"], g["lon"]), "approx": bool(g.get("approx")), "callfirst": (d.get("Call first") or "") == "Yes"})
-tier = lambda s: "High" if s >= MIN_ANCHOR else ("Medium" if s >= 4 else "Fill")
+tier = lambda s: "Best bet" if s >= MIN_ANCHOR else ("Good fit" if s >= 4 else "Also nearby")
+def hm(m):
+    m = int(round(m)); return (f"{m//60} h {m%60:02d} min" if m >= 60 else f"{m} min")
 
 unassigned = sorted(biz, key=lambda b: -b["score"])
 days = []
@@ -127,72 +129,89 @@ for d in days:
     zips = sorted({str(s["zip"]) for s in d["stops"] if s["city"] == main and s["zip"]})
     d["area"] = main + ((" " + ", ".join(zips[:3])) if len(cities) == 1 and zips else (" and " + ", ".join(c for c in cities if c != main) if len(cities) > 1 else ""))
     d["maps"] = "https://www.google.com/maps/dir/" + "/".join(urllib.parse.quote(s["address"] if s["city"].lower() in s["address"].lower() else f"{s['address']}, {s['city']}, {ST}") for s in d["stops"])
-    d["high"] = sum(1 for s in d["stops"] if tier(s["score"]) == "High")
+    d["high"] = sum(1 for s in d["stops"] if tier(s["score"]) == "Best bet")
     d["anchor_score"] = d["stops"][0]["score"]
 
 # ---------- Markdown ----------
 L = []
 L.append(f"# {CFG['market_label']}: daily pamphlet route plan")
 L.append("")
-L.append(f"Generated {__import__('datetime').date.today().isoformat()} from `{os.path.basename(CFG['workbook'])}`. Each day is one geographic cluster built around the highest-potential business still unvisited (the anchor), with other prospects within {RAD:g} miles added while the day stays under {MAXM} minutes: {STOP} minutes per stop plus drive time between stops at about {MPH} mph. {CFG.get('home_base_note','')} Days are listed best-anchor first, so start at Day 1. Open the Google Maps link for turn-by-turn directions in stop order.")
+L.append(f"Generated {__import__('datetime').date.today().isoformat()} from `{os.path.basename(CFG['workbook'])}`.")
 L.append("")
-L.append("Scoring: recovery studios and IV lounges score highest, then CrossFit and performance gyms, then chiropractic, physical therapy and sports clubs, then gyms and salons; a Call-first mark, a named owner, a verifiable hook and a verified email each add a point. High = anchor-grade. Schools, businesses that already offer hyperbaric, and rows flagged unverified or closed are left out (list at the end). Visit mid-morning or mid-afternoon; carry the industry pamphlet for each stop.")
+L.append("## How to read this plan")
 L.append("")
-L.append("## Summary")
+L.append(f"- **One row = one outing.** Each day is a group of businesses close enough together to visit in one trip of one to two hours. Do them in the order listed; Day 1 is the best use of your first outing.")
+L.append(f"- **Businesses to visit** is how many doors you knock on that day. **Best bets** are the ones most likely to sign: recovery studios, IV lounges and performance gyms with a named owner or a specific talking point. Every day contains at least one best bet where one exists nearby; the rest of the stops are good fits or businesses that happen to be on the way.")
+L.append(f"- **Time for the outing** is the total for that day: {STOP} minutes at each business plus the driving between them (about {MPH} mph). It does not include the drive from home to the first stop or home from the last, so pick a day whose area is on your way. {CFG.get('home_base_note','')}")
+L.append(f"- **Directions** opens Google Maps with the stops already in order.")
+L.append(f"- In the stop lists, **Who to ask for** is the owner or manager named in the research, **Talking point** is a true, specific fact to open with, and **Drive from last stop** is the estimated minutes between that business and the one before it. \"Reviewer's pick\" marks a business the list critique singled out as a top prospect.")
+L.append(f"- Not included: schools (approach by email through the athletic director), businesses that already offer hyperbaric, rows the research flagged as unverified or closed, and rows without a street address. They are listed at the end with the reason. Visit mid-morning or mid-afternoon and carry the pamphlet for that industry.")
 L.append("")
-L.append("| Day | Area | Stops | High-potential stops | Est. minutes | Route |")
+L.append("## The days at a glance")
+L.append("")
+L.append("| Day | Area to cover | Businesses to visit | Of which best bets | Time for the outing | Directions |")
 L.append("|---|---|---|---|---|---|")
 for i, d in enumerate(days, 1):
-    L.append(f"| {i} | {d['area']} | {len(d['stops'])} | {d['high']} | {round(d['minutes'])} | [Google Maps]({d['maps']}) |")
+    L.append(f"| {i} | {d['area']} | {len(d['stops'])} | {d['high']} | about {hm(d['minutes'])} | [Google Maps]({d['maps']}) |")
 L.append("")
 tot_stops = sum(len(d["stops"]) for d in days)
-L.append(f"{len(days)} days, {tot_stops} stops, {sum(1 for b in biz if tier(b['score'])=='High')} high-potential businesses, {sum(d['minutes'] for d in days)/60:.1f} hours of visiting time in total, plus {len(singles)} single stops listed at the end.")
+L.append(f"In total: {len(days)} outings, {tot_stops} businesses, {sum(1 for b in biz if tier(b['score'])=='Best bet')} of them best bets, about {sum(d['minutes'] for d in days)/60:.0f} hours of visiting time, plus {len(singles)} single stops listed at the end to pair with errands.")
 L.append("")
 L.append("## Day by day")
 for i, d in enumerate(days, 1):
     L.append("")
-    L.append(f"### Day {i}: {d['area']} ({len(d['stops'])} stops, about {round(d['minutes'])} minutes)")
+    L.append(f"### Day {i}: {d['area']}")
     L.append("")
-    L.append(f"[Open route in Google Maps]({d['maps']})")
+    L.append(f"{len(d['stops'])} businesses, about {hm(d['minutes'])} including driving between stops. Start at stop 1 (the day's best bet) and follow the order. [Open directions in Google Maps]({d['maps']})")
     L.append("")
-    L.append("| # | Business | Industry | Tier | Address | Contact | Why this one | Drive from previous |")
+    L.append("| Stop | Business | Type | Likelihood | Address | Who to ask for | Talking point | Drive from last stop |")
     L.append("|---|---|---|---|---|---|---|---|")
-    for n, (s, leg) in enumerate(zip(d["stops"], d["legs"]), 1):
-        who = s["owner"] + (f", {s['phone']}" if s["phone"] else "")
-        why = ("Call first. " if s["callfirst"] else "") + s["hook"]
-        addr = f"{s['address']}, {s['city']}" + (" (address approximate)" if s["approx"] else "")
-        L.append(f"| {n} | {s['name']} | {s['industry']} | {tier(s['score'])} | {addr} | {who} | {why} | {'start' if n == 1 else str(round(leg)) + ' min'} |")
+    for n, (s_, leg) in enumerate(zip(d["stops"], d["legs"]), 1):
+        who = s_["owner"] + (f" ({s_['phone']})" if s_["phone"] else "") if s_["owner"] else (s_["phone"] or "")
+        why = ("Reviewer's pick. " if s_["callfirst"] else "") + s_["hook"]
+        addr = f"{s_['address']}, {s_['city']}" + (" (address approximate)" if s_["approx"] else "")
+        L.append(f"| {n} | {s_['name']} | {s_['industry']} | {tier(s_['score'])} | {addr} | {who} | {why} | {'first stop' if n == 1 else str(round(leg)) + ' min'} |")
 if singles:
     L.append("")
-    L.append("## Single stops to combine with errands")
+    L.append("## Single stops to pair with errands")
     L.append("")
-    L.append("These businesses have no other prospect within reach of a two-hour loop. Visit one when you are already in that town.")
+    L.append("No other prospect is within reach of a two-hour loop for these. Visit one when you are already in that town.")
     L.append("")
-    L.append("| Business | Industry | Tier | Address | Contact | Why this one |")
+    L.append("| Business | Type | Likelihood | Address | Who to ask for | Talking point |")
     L.append("|---|---|---|---|---|---|")
     for d in singles:
-        s = d["stops"][0]; who = s["owner"] + (f", {s['phone']}" if s["phone"] else "")
-        L.append(f"| {s['name']} | {s['industry']} | {tier(s['score'])} | {s['address']}, {s['city']} | {who} | {('Call first. ' if s['callfirst'] else '') + s['hook']} |")
+        s_ = d["stops"][0]; who = s_["owner"] + (f" ({s_['phone']})" if s_["phone"] else "") if s_["owner"] else (s_["phone"] or "")
+        L.append(f"| {s_['name']} | {s_['industry']} | {tier(s_['score'])} | {s_['address']}, {s_['city']} | {who} | {('Reviewer\'s pick. ' if s_['callfirst'] else '') + s_['hook']} |")
 if skipped:
     L.append("")
-    L.append("## Not on a route (reason)")
+    L.append("## Not on any route, and why")
     L.append("")
     for name, why in sorted(skipped): L.append(f"- {name}: {why}")
 open(CFG["out_md"], "w").write("\n".join(L) + "\n")
 
 # ---------- Workbook ----------
 wbo = openpyxl.Workbook(); so = wbo.active; so.title = "Route plan"
-hdr = ["Day", "Area", "Stop", "Business", "Industry", "Tier", "Score", "Address", "City", "ZIP", "Owner / contact", "Phone", "Hook", "Drive from previous (min)", "Day minutes", "Google Maps route"]
+hdr = ["Day", "Area to cover", "Stop order", "Business", "Type", "Likelihood", "Score", "Address", "City", "ZIP", "Who to ask for", "Phone", "Talking point", "Drive from last stop (min)", "Time for the outing (min)", "Directions (Google Maps)"]
 so.append(hdr)
 for i, d in enumerate(days, 1):
     for n, (s, leg) in enumerate(zip(d["stops"], d["legs"]), 1):
-        so.append([i, d["area"], n, s["name"], s["industry"], tier(s["score"]), s["score"], s["address"], s["city"], s["zip"], s["owner"], s["phone"], s["hook"], round(leg), round(d["minutes"]), d["maps"] if n == 1 else ""])
+        so.append([i, d["area"], n, s["name"], s["industry"], tier(s["score"]), s["score"], s["address"], s["city"], s["zip"], s["owner"], s["phone"], ("Reviewer's pick. " if s["callfirst"] else "") + s["hook"], round(leg), round(d["minutes"]), d["maps"] if n == 1 else ""])
 for c in so[1]: c.font = Font(bold=True, color="FFFFFF"); c.fill = PatternFill("solid", fgColor="2B2320")
 for i, w in enumerate([5, 24, 5, 32, 28, 8, 6, 30, 16, 8, 24, 16, 50, 10, 8, 40], 1): so.column_dimensions[get_column_letter(i)].width = w
 so.freeze_panes = "A2"
-sg = wbo.create_sheet("Single stops"); sg.append(["Business", "Industry", "Tier", "Address", "City", "Owner / contact", "Phone", "Hook"])
+sg = wbo.create_sheet("Single stops"); sg.append(["Business", "Type", "Likelihood", "Address", "City", "Who to ask for", "Phone", "Talking point"])
 for d in singles:
     s = d["stops"][0]; sg.append([s["name"], s["industry"], tier(s["score"]), s["address"], s["city"], s["owner"], s["phone"], s["hook"]])
-sk = wbo.create_sheet("Not on a route"); sk.append(["Business", "Reason"]); [sk.append(list(x)) for x in sorted(skipped)]
+sk = wbo.create_sheet("Not on any route"); sk.append(["Business", "Reason"]); [sk.append(list(x)) for x in sorted(skipped)]
 wbo.save(CFG["out_xlsx"])
+# a "How to read" sheet first
+ho = wbo.create_sheet("How to read this", 0)
+for line in ["One row on the Route plan sheet = one business to visit. Rows are grouped by Day; do each day in Stop order.",
+             "Likelihood: Best bet = most likely to sign (recovery studios, IV lounges, performance gyms with a named owner or talking point); Good fit = worth the stop; Also nearby = on the way.",
+             f"Time for the outing = {STOP} minutes at each business plus driving between stops; it does not include the drive from home to the first stop.",
+             "Directions = a Google Maps link on the first row of each day with the stops already in order.",
+             "Reviewer's pick in the Talking point column = a business the list critique singled out as a top prospect.",
+             "Single stops sheet = businesses with no other prospect within a two-hour loop; visit when you are already in that town. Not on any route sheet = left out, with the reason."]:
+    ho.append([line])
+ho.column_dimensions["A"].width = 140
 print(f"{len(days)} days, {tot_stops} stops, skipped {len(skipped)} -> {CFG['out_md']}")
