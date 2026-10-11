@@ -4,7 +4,7 @@
 Top of the market folder (this list is the single source; `01` points here):
 - `DOCUMENTS-INDEX.md`
 - `SALES-REP-TRAINING-<slug>.md`, `.docx` (Knoxville: `SALES-REP-TRAINING`)
-- `<SLUG>-OUTREACH-RUNBOOK.md`, `.docx` (Knoxville: `TENNESSEE-OUTREACH-RUNBOOK`)
+- `<SLUG>-OUTREACH-RUNBOOK.md`, `.docx` (Knoxville: `TENNESSEE-GETTING-STARTED-ACTION-PLAN`)
 - `pamphlets/Purebaric_<slug>_pamphlet_<industry>.pdf` x 7, `pamphlets/README.md` (Knoxville: `Purebaric_TN_...`)
 
 Research folder (`<slug>/`):

@@ -1,6 +1,6 @@
-# Knoxville launch runbook: getting Purebaric started in Tennessee
+# Tennessee Getting Started Action Plan
 
-Version 4, 10 October 2026. The plan for standing up Purebaric in the Knoxville area and signing the first business, school and home customers. Written for Michael Bailie and whoever works the territory with him. Everything referenced here is in this folder: the daily route plan (`TENNESSEE-ROUTE-PLAN`), the sales training (`SALES-REP-TRAINING`), the seven pamphlets (`pamphlets/`), the Tennessee letter of intent, business rental agreement and renewal disclosure (`knoxville/legal/`), the home rental waiver and the home chamber instructions (`Purebaric - Home - Rental Waiver.docx`, `Purebaric - Home Chamber - Instructions.docx`), the Marketplace listing text and photos (`marketplace-ad/`), and the prospect list (`purebaric_knoxville_prospects.xlsx`).
+Version 5, 10 October 2026. The action plan for standing up Purebaric in the Knoxville area and signing the first business, school and home customers. Written for Michael Bailie and whoever works the territory with him. Everything referenced here is in this folder: the daily route plan (`TENNESSEE-ROUTE-PLAN`), the sales training (`SALES-REP-TRAINING`), the seven pamphlets (`pamphlets/`), the Tennessee letter of intent, business rental agreement and automatic-renewal disclosure (`knoxville/legal/`), the home rental waiver and the home chamber instructions (`Purebaric - Home - Rental Waiver.docx`, `Purebaric - Home Chamber - Instructions.docx`), the Marketplace listing text and photos (`marketplace-ad/`), and the prospect list (`purebaric_knoxville_prospects.xlsx`).
 
 ---
 
@@ -16,7 +16,8 @@ If fewer than three letters of intent are signed after 60 days of steady visits,
 
 Michael operates as an individual for now. No company to form, no attorney to hire: the waivers and agreements in this folder have already been through an attorney.
 
-1. **Documents.** Everything is in this folder: letter of intent, business rental agreement, renewal disclosure, home rental waiver, home chamber instructions, seven pamphlets, sales training, route plan. Print 150 pamphlets; the route plan's day list shows which industries come first.
+1. **Documents.** Everything is in this folder: letter of intent, business rental agreement, the Tennessee automatic-renewal disclosure, home rental waiver, home chamber instructions, seven pamphlets, sales training, route plan. Print 150 pamphlets; the route plan's day list shows which industries come first.
+   - **The Tennessee automatic-renewal disclosure, and why it exists.** Our rentals bill the customer's card every month and keep going after the first term until the customer cancels. Tennessee's automatic-renewal law (Tenn. Code Ann. § 47-18-133) says that before a Tennessee consumer agrees to a charge like that, the business has to show the renewal terms clearly, get the customer's affirmative consent, hand over a copy they can keep, give notice before a charge that falls more than 60 days after they signed, and make cancelling easy. That law protects individuals renting for personal use, which is every home rental. So every Tennessee home customer signs the one-page disclosure (`knoxville/legal/Purebaric_TN_Automatic_Renewal_Disclosure.pdf`) along with the home rental waiver, because the waiver itself does not cover renewals. Businesses are not consumers under that law, but the business rental agreement carries the same terms as its Section 2.7 with an initials line, so a business signs nothing extra. Where it is signed is marked in section 4.
 2. **A local phone number.** Set up a free Google Voice number with an 865 area code that rings Michael's own phone:
    - Go to voice.google.com and sign in with a Google account. Choose "For personal use", then "Web".
    - Under "Choose a number", search by city or area code: type "Knoxville" or "865" and pick a number.
@@ -102,14 +103,14 @@ For wellness use only. Consult a physician before use. Not intended to diagnose,
 2. The same day, send the Tennessee letter of intent for signature, with the rental agreement attached.
 3. Within a week: site check by photos or a video call. A clean, dry 4 by 8 foot space, a wall outlet, a path in for the chamber bag and compressor.
 4. Before install: their insurance certificate naming Purebaric as additional insured, and the landlord's okay if their lease needs it.
-5. Signing: rental agreement signed, first month plus the $200 training fee collected through Stripe.
+5. Signing: rental agreement signed, with the business's initials on Section 2.7, the automatic-renewal terms. First month plus the $200 training fee collected through Stripe.
 6. Install when the chamber arrives: set up the chamber, train two staff, run a session with them, leave the consent forms and the pricing suggestion, take photos.
 7. One week later: a check-in call. One month later: another; ask what they are charging and how it is going. That is the proof for the next visit.
 
 **Home**
 
 1. Enquiry comes in from the Marketplace listing, a referral or the website. Agree the delivery date and collect payment through Stripe, as in Utah. If no chamber is on hand, order one through Matthew the same way.
-2. Before delivery: the home rental waiver and the Tennessee renewal disclosure, signed.
+2. Before delivery: the home rental waiver and the Tennessee automatic-renewal disclosure, both signed. On the disclosure, tick the box that matches the booking (ends on the end date unless extended, or continues month to month), fill in the fee and the charge date, and give the customer a copy. Tennessee law requires this before the first automatic charge; without it a renewal charge can be disputed and refunded.
 3. Delivery, setup and the walk-through of the home chamber instructions.
 4. Support by call or text through the rental; pickup on the last day.
 

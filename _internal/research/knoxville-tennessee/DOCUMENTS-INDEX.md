@@ -14,7 +14,7 @@ Folder: `~/Desktop/Tennessee Research/`. Canonical git copy: `~/projects/purebar
 ## Operating documents
 | Document | Path | What it is |
 |---|---|---|
-| Knoxville launch runbook (v4) | `TENNESSEE-OUTREACH-RUNBOOK.md` / `.docx` | What the test must prove (three letters of intent), setup steps (Google Voice number, tracking, chambers ordered after signatures), who to visit first (route plan, colleges by email, households via the Facebook Marketplace listing with setup steps), yes-to-install steps, a normal week, checkpoints, house rules. |
+| Tennessee Getting Started Action Plan (v5) | `TENNESSEE-GETTING-STARTED-ACTION-PLAN.md` / `.docx` | What the test must prove (three letters of intent), setup steps (Google Voice number, tracking, chambers ordered after signatures), who to visit first (route plan, colleges by email, households via the Facebook Marketplace listing with setup steps), yes-to-install steps, a normal week, checkpoints, house rules. |
 | Home rental waiver | `Purebaric - Home - Rental Waiver.docx` | Owner's attorney-reviewed home waiver with Michael Bailie's name and contact details (updated 10 Oct 2026). |
 | Home chamber instructions | `Purebaric - Home Chamber - Instructions.docx` | Owner's home-user instructions with Michael's contact details. |
 | Marketplace listing kit | `marketplace-ad/` | The Utah Facebook Marketplace listing text (`LISTING-TEXT.md`) and its three photos, for the Knoxville listing. |
