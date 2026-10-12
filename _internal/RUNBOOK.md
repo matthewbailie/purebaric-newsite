@@ -209,7 +209,8 @@ purebaric-newsite/
 ├── package.json                (scripts.test = "node --test"; deps: @netlify/blobs, resend, stripe)
 ├── DECISIONS.md                (running architectural-decision log, git-tracked, keep appending to it —
 │                               don't just describe decisions in a chat session and let them evaporate)
-├── _internal/                 (RUNBOOK.md, SITE-EVALUATION.md — NOT served publicly)
+├── _internal/                 (RUNBOOK.md, SITE-EVALUATION.md, BUSINESS-REGISTRATION.md (the Utah DBA on file,
+│                               the LLC formation step list and what moves to the LLC) — NOT served publicly)
 ├── test/                      (node --test unit tests, run via `npm test`; pure-logic libs only —
 │                               inventory.test.js, notifications.test.js, servicearea.test.js,
 │                               analytics.test.js, rental-dates.test.js, admin-rental-inline-edit.test.js.
