@@ -55,31 +55,35 @@ Word count: 170. Runs long; about 68 seconds at a natural pace.
 
 ---
 
-## Final script (60 seconds, about 175 words)
+## Final script (60 seconds, about 165 words)
 
-Revised 12 October 2026 after the owner's review: professional tone throughout, no quips, and the opening names the people the business pamphlets identify as the buyers of sessions (athletes and weekend competitors recovering between training days and events, people who already pay for recovery services, busy professionals recovering from long weeks and travel, and people recovering from surgery whose surgeon or physical therapist has cleared daily sessions, in the wording of the site's post-surgery page).
+Revised 12 October 2026 to the owner's direction: speak to people who already use hyperbaric and know what it does for them; the message is time and money, with surgery recovery and athletic performance as the named uses.
 
-[0:00. An athlete lies down in the chamber in a bedroom; a runner's shoes by the door.]
+[0:00. The chamber set up in a bedroom; a renter zips it closed and settles in.]
 
-Mild hyperbaric recovery, at home.
+Purebaric provides 1.5 atmosphere hyperbaric chamber rentals to homes across the Wasatch Front.
 
-If you train hard and want to recover between sessions. If you compete on weekends. If you already pay for sauna, cold plunge, or massage to recover. If you are recovering from surgery and your surgeon or physical therapist has cleared daily sessions, and the drive to a clinic is the hardest part. Or if long weeks and travel leave you worn down. A Purebaric chamber in your home gives you that recovery hour whenever you need it, as often as you choose.
+If you already use hyperbaric, you know the benefits. You also know what a clinic costs, and how much of your week goes to driving there, waiting, and driving home. Purebaric puts the chamber in your home, so you save both the time and the money.
 
-[0:24. Delivery van, trained installer setting up, a walk-through with the renter.]
+[0:18. Quick cuts: an athlete after training; a post-surgery renter with a caregiver nearby; a professional reading inside the chamber.]
 
-Purebaric delivers the chamber, installs it, and trains you in your home. It fits most bedrooms and runs from a standard wall outlet. You lie down, the pressure rises gently to one and a half times normal, and you breathe concentrated oxygen through a mask while you rest or read. Our team is available by phone and text for the whole rental.
+Whether you are recovering from surgery, working to improve your athletic performance, or using hyperbaric for one of its many other purposes, you get the most from every session when the chamber is a room away. Daily sessions, on your schedule, for everyone in the household.
 
-[0:38. On screen: $529 a month on a 12-month rental. About $8 a session at two a day. Utah clinics: $75 to $150 a session.]
+[0:33. Delivery van; a trained installer sets up; a walk-through with the renter.]
 
-A Utah clinic charges seventy-five to one hundred fifty dollars for a single session. A twelve-month rental with Purebaric is five hundred twenty-nine dollars a month, with delivery, installation, training, and support included. At two sessions a day, that is about eight dollars a session, and everyone in the household can use it.
+We deliver, install, and train you in your home. The chamber fits most bedrooms and runs from a standard outlet. Our team supports you by phone and text for the whole rental, and we collect the chamber when it ends.
 
-[0:51. Review cards from purebaric.com/reviews, then the booking page.]
+[0:44. On screen: Utah clinics $75 to $150 a session. Purebaric: $529 a month on a 12-month rental, about $8 a session at two a day.]
 
-Read reviews from Utah renters on our site, then book online. There is no charge today, and we collect the chamber when your rental ends.
+A clinic charges seventy-five to one hundred fifty dollars per session. A twelve-month rental with Purebaric is five hundred twenty-nine dollars a month, delivery and support included. At two sessions a day, that is about eight dollars a session.
 
-Purebaric. Mild hyperbaric recovery, delivered to your home.
+[0:54. Booking page and review cards.]
 
-[0:58. Disclaimer on screen, read evenly: Purebaric provides general-wellness equipment. It is not a medical device and is not intended to diagnose, treat, cure, or prevent any disease.]
+Reserve online today with no charge, and read what Utah renters say at purebaric.com.
+
+Purebaric. Hyperbaric recovery, delivered to your home.
+
+[0:58. Disclaimer on screen, read evenly: Purebaric provides general-wellness equipment. It is not a medical device and is not intended to diagnose, treat, cure, or prevent any disease. Consult your physician before use.]
 
 ---
 
