@@ -1,6 +1,6 @@
-# Tennessee Research: index of documents
+# Tennessee Purebaric: index of documents
 
-Folder: `~/Desktop/Tennessee Research/`. Canonical git copy: `~/projects/purebaric-newsite/_internal/research/knoxville-tennessee/` (Knoxville), `_internal/research/channel-schools-athletic-recovery/` (schools channel) and `_internal/outreach/` (sales and Utah documents). Updated 10 October 2026 (evening).
+Finished documents (Word, Excel, PDF) live in `~/Desktop/Tennessee Purbaric V2.0/` (renamed from Tennessee Research on 12 Oct 2026). The markdown sources of the action plan, training and route plan, and every generator, live only in the git copy: `~/projects/purebaric-newsite/_internal/research/knoxville-tennessee/` (Knoxville), `_internal/research/channel-schools-athletic-recovery/` (schools channel) and `_internal/outreach/` (sales and Utah documents). Updated 12 October 2026.
 
 ## Decision documents
 | Document | Path | What it is |

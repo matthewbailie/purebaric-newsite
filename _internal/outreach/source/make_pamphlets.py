@@ -17,7 +17,7 @@ MARKET = (sys.argv[1] if len(sys.argv) > 1 else "tennessee").lower()
 MARKETS = {
   "tennessee": dict(
     prefix="Purebaric_TN_pamphlet_", phone="(801) 884-2113", email="mlebailie@hotmail.com",
-    out_default=os.path.expanduser("~/Desktop/Tennessee Research/pamphlets"),
+    out_default=os.path.expanduser("~/Desktop/Tennessee Purbaric V2.0/pamphlets"),
     local="**Now serving Knoxville, Tennessee.** Purebaric chambers are in use in homes and businesses today, and we are now delivering to the Knoxville area. You work directly with the owner, from the first call through installation and ongoing support.",
     facilities_word="Facilities", charge_label="What facilities charge today(1)",
     price_rows=[("Single session (60 min)", "$100", ""), ("10-session pack", "$800", "$80 a session"), ("20-session pack", "$1,400", "$70 a session")],

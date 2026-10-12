@@ -1,10 +1,10 @@
 {
- "workbook": "/Users/bailie/Desktop/Tennessee Research/purebaric_knoxville_prospects.xlsx",
+ "workbook": "/Users/bailie/Desktop/Tennessee Purbaric V2.0/purebaric_knoxville_prospects.xlsx",
  "state_abbrev": "TN",
  "state_name": "Tennessee",
  "market_label": "Knoxville, Tennessee",
- "out_md": "/Users/bailie/Desktop/Tennessee Research/TENNESSEE-ROUTE-PLAN.md",
- "out_xlsx": "/Users/bailie/Desktop/Tennessee Research/TENNESSEE-ROUTE-PLAN.xlsx",
+ "out_md": "/Users/bailie/projects/purebaric-newsite/_internal/research/knoxville-tennessee/TENNESSEE-ROUTE-PLAN.md",
+ "out_xlsx": "/Users/bailie/Desktop/Tennessee Purbaric V2.0/TENNESSEE-ROUTE-PLAN.xlsx",
  "max_minutes": 120,
  "stop_minutes": 10,
  "cluster_radius_mi": 4.0,
