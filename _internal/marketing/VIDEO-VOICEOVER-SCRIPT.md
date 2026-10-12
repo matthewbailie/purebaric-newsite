@@ -55,33 +55,31 @@ Word count: 170. Runs long; about 68 seconds at a natural pace.
 
 ---
 
-## Final script (60 seconds, about 150 words)
+## Final script (60 seconds, about 160 words)
 
-[0:00. A bedroom. Someone unzips the chamber, lies down, reads.]
+Revised 12 October 2026 after the owner's review: professional tone throughout, no quips, and the opening names the people the business pamphlets identify as the buyers of sessions (athletes and weekend competitors recovering between training days and events, people who already pay for recovery services, busy professionals recovering from long weeks and travel, and people whose provider has approved sessions after a procedure).
 
-A quiet hour to rest and recover, in your own home, as often as you like.
+[0:00. An athlete lies down in the chamber in a bedroom; a runner's shoes by the door.]
 
-Purebaric rents mild hyperbaric chambers to households across the Wasatch Front. You lie down, the pressure rises gently, you breathe oxygen through a mask, and you read, nap, or recover between training days. Everyone in the house can use it. Unlimited sessions.
+Mild hyperbaric recovery, at home.
 
-[0:18. Delivery van, a trained installer setting it up, a short walk-through with the renter.]
+If you train hard and want to recover between sessions. If you compete on weekends. If you already pay for sauna, cold plunge, or massage to recover. Or if long weeks and travel leave you worn down. A Purebaric chamber in your home gives you that recovery hour whenever you need it, as many times a week as you choose.
 
-We deliver it, set it up, and train you in your own living room. It fits most bedrooms and plugs into a wall outlet. Questions later? Call or text us.
+[0:20. Delivery van, trained installer setting up, a walk-through with the renter.]
 
-[0:32. On screen: $529 a month on a year. About $8 a session at two a day. Clinics: $75 to $150 a session.]
+Purebaric delivers the chamber, installs it, and trains you in your home. It fits most bedrooms and runs from a standard wall outlet. You lie down, the pressure rises gently to one and a half times normal, and you breathe concentrated oxygen through a mask while you rest or read. Our team is available by phone and text for the whole rental.
 
-A Utah clinic charges seventy-five to a hundred and fifty dollars for one session. A year with Purebaric is five twenty-nine a month, delivery and support included. At two sessions a day, that's about eight dollars a session.
+[0:36. On screen: $529 a month on a 12-month rental. About $8 a session at two a day. Utah clinics: $75 to $150 a session.]
 
-[0:46. Review cards from purebaric.com/reviews.]
+A Utah clinic charges seventy-five to one hundred fifty dollars for a single session. A twelve-month rental with Purebaric is five hundred twenty-nine dollars a month, with delivery, installation, training, and support included. At two sessions a day, that is about eight dollars a session, and everyone in the household can use it.
 
-Real Utah renters, real reviews, on our site.
+[0:50. Review cards from purebaric.com/reviews, then the booking page.]
 
-[0:52. Booking page.]
+Read reviews from Utah renters on our site, then book online. There is no charge today, and we collect the chamber when your rental ends.
 
-Book online in two minutes. No charge today. We pick it up when you're done.
+Purebaric. Mild hyperbaric recovery, delivered to your home.
 
-Purebaric. The chamber comes to you.
-
-[0:58. Disclaimer on screen, read quietly: Purebaric provides general-wellness equipment. It is not a medical device and is not intended to diagnose, treat, cure, or prevent any disease.]
+[0:58. Disclaimer on screen, read evenly: Purebaric provides general-wellness equipment. It is not a medical device and is not intended to diagnose, treat, cure, or prevent any disease.]
 
 ---
 
