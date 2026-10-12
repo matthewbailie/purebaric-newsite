@@ -1,10 +1,4 @@
-const {
-  listReviews,
-  updateReview,
-  store,
-  STORES,
-  nowIso,
-} = require("./_lib/storage");
+const { listReviews, updateReview, nowIso } = require("./_lib/storage");
 const { requireAuth, parseBody, parsePathSegments, json } = require("./_lib/admin");
 
 exports.handler = async (event, context) => {
@@ -24,8 +18,10 @@ exports.handler = async (event, context) => {
     if (method === "PATCH" && id) {
       const body = parseBody(event);
       const patch = {};
-      if (["pending", "published", "rejected"].includes(body.status)) {
-        patch.status = body.status;
+      // Reviews move between pending, published and archived. There is no delete.
+      const status = body.status === "rejected" ? "archived" : body.status;
+      if (["pending", "published", "archived"].includes(status)) {
+        patch.status = status;
         // Stamp/clear the publish time so the public list can sort by it.
         patch.publishedAt = body.status === "published" ? nowIso() : null;
       }
@@ -38,9 +34,9 @@ exports.handler = async (event, context) => {
       return json(200, { review: updated });
     }
 
-    if (method === "DELETE" && id) {
-      await store(STORES.reviews).delete(id);
-      return json(200, { ok: true });
+    if (method === "DELETE") {
+      // Owner rule (2026-10-12): reviews are archived, never deleted.
+      return json(405, { error: "reviews_cannot_be_deleted" });
     }
 
     return json(405, { error: "method_not_allowed" });

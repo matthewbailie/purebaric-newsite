@@ -155,3 +155,10 @@
 ## Commit authorship is the owner's personal identity (2026-10-04)
 
 **Decision:** The repo carries a repo-local `user.email = matthewbailie@gmail.com`; pushes use the `matthewbailie` GitHub account; no Purebaric material is ever associated with the owner's employer accounts. Earlier commits with the employer author email are left in history rather than rewritten.
+
+## Reviews are archived, never deleted (2026-10-12)
+
+**Decision:** The admin Reviews tab offers publish, unpublish, archive, restore to pending and edit. The `DELETE` route in `admin-reviews.js` returns 405 and the delete button is gone. Archived reviews stay in the `reviews` store and are viewable under the tab's "Archived" filter (the default filter, "Active", shows pending and published). Old records with status `rejected` are read as `archived`; no data migration was run.
+
+**Context:** The owner wants a permanent record of every review submitted, including ones taken off the site, and asked that nothing in that tab be deletable.
+

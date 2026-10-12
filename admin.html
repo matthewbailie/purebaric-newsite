@@ -857,10 +857,11 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <div class="tools-row">
         <input type="search" id="reviewSearch" placeholder="Search by name, city, or text…" autocomplete="off" style="padding: 0.5rem 0.85rem; min-width: 260px;">
         <select id="reviewStatusFilter" style="padding: 0.4rem 0.7rem;">
-          <option value="">All statuses</option>
+          <option value="active">Active (pending and published)</option>
           <option value="pending">Pending</option>
           <option value="published">Published</option>
-          <option value="rejected">Rejected</option>
+          <option value="archived">Archived</option>
+          <option value="">All, including archived</option>
         </select>
         </div>
       </div>
@@ -3837,7 +3838,10 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   function renderReviews() {
     const list = document.getElementById('reviewsList');
     if (!_reviews.length) {
-      list.innerHTML = `<div class="empty-state">No reviews yet. When someone submits one at <strong>/reviews</strong>, it shows here for you to publish.</div>`;
+      const f = document.getElementById('reviewStatusFilter').value;
+      list.innerHTML = f === 'archived'
+        ? `<div class="empty-state">No archived reviews. Archiving a review takes it off the site and out of the active list, but it stays here; nothing is ever deleted.</div>`
+        : `<div class="empty-state">No reviews yet. When someone submits one at <strong>/reviews</strong>, it shows here for you to publish.</div>`;
       return;
     }
     const pending = _reviews.filter(r => r.status === 'pending').length;
@@ -3858,11 +3862,12 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       const rvTrunc = rvFull.length > RV_LIMIT;
       const rvShown = rvTrunc ? escape(rvFull.slice(0, RV_LIMIT).replace(/\s+\S*$/, '')) + '…' : escape(rvFull);
       const actions = [];
+      // Reviews are never deleted: publish, unpublish, archive, restore, edit.
       if (r.status !== 'published') actions.push(`<button class="btn btn-primary btn-sm" onclick='setReviewStatus(${JSON.stringify(r.id)}, "published")'>Publish</button>`);
       if (r.status === 'published') actions.push(`<button class="btn btn-ghost btn-sm" onclick='setReviewStatus(${JSON.stringify(r.id)}, "pending")'>Unpublish</button>`);
-      if (r.status !== 'rejected') actions.push(`<button class="btn btn-ghost btn-sm" onclick='setReviewStatus(${JSON.stringify(r.id)}, "rejected")'>Reject</button>`);
+      if (r.status !== 'archived') actions.push(`<button class="btn btn-ghost btn-sm" onclick='setReviewStatus(${JSON.stringify(r.id)}, "archived")'>Archive</button>`);
+      if (r.status === 'archived') actions.push(`<button class="btn btn-ghost btn-sm" onclick='setReviewStatus(${JSON.stringify(r.id)}, "pending")'>Restore to pending</button>`);
       actions.push(`<button class="btn btn-ghost btn-sm" onclick='editReview(${JSON.stringify(r.id)})'>Edit</button>`);
-      actions.push(`<button class="btn btn-ghost btn-sm" style="color:#82402f;" onclick='deleteReview(${JSON.stringify(r.id)})'>Delete</button>`);
       return `
       <tr>
         <td>${escape(created)}</td>
@@ -3878,7 +3883,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   async function setReviewStatus(id, status) {
     try {
       await api(`/api/admin/reviews/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
-      toast(status === 'published' ? 'Review published, now live on the site' : status === 'rejected' ? 'Review rejected' : 'Review unpublished');
+      toast(status === 'published' ? 'Review published, now live on the site' : status === 'archived' ? 'Review archived (kept, not deleted)' : 'Review moved to pending');
       await loadAll();
     } catch (err) { toast(err.message, true); }
   }
@@ -3910,12 +3915,6 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       closeModal();
       await loadAll();
     } catch (err) { toast(err.message, true); }
-  }
-
-  async function deleteReview(id) {
-    if (!confirm('Delete this review permanently?')) return;
-    try { await api(`/api/admin/reviews/${id}`, { method: 'DELETE' }); toast('Review deleted'); await loadAll(); }
-    catch (err) { toast(err.message, true); }
   }
 
   function viewReview(id) {

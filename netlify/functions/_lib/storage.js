@@ -680,13 +680,22 @@ async function listCustomers() {
 
 // ───────── Reviews / testimonials ─────────
 // shape: { id, firstName, lastInitial, city, text,
-//   status: "pending"|"published"|"rejected", createdAt, publishedAt }
+//   status: "pending"|"published"|"archived", createdAt, publishedAt }
 // Submitted "pending"; only "published" reviews are shown on the public site.
+// Reviews are never deleted: "archived" takes them out of the active list but
+// keeps them viewable in admin. Records written before 2026-10-12 may still
+// carry the old "rejected" status; it is read as "archived".
 
+function normalizeReview(r) {
+  return r && r.status === "rejected" ? { ...r, status: "archived" } : r;
+}
+
+// status: "pending" | "published" | "archived" | "active" (pending + published) | undefined (all)
 async function listReviews({ status } = {}) {
-  const all = await listAll(STORES.reviews);
+  const all = (await listAll(STORES.reviews)).map(normalizeReview);
   let filtered = all;
-  if (status) filtered = filtered.filter((r) => r.status === status);
+  if (status === "active") filtered = filtered.filter((r) => r.status !== "archived");
+  else if (status) filtered = filtered.filter((r) => r.status === status);
   return filtered.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
@@ -714,7 +723,7 @@ async function createReview(data) {
 }
 
 async function updateReview(id, patch) {
-  const existing = await getOne(STORES.reviews, id);
+  const existing = normalizeReview(await getOne(STORES.reviews, id));
   if (!existing) return null;
   const updated = { ...existing, ...patch, id };
   return putOne(STORES.reviews, updated);

@@ -404,12 +404,12 @@ The functions accept the frontend field names plus aliases (`customer_name`, `zi
 
 Customer testimonials with a moderation gate. **No star ratings** by design — testimonials read stronger than a sparse star average for a new, low-volume, trust-based service (revisit only if the owner asks; the store has no rating field).
 
-- **Store:** `reviews` Blobs store. Shape `{ id, firstName, lastInitial, city, text, status: "pending"|"published"|"rejected", createdAt, publishedAt }`. Helpers in `storage.js`: `listReviews`, `listPublishedReviews`, `createReview` (always `pending`), `updateReview`.
+- **Store:** `reviews` Blobs store. Shape `{ id, firstName, lastInitial, city, text, status: "pending"|"published"|"archived", createdAt, publishedAt }` (records written before 2026-10-12 may still say `"rejected"`; `listReviews` reads that as `archived`). Helpers in `storage.js`: `listReviews`, `listPublishedReviews`, `createReview` (always `pending`), `updateReview`.
 - **Public submit:** `/reviews` page → `POST /api/reviews-submit` (`reviews-submit.js`). Fields: `firstName`, `lastInitial` (1 char), `city` (optional), `text`. Honeypot `bot-field`, length caps, emails the owner via `notifyAdminReview` **and texts any recipient subscribed to the `review` event** via `notifyAdminReviewSms` (see §7c). Every submission is saved **pending** — nothing is public until the owner publishes.
 - **`/reviews` on phones (2026-09-28):** at 820px and below the "Write a review" form comes first (CSS `order:-1` on `.formwrap`), with a "Read N reviews" jump link in the hero to `#reviews`. Desktop keeps reviews left, form right. `/reviews#write` links straight to the form, for review-request texts and emails.
 - **Public read:** `GET /api/reviews` (`reviews-public.js`) returns **published only**, safe fields, 60s cache. The homepage "What renters say" band (`#reviewsBand` in `index.html`) fetches this and **stays hidden unless ≥1 published review**; `/reviews` lists them all.
-- **Moderate:** admin **Reviews** tab → `/api/admin/reviews` (`admin-reviews.js`, auth). Publish/unpublish/reject/edit/delete. Publishing stamps `publishedAt`; unpublish/reject clears it.
-- **Flow:** submit → `pending` (+owner email) → admin **Publish** → shows on `/reviews` + homepage. Reject or Delete for spam.
+- **Moderate:** admin **Reviews** tab → `/api/admin/reviews` (`admin-reviews.js`, auth). Publish / unpublish / archive / restore to pending / edit. **No delete** (owner rule, 2026-10-12): `DELETE` returns 405 and the UI has no delete button; archiving keeps the record and the tab's status filter (default "Active") has an "Archived" view. Publishing stamps `publishedAt`; unpublish/archive clears it.
+- **Flow:** submit → `pending` (+owner email) → admin **Publish** → shows on `/reviews` + homepage. Archive for spam; it stays viewable under the Archived filter.
 - Footer "Reviews" link is on the 12 standard-footer warm pages (the legacy teal pages — safety/terms/practitioners/blog — don't have it yet). Top nav intentionally left at 6 items.
 
 ---
