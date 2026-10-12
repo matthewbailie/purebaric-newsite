@@ -10,8 +10,11 @@ function twilioConfigFromEnv() {
   return accountSid && authToken && fromNumber ? { accountSid, authToken, fromNumber } : null;
 }
 
+// `paused` (set in the admin Notifications tab) keeps the keys but routes
+// texts through the free carrier email-to-text path instead, for example while
+// the A2P 10DLC campaign is still pending and carriers block Twilio traffic.
 function isComplete(cfg) {
-  return !!(cfg && cfg.accountSid && cfg.authToken && cfg.fromNumber);
+  return !!(cfg && !cfg.paused && cfg.accountSid && cfg.authToken && cfg.fromNumber);
 }
 
 // E.164 for a US number: +1 followed by 10 digits.

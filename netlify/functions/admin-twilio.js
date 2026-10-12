@@ -2,9 +2,9 @@ const { getTwilioConfig, setTwilioConfig } = require("./_lib/storage");
 const { requireAuth, parseBody, json } = require("./_lib/admin");
 
 // GET  /api/admin/twilio -> { accountSid, fromNumber, hasToken, source } (never the token)
-// PUT  /api/admin/twilio  body { accountSid, authToken, fromNumber } -> same (masked)
+// PUT  /api/admin/twilio  body { accountSid, authToken, fromNumber, paused? } -> same (masked)
 function view(c) {
-  return { accountSid: c.accountSid || "", fromNumber: c.fromNumber || "", hasToken: !!c.authToken, source: c.source };
+  return { accountSid: c.accountSid || "", fromNumber: c.fromNumber || "", hasToken: !!c.authToken, source: c.source, paused: !!c.paused };
 }
 
 exports.handler = async (event, context) => {
@@ -16,7 +16,7 @@ exports.handler = async (event, context) => {
     }
     if (event.httpMethod === "PUT" || event.httpMethod === "POST") {
       const body = parseBody(event);
-      await setTwilioConfig({ accountSid: body.accountSid, authToken: body.authToken, fromNumber: body.fromNumber });
+      await setTwilioConfig({ accountSid: body.accountSid, authToken: body.authToken, fromNumber: body.fromNumber, paused: typeof body.paused === "boolean" ? body.paused : undefined });
       return json(200, view(await getTwilioConfig()));
     }
     return json(405, { error: "method_not_allowed" });

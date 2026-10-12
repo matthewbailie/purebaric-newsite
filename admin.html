@@ -1092,6 +1092,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <div class="keyrow"><label>Account SID</label><input id="twSid" autocomplete="off" placeholder="AC…"></div>
         <div class="keyrow"><label>Auth Token</label><input id="twToken" type="password" autocomplete="off" placeholder="your Twilio auth token"></div>
         <div class="keyrow"><label>From number (your Twilio number, E.164)</label><input id="twFrom" autocomplete="off" placeholder="+18015550123"></div>
+        <label class="keyrow" style="display:flex;gap:8px;align-items:flex-start;font-size:13px;cursor:pointer;"><input type="checkbox" id="twPaused" style="margin-top:3px;"><span>Pause Twilio and send texts by free carrier email-to-text instead. Use this while the A2P 10DLC campaign is pending: carriers block Twilio texts until it is approved (Twilio error 30034).</span></label>
         <button type="button" class="btn btn-primary btn-sm" onclick="saveTwilioConfig()">Save Twilio keys</button>
       </div>
       <style>
@@ -4078,13 +4079,15 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       document.getElementById('twSid').value = c.accountSid || '';
       document.getElementById('twFrom').value = c.fromNumber || '';
       document.getElementById('twToken').placeholder = c.hasToken ? '•••••••• saved — leave blank to keep' : 'your Twilio auth token';
-      s.innerHTML = c.source === 'stored' ? '<strong style="color:#3d5a26;">Twilio active</strong> — texts go through Twilio (portal keys).'
+      var tp = document.getElementById('twPaused'); if (tp) tp.checked = !!c.paused;
+      s.innerHTML = c.source === 'paused' ? '<strong style="color:#9a4f3a;">Twilio paused</strong> — texts go by free carrier email-to-text until you un-pause.'
+        : c.source === 'stored' ? '<strong style="color:#3d5a26;">Twilio active</strong> — texts go through Twilio (portal keys).'
         : c.source === 'env' ? '<strong style="color:#3d5a26;">Twilio active</strong> — texts go through Twilio (Netlify env).'
         : 'Not connected — texts currently use free carrier email-to-text (unreliable).';
     } catch (e) { s.textContent = ''; }
   }
   async function saveTwilioConfig() {
-    const body = { accountSid: document.getElementById('twSid').value.trim(), authToken: document.getElementById('twToken').value, fromNumber: document.getElementById('twFrom').value.trim() };
+    const body = { accountSid: document.getElementById('twSid').value.trim(), authToken: document.getElementById('twToken').value, fromNumber: document.getElementById('twFrom').value.trim(), paused: !!(document.getElementById('twPaused') && document.getElementById('twPaused').checked) };
     try { await api('/api/admin/twilio', { method:'PUT', body: JSON.stringify(body) }); toast('Twilio keys saved'); document.getElementById('twToken').value=''; await loadTwilioConfig(); }
     catch (err) { toast(err.message, true); }
   }

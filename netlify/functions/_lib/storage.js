@@ -413,10 +413,11 @@ async function getTwilioConfig() {
     authToken: (doc.authToken || "").trim(),
     fromNumber: (doc.fromNumber || "").trim(),
   };
-  if (sms.isComplete(stored)) return { ...stored, source: "stored" };
+  const paused = !!doc.paused;
+  if (sms.isComplete(stored)) return { ...stored, paused, source: paused ? "paused" : "stored" };
   const env = sms.twilioConfigFromEnv();
-  if (env) return { ...env, source: "env" };
-  return { ...stored, source: sms.isComplete(stored) ? "stored" : "none" };
+  if (env) return { ...env, paused, source: paused ? "paused" : "env" };
+  return { ...stored, paused, source: "none" };
 }
 
 async function setTwilioConfig(cfg) {
@@ -426,6 +427,8 @@ async function setTwilioConfig(cfg) {
     // Keep the existing token when the field is left blank (never re-typed).
     authToken: (cfg.authToken || "").trim() || (prev.authToken || ""),
     fromNumber: (cfg.fromNumber || "").trim(),
+    // Pause flag: keep the keys, send by carrier email-to-text instead (see sms.isComplete).
+    paused: typeof cfg.paused === "boolean" ? cfg.paused : !!prev.paused,
   };
   await store(STORES.settings).setJSON("twilio", { id: "twilio", ...clean, updatedAt: nowIso() });
   return { ok: true };
