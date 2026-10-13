@@ -15,7 +15,7 @@ const p = (t, o = {}) => new Paragraph({ spacing: { after: o.after ?? 120, line:
 const h1 = t => new Paragraph({ heading: HeadingLevel.HEADING_1, keepNext: true, spacing: { before: 260, after: 100 }, children: [new TextRun({ text: t, bold: true, font: FONT, size: 26, color: TERRA })] });
 const bullet = t => new Paragraph({ numbering: { reference: "bullets", level: 0 }, spacing: { after: 80, line: 276 }, children: runs(t) });
 const blank = () => new Paragraph({ children: [new TextRun({ text: "", font: FONT })] });
-const sig = (label) => new Paragraph({ spacing: { before: 320, after: 60 }, tabStops: [{ type: TabStopType.RIGHT, position: 9360 }], children: [new TextRun({ text: label + ": ", font: FONT, size: 22 }), new TextRun({ text: "_".repeat(46), font: FONT, size: 22 }), new TextRun({ text: "   Date: ____________", font: FONT, size: 22 })] });
+const sig = (label, n = 46) => new Paragraph({ spacing: { before: 320, after: 60 }, tabStops: [{ type: TabStopType.RIGHT, position: 9360 }], children: [new TextRun({ text: label + ": ", font: FONT, size: 22 }), new TextRun({ text: "_".repeat(n), font: FONT, size: 22 }), new TextRun({ text: "   Date: ____________", font: FONT, size: 22 })] });
 function kv(rows) {
   const W = [2600, 6760];
   return new Table({ width: { size: 9360, type: WidthType.DXA }, columnWidths: W, rows: rows.map(([k, v]) => new TableRow({ children: [
@@ -79,7 +79,7 @@ c.push(p("**Parent or legal guardian** (required if the Model is under 18)", { a
 c.push(sig("Signature"));
 c.push(p("Printed name: " + B + "   Relationship to Model: ______________", { after: 200 }));
 c.push(p("**Purebaric**", { after: 40 }));
-c.push(sig("Matthew Bailie, doing business as Purebaric"));
+c.push(sig("Matthew Bailie, doing business as Purebaric", 26));
 c.push(p("**Witness** (optional)", { after: 40 }));
 c.push(sig("Signature"));
 c.push(p("Printed name: " + B + "________________"));
