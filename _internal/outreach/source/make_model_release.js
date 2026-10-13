@@ -1,7 +1,7 @@
 // Model release and consent to use likeness, for Purebaric marketing shoots.
 // Usage: NODE_PATH=$(npm root -g) node make_model_release.js <out.docx>
 const fs = require("fs");
-const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, HeadingLevel, BorderStyle, ShadingType, LevelFormat, TabStopType, PageNumber, Footer } = require("docx");
+const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, HeadingLevel, BorderStyle, ShadingType, LevelFormat, TabStopType, PageNumber, Footer, PageBreak } = require("docx");
 const OUT = process.argv[2] || "/Users/bailie/projects/purebaric-newsite/_internal/marketing/Purebaric_Model_Release_and_Likeness_Consent.docx";
 const FONT = "Calibri", INK = "2B2320", TERRA = "9A4F3A", MUTED = "6F635B";
 const CONTACT = "hello@purebaric.com · (801) 901-0873";
@@ -26,63 +26,77 @@ function kv(rows) {
 const B = "______________________________";
 const c = [];
 c.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 60 }, children: [new TextRun({ text: "PUREBARIC", bold: true, font: FONT, size: 40, color: INK })] }));
-c.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 60 }, children: [new TextRun({ text: "MODEL RELEASE AND CONSENT TO USE LIKENESS", bold: true, font: FONT, size: 28, color: TERRA })] }));
-c.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 240 }, children: [new TextRun({ text: "For photographs and video recorded for Purebaric marketing", font: FONT, size: 22, color: MUTED })] }));
-c.push(p("This Model Release and Consent to Use Likeness (the \"Release\") is made on the date signed below between:"));
+c.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 60 }, children: [new TextRun({ text: "MODEL AND TESTIMONIAL RELEASE", bold: true, font: FONT, size: 28, color: TERRA })] }));
+c.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 240 }, children: [new TextRun({ text: "Consent to use likeness, voice and testimonial in Purebaric marketing. One document, up to eight participants.", font: FONT, size: 22, color: MUTED })] }));
+c.push(p("This Model and Testimonial Release (the \"Release\") is between Purebaric and each person who signs the Participant Schedule at the end (each, \"you\"). Each participant's consent is separate: one person signing does not bind another, and the Release applies to a participant from the date they sign."));
 c.push(kv([
   ["Purebaric", "Matthew Bailie, doing business as Purebaric, Lehi, Utah (\"Purebaric\", \"we\", \"us\"). " + CONTACT],
-  ["Model", "Name: " + B + "   Date of birth: ______________"],
-  ["Model contact", "Address: " + B + "________________\nPhone: __________________   Email: " + B],
   ["Shoot", "Date(s): ______________   Location: " + B + "\nDescription: " + B + "________________"],
-  ["Compensation", "☐ $__________, paid on completion of the shoot    ☐ Product or service: " + B + "    ☐ None (participation only)"],
+  ["Participants", "Each participant completes one slot in the Participant Schedule (name, contact, compensation, choices, signature). Up to eight participants may sign this one document."],
 ]));
 c.push(blank());
 
 c.push(h1("1. What you are agreeing to"));
-c.push(p("You give Purebaric, and anyone Purebaric authorizes, the **irrevocable, perpetual, worldwide, royalty-free right** to photograph and record you at the shoot described above (the \"Materials\"), and to use, reproduce, edit, adapt, combine with other material, publish, distribute, display and perform the Materials, in whole or in part, in any media now known or later developed. This includes your image, likeness, voice, movements, and, if you initial here ______, your first name and last initial."));
+c.push(p("You give Purebaric, and anyone Purebaric authorizes, the **irrevocable, perpetual, worldwide, royalty-free right** to photograph and record you at the shoot described above (the \"Materials\"), and to use, reproduce, edit, adapt, combine with other material, publish, distribute, display and perform the Materials, in whole or in part, in any media now known or later developed. This includes your image, likeness, voice and movements, and, if you initial \"Name\" in your schedule slot, your first name and last initial."));
 c.push(p("Purebaric may use the Materials for advertising, marketing and promotion of Purebaric's products and services, including on websites, in social media posts and advertisements, in online video, in paid digital and print advertising, in pamphlets and other printed materials, in email, at events, and in materials given to Purebaric's business customers."));
 
 c.push(h1("2. Editing, context and approval"));
 c.push(p("Purebaric may crop, retouch, alter, caption, and combine the Materials with other images, text, voice-over, music or graphics. You will not have the right to inspect or approve the Materials or any use of them. Purebaric is under no obligation to use the Materials at all."));
-c.push(p("Purebaric will not attribute to you any spoken or written statement that you did not make. If you make a statement on camera about your own experience, you confirm that it is your honest opinion and experience, and Purebaric may use it only with this Release in place."));
+c.push(p("Purebaric will not attribute to you any statement that you did not make, and will not change the meaning of a statement you did make."));
 
-c.push(h1("3. Compensation"));
-c.push(p("The compensation stated above, or your participation in the shoot where none is stated, is the full consideration for this Release. You acknowledge that it is sufficient and that you are not entitled to any royalty, fee, or further payment for any use of the Materials, however often or widely they are used."));
+c.push(h1("3. Testimonials and statements about your experience"));
+c.push(p("If you initial \"Testimonial\" in your schedule slot, you also agree that Purebaric may record, quote, transcribe, caption, subtitle, translate and publish statements you make about your own experience with Purebaric or with hyperbaric sessions (your \"Testimonial\"), in the same media and for the same purposes as the Materials, together with your image and voice, and with your first name and last initial and, if you also initial \"Name\", your city."));
+c.push(p("You confirm that your Testimonial is truthful, reflects your own honest opinion and actual experience, and was not scripted by Purebaric. Purebaric may shorten or excerpt it, and may correct grammar, but will not change its meaning. If you received any payment, product or service for taking part, Purebaric may say so alongside your Testimonial where the law requires a disclosure."));
+c.push(p("Purebaric rents general-wellness equipment and makes no medical claims. Purebaric may decline to use, or may remove, any part of a Testimonial that describes a diagnosis, a treatment or a medical result, and may add the statement that results vary and that the equipment is not a medical device. Your Testimonial will never be presented as a promise of what another person will experience."));
 
-c.push(h1("4. Ownership"));
-c.push(p("The Materials, and all copyright and other rights in them, belong to Purebaric. You have no ownership interest in the Materials and may not sell, license or publish them. You may share finished pieces that Purebaric has published, for example by reposting Purebaric's social media posts."));
+c.push(h1("4. Compensation"));
+c.push(p("The compensation stated in your schedule slot, or your participation in the shoot where none is stated, is the full consideration for this Release. You acknowledge that it is sufficient and that you are not entitled to any royalty, fee, or further payment for any use of the Materials or your Testimonial, however often or widely they are used."));
 
-c.push(h1("5. Release of claims"));
-c.push(p("To the fullest extent permitted by law, you release and agree not to bring any claim against Purebaric, Matthew Bailie, the photographer or videographer, any agency or printer working for Purebaric, and anyone acting with Purebaric's permission, arising from the making or use of the Materials as this Release allows, including any claim for invasion of privacy, violation of the right of publicity, defamation, false light, or copyright."));
+c.push(h1("5. Ownership"));
+c.push(p("The Materials and the recordings of your Testimonial, and all copyright and other rights in them, belong to Purebaric. You have no ownership interest in the Materials and may not sell, license or publish them. You may share finished pieces that Purebaric has published, for example by reposting Purebaric's social media posts."));
 
-c.push(h1("6. If you use a chamber during the shoot"));
+c.push(h1("6. Release of claims"));
+c.push(p("To the fullest extent permitted by law, you release and agree not to bring any claim against Purebaric, Matthew Bailie, the photographer or videographer, any agency or printer working for Purebaric, and anyone acting with Purebaric's permission, arising from the making or use of the Materials or your Testimonial as this Release allows, including any claim for invasion of privacy, violation of the right of publicity, defamation, false light, or copyright."));
+
+c.push(h1("7. If you use a chamber during the shoot"));
 c.push(p("Entering a Purebaric chamber during the shoot is voluntary. Before doing so you will complete Purebaric's health screening and sign its session consent and waiver, which is a separate document. A session during the shoot is a general-wellness activity and not a medical treatment."));
 
-c.push(h1("7. Age and authority"));
-c.push(p("You confirm that you are at least 18 years old and have the right to enter into this Release, or that your parent or legal guardian is signing below on your behalf. A parent or legal guardian who signs confirms that they have the authority to do so and agrees to every term of this Release on the minor's behalf and on their own behalf."));
+c.push(h1("8. Age and authority"));
+c.push(p("You confirm that you are at least 18 years old and have the right to enter into this Release, or that your parent or legal guardian is signing your schedule slot on your behalf. A parent or legal guardian who signs confirms that they have the authority to do so and agrees to every term of this Release on the minor's behalf and on their own behalf."));
 
-c.push(h1("8. Later requests"));
-c.push(p("This Release is irrevocable. Purebaric is not required to withdraw or destroy Materials that have been published, printed or distributed. If you write to Purebaric at the contact details above asking that new uses stop, Purebaric will consider the request in good faith."));
+c.push(h1("9. Later requests"));
+c.push(p("This Release is irrevocable. Purebaric is not required to withdraw or destroy Materials or Testimonials that have been published, printed or distributed. If you write to Purebaric at the contact details above asking that new uses stop, Purebaric will consider the request in good faith."));
 
-c.push(h1("9. General terms"));
+c.push(h1("10. General terms"));
 c.push(bullet("This Release is governed by the laws of the State of Utah. Any dispute will be brought in the state courts located in Utah County, Utah."));
-c.push(bullet("This is the entire agreement about the Materials and replaces any earlier discussion. It may be changed only in a writing signed by both parties."));
+c.push(bullet("This is the entire agreement about the Materials and your Testimonial and replaces any earlier discussion. It may be changed only in a writing signed by Purebaric and the participant concerned."));
 c.push(bullet("If any part of this Release is found unenforceable, the rest remains in effect."));
 c.push(bullet("This Release may be signed electronically and in counterparts, each of which is an original."));
 c.push(bullet("You have read this Release, you understand it, and you have had the opportunity to ask questions and to seek your own advice before signing."));
 
-c.push(h1("Signatures"));
-c.push(p("**Model**", { after: 40 }));
-c.push(sig("Signature"));
-c.push(p("Printed name: " + B + "________________", { after: 200 }));
-c.push(p("**Parent or legal guardian** (required if the Model is under 18)", { after: 40 }));
-c.push(sig("Signature"));
-c.push(p("Printed name: " + B + "   Relationship to Model: ______________", { after: 200 }));
-c.push(p("**Purebaric**", { after: 40 }));
+c.push(new Paragraph({ children: [new PageBreak()] }));
+c.push(h1("Participant Schedule"));
+c.push(p("Each participant completes one slot and signs it. Initial \"Name\" to allow use of your first name and last initial (and city with a Testimonial). Initial \"Testimonial\" to allow use of your statements under Section 3. A participant under 18 needs a parent or legal guardian's signature in the same slot.", { color: MUTED }));
+function slot(n) {
+  const W = [2200, 7160];
+  const cell = (w, t, shade) => new TableCell({ width: { size: w, type: WidthType.DXA }, shading: shade ? { type: ShadingType.CLEAR, fill: "F4E7DF", color: "auto" } : undefined, margins: { top: 70, bottom: 70, left: 110, right: 110 }, children: t.split("\n").map(l => new Paragraph({ spacing: { after: 20 }, children: [new TextRun({ text: l, font: FONT, size: 20, bold: !!shade })] })) });
+  const rows = [
+    ["Name and date of birth", "Name: ____________________________________   Date of birth: ______________"],
+    ["Contact", "Phone: ____________________   Email: ______________________________________"],
+    ["Compensation", "☐ $________, paid on completion   ☐ Product or service: ____________________   ☐ None"],
+    ["My choices (initial)", "Name: ______      Testimonial: ______      Chamber used during shoot (session waiver signed): ☐"],
+    ["Signature", "Participant signature: ____________________________________   Date: ____________"],
+    ["If under 18", "Parent or guardian signature: ______________________________   Printed name: ______________________   Relationship: __________"],
+  ];
+  return new Table({ width: { size: 9360, type: WidthType.DXA }, columnWidths: W, rows: [
+    new TableRow({ children: [new TableCell({ columnSpan: 2, width: { size: 9360, type: WidthType.DXA }, shading: { type: ShadingType.CLEAR, fill: "2B2320", color: "auto" }, margins: { top: 60, bottom: 60, left: 110, right: 110 }, children: [new Paragraph({ children: [new TextRun({ text: "Participant " + n, bold: true, font: FONT, size: 21, color: "FFFFFF" })] })] })] }),
+    ...rows.map(([k, v]) => new TableRow({ children: [cell(W[0], k, true), cell(W[1], v, false)] })),
+  ] });
+}
+for (let i = 1; i <= 8; i++) { c.push(slot(i)); c.push(new Paragraph({ spacing: { after: 160 }, children: [new TextRun({ text: "", font: FONT })] })); }
+c.push(h1("Purebaric"));
+c.push(p("Purebaric accepts this Release for each participant who has signed the schedule above."));
 c.push(sig("Matthew Bailie, doing business as Purebaric", 26));
-c.push(p("**Witness** (optional)", { after: 40 }));
-c.push(sig("Signature"));
-c.push(p("Printed name: " + B + "________________"));
 
 const doc = new Document({
   styles: { default: { document: { run: { font: FONT, size: 22 } } } },
