@@ -81,12 +81,12 @@ function slot(n) {
   const W = [2200, 7160];
   const cell = (w, t, shade) => new TableCell({ width: { size: w, type: WidthType.DXA }, shading: shade ? { type: ShadingType.CLEAR, fill: "F4E7DF", color: "auto" } : undefined, margins: { top: 70, bottom: 70, left: 110, right: 110 }, children: t.split("\n").map(l => new Paragraph({ spacing: { after: 20 }, children: [new TextRun({ text: l, font: FONT, size: 20, bold: !!shade })] })) });
   const rows = [
-    ["Name and date of birth", "Name: ____________________________________   Date of birth: ______________"],
-    ["Contact", "Phone: ____________________   Email: ______________________________________"],
-    ["Compensation", "☐ $________, paid on completion   ☐ Product or service: ____________________   ☐ None"],
-    ["My choices (initial)", "Name: ______      Testimonial: ______      Chamber used during shoot (session waiver signed): ☐"],
-    ["Signature", "Participant signature: ____________________________________   Date: ____________"],
-    ["If under 18", "Parent or guardian signature: ______________________________   Printed name: ______________________   Relationship: __________"],
+    ["Name and date of birth", "Name: ________________________________   Date of birth: ____________"],
+    ["Contact", "Phone: __________________   Email: ___________________________"],
+    ["Compensation", "☐ $________, paid on completion   ☐ Product or service: ______________   ☐ None"],
+    ["My choices (initial)", "Name: ______      Testimonial: ______      Used the chamber at the shoot (session waiver signed): ☐"],
+    ["Signature", "Participant signature: ______________________________   Date: __________"],
+    ["If under 18", "Parent or guardian signature: ________________________   Date: __________\nPrinted name: ________________________   Relationship: ______________"],
   ];
   return new Table({ width: { size: 9360, type: WidthType.DXA }, columnWidths: W, rows: [
     new TableRow({ children: [new TableCell({ columnSpan: 2, width: { size: 9360, type: WidthType.DXA }, shading: { type: ShadingType.CLEAR, fill: "2B2320", color: "auto" }, margins: { top: 60, bottom: 60, left: 110, right: 110 }, children: [new Paragraph({ children: [new TextRun({ text: "Participant " + n, bold: true, font: FONT, size: 21, color: "FFFFFF" })] })] })] }),
@@ -103,7 +103,7 @@ const doc = new Document({
   numbering: { config: [{ reference: "bullets", levels: [{ level: 0, format: LevelFormat.BULLET, text: "•", alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 540, hanging: 300 } } } }] }] },
   sections: [{
     properties: { page: { size: { width: 12240, height: 15840 }, margin: { top: 1200, bottom: 1100, left: 1440, right: 1440 } } },
-    footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "Purebaric Model Release and Consent to Use Likeness · Page ", font: FONT, size: 18, color: MUTED }), new TextRun({ children: [PageNumber.CURRENT], font: FONT, size: 18, color: MUTED })] })] }) },
+    footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "Purebaric Model and Testimonial Release · Page ", font: FONT, size: 18, color: MUTED }), new TextRun({ children: [PageNumber.CURRENT], font: FONT, size: 18, color: MUTED })] })] }) },
     children: c,
   }],
 });
