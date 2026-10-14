@@ -125,14 +125,59 @@ for b in sorted(biz, key=lambda b: -b["score"]):
 biz = list(seen.values())
 
 # ---------- day building ----------
-def route_cost(stops):
+def _tour_minutes(order):
+    legs = [dmin(HOME, order[0]["pt"])] + [dmin(a["pt"], b["pt"]) for a, b in zip(order, order[1:])]
+    return sum(legs) + dmin(order[-1]["pt"], HOME) + STOP * len(order), legs
+
+def _improve(order):
+    """Travelling-salesman polish of one day's loop (home -> stops -> home): repeat 2-opt segment
+    reversals and or-opt moves (relocating runs of 1 to 3 stops) until no move shortens the loop, so the
+    day drives one cohesive circuit instead of criss-crossing."""
+    pts = [HOME] + [s["pt"] for s in order] + [HOME]
+    n = len(pts)
+    def cost(seq): return sum(dmin(seq[i], seq[i + 1]) for i in range(len(seq) - 1))
+    best = cost(pts); improved = True
+    while improved:
+        improved = False
+        # 2-opt: reverse pts[i..j] (never the fixed home endpoints)
+        for i in range(1, n - 2):
+            for j in range(i + 1, n - 1):
+                delta = (dmin(pts[i - 1], pts[j]) + dmin(pts[i], pts[j + 1])) - (dmin(pts[i - 1], pts[i]) + dmin(pts[j], pts[j + 1]))
+                if delta < -1e-6:
+                    pts[i:j + 1] = pts[i:j + 1][::-1]; order[i - 1:j] = order[i - 1:j][::-1]; best += delta; improved = True
+        # or-opt: move a run of 1-3 stops somewhere else in the loop
+        for k in (1, 2, 3):
+            i = 1
+            while i + k <= n - 1:
+                run_pts, run_ord = pts[i:i + k], order[i - 1:i - 1 + k]
+                rest_pts, rest_ord = pts[:i] + pts[i + k:], order[:i - 1] + order[i - 1 + k:]
+                # saving from lifting the run out: its two outer edges, less the edge that closes the gap (its inner edges travel with it)
+                removed = dmin(pts[i - 1], pts[i]) + dmin(pts[i + k - 1], pts[i + k]) - dmin(pts[i - 1], pts[i + k])
+                cand = None
+                for j in range(1, len(rest_pts)):
+                    for seg in (run_pts, run_pts[::-1]):
+                        added = dmin(rest_pts[j - 1], seg[0]) + dmin(seg[-1], rest_pts[j]) - dmin(rest_pts[j - 1], rest_pts[j])
+                        if added < removed - 1e-6 and (cand is None or added < cand[0]): cand = (added, j, seg is run_pts)
+                if cand:
+                    added, j, fwd = cand
+                    seg_o = run_ord if fwd else run_ord[::-1]; seg_p = run_pts if fwd else run_pts[::-1]
+                    pts[:] = rest_pts[:j] + seg_p + rest_pts[j:]; order[:] = rest_ord[:j - 1] + seg_o + rest_ord[j - 1:]
+                    improved = True
+                else:
+                    i += 1
+    return order
+
+def route_cost(stops, polish=False):
+    """Best loop for a set of stops: nearest-neighbour from every start (polished by _improve when
+    asked), scored door to door (drive out, stops, drives between, drive home). Day building uses the
+    quick version; every finished day is polished once at the end, which can only shorten it."""
     best = None
     for start in stops:
         order, rest, cur = [start], [s for s in stops if s is not start], start["pt"]
         while rest:
             nxt = min(rest, key=lambda s: miles(cur, s["pt"])); order.append(nxt); rest.remove(nxt); cur = nxt["pt"]
-        legs = [dmin(HOME, order[0]["pt"])] + [dmin(a["pt"], b["pt"]) for a, b in zip(order, order[1:])]
-        total = sum(legs) + dmin(order[-1]["pt"], HOME) + STOP * len(order)
+        if polish and len(order) > 2: order = _improve(order)
+        total, legs = _tour_minutes(order)
         if best is None or total < best[0]: best = (total, order, legs)
     return best
 
@@ -170,6 +215,10 @@ while changed:
 singles = [d for d in days if d["minutes"] < MIN_DAY or len(d["stops"]) == 1]
 days = [d for d in days if d["minutes"] >= MIN_DAY and len(d["stops"]) > 1]
 for d in days:
+    # Final travelling-salesman polish of each day's loop (2-opt and or-opt), now that its stops are fixed.
+    if len(d["stops"]) > 2:
+        t, order, legs = route_cost(d["stops"], polish=True)
+        d.update({"stops": order, "legs": legs, "minutes": t})
     d["home_out"] = d["legs"][0]; d["home_back"] = dmin(d["stops"][-1]["pt"], HOME)
     d["best"] = sum(1 for s in d["stops"] if tier(s["score"]) == "Best bet")
 days.sort(key=lambda d: (-(d["best"] / (d["minutes"] / 60)), -d["best"], d["minutes"]))

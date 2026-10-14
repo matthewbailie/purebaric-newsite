@@ -1,6 +1,6 @@
 # Purebaric sales training: placing chambers in businesses
 
-Version 5, 10 October 2026. For whoever walks into gyms, studios, clinics, salons and clubs with our pamphlet. Written for Tennessee; the few Utah differences are marked. Internal.
+Version 6, 14 October 2026. For whoever walks into gyms, studios, clinics, salons and clubs with our pamphlet. Written for Tennessee; the few Utah differences are marked. Internal.
 
 ---
 
@@ -37,7 +37,7 @@ Plus a one-time $200 for staff training and the first supplies. Rates can change
 
 **What they need.** A clean, dry spot about 4 by 8 feet (twin-bed size), a normal wall outlet, and one trained staff member in the building to start and end each session. No flames, heaters or oil-based products near the chamber.
 
-**How it ends.** They pick a term and the rate is locked for it. After the term it runs month to month. Either side can end it with 30 days' notice by email, and we pick the chamber up free. Tennessee agreement only: if they leave before the term is up, the months they used are re-billed at the rate for the length they actually stayed. Example: sign for 12 months at $783, leave after four, and those four months are re-billed at $881, so they owe $392. Tell them this before they pick a term. (The Utah agreement does not have this rule yet; in Utah, do not quote it.)
+**How it ends.** They pick a term and the rate is locked for it. After the term it runs month to month. Either side can end it with 30 days' notice by email, and we pick the chamber up free. If they leave before the term is up, the months they used are re-billed at the rate for the length they actually stayed. Example: sign for 12 months at $783, leave after four, and those four months are re-billed at $881, so they owe $392. Tell them this before they pick a term. (Both the Utah and the Tennessee agreements carry this rule.)
 
 **Insurance.** They need business liability insurance of at least $1 million per incident and $2 million total that covers the chamber sessions, with Purebaric added as additional insured. They send us the certificate before the first session. Tell them to call their broker this week; some policies need a change before they cover chamber sessions.
 
@@ -151,7 +151,7 @@ Use the "Good to know" fact from the route plan to open when there is one; other
 - Home rentals are available; the home rental waiver is with Matthew Bailie.
 - Anything a landlord, insurer or official says that surprises you goes to Michael the same day.
 
-**Utah differences.** The Utah letter of intent and agreement apply (no early-exit re-billing rule); contact is hello@purebaric.com and (801) 901-0873. The chamber package is the same.
+**Utah differences.** The Utah letter of intent and agreement apply; contact is hello@purebaric.com and (801) 901-0873. The chamber package and the term rules are the same.
 
 ## 11. What to carry
 

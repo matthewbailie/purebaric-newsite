@@ -222,7 +222,7 @@ children.push(h2("Safety rules for every session"));
   "A trained staff member starts and ends every session and remains on the premises throughout.",
   "No smoking, vaping, open flame, or heat source anywhere near the Equipment.",
   "No petroleum-based or oil-based products (lotions, hair oils, lip balm, make-up with mineral oil) on the client's skin or clothing. No alcohol-based sanitizer applied immediately before entering.",
-  "No lighters, matches, e-cigarettes, battery packs, hand warmers, or heating devices inside the chamber. Phones and tablets are permitted only if the runbook and manufacturer's instructions allow them.",
+  "No lighters, matches, e-cigarettes, battery packs, hand warmers, red-light devices, or heating devices inside the chamber. Phones, tablets and laptops are allowed inside the chamber.",
   "Clients wear clean, comfortable clothing without metal buckles, exposed zippers, or jewelry that could damage the chamber.",
   "One client per session. Sessions do not exceed the maximum length in the runbook (standard session: 60 minutes).",
   "Pressurize and depressurize gradually. Stop immediately if the client reports ear pain, chest discomfort, dizziness, or distress.",

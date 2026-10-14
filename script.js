@@ -166,7 +166,7 @@ async function submitAjaxForm(form, endpoint) {
 
 // Optional: Wire up forms with an action attribute pointing to your new Laravel endpoints
 document.querySelectorAll('form').forEach(form => {
-  if (['zipCheckForm', 'bookingStep1', 'bookingFinal', 'waitlistForm'].includes(form.id)) return;
+  if (['zipCheckForm', 'waitlistForm'].includes(form.id)) return;
   // Let default submit happen unless it has an action we specifically want to intercept
   // If you want standard page reloads, you can remove this block.
 });
@@ -283,46 +283,6 @@ if (zipForm) {
   }
 })();
 
-// Booking form 2-step flow handled on book.html
-function advanceBookingStep(fromId, toId, fromIndicator, toIndicator) {
-  document.getElementById(fromId).style.display = 'none';
-  const next = document.getElementById(toId);
-  next.style.display = 'block';
-  document.getElementById(fromIndicator).classList.remove('active');
-  document.getElementById(fromIndicator).classList.add('complete');
-  document.getElementById(toIndicator).classList.add('active');
-  next.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// Copy named fields from step 1 into the hidden carry-forward inputs on bookingFinal (step 2)
-function carryStep1ToFinal(stepForm) {
-  const finalForm = document.getElementById('bookingFinal');
-  if (!finalForm) return;
-  const data = new FormData(stepForm);
-  for (const [key, value] of data) {
-    const hidden = finalForm.querySelector(`input[type="hidden"][name="${key}"]`);
-    if (hidden) hidden.value = value;
-  }
-}
-
-const bookingStep1 = document.getElementById('bookingStep1');
-if (bookingStep1) {
-  bookingStep1.addEventListener('submit', (e) => {
-    e.preventDefault();
-    // Require a rental-length card to be selected
-    const rentalPicked = bookingStep1.querySelector('input[name="rental-length"]:checked');
-    const error = document.getElementById('rental-card-error');
-    if (!rentalPicked) {
-      if (error) error.style.display = 'block';
-      const picker = bookingStep1.querySelector('.rental-card-grid');
-      if (picker) picker.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    if (error) error.style.display = 'none';
-    carryStep1ToFinal(bookingStep1);
-    advanceBookingStep('booking-step-1', 'booking-step-2', 'step-indicator-1', 'step-indicator-2');
-  });
-}
 
 // Live "yes" notice on step 2 safety questions
 const safetyYesNotice = document.getElementById('safety-yes-notice');
@@ -346,78 +306,6 @@ if (mobileBar) {
   onScroll();
 }
 
-// Booking form (final step) → Laravel backend
-const bookingForm = document.getElementById('bookingFinal');
-if (bookingForm) {
-  bookingForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(bookingForm);
-    // Aggregate the 3 safety radios into the legacy medical-screening-flags string
-    const safetyMap = {
-      'safety-lung-ear-sinus': 'lung-ear-sinus',
-      'safety-pregnancy-surgery-seizures': 'pregnancy-surgery-seizures',
-      'safety-implants-cardiac-meds': 'implants-cardiac-meds',
-    };
-    const flags = Object.entries(safetyMap)
-      .filter(([name]) => formData.get(name) === 'yes')
-      .map(([, slug]) => slug);
-    formData.set('medical-screening-flags', flags.length ? flags.join(', ') : 'none');
-    
-    // Strip the safety-* keys
-    Object.keys(safetyMap).forEach(k => formData.delete(k));
-    
-    if (formData.get('bot-field')) return; // honeypot
-    
-    const btn = bookingForm.querySelector('button[type="submit"]');
-    const result = document.getElementById('bookingResult');
-    const originalText = btn ? btn.textContent : '';
-    
-    if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
-    try {
-      const analyticsContext = window.getPurebaricAnalyticsContext
-        ? await window.getPurebaricAnalyticsContext()
-        : { consentGranted: false };
-      formData.set('analytics_consent', analyticsContext.consentGranted ? 'true' : 'false');
-      if (analyticsContext.clientId) formData.set('analytics_client_id', analyticsContext.clientId);
-      if (analyticsContext.sessionId) formData.set('analytics_session_id', analyticsContext.sessionId);
-
-      const resp = await fetch(bookingForm.action || '/api/booking-submit', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest'
-        }
-      });
-      const json = await resp.json().catch(() => ({}));
-      if (!resp.ok) throw new Error(json.error || 'request failed');
-      
-      if (result) {
-        result.hidden = false;
-        if (json.autoNotified === 'available') {
-          result.textContent = "✓ Booking request received, we have a chamber available. Check your email; we will be in contact soon.";
-        } else if (json.autoNotified === 'waitlist') {
-          result.textContent = "✓ Booking received. All chambers are currently out on rental, so we've added you to the waitlist. Check your email, we'll notify you the moment a chamber opens up.";
-        } else {
-          result.textContent = "✓ Booking request received. We will be in contact shortly to arrange delivery.";
-        }
-        result.style.cssText = 'padding: 1rem 1.25rem; background: var(--moss-light, #dbeacd); color: var(--moss-deep, #3d5a26); border-radius: 4px; margin-bottom: 1.5rem; margin-top: 1rem;';
-        result.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      if (btn) {
-        btn.textContent = 'Success ✓';
-        btn.style.background = 'var(--moss-deep, #3d5a26)';
-        btn.style.borderColor = 'var(--moss-deep, #3d5a26)';
-        btn.style.color = '#ffffff';
-      }
-      
-      // The backend records booking_request_submit once after accepting the
-      // request, using the anonymous GA context sent with the form.
-    } catch (err) {
-      console.error('booking submit failed', err);
-      if (btn) { btn.textContent = 'Send failed, please email hello@purebaric.com'; btn.disabled = false; }
-    }
-  });
-}
 
 // Booking availability check
 const bookingFlow = document.getElementById('booking-flow');

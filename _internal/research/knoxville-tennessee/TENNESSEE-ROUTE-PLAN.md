@@ -1,12 +1,12 @@
 # Knoxville, Tennessee: daily pamphlet route plan
 
-Generated 2026-10-10 from `purebaric_knoxville_prospects.xlsx`. Start and end point for every day: downtown Knoxville. Downtown is a placeholder: put your actual start address in route_config_knoxville.json and rerun, and the days and times will follow.
+Generated 2026-10-14 from `purebaric_knoxville_prospects.xlsx`. Start and end point for every day: downtown Knoxville. Downtown is a placeholder: put your actual start address in route_config_knoxville.json and rerun, and the days and times will follow.
 
 ## How this plan works
 
 Each **Day** is one outing from downtown Knoxville and back: drive to the first business, hand the pamphlet to the owner or manager and talk for about ten minutes, drive to the next, and so on, then home. The time shown for a day is the whole trip, door to door, and every day fits inside about 2 hours. The number of businesses differs by day because the cap is on time, not on visits: a day in a dense corridor fits eight or nine quick stops; a day with longer drives fits fewer.
 
-**Example, Day 1.** 7 businesses: about 3 minutes to the first stop, 7 x 10 minutes of conversation, about 29 minutes driving between stops, and about 12 minutes home. Total about 1 h 54 min.
+**Example, Day 1.** 5 businesses: about 21 minutes to the first stop, 5 x 10 minutes of conversation, about 23 minutes driving between stops, and about 20 minutes home. Total about 1 h 54 min.
 
 **Best bets** are the businesses most likely to say yes, judged by what they sell: contrast and cold-plunge studios, cryotherapy, float, sauna, IV lounges, stretch and recovery studios, and performance gyms, with a point added for a named owner and for a reviewer's pick. Days 1 to 11 each include at least one best bet and are ranked by best bets per hour on the road, so start at Day 1. The fill-in days after them have no best bet and can wait.
 
@@ -16,8 +16,8 @@ Not visited on these days: college athletics departments and pro teams (email th
 
 **How to read each line.** *Businesses* is the number of stops that day. *Best bets* is how many of those stops are the kinds of business most likely to sign: recovery studios, IV lounges, sauna, cryotherapy, float, stretch studios and performance gyms. The rest of the day's stops are good fits or businesses that are on the way. *Door to door* is the whole trip, including the drive from home and back. Each day's Google Maps link is in its own section under "Stop by stop" below.
 
-- **Day 1, Knoxville (37920):** 7 businesses, 5 best bets. About 1 h 54 min door to door.
-- **Day 2, Knoxville and Farragut, part 1:** 5 businesses, all 5 best bets. About 1 h 54 min door to door.
+- **Day 1, Knoxville and Farragut, part 1:** 5 businesses, all 5 best bets. About 1 h 54 min door to door.
+- **Day 2, Knoxville (37920):** 7 businesses, 5 best bets. About 1 h 54 min door to door.
 - **Day 3, Knoxville: Sherway Rd:** 5 businesses, 4 best bets. About 1 h 53 min door to door.
 - **Day 4, Knoxville: Kingston Pike, part 1:** 7 businesses, 4 best bets. About 1 h 53 min door to door.
 - **Day 5, Powell: Clinton Highway:** 6 businesses, 2 best bets. About 1 h 50 min door to door.
@@ -40,14 +40,14 @@ Fill-in days (no best bet):
 - **Day 19, Maryville (37804), part 2:** 4 businesses, 0 best bets. About 1 h 42 min door to door.
 - **Day 20, Knoxville (37932):** 4 businesses, 0 best bets. About 1 h 43 min door to door.
 - **Day 21, Maryville (37804), part 3:** 5 businesses, 0 best bets. About 1 h 51 min door to door.
-- **Day 22, Knoxville: Kingston Pike, part 3:** 7 businesses, 0 best bets. About 1 h 53 min door to door.
-- **Day 23, Knoxville and Farragut, part 3:** 5 businesses, 0 best bets. About 1 h 53 min door to door.
+- **Day 22, Knoxville and Farragut, part 3:** 5 businesses, 0 best bets. About 1 h 53 min door to door.
+- **Day 23, Knoxville: Kingston Pike, part 3:** 7 businesses, 0 best bets. About 1 h 53 min door to door.
 - **Day 24, Oak Ridge: Oak Ridge Turnpike:** 4 businesses, 0 best bets. About 1 h 53 min door to door.
 - **Day 25, Farragut: Kingston Pike, part 2:** 6 businesses, 0 best bets. About 1 h 54 min door to door.
 - **Day 26, Seymour: Chapman Hwy:** 6 businesses, 0 best bets. About 1 h 55 min door to door.
 - **Day 27, Maryville and Alcoa:** 5 businesses, 0 best bets. About 1 h 55 min door to door.
-- **Day 28, Knoxville: Kingston Pike, part 4:** 7 businesses, 0 best bets. About 1 h 57 min door to door.
-- **Day 29, Knoxville: Hardin Valley Rd:** 5 businesses, 0 best bets. About 1 h 58 min door to door.
+- **Day 28, Knoxville: Hardin Valley Rd:** 5 businesses, 0 best bets. About 1 h 56 min door to door.
+- **Day 29, Knoxville: Kingston Pike, part 4:** 7 businesses, 0 best bets. About 1 h 57 min door to door.
 - **Day 30, Knoxville: Kingston Pike, part 5:** 8 businesses, 0 best bets. About 1 h 59 min door to door.
 - **Day 31, Lenoir City: Highway 321 N:** 5 businesses, 0 best bets. About 1 h 59 min door to door.
 
@@ -57,11 +57,25 @@ Fill-in days (no best bet):
 
 In the tables, **Chance of a yes** means: **Best bet**, the kind of business most likely to sign; **Good fit**, worth the stop; **Also nearby**, on the way, so hand them a pamphlet too. Tap the Google Maps link to open the day's route in order, starting and ending at home.
 
-### Day 1: Knoxville (37920)
+### Day 1: Knoxville and Farragut, part 1
+
+5 businesses, about 1 h 54 min door to door (21 min out from downtown Knoxville, 20 min back).
+
+[Open Day 1 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/9311%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922%2C%20Knoxville%2C%20TN%2037922/10426%20Jackson%20Oaks%20Way%2C%20Suite%20103%2C%20Knoxville%2C%20TN%2037922/10932%20Murdock%20Dr%20%23102b%2C%20Knoxville%2C%20TN%2037932%2C%20Knoxville%2C%20TN%2037932/10935%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11533%20Kingston%20Pike%2C%20Farragut%2C%20TN%2C%20Farragut%2C%20TN%2037934/downtown%20Knoxville)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | CrossFit Knoxville (top pick) | CrossFit and performance gyms | Best bet | 9311 Kingston Pike, Knoxville, TN 37922 | David LeGault, (865) 356-9000 | Rated 4.9 on Google from 121 reviews; programming blends weightlifting, gymnastics and conditioning. | 21 min from downtown Knoxville |
+| 2 | Restorative Functional Medicine | Recovery studios and med spas | Best bet | 10426 Jackson Oaks Way, Suite 103, Knoxville | Emily Kopek, PA-C, 865-200-4874 | PA-founded root-cause functional medicine practice focused on hormone and thyroid health. | 7 min from stop 1 |
+| 3 | Vital Hydration (top pick) | Recovery studios and med spas | Best bet | 10932 Murdock Dr #102b, Knoxville, TN 37932 | Corina West, RN, (865) 282-4634 | Joined the Farragut/Knoxville Chamber in 2025 and offers cryotherapy and red light sauna alongside IV therapy. | 6 min from stop 2 |
+| 4 | Healing Hands Spa - Farragut | Recovery studios and med spas | Best bet | 10935 Kingston Pike, Farragut | Zhou, (865) 671-3200 | Owner opened a second Healing Hands Spa in the Stonecrest Shopping Center . | 5 min from stop 3 |
+| 5 | Stretch Fusion (Farragut) (top pick) | Recovery studios and med spas | Best bet | 11533 Kingston Pike, Farragut, TN | Chad Becker, (865) 599-3786 | Opened its Farragut studio in the Village Green shopping center in 2022. | 5 min from stop 4 |
+
+### Day 2: Knoxville (37920)
 
 7 businesses, about 1 h 54 min door to door (3 min out from downtown Knoxville, 12 min back).
 
-[Open Day 1 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/906%20Sevier%20Ave%2C%20Suite%20120%2C%20Knoxville%2C%20TN%2037920/104%20W%20Summit%20Hill%20Dr%20SW%2C%20Knoxville%2C%20TN%2037902/126%20Jennings%20Ave%2C%20Knoxville%2C%20TN%2037917/941%20North%20Broadway%2C%20Knoxville%2C%20TN%2037917/1412%20N.%206th%20Ave%2C%20Knoxville%2C%20TN%2037917/2404%20Dutch%20Valley%20Dr%2C%20Knoxville%2C%20TN%2037918/4409%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
+[Open Day 2 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/906%20Sevier%20Ave%2C%20Suite%20120%2C%20Knoxville%2C%20TN%2037920/104%20W%20Summit%20Hill%20Dr%20SW%2C%20Knoxville%2C%20TN%2037902/126%20Jennings%20Ave%2C%20Knoxville%2C%20TN%2037917/941%20North%20Broadway%2C%20Knoxville%2C%20TN%2037917/1412%20N.%206th%20Ave%2C%20Knoxville%2C%20TN%2037917/2404%20Dutch%20Valley%20Dr%2C%20Knoxville%2C%20TN%2037918/4409%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -73,49 +87,35 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 6 | CrossFit First Creek | CrossFit and performance gyms | Best bet | 2404 Dutch Valley Dr, Knoxville | Kimberly Rines |  | 8 min from stop 5 |
 | 7 | Prime IV Hydration & Wellness - Knoxville (top pick) | Recovery studios and med spas | Best bet | 4409 Kingston Pike, Knoxville | the manager |  | 12 min from stop 6 |
 
-### Day 2: Knoxville and Farragut, part 1
-
-5 businesses, about 1 h 54 min door to door (21 min out from downtown Knoxville, 18 min back).
-
-[Open Day 2 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/9311%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922%2C%20Knoxville%2C%20TN%2037922/10426%20Jackson%20Oaks%20Way%2C%20Suite%20103%2C%20Knoxville%2C%20TN%2037922/10935%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11533%20Kingston%20Pike%2C%20Farragut%2C%20TN%2C%20Farragut%2C%20TN%2037934/10932%20Murdock%20Dr%20%23102b%2C%20Knoxville%2C%20TN%2037932%2C%20Knoxville%2C%20TN%2037932/downtown%20Knoxville)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | CrossFit Knoxville (top pick) | CrossFit and performance gyms | Best bet | 9311 Kingston Pike, Knoxville, TN 37922 | David LeGault, (865) 356-9000 | Rated 4.9 on Google from 121 reviews; programming blends weightlifting, gymnastics and conditioning. | 21 min from downtown Knoxville |
-| 2 | Restorative Functional Medicine | Recovery studios and med spas | Best bet | 10426 Jackson Oaks Way, Suite 103, Knoxville | Emily Kopek, PA-C, 865-200-4874 | PA-founded root-cause functional medicine practice focused on hormone and thyroid health. | 7 min from stop 1 |
-| 3 | Healing Hands Spa - Farragut | Recovery studios and med spas | Best bet | 10935 Kingston Pike, Farragut | Zhou, (865) 671-3200 | Owner opened a second Healing Hands Spa in the Stonecrest Shopping Center . | 5 min from stop 2 |
-| 4 | Stretch Fusion (Farragut) (top pick) | Recovery studios and med spas | Best bet | 11533 Kingston Pike, Farragut, TN | Chad Becker, (865) 599-3786 | Opened its Farragut studio in the Village Green shopping center in 2022. | 5 min from stop 3 |
-| 5 | Vital Hydration (top pick) | Recovery studios and med spas | Best bet | 10932 Murdock Dr #102b, Knoxville, TN 37932 | Corina West, RN, (865) 282-4634 | Joined the Farragut/Knoxville Chamber in 2025 and offers cryotherapy and red light sauna alongside IV therapy. | 9 min from stop 4 |
-
 ### Day 3: Knoxville: Sherway Rd
 
-5 businesses, about 1 h 53 min door to door (18 min out from downtown Knoxville, 21 min back).
+5 businesses, about 1 h 53 min door to door (21 min out from downtown Knoxville, 18 min back).
 
-[Open Day 3 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/120%20Huxley%20Rd%2C%20Suite%20102%2C%20Knoxville%2C%20TN%2037922/151%20Sherway%20Rd%20%231%2C%20Knoxville%2C%20TN%2037922/155%20Sherway%20Rd%2C%20Suite%202%2C%20Knoxville%2C%20TN%2037922/222%20S%20Peters%20Rd%2C%20Knoxville%2C%20TN%2037923/9411%20S%20Northshore%20Dr%2C%20Suite%20101%2C%20Knoxville%2C%20TN%2037922/downtown%20Knoxville)
+[Open Day 3 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/9411%20S%20Northshore%20Dr%2C%20Suite%20101%2C%20Knoxville%2C%20TN%2037922/222%20S%20Peters%20Rd%2C%20Knoxville%2C%20TN%2037923/155%20Sherway%20Rd%2C%20Suite%202%2C%20Knoxville%2C%20TN%2037922/151%20Sherway%20Rd%20%231%2C%20Knoxville%2C%20TN%2037922/120%20Huxley%20Rd%2C%20Suite%20102%2C%20Knoxville%2C%20TN%2037922/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Dolce Medical Spa | Recovery studios and med spas | Best bet | 120 Huxley Rd, Suite 102, Knoxville | the manager, (865) 658-1018 | Known for red and infrared light treatments, with 860+ Google reviews at 4.9. | 18 min from downtown Knoxville |
-| 2 | The Wellness Room (top pick) | Recovery studios and med spas | Good fit | 151 Sherway Rd #1, Knoxville | the manager, (865) 274-0199 | Holds a 5.0 Google rating across roughly 400-490 reviews while offering IV therapy alongside injectables. | 5 min from stop 1 |
-| 3 | Holisticare Spa | Recovery studios and med spas | Best bet | 155 Sherway Rd, Suite 2, Knoxville (map point approximate) | the manager | Small West Knox holistic spa known for body wraps and red light sessions. | 0 min from stop 2 |
-| 4 | BASK Infrared Sauna | Recovery studios and med spas | Best bet | 222 S Peters Rd, Knoxville (map point approximate) | Katie Lesch | Featured by WBIR for its Clearlight infrared sauna sessions in West Knoxville. | 6 min from stop 3 |
-| 5 | CryoStretch | Recovery studios and med spas | Best bet | 9411 S Northshore Dr, Suite 101, Knoxville | the manager | Northshore studio combining cryotherapy, NormaTec compression and assisted stretching, with a sister CryoStretch Blount serving Maryville. | 12 min from stop 4 |
+| 1 | CryoStretch | Recovery studios and med spas | Best bet | 9411 S Northshore Dr, Suite 101, Knoxville | the manager | Northshore studio combining cryotherapy, NormaTec compression and assisted stretching, with a sister CryoStretch Blount serving Maryville. | 21 min from downtown Knoxville |
+| 2 | BASK Infrared Sauna | Recovery studios and med spas | Best bet | 222 S Peters Rd, Knoxville (map point approximate) | Katie Lesch | Featured by WBIR for its Clearlight infrared sauna sessions in West Knoxville. | 12 min from stop 1 |
+| 3 | Holisticare Spa | Recovery studios and med spas | Best bet | 155 Sherway Rd, Suite 2, Knoxville (map point approximate) | the manager | Small West Knox holistic spa known for body wraps and red light sessions. | 6 min from stop 2 |
+| 4 | The Wellness Room (top pick) | Recovery studios and med spas | Good fit | 151 Sherway Rd #1, Knoxville | the manager, (865) 274-0199 | Holds a 5.0 Google rating across roughly 400-490 reviews while offering IV therapy alongside injectables. | 0 min from stop 3 |
+| 5 | Dolce Medical Spa | Recovery studios and med spas | Best bet | 120 Huxley Rd, Suite 102, Knoxville | the manager, (865) 658-1018 | Known for red and infrared light treatments, with 860+ Google reviews at 4.9. | 5 min from stop 4 |
 
 ### Day 4: Knoxville: Kingston Pike, part 1
 
-7 businesses, about 1 h 53 min door to door (10 min out from downtown Knoxville, 17 min back).
+7 businesses, about 1 h 53 min door to door (17 min out from downtown Knoxville, 11 min back).
 
-[Open Day 4 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/318%20Erin%20Dr%2C%20%235%2C%20Knoxville%2C%20TN%2037919/403%20Bearden%20Park%20Circle%2C%20Knoxville%2C%20TN%2037919/6512%20Baum%20Dr%20SW%20%2312%2C%20Knoxville%2C%20TN%2037919%2C%20Knoxville%2C%20TN%2037919/6504%20Deane%20Hill%20Dr%2C%20Knoxville%2C%20TN%2037919/224%20Brookview%20Centre%20Way%2C%20Suite%20208%2C%20Knoxville%2C%20TN%2037919/7015%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/8425%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
+[Open Day 4 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/8425%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/7015%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/6504%20Deane%20Hill%20Dr%2C%20Knoxville%2C%20TN%2037919/6512%20Baum%20Dr%20SW%20%2312%2C%20Knoxville%2C%20TN%2037919%2C%20Knoxville%2C%20TN%2037919/224%20Brookview%20Centre%20Way%2C%20Suite%20208%2C%20Knoxville%2C%20TN%2037919/318%20Erin%20Dr%2C%20%235%2C%20Knoxville%2C%20TN%2037919/403%20Bearden%20Park%20Circle%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Drip into Wellness (top pick) | Recovery studios and med spas | Best bet | 318 Erin Dr, #5, Knoxville | Lauren McCrossin, RN, (865) 214-6064 | Farragut Press ran a one-year-in-business profile in March 2024; 4.9 stars on 74 Google reviews | 10 min from downtown Knoxville |
-| 2 | Performance Training Inc. | CrossFit and performance gyms | Good fit | 403 Bearden Park Circle, Knoxville | the manager |  | 0 min from stop 1 |
-| 3 | Balanced You Clinic (top pick) | Physical therapy, chiropractic, and sports medicine | Good fit | 6512 Baum Dr SW #12, Knoxville, TN 37919 | Rebekah Knause, L.Ac., LMT, RYT, (865) 888-5342 | Established in 2010; acupuncture, massage, craniosacral, infrared sauna and sliding-scale open-room acupuncture ; 5.0 Google rating from about 225 reviews. | 1 min from stop 2 |
-| 4 | RevitalyzeMD (top pick) | Recovery studios and med spas | Best bet | 6504 Deane Hill Dr, Knoxville | Dr. Debra Durst, (865) 293-5828 | Opened its new Knoxville flagship at 6504 Deane Hill Dr with a grand opening on March 26, 2026 . | 1 min from stop 3 |
+| 1 | Athletic Republic Knoxville (top pick) | CrossFit and performance gyms | Best bet | 8425 Kingston Pike, Knoxville | Adam Scott, (865) 855-3278 | 18,000 sq ft facility with treadmills reaching 28 mph for overspeed training. | 17 min from downtown Knoxville |
+| 2 | Grow Wellness (top pick) | Recovery studios and med spas | Good fit | 7015 Kingston Pike, Knoxville | the manager, (865) 409-9760 | WBIR reported it was one of the first Knoxville businesses to offer IV therapy . | 8 min from stop 1 |
+| 3 | RevitalyzeMD (top pick) | Recovery studios and med spas | Best bet | 6504 Deane Hill Dr, Knoxville | Dr. Debra Durst, (865) 293-5828 | Opened its new Knoxville flagship at 6504 Deane Hill Dr with a grand opening on March 26, 2026 . | 3 min from stop 2 |
+| 4 | Balanced You Clinic (top pick) | Physical therapy, chiropractic, and sports medicine | Good fit | 6512 Baum Dr SW #12, Knoxville, TN 37919 | Rebekah Knause, L.Ac., LMT, RYT, (865) 888-5342 | Established in 2010; acupuncture, massage, craniosacral, infrared sauna and sliding-scale open-room acupuncture ; 5.0 Google rating from about 225 reviews. | 1 min from stop 3 |
 | 5 | StretchLab Bearden | Recovery studios and med spas | Best bet | 224 Brookview Centre Way, Suite 208, Knoxville (map point approximate) | the manager, (865) 541-0833 | Part of a StretchLab East TN group . | 2 min from stop 4 |
-| 6 | Grow Wellness (top pick) | Recovery studios and med spas | Good fit | 7015 Kingston Pike, Knoxville | the manager, (865) 409-9760 | WBIR reported it was one of the first Knoxville businesses to offer IV therapy . | 4 min from stop 5 |
-| 7 | Athletic Republic Knoxville (top pick) | CrossFit and performance gyms | Best bet | 8425 Kingston Pike, Knoxville | Adam Scott, (865) 855-3278 | 18,000 sq ft facility with treadmills reaching 28 mph for overspeed training. | 8 min from stop 6 |
+| 6 | Drip into Wellness (top pick) | Recovery studios and med spas | Best bet | 318 Erin Dr, #5, Knoxville | Lauren McCrossin, RN, (865) 214-6064 | Farragut Press ran a one-year-in-business profile in March 2024; 4.9 stars on 74 Google reviews | 2 min from stop 5 |
+| 7 | Performance Training Inc. | CrossFit and performance gyms | Good fit | 403 Bearden Park Circle, Knoxville | the manager |  | 0 min from stop 6 |
 
 ### Day 5: Powell: Clinton Highway
 
@@ -244,15 +244,15 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 5 businesses, about 1 h 17 min door to door (11 min out from downtown Knoxville, 4 min back).
 
-[Open Day 14 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/3337%20Sutherland%20Ave%2C%20Knoxville%2C%20TN%2037919/4445%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/4467%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/122%20N%20Forest%20Park%20Blvd%2C%20Knoxville%2C%20TN%2037919/2467%20University%20Commons%20Way%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
+[Open Day 14 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/3337%20Sutherland%20Ave%2C%20Knoxville%2C%20TN%2037919/122%20N%20Forest%20Park%20Blvd%2C%20Knoxville%2C%20TN%2037919/4467%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/4445%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/2467%20University%20Commons%20Way%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | The Guild Pilates + | Gyms and fitness centers | Also nearby | 3337 Sutherland Ave, Knoxville (map point approximate) | the manager, (865) 217-6409 |  | 11 min from downtown Knoxville |
-| 2 | Neighborhood Barre Bearden | Gyms and fitness centers | Also nearby | 4445 Kingston Pike, Knoxville | the manager |  | 2 min from stop 1 |
-| 3 | Orangetheory Fitness - Bearden | Gyms and fitness centers | Also nearby | 4467 Kingston Pike, Knoxville | the manager |  | 0 min from stop 2 |
-| 4 | Club Pilates Bearden (N Forest Park Blvd) | Gyms and fitness centers | Also nearby | 122 N Forest Park Blvd, Knoxville | the manager |  | 1 min from stop 3 |
-| 5 | HOTWORX UT Commons | Gyms and fitness centers | Also nearby | 2467 University Commons Way, Knoxville (map point approximate) | the manager, 865-315-7723 |  | 9 min from stop 4 |
+| 2 | Club Pilates Bearden (N Forest Park Blvd) | Gyms and fitness centers | Also nearby | 122 N Forest Park Blvd, Knoxville | the manager |  | 3 min from stop 1 |
+| 3 | Orangetheory Fitness - Bearden | Gyms and fitness centers | Also nearby | 4467 Kingston Pike, Knoxville | the manager |  | 1 min from stop 2 |
+| 4 | Neighborhood Barre Bearden | Gyms and fitness centers | Also nearby | 4445 Kingston Pike, Knoxville | the manager |  | 0 min from stop 3 |
+| 5 | HOTWORX UT Commons | Gyms and fitness centers | Also nearby | 2467 University Commons Way, Knoxville (map point approximate) | the manager, 865-315-7723 |  | 8 min from stop 4 |
 
 ### Day 15: Farragut: Kingston Pike, part 1
 
@@ -342,11 +342,25 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 4 | Eugene Runne, DC (Pain & Health Solutions) | Physical therapy, chiropractic, and sports medicine | Good fit | 520 W Broadway Ave, Maryville | Eugene Runne, DC, (865) 982-6321 |  | 5 min from stop 3 |
 | 5 | Marsh Chiropractic and Wellness | Physical therapy, chiropractic, and sports medicine | Good fit | 424 Home Avenue, Maryville | Joseph Marsh, DC, (865) 681-2222 |  | 2 min from stop 4 |
 
-### Day 22: Knoxville: Kingston Pike, part 3
+### Day 22: Knoxville and Farragut, part 3
+
+5 businesses, about 1 h 53 min door to door (17 min out from downtown Knoxville, 20 min back).
+
+[Open Day 22 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/10321%20Kingston%20Pike%2C%20Ste%20124%2C%20Knoxville%2C%20TN%2037922/8915%20George%20Williams%20Rd%2C%20Knoxville%2C%20TN%2037923/245%20S%20Peters%20Road%2C%20Knoxville%2C%20TN%2037923/11439%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/153%20Brooklawn%20Street%2C%20Suite%20153%2C%20Farragut%2C%20TN%2037934/downtown%20Knoxville)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | La Vita E Bella Spa | Salons and beauty studios | Also nearby | 10321 Kingston Pike, Ste 124, Knoxville | the manager, (586) 909-4313 | Holds a 5.0 Google rating across about 118 reviews . | 17 min from downtown Knoxville |
+| 2 | Saah Salon Suites | Salons and beauty studios | Also nearby | 8915 George Williams Rd, Knoxville (map point approximate) | Saah, (865) 226-9374 | Opened a second salon-suite location in Farragut . | 6 min from stop 1 |
+| 3 | The Middle Path | Physical therapy, chiropractic, and sports medicine | Also nearby | 245 S Peters Road, Knoxville | the manager, (865) 693-7453 | Focuses on chronic pain, stress and digestive issues through acupuncture and herbal medicine. | 5 min from stop 2 |
+| 4 | Curate MedAesthetics (Knoxville/Farragut) | Recovery studios and med spas | Also nearby | 11439 Parkside Dr, Farragut (map point approximate) | the manager |  | 11 min from stop 3 |
+| 5 | Thrive Physical Therapy (Farragut) | Physical therapy, chiropractic, and sports medicine | Also nearby | 153 Brooklawn Street, Suite 153, Farragut | the manager, (865) 412-2347 | Opened its third Knoxville clinic in January 2024 with a Knoxville Chamber ribbon cutting; clinical director is a former Miami Marlins rehab coordinator. | 4 min from stop 4 |
+
+### Day 23: Knoxville: Kingston Pike, part 3
 
 7 businesses, about 1 h 53 min door to door (13 min out from downtown Knoxville, 14 min back).
 
-[Open Day 22 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/133%20S%20Forest%20Park%20Blvd%2C%20Knoxville%2C%20TN%2037919/101%20Westwood%20Rd%2C%20Ste.%20109%2C%20Knoxville%2C%20TN%2037919/224%20Brookview%20Centre%20Way%2C%20Ste.%20200%2C%20Knoxville%2C%20TN%2037919/6450%20Kingston%20Pike%2C%20Ste.%20B%2C%20Knoxville%2C%20TN%2037919/302%20Westfield%20Road%2C%20Knoxville%2C%20TN%2037919/10001%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922/7575%20S%20Northshore%20Dr%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
+[Open Day 23 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/133%20S%20Forest%20Park%20Blvd%2C%20Knoxville%2C%20TN%2037919/101%20Westwood%20Rd%2C%20Ste.%20109%2C%20Knoxville%2C%20TN%2037919/224%20Brookview%20Centre%20Way%2C%20Ste.%20200%2C%20Knoxville%2C%20TN%2037919/6450%20Kingston%20Pike%2C%20Ste.%20B%2C%20Knoxville%2C%20TN%2037919/302%20Westfield%20Road%2C%20Knoxville%2C%20TN%2037919/10001%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922/7575%20S%20Northshore%20Dr%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -357,20 +371,6 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 5 | Innate Wellness | Physical therapy, chiropractic, and sports medicine | Also nearby | 302 Westfield Road, Knoxville | the manager, (865) 240-4966 | Opened with a Knox TN Today ribbon-cutting announcement; combines chiropractic, functional medicine and massage; 5.0 Google rating from about 187 reviews. | 1 min from stop 4 |
 | 6 | Workout Anytime Knoxville (Kingston Pike) | Gyms and fitness centers | Also nearby | 10001 Kingston Pike, Knoxville (map point approximate) | John Heifner | Heifner opened his first Workout Anytime in 2011 and was profiled as a franchisee spotlight in April 2026 | 2 min from stop 5 |
 | 7 | Exclusive Fitness | Gyms and fitness centers | Also nearby | 7575 S Northshore Dr, Knoxville (map point approximate) | the manager, (865) 531-5656 |  | 7 min from stop 6 |
-
-### Day 23: Knoxville and Farragut, part 3
-
-5 businesses, about 1 h 53 min door to door (20 min out from downtown Knoxville, 20 min back).
-
-[Open Day 23 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/11439%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/153%20Brooklawn%20Street%2C%20Suite%20153%2C%20Farragut%2C%20TN%2037934/10321%20Kingston%20Pike%2C%20Ste%20124%2C%20Knoxville%2C%20TN%2037922/8915%20George%20Williams%20Rd%2C%20Knoxville%2C%20TN%2037923/245%20S%20Peters%20Road%2C%20Knoxville%2C%20TN%2037923/downtown%20Knoxville)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Curate MedAesthetics (Knoxville/Farragut) | Recovery studios and med spas | Also nearby | 11439 Parkside Dr, Farragut (map point approximate) | the manager |  | 20 min from downtown Knoxville |
-| 2 | Thrive Physical Therapy (Farragut) | Physical therapy, chiropractic, and sports medicine | Also nearby | 153 Brooklawn Street, Suite 153, Farragut | the manager, (865) 412-2347 | Opened its third Knoxville clinic in January 2024 with a Knoxville Chamber ribbon cutting; clinical director is a former Miami Marlins rehab coordinator. | 4 min from stop 1 |
-| 3 | La Vita E Bella Spa | Salons and beauty studios | Also nearby | 10321 Kingston Pike, Ste 124, Knoxville | the manager, (586) 909-4313 | Holds a 5.0 Google rating across about 118 reviews . | 7 min from stop 2 |
-| 4 | Saah Salon Suites | Salons and beauty studios | Also nearby | 8915 George Williams Rd, Knoxville (map point approximate) | Saah, (865) 226-9374 | Opened a second salon-suite location in Farragut . | 6 min from stop 3 |
-| 5 | The Middle Path | Physical therapy, chiropractic, and sports medicine | Also nearby | 245 S Peters Road, Knoxville | the manager, (865) 693-7453 | Focuses on chronic pain, stress and digestive issues through acupuncture and herbal medicine. | 5 min from stop 4 |
 
 ### Day 24: Oak Ridge: Oak Ridge Turnpike
 
@@ -387,18 +387,18 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 ### Day 25: Farragut: Kingston Pike, part 2
 
-6 businesses, about 1 h 54 min door to door (23 min out from downtown Knoxville, 21 min back).
+6 businesses, about 1 h 54 min door to door (20 min out from downtown Knoxville, 20 min back).
 
-[Open Day 25 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/12284%20N%20Fox%20Den%20Dr%2C%20Farragut%2C%20TN%2037934%2C%20Farragut%2C%20TN%2037934/11560%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11521%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/102%20S%20Campbell%20Station%20Rd%2C%20Farragut%2C%20TN%2037934/11672%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/623%20N%20Campbell%20Station%20Rd%2C%20Farragut%2C%20TN%2037934/downtown%20Knoxville)
+[Open Day 25 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/11672%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/623%20N%20Campbell%20Station%20Rd%2C%20Farragut%2C%20TN%2037934/12284%20N%20Fox%20Den%20Dr%2C%20Farragut%2C%20TN%2037934%2C%20Farragut%2C%20TN%2037934/11560%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11521%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/102%20S%20Campbell%20Station%20Rd%2C%20Farragut%2C%20TN%2037934/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Fox Den Country Club | Sports teams and athletic programs | Also nearby | 12284 N Fox Den Dr, Farragut, TN 37934 | the manager, (865) 966-9771 | Celebrated 50 years in 2018 and runs a club swim team. | 23 min from downtown Knoxville |
-| 2 | Burn Boot Camp Farragut | Gyms and fitness centers | Also nearby | 11560 Kingston Pike, Farragut | Kristy Smith | Farragut Press described 45-minute station-based camps with child care and nutrition guidance | 5 min from stop 1 |
-| 3 | Fitness Together Farragut | Gyms and fitness centers | Also nearby | 11521 Kingston Pike, Farragut (map point approximate) | the manager, (865) 250-1698 |  | 1 min from stop 2 |
-| 4 | Pure Barre Farragut (Farragut Gateway) | Gyms and fitness centers | Also nearby | 102 S Campbell Station Rd, Farragut | Lauren Luftman and Mackenzie Hammett | Second studio opened by the Knoxville Pure Barre owners in Farragut Gateway in 2020 | 1 min from stop 3 |
-| 5 | Neighborhood Barre Farragut | Gyms and fitness centers | Also nearby | 11672 Parkside Dr, Farragut | the manager | Knoxville-founded barre brand that grew to 14 studios in 5 states by 2019 | 4 min from stop 4 |
-| 6 | Blue Ridge Yoga & Wellness Center | Gyms and fitness centers | Also nearby | 623 N Campbell Station Rd, Farragut (map point approximate) | Jessica Mishu, (865) 856-1833 | Locally owned since 2015 and expanded its Farragut studio . | 1 min from stop 5 |
+| 1 | Neighborhood Barre Farragut | Gyms and fitness centers | Also nearby | 11672 Parkside Dr, Farragut | the manager | Knoxville-founded barre brand that grew to 14 studios in 5 states by 2019 | 20 min from downtown Knoxville |
+| 2 | Blue Ridge Yoga & Wellness Center | Gyms and fitness centers | Also nearby | 623 N Campbell Station Rd, Farragut (map point approximate) | Jessica Mishu, (865) 856-1833 | Locally owned since 2015 and expanded its Farragut studio . | 1 min from stop 1 |
+| 3 | Fox Den Country Club | Sports teams and athletic programs | Also nearby | 12284 N Fox Den Dr, Farragut, TN 37934 | the manager, (865) 966-9771 | Celebrated 50 years in 2018 and runs a club swim team. | 6 min from stop 2 |
+| 4 | Burn Boot Camp Farragut | Gyms and fitness centers | Also nearby | 11560 Kingston Pike, Farragut | Kristy Smith | Farragut Press described 45-minute station-based camps with child care and nutrition guidance | 5 min from stop 3 |
+| 5 | Fitness Together Farragut | Gyms and fitness centers | Also nearby | 11521 Kingston Pike, Farragut (map point approximate) | the manager, (865) 250-1698 |  | 1 min from stop 4 |
+| 6 | Pure Barre Farragut (Farragut Gateway) | Gyms and fitness centers | Also nearby | 102 S Campbell Station Rd, Farragut | Lauren Luftman and Mackenzie Hammett | Second studio opened by the Knoxville Pure Barre owners in Farragut Gateway in 2020 | 1 min from stop 5 |
 
 ### Day 26: Seymour: Chapman Hwy
 
@@ -429,11 +429,25 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 4 | ASTRA Aesthetics (Maryville) | Recovery studios and med spas | Also nearby | 921 Foch St, Suite 9, Maryville | the manager | Profiled by WATE 6 as modern aesthetic medicine backed by science. | 4 min from stop 3 |
 | 5 | Tristar Physical Therapy (Maryville) | Physical therapy, chiropractic, and sports medicine | Also nearby | 1009 Hampshire Drive, Maryville | the manager, (865) 518-6791 |  | 6 min from stop 4 |
 
-### Day 28: Knoxville: Kingston Pike, part 4
+### Day 28: Knoxville: Hardin Valley Rd
+
+5 businesses, about 1 h 56 min door to door (19 min out from downtown Knoxville, 20 min back).
+
+[Open Day 28 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/10780%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/10839%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/10966%20Spring%20Bluff%20Way%2C%20Knoxville%2C%20TN%2037932/700%20S%20Illinois%20Ave%2C%20Suite%20A103%2C%20Oak%20Ridge%2C%20TN%2037830/4900%20Guinn%20Rd%2C%20Knoxville%2C%20TN%2037931/downtown%20Knoxville)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | Pure Luxe Salon, Spa and MedSpa | Recovery studios and med spas | Also nearby | 10780 Hardin Valley Rd, Knoxville | the manager, (865) 474-7873 |  | 19 min from downtown Knoxville |
+| 2 | HOTWORX Hardin Valley | Gyms and fitness centers | Also nearby | 10839 Hardin Valley Rd, Knoxville | the manager, 865-297-3668 |  | 1 min from stop 1 |
+| 3 | East Tennessee Spine & Sport Physical Therapy (Hardin Valley) | Physical therapy, chiropractic, and sports medicine | Good fit | 10966 Spring Bluff Way, Knoxville | the manager, (865) 599-5323 | Locally owned PT group serving Knoxville since 1995 with sites in Knox, Loudon and Anderson counties. | 1 min from stop 2 |
+| 4 | Aesthetics by Alexis | Salons and beauty studios | Also nearby | 700 S Illinois Ave, Suite A103, Oak Ridge (map point approximate) | the manager, (865) 332-1263 |  | 12 min from stop 3 |
+| 5 | Triple F Elite Sports Training | CrossFit and performance gyms | Good fit | 4900 Guinn Rd, Knoxville | the manager | Former Powell and NFL star Lee Smith introduced the Triple F facility in March 2022 | 13 min from stop 4 |
+
+### Day 29: Knoxville: Kingston Pike, part 4
 
 7 businesses, about 1 h 57 min door to door (20 min out from downtown Knoxville, 13 min back).
 
-[Open Day 28 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/248%20N%20Peters%20Rd%2C%20Suite%203%2C%20Knoxville%2C%20TN%2037923/9000%20Executive%20Park%20Dr%2C%20Suite%20C150%2C%20Knoxville%2C%20TN%2037923%2C%20Knoxville%2C%20TN%2037923/8805%20Kingston%20Pike%2C%20Suite%20105%2C%20Knoxville%2C%20TN%2037923/1645%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/1701%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/8042%20Ray%20Mears%20Blvd%2C%20Knoxville%2C%20TN%2037919/7347%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
+[Open Day 29 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/248%20N%20Peters%20Rd%2C%20Suite%203%2C%20Knoxville%2C%20TN%2037923/9000%20Executive%20Park%20Dr%2C%20Suite%20C150%2C%20Knoxville%2C%20TN%2037923%2C%20Knoxville%2C%20TN%2037923/8805%20Kingston%20Pike%2C%20Suite%20105%2C%20Knoxville%2C%20TN%2037923/1645%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/1701%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/8042%20Ray%20Mears%20Blvd%2C%20Knoxville%2C%20TN%2037919/7347%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -444,20 +458,6 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 5 | Salon Visage | Salons and beauty studios | Also nearby | 1701 Downtown West Blvd, Knoxville | Frank and Belinda Gambuzza, (865) 694-4000 | Profiled by Salon Today for its work-life-integration approach to staff scheduling. | 0 min from stop 4 |
 | 6 | European Body Works Salon & Spa | Salons and beauty studios | Also nearby | 8042 Ray Mears Blvd, Knoxville | the manager, (865) 693-0485 | Serving Knoxville with spa services since 1996 . | 1 min from stop 5 |
 | 7 | Marble City Chiropractic | Physical therapy, chiropractic, and sports medicine | Also nearby | 7347 Kingston Pike, Knoxville | the manager, (865) 766-2081 | Combines chiropractic, acupuncture and dry needling in one West Knoxville office. | 4 min from stop 6 |
-
-### Day 29: Knoxville: Hardin Valley Rd
-
-5 businesses, about 1 h 58 min door to door (19 min out from downtown Knoxville, 25 min back).
-
-[Open Day 29 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/10966%20Spring%20Bluff%20Way%2C%20Knoxville%2C%20TN%2037932/10839%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/10780%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/4900%20Guinn%20Rd%2C%20Knoxville%2C%20TN%2037931/700%20S%20Illinois%20Ave%2C%20Suite%20A103%2C%20Oak%20Ridge%2C%20TN%2037830/downtown%20Knoxville)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | East Tennessee Spine & Sport Physical Therapy (Hardin Valley) | Physical therapy, chiropractic, and sports medicine | Good fit | 10966 Spring Bluff Way, Knoxville | the manager, (865) 599-5323 | Locally owned PT group serving Knoxville since 1995 with sites in Knox, Loudon and Anderson counties. | 19 min from downtown Knoxville |
-| 2 | HOTWORX Hardin Valley | Gyms and fitness centers | Also nearby | 10839 Hardin Valley Rd, Knoxville | the manager, 865-297-3668 |  | 1 min from stop 1 |
-| 3 | Pure Luxe Salon, Spa and MedSpa | Recovery studios and med spas | Also nearby | 10780 Hardin Valley Rd, Knoxville | the manager, (865) 474-7873 |  | 1 min from stop 2 |
-| 4 | Triple F Elite Sports Training | CrossFit and performance gyms | Good fit | 4900 Guinn Rd, Knoxville | the manager | Former Powell and NFL star Lee Smith introduced the Triple F facility in March 2022 | 10 min from stop 3 |
-| 5 | Aesthetics by Alexis | Salons and beauty studios | Also nearby | 700 S Illinois Ave, Suite A103, Oak Ridge (map point approximate) | the manager, (865) 332-1263 |  | 13 min from stop 4 |
 
 ### Day 30: Knoxville: Kingston Pike, part 5
 
