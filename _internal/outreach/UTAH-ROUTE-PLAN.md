@@ -149,7 +149,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 6 businesses, about 1 h 59 min door to door (15 min out from 3903 W 1700 N, Lehi, UT 84043, 16 min back).
 
-[Open Day 3 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/146%20E%2013065%20S%20Suite%20C%2C%20Draper%2C%20UT%2084020/807%20E%20Pioneer%20Rd%20Ste%20101%2C%20Draper%2C%20UT%2084020/827%20Pioneer%20Rd%20Ste%20101%2C%20Draper%2C%20UT%2084020/12176%20S%201000%20E%20Ste%201%2C%20Draper%2C%20UT%2084020/681%20W%20South%20Jordan%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/1515%20W%2012600%20S%2C%20Ste%20205%2C%20Riverton%2C%20UT%2084065/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 3 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/146%20E%2013065%20S%20Suite%20C%2C%20Draper%2C%20UT%2084020/807%20E%20Pioneer%20Rd%20Ste%20101%2C%20Draper%2C%20UT%2084020/827%20Pioneer%20Rd%20Ste%20101%2C%20Draper%2C%20UT%2084020/12176%20S%201000%20E%20Ste%201%2C%20Draper%2C%20UT%2084020/681%20W%20South%20Jordan%20Pkwy%2C%20UT%2084095/1515%20W%2012600%20S%2C%20Ste%20205%2C%20Riverton%2C%20UT%2084065/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -193,7 +193,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 4 businesses, about 1 h 58 min door to door (30 min out from 3903 W 1700 N, Lehi, UT 84043, 34 min back).
 
-[Open Day 6 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/675%20E%202100%20S%20Ste%20F%2C%20Salt%20Lake%20City%2C%20UT%2084106/55%20W%20Utopia%20Ave%20Unit%20103%2C%20South%20Salt%20Lake%2C%20UT%2084115/1212%20S%20State%20St%2C%20Salt%20Lake%20City%2C%20UT%2084111/336%20W%20Broadway%20Suite%20103%2C%20Salt%20Lake%20City%2C%20UT%2084101/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 6 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/675%20E%202100%20S%20Ste%20F%2C%20Salt%20Lake%20City%2C%20UT%2084106/55%20W%20Utopia%20Ave%20Unit%20103%2C%20South%20Salt%20Lake%2084115/1212%20S%20State%20St%2C%20Salt%20Lake%20City%2C%20UT%2084111/336%20W%20Broadway%20Suite%20103%2C%20Salt%20Lake%20City%2C%20UT%2084101/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -262,7 +262,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 3 businesses, about 1 h 55 min door to door (34 min out from 3903 W 1700 N, Lehi, UT 84043, 35 min back).
 
-[Open Day 11 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/994%20Expressway%20Ln%2C%20Spanish%20Fork%2C%20UT%2084660/852%20S%20Spanish%20Fork%20Pkwy%2C%20Spanish%20Fork%2C%20UT%2084660/132%20Volunteer%20Dr%2C%20Spanish%20Fork%2C%20UT%2084660/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 11 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/994%20Expressway%20Ln%2C%20Spanish%20Fork%2C%20UT%2084660/852%20S%20Spanish%20Fork%20Pkwy%2C%20UT%2084660/132%20Volunteer%20Dr%2C%20Spanish%20Fork%2C%20UT%2084660/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -340,7 +340,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 3 businesses, about 1 h 53 min door to door (37 min out from 3903 W 1700 N, Lehi, UT 84043, 34 min back).
 
-[Open Day 17 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/741%20UT-198%2C%20Salem%2C%20UT%2084653/28%20E%20100%20N%2C%20Spanish%20Fork%2C%20UT%2084660/205%20N%20Main%20St%2C%20Spanish%20Fork%2C%20UT%2084660/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 17 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/741%20UT-198%2C%20Salem%2084653/28%20E%20100%20N%2C%20Spanish%20Fork%2C%20UT%2084660/205%20N%20Main%20St%2C%20Spanish%20Fork%2C%20UT%2084660/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -407,7 +407,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 2 businesses, about 1 h 06 min door to door (14 min out from 3903 W 1700 N, Lehi, UT 84043, 18 min back).
 
-[Open Day 22 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/629%20N%20Saratoga%20Rd%20Bldg%202%2C%20Lehi%2C%20UT%2084043/1388%20Eagle%20Mountain%20Blvd%2C%20Eagle%20Mountain%2C%20UT%2084005/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 22 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/629%20N%20Saratoga%20Rd%20Bldg%202%2C%20Lehi%2C%20UT%2084043/1388%20Eagle%20Mountain%20Blvd%2C%20UT%2084005/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -612,7 +612,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 6 businesses, about 1 h 50 min door to door (15 min out from 3903 W 1700 N, Lehi, UT 84043, 16 min back).
 
-[Open Day 39 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/636%20E%20State%20Rd%2C%20American%20Fork%2C%20UT%2084003/920%20E%20State%20St%2C%20American%20Fork%2C%20UT%2084003/312%20S%202000%20W%2C%20Pleasant%20Grove%2C%20UT%2084062/795%20S%20Main%20St%2C%20Pleasant%20Grove%2C%20UT%2084062/710%20S%20Utah%20Valley%20Dr%2C%20American%20Fork%2C%20UT%2084003/1375%20S%20500%20E%2C%20Unit%20123%2C%20American%20Fork%2C%20UT%2084003/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 39 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/636%20E%20State%20Rd%2C%20American%20Fork%2C%20UT%2084003/920%20E%20State%20St%2C%20American%20Fork%2C%20UT%2084003/312%20S%202000%20W%2C%20Pleasant%20Grove%2C%20UT%2084062/795%20S%20Main%20St%2C%20Pleasant%20Grove%2C%20UT%2084062/710%20S%20Utah%20Valley%20Dr%2C%20American%20Fork%2084003/1375%20S%20500%20E%2C%20Unit%20123%2C%20American%20Fork%2C%20UT%2084003/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -627,7 +627,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 2 businesses, about 1 h 50 min door to door (40 min out from 3903 W 1700 N, Lehi, UT 84043, 41 min back).
 
-[Open Day 40 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1526%20W%20Ute%20Blvd%2C%20Ste%20110%2C%20Park%20City%2C%20UT%2084098/3070%20Rasmussen%20Rd%2C%20Ste%20190%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 40 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1526%20W%20Ute%20Blvd%2C%20Ste%20110%2C%20Park%20City%2084098/3070%20Rasmussen%20Rd%2C%20Ste%20190%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -768,7 +768,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 4 businesses, about 1 h 52 min door to door (25 min out from 3903 W 1700 N, Lehi, UT 84043, 28 min back).
 
-[Open Day 51 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/4751%20S%20Holladay%20Blvd%2C%20Holladay%2C%20UT%2084117/3941%20S%20Wasatch%20Blvd%2C%20Millcreek%2C%20UT%2084124/2505%20E%203300%20S%2C%20Ste%20301%2C%20Millcreek%2C%20UT%2084109/3232%20S%20Highland%20Dr%2C%20Salt%20Lake%20City%2C%20UT%2084106/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 51 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/4751%20S%20Holladay%20Blvd%2C%20UT%2084117/3941%20S%20Wasatch%20Blvd%2C%20Millcreek%2C%20UT%2084124/2505%20E%203300%20S%2C%20Ste%20301%2C%20Millcreek%2C%20UT%2084109/3232%20S%20Highland%20Dr%2C%20Salt%20Lake%20City%2C%20UT%2084106/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -781,7 +781,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 3 businesses, about 1 h 52 min door to door (40 min out from 3903 W 1700 N, Lehi, UT 84043, 40 min back).
 
-[Open Day 52 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1154%20Center%20Dr%20Ste%20D210%2C%20Park%20City%2C%20UT%2084098/1675%20W%20Redstone%20Center%20Dr%20Ste%20140%2C%20Park%20City%2C%20UT%2084098/1612%20W%20Ute%20Blvd%20Ste%20115%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 52 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1154%20Center%20Dr%20Ste%20D210%2C%20Park%20City%2C%20UT%2084098/1675%20W%20Redstone%20Center%20Dr%20Ste%20140%2C%20Park%20City%2C%20UT%2084098/1612%20W%20Ute%20Blvd%20Ste%20115%2C%20Park%20City%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -816,7 +816,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 3 businesses, about 1 h 52 min door to door (40 min out from 3903 W 1700 N, Lehi, UT 84043, 40 min back).
 
-[Open Day 55 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1680%20W%20Ute%20Blvd%2C%20Park%20City%2C%20UT%2084098/6546%20N%20Landmark%20Dr%20Ste%20A%2C%20Park%20City%2C%20UT%2084098/6699%20N%20Landmark%20Dr%20Ste%20A-105%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 55 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1680%20W%20Ute%20Blvd%2C%20Park%20City%2084098/6546%20N%20Landmark%20Dr%20Ste%20A%2C%20Park%20City%2C%20UT%2084098/6699%20N%20Landmark%20Dr%20Ste%20A-105%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -850,7 +850,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 6 businesses, about 1 h 53 min door to door (18 min out from 3903 W 1700 N, Lehi, UT 84043, 20 min back).
 
-[Open Day 58 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1388%20E%20Draper%20Pkwy%20Ste%20B%2C%20Draper%2C%20UT%2084020/1101%20E%20Draper%20Pkwy%2C%20Draper%2C%20UT%2084020/866%20E%2012300%20S%2C%20Ste%20B%2C%20Draper%2C%20UT%2084020/282%20E%2012200%20S%2C%20Suite%20200%2C%20Draper%2C%20UT%2084020/11576%20S%20State%20St%2C%20Ste%201101%2C%20Draper%2C%20UT%2084020/10996%20S%20River%20Front%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 58 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1388%20E%20Draper%20Pkwy%20Ste%20B%2C%20UT%2084020/1101%20E%20Draper%20Pkwy%2C%20UT%2084020/866%20E%2012300%20S%2C%20Ste%20B%2C%20Draper%2C%20UT%2084020/282%20E%2012200%20S%2C%20Suite%20200%2C%20Draper%2C%20UT%2084020/11576%20S%20State%20St%2C%20Ste%201101%2C%20Draper%2C%20UT%2084020/10996%20S%20River%20Front%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1041,7 +1041,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 3 businesses, about 1 h 57 min door to door (37 min out from 3903 W 1700 N, Lehi, UT 84043, 34 min back).
 
-[Open Day 72 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/583%20UT-198%2C%20Salem%2C%20UT%2084653/1332%20E%20Center%20St%2C%20Spanish%20Fork%2C%20UT%2084660/652%20N%20800%20E%2C%20Spanish%20Fork%2C%20UT%2084660/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 72 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/583%20UT-198%2C%20Salem%2084653/1332%20E%20Center%20St%2C%20Spanish%20Fork%2C%20UT%2084660/652%20N%20800%20E%2C%20Spanish%20Fork%2C%20UT%2084660/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1243,7 +1243,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 6 businesses, about 2 h 00 min door to door (21 min out from 3903 W 1700 N, Lehi, UT 84043, 25 min back).
 
-[Open Day 87 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/7076%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/2258%20E%20Fort%20Union%20Blvd%20%23B2%2C%20Cottonwood%20Heights%2C%20UT%2084121/2363%20E%206710%20S%2C%20Cottonwood%20Heights%2C%20UT%2084121/6263%20S%20Highland%20Dr%2C%20Holladay%2C%20UT%2084121/5266%20Cottonwood%20Club%20Dr%2C%20Holladay%2C%20UT%2084117/2046%20E%20Murray%20Holladay%20Rd%2C%20Holladay%2C%20UT%2084117/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 87 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/7076%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/2258%20E%20Fort%20Union%20Blvd%20%23B2%2C%20Cottonwood%20Heights%2C%20UT%2084121/2363%20E%206710%20S%2C%20Cottonwood%20Heights%2C%20UT%2084121/6263%20S%20Highland%20Dr%2C%20Holladay%2C%20UT%2084121/5266%20Cottonwood%20Club%20Dr%2C%20Holladay%2C%20UT%2084117/2046%20E%20Murray%20Holladay%20Rd%2C%20UT%2084117/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|

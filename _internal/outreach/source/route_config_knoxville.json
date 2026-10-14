@@ -20,5 +20,6 @@
  ],
  "home_label": "downtown Knoxville",
  "min_day_minutes": 60,
- "home_note": "Downtown is a placeholder: put your actual start address in route_config_knoxville.json and rerun, and the days and times will follow."
+ "home_note": "Downtown is a placeholder: put your actual start address in route_config_knoxville.json and rerun, and the days and times will follow.",
+ "out_json": "/Users/bailie/projects/purebaric-newsite/netlify/functions/_data/routes_knoxville.json"
 }

@@ -273,7 +273,15 @@ cnt = Counter(d["area"] for d in days); seen_n = Counter()
 for d in days:
     if cnt[d["area"]] > 1: seen_n[d["area"]] += 1; d["area"] = f"{d['area']}, part {seen_n[d['area']]}"
 def maps_link(stops):
-    parts = [urllib.parse.quote(f"{s['address']}, {s['city']}, {ST} {s['zip']}".strip(), safe="") for s in stops if is_address(s["address"])]
+    def full(s):
+        # Some prospect rows already carry the city, state or ZIP inside the address; add only what is missing.
+        a = s["address"].strip().rstrip(",")
+        low = a.lower()
+        if s["city"] and s["city"].lower() not in low: a += f", {s['city']}"
+        if f" {ST.lower()}" not in a.lower() and f",{ST.lower()}" not in a.lower(): a += f", {ST}"
+        if s["zip"] and s["zip"] not in a: a += f" {s['zip']}"
+        return a
+    parts = [urllib.parse.quote(full(s), safe="") for s in stops if is_address(s["address"])]
     hl = urllib.parse.quote(HOME_LABEL.split(" (")[0], safe="")
     return "https://www.google.com/maps/dir/" + hl + "/" + "/".join(parts) + "/" + hl
 for d in days + singles: d["maps"] = maps_link(d["stops"])

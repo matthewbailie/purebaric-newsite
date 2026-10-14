@@ -59,7 +59,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 5 businesses, about 1 h 54 min door to door (21 min out from downtown Knoxville, 20 min back).
 
-[Open Day 1 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/9311%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922%2C%20Knoxville%2C%20TN%2037922/10426%20Jackson%20Oaks%20Way%2C%20Suite%20103%2C%20Knoxville%2C%20TN%2037922/10932%20Murdock%20Dr%20%23102b%2C%20Knoxville%2C%20TN%2037932%2C%20Knoxville%2C%20TN%2037932/10935%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11533%20Kingston%20Pike%2C%20Farragut%2C%20TN%2C%20Farragut%2C%20TN%2037934/downtown%20Knoxville)
+[Open Day 1 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/9311%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922/10426%20Jackson%20Oaks%20Way%2C%20Suite%20103%2C%20Knoxville%2C%20TN%2037922/10932%20Murdock%20Dr%20%23102b%2C%20Knoxville%2C%20TN%2037932/10935%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11533%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -103,7 +103,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 7 businesses, about 1 h 53 min door to door (17 min out from downtown Knoxville, 11 min back).
 
-[Open Day 4 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/8425%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/7015%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/6504%20Deane%20Hill%20Dr%2C%20Knoxville%2C%20TN%2037919/6512%20Baum%20Dr%20SW%20%2312%2C%20Knoxville%2C%20TN%2037919%2C%20Knoxville%2C%20TN%2037919/224%20Brookview%20Centre%20Way%2C%20Suite%20208%2C%20Knoxville%2C%20TN%2037919/318%20Erin%20Dr%2C%20%235%2C%20Knoxville%2C%20TN%2037919/403%20Bearden%20Park%20Circle%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
+[Open Day 4 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/8425%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/7015%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/6504%20Deane%20Hill%20Dr%2C%20Knoxville%2C%20TN%2037919/6512%20Baum%20Dr%20SW%20%2312%2C%20Knoxville%2C%20TN%2037919/224%20Brookview%20Centre%20Way%2C%20Suite%20208%2C%20Knoxville%2C%20TN%2037919/318%20Erin%20Dr%2C%20%235%2C%20Knoxville%2C%20TN%2037919/403%20Bearden%20Park%20Circle%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -162,7 +162,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 5 businesses, about 1 h 52 min door to door (22 min out from downtown Knoxville, 21 min back).
 
-[Open Day 8 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/1632%20West%20Broadway%20Avenue%2C%20Maryville%2C%20TN%2037801/133%20Cherokee%20Heights%20Dr%2C%20Maryville%2C%20TN%2037801/2602%20US-411%2C%20Suite%20103%2C%20Maryville%2C%20TN%2037801/2732%20US-411%2C%20Maryville%2C%20TN%2037801/1780%20W%20Lamar%20Alexander%20Pkwy%2C%20Maryville%2C%20TN%2037801%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
+[Open Day 8 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/1632%20West%20Broadway%20Avenue%2C%20Maryville%2C%20TN%2037801/133%20Cherokee%20Heights%20Dr%2C%20Maryville%2C%20TN%2037801/2602%20US-411%2C%20Suite%20103%2C%20Maryville%2C%20TN%2037801/2732%20US-411%2C%20Maryville%2C%20TN%2037801/1780%20W%20Lamar%20Alexander%20Pkwy%2C%20Maryville%2C%20TN%2037801/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -176,7 +176,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 6 businesses, about 1 h 52 min door to door (18 min out from downtown Knoxville, 19 min back).
 
-[Open Day 9 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/10542%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922/10843%20Kingston%20Pike%2C%20Suite%207%2C%20Farragut%2C%20TN%2037934/102%20South%20Campbell%20Station%20Rd%2C%20Suite%2021%2C%20Farragut%2C%20TN%2037934/11673%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/11668%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934%2C%20Farragut%2C%20TN%2037934/11245%20Threadstone%20Lane%2C%20Knoxville%2C%20TN%2037932/downtown%20Knoxville)
+[Open Day 9 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/10542%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922/10843%20Kingston%20Pike%2C%20Suite%207%2C%20Farragut%2C%20TN%2037934/102%20South%20Campbell%20Station%20Rd%2C%20Suite%2021%2C%20Farragut%2C%20TN%2037934/11673%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/11668%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/11245%20Threadstone%20Lane%2C%20Knoxville%2C%20TN%2037932/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -276,7 +276,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 3 businesses, about 1 h 36 min door to door (26 min out from downtown Knoxville, 29 min back).
 
-[Open Day 17 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/110%20Skyline%20Dr%2C%20Suite%201%2C%20Maynardville%2C%20TN%2037807/2915%20Maynardville%20Hwy%2C%20Maynardville%2C%20TN%2037807/4356%20Maynardville%20Hwy%2C%20Suite%203%2C%20Maynardville%2C%20TN%2037807/downtown%20Knoxville)
+[Open Day 17 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/110%20Skyline%20Dr%2C%20Suite%201%2C%20Maynardville%2C%20TN%2037807/2915%20Maynardville%20Hwy%2C%20TN%2037807/4356%20Maynardville%20Hwy%2C%20Suite%203%2C%20TN%2037807/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -327,7 +327,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 4 businesses, about 1 h 50 min door to door (26 min out from downtown Knoxville, 31 min back).
 
-[Open Day 21 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/1153%20Oak%20Ridge%20Turnpike%2C%20Oak%20Ridge%2C%20TN%2037830/1403%20Oak%20Ridge%20Turnpike%2C%20Oak%20Ridge%2C%20TN%2037830/176%20Randolph%20Road%2C%20Oak%20Ridge%2C%20TN%2037830/1116%20E%20Tri%20County%20Blvd%2C%20Oliver%20Springs%2C%20TN%2037840/downtown%20Knoxville)
+[Open Day 21 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/1153%20Oak%20Ridge%20Turnpike%2C%20TN%2037830/1403%20Oak%20Ridge%20Turnpike%2C%20TN%2037830/176%20Randolph%20Road%2C%20Oak%20Ridge%2C%20TN%2037830/1116%20E%20Tri%20County%20Blvd%2C%20Oliver%20Springs%2C%20TN%2037840/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -412,7 +412,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 6 businesses, about 1 h 56 min door to door (19 min out from downtown Knoxville, 20 min back).
 
-[Open Day 27 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/11324%20Parkside%20Dr%2C%20Knoxville%2C%20TN%2037934/11439%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/623%20N%20Campbell%20Station%20Rd%2C%20Farragut%2C%20TN%2037934/11416%20Grigsby%20Chapel%20Rd%2C%20Farragut%2C%20TN%2037934/12284%20N%20Fox%20Den%20Dr%2C%20Farragut%2C%20TN%2037934%2C%20Farragut%2C%20TN%2037934/153%20Brooklawn%20Street%2C%20Suite%20153%2C%20Farragut%2C%20TN%2037934/downtown%20Knoxville)
+[Open Day 27 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/11324%20Parkside%20Dr%2C%20Knoxville%2C%20TN%2037934/11439%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/623%20N%20Campbell%20Station%20Rd%2C%20Farragut%2C%20TN%2037934/11416%20Grigsby%20Chapel%20Rd%2C%20Farragut%2C%20TN%2037934/12284%20N%20Fox%20Den%20Dr%2C%20Farragut%2C%20TN%2037934/153%20Brooklawn%20Street%2C%20Suite%20153%2C%20Farragut%2C%20TN%2037934/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -427,7 +427,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 7 businesses, about 1 h 57 min door to door (20 min out from downtown Knoxville, 13 min back).
 
-[Open Day 28 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/248%20N%20Peters%20Rd%2C%20Suite%203%2C%20Knoxville%2C%20TN%2037923/9000%20Executive%20Park%20Dr%2C%20Suite%20C150%2C%20Knoxville%2C%20TN%2037923%2C%20Knoxville%2C%20TN%2037923/8805%20Kingston%20Pike%2C%20Suite%20105%2C%20Knoxville%2C%20TN%2037923/1645%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/1701%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/8042%20Ray%20Mears%20Blvd%2C%20Knoxville%2C%20TN%2037919/7347%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
+[Open Day 28 in Google Maps](https://www.google.com/maps/dir/downtown%20Knoxville/248%20N%20Peters%20Rd%2C%20Suite%203%2C%20Knoxville%2C%20TN%2037923/9000%20Executive%20Park%20Dr%2C%20Suite%20C150%2C%20Knoxville%2C%20TN%2037923/8805%20Kingston%20Pike%2C%20Suite%20105%2C%20Knoxville%2C%20TN%2037923/1645%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/1701%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/8042%20Ray%20Mears%20Blvd%2C%20Knoxville%2C%20TN%2037919/7347%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/downtown%20Knoxville)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
