@@ -20,5 +20,6 @@
  ],
  "home_label": "Lehi",
  "min_day_minutes": 60,
- "home_note": ""
+ "home_note": "",
+ "out_json": "/Users/bailie/projects/purebaric-newsite/_internal/outreach/routes_utah.json"
 }

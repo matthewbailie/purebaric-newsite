@@ -54,6 +54,20 @@ test("a paid rental counts from its first payment day, before delivery, like Str
   assert.equal(o.startingSoon.count, 1);
 });
 
+test("startsAndEnds lists starts and ends in the next ten days, soonest first, and skips cancelled rentals", () => {
+  const list = M.startsAndEnds([
+    r(20, "s@x.com", "2026-10-15", "2027-01-14", 600, { status: "scheduled" }),
+    r(21, "e@x.com", "2026-08-01", "2026-10-20", 500, { status: "active" }),
+    r(22, "both@x.com", "2026-10-14", "2026-10-23", 164.75, { status: "active", rateType: "weekly" }),
+    r(23, "late@x.com", "2026-10-24", "2026-11-23", 600, { status: "scheduled" }),
+    r(24, "gone@x.com", "2026-10-16", "2026-11-15", 600, { status: "cancelled" }),
+    r(25, "past@x.com", "2026-09-01", "2026-10-12", 600, { status: "completed" }),
+  ], "2026-10-13", 10);
+  assert.deepEqual(list.map((x) => [x.kind, x.date, x.rental.id]), [
+    ["start", "2026-10-14", 22], ["start", "2026-10-15", 20], ["end", "2026-10-20", 21], ["end", "2026-10-23", 22],
+  ]);
+});
+
 test("snapshot sums MRR, counts rentals and distinct subscribers, averages price", () => {
   const s = M.snapshot(rentals, "2026-03-31");
   assert.equal(s.rentals, 2);

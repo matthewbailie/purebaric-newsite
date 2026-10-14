@@ -387,6 +387,8 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       <p class="renter-line" style="margin:-0.8rem 0 1rem;">Press and hold a card, then drag it to reorder. The order saves automatically.</p>
       <h3 class="inv-heading" style="margin-top:0">Renewals in the next 7 days</h3>
       <div id="renewalsList"></div>
+      <h3 class="inv-heading">Rentals starting and ending in the next week and a half</h3>
+      <div id="startEndList"></div>
       <h3 class="inv-heading">Operations</h3>
       <div class="stat-row" data-sortable="home-operations">
         <button type="button" class="stat-block" data-card-key="active-chambers" data-jump-tab="chambers"><div class="stat-label">Chambers in use</div><div class="stat-val" id="statActive"></div><div class="stat-sub" id="statActiveSub"></div></button>
@@ -939,6 +941,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           <button type="button" data-r="90" onclick="setAnRange(90)">3 months</button>
           <button type="button" data-r="30" onclick="setAnRange(30)">Month</button>
           <button type="button" data-r="7" onclick="setAnRange(7)">Week</button>
+          <button type="button" data-r="1" onclick="setAnRange(1)">Today</button>
         </div>
       </div>
       <div class="viz-card viz an-card">
@@ -949,6 +952,11 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           <div class="kpi"><div class="kpi-label" id="akTotalLabel">Total visits</div><div class="kpi-val" id="akTotal"></div><div class="kpi-sub" id="akTotalSub"></div></div>
         </div>
         <div id="chartAnTotal"></div>
+      </div>
+      <div class="viz-card viz an-card">
+        <h3>Top performing pages</h3>
+        <p class="viz-note" id="anTopNote">The pages with the most views in the selected period.</p>
+        <div id="anTopPages"></div>
       </div>
       <div class="viz-card viz an-card">
         <h3>Page views by page</h3>
@@ -970,6 +978,14 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           .pin-bar{margin:0 -1rem 1rem;padding:10px 1rem;}
         }
         .an-card .traffic-kpis{margin:14px 0 18px;}
+        .an-top{list-style:none;margin:10px 0 0;padding:0;}
+        .an-top li{margin:0 0 10px;}
+        .an-top-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+        .an-top-rank{display:inline-block;min-width:1.6em;color:var(--stone-muted);font-variant-numeric:tabular-nums;}
+        .an-top-name{flex:1 1 auto;}
+        .an-top-n{white-space:nowrap;font-variant-numeric:tabular-nums;}
+        .an-top-bar{height:8px;border-radius:4px;background:#efe7db;overflow:hidden;margin:4px 0 0 2.2em;}
+        .an-top-bar div{height:100%;background:var(--terracotta,#b8654d);border-radius:4px;}
         .an-card #chartAnTotal, .an-card #chartAnPage{margin-top:8px;}
         .an-card .table-wrap{margin-top:22px;}
       </style>
@@ -1123,6 +1139,11 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
 
     <!-- ───── Outreach: business prospects and the emails sent to them ───── -->
     <section class="tab-panel" data-panel="outreach">
+      <div class="seg or-sub" role="group" aria-label="Outreach section" style="margin-bottom:1rem;">
+        <button type="button" data-sub="email" class="on" onclick="setOutreachSub('email')">Email outreach</button>
+        <button type="button" data-sub="routes" onclick="setOutreachSub('routes')">Driving paths</button>
+      </div>
+      <div id="orSubEmail">
       <div class="panel-actions">
         <h2>Outreach</h2>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -1200,7 +1221,42 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         .or-edit textarea { min-height: 64px; resize: vertical; }
         #orTable select { padding: 3px 6px; border: 1px solid var(--line); border-radius: 6px; font-size: 0.78rem; }
       </style>
-    </section>
+          </div><!-- /orSubEmail -->
+      <div id="orSubRoutes" hidden>
+        <div class="panel-actions">
+          <h2>Driving paths</h2>
+          <button class="btn btn-ghost btn-sm" onclick="loadRoutes(true)">Refresh</button>
+        </div>
+        <p class="renter-line" style="margin:0 0 14px;max-width:820px;">The Utah pamphlet route plan, one outing per day. Open a day's route in Google Maps, tick each business as you hand over its pamphlet, and mark the day complete when it is done. Progress is saved here, not on the phone.</p>
+        <div id="rtSummary" class="form-card open" style="display:block;max-width:820px;margin-bottom:18px;"><div class="renter-line">Loading routes…</div></div>
+        <div class="seg rt-filter" role="group" aria-label="Show" style="margin-bottom:12px;">
+          <button type="button" data-f="todo" class="on" onclick="setRouteFilter('todo')">Still to do</button>
+          <button type="button" data-f="done" onclick="setRouteFilter('done')">Completed</button>
+          <button type="button" data-f="all" onclick="setRouteFilter('all')">All days</button>
+        </div>
+        <div id="rtList"></div>
+        <style>
+          .rt-day{border:1px solid var(--line,#e6dccd);border-radius:12px;background:#fff;margin:0 0 12px;overflow:hidden;}
+          .rt-day.done{background:#f6f2ea;}
+          .rt-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 14px;cursor:pointer;}
+          .rt-head h4{margin:0;font-size:1rem;flex:1 1 220px;}
+          .rt-meta{color:var(--stone-muted);font-size:.85rem;}
+          .rt-body{display:none;padding:0 14px 14px;border-top:1px solid var(--line,#e6dccd);}
+          .rt-day.open .rt-body{display:block;}
+          .rt-pamphlets{margin:10px 0;padding:10px 12px;border-radius:10px;background:#f4e7df;font-size:.9rem;}
+          .rt-stop{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:8px 0;border-bottom:1px solid #f0e9df;}
+          .rt-stop:last-child{border-bottom:0;}
+          .rt-stop input{width:20px;height:20px;margin-top:2px;}
+          .rt-stop.delivered .rt-name{text-decoration:line-through;color:var(--stone-muted);}
+          .rt-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 0;}
+          .rt-bar{height:10px;border-radius:5px;background:#efe7db;overflow:hidden;margin:8px 0 4px;}
+          .rt-bar div{height:100%;background:var(--terracotta,#b8654d);}
+          .rt-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:8px;}
+          .rt-kpis .kpi-val{font-size:1.6rem;}
+          @media(max-width:560px){.rt-kpis{grid-template-columns:1fr 1fr;}}
+        </style>
+      </div>
+</section>
 
   </div><!-- /#adminApp -->
   </main>
@@ -1577,7 +1633,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       servicearea: () => loadServiceArea(),
       delivery: () => loadDelivery(),
       notifications: () => Promise.all([loadNotifications(), loadTwilioConfig()]),
-      outreach: () => loadOutreach(),
+      outreach: () => Promise.all([loadOutreach(), loadRoutes(false).catch(() => {})]),
       analytics: () => loadTraffic(true),
     };
     const loader = loaders[tab];
@@ -1708,7 +1764,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   const _delta = p => p == null ? '' : ` <span class="${p >= 0 ? 'up' : 'down'}">${p >= 0 ? '▲' : '▼'} ${Math.abs(p)}%</span>`;
   const _notConnected = (r) => `Not connected to Google Analytics yet. To connect it: in Google Cloud, enable the <strong>Google Analytics Data API</strong> and create a <strong>service account</strong> with a JSON key; in Google Analytics, add that service account's email as a <strong>Viewer</strong> on the Purebaric Website property (${escape(r.propertyId || '')}); then store the key as the <code>GA4_SERVICE_ACCOUNT</code> environment variable on Netlify (secret). Details are in the runbook.`;
   // Chart range on the Site analytics tab (365 = the whole year, else the last N days), remembered per device.
-  const AN_RANGES = [365, 90, 30, 7];
+  const AN_RANGES = [365, 90, 30, 7, 1];
   let _anRange = 365;
   try { const v = parseInt(localStorage.getItem('pb_analytics_range'), 10); if (AN_RANGES.includes(v)) _anRange = v; } catch (e) { /* storage blocked */ }
   function setAnRange(r) {
@@ -1743,7 +1799,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const check = () => document.querySelectorAll('.tab-panel.active .pin-bar').forEach(bar => bar.classList.toggle('stuck', window.scrollY > 0 && bar.getBoundingClientRect().top <= 0));
     window.addEventListener('scroll', check, { passive: true }); window.addEventListener('resize', check);
   })();
-  function anRangeLabel() { return _anRange === 365 ? 'every day of this year' : _anRange === 7 ? 'the last 7 days' : _anRange === 30 ? 'the last 30 days' : 'the last 90 days'; }
+  function anRangeLabel() { return _anRange === 365 ? 'every day of this year' : _anRange === 1 ? 'today' : _anRange === 7 ? 'the last 7 days' : _anRange === 30 ? 'the last 30 days' : 'the last 90 days'; }
   // The selected window = the last N days ending today; it is compared with the N days before it.
   // Both are cut from one timeline that runs from Jan 1 of last year to today, so a window can
   // reach back across New Year. Null = no data (before tracking began).
@@ -1769,12 +1825,13 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     return { cur, prev, prevAligned, hasPrev, labels, ticks, avg: avg(cur), total: total(cur), prevAvg: hasPrev ? avg(prev) : null, prevTotal: hasPrev ? total(prev) : null, days: n,
       pct: hasPrev && avg(prev) > 0 && avg(cur) != null ? Math.round(((avg(cur) - avg(prev)) / avg(prev)) * 100) : null };
   }
-  function _rangeWords() { return _anRange === 365 ? 'last 12 months' : _anRange === 7 ? 'last 7 days' : _anRange === 30 ? 'last 30 days' : 'last 90 days'; }
-  function _prevWords() { return _anRange === 365 ? 'the 12 months before' : `the ${_anRange} days before`; }
+  function _rangeWords() { return _anRange === 365 ? 'last 12 months' : _anRange === 1 ? 'today' : _anRange === 7 ? 'last 7 days' : _anRange === 30 ? 'last 30 days' : 'last 90 days'; }
+  function _prevWords() { return _anRange === 365 ? 'the 12 months before' : _anRange === 1 ? 'yesterday' : `the ${_anRange} days before`; }
   // Legend / readout names for the two lines, matching the selected period.
-  function _periodNames() { return _anRange === 7 ? ['This week', 'Previous week'] : _anRange === 30 ? ['This month', 'Previous month'] : _anRange === 90 ? ['Last 3 months', 'Previous 3 months'] : ['Last 12 months', 'Previous 12 months']; }
+  function _periodNames() { return _anRange === 1 ? ['Today', 'Yesterday'] : _anRange === 7 ? ['This week', 'Previous week'] : _anRange === 30 ? ['This month', 'Previous month'] : _anRange === 90 ? ['Last 3 months', 'Previous 3 months'] : ['Last 12 months', 'Previous 12 months']; }
   function _windowChartEl(el, c, w, unit, what) {
     if (!el || !w) return;
+    if (_anRange === 1) { el.innerHTML = `<div class="renter-line" style="padding:6px 0 2px;">${escape(what)} today so far: <strong>${Math.round(w.total).toLocaleString('en-US')}</strong>${w.hasPrev ? ` · yesterday, whole day: ${Math.round(w.prevTotal).toLocaleString('en-US')}` : ''}. Google Analytics adds today's visits during the day; press Refresh for the latest.</div>`; return; }
     const [curName, prevName] = _periodNames();
     // The previous-period line is always in the legend; with no data yet it simply has nothing to draw.
     const series = [{ label: curName, values: w.cur }, { label: prevName, values: w.prevAligned }];
@@ -1787,7 +1844,15 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const w = _window(r.chart, _anRange);
     const note = document.getElementById('anTotalNote');
     if (note) note.textContent = 'Visits (sessions) per day on purebaric.com over the ' + _rangeWords() + (w && w.hasPrev ? ', with ' + _prevWords() + ' dashed.' : '.');
-    if (w) {
+    if (w && _anRange === 1) {
+      document.getElementById('akAvgLabel').textContent = 'Visits so far today';
+      document.getElementById('akAvg').textContent = w.total.toLocaleString('en-US');
+      document.getElementById('akAvgSub').innerHTML = w.hasPrev ? `${w.prevTotal.toLocaleString('en-US')} yesterday, whole day` : 'No data for yesterday yet';
+      document.getElementById('akTotalLabel').textContent = 'Average visits per day, last 7 days';
+      const w7 = _window(r.chart, 7);
+      document.getElementById('akTotal').textContent = _n1(w7 && w7.avg);
+      document.getElementById('akTotalSub').innerHTML = 'For comparison with today';
+    } else if (w) {
       document.getElementById('akAvgLabel').textContent = 'Average visits per day, ' + _rangeWords();
       document.getElementById('akAvg').textContent = _n1(w.avg);
       document.getElementById('akAvgSub').innerHTML = w.hasPrev ? `${_n1(w.prevAvg)} per day in ${escape(_prevWords())}${_delta(w.pct)}` : `No data for ${escape(_prevWords())} yet`;
@@ -1797,11 +1862,22 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     }
     _windowChartEl(document.getElementById('chartAnTotal'), r.chart, w, 'visit', 'Website visits');
     const pn = document.getElementById('anPageNote');
-    if (pn) pn.textContent = 'Views of each page per day over the ' + _rangeWords() + '. Pick a page to chart it.';
-    document.getElementById('anThAvg').textContent = 'Views/day, ' + _rangeWords();
-    document.getElementById('anThPrev').textContent = _prevWords().replace(/^the /, 'The ');
+    if (pn) pn.textContent = _anRange === 1
+      ? 'Views of each page today so far, with yesterday for comparison. Pick a page to chart it.'
+      : `Average views per day of each page over the ${_rangeWords()}: the page's total views in the period divided by the number of days in it, so a page showing 2.3 on the Week view got 16 views in 7 days. The total for the period is in the last column. Pick a page to chart it.`;
+    document.getElementById('anThAvg').textContent = _anRange === 1 ? 'Views today' : 'Average views per day, ' + _rangeWords();
+    document.getElementById('anThPrev').textContent = _anRange === 1 ? 'Yesterday' : _prevWords().replace(/^the /, 'The ') + ' (per day)';
     document.getElementById('anThTotal').textContent = 'Total views, ' + _rangeWords();
     const rows = (r.pages || []).map(p => { const pw = _window(r.pageCharts[p.label], _anRange); return { label: p.label, w: pw }; });
+    // Top performing pages: ranked by total views in the selected period.
+    const top = rows.filter(x => x.w && x.w.total > 0).sort((a, b) => b.w.total - a.w.total).slice(0, 10);
+    const topNote = document.getElementById('anTopNote');
+    if (topNote) topNote.textContent = `Pages ranked by views over the ${_rangeWords()}${top.length ? `. ${escape(top[0].label)} leads with ${top[0].w.total.toLocaleString('en-US')} view${top[0].w.total === 1 ? '' : 's'}.` : '.'}`;
+    const maxViews = top.length ? top[0].w.total : 0;
+    document.getElementById('anTopPages').innerHTML = top.length ? `<ol class="an-top">${top.map(({ label, w: pw }, i) => `<li>
+        <div class="an-top-row"><span class="an-top-rank">${i + 1}</span><strong class="an-top-name">${escape(label)}</strong><span class="an-top-n">${pw.total.toLocaleString('en-US')} view${pw.total === 1 ? '' : 's'}${pw.hasPrev && pw.prevTotal != null ? `<span class="renter-line"> · ${pw.prevTotal.toLocaleString('en-US')} in ${escape(_prevWords())}</span>` : ''}</span></div>
+        <div class="an-top-bar"><div style="width:${Math.max(2, Math.round((pw.total / maxViews) * 100))}%"></div></div></li>`).join('')}</ol>`
+      : '<div class="renter-line">No page views in this period yet.</div>';
     document.getElementById('anPagesBody').innerHTML = rows.map(({ label, w: pw }) => `<tr><td><strong>${escape(label)}</strong></td><td class="n">${_n1(pw && pw.avg)}</td><td class="n">${pw && pw.hasPrev ? _n1(pw.prevAvg) : '—'}</td><td class="n">${pw ? (_delta(pw.pct) || '—') : '—'}</td><td class="n">${pw ? pw.total.toLocaleString('en-US') : '—'}</td></tr>`).join('')
       || '<tr><td colspan="5" class="renter-line">No page data yet.</td></tr>';
     renderPageChart();
@@ -1917,6 +1993,34 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       <div class="renter-line" style="margin-top:6px;">${list.length} renewal${list.length === 1 ? '' : 's'} · $${total.toLocaleString('en-US', { maximumFractionDigits: 2 })} due</div>`;
   }
 
+  // Home: every rental that starts or ends in the next 10 days, with the exact day and which it is.
+  function renderStartsEnds(M, today) {
+    const el = document.getElementById('startEndList');
+    if (!el) return;
+    const when = (date) => {
+      const n = Math.round((new Date(date) - new Date(today)) / 86400000);
+      return n === 0 ? 'today' : n === 1 ? 'tomorrow' : `in ${n} days`;
+    };
+    const list = M.startsAndEnds(_rentals || [], today, 10);
+    if (!list.length) { el.innerHTML = '<div class="renter-line">No rentals start or end in the next 10 days.</div>'; return; }
+    const rows = list.map(({ kind, date, rental: r }) => {
+      const chamber = _chambers.find(c => c.id === r.chamberId);
+      const tag = kind === 'start'
+        ? '<span class="pill pill-scheduled">Start of contract</span>'
+        : '<span class="pill pill-expired">End of contract</span>';
+      const term = r.rateType === 'weekly' ? `${rentalWeeks(r)} wk` : `${rentalMonths(r)} mo`;
+      return `<tr><td><strong>${escape(fmtDate(date))}</strong><div class="renter-line">${when(date)}</div></td>
+        <td>${tag}</td>
+        <td>${escape((r.renter && r.renter.name) || '—')}${r.businessName ? `<div class="renter-line">${escape(r.businessName)}</div>` : ''}</td>
+        <td>${escape(chamber ? chamber.name : '—')}</td>
+        <td class="renter-line">${escape(fmtDate(r.startDate))} → ${escape(fmtDate(r.endDate))} (${term})</td></tr>`;
+    }).join('');
+    const starts = list.filter(x => x.kind === 'start').length, ends = list.length - starts;
+    el.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Day</th><th>Start or end</th><th>Renter</th><th>Chamber</th><th>Contract</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>
+      <div class="renter-line" style="margin-top:6px;">${starts} start${starts === 1 ? '' : 's'} · ${ends} end${ends === 1 ? '' : 's'} in the next 10 days</div>`;
+  }
+
   function renderDashboard() {
     const M = window.PurebaricMetrics, C = window.PurebaricCharts;
     if (!M || !C || !document.getElementById('kpiMrr')) return;
@@ -1929,6 +2033,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const hasPrev = M.seriesHasActivity(prev);
 
     renderRenewals(M, today);
+    renderStartsEnds(M, today);
 
     setText('kpiMrr', money(o.mrr));
     const prevMonthName = MONTH_NAMES[(monthIdx + 11) % 12];
@@ -4594,6 +4699,95 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   let _outreach = { prospects: [], stats: null, settings: null, templates: [], testRecipient: '' };
   const OR_PILL = { new: 'pill-new', sent: 'pill-notified', bounced: 'pill-rejected', replied: 'pill-approved', interested: 'pill-approved', customer: 'pill-converted', declined: 'pill-cancelled', unsubscribed: 'pill-archived', skipped: 'pill-expired', failed: 'pill-rejected' };
   const OR_STATUSES = ['new', 'sent', 'bounced', 'replied', 'interested', 'customer', 'declined', 'unsubscribed', 'skipped', 'failed'];
+
+  // ─── Outreach: Email outreach / Driving paths sub-tabs ───
+  let _orSub = 'email';
+  try { const v = localStorage.getItem('pb_outreach_sub'); if (v === 'routes' || v === 'email') _orSub = v; } catch (e) { /* storage blocked */ }
+  function setOutreachSub(sub) {
+    _orSub = sub === 'routes' ? 'routes' : 'email';
+    try { localStorage.setItem('pb_outreach_sub', _orSub); } catch (e) { /* not critical */ }
+    document.querySelectorAll('.or-sub button').forEach(b => b.classList.toggle('on', b.dataset.sub === _orSub));
+    const em = document.getElementById('orSubEmail'), rt = document.getElementById('orSubRoutes');
+    if (em) em.hidden = _orSub !== 'email';
+    if (rt) rt.hidden = _orSub !== 'routes';
+    if (_orSub === 'routes' && !_routes) loadRoutes(false).catch(() => {});
+  }
+  document.addEventListener('DOMContentLoaded', () => setOutreachSub(_orSub));
+
+  // ─── Driving paths (pamphlet routes): /api/admin/routes ───
+  let _routes = null, _routeFilter = 'todo', _routeOpen = new Set();
+  async function loadRoutes(refresh) {
+    const box = document.getElementById('rtSummary'); if (!box) return;
+    if (refresh) box.innerHTML = '<div class="renter-line">Refreshing…</div>';
+    try { _routes = await api('/api/admin/routes'); renderRoutes(); }
+    catch (err) { box.innerHTML = `<div class="renter-line" style="color:#82402f;">Routes could not load: ${escape(err.message)}</div>`; }
+  }
+  function setRouteFilter(f) { _routeFilter = f; document.querySelectorAll('.rt-filter button').forEach(b => b.classList.toggle('on', b.dataset.f === f)); renderRoutes(); }
+  function toggleRouteDay(n) { if (_routeOpen.has(n)) _routeOpen.delete(n); else _routeOpen.add(n); renderRoutes(); }
+  function routeDayProgress(n) { return (_routes && _routes.summary && _routes.summary.byDay.find(d => d.n === n)) || { delivered: 0, stops: 0, completed: false, pamphlets: { total: 0, byPamphlet: [] } }; }
+  function renderRoutes() {
+    if (!_routes) return;
+    const { plan, progress, summary } = _routes;
+    const box = document.getElementById('rtSummary');
+    box.innerHTML = `
+      <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;">
+        <strong>Completion score: ${summary.pct}%</strong>
+        <span class="renter-line">${escape(plan.market)} · ${summary.days} days · generated ${escape(fmtDate(plan.generated))}</span>
+      </div>
+      <div class="rt-bar"><div style="width:${summary.pct}%"></div></div>
+      <div class="rt-kpis">
+        <div class="kpi"><div class="kpi-label">Businesses reached</div><div class="kpi-val">${summary.delivered.toLocaleString('en-US')}</div><div class="kpi-sub">of ${summary.stops.toLocaleString('en-US')} on the plan</div></div>
+        <div class="kpi"><div class="kpi-label">Routes completed</div><div class="kpi-val">${summary.daysDone}</div><div class="kpi-sub">of ${summary.days} days</div></div>
+        <div class="kpi"><div class="kpi-label">Still to visit</div><div class="kpi-val">${(summary.stops - summary.delivered).toLocaleString('en-US')}</div><div class="kpi-sub">businesses</div></div>
+      </div>`;
+    const days = plan.days.filter(d => { const p = routeDayProgress(d.n); return _routeFilter === 'all' ? true : _routeFilter === 'done' ? p.completed : !p.completed; });
+    const list = document.getElementById('rtList');
+    if (!days.length) { list.innerHTML = `<div class="empty-state">${_routeFilter === 'done' ? 'No routes completed yet.' : 'Every route is done.'}</div>`; return; }
+    list.innerHTML = days.map(d => {
+      const p = routeDayProgress(d.n);
+      const prog = (progress.days && progress.days[String(d.n)]) || { delivered: [], completed: false, note: '' };
+      const deliveredSet = new Set(prog.delivered || []);
+      const open = _routeOpen.has(d.n);
+      const pam = p.pamphlets.byPamphlet.map(x => `${x.count} ${escape(x.pamphlet)}`).join(' · ');
+      const stops = d.stops.map(st => `<label class="rt-stop ${deliveredSet.has(st.id) ? 'delivered' : ''}">
+          <input type="checkbox" ${deliveredSet.has(st.id) ? 'checked' : ''} onchange="setStopDelivered(${d.n}, ${JSON.stringify(st.id)}, this.checked)" aria-label="Pamphlet delivered to ${escape(st.name)}">
+          <div><div class="rt-name"><strong>${st.stop}. ${escape(st.name)}</strong>${st.top ? ' <span class="pill pill-approved">top pick</span>' : ''} <span class="rt-meta">${escape(st.tier)} · ${escape(st.industry)}</span></div>
+            <div class="renter-line">${escape(st.address)}, ${escape(st.city)}${st.also && st.also.length ? ` · also here: ${escape(st.also.join(', '))}` : ''}</div>
+            <div class="renter-line">Ask for ${escape(st.owner || 'the manager')}${st.phone ? ` · ${escape(st.phone)}` : ''} · ${st.drive_min} min drive${st.note ? ` · ${escape(st.note)}` : ''}</div></div>
+        </label>`).join('');
+      return `<div class="rt-day ${p.completed ? 'done' : ''} ${open ? 'open' : ''}" id="rtDay${d.n}">
+        <div class="rt-head" onclick="toggleRouteDay(${d.n})">
+          <h4>Day ${d.n}: ${escape(d.area)}</h4>
+          <span class="rt-meta">${d.stops.length} stop${d.stops.length === 1 ? '' : 's'} · ${d.best} best bet${d.best === 1 ? '' : 's'} · about ${Math.floor(d.minutes / 60)} h ${String(d.minutes % 60).padStart(2, '0')} min door to door</span>
+          <span class="pill ${p.completed ? 'pill-completed' : p.delivered ? 'pill-partial' : 'pill-new'}">${p.completed ? 'Completed' : `${p.delivered} of ${p.stops} delivered`}</span>
+          <a class="btn btn-primary btn-sm" href="${escape(d.maps)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Open route in Google Maps</a>
+        </div>
+        <div class="rt-body">
+          <div class="rt-pamphlets"><strong>Pamphlets to take: ${p.pamphlets.total}</strong>${pam ? ` · ${pam}` : ''}. Add a couple of spares.</div>
+          ${stops}
+          <div class="rt-actions">
+            ${p.completed
+              ? `<button class="btn btn-ghost btn-sm" onclick="setRouteDone(${d.n}, false)">Reopen this route</button><span class="renter-line">Completed ${escape(fmtDate((p.completedAt || '').slice(0, 10)))}</span>`
+              : `<button class="btn btn-primary btn-sm" onclick="setRouteDone(${d.n}, true)">Mark route complete (all pamphlets handed out)</button>`}
+            <input id="rtNote${d.n}" placeholder="Note for this route (optional)" value="${escape(prog.note || '')}" style="flex:1 1 220px;padding:7px 10px;border:1px solid var(--line,#e6dccd);border-radius:8px;">
+            <button class="btn btn-ghost btn-sm" onclick="saveRouteNote(${d.n})">Save note</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  async function patchRoute(n, body) {
+    try { const r = await api(`/api/admin/routes/${n}`, { method: 'PATCH', body: JSON.stringify(body) }); _routes.progress = r.progress; _routes.summary = r.summary; renderRoutes(); }
+    catch (err) { toast(err.message, true); }
+  }
+  function setStopDelivered(n, stopId, on) {
+    const cur = new Set(((_routes.progress.days || {})[String(n)] || {}).delivered || []);
+    if (on) cur.add(stopId); else cur.delete(stopId);
+    _routeOpen.add(n);
+    patchRoute(n, { delivered: [...cur] });
+  }
+  function setRouteDone(n, done) { _routeOpen.add(n); patchRoute(n, { completed: done }); if (done) toast('Route marked complete'); }
+  function saveRouteNote(n) { const el = document.getElementById(`rtNote${n}`); _routeOpen.add(n); patchRoute(n, { note: el ? el.value : '' }); }
 
   async function loadOutreach() {
     const card = document.getElementById('orSettingsCard');

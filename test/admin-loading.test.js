@@ -27,7 +27,7 @@ test("Home startup excludes unrelated slow admin endpoints", () => {
 });
 
 test("non-dashboard tabs load their data on demand", () => {
-  assert.match(adminHtml, /outreach: \(\) => loadOutreach\(\)/);
+  assert.match(adminHtml, /outreach: \(\) => Promise\.all\(\[loadOutreach\(\), loadRoutes\(false\)\.catch\(\(\) => \{\}\)\]\)/);
   assert.match(adminHtml, /pricing: \(\) => Promise\.all\(\[loadPricing\(\), loadStripeConfig\(\)\]\)/);
   assert.match(adminHtml, /notifications: \(\) => Promise\.all\(\[loadNotifications\(\), loadTwilioConfig\(\)\]\)/);
   assert.match(adminHtml, /ensureTabData\(tab, \{ force: tab === 'customers' \}\)/);

@@ -161,6 +161,20 @@
       .sort((a, b) => day10(a.endDate).localeCompare(day10(b.endDate)) || String(a.id).localeCompare(String(b.id)));
   }
 
+  // Rentals starting or ending within `days` days of today (inclusive), soonest first. Each row is
+  // { kind: 'start'|'end', date, rental }; a rental that starts and ends inside the window appears twice.
+  function startsAndEnds(rentals, today, days = 10) {
+    const last = addDays(today, days);
+    const out = [];
+    (rentals || []).forEach((r) => {
+      if (!r || r.status === 'cancelled') return;
+      const start = day10(r.startDate), end = day10(r.endDate);
+      if ((r.status === 'scheduled' || r.status === 'active') && start >= today && start <= last) out.push({ kind: 'start', date: start, rental: r });
+      if ((r.status === 'scheduled' || r.status === 'active') && end >= today && end <= last) out.push({ kind: 'end', date: end, rental: r });
+    });
+    return out.sort((a, b) => a.date.localeCompare(b.date) || a.kind.localeCompare(b.kind) || String(a.rental.id).localeCompare(String(b.rental.id)));
+  }
+
   function lifetimePaid(r) {
     const paid = Number(r.paidAmount) || 0;
     if (paid > 0) return paid;
@@ -237,5 +251,5 @@
     };
   }
 
-  return { monthlyEquivalent, isCounted, countsFrom, activeOn, avgTermMonths, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon };
+  return { monthlyEquivalent, isCounted, countsFrom, activeOn, avgTermMonths, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon, startsAndEnds };
 });

@@ -17,6 +17,7 @@ const { monthsFromLength } = require("./_lib/followup");
 const { cleanGclid } = require("./_lib/analytics");
 const { cleanRentalType, cleanBusinessName } = require("./_lib/rental-type");
 const { zipServed } = require("./_lib/servicearea");
+const { parseBookingName } = require("./_lib/booking-name");
 const { smsForEvent, smsNumbersForEvent, emailsForEvent } = require("./_lib/notifications");
 const {
   notifyAdminBooking,
@@ -63,17 +64,14 @@ exports.handler = async (event) => {
     }
 
     // Accept both the Netlify field names and the newer frontend's names
-    // (customer_name is a single field; split into first/last).
-    const customerName = (body.customer_name || "").trim();
-    const cnParts = customerName ? customerName.split(/\s+/) : [];
-    const firstName = (body["first-name"] || cnParts[0] || "").trim();
-    const lastName = (body["last-name"] || cnParts.slice(1).join(" ") || "").trim();
+    // (older clients send customer_name as a single field; it is split into first/last).
+    const { firstName, lastName } = parseBookingName(body);
     const email = (body.email || body.customer_email || "").trim();
-    if (!firstName || !email) {
+    if (!firstName || !lastName || !email) {
       return {
         statusCode: 400,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ error: "first name and email are required" }),
+        body: JSON.stringify({ error: "first name, last name and email are required" }),
       };
     }
 

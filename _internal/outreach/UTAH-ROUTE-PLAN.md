@@ -1,6 +1,6 @@
 # Utah (Wasatch Front, Park City, Heber and Tooele): daily pamphlet route plan
 
-Generated 2026-10-10 from `purebaric_b2b_email_prospects.xlsx`. Start and end point for every day: Lehi.
+Generated 2026-10-13 from `purebaric_b2b_email_prospects.xlsx`. Start and end point for every day: Lehi.
 
 ## How this plan works
 

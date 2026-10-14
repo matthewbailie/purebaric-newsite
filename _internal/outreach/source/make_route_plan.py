@@ -296,4 +296,20 @@ for sh, widths in [(ds, [5, 34, 14, 18, 14, 10, 10, 26]), (so, [5, 5, 32, 24, 28
     for i, w in enumerate(widths, 1): sh.column_dimensions[get_column_letter(i)].width = w
     sh.freeze_panes = "A2"
 wbo.save(CFG["out_xlsx"])
+
+# ---------- JSON for the admin's Driving paths tab (optional: config key out_json) ----------
+if CFG.get("out_json"):
+    import json as _json, hashlib as _hashlib
+    def _stop_id(s): return _hashlib.sha1((s["name"] + "|" + s["address"] + "|" + s["city"]).encode("utf8")).hexdigest()[:12]
+    plan = {
+        "market": CFG["market_label"], "state": CFG["state_abbrev"], "generated": datetime.date.today().isoformat(), "home_label": HOME_LABEL.split(" (")[0],
+        "days": [{
+            "n": i, "area": d["area"], "minutes": round(d["minutes"]), "best": d["best"], "maps": d["maps"],
+            "stops": [{"id": _stop_id(s), "stop": n, "name": s["name"], "also": s.get("also", []), "industry": s["industry"], "tier": tier(s["score"]),
+                       "address": s["address"], "city": s["city"], "zip": s["zip"], "owner": s["owner"] or "", "phone": s["phone"] or "", "top": bool(s["top"]), "note": s["hook"] or "",
+                       "drive_min": round(leg)} for n, (s, leg) in enumerate(zip(d["stops"], d["legs"]), 1)],
+        } for i, d in enumerate(ordered_days, 1)],
+    }
+    _json.dump(plan, open(CFG["out_json"], "w"), indent=1)
+    print(f"json -> {CFG['out_json']}")
 print(f"{len(days)} days ({len(main_days)} with a best bet), {tot_stops} stops, far {len(far)}, singles {sum(len(d['stops']) for d in singles)}, email-first {len(email_first)}, need address {len(need_address)}, skipped {len(skipped)} -> {CFG['out_md']}")

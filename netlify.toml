@@ -206,6 +206,14 @@
   from = "/api/admin/outreach/*"
   to = "/.netlify/functions/admin-outreach/:splat"
   status = 200
+[[redirects]]
+  from = "/api/admin/routes"
+  to = "/.netlify/functions/admin-routes"
+  status = 200
+[[redirects]]
+  from = "/api/admin/routes/*"
+  to = "/.netlify/functions/admin-routes/:splat"
+  status = 200
 
 [[redirects]]
   from = "/api/admin/twilio"
@@ -260,7 +268,7 @@
 # The admin Outreach tab imports its prospect list from this file (built by
 # _internal/outreach/source/make_prospect_list.py), so it ships inside the function bundle.
 [functions."admin-outreach"]
-  included_files = ["_internal/outreach/prospects.json"]
+  included_files = ["_internal/outreach/prospects.json", "_internal/outreach/routes_utah.json"]
 
 # ───────── Scheduled function ─────────
 # Auto-expires waitlist holds and transitions rentals by date. Runs hourly.

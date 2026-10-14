@@ -178,7 +178,10 @@ body.biz.bookmode .slider-block{display:block!important}
         <p hidden><label>Do not fill this out <input name="bot-field" id="botField" tabindex="-1" autocomplete="off"></label></p>
 
         <div class="fg" id="bizNameRow"><label for="cbiz">Business name <span class="req">*</span></label><input type="text" id="cbiz" name="business_name" autocomplete="organization" maxlength="120"></div>
-        <div class="fg"><label for="cn">Full name <span class="req">*</span></label><input type="text" id="cn" name="customer_name" autocomplete="name" required></div>
+        <div class="row2">
+          <div class="fg"><label for="cfn">First name <span class="req">*</span></label><input type="text" id="cfn" name="first-name" autocomplete="given-name" required></div>
+          <div class="fg"><label for="cln">Last name <span class="req">*</span></label><input type="text" id="cln" name="last-name" autocomplete="family-name" required></div>
+        </div>
         <div class="row2">
           <div class="fg"><label for="ce">Email <span class="req">*</span></label><input type="email" id="ce" name="customer_email" autocomplete="email" required></div>
           <div class="fg"><label for="cp">Phone <span class="req">*</span></label><input type="tel" id="cp" name="customer_phone" autocomplete="tel" required></div>
@@ -483,12 +486,15 @@ var CACHED_MODE=null; try{CACHED_MODE=localStorage.getItem('pb_booking_mode');}c
 if(CACHED_MODE==='book'){ enterBookMode({dates:[],styles:[]}); var dc=document.getElementById('dcal'); if(dc)dc.innerHTML='<div class="dnote">Loading open delivery dates…</div>'; }
 fetchDelivery().then(function(j){ if(j&&j.mode==='book'){ if(!window.BOOKMODE)enterBookMode(j); else { if(j.styles&&j.styles.length)window.__pbSetChamberOptions(j.styles.map(function(t){ var lbl='1.5 ATA '+(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:t.status!=='available'&&t.status!=='later',soon:t.status==='soon',status:t.status,next:t.nextAvailable}; })); var note=document.getElementById('dnote'); if(note&&j.deliveryNote){note.innerHTML='<strong>'+j.deliveryNote.replace(/</g,'&lt;')+'</strong>';delete note.dataset.base;} applyDelivery(j); } } }).catch(function(){});
 
+['cfn','cln'].forEach(function(id){ var el=document.getElementById(id); el.addEventListener('input',function(){ el.setCustomValidity(''); }); });
 var _submitting=false; // idempotency guard: blocks double-clicks / re-entry for one submission
 document.getElementById('resForm').addEventListener('submit',async function(e){
   e.preventDefault();
   if(_submitting)return;
   var f=e.target,btn=document.getElementById('submitBtn'),res=document.getElementById('resResult');
   if(document.getElementById('botField').value)return;
+  var fnEl=document.getElementById('cfn'),lnEl=document.getElementById('cln');
+  [fnEl,lnEl].forEach(function(el){ el.setCustomValidity(el.value.trim()?'':'Please fill out this field.'); });
   if(!f.checkValidity()){f.reportValidity();return;}
   if(window.BOOKMODE&&!document.getElementById('bookDate').value){ res.className='result err'; res.textContent='Please pick a delivery date on the calendar.'; document.getElementById('dcal').scrollIntoView({block:'center',behavior:'smooth'}); return; }
   _submitting=true;
@@ -505,7 +511,8 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   data.set('rental-length',months);
   data.set('rental_type',BIZ?'business':'residential');
   if(BIZ)data.set('business_name',document.getElementById('cbiz').value.trim());
-  data.set('customer_name',document.getElementById('cn').value);
+  data.set('first-name',document.getElementById('cfn').value.trim());
+  data.set('last-name',document.getElementById('cln').value.trim());
   data.set('customer_email',document.getElementById('ce').value);
   data.set('customer_phone',document.getElementById('cp').value);
   data.set('city',document.getElementById('ccity').value);
