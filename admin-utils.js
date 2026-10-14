@@ -35,5 +35,16 @@
       .map((x) => x.item);
   }
 
-  return { matchesSearch, orderByKeys };
+  // Who a customer is: email, else phone digits, else name. Mirrors netlify/functions/_lib/customer-key.js
+  // (test/admin-utils.test.js keeps them equal) so the admin can match rentals to customers with no email.
+  function customerKey(p) {
+    const r = p || {};
+    const email = String(r.email || '').trim().toLowerCase();
+    if (email) return email;
+    const digits = String(r.phone || '').replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
+    if (digits) return `phone:${digits}`;
+    const name = String(r.name || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    return name ? `name:${name}` : '';
+  }
+  return { matchesSearch, orderByKeys, customerKey };
 });

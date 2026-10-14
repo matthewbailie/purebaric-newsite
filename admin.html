@@ -3056,8 +3056,8 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const data = Object.fromEntries(new FormData(form));
     data.historical = form.querySelector('[name="historical"]').checked; // unchecked boxes are absent from FormData; send false so an edit can clear it
     // A historical rental only needs a name; older customers often have no email on file.
-    if (!data['renter-name'] || (!data['renter-email'] && !data.historical)) {
-      toast(data.historical ? 'Add the renter\'s name for this rental first' : 'Choose or add a customer for this rental first', true);
+    if (!data['renter-name'] || (!data['renter-email'] && !data['renter-phone'] && !data.historical)) {
+      toast(data.historical ? 'Add the renter\'s name for this rental first' : 'Choose or add a customer (with an email or a phone number) for this rental first', true);
       return false;
     }
     try {
@@ -3285,8 +3285,8 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         : '');
       const notesBlock = c.notes
         ? `<div class="renter-line" style="margin-top:0.5rem;color:var(--terracotta);">📝 ${escape(c.notes)}</div>` : '';
-      // Customer records are keyed by email, so someone with none on file (an older, historical renter) has no Edit.
-      const editButton = c.email ? `<button class="btn btn-ghost btn-sm" onclick='editCustomer(${JSON.stringify(c.email)})'>Edit</button>` : '<span class="renter-line">No email on file</span>';
+      // Customers are grouped by email, else phone, else name (c.key), so everyone can be edited, email or not.
+      const editButton = `<button class="btn btn-ghost btn-sm" onclick='editCustomer(${JSON.stringify(c.key)})'>Edit</button>`;
       // Collapsed summary: who, what they've paid, and where their rental stands. Tap to expand the full details.
       const today1 = localToday();
       const liveRentals = c.rentals.filter(r => r.status === 'active' || r.status === 'scheduled');
@@ -3314,7 +3314,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         ? `${totalMonths ? totalMonths + ' month' + (totalMonths === 1 ? '' : 's') + ' total · ' : ''}${c.rentals.length} rental${c.rentals.length === 1 ? '' : 's'}`
         : '';
       return `
-        <details class="customer-card" data-email="${escape(c.email || '')}">
+        <details class="customer-card" data-key="${escape(c.key || '')}" data-email="${escape(c.email || '')}">
           <summary class="customer-summary">
             <div class="cs-main">
               <div class="cs-name">${escape(c.name || '(no name)')} ${tagPills}</div>
@@ -3474,13 +3474,9 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const data = Object.fromEntries(new FormData(form));
     // Opened from a rental's "Customer record" section? Checked before the form is moved back home below.
     const fromRental = document.getElementById('rentalForm').contains(document.getElementById('customerForm'));
-    // No email: only possible for a new customer added from a historical rental. There is no
-    // customer record to save (customers are keyed by email), so the details go on the rental only.
-    const noEmail = fromRental && !data.id && !(data.email || '').trim() && rentalIsHistorical();
+    if (!String(data.name || '').trim()) { toast('A name is required', true); return false; }
     try {
-      if (noEmail) {
-        toast('Renter added to this rental (no email, so no customer record)');
-      } else if (data.id) {
+      if (data.id) {
         const { id, ...patch } = data;
         await api(`/api/admin/customers/${id}`, { method: 'PATCH', body: JSON.stringify(patch) });
         toast('Customer updated');
@@ -3508,12 +3504,12 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   // Open the customer form pre-filled with the merged customer data.
   // Works for both manually-created customers (PATCHes existing record) and
   // derived customers (POSTs a new manual record on first save).
-  function editCustomer(email) {
-    const c = _customers.find(x => x.email === email);
+  function editCustomer(key) {
+    const c = _customers.find(x => x.key === key) || _customers.find(x => x.email && x.email === key);
     if (!c) return;
     // Open the editor right under this customer's card (unless the form is in use inside the rental form).
     const form = document.getElementById('customerForm');
-    const card = document.querySelector(`#customersList details.customer-card[data-email="${CSS.escape(email)}"]`);
+    const card = document.querySelector(`#customersList details.customer-card[data-key="${CSS.escape(c.key || '')}"]`);
     if (card && !form.closest('#rentalForm')) { form.classList.remove('open'); card.insertAdjacentElement('afterend', form); form.classList.add('after-card'); }
     // Address fallback: if no manual address yet, pull from the most recent rental
     let addr = c.address || {};
@@ -3548,15 +3544,15 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   // fields (a point-in-time snapshot, so editing a customer later doesn't
   // rewrite an old rental): a new rental copies the customer in, an existing
   // one is only re-copied when the customer is saved from inside it.
-  function editCustomerInline(email) {
+  function editCustomerInline(key) {
     resetFormPosition('customerForm', 'rentalCustomerFormAnchor');
-    editCustomer(email);
+    editCustomer(key);
   }
   function addCustomerInline() {
     resetFormPosition('customerForm', 'rentalCustomerFormAnchor');
     toggleForm('customerForm');
-    // Historical rentals can be for someone with no email on file; everywhere else email stays required.
-    document.querySelector('#customerFormEl [name="email"]').required = !rentalIsHistorical();
+    // Email is optional: a customer with none is grouped by phone, else by name.
+    document.querySelector('#customerFormEl [name="email"]').required = false;
     // A rental that already names its renter (for example one filed under the wrong customer) seeds the new record.
     const snap = getRentalRenter();
     const nameEl = document.querySelector('#customerFormEl [name="name"]');
@@ -3598,35 +3594,30 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     if (!rentalField('renter-email') || !summaryEl) return;
     const isNew = !rentalField('id').value;
     const snap = getRentalRenter();
-    const email = snap.email;
+    const key = window.PurebaricAdminUtils.customerKey(snap);
     const showPick = show => {
       pickEl.style.display = show ? '' : 'none';
       if (show) { document.getElementById('rentalCustomerLookup').value = ''; document.getElementById('rentalCustomerLookupMsg').textContent = ''; document.getElementById('rentalCustomerResults').hidden = true; }
     };
-    if (!email) {
-      if (snap.name && rentalIsHistorical()) {
-        summaryEl.innerHTML = `${customerDetailsHtml(snap.name, '', snap.phone, snap.address)}<div>No email on file. A historical rental can be saved without one.</div>`;
-      } else {
-        summaryEl.textContent = 'No customer chosen yet.';
-      }
+    if (!key) {
+      summaryEl.textContent = 'No customer chosen yet.';
       showPick(true);
       return;
     }
-    let c = _customers.find(x => x.email === email);
+    let c = _customers.find(x => x.key === key);
     if (!c) {
-      // Don't depend on the Customers tab having been visited this session —
-      // look this one email up directly.
+      // Don't depend on the Customers tab having been visited this session: look this one person up directly.
       try {
-        const data = await api(`/api/admin/customers?q=${encodeURIComponent(email)}`);
-        c = (data.customers || []).find(x => x.email === email);
+        const data = await api(`/api/admin/customers?q=${encodeURIComponent(snap.email || snap.phone || snap.name)}`);
+        c = (data.customers || []).find(x => x.key === key);
         if (c) {
-          const idx = _customers.findIndex(x => x.email === c.email);
+          const idx = _customers.findIndex(x => x.key === c.key);
           if (idx >= 0) _customers[idx] = c; else _customers.push(c);
         }
       } catch (e) { /* non-fatal — falls through to the rental's own copy below */ }
     }
     if (!c) {
-      summaryEl.innerHTML = `${customerDetailsHtml(snap.name, snap.email, snap.phone, snap.address)}<div>No customer record found for this email. Choose or add one below.</div>`;
+      summaryEl.innerHTML = `${customerDetailsHtml(snap.name, snap.email, snap.phone, snap.address)}<div>No customer record found for this person yet. Choose or add one below.</div>`;
       showPick(true);
       return;
     }
@@ -3640,7 +3631,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       ${mismatch ? `<div class="renter-line" style="color:#82402f;margin:0 0 8px;"><strong>Check this customer.</strong> This rental is for <strong>${escape(snap.name)}</strong>, but the email on it belongs to <strong>${escape(c.name)}</strong>'s customer record, so the rental is filed under ${escape(c.name)}. Use "Choose a different customer" below and pick or add ${escape(snap.name)}.</div>` : ''}
       ${customerDetailsHtml(c.name, c.email, c.phone, addr)}
       <div class="row-actions">
-        <button type="button" class="btn btn-ghost btn-sm" onclick='editCustomerInline(${JSON.stringify(c.email)})'>Edit customer</button>
+        <button type="button" class="btn btn-ghost btn-sm" onclick='editCustomerInline(${JSON.stringify(c.key)})'>Edit customer</button>
         <button type="button" class="btn ${mismatch ? 'btn-primary' : 'btn-ghost'} btn-sm" onclick="showRentalCustomerPick()">Choose a different customer</button>
       </div>
     `;
@@ -3666,10 +3657,10 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     _pickLoadedAt = Date.now();
     return _pickCustomers;
   }
-  function chooseRentalCustomer(email) {
-    const c = (_pickCustomers || []).find(x => x.email === email);
+  function chooseRentalCustomer(key) {
+    const c = (_pickCustomers || []).find(x => x.key === key);
     if (!c) return;
-    const idx = _customers.findIndex(x => x.email === c.email);
+    const idx = _customers.findIndex(x => x.key === c.key);
     if (idx >= 0) _customers[idx] = c; else _customers.push(c);
     setRentalRenter({ name: c.name, email: c.email, phone: c.phone, address: customerAddress(c) });
     document.getElementById('rentalCustomerResults').hidden = true;
@@ -3689,7 +3680,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const hits = all.filter(c => window.PurebaricAdminUtils.matchesSearch(q, [c.name, c.email, c.phone])).slice(0, 8);
     results.hidden = false;
     results.innerHTML = hits.length
-      ? hits.map(c => `<button type="button" data-email="${escape(c.email)}"><strong>${escape(c.name || '(no name)')}</strong><div class="pick-sub">${escape(c.email)}${c.phone ? ' · ' + escape(c.phone) : ''}</div></button>`).join('')
+      ? hits.map(c => `<button type="button" data-key="${escape(c.key)}"><strong>${escape(c.name || '(no name)')}</strong><div class="pick-sub">${escape(c.email || 'no email')}${c.phone ? ' · ' + escape(c.phone) : ''}</div></button>`).join('')
       : '<div class="pick-empty">No customers match. Use Add new customer.</div>';
   }
   (function () {
@@ -3698,10 +3689,10 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     box.addEventListener('input', searchRentalCustomers);
     box.addEventListener('focus', () => { loadPickCustomers().catch(() => {}); });
     box.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') { e.preventDefault(); const first = results.querySelector('button'); if (first) chooseRentalCustomer(first.dataset.email); }
+      if (e.key === 'Enter') { e.preventDefault(); const first = results.querySelector('button'); if (first) chooseRentalCustomer(first.dataset.key); }
       if (e.key === 'ArrowDown') { const first = results.querySelector('button'); if (first) { e.preventDefault(); first.focus(); } }
     });
-    results.addEventListener('click', (e) => { const b = e.target.closest('button[data-email]'); if (b) chooseRentalCustomer(b.dataset.email); });
+    results.addEventListener('click', (e) => { const b = e.target.closest('button[data-key]'); if (b) chooseRentalCustomer(b.dataset.key); });
     results.addEventListener('keydown', (e) => {
       const b = e.target.closest('button'); if (!b) return;
       if (e.key === 'ArrowDown' && b.nextElementSibling) { e.preventDefault(); b.nextElementSibling.focus(); }

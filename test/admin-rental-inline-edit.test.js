@@ -65,11 +65,12 @@ test("rentals API stores the historical flag without changing conflict rules", (
   assert.match(src, /function cleanHistorical\(value\) \{\s*return value === true \|\| value === "true" \|\| value === "on";/);
 });
 
-test("historical rentals can be saved without an email; other rentals still need one", () => {
-  assert.match(adminHtml, /\(!data\['renter-email'\] && !data\.historical\)/);
-  assert.match(adminHtml, /const noEmail = fromRental && !data\.id && !\(data\.email \|\| ''\)\.trim\(\) && rentalIsHistorical\(\)/);
-  // The customer form's email stays required except for a new customer added from a historical rental.
-  assert.match(adminHtml, /\[name="email"\]'\)\.required = !rentalIsHistorical\(\)/);
+test("a rental needs a renter with an email or a phone, unless it is historical; customers never need an email", () => {
+  assert.match(adminHtml, /\(!data\['renter-email'\] && !data\['renter-phone'\] && !data\.historical\)/);
+  // Customers are grouped by email, else phone, else name, so the customer form's email is never required.
+  assert.match(adminHtml, /\[name="email"\]'\)\.required = false/);
+  assert.match(adminHtml, /window\.PurebaricAdminUtils\.customerKey\(snap\)/);
+  assert.doesNotMatch(adminHtml, /const noEmail = fromRental/);
 });
 
 test("Home shows renewals for the next 7 days above Operations", () => {

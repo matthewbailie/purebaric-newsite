@@ -560,9 +560,12 @@ async function createManualCustomer(data) {
   const phone = String(data.phone || "").replace(/\D/g, "");
   // Merge into an existing record only on a real match: same email, or (no email) same phone number.
   const all = await listManualCustomers();
+  const name = String(data.name || "").trim().toLowerCase().replace(/\s+/g, " ");
   const existing = email
     ? all.find((c) => normalizeEmail(c.email) === email)
-    : (phone ? all.find((c) => !normalizeEmail(c.email) && String(c.phone || "").replace(/\D/g, "") === phone) : null);
+    : phone ? all.find((c) => !normalizeEmail(c.email) && String(c.phone || "").replace(/\D/g, "") === phone)
+    : name ? all.find((c) => !normalizeEmail(c.email) && !String(c.phone || "").replace(/\D/g, "") && String(c.name || "").trim().toLowerCase().replace(/\s+/g, " ") === name)
+    : null;
   if (existing) {
     return updateManualCustomer(existing.id, {
       name: data.name || "",
@@ -630,7 +633,7 @@ async function listCustomers() {
 
   // Seed from manually-created customers first, these are the source of truth for name/phone/address/notes/tags
   for (const m of manualCustomers) {
-    const c = ensure(m.email);
+    const c = ensure(m.email, renterKey(m));
     if (!c) continue;
     c.manualId = m.id;
     c.name = m.name || c.name;

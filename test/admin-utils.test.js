@@ -1,6 +1,7 @@
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
-const { matchesSearch, orderByKeys } = require("../admin-utils");
+const { matchesSearch, orderByKeys, customerKey } = require("../admin-utils");
+const { renterKey } = require("../netlify/functions/_lib/customer-key");
 
 test("matchesSearch: empty query matches everything, words are AND-ed and case-insensitive", () => {
   assert.equal(matchesSearch("", ["Ann Lee"]), true);
@@ -17,6 +18,13 @@ test("matchesSearch: phone numbers match on digits regardless of formatting", ()
   assert.equal(matchesSearch("(801)", ["801.555.1234"]), true);
   assert.equal(matchesSearch("999", ["8015551234"]), false);
   assert.equal(matchesSearch("12", ["Room 123"]), true); // ordinary text match still works
+});
+
+test("customerKey matches the server's renterKey for every fallback", () => {
+  for (const p of [{ email: " Sam@X.com ", phone: "8015551212" }, { name: "Cassie Johnson", phone: "+1 (801) 358-3141" }, { name: "  Cassie   Johnson " }, {}, { email: "", phone: "", name: "" }]) {
+    assert.equal(customerKey(p), renterKey(p));
+  }
+  assert.equal(customerKey({ name: "Cassie Johnson" }), "name:cassie johnson");
 });
 
 test("orderByKeys: listed keys first in order, the rest keep their relative order", () => {
