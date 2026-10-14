@@ -168,3 +168,9 @@
 
 **Context:** Stripe's dashboard showed MRR of $4,484 while the admin Home tab showed $3,755. The $729 gap was one rental paid on the evening of 13 October for delivery on 14 October: Stripe counts a subscription from the day it is paid; the admin counted from the delivery date. The UTC day also stamped that evening payment as 14 October. Nothing else differed.
 
+## The public instruction manual omits the "Benefits of mHBOT" section (2026-10-13)
+
+**Decision:** `instructions.html` reproduces the owner's home chamber manual except section 14, "Benefits of mHBOT (Supported by Existing Research)", which listed disease and biomarker claims (inflammation, dementia biomarker, wound healing, telomeres, mold exposure). The removed markup is easy to restore from the Word document if the owner and a qualified reviewer want it published.
+
+**Context:** The site's health-content policy (RUNBOOK section 14) is wellness-only and asks for a qualified reviewer on new health claims; that section would have put the strongest medical claims on the site on a public, indexable page. Everything a renter needs to operate the chamber safely is on the page.
+

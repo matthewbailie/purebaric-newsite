@@ -168,6 +168,22 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   .modal-backdrop { position: fixed; inset: 0; background: rgba(20, 18, 15, 0.45); display: none; align-items: center; justify-content: center; z-index: 9998; padding: 1rem; }
   .modal-backdrop.open { display: flex; }
   .modal { background: var(--cream); border-radius: 4px; max-width: 640px; width: 100%; max-height: 86vh; overflow-y: auto; padding: 2rem; box-shadow: 0 12px 36px rgba(0,0,0,0.18); }
+  .customer-waivers { margin: 10px 0 4px; }
+  .customer-waivers ul { margin: 6px 0 0; padding-left: 18px; }
+  .customer-waivers li { margin: 4px 0; }
+  .wv-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+  .wv-fields label, .wv-actions label { display: block; font-size: 0.82rem; color: var(--stone-muted); }
+  .wv-fields input, .wv-actions input { display: block; width: 100%; margin-top: 3px; padding: 7px 9px; border: 1px solid var(--line, #e6dccd); border-radius: 8px; font: inherit; }
+  .wv-text { max-height: 38vh; overflow-y: auto; padding: 10px 12px; border: 1px solid var(--line, #e6dccd); border-radius: 10px; background: #fff; font-size: 0.9rem; line-height: 1.5; }
+  .wv-text h4, .modal h4 { margin: 12px 0 4px; font-size: 0.95rem; color: var(--terracotta, #9a4f3a); }
+  .wv-text ul { margin: 2px 0 8px 18px; padding: 0; }
+  .wv-text p { margin: 0 0 6px; }
+  .wv-agree { display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; margin: 8px 0; }
+  .wv-agree input { width: 20px; height: 20px; margin-top: 1px; }
+  .wv-pad { border: 1px dashed var(--terracotta, #9a4f3a); border-radius: 10px; background: #fff; height: 180px; }
+  .wv-pad canvas { width: 100%; height: 100%; display: block; touch-action: none; border-radius: 10px; }
+  .wv-actions { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-top: 8px; }
+  @media (max-width: 560px) { .wv-fields { grid-template-columns: 1fr; } .wv-text { max-height: 32vh; } }
   .modal-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
   .modal-header h3 { margin: 0; font-size: 1.4rem; }
   .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--stone-muted); padding: 0; line-height: 1; }
@@ -2739,8 +2755,8 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <td><span class="pill pill-${r.status}">${r.status}</span></td>
         <td><span class="pill pill-${payStatus}">${escape(paymentLabel)}</span></td>
         <td>${r.waiverFileKey
-            ? `<a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color: var(--terracotta);">View waiver</a>`
-            : `<label class="btn btn-ghost btn-sm" style="cursor: pointer;">Attach waiver<input type="file" accept="application/pdf,image/*" style="display:none;" onchange="uploadWaiver(event, '${r.id}')"></label>`}</td>
+            ? `<a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color: var(--terracotta);">${r.waiverSigned ? 'View signed waiver' : 'View waiver'}</a>${r.waiverSigned ? `<div class="renter-line">Signed ${escape(fmtDate(String(r.waiverSigned.at).slice(0, 10)))}</div>` : ''}`
+            : `<div class="row-actions"><button class="btn btn-primary btn-sm" onclick='openWaiverSign(${JSON.stringify(r.id)})'>Sign waiver</button><label class="btn btn-ghost btn-sm" style="cursor: pointer;">Attach file<input type="file" accept="application/pdf,image/*" style="display:none;" onchange="uploadWaiver(event, '${r.id}')"></label></div>`}</td>
         <td>
           <div class="row-actions">
             <button class="btn btn-ghost btn-sm" onclick='viewRentalDetails(${JSON.stringify(r.id)})'>Details</button>
@@ -2785,8 +2801,10 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     if (r.paymentMethod) payParts.push(escape(r.paymentMethod));
     if (r.paymentDate) payParts.push(`on ${escape(r.paymentDate)}`);
     const waiverHtml = r.waiverFileKey
-      ? `<a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color: var(--terracotta);">View attached waiver</a>`
-      : 'Not attached yet';
+      ? (r.waiverSigned
+        ? `Signed electronically by ${escape(r.waiverSigned.name)} on ${escape(fmtDate(String(r.waiverSigned.at).slice(0, 10)))} · <a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color: var(--terracotta);">View signed waiver</a>`
+        : `<a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color: var(--terracotta);">View attached waiver</a>`)
+      : `Not signed yet · <button class="btn btn-primary btn-sm" onclick='openWaiverSign(${JSON.stringify(r.id)})'>Sign waiver on this phone</button>`;
     const body = `
       <div class="modal-row"><strong>Status</strong><div><span class="pill pill-${r.status}">${r.status}</span></div></div>
       <div class="modal-row"><strong>Rental type</strong><div>${rentalIsBusiness(r) ? `Business${r.businessName ? ' · ' + escape(r.businessName) : ''} <span class="renter-line">(business rate and agreement)</span>` : 'Residential (home)'}</div></div>
@@ -3297,6 +3315,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
               <span>First seen: <strong>${escape(firstDate)}</strong></span>
               <span>Last activity: <strong>${escape(lastDate)}</strong></span>
             </div>
+            <div class="customer-waivers"><strong>Waiver</strong>${customerWaiverHtml(c)}</div>
             <div class="customer-records">
               <div class="customer-record-block"><strong>Rentals</strong>${discountHtml}<ul>${rentalList}</ul></div>
               <div class="customer-record-block"><strong>Rental requests</strong><ul>${bookingList}</ul></div>
@@ -3308,6 +3327,100 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       `;
     }).join('');
   }
+  // Waiver status for each of a customer's rentals, with the signed copy or a button to sign now.
+  function customerWaiverHtml(c) {
+    const rentals = [...(c.rentals || [])].filter(r => r.status !== 'cancelled').sort((a, b) => String(b.startDate).localeCompare(String(a.startDate)));
+    if (!rentals.length) return '<div class="renter-line">The waiver is signed per rental. Add this customer\'s rental first, then sign it here.</div>';
+    return `<ul>${rentals.map(r => {
+      const chamber = _chambers.find(x => x.id === r.chamberId);
+      const label = `${escape(fmtDate(r.startDate))} → ${escape(fmtDate(r.endDate))}${chamber ? ' · ' + escape(chamber.name) : ''}`;
+      if (r.waiverSigned) return `<li>${label}: <span class="pill pill-paid">Signed</span> by ${escape(r.waiverSigned.name)} on ${escape(fmtDate(String(r.waiverSigned.at).slice(0, 10)))} · <a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color:var(--terracotta);">View signed waiver</a></li>`;
+      if (r.waiverFileKey) return `<li>${label}: <span class="pill pill-paid">Attached</span> · <a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color:var(--terracotta);">View file</a></li>`;
+      return `<li>${label}: <span class="pill pill-unpaid">Not signed</span> <button class="btn btn-primary btn-sm" onclick='openWaiverSign(${JSON.stringify(r.id)})'>Sign waiver on this phone</button></li>`;
+    }).join('')}</ul>`;
+  }
+
+  // ─── Digital waiver signature: show the waiver on this phone, the renter signs with a finger ───
+  let _waiverText = null, _sigPad = null;
+  async function openWaiverSign(rentalId) {
+    const r = (_rentals || []).find(x => x.id === rentalId);
+    if (!r) { toast('Rental not found', true); return; }
+    try { if (!_waiverText) _waiverText = await api('/api/admin/waiver/text'); } catch (err) { toast(err.message, true); return; }
+    const w = _waiverText, p = r.renter || {};
+    const addr = [p.street || p.address, p.city, p.state, p.zip].filter(Boolean).join(', ');
+    const sections = w.sections.map(sec => {
+      let html = `<h4>${escape(sec.heading)}</h4>`, inList = false;
+      sec.items.forEach(it => {
+        if (it.t === 'li') { if (!inList) { html += '<ul>'; inList = true; } html += `<li>${escape(it.text)}</li>`; return; }
+        if (inList) { html += '</ul>'; inList = false; }
+        html += it.t === 'b' ? `<p><strong>${escape(it.text)}</strong></p>` : `<p>${escape(it.text)}</p>`;
+      });
+      return html + (inList ? '</ul>' : '');
+    }).join('');
+    openModal(w.title, `
+      <div class="wv-head renter-line">Provider / Business: <strong>${escape(w.provider.name)}</strong> · ${escape(w.provider.phone)} / ${escape(w.provider.email)}</div>
+      <div class="wv-fields">
+        <label>Renter name <input id="wvName" value="${escape(p.name || '')}" autocomplete="off"></label>
+        <label>Phone / Email <input id="wvContact" value="${escape([p.phone, p.email].filter(Boolean).join(' / '))}" autocomplete="off"></label>
+        <label>Address <input id="wvAddress" value="${escape(addr)}" autocomplete="off"></label>
+      </div>
+      <div class="wv-text" id="wvText">${sections}</div>
+      <h4>12. Acknowledgment &amp; Signature</h4>
+      <label class="wv-agree"><input type="checkbox" id="wvAgree" onchange="wvUpdateSubmit()"> I have read this Agreement fully, I understand it, and I am signing voluntarily.</label>
+      <div class="renter-line" style="margin:8px 0 4px;">Sign with your finger in the box below.</div>
+      <div class="wv-pad"><canvas id="wvCanvas" aria-label="Signature area"></canvas></div>
+      <div class="wv-actions">
+        <button type="button" class="btn btn-ghost btn-sm" onclick="wvClear()">Clear signature</button>
+        <label style="flex:1 1 200px;">Equipment condition at delivery (optional) <input id="wvCondition" placeholder="e.g. clean, no marks" autocomplete="off"></label>
+      </div>
+      <div class="modal-actions" style="margin-top:12px;">
+        <button type="button" class="btn btn-primary" id="wvSubmit" disabled onclick='submitWaiverSign(${JSON.stringify(rentalId)})'>Record signature</button>
+        <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      </div>
+      <div class="renter-line" style="margin-top:8px;">Today: ${escape(fmtDate(localToday()))}. The signed copy is kept with this rental and can be viewed or printed from the Rentals and Customers tabs.</div>`);
+    _sigPad = wvInitPad(document.getElementById('wvCanvas'));
+    document.getElementById('wvText').scrollTop = 0;
+  }
+  // A small signature pad: pointer events (finger, stylus or mouse), crisp on high-density screens.
+  function wvInitPad(canvas) {
+    const pad = { canvas, strokes: 0, drawing: false, last: null };
+    const ratio = Math.max(1, window.devicePixelRatio || 1);
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.round(rect.width * ratio); canvas.height = Math.round(rect.height * ratio);
+      const ctx = canvas.getContext('2d'); ctx.scale(ratio, ratio); ctx.lineWidth = 2.4; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#2b2320';
+      pad.ctx = ctx; pad.strokes = 0; wvUpdateSubmit();
+    };
+    const pos = (e) => { const rect = canvas.getBoundingClientRect(); return { x: e.clientX - rect.left, y: e.clientY - rect.top }; };
+    canvas.addEventListener('pointerdown', (e) => { e.preventDefault(); canvas.setPointerCapture(e.pointerId); pad.drawing = true; pad.last = pos(e); pad.ctx.beginPath(); pad.ctx.moveTo(pad.last.x, pad.last.y); pad.ctx.lineTo(pad.last.x + 0.1, pad.last.y + 0.1); pad.ctx.stroke(); });
+    canvas.addEventListener('pointermove', (e) => { if (!pad.drawing) return; e.preventDefault(); const p = pos(e); pad.ctx.beginPath(); pad.ctx.moveTo(pad.last.x, pad.last.y); pad.ctx.lineTo(p.x, p.y); pad.ctx.stroke(); pad.last = p; pad.strokes += 1; wvUpdateSubmit(); });
+    const end = () => { pad.drawing = false; };
+    canvas.addEventListener('pointerup', end); canvas.addEventListener('pointercancel', end); canvas.addEventListener('pointerleave', end);
+    resize();
+    return pad;
+  }
+  function wvClear() { if (!_sigPad) return; const c = _sigPad.canvas; _sigPad.ctx.clearRect(0, 0, c.width, c.height); _sigPad.strokes = 0; wvUpdateSubmit(); }
+  function wvUpdateSubmit() {
+    const btn = document.getElementById('wvSubmit'), agree = document.getElementById('wvAgree');
+    if (btn) btn.disabled = !(agree && agree.checked && _sigPad && _sigPad.strokes > 3);
+  }
+  async function submitWaiverSign(rentalId) {
+    const btn = document.getElementById('wvSubmit'); if (btn) btn.disabled = true;
+    const contact = document.getElementById('wvContact').value.trim();
+    const [phone, email] = contact.includes('@') ? [contact.split('/')[0].includes('@') ? '' : contact.split('/')[0].trim(), contact.split('/').find(x => x.includes('@')).trim()] : [contact, ''];
+    const body = {
+      rentalId, signerName: document.getElementById('wvName').value, signerPhone: phone, signerEmail: email,
+      signerAddress: document.getElementById('wvAddress').value, equipmentCondition: document.getElementById('wvCondition').value,
+      agreed: document.getElementById('wvAgree').checked === true, signaturePng: _sigPad.canvas.toDataURL('image/png'), waiverVersion: _waiverText.version,
+    };
+    try {
+      const r = await api('/api/admin/waiver/sign', { method: 'POST', body: JSON.stringify(body) });
+      const i = (_rentals || []).findIndex(x => x.id === rentalId); if (i !== -1) _rentals[i] = r.rental;
+      closeModal(); toast('Waiver signed and saved with the rental');
+      await loadAll();
+    } catch (err) { toast(err.message, true); if (btn) btn.disabled = false; }
+  }
+
   // Only one customer is open at a time, so scrolling the list stays easy.
   document.getElementById('customersList').addEventListener('toggle', (e) => {
     if (!e.target.open) return;
