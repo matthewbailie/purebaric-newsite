@@ -455,7 +455,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <summary>View the monthly numbers as a table</summary>
         <div style="overflow-x:auto"><table class="data-table" id="monthlyTable"></table></div>
       </details>
-      <p class="renter-line" style="margin:0.6rem 0 0;">Each month shows the position at month end (today, for the current month). Cancelled rentals are excluded. Weekly-billed rentals are converted to a monthly amount.</p>
+      <p class="renter-line" style="margin:0.6rem 0 0;">Each month shows the position at month end (today, for the current month). Cancelled rentals are excluded. A paid rental counts from the day it was paid, even if delivery is later, which is how Stripe counts it. Weekly-billed rentals are converted to a monthly amount.</p>
 
       <h3 class="inv-heading">Business health</h3>
       <div class="health-row" id="healthRow" data-sortable="home-health"></div>

@@ -37,6 +37,23 @@ test("scheduled rentals do not count as MRR before activation", () => {
   assert.equal(M.snapshot([completed], "2026-09-30").mrr, 500);
 });
 
+test("a paid rental counts from its first payment day, before delivery, like Stripe's MRR", () => {
+  const paidEarly = r(9, "early@x.com", "2026-10-14", "2026-11-13", 729, { paymentStatus: "paid", paymentDate: "2026-10-13", stripePayments: [{ date: "2026-10-13", amount: 729 }] });
+  const unpaidFuture = r(10, "later@x.com", "2026-10-14", "2026-11-13", 729, { paymentStatus: "unpaid" });
+  assert.equal(M.countsFrom(paidEarly), "2026-10-13");
+  assert.equal(M.countsFrom(unpaidFuture), "2026-10-14");
+  assert.equal(M.activeOn(paidEarly, "2026-10-13"), true);
+  assert.equal(M.activeOn(unpaidFuture, "2026-10-13"), false);
+  assert.equal(M.activeOn(paidEarly, "2026-10-12"), false);
+  // a payment recorded after the start never moves the start earlier
+  const paidLate = r(11, "late@x.com", "2026-08-25", "2026-11-24", 549, { paymentStatus: "paid", paymentDate: "2026-09-26" });
+  assert.equal(M.countsFrom(paidLate), "2026-08-25");
+  // once it counts in MRR it is no longer "starting soon"
+  const o = M.overview({ rentals: [paidEarly, unpaidFuture], today: "2026-10-13" });
+  assert.equal(o.mrr, 729);
+  assert.equal(o.startingSoon.count, 1);
+});
+
 test("snapshot sums MRR, counts rentals and distinct subscribers, averages price", () => {
   const s = M.snapshot(rentals, "2026-03-31");
   assert.equal(s.rentals, 2);

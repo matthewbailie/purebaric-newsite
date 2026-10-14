@@ -57,7 +57,7 @@ async function paymentHint(stripe, evt) {
 }
 
 async function reconcile(stripe, { rentalId, email }) {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = require("./_lib/delivery").mountainToday();
   let rental = rentalId ? await getRental(rentalId) : null;
   if (!rental && email) rental = pickRental(await listRentals({}), email, today);
   if (!rental) {

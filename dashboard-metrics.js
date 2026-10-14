@@ -4,7 +4,10 @@
 //
 // Definitions (keep in sync with RUNBOOK §11):
 //  - A rental counts on a day when it is neither cancelled nor still scheduled,
-//    and start <= day <= end. Scheduled rentals stay in "Starting soon" until
+//    and countsFrom <= day <= end, where countsFrom is the start date or, for a
+//    rental that has already been paid, the first payment date if earlier. That
+//    matches Stripe's MRR, which counts a subscription from the day it is paid,
+//    not from the delivery date. Scheduled rentals stay in "Starting soon" until
 //    they are explicitly/automatically made active.
 //  - Monthly-equivalent revenue: a monthly rental's rate; a custom weekly rental's
 //    weekly rate x 52/12.
@@ -38,8 +41,17 @@
   function isCounted(r) {
     return !!r && r.status !== 'cancelled' && !!day10(r.startDate) && !!day10(r.endDate);
   }
+  // The day a rental starts counting as recurring revenue: its start date, or the day of its first
+  // recorded payment if that came earlier (a paid rental is live in Stripe before delivery day).
+  function countsFrom(r) {
+    const start = day10(r.startDate);
+    if (!r || r.paymentStatus === 'unpaid' || !r.paymentStatus) return start;
+    const dates = [day10(r.paymentDate), ...((r.stripePayments || []).map((p) => day10(p && p.date)))].filter(Boolean);
+    const first = dates.sort()[0];
+    return first && first < start ? first : start;
+  }
   function activeOn(r, day) {
-    return isCounted(r) && r.status !== 'scheduled' && day10(r.startDate) <= day && day10(r.endDate) >= day;
+    return isCounted(r) && r.status !== 'scheduled' && countsFrom(r) <= day && day10(r.endDate) >= day;
   }
   // Mirrors renterKey in netlify/functions/_lib/customer-key.js: email, else phone, else name (else this rental alone).
   const emailOf = (r) => {
@@ -192,6 +204,7 @@
     const startingSoon = { count: 0, mrr: 0 };
     counted.forEach((r) => {
       const start = day10(r.startDate);
+      if (activeOn(r, today)) return; // already paid and counting in MRR, even if delivery is later
       if (start > today && start <= horizon) { startingSoon.count += 1; startingSoon.mrr += monthlyEquivalent(r); }
     });
     startingSoon.mrr = Math.round(startingSoon.mrr);
@@ -224,5 +237,5 @@
     };
   }
 
-  return { monthlyEquivalent, isCounted, activeOn, avgTermMonths, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon };
+  return { monthlyEquivalent, isCounted, countsFrom, activeOn, avgTermMonths, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon };
 });

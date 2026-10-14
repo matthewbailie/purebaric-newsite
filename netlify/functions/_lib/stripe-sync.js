@@ -5,7 +5,10 @@
 // Pure apart from the `stripe` client passed in — unit-tested with a fake in test/stripe-sync.test.js.
 
 const DAY = 86400000;
-const isoOf = (seconds) => new Date(seconds * 1000).toISOString().slice(0, 10);
+// Calendar day of a Stripe timestamp in Mountain time, the business's day. Using the UTC day
+// put a late-evening payment on the next day, which kept a paid rental out of the admin's MRR.
+const MT = new Intl.DateTimeFormat("en-US", { timeZone: "America/Denver", year: "numeric", month: "2-digit", day: "2-digit" });
+const isoOf = (seconds) => { const p = Object.fromEntries(MT.formatToParts(new Date(seconds * 1000)).map((x) => [x.type, x.value])); return `${p.year}-${p.month}-${p.day}`; };
 const day10 = (v) => String(v || "").slice(0, 10);
 const utc = (d) => { const [y, m, dd] = d.split("-").map(Number); return Date.UTC(y, m - 1, dd); };
 const addDays = (d, n) => new Date(utc(d) + n * DAY).toISOString().slice(0, 10);

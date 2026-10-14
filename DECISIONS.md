@@ -162,3 +162,9 @@
 
 **Context:** The owner wants a permanent record of every review submitted, including ones taken off the site, and asked that nothing in that tab be deletable.
 
+## Admin MRR counts a paid rental from its payment day, matching Stripe (2026-10-13)
+
+**Decision:** `dashboard-metrics.js` counts a rental from `countsFrom`: its start date, or the day of its first recorded payment if that is earlier and the rental is paid. A rental counting in MRR is no longer listed under "Starting soon". Stripe payment days (`stripe-sync.js`) and the webhook's "today" are taken in Mountain time instead of UTC.
+
+**Context:** Stripe's dashboard showed MRR of $4,484 while the admin Home tab showed $3,755. The $729 gap was one rental paid on the evening of 13 October for delivery on 14 October: Stripe counts a subscription from the day it is paid; the admin counted from the delivery date. The UTC day also stamped that evening payment as 14 October. Nothing else differed.
+
