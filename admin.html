@@ -984,11 +984,14 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <p class="viz-note" id="anPageNote">Views of each page per day. Pick a page to chart it.</p>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0 10px;"><label class="renter-line" for="anPage">Page</label><select id="anPage" onchange="renderPageChart()" style="padding:7px 10px;border:1px solid var(--line,#e6dccd);border-radius:8px;background:var(--card,#fffdf9);font-family:inherit;"></select></div>
         <div id="chartAnPage"></div>
-        <div class="table-wrap" style="margin-top:14px;"><table class="data-table an-table"><thead><tr><th>Page</th><th class="n" id="anThAvg">Views/day</th><th class="n" id="anThPrev">Previous period</th><th class="n">Change</th><th class="n" id="anThTotal">Total views</th></tr></thead><tbody id="anPagesBody"></tbody></table></div>
+        <div class="table-wrap" style="margin-top:14px;"><table class="data-table an-table"><thead><tr><th>Page</th><th class="n" id="anThAvg">This period</th><th class="n" id="anThPrev">Previous period</th><th class="n">Change</th></tr></thead><tbody id="anPagesBody"></tbody></table></div>
         <div class="renter-line" id="anMeta" style="margin-top:8px;"></div>
       </div>
       <style>
         .an-table td.n, .an-table th.n{text-align:right;white-space:nowrap;}
+        .an-table th, .an-table td{padding:0.5rem 0.45rem;}
+        .an-table th{letter-spacing:0;font-size:0.72rem;}
+        .an-table td.n, .an-table th.n{width:1%;}
         .an-card{margin-top:1.5rem;padding-bottom:1.1rem;}
         /* Filter / period switches lock to the top of the viewport and stay there while you scroll a list or chart. */
         .pin-bar{position:sticky;top:0;z-index:20;background:var(--cream-warm);padding:10px 0;margin:0 0 1rem;}
@@ -1898,21 +1901,23 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       document.getElementById('akTotal').textContent = w.hasPrev ? w.prevTotal.toLocaleString('en-US') : '—';
       document.getElementById('akTotalSub').innerHTML = w.hasPrev ? 'Whole day' : 'No data yet';
     } else if (w) {
-      document.getElementById('akAvgLabel').textContent = 'Average visits per day, ' + _rangeWords();
-      document.getElementById('akAvg').textContent = _n1(w.avg);
-      document.getElementById('akAvgSub').innerHTML = w.hasPrev ? `${_delta(w.pct)} vs ${escape(prevName.toLowerCase())}` : `${w.days} day${w.days === 1 ? '' : 's'} of data so far`;
-      document.getElementById('akTotalLabel').textContent = prevName + ', average per day';
-      document.getElementById('akTotal').textContent = w.hasPrev ? _n1(w.prevAvg) : '—';
+      const pctT = w.hasPrev && w.prevTotal > 0 ? Math.round(((w.total - w.prevTotal) / w.prevTotal) * 100) : null;
+      document.getElementById('akAvgLabel').textContent = 'Visits, ' + _rangeWords();
+      document.getElementById('akAvg').textContent = w.total.toLocaleString('en-US');
+      document.getElementById('akAvgSub').innerHTML = w.hasPrev ? `${_delta(pctT)} vs ${escape(prevName.toLowerCase())}` : `${w.days} day${w.days === 1 ? '' : 's'} of data so far`;
+      document.getElementById('akTotalLabel').textContent = 'Visits, ' + prevName.toLowerCase();
+      document.getElementById('akTotal').textContent = w.hasPrev ? w.prevTotal.toLocaleString('en-US') : '—';
       document.getElementById('akTotalSub').innerHTML = w.hasPrev ? '' : 'No data yet';
     }
     _windowChartEl(document.getElementById('chartAnTotal'), r.chart, w, 'visit', 'Website visits');
     const pn = document.getElementById('anPageNote');
     if (pn) pn.textContent = _anRange === 1
-      ? 'Views of each page today so far, with yesterday for comparison. Pick a page to chart it.'
-      : `Average views per day of each page over the ${_rangeWords()}: the page's total views in the period divided by the number of days in it, so a page showing 2.3 on the Week view got 16 views in 7 days. The total for the period is in the last column. Pick a page to chart it.`;
-    document.getElementById('anThAvg').textContent = _anRange === 1 ? 'Views today' : 'Average views per day, ' + _rangeWords();
-    document.getElementById('anThPrev').textContent = _anRange === 1 ? 'Yesterday' : _prevWords().replace(/^the /, 'The ') + ' (per day)';
-    document.getElementById('anThTotal').textContent = 'Total views, ' + _rangeWords();
+      ? 'Views of each page today so far, beside yesterday. Pick a page to chart it.'
+      : `Views of each page over the ${_rangeWords()}, beside ${_prevWords()}. Pick a page to chart it.`;
+    // Short period names so the table fits a phone: views this period beside the one before it.
+    const thisName = _anRange === 1 ? 'Today' : _anRange === 7 ? 'This week' : _anRange === 30 ? 'This month' : _anRange === 90 ? 'Last 3 months' : 'Last 12 months';
+    document.getElementById('anThAvg').textContent = thisName;
+    document.getElementById('anThPrev').textContent = prevName;
     const rows = (r.pages || []).map(p => { const pw = _window(r.pageCharts[p.label], _anRange); return { label: p.label, w: pw }; });
     // Top performing pages: ranked by total views in the selected period.
     const top = rows.filter(x => x.w && x.w.total > 0).sort((a, b) => b.w.total - a.w.total).slice(0, 10);
@@ -1923,8 +1928,9 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <div class="an-top-row"><span class="an-top-rank">${i + 1}</span><strong class="an-top-name">${escape(label)}</strong><span class="an-top-n">${pw.total.toLocaleString('en-US')} view${pw.total === 1 ? '' : 's'}</span></div>
         <div class="an-top-bar"><div style="width:${Math.max(2, Math.round((pw.total / maxViews) * 100))}%"></div></div></li>`).join('')}</ol>`
       : '<div class="renter-line">No page views in this period yet.</div>';
-    document.getElementById('anPagesBody').innerHTML = rows.map(({ label, w: pw }) => `<tr><td><strong>${escape(label)}</strong></td><td class="n">${_n1(pw && pw.avg)}</td><td class="n">${pw && pw.hasPrev ? _n1(pw.prevAvg) : '—'}</td><td class="n">${pw ? (_delta(pw.pct) || '—') : '—'}</td><td class="n">${pw ? pw.total.toLocaleString('en-US') : '—'}</td></tr>`).join('')
-      || '<tr><td colspan="5" class="renter-line">No page data yet.</td></tr>';
+    const pctTotal = (pw) => pw && pw.hasPrev && pw.prevTotal > 0 ? Math.round(((pw.total - pw.prevTotal) / pw.prevTotal) * 100) : null;
+    document.getElementById('anPagesBody').innerHTML = rows.map(({ label, w: pw }) => `<tr><td><strong>${escape(label)}</strong></td><td class="n">${pw ? pw.total.toLocaleString('en-US') : '—'}</td><td class="n">${pw && pw.hasPrev ? pw.prevTotal.toLocaleString('en-US') : '—'}</td><td class="n">${pw ? (_delta(pctTotal(pw)) || '—') : '—'}</td></tr>`).join('')
+      || '<tr><td colspan="4" class="renter-line">No page data yet.</td></tr>';
     renderPageChart();
   }
 
