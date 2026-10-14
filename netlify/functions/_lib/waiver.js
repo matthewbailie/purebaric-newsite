@@ -6,7 +6,7 @@
 const WAIVER_VERSION = "home-2026-10";
 
 const PROVIDERS = {
-  utah: { name: "Matthew Bailie / Purebaric", phone: "(801) 901-0873", email: "hello@purebaric.com", state: "Utah" },
+  utah: { name: "Matthew Bailie / Purebaric", phone: "(801) 602-2134", email: "hello@purebaric.com", state: "Utah" },
   tennessee: { name: "Michael Bailie / Purebaric", phone: "(801) 884-2113", email: "mlebailie@hotmail.com", state: "Tennessee" },
 };
 const providerFor = (market) => PROVIDERS[String(market || "utah").toLowerCase()] || PROVIDERS.utah;
