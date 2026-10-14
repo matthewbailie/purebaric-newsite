@@ -34,10 +34,11 @@ Michael operates as an individual for now. No company to form, no attorney to hi
 
 ## 3. Who to visit first
 
-**Businesses, by walking in.** Follow the route plan from Day 1. Days 1 to 11 each include at least one best bet.
-- Day 1, South Knoxville and the Old City: Sauna House Knoxville, Peak IV Hydration, Prime IV, Rocky Top CrossFit, CrossFit First Creek.
-- Day 2, Kingston Pike out to Farragut: CrossFit Knoxville, Healing Hands Spa, Stretch Fusion (Chad Becker), Vital Hydration (Corina West).
-- Days 3 to 11: Sherway Road, Kingston Pike, Powell, Lenoir City, Maryville, Corryton, Oak Ridge.
+**Businesses, by walking in.** Follow the route plan from Day 1. Days 1 to 9 each include at least one best bet.
+- Day 1, Kingston Pike out to Farragut: Holisticare Spa, Restorative Functional Medicine, Dolce Medical Spa, Healing Hands Spa, Stretch Fusion (Chad Becker), Vital Hydration (Corina West), CrossFit Courageous.
+- Day 2, Kingston Pike, part 1: seven businesses, five best bets.
+- Days 3 to 9 each include at least one best bet: South Knoxville, the 37922 corridor, Maryville, Powell and the rest.
+- Every day starts and ends at 8843 Brookhaven Dr and fits inside two hours door to door.
 - Skip the businesses on the workbook's "Already offer HBOT" sheet; they are competitors.
 
 **Colleges and clubs, by email.** Do not walk in. Send the schools pamphlet and ask for ten minutes with the athletic director and the head athletic trainer together, in this order:
