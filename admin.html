@@ -3557,6 +3557,13 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     toggleForm('customerForm');
     // Historical rentals can be for someone with no email on file; everywhere else email stays required.
     document.querySelector('#customerFormEl [name="email"]').required = !rentalIsHistorical();
+    // A rental that already names its renter (for example one filed under the wrong customer) seeds the new record.
+    const snap = getRentalRenter();
+    const nameEl = document.querySelector('#customerFormEl [name="name"]');
+    if (nameEl && !nameEl.value && snap.name) {
+      const matched = _customers.find(x => x.email === snap.email);
+      if (!matched || String(matched.name || '').trim().toLowerCase() !== snap.name.trim().toLowerCase()) nameEl.value = snap.name;
+    }
   }
   function rentalField(name) { return document.querySelector(`#rentalFormEl [name="${name}"]`); }
   function getRentalRenter() {
@@ -3625,11 +3632,29 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     }
     const addr = customerAddress(c);
     if (isNew) setRentalRenter({ name: c.name, email: c.email, phone: c.phone, address: addr });
+    // The rental keeps its own copy of the renter. If its name is not the matched customer's name, the
+    // email on the rental belongs to someone else (a rental created from the wrong customer record).
+    const norm = v => String(v || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    const mismatch = !isNew && snap.name && c.name && norm(snap.name) !== norm(c.name);
     summaryEl.innerHTML = `
+      ${mismatch ? `<div class="renter-line" style="color:#82402f;margin:0 0 8px;"><strong>Check this customer.</strong> This rental is for <strong>${escape(snap.name)}</strong>, but the email on it belongs to <strong>${escape(c.name)}</strong>'s customer record, so the rental is filed under ${escape(c.name)}. Use "Choose a different customer" below and pick or add ${escape(snap.name)}.</div>` : ''}
       ${customerDetailsHtml(c.name, c.email, c.phone, addr)}
-      <button type="button" class="btn btn-ghost btn-sm" onclick='editCustomerInline(${JSON.stringify(c.email)})'>Edit customer</button>
+      <div class="row-actions">
+        <button type="button" class="btn btn-ghost btn-sm" onclick='editCustomerInline(${JSON.stringify(c.email)})'>Edit customer</button>
+        <button type="button" class="btn ${mismatch ? 'btn-primary' : 'btn-ghost'} btn-sm" onclick="showRentalCustomerPick()">Choose a different customer</button>
+      </div>
     `;
     showPick(false);
+  }
+  // Re-open the customer search under an existing rental so it can be moved to another customer
+  // (or a new one). Nothing changes until a customer is picked and the rental is saved.
+  function showRentalCustomerPick() {
+    const pickEl = document.getElementById('rentalCustomerPick');
+    pickEl.style.display = '';
+    document.getElementById('rentalCustomerLookup').value = '';
+    document.getElementById('rentalCustomerResults').hidden = true;
+    document.getElementById('rentalCustomerLookupMsg').textContent = 'Search for the right customer, or add a new one. The rental switches to them when you pick, and saves when you press Save rental.';
+    document.getElementById('rentalCustomerLookup').focus();
   }
   // Choose an existing customer for a rental that has none yet: search by name, email or phone;
   // matches appear as you type and a tap fills the rental in.
@@ -3648,6 +3673,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     if (idx >= 0) _customers[idx] = c; else _customers.push(c);
     setRentalRenter({ name: c.name, email: c.email, phone: c.phone, address: customerAddress(c) });
     document.getElementById('rentalCustomerResults').hidden = true;
+    if (rentalField('id').value) toast(`Rental will move to ${c.name || c.email} when you save`);
     refreshRentalCustomerSummary();
   }
   async function searchRentalCustomers() {
