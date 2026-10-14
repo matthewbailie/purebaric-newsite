@@ -1859,7 +1859,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   function _periodNames() { return _anRange === 1 ? ['Today', 'Yesterday'] : _anRange === 7 ? ['This week', 'Previous week'] : _anRange === 30 ? ['This month', 'Previous month'] : _anRange === 90 ? ['Last 3 months', 'Previous 3 months'] : ['Last 12 months', 'Previous 12 months']; }
   function _windowChartEl(el, c, w, unit, what) {
     if (!el || !w) return;
-    if (_anRange === 1) { _barPair(el, [{ label: 'Today', value: Math.round(w.total) }, { label: 'Yesterday', value: w.hasPrev ? Math.round(w.prevTotal) : null }], unit); return; }
+    if (_anRange === 1) { _barPair(el, [{ label: 'Yesterday', value: w.hasPrev ? Math.round(w.prevTotal) : null, muted: true }, { label: 'Today', value: Math.round(w.total) }], unit); return; }
     const [curName, prevName] = _periodNames();
     if (el.querySelector('svg[role="img"]') && !el.querySelector('.viz-plot')) { el.innerHTML = ''; el._vizInit = false; }
     // The previous-period line is always in the legend; with no data yet it simply has nothing to draw.
@@ -1877,7 +1877,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       const h = b.value == null ? 0 : Math.round(((H - pad - top) * b.value) / max);
       const x = x0 + i * (bw + gap), y = H - pad - h;
       const txt = b.value == null ? 'no data' : `${b.value.toLocaleString('en-US')} ${b.value === 1 ? unit : unit + 's'}`;
-      return `<rect x="${x}" y="${y}" width="${bw}" height="${h}" rx="4" fill="${i === 0 ? '#b8654d' : '#d9c7b5'}"></rect>
+      return `<rect x="${x}" y="${y}" width="${bw}" height="${h}" rx="4" fill="${b.muted ? '#d9c7b5' : '#b8654d'}"></rect>
         <text x="${x + bw / 2}" y="${y - 6}" text-anchor="middle" font-size="12" fill="#2b2320">${txt}</text>
         <text x="${x + bw / 2}" y="${H - 8}" text-anchor="middle" font-size="12" fill="#6f635b">${b.label}</text>`;
     }).join('');
