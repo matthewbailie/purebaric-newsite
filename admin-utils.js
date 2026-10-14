@@ -39,12 +39,28 @@
   // (test/admin-utils.test.js keeps them equal) so the admin can match rentals to customers with no email.
   function customerKey(p) {
     const r = p || {};
+    const name = String(r.name || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    if (name) return `name:${name}`;
     const email = String(r.email || '').trim().toLowerCase();
     if (email) return email;
     const digits = String(r.phone || '').replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
-    if (digits) return `phone:${digits}`;
-    const name = String(r.name || '').trim().toLowerCase().replace(/\s+/g, ' ');
-    return name ? `name:${name}` : '';
+    return digits ? `phone:${digits}` : '';
   }
-  return { matchesSearch, orderByKeys, customerKey };
+  // The customer a rental's renter copy belongs to: same name (phone breaks a tie between two customers
+  // with one name), else same email, else same phone. Mirrors customerFor in _lib/customers.js.
+  function findCustomerFor(customers, p) {
+    const all = customers || [];
+    const name = String((p && p.name) || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    const digits = String((p && p.phone) || '').replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
+    const email = String((p && p.email) || '').trim().toLowerCase();
+    if (name) {
+      const same = all.filter(c => (c.nameKey || String(c.name || '').trim().toLowerCase().replace(/\s+/g, ' ')) === name);
+      if (same.length === 1) return same[0];
+      if (same.length > 1) return same.find(c => digits && c.phoneDigits === digits) || same.find(c => email && c.email === email) || same.find(c => !c.phoneDigits) || same[0];
+    }
+    if (email) { const e = all.find(c => c.email === email); if (e) return e; }
+    if (digits) { const d = all.find(c => c.phoneDigits === digits); if (d) return d; }
+    return null;
+  }
+  return { matchesSearch, orderByKeys, customerKey, findCustomerFor };
 });

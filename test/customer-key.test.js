@@ -3,11 +3,11 @@ const assert = require("node:assert/strict");
 const { renterKey } = require("../netlify/functions/_lib/customer-key");
 const M = require("../dashboard-metrics");
 
-test("a renter is identified by email, else phone, else name", () => {
+test("a renter is identified by name, else email, else phone", () => {
   assert.equal(renterKey({ email: " Sam@X.com ", phone: "8015551212" }), "sam@x.com");
-  assert.equal(renterKey({ name: "Troy Miller", phone: "+1 (801) 358-3141" }), "phone:8013583141");
-  assert.equal(renterKey({ name: "Troy Miller", phone: "8013583141" }), renterKey({ name: "T M", phone: "801-358-3141" }));
-  assert.equal(renterKey({ name: "  Troy   Miller " }), "name:troy miller");
+  assert.equal(renterKey({ name: "Troy Miller", phone: "+1 (801) 358-3141" }), "name:troy miller");
+  assert.equal(renterKey({ name: "Troy Miller", email: "a@x.com" }), renterKey({ name: "  troy   MILLER ", email: "b@x.com" }));
+  assert.equal(renterKey({ phone: "+1 (801) 358-3141" }), "phone:8013583141");
   assert.equal(renterKey({}), "");
 });
 

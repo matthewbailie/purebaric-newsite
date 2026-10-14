@@ -1,5 +1,6 @@
 const { getStore } = require("@netlify/blobs");
 const { renterKey } = require("./customer-key");
+const { groupCustomers, findMergeTarget } = require("./customers");
 const crypto = require("crypto");
 const inventory = require("./inventory");
 const serviceArea = require("./servicearea");
@@ -557,15 +558,10 @@ async function listManualCustomers() {
 // once a manualId already exists on the customer it fetched.
 async function createManualCustomer(data) {
   const email = normalizeEmail(data.email);
-  const phone = String(data.phone || "").replace(/\D/g, "");
-  // Merge into an existing record only on a real match: same email, or (no email) same phone number.
+  // Merge into an existing record only when it is the same person: same name, unless both carry
+  // phone numbers that differ (two customers with one name are told apart by phone). See _lib/customers.js.
   const all = await listManualCustomers();
-  const name = String(data.name || "").trim().toLowerCase().replace(/\s+/g, " ");
-  const existing = email
-    ? all.find((c) => normalizeEmail(c.email) === email)
-    : phone ? all.find((c) => !normalizeEmail(c.email) && String(c.phone || "").replace(/\D/g, "") === phone)
-    : name ? all.find((c) => !normalizeEmail(c.email) && !String(c.phone || "").replace(/\D/g, "") && String(c.name || "").trim().toLowerCase().replace(/\s+/g, " ") === name)
-    : null;
+  const existing = findMergeTarget(all, data);
   if (existing) {
     return updateManualCustomer(existing.id, {
       name: data.name || "",
@@ -604,81 +600,8 @@ async function listCustomers() {
     listAll(STORES.waitlist),
     listAll(STORES.customers),
   ]);
-  const map = new Map();
-  // `key` groups a person's records; it is their email when they have one (rentals may fall back to
-  // phone or name, see customer-key.js), and `email` is '' for someone with no email on file.
-  function ensure(email, keyOverride) {
-    const key = keyOverride || normalizeEmail(email);
-    if (!key) return null;
-    if (!map.has(key)) {
-      map.set(key, {
-        key,
-        email: normalizeEmail(email) || "",
-        manualId: null,
-        name: "",
-        phone: "",
-        address: { street: "", city: "", state: "", zip: "" },
-        notes: "",
-        tags: [],
-        rentals: [],
-        bookings: [],
-        waitlist: [],
-        totalPaid: 0,
-        firstSeen: null,
-        lastActivity: null,
-      });
-    }
-    return map.get(key);
-  }
-
-  // Seed from manually-created customers first, these are the source of truth for name/phone/address/notes/tags
-  for (const m of manualCustomers) {
-    const c = ensure(m.email, renterKey(m));
-    if (!c) continue;
-    c.manualId = m.id;
-    c.name = m.name || c.name;
-    c.phone = m.phone || c.phone;
-    c.address = m.address || c.address;
-    c.notes = m.notes || c.notes;
-    c.tags = m.tags || c.tags;
-    if (!c.firstSeen || m.createdAt < c.firstSeen) c.firstSeen = m.createdAt;
-    if (!c.lastActivity || m.updatedAt > c.lastActivity) c.lastActivity = m.updatedAt;
-  }
-  function touch(c, iso) {
-    if (!c.firstSeen || iso < c.firstSeen) c.firstSeen = iso;
-    if (!c.lastActivity || iso > c.lastActivity) c.lastActivity = iso;
-  }
-  for (const r of rentals) {
-    const c = ensure(r.renter && r.renter.email, renterKey(r.renter));
-    if (!c) continue;
-    c.rentals.push(r);
-    if (r.renter) {
-      if (!c.name && r.renter.name) c.name = r.renter.name;
-      if (!c.phone && r.renter.phone) c.phone = r.renter.phone;
-    }
-    c.totalPaid += Number(r.paidAmount) || 0;
-    touch(c, r.createdAt);
-  }
-  for (const b of bookings) {
-    const c = ensure(b.email);
-    if (!c) continue;
-    c.bookings.push(b);
-    const fullName = `${b.firstName || ""} ${b.lastName || ""}`.trim();
-    if (!c.name && fullName) c.name = fullName;
-    if (!c.phone && b.phone) c.phone = b.phone;
-    touch(c, b.createdAt);
-  }
-  for (const w of waitlist) {
-    const c = ensure(w.email);
-    if (!c) continue;
-    c.waitlist.push(w);
-    if (!c.name && w.name) c.name = w.name;
-    if (!c.phone && w.phone) c.phone = w.phone;
-    touch(c, w.createdAt);
-  }
-  return Array.from(map.values()).sort((a, b) =>
-    (b.lastActivity || "").localeCompare(a.lastActivity || "")
-  );
+  // Grouping rule (name first, phone as the tie-break) lives in _lib/customers.js.
+  return groupCustomers({ rentals, bookings, waitlist, manualCustomers });
 }
 
 // ───────── Reviews / testimonials ─────────

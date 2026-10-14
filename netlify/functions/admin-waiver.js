@@ -4,7 +4,7 @@ const W = require("./_lib/waiver");
 
 // GET  /api/admin/waiver?rentalId=…        → a signed waiver as a printable HTML page, or an attached file inline.
 // GET  /api/admin/waiver?rentalId=…&raw=1  → the stored file itself (the signature PNG for a signed waiver).
-// GET  /api/admin/waiver/text[?market=]    → the waiver text the admin shows for a finger signature.
+// GET  /api/admin/waiver/text[?market=&kind=home|business] → the document the admin shows for a finger signature.
 // POST /api/admin/waiver/sign              → { rentalId, signerName, agreed: true, signaturePng (data URL), waiverVersion, … }
 // POST /api/admin/waiver                   → { rentalId, filename, contentType, dataBase64 } uploads a scanned waiver.
 exports.handler = async (event, context) => {
@@ -17,7 +17,7 @@ exports.handler = async (event, context) => {
 
   try {
     if (method === "GET" && action === "text") {
-      return json(200, W.waiverText(q.market));
+      return json(200, W.waiverText(q.market, q.kind));
     }
 
     if (method === "GET") {
@@ -52,8 +52,9 @@ exports.handler = async (event, context) => {
       if (!rental) return json(404, { error: "rental_not_found" });
       const signatureKey = await saveWaiver(s.rentalId, s.png, "image/png");
       const waiverSigned = {
-        at: new Date().toISOString(), name: s.signerName, email: s.signerEmail, phone: s.signerPhone, address: s.signerAddress,
-        equipmentCondition: s.equipmentCondition, market: s.market, version: W.WAIVER_VERSION, signatureKey,
+        at: new Date().toISOString(), kind: s.kind, businessName: s.businessName, signerTitle: s.signerTitle,
+        name: s.signerName, email: s.signerEmail, phone: s.signerPhone, address: s.signerAddress,
+        equipmentCondition: s.equipmentCondition, market: s.market, version: W.WAIVER_VERSIONS[s.kind], signatureKey,
         rentalId: s.rentalId, userAgent: String((event.headers || {})["user-agent"] || "").slice(0, 200),
       };
       const updated = await updateRental(s.rentalId, { waiverFileKey: signatureKey, waiverSigned });

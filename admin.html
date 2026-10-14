@@ -2837,7 +2837,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       ? (r.waiverSigned
         ? `Signed electronically by ${escape(r.waiverSigned.name)} on ${escape(fmtDate(String(r.waiverSigned.at).slice(0, 10)))} · <a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color: var(--terracotta);">View signed waiver</a>`
         : `<a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color: var(--terracotta);">View attached waiver</a>`)
-      : `Not signed yet · <button class="btn btn-primary btn-sm" onclick='openWaiverSign(${JSON.stringify(r.id)})'>Sign waiver on this phone</button>`;
+      : `Not signed yet (${rentalIsBusiness(r) ? 'business rental agreement and liability waiver' : 'home rental waiver'}) · <button class="btn btn-primary btn-sm" onclick='openWaiverSign(${JSON.stringify(r.id)})'>Sign ${rentalIsBusiness(r) ? 'agreement' : 'waiver'} on this phone</button>`;
     const body = `
       <div class="modal-row"><strong>Status</strong><div><span class="pill pill-${r.status}">${r.status}</span></div></div>
       <div class="modal-row"><strong>Rental type</strong><div>${rentalIsBusiness(r) ? `Business${r.businessName ? ' · ' + escape(r.businessName) : ''} <span class="renter-line">(business rate and agreement)</span>` : 'Residential (home)'}</div></div>
@@ -3367,22 +3367,25 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     return `<ul>${rentals.map(r => {
       const chamber = _chambers.find(x => x.id === r.chamberId);
       const label = `${escape(fmtDate(r.startDate))} → ${escape(fmtDate(r.endDate))}${chamber ? ' · ' + escape(chamber.name) : ''}`;
-      if (r.waiverSigned) return `<li>${label}: <span class="pill pill-paid">Signed</span> by ${escape(r.waiverSigned.name)} on ${escape(fmtDate(String(r.waiverSigned.at).slice(0, 10)))} · <a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color:var(--terracotta);">View signed waiver</a></li>`;
+      const doc = rentalIsBusiness(r) ? 'business rental agreement and liability waiver' : 'home rental waiver';
+      if (r.waiverSigned) return `<li>${label}: <span class="pill pill-paid">Signed</span> ${escape(doc)}${r.waiverSigned.businessName ? ` for ${escape(r.waiverSigned.businessName)}` : ''} by ${escape(r.waiverSigned.name)}${r.waiverSigned.signerTitle ? ` (${escape(r.waiverSigned.signerTitle)})` : ''} on ${escape(fmtDate(String(r.waiverSigned.at).slice(0, 10)))} · <a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color:var(--terracotta);">View signed copy</a></li>`;
       if (r.waiverFileKey) return `<li>${label}: <span class="pill pill-paid">Attached</span> · <a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color:var(--terracotta);">View file</a></li>`;
-      return `<li>${label}: <span class="pill pill-unpaid">Not signed</span> <button class="btn btn-primary btn-sm" onclick='openWaiverSign(${JSON.stringify(r.id)})'>Sign waiver on this phone</button></li>`;
+      return `<li>${label}: <span class="pill pill-unpaid">Not signed</span> (${escape(doc)}) <button class="btn btn-primary btn-sm" onclick='openWaiverSign(${JSON.stringify(r.id)})'>Sign ${rentalIsBusiness(r) ? 'agreement' : 'waiver'} on this phone</button></li>`;
     }).join('')}</ul>`;
   }
 
   // ─── Digital waiver signature: show the waiver on this phone, the renter signs with a finger ───
-  let _waiverText = null, _sigPad = null;
+  const _waiverTexts = {}; let _waiverText = null, _sigPad = null;
   async function openWaiverSign(rentalId) {
     const r = (_rentals || []).find(x => x.id === rentalId);
     if (!r) { toast('Rental not found', true); return; }
-    try { if (!_waiverText) _waiverText = await api('/api/admin/waiver/text'); } catch (err) { toast(err.message, true); return; }
-    const w = _waiverText, p = r.renter || {};
+    // A business rental signs the Business Rental Agreement and Liability Waiver; a home rental signs the home waiver.
+    const kind = rentalIsBusiness(r) ? 'business' : 'home';
+    try { if (!_waiverTexts[kind]) _waiverTexts[kind] = await api(`/api/admin/waiver/text?kind=${kind}`); } catch (err) { toast(err.message, true); return; }
+    const w = _waiverTexts[kind], p = r.renter || {}; _waiverText = w;
     const addr = [p.street || p.address, p.city, p.state, p.zip].filter(Boolean).join(', ');
     const sections = w.sections.map(sec => {
-      let html = `<h4>${escape(sec.heading)}</h4>`, inList = false;
+      let html = sec.heading ? `<h4>${escape(sec.heading)}</h4>` : '', inList = false;
       sec.items.forEach(it => {
         if (it.t === 'li') { if (!inList) { html += '<ul>'; inList = true; } html += `<li>${escape(it.text)}</li>`; return; }
         if (inList) { html += '</ul>'; inList = false; }
@@ -3393,18 +3396,20 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     openModal(w.title, `
       <div class="wv-head renter-line">Provider / Business: <strong>${escape(w.provider.name)}</strong> · ${escape(w.provider.phone)} / ${escape(w.provider.email)}</div>
       <div class="wv-fields">
-        <label>Renter name <input id="wvName" value="${escape(p.name || '')}" autocomplete="off"></label>
+        ${kind === 'business' ? `<label>Business (legal name) <input id="wvBusiness" value="${escape(r.businessName || '')}" autocomplete="off"></label>
+        <label>Authorized signer <input id="wvName" value="${escape(p.name || '')}" autocomplete="off"></label>
+        <label>Signer's title <input id="wvTitle" placeholder="Owner, manager…" autocomplete="off"></label>` : `<label>Renter name <input id="wvName" value="${escape(p.name || '')}" autocomplete="off"></label>`}
         <label>Phone / Email <input id="wvContact" value="${escape([p.phone, p.email].filter(Boolean).join(' / '))}" autocomplete="off"></label>
-        <label>Address <input id="wvAddress" value="${escape(addr)}" autocomplete="off"></label>
+        <label>${kind === 'business' ? 'Business address (installation location)' : 'Address'} <input id="wvAddress" value="${escape(addr)}" autocomplete="off"></label>
       </div>
       <div class="wv-text" id="wvText">${sections}</div>
-      <h4>12. Acknowledgment &amp; Signature</h4>
-      <label class="wv-agree"><input type="checkbox" id="wvAgree" onchange="wvUpdateSubmit()"> I have read this Agreement fully, I understand it, and I am signing voluntarily.</label>
+      <h4>${kind === 'business' ? 'Signature' : '12. Acknowledgment &amp; Signature'}</h4>
+      <label class="wv-agree"><input type="checkbox" id="wvAgree" onchange="wvUpdateSubmit()"> ${kind === 'business' ? 'I am authorized to sign for the Business, I have read this Agreement including its exhibits, and the Business agrees to it.' : 'I have read this Agreement fully, I understand it, and I am signing voluntarily.'}</label>
       <div class="renter-line" style="margin:8px 0 4px;">Sign with your finger in the box below.</div>
       <div class="wv-pad"><canvas id="wvCanvas" aria-label="Signature area"></canvas></div>
       <div class="wv-actions">
         <button type="button" class="btn btn-ghost btn-sm" onclick="wvClear()">Clear signature</button>
-        <label style="flex:1 1 200px;">Equipment condition at delivery (optional) <input id="wvCondition" placeholder="e.g. clean, no marks" autocomplete="off"></label>
+        <label style="flex:1 1 200px;">${kind === 'business' ? 'Equipment condition at installation (optional)' : 'Equipment condition at delivery (optional)'} <input id="wvCondition" placeholder="e.g. clean, no marks" autocomplete="off"></label>
       </div>
       <div class="modal-actions" style="margin-top:12px;">
         <button type="button" class="btn btn-primary" id="wvSubmit" disabled onclick='submitWaiverSign(${JSON.stringify(rentalId)})'>Record signature</button>
@@ -3441,8 +3446,10 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const btn = document.getElementById('wvSubmit'); if (btn) btn.disabled = true;
     const contact = document.getElementById('wvContact').value.trim();
     const [phone, email] = contact.includes('@') ? [contact.split('/')[0].includes('@') ? '' : contact.split('/')[0].trim(), contact.split('/').find(x => x.includes('@')).trim()] : [contact, ''];
+    const bizEl = document.getElementById('wvBusiness'), titleEl = document.getElementById('wvTitle');
     const body = {
-      rentalId, signerName: document.getElementById('wvName').value, signerPhone: phone, signerEmail: email,
+      rentalId, kind: _waiverText.kind, businessName: bizEl ? bizEl.value : '', signerTitle: titleEl ? titleEl.value : '',
+      signerName: document.getElementById('wvName').value, signerPhone: phone, signerEmail: email,
       signerAddress: document.getElementById('wvAddress').value, equipmentCondition: document.getElementById('wvCondition').value,
       agreed: document.getElementById('wvAgree').checked === true, signaturePng: _sigPad.canvas.toDataURL('image/png'), waiverVersion: _waiverText.version,
     };
@@ -3612,12 +3619,13 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       showPick(true);
       return;
     }
-    let c = _customers.find(x => x.key === key);
+    const U = window.PurebaricAdminUtils;
+    let c = U.findCustomerFor(_customers, snap);
     if (!c) {
       // Don't depend on the Customers tab having been visited this session: look this one person up directly.
       try {
-        const data = await api(`/api/admin/customers?q=${encodeURIComponent(snap.email || snap.phone || snap.name)}`);
-        c = (data.customers || []).find(x => x.key === key);
+        const data = await api(`/api/admin/customers?q=${encodeURIComponent(snap.name || snap.email || snap.phone)}`);
+        c = U.findCustomerFor(data.customers || [], snap);
         if (c) {
           const idx = _customers.findIndex(x => x.key === c.key);
           if (idx >= 0) _customers[idx] = c; else _customers.push(c);
@@ -3634,7 +3642,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     // The rental keeps its own copy of the renter. If its name is not the matched customer's name, the
     // email on the rental belongs to someone else (a rental created from the wrong customer record).
     const norm = v => String(v || '').trim().toLowerCase().replace(/\s+/g, ' ');
-    const mismatch = !isNew && snap.name && c.name && norm(snap.name) !== norm(c.name);
+    const mismatch = !isNew && snap.name && c.name && norm(snap.name) !== norm(c.name); // only possible for a renter with no name match, now rare
     summaryEl.innerHTML = `
       ${mismatch ? `<div class="renter-line" style="color:#82402f;margin:0 0 8px;"><strong>Check this customer.</strong> This rental is for <strong>${escape(snap.name)}</strong>, but the email on it belongs to <strong>${escape(c.name)}</strong>'s customer record, so the rental is filed under ${escape(c.name)}. Use "Choose a different customer" below and pick or add ${escape(snap.name)}.</div>` : ''}
       ${customerDetailsHtml(c.name, c.email, c.phone, addr)}

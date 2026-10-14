@@ -18,6 +18,30 @@ test("the waiver text has the eleven numbered sections and the market's provider
   assert.ok(w.sections.every((s) => s.items.length > 0));
 });
 
+test("a business rental gets the business agreement, with its own version and the exhibits", () => {
+  const b = W.waiverText("utah", "business");
+  assert.equal(b.kind, "business");
+  assert.equal(b.title, "Business Rental Agreement and Liability Waiver");
+  assert.notEqual(b.version, W.waiverText("utah", "home").version);
+  const heads = b.sections.map((s) => s.heading);
+  assert.ok(heads.includes("1. Equipment and Services"));
+  assert.ok(heads.includes("11. General Terms"));
+  assert.ok(heads.some((h) => /^Exhibit C/.test(h)));
+  assert.ok(!heads.some((h) => /^Signatures/.test(h)));
+  assert.ok(b.sections.every((s) => s.items.length > 0));
+  assert.equal(W.waiverText("tennessee", "business").sections.some((s) => s.items.some((i) => /Tennessee/.test(i.text))), true);
+  // a business signing needs the business name and the business version
+  const ok = W.validateSigning({ ...good, kind: "business", businessName: "Rest Recovery", signerTitle: "Owner", waiverVersion: b.version });
+  assert.equal(ok.ok, true); assert.equal(ok.signing.kind, "business"); assert.equal(ok.signing.businessName, "Rest Recovery");
+  assert.match(W.validateSigning({ ...good, kind: "business", waiverVersion: b.version }).error, /business name/);
+  assert.match(W.validateSigning({ ...good, kind: "business", businessName: "X" }).error, /changed/);
+  const html = W.renderSignedHtml({ at: "2026-10-14T03:30:00.000Z", kind: "business", businessName: "Rest & Recovery", name: "Cassie Johnson", signerTitle: "Owner", rentalId: "r1", market: "utah" }, "data:image/png;base64,AAAA");
+  assert.match(html, /Business Rental Agreement and Liability Waiver/);
+  assert.match(html, /Rest &amp; Recovery/);
+  assert.match(html, /Cassie Johnson, Owner/);
+  assert.match(html, /1\. Equipment and Services/);
+});
+
 test("a signing needs a rental, a name, agreement, a real PNG and the current text version", () => {
   const ok = W.validateSigning(good);
   assert.equal(ok.ok, true);

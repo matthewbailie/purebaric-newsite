@@ -13,21 +13,24 @@ const OUT = process.env.WAIVER_OUT || "/Users/bailie/projects/purebaric-newsite/
 const FONT = "Calibri";
 const INK = "2B2320", TERRA = "9A4F3A", MUTED = "6F635B";
 
-const p = (text, o = {}) => new Paragraph({ spacing: { after: o.after ?? 120, line: 276 }, alignment: o.align, children: runs(text, o) });
+const DUMP = process.env.WAIVER_DUMP ? [] : null;
+const rec = (t, text) => { if (DUMP) DUMP.push({ t, text: String(text) }); };
+const p = (text, o = {}) => { rec("p", text); return new Paragraph({ spacing: { after: o.after ?? 120, line: 276 }, alignment: o.align, children: runs(text, o) }); };
 function runs(text, o = {}) {
   // **bold** segments
   const parts = String(text).split(/(\*\*[^*]+\*\*)/g).filter(Boolean);
   return parts.map(s => s.startsWith("**") ? new TextRun({ text: s.slice(2, -2), bold: true, font: FONT, size: o.size ?? 22, color: o.color }) : new TextRun({ text: s, font: FONT, size: o.size ?? 22, bold: o.bold, italics: o.italics, color: o.color, allCaps: o.caps }));
 }
-const h1 = t => new Paragraph({ heading: HeadingLevel.HEADING_1, keepNext: true, spacing: { before: 280, after: 120 }, children: [new TextRun({ text: t, bold: true, font: FONT, size: 26, color: TERRA })] });
-const h2 = t => new Paragraph({ heading: HeadingLevel.HEADING_2, keepNext: true, spacing: { before: 200, after: 80 }, children: [new TextRun({ text: t, bold: true, font: FONT, size: 22, color: INK })] });
-const bullet = (t, lvl = 0) => new Paragraph({ numbering: { reference: "bullets", level: lvl }, spacing: { after: 80, line: 276 }, children: runs(t) });
-const num = (t) => new Paragraph({ numbering: { reference: "numbers", level: 0 }, spacing: { after: 80, line: 276 }, children: runs(t) });
-const caps = t => new Paragraph({ spacing: { after: 120, line: 276 }, children: [new TextRun({ text: t, font: FONT, size: 22, bold: true })] });
+const h1 = t => { rec("h1", t); return new Paragraph({ heading: HeadingLevel.HEADING_1, keepNext: true, spacing: { before: 280, after: 120 }, children: [new TextRun({ text: t, bold: true, font: FONT, size: 26, color: TERRA })] }); };
+const h2 = t => { rec("h2", t); return new Paragraph({ heading: HeadingLevel.HEADING_2, keepNext: true, spacing: { before: 200, after: 80 }, children: [new TextRun({ text: t, bold: true, font: FONT, size: 22, color: INK })] }); };
+const bullet = (t, lvl = 0) => { rec("li", t); return new Paragraph({ numbering: { reference: "bullets", level: lvl }, spacing: { after: 80, line: 276 }, children: runs(t) }); };
+const num = (t) => { rec("li", t); return new Paragraph({ numbering: { reference: "numbers", level: 0 }, spacing: { after: 80, line: 276 }, children: runs(t) }); };
+const caps = t => { rec("b", t); return new Paragraph({ spacing: { after: 120, line: 276 }, children: [new TextRun({ text: t, font: FONT, size: 22, bold: true })] }); };
 const blank = (n = 1) => Array.from({ length: n }, () => new Paragraph({ children: [new TextRun({ text: "", font: FONT })] }));
 const line = (label, w = 9360) => new Paragraph({ spacing: { after: 160 }, tabStops: [{ type: TabStopType.RIGHT, position: w }], children: [new TextRun({ text: label + " ", font: FONT, size: 22 }), new TextRun({ text: "\t", font: FONT, size: 22, underline: {} })] });
 
 function kv(rows) {
+  rows.forEach(([k, v]) => rec("kv", k + ": " + String(v).replace(/\n/g, " ")));
   const W = [3000, 6360];
   return new Table({ width: { size: 9360, type: WidthType.DXA }, columnWidths: W, rows: rows.map(([k, v]) => new TableRow({ children: [
     new TableCell({ width: { size: W[0], type: WidthType.DXA }, shading: { type: ShadingType.CLEAR, fill: "F4E7DF", color: "auto" }, margins: { top: 80, bottom: 80, left: 120, right: 120 }, children: [new Paragraph({ children: [new TextRun({ text: k, bold: true, font: FONT, size: 21 })] })] }),
@@ -250,4 +253,5 @@ const doc = new Document({
     children,
   }],
 });
+if (DUMP) { fs.writeFileSync(process.env.WAIVER_DUMP, JSON.stringify({ state: STATE_KEY, person: ST.person, contact: ST.contact, items: DUMP }, null, 1)); console.log("dumped", DUMP.length, "items to", process.env.WAIVER_DUMP); }
 Packer.toBuffer(doc).then(b => { fs.writeFileSync(OUT, b); console.log("wrote", OUT, b.length); });

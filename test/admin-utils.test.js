@@ -1,6 +1,6 @@
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
-const { matchesSearch, orderByKeys, customerKey } = require("../admin-utils");
+const { matchesSearch, orderByKeys, customerKey, findCustomerFor } = require("../admin-utils");
 const { renterKey } = require("../netlify/functions/_lib/customer-key");
 
 test("matchesSearch: empty query matches everything, words are AND-ed and case-insensitive", () => {
@@ -25,6 +25,21 @@ test("customerKey matches the server's renterKey for every fallback", () => {
     assert.equal(customerKey(p), renterKey(p));
   }
   assert.equal(customerKey({ name: "Cassie Johnson" }), "name:cassie johnson");
+  assert.equal(customerKey({ email: "x@y.com", phone: "801" }), "x@y.com");
+});
+
+test("findCustomerFor: by name, phone breaks a tie, then email, then phone", () => {
+  const cs = [
+    { key: "name:sam lee|phone:8011111111", nameKey: "sam lee", phoneDigits: "8011111111", email: "" },
+    { key: "name:sam lee|phone:8012222222", nameKey: "sam lee", phoneDigits: "8012222222", email: "sam2@x.com" },
+    { key: "name:cassie johnson", nameKey: "cassie johnson", phoneDigits: "", email: "" },
+    { key: "anon@x.com", nameKey: "", phoneDigits: "", email: "anon@x.com" },
+  ];
+  assert.equal(findCustomerFor(cs, { name: "Cassie Johnson", email: "someone-elses@x.com" }).key, "name:cassie johnson");
+  assert.equal(findCustomerFor(cs, { name: "Sam Lee", phone: "(801) 222-2222" }).key, "name:sam lee|phone:8012222222");
+  assert.equal(findCustomerFor(cs, { name: "Sam Lee", email: "sam2@x.com" }).key, "name:sam lee|phone:8012222222");
+  assert.equal(findCustomerFor(cs, { name: "", email: "Anon@x.com" }).key, "anon@x.com");
+  assert.equal(findCustomerFor(cs, { name: "Nobody" }), null);
 });
 
 test("orderByKeys: listed keys first in order, the rest keep their relative order", () => {

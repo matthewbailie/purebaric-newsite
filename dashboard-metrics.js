@@ -53,15 +53,15 @@
   function activeOn(r, day) {
     return isCounted(r) && r.status !== 'scheduled' && countsFrom(r) <= day && day10(r.endDate) >= day;
   }
-  // Mirrors renterKey in netlify/functions/_lib/customer-key.js: email, else phone, else name (else this rental alone).
+  // Mirrors renterKey in netlify/functions/_lib/customer-key.js: name, else email, else phone (else this rental alone).
   const emailOf = (r) => {
     const p = (r && r.renter) || {};
+    const name = String(p.name || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    if (name) return `name:${name}`;
     const email = String(p.email || '').trim().toLowerCase();
     if (email) return email;
     const digits = String(p.phone || '').replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
-    if (digits) return `phone:${digits}`;
-    const name = String(p.name || '').trim().toLowerCase().replace(/\s+/g, ' ');
-    return name ? `name:${name}` : `rental:${r.id}`;
+    return digits ? `phone:${digits}` : `rental:${r.id}`;
   };
 
   function subscriberSet(rentals, day) {
