@@ -408,9 +408,10 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       <h3 class="inv-heading">Operations</h3>
       <div class="stat-row" data-sortable="home-operations">
         <button type="button" class="stat-block" data-card-key="active-chambers" data-jump-tab="chambers"><div class="stat-label">Chambers in use</div><div class="stat-val" id="statActive"></div><div class="stat-sub" id="statActiveSub"></div></button>
-        <button type="button" class="stat-block" data-card-key="bookable-now" data-jump-tab="chambers"><div class="stat-label">Available</div><div class="stat-val" id="statAvailable"></div></button>
+        <button type="button" class="stat-block" data-card-key="reserved-chambers" data-jump-tab="rentals"><div class="stat-label">Reserved for upcoming rentals</div><div class="stat-val" id="statReserved"></div><div class="stat-sub" id="statReservedSub"></div></button>
+        <button type="button" class="stat-block" data-card-key="bookable-now" data-jump-tab="chambers"><div class="stat-label">Available to book today</div><div class="stat-val" id="statAvailable"></div><div class="stat-sub" id="statAvailableSub"></div></button>
         <button type="button" class="stat-block" data-card-key="new-requests" data-jump-tab="bookings"><div class="stat-label">New rental requests</div><div class="stat-val" id="statBookings"></div></button>
-        <button type="button" class="stat-block" data-card-key="scheduled-bookings" data-jump-tab="bookings" id="statScheduledWrap" hidden><div class="stat-label">Scheduled bookings</div><div class="stat-val" id="statScheduled"></div></button>
+        <button type="button" class="stat-block" data-card-key="scheduled-bookings" data-jump-tab="bookings" id="statScheduledWrap" hidden><div class="stat-label">Booked requests to convert</div><div class="stat-val" id="statScheduled"></div><div class="stat-sub">Calendar bookings not yet turned into a rental</div></button>
         <button type="button" class="stat-block" data-card-key="waitlist-queued" data-jump-tab="waitlist"><div class="stat-label">Waitlist queued</div><div class="stat-val" id="statWaitlist"></div></button>
         <button type="button" class="stat-block" data-card-key="pending-reviews" data-jump-tab="reviews"><div class="stat-label">Pending reviews</div><div class="stat-val" id="statReviews"></div></button>
       </div>
@@ -1847,34 +1848,51 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   function _periodNames() { return _anRange === 1 ? ['Today', 'Yesterday'] : _anRange === 7 ? ['This week', 'Previous week'] : _anRange === 30 ? ['This month', 'Previous month'] : _anRange === 90 ? ['Last 3 months', 'Previous 3 months'] : ['Last 12 months', 'Previous 12 months']; }
   function _windowChartEl(el, c, w, unit, what) {
     if (!el || !w) return;
-    if (_anRange === 1) { el.innerHTML = `<div class="renter-line" style="padding:6px 0 2px;">${escape(what)} today so far: <strong>${Math.round(w.total).toLocaleString('en-US')}</strong>${w.hasPrev ? ` · yesterday, whole day: ${Math.round(w.prevTotal).toLocaleString('en-US')}` : ''}. Google Analytics adds today's visits during the day; press Refresh for the latest.</div>`; return; }
+    if (_anRange === 1) { _barPair(el, [{ label: 'Today', value: Math.round(w.total) }, { label: 'Yesterday', value: w.hasPrev ? Math.round(w.prevTotal) : null }], unit); return; }
     const [curName, prevName] = _periodNames();
+    if (el.querySelector('svg[role="img"]') && !el.querySelector('.viz-plot')) { el.innerHTML = ''; el._vizInit = false; }
     // The previous-period line is always in the legend; with no data yet it simply has nothing to draw.
     const series = [{ label: curName, values: w.cur }, { label: prevName, values: w.prevAligned }];
     const last = w.cur.filter(v => v != null).pop();
     window.PurebaricCharts.lineChart(el, { series, labels: w.labels, ticks: w.ticks, alwaysLegend: true, format: v => Math.round(v) + ' ' + (Math.round(v) === 1 ? unit : unit + 's'), axisFormat: v => String(Math.round(v)),
       ariaLabel: `${what}, ${_rangeWords()}${w.hasPrev ? ', with the previous period' : ''}. Latest day: ${last == null ? 'no data' : Math.round(last)}.` });
   }
+  // Two bars side by side (today vs yesterday): the line chart has nothing to draw with one point per period.
+  function _barPair(el, bars, unit) {
+    el._vizInit = false; el.innerHTML = '';
+    const max = Math.max(1, ...bars.map(b => b.value || 0));
+    const W = 320, H = 150, pad = 28, bw = 70, gap = 60, x0 = (W - (bars.length * bw + (bars.length - 1) * gap)) / 2;
+    const rects = bars.map((b, i) => {
+      const h = b.value == null ? 0 : Math.round(((H - pad - 10) * b.value) / max);
+      const x = x0 + i * (bw + gap), y = H - pad - h;
+      const txt = b.value == null ? 'no data' : `${b.value.toLocaleString('en-US')} ${b.value === 1 ? unit : unit + 's'}`;
+      return `<rect x="${x}" y="${y}" width="${bw}" height="${h}" rx="4" fill="${i === 0 ? '#b8654d' : '#d9c7b5'}"></rect>
+        <text x="${x + bw / 2}" y="${y - 6}" text-anchor="middle" font-size="12" fill="#2b2320">${txt}</text>
+        <text x="${x + bw / 2}" y="${H - 8}" text-anchor="middle" font-size="12" fill="#6f635b">${b.label}</text>`;
+    }).join('');
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:360px;display:block;margin:6px auto 0;" role="img" aria-label="${bars.map(b => `${b.label}: ${b.value == null ? 'no data' : b.value}`).join(', ')}"><line x1="${x0 - 20}" x2="${W - x0 + 20}" y1="${H - pad}" y2="${H - pad}" stroke="#e6dccd"></line>${rects}</svg>`;
+  }
   function renderAnalyticsCharts() {
     const r = _traffic; if (!r || !r.chart) return;
     const w = _window(r.chart, _anRange);
     const note = document.getElementById('anTotalNote');
-    if (note) note.textContent = 'Visits (sessions) per day on purebaric.com over the ' + _rangeWords() + (w && w.hasPrev ? ', with ' + _prevWords() + ' dashed.' : '.');
+    if (note) note.textContent = _anRange === 1 ? 'Visits (sessions) on purebaric.com today so far, beside yesterday.' : 'Visits (sessions) per day on purebaric.com over the ' + _rangeWords() + (w && w.hasPrev ? ', with ' + _prevWords() + ' dashed.' : '.');
+    // Left: this period. Right: the period before it, same measure, so the two read side by side.
+    const prevName = _anRange === 1 ? 'Yesterday' : _anRange === 7 ? 'Previous week' : _anRange === 30 ? 'Previous month' : _anRange === 90 ? 'Previous 3 months' : 'Previous 12 months';
     if (w && _anRange === 1) {
       document.getElementById('akAvgLabel').textContent = 'Visits so far today';
       document.getElementById('akAvg').textContent = w.total.toLocaleString('en-US');
-      document.getElementById('akAvgSub').innerHTML = w.hasPrev ? `${w.prevTotal.toLocaleString('en-US')} yesterday, whole day` : 'No data for yesterday yet';
-      document.getElementById('akTotalLabel').textContent = 'Average visits per day, last 7 days';
-      const w7 = _window(r.chart, 7);
-      document.getElementById('akTotal').textContent = _n1(w7 && w7.avg);
-      document.getElementById('akTotalSub').innerHTML = 'For comparison with today';
+      document.getElementById('akAvgSub').innerHTML = 'Google Analytics adds today\'s visits during the day';
+      document.getElementById('akTotalLabel').textContent = prevName;
+      document.getElementById('akTotal').textContent = w.hasPrev ? w.prevTotal.toLocaleString('en-US') : '—';
+      document.getElementById('akTotalSub').innerHTML = w.hasPrev ? 'Whole day' : 'No data yet';
     } else if (w) {
       document.getElementById('akAvgLabel').textContent = 'Average visits per day, ' + _rangeWords();
       document.getElementById('akAvg').textContent = _n1(w.avg);
-      document.getElementById('akAvgSub').innerHTML = w.hasPrev ? `${_n1(w.prevAvg)} per day in ${escape(_prevWords())}${_delta(w.pct)}` : `No data for ${escape(_prevWords())} yet`;
-      document.getElementById('akTotalLabel').textContent = 'Total visits, ' + _rangeWords();
-      document.getElementById('akTotal').textContent = w.total.toLocaleString('en-US');
-      document.getElementById('akTotalSub').innerHTML = w.hasPrev ? `${w.prevTotal.toLocaleString('en-US')} in ${escape(_prevWords())}` : `${w.days} day${w.days === 1 ? '' : 's'} of data so far`;
+      document.getElementById('akAvgSub').innerHTML = w.hasPrev ? `${_delta(w.pct)} vs ${escape(prevName.toLowerCase())}` : `${w.days} day${w.days === 1 ? '' : 's'} of data so far`;
+      document.getElementById('akTotalLabel').textContent = prevName + ', average per day';
+      document.getElementById('akTotal').textContent = w.hasPrev ? _n1(w.prevAvg) : '—';
+      document.getElementById('akTotalSub').innerHTML = w.hasPrev ? '' : 'No data yet';
     }
     _windowChartEl(document.getElementById('chartAnTotal'), r.chart, w, 'visit', 'Website visits');
     const pn = document.getElementById('anPageNote');
@@ -1891,7 +1909,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     if (topNote) topNote.textContent = `Pages ranked by views over the ${_rangeWords()}${top.length ? `. ${escape(top[0].label)} leads with ${top[0].w.total.toLocaleString('en-US')} view${top[0].w.total === 1 ? '' : 's'}.` : '.'}`;
     const maxViews = top.length ? top[0].w.total : 0;
     document.getElementById('anTopPages').innerHTML = top.length ? `<ol class="an-top">${top.map(({ label, w: pw }, i) => `<li>
-        <div class="an-top-row"><span class="an-top-rank">${i + 1}</span><strong class="an-top-name">${escape(label)}</strong><span class="an-top-n">${pw.total.toLocaleString('en-US')} view${pw.total === 1 ? '' : 's'}${pw.hasPrev && pw.prevTotal != null ? `<span class="renter-line"> · ${pw.prevTotal.toLocaleString('en-US')} in ${escape(_prevWords())}</span>` : ''}</span></div>
+        <div class="an-top-row"><span class="an-top-rank">${i + 1}</span><strong class="an-top-name">${escape(label)}</strong><span class="an-top-n">${pw.total.toLocaleString('en-US')} view${pw.total === 1 ? '' : 's'}</span></div>
         <div class="an-top-bar"><div style="width:${Math.max(2, Math.round((pw.total / maxViews) * 100))}%"></div></div></li>`).join('')}</ol>`
       : '<div class="renter-line">No page views in this period yet.</div>';
     document.getElementById('anPagesBody').innerHTML = rows.map(({ label, w: pw }) => `<tr><td><strong>${escape(label)}</strong></td><td class="n">${_n1(pw && pw.avg)}</td><td class="n">${pw && pw.hasPrev ? _n1(pw.prevAvg) : '—'}</td><td class="n">${pw ? (_delta(pw.pct) || '—') : '—'}</td><td class="n">${pw ? pw.total.toLocaleString('en-US') : '—'}</td></tr>`).join('')
@@ -1962,6 +1980,13 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const schedWrap = document.getElementById('statScheduledWrap');
     if (schedWrap) { schedWrap.hidden = !bookMode; document.getElementById('statScheduled').textContent = scheduled; }
     document.getElementById('statAvailable').textContent = available;
+    // Reserved: active chambers that are not in use today but are committed to a rental starting later.
+    const reservedList = _chambers.filter(c => c.status === 'active' && !inUseC.has(c.id) && committedC.has(c.id));
+    const nextStart = _rentals.filter(r => r.status !== 'cancelled' && r.startDate > today && reservedList.some(c => c.id === r.chamberId)).map(r => r.startDate).sort()[0];
+    document.getElementById('statReserved').textContent = String(reservedList.length);
+    document.getElementById('statReservedSub').textContent = reservedList.length ? `Booked, not yet delivered${nextStart ? ' · next starts ' + fmtDate(nextStart) : ''}` : 'No upcoming rentals waiting for a chamber';
+    const machineShort = freeMachines < freeChambers;
+    document.getElementById('statAvailableSub').textContent = `${active} active chamber${active === 1 ? '' : 's'}: ${inUse} in use, ${reservedList.length} reserved, ${freeChambers} free${machineShort ? `, but only ${freeMachines} free machine${freeMachines === 1 ? '' : 's'}` : ''}${inMaintenance ? ` · ${inMaintenance} in maintenance` : ''}`;
     document.getElementById('statWaitlist').textContent = queued;
     document.getElementById('statBookings').textContent = newBookings;
     const rv = document.getElementById('statReviews'); if (rv) rv.textContent = pendingReviews;

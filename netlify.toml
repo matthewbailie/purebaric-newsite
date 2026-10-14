@@ -268,7 +268,7 @@
 # The admin Outreach tab imports its prospect list from this file (built by
 # _internal/outreach/source/make_prospect_list.py), so it ships inside the function bundle.
 [functions."admin-outreach"]
-  included_files = ["_internal/outreach/prospects.json", "_internal/outreach/routes_utah.json"]
+  included_files = ["_internal/outreach/prospects.json"]
 
 # ───────── Scheduled function ─────────
 # Auto-expires waitlist holds and transitions rentals by date. Runs hourly.
