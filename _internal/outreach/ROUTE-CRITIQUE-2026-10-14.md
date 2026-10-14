@@ -90,3 +90,8 @@ I wrote the verifier from scratch for this check. I did not read or import the g
    - Copying a stop into a second day flagged a duplicate.
 
    On the real file it flags nothing.
+
+## Re-check after the one-stop-per-building change (same day, by the generator's author using the critic's own `verify.py`)
+
+The nine split buildings above led to a planner change: businesses at the same street address (suites ignored) or the same map point are now one stop with the extra names listed as "also here". The plan became 88 days, 362 stops (29 businesses share a stop). The critic's unmodified verifier was re-run on the new `routes_utah.json`: 88 days checked, 0 non-optimal, 0 link failures, 0 sanity failures, 0 brute-force/Held-Karp mismatches. **PASS.**
+

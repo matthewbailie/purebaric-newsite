@@ -17,103 +17,98 @@ Not visited on these days: college athletics departments and pro teams (email th
 **How to read each line.** *Businesses* is the number of stops that day. *Best bets* is how many of those stops are the kinds of business most likely to sign: recovery studios, IV lounges, sauna, cryotherapy, float, stretch studios and performance gyms. The rest of the day's stops are good fits or businesses that are on the way. *Door to door* is the whole trip, including the drive from home and back. Each day's Google Maps link is in its own section under "Stop by stop" below.
 
 - **Day 1, Lehi and Saratoga Springs:** 7 businesses, all 7 best bets. About 1 h 50 min door to door.
-- **Day 2, Draper: E Pioneer Rd:** 6 businesses, all 6 best bets. About 1 h 59 min door to door.
-- **Day 3, Pleasant Grove and Orem, Lindon:** 6 businesses, all 6 best bets. About 2 h 00 min door to door.
+- **Day 2, Pleasant Grove and Orem, Lindon:** 6 businesses, all 6 best bets. About 2 h 00 min door to door.
+- **Day 3, Draper and South Jordan, Riverton:** 6 businesses, 5 best bets. About 1 h 59 min door to door.
 - **Day 4, Orem and Provo:** 6 businesses, 5 best bets. About 1 h 59 min door to door.
 - **Day 5, Sandy: S 700 E, part 1:** 5 businesses, 4 best bets. About 1 h 52 min door to door.
 - **Day 6, Salt Lake City and South Salt Lake, part 1:** 4 businesses, all 4 best bets. About 1 h 58 min door to door.
 - **Day 7, Salt Lake City and South Salt Lake, part 2:** 5 businesses, 4 best bets. About 2 h 00 min door to door.
 - **Day 8, West Jordan and Kearns:** 5 businesses, 3 best bets. About 1 h 52 min door to door.
 - **Day 9, Salt Lake City and South Salt Lake, part 3:** 4 businesses, 3 best bets. About 1 h 56 min door to door.
-- **Day 10, Herriman: Academy Pkwy:** 6 businesses, 3 best bets. About 1 h 57 min door to door.
+- **Day 10, Riverton: W 12600 S, part 1:** 6 businesses, 3 best bets. About 1 h 58 min door to door.
 - **Day 11, Spanish Fork (84660):** 3 businesses, 2 best bets. About 1 h 55 min door to door.
-- **Day 12, Tooele (84074):** 3 businesses, 2 best bets. About 1 h 56 min door to door.
+- **Day 12, Tooele (84074), part 1:** 3 businesses, 2 best bets. About 1 h 56 min door to door.
 - **Day 13, Holladay and Cottonwood Heights, Murray:** 5 businesses, 2 best bets. About 1 h 56 min door to door.
-- **Day 14, Salem and Elk Ridge:** 2 businesses, 1 best bet. About 1 h 50 min door to door.
-- **Day 15, Salt Lake City and Millcreek, part 1:** 4 businesses, 1 best bet. About 1 h 51 min door to door.
-- **Day 16, Spanish Fork and Salem, part 1:** 3 businesses, 1 best bet. About 1 h 53 min door to door.
-- **Day 17, Orem and Lindon:** 5 businesses, 1 best bet. About 1 h 55 min door to door.
-- **Day 18, Heber City: N Main St:** 4 businesses, 1 best bet. About 1 h 57 min door to door.
-- **Day 19, Saratoga Springs: N Redwood Rd:** 8 businesses, 1 best bet. About 1 h 58 min door to door.
+- **Day 14, Saratoga Springs: N Redwood Rd:** 7 businesses, 1 best bet. About 1 h 48 min door to door.
+- **Day 15, Salem and Elk Ridge:** 2 businesses, 1 best bet. About 1 h 50 min door to door.
+- **Day 16, Salt Lake City and Millcreek, part 1:** 4 businesses, 1 best bet. About 1 h 51 min door to door.
+- **Day 17, Spanish Fork and Salem, part 1:** 3 businesses, 1 best bet. About 1 h 53 min door to door.
+- **Day 18, Orem and Lindon:** 5 businesses, 1 best bet. About 1 h 55 min door to door.
+- **Day 19, Heber City: N Main St:** 4 businesses, 1 best bet. About 1 h 57 min door to door.
 - **Day 20, Provo: N Canyon Rd:** 6 businesses, 1 best bet. About 1 h 58 min door to door.
 - **Day 21, Park City: Bonanza Dr:** 4 businesses, 1 best bet. About 1 h 58 min door to door.
 
 Fill-in days (no best bet):
 
-- **Day 22, Herriman (84096):** 2 businesses, 0 best bets. About 1 h 09 min door to door.
-- **Day 23, Sandy (84070):** 2 businesses, 0 best bets. About 1 h 12 min door to door.
-- **Day 24, Lindon and Vineyard:** 2 businesses, 0 best bets. About 1 h 18 min door to door.
-- **Day 25, Salt Lake City (84106), part 1:** 2 businesses, 0 best bets. About 1 h 24 min door to door.
+- **Day 22, Lehi and Eagle Mountain:** 2 businesses, 0 best bets. About 1 h 06 min door to door.
+- **Day 23, Lehi (84043), part 1:** 4 businesses, 0 best bets. About 1 h 15 min door to door.
+- **Day 24, American Fork and Lindon:** 3 businesses, 0 best bets. About 1 h 22 min door to door.
+- **Day 25, Vineyard and Cedar Hills, Highland:** 3 businesses, 0 best bets. About 1 h 31 min door to door.
 - **Day 26, Tooele: N Main St:** 3 businesses, 0 best bets. About 1 h 32 min door to door.
-- **Day 27, Lehi and Eagle Mountain, Highland:** 3 businesses, 0 best bets. About 1 h 33 min door to door.
-- **Day 28, Payson (84651):** 2 businesses, 0 best bets. About 1 h 40 min door to door.
-- **Day 29, Lehi and American Fork, Cedar Hills:** 5 businesses, 0 best bets. About 1 h 43 min door to door.
-- **Day 30, Cottonwood Heights and Midvale, Murray:** 4 businesses, 0 best bets. About 1 h 45 min door to door.
-- **Day 31, Orem: S 800 E:** 6 businesses, 0 best bets. About 1 h 46 min door to door.
-- **Day 32, West Jordan and South Jordan:** 4 businesses, 0 best bets. About 1 h 46 min door to door.
-- **Day 33, Millcreek and Holladay, Salt Lake City:** 4 businesses, 0 best bets. About 1 h 47 min door to door.
-- **Day 34, Grantsville: E Main St:** 2 businesses, 0 best bets. About 1 h 47 min door to door.
-- **Day 35, Riverton: W Partridge Hill Ln:** 5 businesses, 0 best bets. About 1 h 47 min door to door.
-- **Day 36, Taylorsville: S Redwood Rd:** 4 businesses, 0 best bets. About 1 h 48 min door to door.
-- **Day 37, Heber City (84032):** 3 businesses, 0 best bets. About 1 h 50 min door to door.
-- **Day 38, Woods Cross (84087):** 2 businesses, 0 best bets. About 1 h 50 min door to door.
-- **Day 39, Bountiful: W 1150 S:** 2 businesses, 0 best bets. About 1 h 50 min door to door.
-- **Day 40, South Salt Lake: S West Temple:** 4 businesses, 0 best bets. About 1 h 50 min door to door.
-- **Day 41, Lehi: W Traverse Pkwy:** 7 businesses, 0 best bets. About 1 h 50 min door to door.
-- **Day 42, Salt Lake City (84108):** 4 businesses, 0 best bets. About 1 h 50 min door to door.
-- **Day 43, Park City (84098), part 1:** 2 businesses, 0 best bets. About 1 h 50 min door to door.
-- **Day 44, Park City: Center Dr:** 3 businesses, 0 best bets. About 1 h 51 min door to door.
-- **Day 45, Bountiful: W 500 S:** 2 businesses, 0 best bets. About 1 h 51 min door to door.
-- **Day 46, Salt Lake City: S 700 E:** 4 businesses, 0 best bets. About 1 h 51 min door to door.
-- **Day 47, South Jordan and West Jordan, Riverton:** 5 businesses, 0 best bets. About 1 h 51 min door to door.
-- **Day 48, Park City (84098), part 2:** 3 businesses, 0 best bets. About 1 h 51 min door to door.
-- **Day 49, Bountiful (84010), part 1:** 2 businesses, 0 best bets. About 1 h 51 min door to door.
-- **Day 50, Salt Lake City (84106), part 2:** 4 businesses, 0 best bets. About 1 h 51 min door to door.
-- **Day 51, Park City: W Ute Blvd:** 3 businesses, 0 best bets. About 1 h 51 min door to door.
-- **Day 52, Lindon and Pleasant Grove:** 6 businesses, 0 best bets. About 1 h 51 min door to door.
-- **Day 53, Bountiful (84010), part 2:** 2 businesses, 0 best bets. About 1 h 51 min door to door.
-- **Day 54, Bountiful (84010), part 3:** 2 businesses, 0 best bets. About 1 h 51 min door to door.
-- **Day 55, Mapleton and Springville:** 3 businesses, 0 best bets. About 1 h 52 min door to door.
-- **Day 56, Draper: E Draper Pkwy:** 6 businesses, 0 best bets. About 1 h 53 min door to door.
+- **Day 27, Orem: E University Pkwy:** 5 businesses, 0 best bets. About 1 h 36 min door to door.
+- **Day 28, Heber City (84032), part 1:** 2 businesses, 0 best bets. About 1 h 37 min door to door.
+- **Day 29, Payson (84651):** 2 businesses, 0 best bets. About 1 h 40 min door to door.
+- **Day 30, Cottonwood Heights and Murray, Sandy:** 3 businesses, 0 best bets. About 1 h 41 min door to door.
+- **Day 31, South Jordan and Riverton, Herriman:** 4 businesses, 0 best bets. About 1 h 45 min door to door.
+- **Day 32, Salt Lake City (84101):** 3 businesses, 0 best bets. About 1 h 47 min door to door.
+- **Day 33, Tooele (84074), part 2:** 3 businesses, 0 best bets. About 1 h 48 min door to door.
+- **Day 34, Woods Cross (84087):** 2 businesses, 0 best bets. About 1 h 50 min door to door.
+- **Day 35, South Salt Lake: S West Temple:** 4 businesses, 0 best bets. About 1 h 50 min door to door.
+- **Day 36, Park City (84060):** 2 businesses, 0 best bets. About 1 h 50 min door to door.
+- **Day 37, Heber City (84032), part 2:** 3 businesses, 0 best bets. About 1 h 50 min door to door.
+- **Day 38, Salt Lake City (84108):** 4 businesses, 0 best bets. About 1 h 50 min door to door.
+- **Day 39, American Fork and Pleasant Grove:** 6 businesses, 0 best bets. About 1 h 50 min door to door.
+- **Day 40, Park City (84098), part 1:** 2 businesses, 0 best bets. About 1 h 50 min door to door.
+- **Day 41, Salt Lake City and South Salt Lake, part 4:** 4 businesses, 0 best bets. About 1 h 51 min door to door.
+- **Day 42, Salt Lake City (84106):** 4 businesses, 0 best bets. About 1 h 51 min door to door.
+- **Day 43, Salt Lake City: S 700 E:** 4 businesses, 0 best bets. About 1 h 51 min door to door.
+- **Day 44, Taylorsville and Murray, South Salt Lake:** 4 businesses, 0 best bets. About 1 h 51 min door to door.
+- **Day 45, Bountiful (84010), part 1:** 2 businesses, 0 best bets. About 1 h 51 min door to door.
+- **Day 46, Bountiful (84010), part 2:** 2 businesses, 0 best bets. About 1 h 51 min door to door.
+- **Day 47, South Jordan and Riverton, West Jordan:** 5 businesses, 0 best bets. About 1 h 52 min door to door.
+- **Day 48, Draper: S State St:** 6 businesses, 0 best bets. About 1 h 52 min door to door.
+- **Day 49, Bountiful (84010), part 3:** 2 businesses, 0 best bets. About 1 h 52 min door to door.
+- **Day 50, Lehi (84043), part 2:** 7 businesses, 0 best bets. About 1 h 52 min door to door.
+- **Day 51, Millcreek and Holladay, Salt Lake City:** 4 businesses, 0 best bets. About 1 h 52 min door to door.
+- **Day 52, Park City (84098), part 2:** 3 businesses, 0 best bets. About 1 h 52 min door to door.
+- **Day 53, Mapleton and Springville:** 3 businesses, 0 best bets. About 1 h 52 min door to door.
+- **Day 54, Bountiful (84010), part 4:** 2 businesses, 0 best bets. About 1 h 52 min door to door.
+- **Day 55, Park City: N Landmark Dr:** 3 businesses, 0 best bets. About 1 h 52 min door to door.
+- **Day 56, Bountiful (84010), part 5:** 2 businesses, 0 best bets. About 1 h 52 min door to door.
 - **Day 57, Park City (84098), part 3:** 2 businesses, 0 best bets. About 1 h 53 min door to door.
-- **Day 58, Woods Cross and Bountiful:** 2 businesses, 0 best bets. About 1 h 54 min door to door.
-- **Day 59, Orem: S State St:** 6 businesses, 0 best bets. About 1 h 54 min door to door.
-- **Day 60, Bountiful (84010), part 4:** 2 businesses, 0 best bets. About 1 h 54 min door to door.
-- **Day 61, Herriman: S 5600 W:** 6 businesses, 0 best bets. About 1 h 54 min door to door.
-- **Day 62, Salt Lake City (84106), part 3:** 4 businesses, 0 best bets. About 1 h 55 min door to door.
-- **Day 63, Lehi: S 850 E:** 8 businesses, 0 best bets. About 1 h 55 min door to door.
-- **Day 64, Orem (84057):** 5 businesses, 0 best bets. About 1 h 55 min door to door.
-- **Day 65, American Fork and Pleasant Grove:** 7 businesses, 0 best bets. About 1 h 55 min door to door.
+- **Day 58, Draper: E Draper Pkwy:** 6 businesses, 0 best bets. About 1 h 53 min door to door.
+- **Day 59, Salt Lake City (84103):** 4 businesses, 0 best bets. About 1 h 53 min door to door.
+- **Day 60, Woods Cross and Bountiful:** 2 businesses, 0 best bets. About 1 h 54 min door to door.
+- **Day 61, Lindon and Pleasant Grove:** 6 businesses, 0 best bets. About 1 h 54 min door to door.
+- **Day 62, Orem: S State St:** 6 businesses, 0 best bets. About 1 h 54 min door to door.
+- **Day 63, Bountiful (84010), part 6:** 2 businesses, 0 best bets. About 1 h 54 min door to door.
+- **Day 64, Salt Lake City (84111):** 4 businesses, 0 best bets. About 1 h 55 min door to door.
+- **Day 65, Orem (84057):** 5 businesses, 0 best bets. About 1 h 55 min door to door.
 - **Day 66, Spanish Fork and Springville:** 4 businesses, 0 best bets. About 1 h 55 min door to door.
-- **Day 67, Lehi: N 1200 E:** 6 businesses, 0 best bets. About 1 h 55 min door to door.
-- **Day 68, Salt Lake City (84101):** 4 businesses, 0 best bets. About 1 h 55 min door to door.
-- **Day 69, Salt Lake City and Millcreek, part 2:** 5 businesses, 0 best bets. About 1 h 55 min door to door.
+- **Day 67, Salt Lake City and Millcreek, part 2:** 5 businesses, 0 best bets. About 1 h 55 min door to door.
+- **Day 68, Herriman: S 5600 W:** 6 businesses, 0 best bets. About 1 h 56 min door to door.
+- **Day 69, Cottonwood Heights and Sandy, Midvale:** 6 businesses, 0 best bets. About 1 h 56 min door to door.
 - **Day 70, North Salt Lake: N Redwood Rd:** 3 businesses, 0 best bets. About 1 h 56 min door to door.
-- **Day 71, Salt Lake City (84115):** 4 businesses, 0 best bets. About 1 h 56 min door to door.
-- **Day 72, Salt Lake City: E 2100 S:** 5 businesses, 0 best bets. About 1 h 56 min door to door.
-- **Day 73, Heber City: W 600 S:** 4 businesses, 0 best bets. About 1 h 57 min door to door.
-- **Day 74, West Jordan: Welby Park Dr:** 6 businesses, 0 best bets. About 1 h 57 min door to door.
-- **Day 75, Spanish Fork and Salem, part 2:** 3 businesses, 0 best bets. About 1 h 57 min door to door.
-- **Day 76, Park City (84098), part 4:** 3 businesses, 0 best bets. About 1 h 58 min door to door.
-- **Day 77, Tooele: S Garnet St:** 4 businesses, 0 best bets. About 1 h 58 min door to door.
-- **Day 78, Salt Lake City and Millcreek, South Salt Lake:** 5 businesses, 0 best bets. About 1 h 58 min door to door.
-- **Day 79, Provo and Springville:** 4 businesses, 0 best bets. About 1 h 58 min door to door.
-- **Day 80, Bountiful (84010), part 5:** 2 businesses, 0 best bets. About 1 h 58 min door to door.
-- **Day 81, Draper: S State St:** 7 businesses, 0 best bets. About 1 h 59 min door to door.
-- **Day 82, Centerville (84014):** 2 businesses, 0 best bets. About 1 h 59 min door to door.
-- **Day 83, Heber City and Midway:** 3 businesses, 0 best bets. About 1 h 59 min door to door.
-- **Day 84, Midvale and Sandy, West Jordan:** 6 businesses, 0 best bets. About 1 h 59 min door to door.
-- **Day 85, Sandy: S State St:** 7 businesses, 0 best bets. About 1 h 59 min door to door.
-- **Day 86, Centerville: N 1250 W:** 2 businesses, 0 best bets. About 1 h 59 min door to door.
-- **Day 87, West Valley City: W 3500 S:** 5 businesses, 0 best bets. About 1 h 59 min door to door.
-- **Day 88, Sandy: S 700 E, part 2:** 7 businesses, 0 best bets. About 1 h 59 min door to door.
-- **Day 89, Cottonwood Heights: E Fort Union Blvd:** 6 businesses, 0 best bets. About 1 h 59 min door to door.
-- **Day 90, Murray: S 900 E:** 6 businesses, 0 best bets. About 2 h 00 min door to door.
-- **Day 91, Riverton: W 12600 S:** 7 businesses, 0 best bets. About 2 h 00 min door to door.
-- **Day 92, Sandy: E 9400 S:** 6 businesses, 0 best bets. About 2 h 00 min door to door.
-- **Day 93, Park City: Gold Dust Ln:** 3 businesses, 0 best bets. About 2 h 00 min door to door.
+- **Day 71, Lehi and Highland, Alpine:** 6 businesses, 0 best bets. About 1 h 57 min door to door.
+- **Day 72, Spanish Fork and Salem, part 2:** 3 businesses, 0 best bets. About 1 h 57 min door to door.
+- **Day 73, Provo and Springville:** 4 businesses, 0 best bets. About 1 h 58 min door to door.
+- **Day 74, Bountiful (84010), part 7:** 2 businesses, 0 best bets. About 1 h 58 min door to door.
+- **Day 75, Centerville (84014):** 2 businesses, 0 best bets. About 1 h 59 min door to door.
+- **Day 76, Heber City and Midway:** 3 businesses, 0 best bets. About 1 h 59 min door to door.
+- **Day 77, Riverton: W 12600 S, part 2:** 7 businesses, 0 best bets. About 1 h 59 min door to door.
+- **Day 78, Millcreek and Salt Lake City, South Salt Lake:** 5 businesses, 0 best bets. About 1 h 59 min door to door.
+- **Day 79, Park City: Center Dr:** 3 businesses, 0 best bets. About 1 h 59 min door to door.
+- **Day 80, Midvale and Sandy, West Jordan:** 6 businesses, 0 best bets. About 1 h 59 min door to door.
+- **Day 81, Sandy: S State St:** 7 businesses, 0 best bets. About 1 h 59 min door to door.
+- **Day 82, Centerville: N 1250 W:** 2 businesses, 0 best bets. About 1 h 59 min door to door.
+- **Day 83, West Valley City: W 3500 S:** 5 businesses, 0 best bets. About 1 h 59 min door to door.
+- **Day 84, Sandy: S 700 E, part 2:** 7 businesses, 0 best bets. About 1 h 59 min door to door.
+- **Day 85, West Jordan and Kearns, Taylorsville:** 5 businesses, 0 best bets. About 2 h 00 min door to door.
+- **Day 86, Murray: S 900 E:** 6 businesses, 0 best bets. About 2 h 00 min door to door.
+- **Day 87, Cottonwood Heights and Holladay:** 6 businesses, 0 best bets. About 2 h 00 min door to door.
+- **Day 88, West Jordan and South Jordan:** 5 businesses, 0 best bets. About 2 h 00 min door to door.
 
-93 days in all: 391 businesses, 59 best bets, about 174 hours on the road.
+88 days in all: 362 businesses, 58 best bets, about 164 hours on the road.
 
 ## Stop by stop
 
@@ -127,43 +122,43 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Prime IV Hydration & Wellness - Lehi | Recovery studios and med spas | Best bet | 1881 W Traverse Pkwy Suite D, Lehi | the manager | Sits in Traverse Mountain near the Outlets at Traverse Mountain, Lehi's tech-corridor foot traffic. | 9 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 1 | Prime IV Hydration & Wellness - Lehi (also here: Club Pilates Lehi) | Recovery studios and med spas | Best bet | 1881 W Traverse Pkwy Suite D, Lehi | the manager | Sits in Traverse Mountain near the Outlets at Traverse Mountain, Lehi's tech-corridor foot traffic. | 9 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | Elite Performance Prep Academy (Lehi) | CrossFit and performance gyms | Best bet | 1603 N State St Ste B, Lehi | Setema Gali and Samuel Sells ; Tasha Su'a, (385) 336-5715 | Owner Setema Gali is a Super Bowl-winning former NFL lineman; the academy pairs athlete training with a 1:10 microschool model. | 7 min from stop 1 |
 | 3 | Colossal CrossFit | CrossFit and performance gyms | Best bet | 870 N 100 E, Lehi | Nicolas Cole, 385-539-9010 | Markets itself as a 'family CrossFit' box with free day care and beginner classes for kids. | 4 min from stop 2 |
 | 4 | The Bullpen UT | CrossFit and performance gyms | Best bet | 50 E Main St, Lehi | Billy Schlee and Eric Hanson, 269-274-4949 | Opened on Lehi Main Street in Sept 2025 as the only training facility in Utah with Proteus technology . | 3 min from stop 3 |
-| 5 | CrossFit Lehi | CrossFit and performance gyms | Best bet | 401 S 850 E Ste A3, Lehi | Danny Brand | Runs dedicated youth programs ; Danny holds the CCFT credential. | 3 min from stop 4 |
+| 5 | CrossFit Lehi (also here: Utah Barbell, CoreFit Studio, Momentum Indoor Climbing - Lehi) | CrossFit and performance gyms | Best bet | 401 S 850 E Ste A3, Lehi | Danny Brand | Runs dedicated youth programs ; Danny holds the CCFT credential. | 3 min from stop 4 |
 | 6 | Utah Speed Academy | CrossFit and performance gyms | Best bet | 1363 W 800 N, Lehi | Nate Soelberg, 801-836-1088 | Coach Nate runs sprint and long-jump training plus the Soelberg Track Club from his Lehi turf gym. | 3 min from stop 5 |
-| 7 | Saratoga Springs CrossFit | CrossFit and performance gyms | Best bet | 11 W Hillcrest Rd, Saratoga Springs | Natalie Petersen, 801-810-7723 | Marked 10 years as a CrossFit affiliate in Saratoga Springs. | 9 min from stop 6 |
+| 7 | Saratoga Springs CrossFit (also here: Rio Combat Team Utah (Shark Tank)) | CrossFit and performance gyms | Best bet | 11 W Hillcrest Rd, Saratoga Springs | Natalie Petersen, 801-810-7723 | Marked 10 years as a CrossFit affiliate in Saratoga Springs. | 9 min from stop 6 |
 
-### Day 2: Draper: E Pioneer Rd
-
-6 businesses, about 1 h 59 min door to door (15 min out from 3903 W 1700 N, Lehi, UT 84043, 16 min back).
-
-[Open Day 2 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/146%20E%2013065%20S%20Suite%20C%2C%20Draper%2C%20UT%2084020/807%20E%20Pioneer%20Rd%20Ste%20101%2C%20Draper%2C%20UT%2084020/807%20E%20Pioneer%20Rd%2C%20Suite%20104%2C%20Draper%2C%20UT%2084020/12176%20S%201000%20E%20Ste%201%2C%20Draper%2C%20UT%2084020/681%20W%20South%20Jordan%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/1515%20W%2012600%20S%2C%20Ste%20205%2C%20Riverton%2C%20UT%2084065/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | CrossFit Draper | CrossFit and performance gyms | Best bet | 146 E 13065 S Suite C, Draper | Alana Crowley | Recently opened affiliate in Draper owned by Alana Crowley. | 15 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | JIKO Life | Recovery studios and med spas | Best bet | 807 E Pioneer Rd Ste 101, Draper | Annette Sonnenburg, (385) 557-4171 | Pairs contrast therapy with PEMF, IV drips and a superfood cafe under one roof in Draper. | 5 min from stop 1 |
-| 3 | Fit Factory Inc | CrossFit and performance gyms | Best bet | 807 E Pioneer Rd, Suite 104, Draper | Sally Wilhelm; Shayne Scruggs, 801-842-7590 | Featured on KUTV Fresh Living when it opened in Draper; sports-performance program for athletes of all levels. | 0 min from stop 2 |
-| 4 | Better Health Cryotherapy | Recovery studios and med spas | Best bet | 12176 S 1000 E Ste 1, Draper | Jerry J., (385) 255-9895 | Independent cryo shop competing a few blocks from Restore Draper's HBOT menu. | 1 min from stop 3 |
-| 5 | D1 Training South Jordan | CrossFit and performance gyms | Best bet | 681 W South Jordan Pkwy | Dave Hunt; Emily Hunt, 801-509-6718 | Brand-new location opened spring 2026 by husband-and-wife owners Dave and Emily Hunt. | 11 min from stop 4 |
-| 6 | StayFITT Training | CrossFit and performance gyms | Best bet | 1515 W 12600 S, Ste 205, Riverton | LaRee Schuenman, 385-448-0615 | Woman-founded private studio in Riverton that pairs small-group training with stretch therapy and rehab-focused sessions. | 10 min from stop 5 |
-
-### Day 3: Pleasant Grove and Orem, Lindon
+### Day 2: Pleasant Grove and Orem, Lindon
 
 6 businesses, about 2 h 00 min door to door (24 min out from 3903 W 1700 N, Lehi, UT 84043, 15 min back).
 
-[Open Day 3 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1410%20W%201200%20N%20%234%2C%20Orem%2C%20UT%2084057/1428%20W%2070%20S%2C%20Lindon%2C%20UT%2084042/2415%20W%20700%20S%20Unit%20G%2C%20Pleasant%20Grove%2C%20UT%2084062/2054%20W%20Grove%20Pkwy%20Suite%20G%2C%20Pleasant%20Grove%2C%20UT%2084062/1983%20W%20680%20N%20%235%2C%20Pleasant%20Grove%2C%20UT%2084062/777%20S%20Auto%20Mall%20Dr%20%23110%2C%20American%20Fork%2C%20UT%2084003/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 2 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1410%20W%201200%20N%20%234%2C%20Orem%2C%20UT%2084057/1428%20W%2070%20S%2C%20Lindon%2C%20UT%2084042/2415%20W%20700%20S%20Unit%20G%2C%20Pleasant%20Grove%2C%20UT%2084062/2054%20W%20Grove%20Pkwy%20Suite%20G%2C%20Pleasant%20Grove%2C%20UT%2084062/1983%20W%20680%20N%20%235%2C%20Pleasant%20Grove%2C%20UT%2084062/777%20S%20Auto%20Mall%20Dr%20%23110%2C%20American%20Fork%2C%20UT%2084003/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | The Strike Zone Batting Cages & Training Center | CrossFit and performance gyms | Best bet | 1410 W 1200 N #4, Orem | Pablo Valdez, 801-319-4135 | Fox 13 featured Pablo as the Utah dad who built The Strike Zone so his boys would have a place to hit; now runs three HitTrax systems. | 24 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | CrossFit Utah Valley | CrossFit and performance gyms | Best bet | 1428 W 70 S, Lindon | Jake and Shantai Dickerson, (435) 485-7444 | Established 2007 — one of the longest-running boxes in Utah County; recently added a nutrition consulting program. | 6 min from stop 1 |
-| 3 | MVMNT Fitness Group | CrossFit and performance gyms | Best bet | 2415 W 700 S Unit G, Pleasant Grove | Daniel Abshere | Positions itself as a HYROX training gym with supervised on-site childcare. | 5 min from stop 2 |
+| 3 | MVMNT Fitness Group (also here: Work Training Studio) | CrossFit and performance gyms | Best bet | 2415 W 700 S Unit G, Pleasant Grove | Daniel Abshere | Positions itself as a HYROX training gym with supervised on-site childcare. | 5 min from stop 2 |
 | 4 | Ash & Ice | Recovery studios and med spas | Best bet | 2054 W Grove Pkwy Suite G, Pleasant Grove | Joshua Harrison and Cathryne Hundley, (801) 828-8318 | Sibling-founded studio; blogger Alive in the Fire called it one of Utah's best sauna and cold plunge spots. | 2 min from stop 3 |
 | 5 | CrossFit Hyperion | CrossFit and performance gyms | Best bet | 1983 W 680 N #5, Pleasant Grove | Michelle Tolboe, 801-367-9613 | Affiliate #42 — one of the first CrossFit affiliates in the world, still operating in Pleasant Grove. | 4 min from stop 4 |
 | 6 | Elevated CrossFit American Fork | CrossFit and performance gyms | Best bet | 777 S Auto Mall Dr #110, American Fork | Robert Lowe, 801-885-2674 | Owner-operated by Robert Lowe on Auto Mall Drive in American Fork. | 5 min from stop 5 |
+
+### Day 3: Draper and South Jordan, Riverton
+
+6 businesses, about 1 h 59 min door to door (15 min out from 3903 W 1700 N, Lehi, UT 84043, 16 min back).
+
+[Open Day 3 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/146%20E%2013065%20S%20Suite%20C%2C%20Draper%2C%20UT%2084020/807%20E%20Pioneer%20Rd%20Ste%20101%2C%20Draper%2C%20UT%2084020/827%20Pioneer%20Rd%20Ste%20101%2C%20Draper%2C%20UT%2084020/12176%20S%201000%20E%20Ste%201%2C%20Draper%2C%20UT%2084020/681%20W%20South%20Jordan%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/1515%20W%2012600%20S%2C%20Ste%20205%2C%20Riverton%2C%20UT%2084065/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | CrossFit Draper | CrossFit and performance gyms | Best bet | 146 E 13065 S Suite C, Draper | Alana Crowley | Recently opened affiliate in Draper owned by Alana Crowley. | 15 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | JIKO Life (also here: Fit Factory Inc) | Recovery studios and med spas | Best bet | 807 E Pioneer Rd Ste 101, Draper | Annette Sonnenburg, (385) 557-4171 | Pairs contrast therapy with PEMF, IV drips and a superfood cafe under one roof in Draper. | 5 min from stop 1 |
+| 3 | Studio IVL | Gyms and fitness centers | Also nearby | 827 Pioneer Rd Ste 101, Draper | Emily Jackson, (385) 212-6352 | Studio is an extension of founder Emily Jackson's IVL Collective activewear brand. | 0 min from stop 2 |
+| 4 | Better Health Cryotherapy | Recovery studios and med spas | Best bet | 12176 S 1000 E Ste 1, Draper | Jerry J., (385) 255-9895 | Independent cryo shop competing a few blocks from Restore Draper's HBOT menu. | 1 min from stop 3 |
+| 5 | D1 Training South Jordan | CrossFit and performance gyms | Best bet | 681 W South Jordan Pkwy | Dave Hunt; Emily Hunt, 801-509-6718 | Brand-new location opened spring 2026 by husband-and-wife owners Dave and Emily Hunt. | 11 min from stop 4 |
+| 6 | StayFITT Training | CrossFit and performance gyms | Best bet | 1515 W 12600 S, Ste 205, Riverton | LaRee Schuenman, 385-448-0615 | Woman-founded private studio in Riverton that pairs small-group training with stretch therapy and rehab-focused sessions. | 10 min from stop 5 |
 
 ### Day 4: Orem and Provo
 
@@ -202,7 +197,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | US Cryotherapy Salt Lake City | Recovery studios and med spas | Best bet | 675 E 2100 S Ste F, Salt Lake City | Terran and Tom, (385) 549-1130 | Member of the Sugar House Chamber; one of the longest-running cryo studios on the Wasatch Front . | 30 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 1 | US Cryotherapy Salt Lake City (also here: HOTWORX Salt Lake City (Sugarhouse), Salon Keiji) | Recovery studios and med spas | Best bet | 675 E 2100 S Ste F, Salt Lake City | Terran and Tom, (385) 549-1130 | Member of the Sugar House Chamber; one of the longest-running cryo studios on the Wasatch Front . | 30 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | PLUNJ Salt Lake | Recovery studios and med spas | Best bet | 55 W Utopia Ave Unit 103, South Salt Lake | Brian Brown, Ronnie Withaeger, Michael Bunn, Jason Blickenstaff, (385) 492-5520 | Held its ribbon cutting May 9, 2025 and was profiled in the Valley Journals and ABC4 Good Things Utah. | 4 min from stop 1 |
 | 3 | Float Spa 19 | Recovery studios and med spas | Best bet | 1212 S State St, Salt Lake City | Xinru Han, (801) 906-0627 | Now the primary float destination in SLC after Salt City Float Spa closed. | 5 min from stop 2 |
 | 4 | Löyly Nordic Spa | Recovery studios and med spas | Best bet | 336 W Broadway Suite 103, Salt Lake City | Jackson Walker, (385) 207-8289 | Expanded from downtown SLC to a second studio in Orem; Corbin Kaufusi runs business development. | 5 min from stop 3 |
@@ -231,7 +226,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 |---|---|---|---|---|---|---|---|
 | 1 | The Movement Training Day | CrossFit and performance gyms | Best bet | 3105 W 7800 S, West Jordan | Brian McGee, (801) 747-9803 | Markets itself as a Hyrox and CrossFit training gym in West Jordan; 41 Birdeye reviews | 20 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | CrossFit Helo | CrossFit and performance gyms | Best bet | 8455 S Welby Farm Rd Ste B, West Jordan | Julia Kyte and Alecio Mejia, (801) 209-8577 | Listed as a member-deal partner of Gracie Barra West Jordan | 6 min from stop 1 |
-| 3 | Utah Hit Lab | CrossFit and performance gyms | Best bet | 8018 Welby Park Dr, Ste 3, West Jordan | Bodie Christiansen; Brewster Christiansen, 801-913-5695 | Brand-new facility off Old Bingham Highway in West Jordan built around 'empowering the inner athlete'. | 2 min from stop 2 |
+| 3 | Utah Hit Lab (also here: Gracie Barra West Jordan) | CrossFit and performance gyms | Best bet | 8018 Welby Park Dr, Ste 3, West Jordan | Bodie Christiansen; Brewster Christiansen, 801-913-5695 | Brand-new facility off Old Bingham Highway in West Jordan built around 'empowering the inner athlete'. | 2 min from stop 2 |
 | 4 | The Swing Station | CrossFit and performance gyms | Good fit | 7352 S Airport Rd, Unit B, West Jordan | the manager, 435-828-2239 | 23,000 sq ft baseball/softball training facility with its own booking app on Google Play. | 3 min from stop 3 |
 | 5 | US Speedskating (Utah Olympic Oval) | Sports teams and athletic programs | Good fit | 5662 Cougar Ln, Kearns | Fikre Wondafrash | US Speedskating announced its 2026 coaching staff in June 2026 and introduced the 2026-27 short track national team in July, so the Kearns training group is res | 8 min from stop 4 |
 
@@ -248,20 +243,20 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 3 | Brickwall CrossFit | CrossFit and performance gyms | Best bet | 1435 S State St, Salt Lake City | Greg | 60+ Birdeye reviews praising owner Greg's hands-on coaching. | 3 min from stop 2 |
 | 4 | D-BAT Salt Lake | CrossFit and performance gyms | Good fit | 2530 S West Temple, South Salt Lake | the manager, 385-477-3228 | New D-BAT franchise location in South Salt Lake offering lessons, cage rentals and camps. | 6 min from stop 3 |
 
-### Day 10: Herriman: Academy Pkwy
+### Day 10: Riverton: W 12600 S, part 1
 
-6 businesses, about 1 h 57 min door to door (13 min out from 3903 W 1700 N, Lehi, UT 84043, 14 min back).
+6 businesses, about 1 h 58 min door to door (14 min out from 3903 W 1700 N, Lehi, UT 84043, 13 min back).
 
-[Open Day 10 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/14787%20Academy%20Pkwy%2C%20Herriman%2C%20UT%2084096/14787%20Academy%20Pkwy%2C%20Herriman%2C%20UT%2084096/2184%20W%20Amber%20Blossom%20Way%2C%20South%20Jordan%2C%20UT%2084095/12472%20S%203670%20W%2C%20Riverton%2C%20UT%2084065/3305%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/13863%20S%202700%20W%2C%20Units%20205%20%26%20206%2C%20Bluffdale%2C%20UT%2084065/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 10 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/13863%20S%202700%20W%2C%20Units%20205%20%26%20206%2C%20Bluffdale%2C%20UT%2084065/2936%20W%2012600%20S%20Ste%201%262%2C%20Riverton%2C%20UT%2084065/3305%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/12472%20S%203670%20W%2C%20Riverton%2C%20UT%2084065/2184%20W%20Amber%20Blossom%20Way%2C%20South%20Jordan%2C%20UT%2084095/14787%20Academy%20Pkwy%2C%20Herriman%2C%20UT%2084096/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | RSL Academy / Real Monarchs | Sports teams and athletic programs | Good fit | 14787 Academy Pkwy, Herriman | Andrew Payne | RSL Academy announced structural changes to its staff ahead of the 2026-27 season , naming Payne as head academy athletic trainer. | 13 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Utah Archers (Premier Lacrosse League) | Sports teams and athletic programs | Good fit | 14787 Academy Pkwy, Herriman | Michele Bliss | The Archers won back-to-back PLL championships in 2023 and 2024 and hosted the month-long PLL Championship Series in Utah. | 0 min from stop 1 |
-| 3 | Praxis Olympic Weightlifting Center | CrossFit and performance gyms | Best bet | 2184 W Amber Blossom Way, South Jordan | Debbie Millet, 801-440-7699 | Founded in 2008 by Debbie Millet, a 2-time Masters World Champion and 4-time Masters National Champion; club hosted athletes at Masters Nationals 2022. | 12 min from stop 2 |
-| 4 | Total Athlete Training (TAT) | CrossFit and performance gyms | Best bet | 12472 S 3670 W, Riverton | Christian Sandoval, 801-882-1243 | Runs the speed & agility camps for Herriman Mustangs Youth Football. | 10 min from stop 3 |
-| 5 | Skol CrossFit | CrossFit and performance gyms | Best bet | 3305 W 12600 S, Riverton | Kerrie Olsen | Owner-operated by Kerrie Olsen in Riverton's growing southwest-valley market. | 2 min from stop 4 |
-| 6 | Utah Sports Academy | CrossFit and performance gyms | Good fit | 13863 S 2700 W, Units 205 & 206, Bluffdale | the manager | 12,000 sq ft dedicated indoor baseball space in Bluffdale, used by teams across Salt Lake County. | 6 min from stop 5 |
+| 1 | Utah Sports Academy | CrossFit and performance gyms | Good fit | 13863 S 2700 W, Units 205 & 206, Bluffdale | the manager | 12,000 sq ft dedicated indoor baseball space in Bluffdale, used by teams across Salt Lake County. | 14 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Gracie Barra Riverton | Gyms and fitness centers | Also nearby | 2936 W 12600 S Ste 1&2, Riverton | Seidler Rodrigo Ziser, (801) 436-7373 | Professor Andrea leads female-only classes; same head professor as GB Herriman | 6 min from stop 1 |
+| 3 | Skol CrossFit | CrossFit and performance gyms | Best bet | 3305 W 12600 S, Riverton | Kerrie Olsen | Owner-operated by Kerrie Olsen in Riverton's growing southwest-valley market. | 1 min from stop 2 |
+| 4 | Total Athlete Training (TAT) | CrossFit and performance gyms | Best bet | 12472 S 3670 W, Riverton | Christian Sandoval, 801-882-1243 | Runs the speed & agility camps for Herriman Mustangs Youth Football. | 2 min from stop 3 |
+| 5 | Praxis Olympic Weightlifting Center | CrossFit and performance gyms | Best bet | 2184 W Amber Blossom Way, South Jordan | Debbie Millet, 801-440-7699 | Founded in 2008 by Debbie Millet, a 2-time Masters World Champion and 4-time Masters National Champion; club hosted athletes at Masters Nationals 2022. | 10 min from stop 4 |
+| 6 | RSL Academy / Real Monarchs (also here: Utah Archers (Premier Lacrosse League)) | Sports teams and athletic programs | Good fit | 14787 Academy Pkwy, Herriman | Andrew Payne | RSL Academy announced structural changes to its staff ahead of the 2026-27 season , naming Payne as head academy athletic trainer. | 12 min from stop 5 |
 
 ### Day 11: Spanish Fork (84660)
 
@@ -275,7 +270,7 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 2 | D1 Training Spanish Fork | CrossFit and performance gyms | Best bet | 852 S Spanish Fork Pkwy | Brian and Amy Wall; Kevin and Kelly Swasey; Jeremy and Amy Chapman; Jared and Shyann Robinson, 385-437-6364 | Brand-new D1 Training facility that opened in Spanish Fork in September 2026. | 8 min from stop 1 |
 | 3 | Athlete Development Center (ADC) | CrossFit and performance gyms | Good fit | 132 Volunteer Dr, Spanish Fork | the manager, (385) 200-0686 | Features the only HitTrax baseball/softball simulator in Spanish Fork and lessons with former MLB outfielder Cory Snyder. | 9 min from stop 2 |
 
-### Day 12: Tooele (84074)
+### Day 12: Tooele (84074), part 1
 
 3 businesses, about 1 h 56 min door to door (34 min out from 3903 W 1700 N, Lehi, UT 84043, 32 min back).
 
@@ -301,22 +296,38 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 4 | SpearHead Fitness (CrossFit SpearHead) | CrossFit and performance gyms | Best bet | 4540 S Highland Dr, Holladay | Carlyn Frampton and Dallin Frampton, 801-870-9657 | Husband-and-wife owned CrossFit box with 220+ reviews on Birdeye. | 8 min from stop 3 |
 | 5 | Spruce Aesthetics + Infusion Bar | Recovery studios and med spas | Good fit | 2006 E 3900 S, Holladay | Lauren Lightfield, (801) 607-5415 | Opened in 2018 and bills itself as SLC's premier med spa + infusion bar . | 4 min from stop 4 |
 
-### Day 14: Salem and Elk Ridge
+### Day 14: Saratoga Springs: N Redwood Rd
+
+7 businesses, about 1 h 48 min door to door (4 min out from 3903 W 1700 N, Lehi, UT 84043, 16 min back).
+
+[Open Day 14 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/18%20W%20Sergeant%20Court%20Dr%2C%20Ste%20101%2C%20Saratoga%20Springs%2C%20UT%2084045/321%20E%20Crossroads%20Blvd%20Bldg%203%20Ste%20B%2C%20Saratoga%20Springs%2C%20UT%2084045/1320%20S%20Redwood%20Rd%2C%20Saratoga%20Springs%2C%20UT%2084045/1168%20N%20Redwood%20Rd%20Ste%20B-204%2C%20Saratoga%20Springs%2C%20UT%2084045/1012%20N%20Redwood%20Rd%20Ste%20B%2C%20Saratoga%20Springs%2C%20UT%2084045/4095%20E%20Pony%20Express%20Pkwy%2C%20Eagle%20Mountain%2C%20UT%2084005/3251%20E%20Stone%20Ct%2C%20Eagle%20Mountain%2C%20UT%2084005/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | Saratoga Physical Therapy & Sports Medicine | Physical therapy, chiropractic, and sports medicine | Good fit | 18 W Sergeant Court Dr, Ste 101, Saratoga Springs | Todd Austin, (801) 766-0103 | Owned and operated by Todd Austin since 2008; added Tyler Boulter DPT in 2020 | 4 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Burn Boot Camp Saratoga Springs | Gyms and fitness centers | Also nearby | 321 E Crossroads Blvd Bldg 3 Ste B, Saratoga Springs | the manager |  | 2 min from stop 1 |
+| 3 | VASA Fitness Saratoga Springs | Gyms and fitness centers | Also nearby | 1320 S Redwood Rd, Saratoga Springs | the manager |  | 1 min from stop 2 |
+| 4 | Club Pilates Saratoga Springs | Gyms and fitness centers | Also nearby | 1168 N Redwood Rd Ste B-204, Saratoga Springs | the manager, (385) 336-7008 |  | 1 min from stop 3 |
+| 5 | HOTWORX Saratoga Springs | Gyms and fitness centers | Also nearby | 1012 N Redwood Rd Ste B, Saratoga Springs | the manager |  | 1 min from stop 4 |
+| 6 | Vitalogy Fitness | Gyms and fitness centers | Also nearby | 4095 E Pony Express Pkwy, Eagle Mountain | Jarom Ricks |  | 10 min from stop 5 |
+| 7 | CrossFit 1976 (Battle Forged Fitness) | CrossFit and performance gyms | Best bet | 3251 E Stone Ct, Eagle Mountain | Jeremy Evans, (801) 885-4506 | 11 years as an affiliate serving Eagle Mountain; operates under both the CrossFit 1976 and Battle Forged Fitness names. | 4 min from stop 6 |
+
+### Day 15: Salem and Elk Ridge
 
 2 businesses, about 1 h 50 min door to door (40 min out from 3903 W 1700 N, Lehi, UT 84043, 42 min back).
 
-[Open Day 14 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/898%20E%201160%20S%2C%20Salem%2C%20UT%2084653/401%20E%20Salem%20Hills%20Dr%2C%20Elk%20Ridge%2C%20UT%2084651/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 15 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/898%20E%201160%20S%2C%20Salem%2C%20UT%2084653/401%20E%20Salem%20Hills%20Dr%2C%20Elk%20Ridge%2C%20UT%2084651/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Powerhouse Fitness | Gyms and fitness centers | Also nearby | 898 E 1160 S, Salem | the manager |  | 40 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | Pepperbox CrossFit | CrossFit and performance gyms | Best bet | 401 E Salem Hills Dr, Elk Ridge | Natalie Anderson |  | 8 min from stop 1 |
 
-### Day 15: Salt Lake City and Millcreek, part 1
+### Day 16: Salt Lake City and Millcreek, part 1
 
 4 businesses, about 1 h 51 min door to door (31 min out from 3903 W 1700 N, Lehi, UT 84043, 29 min back).
 
-[Open Day 15 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1892%20S%201000%20E%2C%20Salt%20Lake%20City%2C%20UT%2084105/1760%20S%201100%20E%2C%20Ste%203%2C%20Salt%20Lake%20City%2C%20UT%2084105/2191%20E%203300%20S%2C%20Millcreek%2C%20UT%2084109/2261%20E%203300%20S%2C%20Salt%20Lake%20City%20%28Millcreek%29%2C%20UT%2084109/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 16 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1892%20S%201000%20E%2C%20Salt%20Lake%20City%2C%20UT%2084105/1760%20S%201100%20E%2C%20Ste%203%2C%20Salt%20Lake%20City%2C%20UT%2084105/2191%20E%203300%20S%2C%20Millcreek%2C%20UT%2084109/2261%20E%203300%20S%2C%20Salt%20Lake%20City%20%28Millcreek%29%2C%20UT%2084109/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -325,11 +336,11 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 3 | 212 Fitness | Gyms and fitness centers | Also nearby | 2191 E 3300 S, Millcreek | Josiah Schultz, 801-946-9732 | Opened in 2012 and still owner-run by Josiah and Jamie Schultz; small-group S&C format on 3300 South. | 10 min from stop 2 |
 | 4 | CrossFit EMC | CrossFit and performance gyms | Best bet | 2261 E 3300 S, Salt Lake City (Millcreek) | Suzanne Hendrix | Owner Suzanne Hendrix also runs Pentara Corp, so a business-to-business pitch may land well. | 0 min from stop 3 |
 
-### Day 16: Spanish Fork and Salem, part 1
+### Day 17: Spanish Fork and Salem, part 1
 
 3 businesses, about 1 h 53 min door to door (37 min out from 3903 W 1700 N, Lehi, UT 84043, 34 min back).
 
-[Open Day 16 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/741%20UT-198%2C%20Salem%2C%20UT%2084653/28%20E%20100%20N%2C%20Spanish%20Fork%2C%20UT%2084660/205%20N%20Main%20St%2C%20Spanish%20Fork%2C%20UT%2084660/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 17 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/741%20UT-198%2C%20Salem%2C%20UT%2084653/28%20E%20100%20N%2C%20Spanish%20Fork%2C%20UT%2084660/205%20N%20Main%20St%2C%20Spanish%20Fork%2C%20UT%2084660/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -337,11 +348,11 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 2 | Deep Half BJJ | Gyms and fitness centers | Also nearby | 28 E 100 N, Spanish Fork | Weston Youd, (801) 362-0943 |  | 11 min from stop 1 |
 | 3 | Synergy Physical Therapy | Physical therapy, chiropractic, and sports medicine | Good fit | 205 N Main St, Spanish Fork | David H., (801) 436-3110 | Independent Main Street clinic in Spanish Fork | 0 min from stop 2 |
 
-### Day 17: Orem and Lindon
+### Day 18: Orem and Lindon
 
 5 businesses, about 1 h 55 min door to door (17 min out from 3903 W 1700 N, Lehi, UT 84043, 21 min back).
 
-[Open Day 17 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/165%20N%201330%20W%20Unit%20D1%2C%20Orem%2C%20UT%2084057/139%20S%20State%20St%2C%20Ste%2013%2C%20Lindon%2C%20UT%2084042/350%20W%20800%20N%2C%20Orem%2C%20UT%2084057/86%20E%20800%20N%2C%20Orem%2C%20UT%2084057/1245%20S%20800%20E%2C%20Orem%2C%20UT%2084097/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 18 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/165%20N%201330%20W%20Unit%20D1%2C%20Orem%2C%20UT%2084057/139%20S%20State%20St%2C%20Ste%2013%2C%20Lindon%2C%20UT%2084042/350%20W%20800%20N%2C%20Orem%2C%20UT%2084057/86%20E%20800%20N%2C%20Orem%2C%20UT%2084057/1245%20S%20800%20E%2C%20Orem%2C%20UT%2084097/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -351,35 +362,18 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 4 | PEAK Athlete | CrossFit and performance gyms | Good fit | 86 E 800 N, Orem | the manager | Bills itself as Orem's premier sports performance facility with speed, agility and power programs for youth athletes. | 2 min from stop 3 |
 | 5 | Muscle IQ Physical Therapy | Physical therapy, chiropractic, and sports medicine | Good fit | 1245 S 800 E, Orem | Howard Knudsen, (801) 310-0851 | Two-brother family practice running since the early 2000s | 10 min from stop 4 |
 
-### Day 18: Heber City: N Main St
+### Day 19: Heber City: N Main St
 
 4 businesses, about 1 h 57 min door to door (38 min out from 3903 W 1700 N, Lehi, UT 84043, 37 min back).
 
-[Open Day 18 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/476%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/190%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/151%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/550%20W%20100%20S%2C%20Suite%20A2%2C%20Heber%20City%2C%20UT%2084032/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 19 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/476%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/190%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/151%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/550%20W%20100%20S%2C%20Suite%20A2%2C%20Heber%20City%2C%20UT%2084032/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | WPT Sports Performance | CrossFit and performance gyms | Good fit | 476 N Main St, Heber City | the manager | Runs VertiMax-based speed and vertical-jump training on Main Street in Heber City. | 38 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | Heber Valley Physical Therapy & Sports Medicine | Physical therapy, chiropractic, and sports medicine | Good fit | 190 N Main St, Heber City | Willis Clyde, (435) 654-0410 | Long-running independent Main Street clinic in Heber | 1 min from stop 1 |
-| 3 | The Mountain Gym | CrossFit and performance gyms | Best bet | 151 N Main St, Heber City | Megan and Austin, (435) 671-5185 | Rebranded from Heber City CrossFit to The Mountain Gym and shares the 151 N Main building with The Underground Barbell Club. | 0 min from stop 2 |
+| 3 | The Mountain Gym (also here: The Underground Barbell Club) | CrossFit and performance gyms | Best bet | 151 N Main St, Heber City | Megan and Austin, (435) 671-5185 | Rebranded from Heber City CrossFit to The Mountain Gym and shares the 151 N Main building with The Underground Barbell Club. | 0 min from stop 2 |
 | 4 | A Good Spa Day | Salons and beauty studios | Good fit | 550 W 100 S, Suite A2, Heber City | Angie Sulser, (435) 654-2799 | Team-based spa Angie opened in 2017 that pairs massage with nail, lash and waxing services for Heber Valley locals. | 2 min from stop 3 |
-
-### Day 19: Saratoga Springs: N Redwood Rd
-
-8 businesses, about 1 h 58 min door to door (16 min out from 3903 W 1700 N, Lehi, UT 84043, 3 min back).
-
-[Open Day 19 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/3251%20E%20Stone%20Ct%2C%20Eagle%20Mountain%2C%20UT%2084005/4095%20E%20Pony%20Express%20Pkwy%2C%20Eagle%20Mountain%2C%20UT%2084005/1012%20N%20Redwood%20Rd%20Ste%20B%2C%20Saratoga%20Springs%2C%20UT%2084045/1168%20N%20Redwood%20Rd%20Ste%20B-204%2C%20Saratoga%20Springs%2C%20UT%2084045/1320%20S%20Redwood%20Rd%2C%20Saratoga%20Springs%2C%20UT%2084045/321%20E%20Crossroads%20Blvd%20Bldg%203%20Ste%20B%2C%20Saratoga%20Springs%2C%20UT%2084045/18%20W%20Sergeant%20Court%20Dr%2C%20Ste%20101%2C%20Saratoga%20Springs%2C%20UT%2084045/17%20N%20Hillcrest%20Rd%2C%20Saratoga%20Springs%2C%20UT%2084045/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | CrossFit 1976 (Battle Forged Fitness) | CrossFit and performance gyms | Best bet | 3251 E Stone Ct, Eagle Mountain | Jeremy Evans, (801) 885-4506 | 11 years as an affiliate serving Eagle Mountain; operates under both the CrossFit 1976 and Battle Forged Fitness names. | 16 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Vitalogy Fitness | Gyms and fitness centers | Also nearby | 4095 E Pony Express Pkwy, Eagle Mountain | Jarom Ricks |  | 4 min from stop 1 |
-| 3 | HOTWORX Saratoga Springs | Gyms and fitness centers | Also nearby | 1012 N Redwood Rd Ste B, Saratoga Springs | the manager |  | 10 min from stop 2 |
-| 4 | Club Pilates Saratoga Springs | Gyms and fitness centers | Also nearby | 1168 N Redwood Rd Ste B-204, Saratoga Springs | the manager, (385) 336-7008 |  | 1 min from stop 3 |
-| 5 | VASA Fitness Saratoga Springs | Gyms and fitness centers | Also nearby | 1320 S Redwood Rd, Saratoga Springs | the manager |  | 1 min from stop 4 |
-| 6 | Burn Boot Camp Saratoga Springs | Gyms and fitness centers | Also nearby | 321 E Crossroads Blvd Bldg 3 Ste B, Saratoga Springs | the manager |  | 1 min from stop 5 |
-| 7 | Saratoga Physical Therapy & Sports Medicine | Physical therapy, chiropractic, and sports medicine | Good fit | 18 W Sergeant Court Dr, Ste 101, Saratoga Springs | Todd Austin, (801) 766-0103 | Owned and operated by Todd Austin since 2008; added Tyler Boulter DPT in 2020 | 2 min from stop 6 |
-| 8 | Rio Combat Team Utah (Shark Tank) | Gyms and fitness centers | Also nearby | 17 N Hillcrest Rd, Saratoga Springs | James Aiono |  | 1 min from stop 7 |
 
 ### Day 20: Provo: N Canyon Rd
 
@@ -409,49 +403,53 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 3 | Align Spa | Salons and beauty studios | Good fit | 1792 Bonanza Dr, Park City | Calli Sorensen and Amy Asherman, (435) 647-9300 | Calli and Amy took over Align Spa in 2024 and launched the Align Elevated med spa extension in 2025. | 1 min from stop 2 |
 | 4 | Park City Chiropractic | Physical therapy, chiropractic, and sports medicine | Good fit | 1678 Bonanza Dr, Park City | Corey Francis, (435) 649-1017 | Long-standing Bonanza Dr practice in the heart of Park City | 0 min from stop 3 |
 
-### Day 22: Herriman (84096)
+### Day 22: Lehi and Eagle Mountain
 
-2 businesses, about 1 h 09 min door to door (19 min out from 3903 W 1700 N, Lehi, UT 84043, 20 min back).
+2 businesses, about 1 h 06 min door to door (14 min out from 3903 W 1700 N, Lehi, UT 84043, 18 min back).
 
-[Open Day 22 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/13216%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/13366%20S%20Rosecrest%20Rd%2C%20Herriman%2C%20UT%2084096/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Burn Boot Camp Herriman | Gyms and fitness centers | Also nearby | 13216 S 5600 W, Herriman | the manager, (385) 707-2386 |  | 19 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | VASA Fitness Herriman | Gyms and fitness centers | Also nearby | 13366 S Rosecrest Rd, Herriman | the manager |  | 10 min from stop 1 |
-
-### Day 23: Sandy (84070)
-
-2 businesses, about 1 h 12 min door to door (22 min out from 3903 W 1700 N, Lehi, UT 84043, 23 min back).
-
-[Open Day 23 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/10489%20S%20State%20St%2C%20Sandy%2C%20UT%2084070/10365%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 22 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/629%20N%20Saratoga%20Rd%20Bldg%202%2C%20Lehi%2C%20UT%2084043/1388%20Eagle%20Mountain%20Blvd%2C%20Eagle%20Mountain%2C%20UT%2084005/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Pure Barre Sandy | Gyms and fitness centers | Also nearby | 10489 S State St, Sandy | the manager, (801) 999-4139 |  | 22 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | EoS Fitness Sandy | Gyms and fitness centers | Also nearby | 10365 S 1300 E, Sandy | the manager |  | 7 min from stop 1 |
+| 1 | The Picklr Lehi | Gyms and fitness centers | Also nearby | 629 N Saratoga Rd Bldg 2, Lehi | Greg Larsen, (385) 406-6802 | Opened June 2025 as Utah County's largest indoor pickleball facility with 13 courts | 14 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Immortal Fitness | Gyms and fitness centers | Also nearby | 1388 Eagle Mountain Blvd | the manager |  | 14 min from stop 1 |
 
-### Day 24: Lindon and Vineyard
+### Day 23: Lehi (84043), part 1
 
-2 businesses, about 1 h 18 min door to door (23 min out from 3903 W 1700 N, Lehi, UT 84043, 25 min back).
+4 businesses, about 1 h 15 min door to door (3 min out from 3903 W 1700 N, Lehi, UT 84043, 12 min back).
 
-[Open Day 24 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/259%20N%20290%20W%2C%20Lindon%2C%20UT%2084042/773%20E%20Mill%20Rd%2C%20Vineyard%2C%20UT%2084059/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | F45 Training Lindon | Gyms and fitness centers | Also nearby | 259 N 290 W, Lindon | the manager |  | 23 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Anytime Fitness - Vineyard | Gyms and fitness centers | Also nearby | 773 E Mill Rd, Vineyard | the manager, (385) 203-2348 |  | 11 min from stop 1 |
-
-### Day 25: Salt Lake City (84106), part 1
-
-2 businesses, about 1 h 24 min door to door (28 min out from 3903 W 1700 N, Lehi, UT 84043, 30 min back).
-
-[Open Day 25 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1140%20E%20Brickyard%20Rd%2C%20%2330%2C%20Salt%20Lake%20City%2C%20UT%2084106/1202%20Wilmington%20Ave%2C%20%23100%2C%20Salt%20Lake%20City%2C%20UT%2084106/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 23 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/2319%20N%203370%20W%2C%20Lehi%2C%20UT%2084043/1873%20W%20Traverse%20Pkwy%20Ste%20C%2C%20Lehi%2C%20UT%2084043/2065%20W%20900%20N%2C%20Lehi%2C%20UT%2084043/1010%20S%201100%20W%2C%20Suite%20104%2C%20Lehi%2C%20UT%2084043/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Club Pilates Millcreek (Brickyard) | Gyms and fitness centers | Also nearby | 1140 E Brickyard Rd, #30, Salt Lake City | the manager, 801-939-2300 |  | 28 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Orangetheory Fitness Sugar House | Gyms and fitness centers | Also nearby | 1202 Wilmington Ave, #100, Salt Lake City | the manager | Open in Sugar House since 2017; Sugar House Chamber member. | 5 min from stop 1 |
+| 1 | The Skin Loft | Salons and beauty studios | Also nearby | 2319 N 3370 W, Lehi | Marie Black, (801) 885-8238 | 213 Birdeye reviews for a facial-plus-lash studio in west Lehi. | 3 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | F45 Training Traverse Mountain | Gyms and fitness centers | Also nearby | 1873 W Traverse Pkwy Ste C, Lehi | Shallan Smith, (801) 785-6166 | Hosts an F45 MomTribe workout series | 6 min from stop 1 |
+| 3 | Utah Valley Tennis Club | Gyms and fitness centers | Also nearby | 2065 W 900 N, Lehi | the manager, (385) 482-3765 | Five indoor courts with viewing mezzanine plus two outdoor red clay courts, new club with its own member app | 8 min from stop 2 |
+| 4 | Bomb Lashes & Brows | Salons and beauty studios | Also nearby | 1010 S 1100 W, Suite 104, Lehi | Fernanda Jones, (619) 745-3784 (text preferred) | Fernanda is a licensed instructor who added powder-brow services alongside lashes and runs out of Wild Oak Salon Suites in Lehi. | 6 min from stop 3 |
+
+### Day 24: American Fork and Lindon
+
+3 businesses, about 1 h 22 min door to door (15 min out from 3903 W 1700 N, Lehi, UT 84043, 23 min back).
+
+[Open Day 24 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/499%20S%20500%20E%20Ste%20A%2C%20American%20Fork%2C%20UT%2084003/634%20E%20State%20St%2C%20American%20Fork%2C%20UT%2084003/259%20N%20290%20W%2C%20Lindon%2C%20UT%2084042/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | Orangetheory Fitness American Fork | Gyms and fitness centers | Also nearby | 499 S 500 E Ste A, American Fork | the manager |  | 15 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | VASA Fitness American Fork | Gyms and fitness centers | Also nearby | 634 E State St, American Fork | the manager |  | 2 min from stop 1 |
+| 3 | F45 Training Lindon | Gyms and fitness centers | Also nearby | 259 N 290 W, Lindon | the manager |  | 13 min from stop 2 |
+
+### Day 25: Vineyard and Cedar Hills, Highland
+
+3 businesses, about 1 h 31 min door to door (25 min out from 3903 W 1700 N, Lehi, UT 84043, 14 min back).
+
+[Open Day 25 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/773%20E%20Mill%20Rd%2C%20Vineyard%2C%20UT%2084059/10066%20N%204800%20W%20Unit%201%2C%20Cedar%20Hills%2C%20UT%2084062/11117%20N%20Alpine%20Hwy%2C%20Highland%2C%20UT%2084003/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | Anytime Fitness - Vineyard | Gyms and fitness centers | Also nearby | 773 E Mill Rd, Vineyard | the manager, (385) 203-2348 |  | 25 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Club Pilates West Cedar Hills | Gyms and fitness centers | Also nearby | 10066 N 4800 W Unit 1, Cedar Hills | the manager |  | 17 min from stop 1 |
+| 3 | Anytime Fitness Highland | Gyms and fitness centers | Also nearby | 11117 N Alpine Hwy, Highland | Maegen Nitta, (801) 230-9119 |  | 5 min from stop 2 |
 
 ### Day 26: Tooele: N Main St
 
@@ -465,174 +463,107 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 2 | Anytime Fitness Tooele | Gyms and fitness centers | Also nearby | 227 N Main St, Tooele | Shay McQuiston, (435) 882-1811 | Family-run Anytime franchise group covering Tooele and Grantsville since 2008. | 1 min from stop 1 |
 | 3 | VASA Fitness Tooele | Gyms and fitness centers | Also nearby | 250 N Main St, Tooele | the manager, (435) 249-7133 |  | 0 min from stop 2 |
 
-### Day 27: Lehi and Eagle Mountain, Highland
+### Day 27: Orem: E University Pkwy
 
-3 businesses, about 1 h 33 min door to door (14 min out from 3903 W 1700 N, Lehi, UT 84043, 14 min back).
+5 businesses, about 1 h 36 min door to door (21 min out from 3903 W 1700 N, Lehi, UT 84043, 20 min back).
 
-[Open Day 27 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/629%20N%20Saratoga%20Rd%20Bldg%202%2C%20Lehi%2C%20UT%2084043/1388%20Eagle%20Mountain%20Blvd%2C%20Eagle%20Mountain%2C%20UT%2084005/11117%20N%20Alpine%20Hwy%2C%20Highland%2C%20UT%2084003/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 27 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1259%20S%20800%20E%2C%20Orem%2C%20UT%2084097/545%20E%20University%20Pkwy%2C%20Unit%20104%2C%20Orem%2C%20UT%2084097/1345%20S%20State%20St%2C%20Orem%2C%20UT%2084097/1409%20S%20State%20St%2C%20Orem%2C%20UT%2084097/52%20E%20University%20Pkwy%2C%20Orem%2C%20UT%2084058/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | The Picklr Lehi | Gyms and fitness centers | Also nearby | 629 N Saratoga Rd Bldg 2, Lehi | Greg Larsen, (385) 406-6802 | Opened June 2025 as Utah County's largest indoor pickleball facility with 13 courts | 14 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Immortal Fitness | Gyms and fitness centers | Also nearby | 1388 Eagle Mountain Blvd | the manager |  | 14 min from stop 1 |
-| 3 | Anytime Fitness Highland | Gyms and fitness centers | Also nearby | 11117 N Alpine Hwy, Highland | Maegen Nitta, (801) 230-9119 |  | 21 min from stop 2 |
+| 1 | VASA Fitness (corporate office) (also here: VASA Fitness - Orem University) | Gyms and fitness centers | Also nearby | 1259 S 800 E, Orem | the manager |  | 21 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Burn Boot Camp - Orem | Gyms and fitness centers | Also nearby | 545 E University Pkwy, Unit 104, Orem | the manager, (801) 854-5114 |  | 1 min from stop 1 |
+| 3 | Orangetheory Fitness Provo/Orem | Gyms and fitness centers | Also nearby | 1345 S State St, Orem | the manager |  | 0 min from stop 2 |
+| 4 | F45 Training South Orem | Gyms and fitness centers | Also nearby | 1409 S State St, Orem | the manager |  | 0 min from stop 3 |
+| 5 | EoS Fitness - Orem | Gyms and fitness centers | Also nearby | 52 E University Pkwy, Orem | the manager |  | 2 min from stop 4 |
 
-### Day 28: Payson (84651)
+### Day 28: Heber City (84032), part 1
+
+2 businesses, about 1 h 37 min door to door (37 min out from 3903 W 1700 N, Lehi, UT 84043, 38 min back).
+
+[Open Day 28 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1522%20S%20Daniels%20Rd%2C%20Heber%20City%2C%20UT%2084032/425%20E%201200%20S%2C%20Suite%202%2C%20Heber%20City%2C%20UT%2084032/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | Timpanogos Jiu Jitsu Club | Gyms and fitness centers | Also nearby | 1522 S Daniels Rd, Heber City | the manager, (801) 573-6806 | Runs women's-only and self-defense classes in addition to adult BJJ at the Daniels Rd gym. | 37 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Heber Beauty Studios | Salons and beauty studios | Also nearby | 425 E 1200 S, Suite 2, Heber City | the manager | Houses the Bloom Beauty facial lounge alongside hair and waxing providers. | 2 min from stop 1 |
+
+### Day 29: Payson (84651)
 
 2 businesses, about 1 h 40 min door to door (37 min out from 3903 W 1700 N, Lehi, UT 84043, 38 min back).
 
-[Open Day 28 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/673%20Innovation%20Cir%2C%20Payson%2C%20UT%2084651/742%20Highway%20198%2C%20Payson%2C%20UT%2084651/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 29 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/673%20Innovation%20Cir%2C%20Payson%2C%20UT%2084651/742%20Highway%20198%2C%20Payson%2C%20UT%2084651/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Maximus Boxing Gym | Gyms and fitness centers | Also nearby | 673 Innovation Cir, Payson | Aaron "Maximus" Garcia |  | 37 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | Anytime Fitness - Payson | Gyms and fitness centers | Also nearby | 742 Highway 198, Payson | the manager |  | 5 min from stop 1 |
 
-### Day 29: Lehi and American Fork, Cedar Hills
+### Day 30: Cottonwood Heights and Murray, Sandy
 
-5 businesses, about 1 h 43 min door to door (15 min out from 3903 W 1700 N, Lehi, UT 84043, 15 min back).
+3 businesses, about 1 h 41 min door to door (21 min out from 3903 W 1700 N, Lehi, UT 84043, 23 min back).
 
-[Open Day 29 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/785%20E%20200%20S%2C%20Suite%206%2C%20Lehi%2C%20UT%2084043/1438%20E%20Main%20St%20Ste%207%2C%20Lehi%2C%20UT%2084043/499%20S%20500%20E%20Ste%20A%2C%20American%20Fork%2C%20UT%2084003/634%20E%20State%20St%2C%20American%20Fork%2C%20UT%2084003/10066%20N%204800%20W%20Unit%201%2C%20Cedar%20Hills%2C%20UT%2084062/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Mandala Beauty Lounge (Candee Lash) | Salons and beauty studios | Also nearby | 785 E 200 S, Suite 6, Lehi | Kimberly, (801) 341-8661 | 101 Birdeye reviews and a ClassPass listing for the Candee Lash lounge in Lehi. | 15 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | University of Grappling | Gyms and fitness centers | Also nearby | 1438 E Main St Ste 7, Lehi | Ricky Lundell, (801) 358-2336 | Head instructor Ricky Lundell is a two-time world champion submission grappler and UFC-featured coach | 2 min from stop 1 |
-| 3 | Orangetheory Fitness American Fork | Gyms and fitness centers | Also nearby | 499 S 500 E Ste A, American Fork | the manager |  | 9 min from stop 2 |
-| 4 | VASA Fitness American Fork | Gyms and fitness centers | Also nearby | 634 E State St, American Fork | the manager |  | 2 min from stop 3 |
-| 5 | Club Pilates West Cedar Hills | Gyms and fitness centers | Also nearby | 10066 N 4800 W Unit 1, Cedar Hills | the manager |  | 10 min from stop 4 |
-
-### Day 30: Cottonwood Heights and Midvale, Murray
-
-4 businesses, about 1 h 45 min door to door (21 min out from 3903 W 1700 N, Lehi, UT 84043, 21 min back).
-
-[Open Day 30 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/785%20E%20Fort%20Union%20Blvd%2C%20Midvale%2C%20UT%2084047/6953%20S%201300%20E%2C%20Cottonwood%20Heights%2C%20UT%2084121/5518%20S%20Van%20Winkle%20Expy%2C%20Murray%2C%20UT%2084117/3418%20E%20Bengal%20Blvd%2C%20Cottonwood%20Heights%2C%20UT%2084121/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 30 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/3418%20E%20Bengal%20Blvd%2C%20Cottonwood%20Heights%2C%20UT%2084121/5518%20S%20Van%20Winkle%20Expy%2C%20Murray%2C%20UT%2084117/10365%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Anytime Fitness Midvale | Gyms and fitness centers | Also nearby | 785 E Fort Union Blvd, Midvale | the manager, (801) 559-7373 |  | 21 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Orangetheory Fitness Cottonwood Heights | Gyms and fitness centers | Also nearby | 6953 S 1300 E, Cottonwood Heights | the manager |  | 3 min from stop 1 |
-| 3 | VASA Fitness Murray (Van Winkle) | Gyms and fitness centers | Also nearby | 5518 S Van Winkle Expy, Murray | the manager |  | 6 min from stop 2 |
-| 4 | F45 Training Cottonwood Canyons | Gyms and fitness centers | Also nearby | 3418 E Bengal Blvd, Cottonwood Heights | the manager |  | 14 min from stop 3 |
+| 1 | F45 Training Cottonwood Canyons | Gyms and fitness centers | Also nearby | 3418 E Bengal Blvd, Cottonwood Heights | the manager |  | 21 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | VASA Fitness Murray (Van Winkle) | Gyms and fitness centers | Also nearby | 5518 S Van Winkle Expy, Murray | the manager |  | 14 min from stop 1 |
+| 3 | EoS Fitness Sandy | Gyms and fitness centers | Also nearby | 10365 S 1300 E, Sandy | the manager |  | 13 min from stop 2 |
 
-### Day 31: Orem: S 800 E
+### Day 31: South Jordan and Riverton, Herriman
 
-6 businesses, about 1 h 46 min door to door (21 min out from 3903 W 1700 N, Lehi, UT 84043, 20 min back).
+4 businesses, about 1 h 45 min door to door (17 min out from 3903 W 1700 N, Lehi, UT 84043, 20 min back).
 
-[Open Day 31 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1259%20S%20800%20E%2C%20Orem%2C%20UT%2084097/1259%20S%20800%20E%2C%20Orem%2C%20UT%2084097/545%20E%20University%20Pkwy%2C%20Unit%20104%2C%20Orem%2C%20UT%2084097/1345%20S%20State%20St%2C%20Orem%2C%20UT%2084097/1409%20S%20State%20St%2C%20Orem%2C%20UT%2084097/52%20E%20University%20Pkwy%2C%20Orem%2C%20UT%2084058/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | VASA Fitness (corporate office) | Gyms and fitness centers | Also nearby | 1259 S 800 E, Orem | the manager |  | 21 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | VASA Fitness - Orem University | Gyms and fitness centers | Also nearby | 1259 S 800 E, Orem | the manager |  | 0 min from stop 1 |
-| 3 | Burn Boot Camp - Orem | Gyms and fitness centers | Also nearby | 545 E University Pkwy, Unit 104, Orem | the manager, (801) 854-5114 |  | 1 min from stop 2 |
-| 4 | Orangetheory Fitness Provo/Orem | Gyms and fitness centers | Also nearby | 1345 S State St, Orem | the manager |  | 0 min from stop 3 |
-| 5 | F45 Training South Orem | Gyms and fitness centers | Also nearby | 1409 S State St, Orem | the manager |  | 0 min from stop 4 |
-| 6 | EoS Fitness - Orem | Gyms and fitness centers | Also nearby | 52 E University Pkwy, Orem | the manager |  | 2 min from stop 5 |
-
-### Day 32: West Jordan and South Jordan
-
-4 businesses, about 1 h 46 min door to door (22 min out from 3903 W 1700 N, Lehi, UT 84043, 20 min back).
-
-[Open Day 32 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/10467%20S%20Redwood%20Rd%2C%20South%20Jordan%2C%20UT%2084095/7836%20S%20Redwood%20Rd%2C%20West%20Jordan%2C%20UT%2084088/3812%20W%207800%20S%20Ste%20190%2C%20West%20Jordan%2C%20UT%2084088/7759%20S%204800%20W%2C%20West%20Jordan%2C%20UT%2084084/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 31 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/4534%20W%20Partridge%20Hill%20Ln%20Ste%20E120%2C%20Riverton%2C%20UT%2084096/11531%20S%20District%20Main%20Dr%20Ste%201000%2C%20South%20Jordan%2C%20UT%2084095/10534%20S%20River%20Heights%20Dr%2C%20South%20Jordan%2C%20UT%2084095/13366%20S%20Rosecrest%20Rd%2C%20Herriman%2C%20UT%2084096/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Burn Boot Camp South Jordan | Gyms and fitness centers | Also nearby | 10467 S Redwood Rd, South Jordan | the manager, (385) 308-3479 |  | 22 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | VASA Fitness West Jordan | Gyms and fitness centers | Also nearby | 7836 S Redwood Rd, West Jordan | the manager |  | 11 min from stop 1 |
-| 3 | F45 Training Jordan Landing | Gyms and fitness centers | Also nearby | 3812 W 7800 S Ste 190, West Jordan | the manager, (801) 513-3903 |  | 8 min from stop 2 |
-| 4 | Snap Fitness West Jordan | Gyms and fitness centers | Also nearby | 7759 S 4800 W, West Jordan | the manager, (801) 282-2766 |  | 4 min from stop 3 |
+| 1 | HOTWORX - Riverton (Mountain View Village) (also here: Orangetheory Fitness Riverton) | Gyms and fitness centers | Also nearby | 4534 W Partridge Hill Ln Ste E120, Riverton | the manager |  | 17 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Club Pilates The District SoJo | Gyms and fitness centers | Also nearby | 11531 S District Main Dr Ste 1000, South Jordan | the manager, (801) 637-8070 |  | 9 min from stop 1 |
+| 3 | EoS Fitness South Jordan | Gyms and fitness centers | Also nearby | 10534 S River Heights Dr, South Jordan | the manager |  | 5 min from stop 2 |
+| 4 | VASA Fitness Herriman | Gyms and fitness centers | Also nearby | 13366 S Rosecrest Rd, Herriman | the manager |  | 15 min from stop 3 |
 
-### Day 33: Millcreek and Holladay, Salt Lake City
+### Day 32: Salt Lake City (84101)
 
-4 businesses, about 1 h 47 min door to door (25 min out from 3903 W 1700 N, Lehi, UT 84043, 29 min back).
+3 businesses, about 1 h 47 min door to door (34 min out from 3903 W 1700 N, Lehi, UT 84043, 30 min back).
 
-[Open Day 33 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/4751%20S%20Holladay%20Blvd%2C%20Holladay%2C%20UT%2084117/3941%20S%20Wasatch%20Blvd%2C%20Millcreek%2C%20UT%2084124/2505%20E%203300%20S%2C%20Ste%20301%2C%20Millcreek%2C%20UT%2084109/2505%20E%203300%20S%2C%20Suite%20102%2C%20Salt%20Lake%20City%2C%20UT%2084109/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Holladay Health & Fitness | Gyms and fitness centers | Also nearby | 4751 S Holladay Blvd | Rob Dunfield, 801-278-6465 | Markets itself on personal attention with private dressing rooms and separate exercise areas, a premium-recovery clientele. | 25 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | HOTWORX Millcreek (Holladay) | Gyms and fitness centers | Also nearby | 3941 S Wasatch Blvd, Millcreek | Sharon Anderson and Johnny Anderson | Second of the Andersons' two SLC-area HOTWORX studios, in Olympus Hills. | 7 min from stop 1 |
-| 3 | Obsidian Fitness | Gyms and fitness centers | Also nearby | 2505 E 3300 S, Ste 301, Millcreek | Lacey Bruschke, 801-486-1122 | Voted best gym in Utah three years running ; proprietary Obsidian format and app. | 6 min from stop 2 |
-| 4 | Skin Logic Esthetics | Salons and beauty studios | Also nearby | 2505 E 3300 S, Suite 102, Salt Lake City | Heather Stinnett, 801-834-9419 | Heather's studio specializes in acne management programs alongside HydraFacial and microneedling. | 0 min from stop 3 |
-
-### Day 34: Grantsville: E Main St
-
-2 businesses, about 1 h 47 min door to door (43 min out from 3903 W 1700 N, Lehi, UT 84043, 43 min back).
-
-[Open Day 34 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/225%20E%20Main%20St%2C%20Ste%20B%2C%20Grantsville%2C%20UT%2084029/225%20E%20Main%20St%2C%20Grantsville%2C%20UT%2084029/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 32 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/175%20S%20West%20Temple%2C%20Salt%20Lake%20City%2C%20UT%2084101/358%20S%20300%20E%2C%20Salt%20Lake%20City%2C%20UT%2084111/1202%20Wilmington%20Ave%2C%20%23100%2C%20Salt%20Lake%20City%2C%20UT%2084106/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Tooele Valley Physical Therapy | Physical therapy, chiropractic, and sports medicine | Good fit | 225 E Main St, Ste B, Grantsville | Danielle Moorad, (435) 244-2422 | Owner is both a DPT and a certified athletic trainer serving Tooele Valley athletes | 43 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Anytime Fitness Grantsville | Gyms and fitness centers | Also nearby | 225 E Main St, Grantsville | Terri Elesa McQuiston, (435) 884-5565 |  | 0 min from stop 1 |
+| 1 | The Gym at City Creek | Gyms and fitness centers | Also nearby | 175 S West Temple, Salt Lake City | the manager |  | 34 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | SLT Gym | Gyms and fitness centers | Also nearby | 358 S 300 E, Salt Lake City | the manager, 385-315-5174 | SLT already sells contrast therapy and recovery drop-ins alongside memberships, so a chamber slots into an existing recovery menu. | 2 min from stop 1 |
+| 3 | Orangetheory Fitness Sugar House | Gyms and fitness centers | Also nearby | 1202 Wilmington Ave, #100, Salt Lake City | the manager | Open in Sugar House since 2017; Sugar House Chamber member. | 11 min from stop 2 |
 
-### Day 35: Riverton: W Partridge Hill Ln
+### Day 33: Tooele (84074), part 2
 
-5 businesses, about 1 h 47 min door to door (17 min out from 3903 W 1700 N, Lehi, UT 84043, 17 min back).
+3 businesses, about 1 h 48 min door to door (31 min out from 3903 W 1700 N, Lehi, UT 84043, 33 min back).
 
-[Open Day 35 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/2722%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/10534%20S%20River%20Heights%20Dr%2C%20South%20Jordan%2C%20UT%2084095/11531%20S%20District%20Main%20Dr%20Ste%201000%2C%20South%20Jordan%2C%20UT%2084095/4534%20W%20Partridge%20Hill%20Ln%20Ste%20E120%2C%20Riverton%2C%20UT%2084096/4534%20W%20Partridge%20Hill%20Ln%20Ste%20E150%2C%20Riverton%2C%20UT%2084096/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Anytime Fitness Riverton | Gyms and fitness centers | Also nearby | 2722 W 12600 S, Riverton | Chad Peck, (801) 878-3388 | Family-run franchise: owner Chad Peck with managers Caleb and Carson Peck | 17 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | EoS Fitness South Jordan | Gyms and fitness centers | Also nearby | 10534 S River Heights Dr, South Jordan | the manager |  | 10 min from stop 1 |
-| 3 | Club Pilates The District SoJo | Gyms and fitness centers | Also nearby | 11531 S District Main Dr Ste 1000, South Jordan | the manager, (801) 637-8070 |  | 5 min from stop 2 |
-| 4 | HOTWORX - Riverton (Mountain View Village) | Gyms and fitness centers | Also nearby | 4534 W Partridge Hill Ln Ste E120, Riverton | the manager |  | 9 min from stop 3 |
-| 5 | Orangetheory Fitness Riverton | Gyms and fitness centers | Also nearby | 4534 W Partridge Hill Ln Ste E150, Riverton | the manager |  | 0 min from stop 4 |
-
-### Day 36: Taylorsville: S Redwood Rd
-
-4 businesses, about 1 h 48 min door to door (23 min out from 3903 W 1700 N, Lehi, UT 84043, 27 min back).
-
-[Open Day 36 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/5546%20S%20Redwood%20Rd%2C%20Taylorsville%2C%20UT%2084123/5474%20S%20Redwood%20Rd%2C%20Taylorsville%2C%20UT%2084123/676%20W%20Auburn%20Dr%2C%20Murray%2C%20UT%2084123/3560%20S%20Main%20St%2C%20South%20Salt%20Lake%2C%20UT%2084115/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 33 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/992%20N%20Main%20St%2C%20Tooele%2C%20UT%2084074/1868%20N%20170%20W%2C%20Tooele%2C%20UT%2084074/10%20S%20Garnet%20St%20Bldg%20669%20%234%2C%20Tooele%2C%20UT%2084074/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | EoS Fitness Taylorsville | Gyms and fitness centers | Also nearby | 5546 S Redwood Rd, Taylorsville | the manager |  | 23 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | HOTWORX - Taylorsville (Crossroads) | Gyms and fitness centers | Also nearby | 5474 S Redwood Rd, Taylorsville | the manager |  | 0 min from stop 1 |
-| 3 | Murray Kickboxing Academy | Gyms and fitness centers | Also nearby | 676 W Auburn Dr, Murray | the manager, (801) 815-8664 | WKA-sanctioned affiliate advertising the lowest-cost martial arts training in town. | 5 min from stop 2 |
-| 4 | Legends Boxing - South Salt Lake | Gyms and fitness centers | Also nearby | 3560 S Main St, South Salt Lake | the manager | USA Boxing-certified coaches teach first-timers alongside seasoned members. | 12 min from stop 3 |
+| 1 | HOTWORX Tooele | Gyms and fitness centers | Also nearby | 992 N Main St, Tooele | Casey and Tonya Walker; Joseph and Breearna Walker, (385) 787-8090 | Tooele Transcript Bulletin covered the studio's Feb 26-28, 2026 ribbon cutting under new local family ownership. | 31 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Tooele Boxing | Gyms and fitness centers | Also nearby | 1868 N 170 W, Tooele | the manager |  | 4 min from stop 1 |
+| 3 | Tooele Martial Arts Academy (also here: Get Fit With Ty) | Gyms and fitness centers | Also nearby | 10 S Garnet St Bldg 669 #4, Tooele | Keith Azbury, (435) 882-1212 | Runs BJJ , Muay Thai and a women's self-defense program out of the Garnet St building. | 10 min from stop 2 |
 
-### Day 37: Heber City (84032)
-
-3 businesses, about 1 h 50 min door to door (37 min out from 3903 W 1700 N, Lehi, UT 84043, 38 min back).
-
-[Open Day 37 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/151%20N%20Main%20St%2C%20Heber%20City%2C%20UT%2084032/55%20E%20Center%20St%20Ste%20140%2C%20Heber%20City%2C%20UT%2084032/425%20E%201200%20S%2C%20Suite%202%2C%20Heber%20City%2C%20UT%2084032/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | The Underground Barbell Club | Gyms and fitness centers | Also nearby | 151 N Main St, Heber City | the manager, (435) 709-5582 |  | 37 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | The Studio - Elevated Fitness | Gyms and fitness centers | Also nearby | 55 E Center St Ste 140, Heber City | Kasey Sorensen, (435) 315-3635 | Heber Valley Life featured the studio's breathwork programming ; runs spin, hot yoga, barre and HIIT under one roof downtown. | 1 min from stop 1 |
-| 3 | Heber Beauty Studios | Salons and beauty studios | Also nearby | 425 E 1200 S, Suite 2, Heber City | the manager | Houses the Bloom Beauty facial lounge alongside hair and waxing providers. | 4 min from stop 2 |
-
-### Day 38: Woods Cross (84087)
+### Day 34: Woods Cross (84087)
 
 2 businesses, about 1 h 50 min door to door (45 min out from 3903 W 1700 N, Lehi, UT 84043, 45 min back).
 
-[Open Day 38 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1431%20Redwood%20Rd%2C%20Woods%20Cross%2C%20UT%2084087/1181%20S%201800%20W%20Ste%201%2C%20Woods%20Cross%2C%20UT%2084087/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 34 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1431%20Redwood%20Rd%2C%20Woods%20Cross%2C%20UT%2084087/1181%20S%201800%20W%20Ste%201%2C%20Woods%20Cross%2C%20UT%2084087/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Rockwell Training Facility | Gyms and fitness centers | Also nearby | 1431 Redwood Rd, Woods Cross | the manager, (801) 678-7983 | Rebranded from Rockwell CrossFit to Rockwell Training Facility with open-gym memberships on WellnessLiving. | 45 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | Results Pro Training | Gyms and fitness centers | Also nearby | 1181 S 1800 W Ste 1, Woods Cross | the manager, (801) 660-0430 | Listed on BestofUtah.com; small-group circuit training studio in Woods Cross. | 0 min from stop 1 |
 
-### Day 39: Bountiful: W 1150 S
-
-2 businesses, about 1 h 50 min door to door (45 min out from 3903 W 1700 N, Lehi, UT 84043, 45 min back).
-
-[Open Day 39 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/448%20W%201150%20S%2C%20Suite%202%2C%20Bountiful%2C%20UT%2084010/448%20W%201150%20S%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Big John's Pro Gym / The Elite Training Facility | Gyms and fitness centers | Also nearby | 448 W 1150 S, Suite 2, Bountiful | Elise G. and John G., (385) 243-1652 | Offers contest prep and posing instruction alongside massage therapy, so recovery services are already part of the menu. | 45 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | The Refinery Gym (Bountiful) | Gyms and fitness centers | Also nearby | 448 W 1150 S, Bountiful | John and Jessica Nelson | Owners built a personal collection of rare, high-performance machines before opening to the public, and recently added the Bountiful location to the original Sa | 0 min from stop 1 |
-
-### Day 40: South Salt Lake: S West Temple
+### Day 35: South Salt Lake: S West Temple
 
 4 businesses, about 1 h 50 min door to door (27 min out from 3903 W 1700 N, Lehi, UT 84043, 29 min back).
 
-[Open Day 40 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/3584%20S%201950%20W%2C%20West%20Valley%20City%2C%20UT%2084119/2710%20S%20Lemel%20Cir%2C%20South%20Salt%20Lake%2C%20UT%2084115/2394%20S%20West%20Temple%2C%20South%20Salt%20Lake%2C%20UT%2084115/2904%20S%20West%20Temple%2C%20South%20Salt%20Lake%2C%20UT%2084115/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 35 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/3584%20S%201950%20W%2C%20West%20Valley%20City%2C%20UT%2084119/2710%20S%20Lemel%20Cir%2C%20South%20Salt%20Lake%2C%20UT%2084115/2394%20S%20West%20Temple%2C%20South%20Salt%20Lake%2C%20UT%2084115/2904%20S%20West%20Temple%2C%20South%20Salt%20Lake%2C%20UT%2084115/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -641,74 +572,99 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 3 | Fight City SLC | Gyms and fitness centers | Also nearby | 2394 S West Temple, South Salt Lake | Eric Wahlin, 801-455-4003 | Runs both a fight gym and a fight-gear retail shop out of South Salt Lake. | 2 min from stop 2 |
 | 4 | The Institute of Mixed Martial Arts | Gyms and fitness centers | Also nearby | 2904 S West Temple, South Salt Lake | Sep Pohua, 801-870-8904 | Markets open mat time plus classes across boxing, kickboxing and jiu jitsu for all levels 13+. | 3 min from stop 3 |
 
-### Day 41: Lehi: W Traverse Pkwy
+### Day 36: Park City (84060)
 
-7 businesses, about 1 h 50 min door to door (6 min out from 3903 W 1700 N, Lehi, UT 84043, 3 min back).
+2 businesses, about 1 h 50 min door to door (39 min out from 3903 W 1700 N, Lehi, UT 84043, 42 min back).
 
-[Open Day 41 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/2065%20W%20900%20N%2C%20Lehi%2C%20UT%2084043/1010%20S%201100%20W%2C%20Suite%20104%2C%20Lehi%2C%20UT%2084043/401%20S%20850%20E%2C%20Lehi%2C%20UT%2084043/288%20E%20Main%20St%2C%20Lehi%2C%20UT%2084043/1873%20W%20Traverse%20Pkwy%20Ste%20C%2C%20Lehi%2C%20UT%2084043/1881%20W%20Traverse%20Pkwy%20Ste%20B%2C%20Lehi%2C%20UT%2084043/2319%20N%203370%20W%2C%20Lehi%2C%20UT%2084043/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 36 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/2080%20Gold%20Dust%20Ln%2C%20Park%20City%2C%20UT%2084060/4108%20N%20Forestdale%20Dr%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Utah Valley Tennis Club | Gyms and fitness centers | Also nearby | 2065 W 900 N, Lehi | the manager, (385) 482-3765 | Five indoor courts with viewing mezzanine plus two outdoor red clay courts, new club with its own member app | 6 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Bomb Lashes & Brows | Salons and beauty studios | Also nearby | 1010 S 1100 W, Suite 104, Lehi | Fernanda Jones, (619) 745-3784 (text preferred) | Fernanda is a licensed instructor who added powder-brow services alongside lashes and runs out of Wild Oak Salon Suites in Lehi. | 6 min from stop 1 |
-| 3 | Momentum Indoor Climbing - Lehi | Gyms and fitness centers | Also nearby | 401 S 850 E, Lehi | the manager, (801) 717-1233 | Lehi gym includes a dedicated training/yoga area alongside rope and bouldering walls | 3 min from stop 2 |
-| 4 | Rage Fitness | Gyms and fitness centers | Also nearby | 288 E Main St, Lehi | Kenny Knight, (801) 358-2089 | Lehi Free Press profiled RAGE Fitness as a Main Street fixture since 1995 under founder Kenny Knight | 4 min from stop 3 |
-| 5 | F45 Training Traverse Mountain | Gyms and fitness centers | Also nearby | 1873 W Traverse Pkwy Ste C, Lehi | Shallan Smith, (801) 785-6166 | Hosts an F45 MomTribe workout series | 13 min from stop 4 |
-| 6 | Club Pilates Lehi | Gyms and fitness centers | Also nearby | 1881 W Traverse Pkwy Ste B, Lehi | Krista McClure, (385) 831-7077 |  | 0 min from stop 5 |
-| 7 | The Skin Loft | Salons and beauty studios | Also nearby | 2319 N 3370 W, Lehi | Marie Black, (801) 885-8238 | 213 Birdeye reviews for a facial-plus-lash studio in west Lehi. | 6 min from stop 6 |
+| 1 | BJJ Revolution Park City (Malmberg Jiu Jitsu) (also here: Silver Mountain Sports Club & Spa) | Gyms and fitness centers | Also nearby | 2080 Gold Dust Ln, Park City | Ben Malmberg, (435) 714-0321 | Trains out of Silver Mountain Sports Club and also runs BJJ Revolution classes for Heber and Kamas. | 39 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Park City Fit | Gyms and fitness centers | Also nearby | 4108 N Forestdale Dr, Park City | Chris Spealler | Profiled in TownLift's 'Our Town: Park City Fit, More Than a Gym' and sells an 'Adventure Preparedness Program' for mountain athletes. | 9 min from stop 1 |
 
-### Day 42: Salt Lake City (84108)
+### Day 37: Heber City (84032), part 2
+
+3 businesses, about 1 h 50 min door to door (36 min out from 3903 W 1700 N, Lehi, UT 84043, 37 min back).
+
+[Open Day 37 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/544%20Airport%20Rd%2C%20Unit%20B10%2C%20Heber%20City%2C%20UT%2084032/345%20W%20600%20S%2C%20Ste%20200%2C%20Heber%20City%2C%20UT%2084032/55%20E%20Center%20St%20Ste%20140%2C%20Heber%20City%2C%20UT%2084032/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | Ruthless Performance | CrossFit and performance gyms | Good fit | 544 Airport Rd, Unit B10, Heber City | the manager, 435-671-8423 | Custom athlete programs combining speed/agility, strength and nutrition planning out of the Heber airport-road industrial park. | 36 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | The Fit Stop Health Club (also here: The Pilates Studio Utah, BC Boxing Utah) | Gyms and fitness centers | Also nearby | 345 W 600 S, Ste 200, Heber City | Wayne Bulkley, (435) 654-5607 | Family-run Heber Valley institution for over 30 years that already pairs the gym with its own physical therapy clinic. | 4 min from stop 1 |
+| 3 | The Studio - Elevated Fitness | Gyms and fitness centers | Also nearby | 55 E Center St Ste 140, Heber City | Kasey Sorensen, (435) 315-3635 | Heber Valley Life featured the studio's breathwork programming ; runs spin, hot yoga, barre and HIIT under one roof downtown. | 2 min from stop 2 |
+
+### Day 38: Salt Lake City (84108)
 
 4 businesses, about 1 h 50 min door to door (32 min out from 3903 W 1700 N, Lehi, UT 84043, 30 min back).
 
-[Open Day 42 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1440%20Foothill%20Dr%20%23160%2C%20Salt%20Lake%20City%2C%20UT%2084108/1400%20S%20Foothill%20Dr%2C%20Ste%2020%2C%20Salt%20Lake%20City%2C%20UT%2084108/1511%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084105/1142%20Wilmington%20Ave%2C%20Salt%20Lake%20City%2C%20UT%2084106/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 38 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1440%20Foothill%20Dr%20%23160%2C%20Salt%20Lake%20City%2C%20UT%2084108/1511%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084105/1142%20Wilmington%20Ave%2C%20Salt%20Lake%20City%2C%20UT%2084106/2188%20Highland%20Dr%2C%20Suite%20104%2C%20Salt%20Lake%20City%2C%20UT%2084106/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | FACE FOUNDRIE Salt Lake City | Salons and beauty studios | Also nearby | 1440 Foothill Dr #160, Salt Lake City | Sydney and Dave Scott, 801-839-2204 | Locally owned FACE FOUNDRIE facial bar on Foothill Drive with a membership model built around monthly repeat visits. | 32 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | BodyWise Fitness | Gyms and fitness centers | Also nearby | 1400 S Foothill Dr, Ste 20, Salt Lake City | Andrew Moran, 801-583-0200 | Foothill Village neighbor of Move Better Pilates and . | 0 min from stop 1 |
-| 3 | F45 Training Sugarhouse | Gyms and fitness centers | Also nearby | 1511 E 2100 S, Salt Lake City | Marci Kimball, 801-512-2664 |  | 5 min from stop 2 |
-| 4 | JETSET Pilates - Sugar House | Gyms and fitness centers | Also nearby | 1142 Wilmington Ave, Salt Lake City | the manager | Newer reformer studio in Sugar House's Wilmington Ave retail cluster next to Orangetheory. | 2 min from stop 3 |
+| 2 | F45 Training Sugarhouse | Gyms and fitness centers | Also nearby | 1511 E 2100 S, Salt Lake City | Marci Kimball, 801-512-2664 |  | 5 min from stop 1 |
+| 3 | JETSET Pilates - Sugar House | Gyms and fitness centers | Also nearby | 1142 Wilmington Ave, Salt Lake City | the manager | Newer reformer studio in Sugar House's Wilmington Ave retail cluster next to Orangetheory. | 2 min from stop 2 |
+| 4 | Barry's Salt Lake City | Gyms and fitness centers | Also nearby | 2188 Highland Dr, Suite 104, Salt Lake City | the manager, 801-349-1120 | Opened December 2025 as Barry's first Utah studio . | 0 min from stop 3 |
 
-### Day 43: Park City (84098), part 1
+### Day 39: American Fork and Pleasant Grove
+
+6 businesses, about 1 h 50 min door to door (15 min out from 3903 W 1700 N, Lehi, UT 84043, 16 min back).
+
+[Open Day 39 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/636%20E%20State%20Rd%2C%20American%20Fork%2C%20UT%2084003/920%20E%20State%20St%2C%20American%20Fork%2C%20UT%2084003/312%20S%202000%20W%2C%20Pleasant%20Grove%2C%20UT%2084062/795%20S%20Main%20St%2C%20Pleasant%20Grove%2C%20UT%2084062/710%20S%20Utah%20Valley%20Dr%2C%20American%20Fork%2C%20UT%2084003/1375%20S%20500%20E%2C%20Unit%20123%2C%20American%20Fork%2C%20UT%2084003/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | American Fork Physical Therapy | Physical therapy, chiropractic, and sports medicine | Also nearby | 636 E State Rd, American Fork | the manager, (801) 492-6577 | Four-DPT independent clinic on State Road in American Fork | 15 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Paul Tom's Academy of Brazilian Jiu Jitsu | Gyms and fitness centers | Also nearby | 920 E State St, American Fork | Paul Tom |  | 2 min from stop 1 |
+| 3 | The Park Pilates | Gyms and fitness centers | Also nearby | 312 S 2000 W, Pleasant Grove | Alayna Erb |  | 1 min from stop 2 |
+| 4 | JP Lash & Brow Studio | Salons and beauty studios | Also nearby | 795 S Main St, Pleasant Grove | Breanne Jensen, 385-200-1052 | Breanne was profiled in VoyageUtah, and her studio shares space with Mountain West Pilates in Pleasant Grove. | 6 min from stop 3 |
+| 5 | The Training Room | Gyms and fitness centers | Also nearby | 710 S Utah Valley Dr, American Fork | Phil Templeman, (385) 254-5631 |  | 8 min from stop 4 |
+| 6 | Valhalla Strength Gym | Gyms and fitness centers | Also nearby | 1375 S 500 E, Unit 123, American Fork | Michelle and Niko | 24/7/365 key-fob strongman and powerlifting gym in American Fork with specialty equipment at $70/month. | 3 min from stop 5 |
+
+### Day 40: Park City (84098), part 1
 
 2 businesses, about 1 h 50 min door to door (40 min out from 3903 W 1700 N, Lehi, UT 84043, 41 min back).
 
-[Open Day 43 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1526%20W%20Ute%20Blvd%2C%20Ste%20110%2C%20Park%20City%2C%20UT%2084098/3070%20Rasmussen%20Rd%2C%20Ste%20190%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 40 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1526%20W%20Ute%20Blvd%2C%20Ste%20110%2C%20Park%20City%2C%20UT%2084098/3070%20Rasmussen%20Rd%2C%20Ste%20190%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Freedom Chiropractic (Park City) | Physical therapy, chiropractic, and sports medicine | Good fit | 1526 W Ute Blvd, Ste 110, Park City | E.J. Raven, (435) 655-7789 | Markets itself specifically on treating common ski/sports injuries in Kimball Junction | 40 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | Jeremy Ranch Chiropractic | Physical therapy, chiropractic, and sports medicine | Good fit | 3070 Rasmussen Rd, Ste 190, Park City | Suzanne Cronin, (435) 200-8079 | Jeremy Ranch outpost of a small Salt Lake chiropractic group | 9 min from stop 1 |
 
-### Day 44: Park City: Center Dr
+### Day 41: Salt Lake City and South Salt Lake, part 4
 
-3 businesses, about 1 h 51 min door to door (40 min out from 3903 W 1700 N, Lehi, UT 84043, 40 min back).
+4 businesses, about 1 h 51 min door to door (31 min out from 3903 W 1700 N, Lehi, UT 84043, 31 min back).
 
-[Open Day 44 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1675%20W%20Redstone%20Center%20Dr%20Ste%20140%2C%20Park%20City%2C%20UT%2084098/1154%20Center%20Dr%20Ste%20D210%2C%20Park%20City%2C%20UT%2084098/1154%20Center%20Dr%20Ste%20D200%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Salt Pilates | Gyms and fitness centers | Also nearby | 1675 W Redstone Center Dr Ste 140, Park City | Rebekah Stokely, (435) 293-6884 | Every reformer station has its own halotherapy salt wall, so the studio already sells a wellness add-on alongside Pilates. | 40 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | PC Yoga Collective | Gyms and fitness centers | Also nearby | 1154 Center Dr Ste D210, Park City | Jennifer Armstrong, (435) 359-0715 | The only hot-yoga studio in Park City heated with radiant heat; drop-ins are $15 with mats included. | 1 min from stop 1 |
-| 3 | Boom Cycle Room | Gyms and fitness centers | Also nearby | 1154 Center Dr Ste D200, Park City | Regan Rodgers, (208) 881-6473 | Park Record covered the studio's 2016 opening as Park City's first dedicated indoor cycling studio; still the only one in town. | 0 min from stop 2 |
-
-### Day 45: Bountiful: W 500 S
-
-2 businesses, about 1 h 51 min door to door (45 min out from 3903 W 1700 N, Lehi, UT 84043, 45 min back).
-
-[Open Day 45 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/155%20W%20500%20S%20Ste%201A%2C%20Bountiful%2C%20UT%2084010/144%20W%20500%20S%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 41 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/2020%20S%20700%20E%2C%20Salt%20Lake%20City%2C%20UT%2084105/615%20Simpson%20Ave%2C%20Salt%20Lake%20City%2C%20UT%2084106/2257%20S%20State%20St%2C%20South%20Salt%20Lake%2C%20UT%2084115/1470%20S%20400%20W%2C%20Salt%20Lake%20City%2C%20UT%2084115/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Legends Boxing Bountiful | Gyms and fitness centers | Also nearby | 155 W 500 S Ste 1A, Bountiful | Andrew Scott, (801) 810-0818 | Davis Journal profiled the Bountiful gym in July 2023 ; opened in 2022. | 45 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Gracie Jiu-Jitsu Bountiful | Gyms and fitness centers | Also nearby | 144 W 500 S, Bountiful | Nick, (385) 202-1988 | Runs adult Gracie Combatives classes four evenings a week plus Saturday morning sessions. | 0 min from stop 1 |
+| 1 | Utah Fitness Institute | Gyms and fitness centers | Also nearby | 2020 S 700 E, Salt Lake City | Paul Daniels, PhD, CSCS, 801-326-9126 | Led by one of the few trainers in Utah with a PhD in exercise physiology; profiled in VoyageUtah. | 31 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Renzo Gracie Salt Lake City | Gyms and fitness centers | Also nearby | 615 Simpson Ave, Salt Lake City | Stan Beck, 801-810-6550 | Owner Stan Beck is a 4th-degree black belt under Renzo Gracie. | 1 min from stop 1 |
+| 3 | Bernales Institute of Martial Arts | Gyms and fitness centers | Also nearby | 2257 S State St, South Salt Lake | William Bernales, 801-463-1727 | Long-running South Salt Lake academy teaching seven disciplines from BJJ to Kali and Silat. | 3 min from stop 2 |
+| 4 | The Front Climbing Club | Gyms and fitness centers | Also nearby | 1470 S 400 W, Salt Lake City | Dustin Buckthal, (801) 466-7625 | Opened the South Main location in South Salt Lake and has been expanding with RDA backing . | 5 min from stop 3 |
 
-### Day 46: Salt Lake City: S 700 E
+### Day 42: Salt Lake City (84106)
+
+4 businesses, about 1 h 51 min door to door (31 min out from 3903 W 1700 N, Lehi, UT 84043, 32 min back).
+
+[Open Day 42 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1057%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084106/1993%201%2F2%20S%201100%20E%2C%20Salt%20Lake%20City%2C%20UT%2084106/1790%20S%201100%20E%2C%20Suite%20201%2C%20Salt%20Lake%20City%2C%20UT%2084105/1400%20Foothill%20Dr%2C%20%2320%2C%20Salt%20Lake%20City%2C%20UT%2084108/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | The Bar Method - Salt Lake City Sugarhouse | Gyms and fitness centers | Also nearby | 1057 E 2100 S, Salt Lake City | Carrie Goodwin, 801-485-4227 | Long-running Sugar House barre studio featured in Sugar House Chamber's business spotlight. | 31 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Sugarhouse Parlour Hairdressing | Salons and beauty studios | Also nearby | 1993 1/2 S 1100 E, Salt Lake City | Ashton Eguchi | Woman-owned Sugar House salon that Ashton has run since July 2014. | 0 min from stop 1 |
+| 3 | Seek Studio | Gyms and fitness centers | Also nearby | 1790 S 1100 E, Suite 201, Salt Lake City | Sarah Betts, 385-355-4830 | Named one of Best of Utah 2026's best privately owned gyms alongside The Backline and PEAK|45. | 1 min from stop 2 |
+| 4 | Move Better Pilates & Training Studio (also here: BodyWise Fitness) | Gyms and fitness centers | Also nearby | 1400 Foothill Dr, #20, Salt Lake City | Camilo Jimenez, 435-571-1105 | Profiled by Utah Stories for its strength-and-mobility approach; semi-private format. | 7 min from stop 3 |
+
+### Day 43: Salt Lake City: S 700 E
 
 4 businesses, about 1 h 51 min door to door (34 min out from 3903 W 1700 N, Lehi, UT 84043, 33 min back).
 
-[Open Day 46 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/330%20E%20400%20S%2C%20Suite%20105%2C%20Salt%20Lake%20City%2C%20UT%2084111/515%20S%20700%20E%2C%20Ste%202D%2C%20Salt%20Lake%20City%2C%20UT%2084102/602%20S%20700%20E%2C%20Suite%20106%2C%20Salt%20Lake%20City%2C%20UT%2084102/951%20E%20900%20S%2C%20Salt%20Lake%20City%2C%20UT%2084105/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 43 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/330%20E%20400%20S%2C%20Suite%20105%2C%20Salt%20Lake%20City%2C%20UT%2084111/515%20S%20700%20E%2C%20Ste%202D%2C%20Salt%20Lake%20City%2C%20UT%2084102/602%20S%20700%20E%2C%20Suite%20106%2C%20Salt%20Lake%20City%2C%20UT%2084102/951%20E%20900%20S%2C%20Salt%20Lake%20City%2C%20UT%2084105/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -717,110 +673,127 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 3 | Legends Boxing - Trolley Square | Gyms and fitness centers | Also nearby | 602 S 700 E, Suite 106, Salt Lake City | Dave Hodgkinson and Cate Hodgkinson, 801-784-4446 | Profiled in Salt Lake Magazine ; husband-and-wife team Dave and Cate Hodgkinson run the Trolley Square gym. | 0 min from stop 2 |
 | 4 | Tonic Method 9th & 9th | Gyms and fitness centers | Also nearby | 951 E 900 S, Salt Lake City | Madeleine Hasulak, 801-753-8909 ext 6 | Brand grew from Aspen; the 9th & 9th studio is the SLC flagship. | 2 min from stop 3 |
 
-### Day 47: South Jordan and West Jordan, Riverton
+### Day 44: Taylorsville and Murray, South Salt Lake
 
-5 businesses, about 1 h 51 min door to door (18 min out from 3903 W 1700 N, Lehi, UT 84043, 18 min back).
+4 businesses, about 1 h 51 min door to door (23 min out from 3903 W 1700 N, Lehi, UT 84043, 21 min back).
 
-[Open Day 47 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/8860%20S%20Redwood%20Rd%20Ste%20101%2C%20West%20Jordan%2C%20UT%2084088/3658%20W%209800%20S%2C%20South%20Jordan%2C%20UT%2084095/11277%20Kestrel%20Rise%20Rd%20Ste%20A%2C%20South%20Jordan%2C%20UT%2084009/11516%20District%20Dr%20%23600%2C%20South%20Jordan%2C%20UT%2084095/12544%20S%20Pasture%20Rd%2C%20Riverton%2C%20UT%2084096/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | HOTWORX - West Jordan (Redwood) | Gyms and fitness centers | Also nearby | 8860 S Redwood Rd Ste 101, West Jordan | the manager, (801) 996-3124 |  | 18 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Impact Strong | Gyms and fitness centers | Also nearby | 3658 W 9800 S, South Jordan | Angie Garcia, (801) 755-9825 | Featured in a South Jordan Journal 'Local Business Spotlight' ; Yelp reviews call out 'Frank and Angie are awesome owners' | 9 min from stop 1 |
-| 3 | F45 Training SoDa Row | Gyms and fitness centers | Also nearby | 11277 Kestrel Rise Rd Ste A, South Jordan | Cynthia Gillette and James Gillette, (385) 217-4572 | Locally owned by Daybreak mother/son duo Cynthia and James Gillette; 73 Birdeye reviews | 8 min from stop 2 |
-| 4 | Orangetheory Fitness South Jordan | Gyms and fitness centers | Also nearby | 11516 District Dr #600, South Jordan | Dave Morrocco, (801) 758-0500 | Member of the South Valley Chamber as Orangetheory Fitness South Valley | 4 min from stop 3 |
-| 5 | Legends Boxing - Riverton | Gyms and fitness centers | Also nearby | 12544 S Pasture Rd, Riverton | the manager, (801) 254-3010 |  | 5 min from stop 4 |
-
-### Day 48: Park City (84098), part 2
-
-3 businesses, about 1 h 51 min door to door (40 min out from 3903 W 1700 N, Lehi, UT 84043, 40 min back).
-
-[Open Day 48 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1678%20Redstone%20Center%20Dr%2C%20Park%20City%2C%20UT%2084098/1708%20Uinta%20Way%20Ste%20F-2%2C%20Park%20City%2C%20UT%2084098/1153%20Center%20Dr%20Ste%20G190%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 44 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/5546%20S%20Redwood%20Rd%2C%20Taylorsville%2C%20UT%2084123/676%20W%20Auburn%20Dr%2C%20Murray%2C%20UT%2084123/3560%20S%20Main%20St%2C%20South%20Salt%20Lake%2C%20UT%2084115/785%20E%20Fort%20Union%20Blvd%2C%20Midvale%2C%20UT%2084047/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Orangetheory Fitness Park City | Gyms and fitness centers | Also nearby | 1678 Redstone Center Dr, Park City | the manager, (435) 575-5575 |  | 40 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Pure Barre Park City | Gyms and fitness centers | Also nearby | 1708 Uinta Way Ste F-2, Park City | the manager, (435) 214-7430 | Studio recently changed hands and runs classes seven days a week at Newpark. | 0 min from stop 1 |
-| 3 | Club Pilates Park City | Gyms and fitness centers | Also nearby | 1153 Center Dr Ste G190, Park City | JaNae M., (435) 800-9904 | Owner JaNae also teaches on the floor as a certified instructor at the Redstone studio. | 1 min from stop 2 |
+| 1 | EoS Fitness Taylorsville | Gyms and fitness centers | Also nearby | 5546 S Redwood Rd, Taylorsville | the manager |  | 23 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Murray Kickboxing Academy | Gyms and fitness centers | Also nearby | 676 W Auburn Dr, Murray | the manager, (801) 815-8664 | WKA-sanctioned affiliate advertising the lowest-cost martial arts training in town. | 5 min from stop 1 |
+| 3 | Legends Boxing - South Salt Lake | Gyms and fitness centers | Also nearby | 3560 S Main St, South Salt Lake | the manager | USA Boxing-certified coaches teach first-timers alongside seasoned members. | 12 min from stop 2 |
+| 4 | Anytime Fitness Midvale | Gyms and fitness centers | Also nearby | 785 E Fort Union Blvd, Midvale | the manager, (801) 559-7373 |  | 10 min from stop 3 |
 
-### Day 49: Bountiful (84010), part 1
+### Day 45: Bountiful (84010), part 1
 
 2 businesses, about 1 h 51 min door to door (45 min out from 3903 W 1700 N, Lehi, UT 84043, 45 min back).
 
-[Open Day 49 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/533%20W%20750%20S%2C%20Bountiful%2C%20UT%2084010/530%20W%20500%20S%20Ste%20D%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 45 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/533%20W%20750%20S%2C%20Bountiful%2C%20UT%2084010/530%20W%20500%20S%20Ste%20D%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Anytime Fitness Bountiful | Gyms and fitness centers | Also nearby | 533 W 750 S, Bountiful | Justin Caldwell, (385) 414-2768 | Locally owned Anytime franchise; BBB-listed owner Justin Caldwell. | 45 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | Club Pilates Bountiful | Gyms and fitness centers | Also nearby | 530 W 500 S Ste D, Bountiful | Matt McLaughlin, (801) 317-1766 | One of five Utah studios under franchisee Matt McLaughlin; reformer classes across 4 levels. | 1 min from stop 1 |
 
-### Day 50: Salt Lake City (84106), part 2
-
-4 businesses, about 1 h 51 min door to door (30 min out from 3903 W 1700 N, Lehi, UT 84043, 32 min back).
-
-[Open Day 50 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1155%20E%20Wilmington%20Ave%2C%20Ste%20200%2C%20Salt%20Lake%20City%2C%20UT%2084106/1993%201%2F2%20S%201100%20E%2C%20Salt%20Lake%20City%2C%20UT%2084106/1790%20S%201100%20E%2C%20Suite%20201%2C%20Salt%20Lake%20City%2C%20UT%2084105/1400%20Foothill%20Dr%2C%20%2320%2C%20Salt%20Lake%20City%2C%20UT%2084108/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Rideologie | Gyms and fitness centers | Also nearby | 1155 E Wilmington Ave, Ste 200, Salt Lake City | Ali Babcock, 801-484-1456 | Woman-owned, LGBTQ-friendly spin studio featured by Her Campus as SLC's newest spin studio. | 30 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Sugarhouse Parlour Hairdressing | Salons and beauty studios | Also nearby | 1993 1/2 S 1100 E, Salt Lake City | Ashton Eguchi | Woman-owned Sugar House salon that Ashton has run since July 2014. | 1 min from stop 1 |
-| 3 | Seek Studio | Gyms and fitness centers | Also nearby | 1790 S 1100 E, Suite 201, Salt Lake City | Sarah Betts, 385-355-4830 | Named one of Best of Utah 2026's best privately owned gyms alongside The Backline and PEAK|45. | 1 min from stop 2 |
-| 4 | Move Better Pilates & Training Studio | Gyms and fitness centers | Also nearby | 1400 Foothill Dr, #20, Salt Lake City | Camilo Jimenez, 435-571-1105 | Profiled by Utah Stories for its strength-and-mobility approach; semi-private format. | 7 min from stop 3 |
-
-### Day 51: Park City: W Ute Blvd
-
-3 businesses, about 1 h 51 min door to door (40 min out from 3903 W 1700 N, Lehi, UT 84043, 40 min back).
-
-[Open Day 51 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/6546%20N%20Landmark%20Dr%20Ste%20A%2C%20Park%20City%2C%20UT%2084098/1680%20W%20Ute%20Blvd%2C%20Park%20City%2C%20UT%2084098/1612%20W%20Ute%20Blvd%20Ste%20115%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | The Smart Fit Method Park City | Gyms and fitness centers | Also nearby | 6546 N Landmark Dr Ste A, Park City | Connor and Mike Darnbrough, (435) 500-6154 | Launched a $149/month contrast-therapy membership in Dec 2025, so recovery is already a revenue line. | 40 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | The Mine Bouldering Gym | Gyms and fitness centers | Also nearby | 1680 W Ute Blvd, Park City | Andy Jacobsen, (435) 655-6463 | Has been working to build a full-service roped climbing gym at Quinn's Junction with a 15-meter Olympic-size wall . | 1 min from stop 1 |
-| 3 | HOTWORX Park City (Kimball Junction) | Gyms and fitness centers | Also nearby | 1612 W Ute Blvd Ste 115, Park City | Nate and Julie Taylor, (435) 351-1004 | Family-owned franchise that held its Kimball Junction grand opening in June 2024 . | 0 min from stop 2 |
-
-### Day 52: Lindon and Pleasant Grove
-
-6 businesses, about 1 h 51 min door to door (20 min out from 3903 W 1700 N, Lehi, UT 84043, 20 min back).
-
-[Open Day 52 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/795%20S%20Main%20St%2C%20Pleasant%20Grove%2C%20UT%2084062/346%20E%20State%20Rd%2C%20Pleasant%20Grove%2C%20UT%2084062/537%20W%20550%20N%20Ste%20A%2C%20Lindon%2C%20UT%2084042/296%20N%20State%20St%2C%20Lindon%2C%20UT%2084042/236%20S%201250%20W%2C%20Lindon%2C%20UT%2084042/31%20S%201550%20W%20Ste%20112%2C%20Lindon%2C%20UT%2084042/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | JP Lash & Brow Studio | Salons and beauty studios | Also nearby | 795 S Main St, Pleasant Grove | Breanne Jensen, 385-200-1052 | Breanne was profiled in VoyageUtah, and her studio shares space with Mountain West Pilates in Pleasant Grove. | 20 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | XD Fit | Gyms and fitness centers | Also nearby | 346 E State Rd, Pleasant Grove | Brandon |  | 1 min from stop 1 |
-| 3 | Karve Barre Studio | Gyms and fitness centers | Also nearby | 537 W 550 N Ste A, Lindon | Brooke, (801) 785-0414 |  | 2 min from stop 2 |
-| 4 | HOTWORX Lindon (City Park) | Gyms and fitness centers | Also nearby | 296 N State St, Lindon | the manager |  | 2 min from stop 3 |
-| 5 | The Box (Pleasant Grove) | Gyms and fitness centers | Also nearby | 236 S 1250 W, Lindon | Chantelle L. |  | 5 min from stop 4 |
-| 6 | The Grid Fitness | Gyms and fitness centers | Also nearby | 31 S 1550 W Ste 112, Lindon | Brandon Herman, (385) 236-9542 |  | 1 min from stop 5 |
-
-### Day 53: Bountiful (84010), part 2
-
-2 businesses, about 1 h 51 min door to door (46 min out from 3903 W 1700 N, Lehi, UT 84043, 45 min back).
-
-[Open Day 53 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/401%20S%20Main%20St%2C%20Bountiful%2C%20UT%2084010/85%20W%20500%20S%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Urban and Ivy Co (Bountiful Lash & Brow Salon) | Salons and beauty studios | Also nearby | 401 S Main St, Bountiful | the manager |  | 46 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Orangetheory Fitness Bountiful | Gyms and fitness centers | Also nearby | 85 W 500 S, Bountiful | the manager, (801) 784-6477 | Studio #0393 sits in the same 500 South corridor as Legends Boxing, Planet Fitness and Club Pilates. | 0 min from stop 1 |
-
-### Day 54: Bountiful (84010), part 3
+### Day 46: Bountiful (84010), part 2
 
 2 businesses, about 1 h 51 min door to door (45 min out from 3903 W 1700 N, Lehi, UT 84043, 45 min back).
 
-[Open Day 54 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/439%20S%20425%20W%20Ste%20A%2C%20Bountiful%2C%20UT%2084010/273%20W%20500%20S%20%2320%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 46 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/439%20S%20425%20W%20Ste%20A%2C%20Bountiful%2C%20UT%2084010/273%20W%20500%20S%20%2320%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | D1 Training Bountiful | CrossFit and performance gyms | Good fit | 439 S 425 W Ste A, Bountiful | the manager, (385) 340-3500 | Held a Davis Chamber of Commerce ribbon cutting for the new Bountiful facility. | 45 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | Infusion Yoga & Pilates | Gyms and fitness centers | Also nearby | 273 W 500 S #20, Bountiful | Corena Hammer, (801) 390-6244 | Studio markets restorative and therapeutic yoga alongside Pilates, so recovery-minded members are already its audience. | 1 min from stop 1 |
 
-### Day 55: Mapleton and Springville
+### Day 47: South Jordan and Riverton, West Jordan
+
+5 businesses, about 1 h 52 min door to door (17 min out from 3903 W 1700 N, Lehi, UT 84043, 18 min back).
+
+[Open Day 47 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/2722%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/11516%20District%20Dr%20%23600%2C%20South%20Jordan%2C%20UT%2084095/11277%20Kestrel%20Rise%20Rd%20Ste%20A%2C%20South%20Jordan%2C%20UT%2084009/3658%20W%209800%20S%2C%20South%20Jordan%2C%20UT%2084095/8860%20S%20Redwood%20Rd%20Ste%20101%2C%20West%20Jordan%2C%20UT%2084088/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | Anytime Fitness Riverton | Gyms and fitness centers | Also nearby | 2722 W 12600 S, Riverton | Chad Peck, (801) 878-3388 | Family-run franchise: owner Chad Peck with managers Caleb and Carson Peck | 17 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Orangetheory Fitness South Jordan | Gyms and fitness centers | Also nearby | 11516 District Dr #600, South Jordan | Dave Morrocco, (801) 758-0500 | Member of the South Valley Chamber as Orangetheory Fitness South Valley | 7 min from stop 1 |
+| 3 | F45 Training SoDa Row | Gyms and fitness centers | Also nearby | 11277 Kestrel Rise Rd Ste A, South Jordan | Cynthia Gillette and James Gillette, (385) 217-4572 | Locally owned by Daybreak mother/son duo Cynthia and James Gillette; 73 Birdeye reviews | 4 min from stop 2 |
+| 4 | Impact Strong | Gyms and fitness centers | Also nearby | 3658 W 9800 S, South Jordan | Angie Garcia, (801) 755-9825 | Featured in a South Jordan Journal 'Local Business Spotlight' ; Yelp reviews call out 'Frank and Angie are awesome owners' | 8 min from stop 3 |
+| 5 | HOTWORX - West Jordan (Redwood) | Gyms and fitness centers | Also nearby | 8860 S Redwood Rd Ste 101, West Jordan | the manager, (801) 996-3124 |  | 9 min from stop 4 |
+
+### Day 48: Draper: S State St
+
+6 businesses, about 1 h 52 min door to door (21 min out from 3903 W 1700 N, Lehi, UT 84043, 15 min back).
+
+[Open Day 48 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/10975%20Sterling%20View%20Dr%2C%20South%20Jordan%2C%20UT%2084095/10489%20S%20State%20St%2C%20Sandy%2C%20UT%2084070/11483%20S%20State%20St%20Ste%20F%2C%20Draper%2C%20UT%2084020/12101%20S%20State%20St%2C%20Draper%2C%20UT%2084020/241%20E%2012300%20S%2C%20Draper%2C%20UT%2084020/10%20W%20Scenic%20Point%20Dr%2C%20Suite%20107%2C%20Draper%2C%20UT%2084020/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | FreedOM Hot Yoga + Pilates SoJo | Gyms and fitness centers | Also nearby | 10975 Sterling View Dr, South Jordan | the manager, (801) 201-5517 | Second studio of the Orem-based FreedOM Hot Yoga brand | 21 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Pure Barre Sandy | Gyms and fitness centers | Also nearby | 10489 S State St, Sandy | the manager, (801) 999-4139 |  | 3 min from stop 1 |
+| 3 | Club Pilates Draper | Gyms and fitness centers | Also nearby | 11483 S State St Ste F, Draper | the manager |  | 4 min from stop 2 |
+| 4 | VASA Fitness Draper | Gyms and fitness centers | Also nearby | 12101 S State St, Draper | the manager |  | 3 min from stop 3 |
+| 5 | Phenix Salon Suites Draper | Salons and beauty studios | Also nearby | 241 E 12300 S, Draper | the manager, 801-750-4512 | Each private suite at the Draper location is independently owned, so a shared recovery amenity would be a differentiator for leasing. | 2 min from stop 4 |
+| 6 | House of Lashademics | Salons and beauty studios | Also nearby | 10 W Scenic Point Dr, Suite 107, Draper | the manager, (385) 290-2633 |  | 4 min from stop 5 |
+
+### Day 49: Bountiful (84010), part 3
+
+2 businesses, about 1 h 52 min door to door (45 min out from 3903 W 1700 N, Lehi, UT 84043, 46 min back).
+
+[Open Day 49 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/144%20W%20500%20S%2C%20Bountiful%2C%20UT%2084010/51%20E%20400%20S%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | Gracie Jiu-Jitsu Bountiful | Gyms and fitness centers | Also nearby | 144 W 500 S, Bountiful | Nick, (385) 202-1988 | Runs adult Gracie Combatives classes four evenings a week plus Saturday morning sessions. | 45 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Culture Beauty Studio | Salons and beauty studios | Also nearby | 51 E 400 S, Bountiful | Lauren, (385) 595-5984 | 2026 Best of SLC winner; Lauren left teaching to open Culture in downtown Bountiful in 2019. | 1 min from stop 1 |
+
+### Day 50: Lehi (84043), part 2
+
+7 businesses, about 1 h 52 min door to door (9 min out from 3903 W 1700 N, Lehi, UT 84043, 13 min back).
+
+[Open Day 50 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1600%20N%20Trinnaman%20Ln%2C%20Lehi%2C%20UT%2084043/1657%20N%20State%20St%2C%20Lehi%2C%20UT%2084043/1560%20Trinnaman%20Ln%20%23B2%2C%20Lehi%2C%20UT%2084043/68%20W%20Main%20St%2C%20Lehi%2C%20UT%2084043/288%20E%20Main%20St%2C%20Lehi%2C%20UT%2084043/120%20S%201350%20E%20Ste%201%2C%20Lehi%2C%20UT%2084043/61%20W%203200%20N%2C%20Suite%20%2310%2C%20Lehi%2C%20UT%2084043/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | American Athlete | Gyms and fitness centers | Also nearby | 1600 N Trinnaman Ln, Lehi | Dallas Irvin, (385) 999-1293 | Co-founder Dallas Irvin is a retired Team USA bobsled athlete | 9 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Boom Fitness Culture | Gyms and fitness centers | Also nearby | 1657 N State St, Lehi | Tyson Evans, (801) 362-6315 | Runs two locations with 24/7 access plus childcare, and publishes a 'best gyms in American Fork' guide on its blog. | 0 min from stop 1 |
+| 3 | Onyx Gym | CrossFit and performance gyms | Good fit | 1560 Trinnaman Ln #B2, Lehi | the manager, (833) 431-1395 | Raw-powerlifting-focused gym with specialty equipment for serious lifters. | 0 min from stop 2 |
+| 4 | Theta Combat (also here: Warrior Mountain Academy) | Gyms and fitness centers | Also nearby | 68 W Main St, Lehi | Jason Greenfield, (801) 228-0177 |  | 5 min from stop 3 |
+| 5 | Rage Fitness | Gyms and fitness centers | Also nearby | 288 E Main St, Lehi | Kenny Knight, (801) 358-2089 | Lehi Free Press profiled RAGE Fitness as a Main Street fixture since 1995 under founder Kenny Knight | 1 min from stop 4 |
+| 6 | CrossFit Timpanogos | CrossFit and performance gyms | Good fit | 120 S 1350 E Ste 1, Lehi | the manager, (801) 230-8687 | 137 reviews on Birdeye, among the highest-reviewed boxes in Lehi. | 3 min from stop 5 |
+| 7 | Sadie Marie | Salons and beauty studios | Also nearby | 61 W 3200 N, Suite #10, Lehi | McKenna, (385) 200-3904 | Luxury lash and brow suite inside Serenity Studios in north Lehi serving all of Utah County. | 11 min from stop 6 |
+
+### Day 51: Millcreek and Holladay, Salt Lake City
+
+4 businesses, about 1 h 52 min door to door (25 min out from 3903 W 1700 N, Lehi, UT 84043, 28 min back).
+
+[Open Day 51 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/4751%20S%20Holladay%20Blvd%2C%20Holladay%2C%20UT%2084117/3941%20S%20Wasatch%20Blvd%2C%20Millcreek%2C%20UT%2084124/2505%20E%203300%20S%2C%20Ste%20301%2C%20Millcreek%2C%20UT%2084109/3232%20S%20Highland%20Dr%2C%20Salt%20Lake%20City%2C%20UT%2084106/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | Holladay Health & Fitness | Gyms and fitness centers | Also nearby | 4751 S Holladay Blvd | Rob Dunfield, 801-278-6465 | Markets itself on personal attention with private dressing rooms and separate exercise areas, a premium-recovery clientele. | 25 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | HOTWORX Millcreek (Holladay) | Gyms and fitness centers | Also nearby | 3941 S Wasatch Blvd, Millcreek | Sharon Anderson and Johnny Anderson | Second of the Andersons' two SLC-area HOTWORX studios, in Olympus Hills. | 7 min from stop 1 |
+| 3 | Obsidian Fitness (also here: Skin Logic Esthetics) | Gyms and fitness centers | Also nearby | 2505 E 3300 S, Ste 301, Millcreek | Lacey Bruschke, 801-486-1122 | Voted best gym in Utah three years running ; proprietary Obsidian format and app. | 6 min from stop 2 |
+| 4 | SLC Strength & Conditioning | Gyms and fitness centers | Also nearby | 3232 S Highland Dr, Salt Lake City | Stephen Pizza, (801) 810-0373 | Owner Stephen Pizza is a former collegiate strength coach at University of Utah and University of Hawai'i with a master's in exercise physiology. | 6 min from stop 3 |
+
+### Day 52: Park City (84098), part 2
+
+3 businesses, about 1 h 52 min door to door (40 min out from 3903 W 1700 N, Lehi, UT 84043, 40 min back).
+
+[Open Day 52 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1154%20Center%20Dr%20Ste%20D210%2C%20Park%20City%2C%20UT%2084098/1675%20W%20Redstone%20Center%20Dr%20Ste%20140%2C%20Park%20City%2C%20UT%2084098/1612%20W%20Ute%20Blvd%20Ste%20115%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | PC Yoga Collective (also here: Boom Cycle Room) | Gyms and fitness centers | Also nearby | 1154 Center Dr Ste D210, Park City | Jennifer Armstrong, (435) 359-0715 | The only hot-yoga studio in Park City heated with radiant heat; drop-ins are $15 with mats included. | 40 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Salt Pilates | Gyms and fitness centers | Also nearby | 1675 W Redstone Center Dr Ste 140, Park City | Rebekah Stokely, (435) 293-6884 | Every reformer station has its own halotherapy salt wall, so the studio already sells a wellness add-on alongside Pilates. | 1 min from stop 1 |
+| 3 | HOTWORX Park City (Kimball Junction) (also here: Peak|45 Lagree Fitness Park City) | Gyms and fitness centers | Also nearby | 1612 W Ute Blvd Ste 115, Park City | Nate and Julie Taylor, (435) 351-1004 | Family-owned franchise that held its Kimball Junction grand opening in June 2024 . | 1 min from stop 2 |
+
+### Day 53: Mapleton and Springville
 
 3 businesses, about 1 h 52 min door to door (35 min out from 3903 W 1700 N, Lehi, UT 84043, 33 min back).
 
-[Open Day 55 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1885%20W%20Alvey%20Dr%2C%20Unit%203%2C%20Mapleton%2C%20UT%2084664/1615%20N%20850%20E%2C%20Mapleton%2C%20UT%2084664/665%20E%20400%20S%2C%20Springville%2C%20UT%2084663/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 53 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1885%20W%20Alvey%20Dr%2C%20Unit%203%2C%20Mapleton%2C%20UT%2084664/1615%20N%20850%20E%2C%20Mapleton%2C%20UT%2084664/665%20E%20400%20S%2C%20Springville%2C%20UT%2084663/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -828,48 +801,110 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 2 | Simply Fit Personal Training | Gyms and fitness centers | Also nearby | 1615 N 850 E, Mapleton | Jennefer H., (209) 597-1344 |  | 7 min from stop 1 |
 | 3 | Anytime Fitness - Springville | Gyms and fitness centers | Also nearby | 665 E 400 S, Springville | the manager, (801) 491-9977 |  | 7 min from stop 2 |
 
-### Day 56: Draper: E Draper Pkwy
+### Day 54: Bountiful (84010), part 4
+
+2 businesses, about 1 h 52 min door to door (45 min out from 3903 W 1700 N, Lehi, UT 84043, 45 min back).
+
+[Open Day 54 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/448%20W%201150%20S%2C%20Suite%202%2C%20Bountiful%2C%20UT%2084010/155%20W%20500%20S%20Ste%201A%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | Big John's Pro Gym / The Elite Training Facility (also here: The Refinery Gym (Bountiful)) | Gyms and fitness centers | Also nearby | 448 W 1150 S, Suite 2, Bountiful | Elise G. and John G., (385) 243-1652 | Offers contest prep and posing instruction alongside massage therapy, so recovery services are already part of the menu. | 45 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Legends Boxing Bountiful | Gyms and fitness centers | Also nearby | 155 W 500 S Ste 1A, Bountiful | Andrew Scott, (801) 810-0818 | Davis Journal profiled the Bountiful gym in July 2023 ; opened in 2022. | 2 min from stop 1 |
+
+### Day 55: Park City: N Landmark Dr
+
+3 businesses, about 1 h 52 min door to door (40 min out from 3903 W 1700 N, Lehi, UT 84043, 40 min back).
+
+[Open Day 55 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1680%20W%20Ute%20Blvd%2C%20Park%20City%2C%20UT%2084098/6546%20N%20Landmark%20Dr%20Ste%20A%2C%20Park%20City%2C%20UT%2084098/6699%20N%20Landmark%20Dr%20Ste%20A-105%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | The Mine Bouldering Gym | Gyms and fitness centers | Also nearby | 1680 W Ute Blvd, Park City | Andy Jacobsen, (435) 655-6463 | Has been working to build a full-service roped climbing gym at Quinn's Junction with a 15-meter Olympic-size wall . | 40 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | The Smart Fit Method Park City | Gyms and fitness centers | Also nearby | 6546 N Landmark Dr Ste A, Park City | Connor and Mike Darnbrough, (435) 500-6154 | Launched a $149/month contrast-therapy membership in Dec 2025, so recovery is already a revenue line. | 1 min from stop 1 |
+| 3 | BODYROK Park City | Gyms and fitness centers | Also nearby | 6699 N Landmark Dr Ste A-105, Park City | Cameron Klaus | Opened in Aug 2025 at Junction Commons and has already run ski-prep Pilates community classes with Halfdays. | 1 min from stop 2 |
+
+### Day 56: Bountiful (84010), part 5
+
+2 businesses, about 1 h 52 min door to door (45 min out from 3903 W 1700 N, Lehi, UT 84043, 45 min back).
+
+[Open Day 56 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/250%20W%201500%20S%2C%20Bountiful%2C%20UT%2084010/85%20W%20500%20S%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | VASA Fitness Bountiful | Gyms and fitness centers | Also nearby | 250 W 1500 S, Bountiful | the manager, (801) 397-2777 |  | 45 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Orangetheory Fitness Bountiful | Gyms and fitness centers | Also nearby | 85 W 500 S, Bountiful | the manager, (801) 784-6477 | Studio #0393 sits in the same 500 South corridor as Legends Boxing, Planet Fitness and Club Pilates. | 2 min from stop 1 |
+
+### Day 57: Park City (84098), part 3
+
+2 businesses, about 1 h 53 min door to door (39 min out from 3903 W 1700 N, Lehi, UT 84043, 40 min back).
+
+[Open Day 57 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/4942%20Ponderosa%20Dr%2C%20Park%20City%2C%20UT%2084098/1708%20Uinta%20Way%20Ste%20F-2%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | Park City Personal Training | Gyms and fitness centers | Also nearby | 4942 Ponderosa Dr, Park City | the manager, (435) 640-5841 |  | 39 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Pure Barre Park City | Gyms and fitness centers | Also nearby | 1708 Uinta Way Ste F-2, Park City | the manager, (435) 214-7430 | Studio recently changed hands and runs classes seven days a week at Newpark. | 13 min from stop 1 |
+
+### Day 58: Draper: E Draper Pkwy
 
 6 businesses, about 1 h 53 min door to door (18 min out from 3903 W 1700 N, Lehi, UT 84043, 20 min back).
 
-[Open Day 56 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1388%20E%20Draper%20Pkwy%20Ste%20B%2C%20Draper%2C%20UT%2084020/1101%20E%20Draper%20Pkwy%2C%20Draper%2C%20UT%2084020/866%20E%2012300%20S%2C%20Ste%20B%2C%20Draper%2C%20UT%2084020/827%20Pioneer%20Rd%20Ste%20101%2C%20Draper%2C%20UT%2084020/11576%20S%20State%20St%2C%20Ste%201101%2C%20Draper%2C%20UT%2084020/10996%20S%20River%20Front%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 58 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1388%20E%20Draper%20Pkwy%20Ste%20B%2C%20Draper%2C%20UT%2084020/1101%20E%20Draper%20Pkwy%2C%20Draper%2C%20UT%2084020/866%20E%2012300%20S%2C%20Ste%20B%2C%20Draper%2C%20UT%2084020/282%20E%2012200%20S%2C%20Suite%20200%2C%20Draper%2C%20UT%2084020/11576%20S%20State%20St%2C%20Ste%201101%2C%20Draper%2C%20UT%2084020/10996%20S%20River%20Front%20Pkwy%2C%20South%20Jordan%2C%20UT%2084095/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Studio CORE Pilates | Gyms and fitness centers | Also nearby | 1388 E Draper Pkwy Ste B | Tiffany Crosswhite Burke, (801) 987-5015 | Owner Tiffany Burke also runs her own instructor-training brand . | 18 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | Treehouse Athletic Club | Gyms and fitness centers | Also nearby | 1101 E Draper Pkwy | Jennifer, (801) 553-0123 |  | 1 min from stop 1 |
 | 3 | Family Chiropractic & Wellness | Physical therapy, chiropractic, and sports medicine | Also nearby | 866 E 12300 S, Ste B, Draper | the manager | Already offers Invisa-RED laser therapy as a cash add-on | 2 min from stop 2 |
-| 4 | Studio IVL | Gyms and fitness centers | Also nearby | 827 Pioneer Rd Ste 101, Draper | Emily Jackson, (385) 212-6352 | Studio is an extension of founder Emily Jackson's IVL Collective activewear brand. | 0 min from stop 3 |
-| 5 | Wellness and Neuro Center | Physical therapy, chiropractic, and sports medicine | Also nearby | 11576 S State St, Ste 1101, Draper | the manager | Chiropractic practice branded around neuro-wellness, not just adjustments | 6 min from stop 4 |
+| 4 | Rhea Salon Suites | Salons and beauty studios | Also nearby | 282 E 12200 S, Suite 200, Draper | the manager, (385) 644-9001 |  | 3 min from stop 3 |
+| 5 | Wellness and Neuro Center | Physical therapy, chiropractic, and sports medicine | Also nearby | 11576 S State St, Ste 1101, Draper | the manager | Chiropractic practice branded around neuro-wellness, not just adjustments | 4 min from stop 4 |
 | 6 | Life Time South Jordan | Gyms and fitness centers | Also nearby | 10996 S River Front Pkwy, South Jordan | Matt Raabe, (801) 302-0909 |  | 5 min from stop 5 |
 
-### Day 57: Park City (84098), part 3
+### Day 59: Salt Lake City (84103)
 
-2 businesses, about 1 h 53 min door to door (39 min out from 3903 W 1700 N, Lehi, UT 84043, 40 min back).
+4 businesses, about 1 h 53 min door to door (35 min out from 3903 W 1700 N, Lehi, UT 84043, 33 min back).
 
-[Open Day 57 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/4942%20Ponderosa%20Dr%2C%20Park%20City%2C%20UT%2084098/1241%20Center%20Dr%20Ste%20L-120%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 59 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/244%20W%20300%20N%2C%20Suite%20103%2C%20Salt%20Lake%20City%2C%20UT%2084103/320%20W%20200%20S%2C%20Salt%20Lake%20City%2C%20UT%2084101/355%20W%20400%20S%2C%20Salt%20Lake%20City%2C%20UT%2084101/660%20S%20400%20W%2C%20Suite%20600%2C%20Salt%20Lake%20City%2C%20UT%2084101/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Park City Personal Training | Gyms and fitness centers | Also nearby | 4942 Ponderosa Dr, Park City | the manager, (435) 640-5841 |  | 39 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | F45 Training Park City | Gyms and fitness centers | Also nearby | 1241 Center Dr Ste L-120, Park City | Sabrina O'Mara and Clayton Rule, (385) 485-6704 | TownLift reported F45 Park City launched Park City's first in-gym cold plunge , so the owners are already investing in recovery amenities. | 14 min from stop 1 |
+| 1 | Seven Sisters Pilates | Gyms and fitness centers | Also nearby | 244 W 300 N, Suite 103, Salt Lake City | Madeline Hale, 801-215-9318 | Founder Madeline Hale profiled in VoyageUtah; Marmalade-district studio. | 35 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | CHVRCH Cycle | Gyms and fitness centers | Also nearby | 320 W 200 S, Salt Lake City | Naomi Pacheco | Latina-owned studio; runs cycling plus boxing and strength formats under one roof downtown. | 3 min from stop 1 |
+| 3 | Mcycle Studios | Gyms and fitness centers | Also nearby | 355 W 400 S, Salt Lake City | Megan Tyrrell and Richmond Tyrrell, 385-270-5185 | SLC's original boutique cycling studio; CEO Megan Tyrrell profiled in CanvasRebel and SLUG. | 1 min from stop 2 |
+| 4 | Bouldering Project - The Granary (Salt Lake Bouldering Project) | Gyms and fitness centers | Also nearby | 660 S 400 W, Suite 600, Salt Lake City | the manager, (801) 441-1387 | Hosting two premier climbing camps for competitive youth and runs a dedicated youth program . | 1 min from stop 3 |
 
-### Day 58: Woods Cross and Bountiful
+### Day 60: Woods Cross and Bountiful
 
 2 businesses, about 1 h 54 min door to door (45 min out from 3903 W 1700 N, Lehi, UT 84043, 46 min back).
 
-[Open Day 58 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/582%20S%201100%20W%2C%20Woods%20Cross%2C%20UT%2084087/450%20S%20400%20E%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 60 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/582%20S%201100%20W%2C%20Woods%20Cross%2C%20UT%2084087/450%20S%20400%20E%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Anatomy Boxing & Fitness | Gyms and fitness centers | Also nearby | 582 S 1100 W, Woods Cross | Julia Misrasi, (435) 409-4210 | Community boxing gym serving Bountiful, Woods Cross, Farmington and North Salt Lake with strength & conditioning plus sparring classes. | 45 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | The Scratch Pad | Gyms and fitness centers | Also nearby | 450 S 400 E, Bountiful | Dustin Lyons, (801) 400-5610 | Utah's first and only drytooling gym, open 24/7, and hosts Ice Climbing World Youth Championships events . | 3 min from stop 1 |
 
-### Day 59: Orem: S State St
+### Day 61: Lindon and Pleasant Grove
+
+6 businesses, about 1 h 54 min door to door (17 min out from 3903 W 1700 N, Lehi, UT 84043, 20 min back).
+
+[Open Day 61 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1809%20W%20State%20St%2C%20Unit%20A5%2C%20Pleasant%20Grove%2C%20UT%2084062/346%20E%20State%20Rd%2C%20Pleasant%20Grove%2C%20UT%2084062/537%20W%20550%20N%20Ste%20A%2C%20Lindon%2C%20UT%2084042/296%20N%20State%20St%2C%20Lindon%2C%20UT%2084042/236%20S%201250%20W%2C%20Lindon%2C%20UT%2084042/31%20S%201550%20W%20Ste%20112%2C%20Lindon%2C%20UT%2084042/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | Twinkle Lash Studio | Salons and beauty studios | Also nearby | 1809 W State St, Unit A5, Pleasant Grove | the manager | Two Utah County locations . | 17 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | XD Fit | Gyms and fitness centers | Also nearby | 346 E State Rd, Pleasant Grove | Brandon |  | 7 min from stop 1 |
+| 3 | Karve Barre Studio | Gyms and fitness centers | Also nearby | 537 W 550 N Ste A, Lindon | Brooke, (801) 785-0414 |  | 2 min from stop 2 |
+| 4 | HOTWORX Lindon (City Park) | Gyms and fitness centers | Also nearby | 296 N State St, Lindon | the manager |  | 2 min from stop 3 |
+| 5 | The Box (Pleasant Grove) | Gyms and fitness centers | Also nearby | 236 S 1250 W, Lindon | Chantelle L. |  | 5 min from stop 4 |
+| 6 | The Grid Fitness | Gyms and fitness centers | Also nearby | 31 S 1550 W Ste 112, Lindon | Brandon Herman, (385) 236-9542 |  | 1 min from stop 5 |
+
+### Day 62: Orem: S State St
 
 6 businesses, about 1 h 54 min door to door (22 min out from 3903 W 1700 N, Lehi, UT 84043, 18 min back).
 
-[Open Day 59 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/2494%20N%20University%20Pkwy%2C%20Provo%2C%20UT%2084604/1523%20S%20State%20St%2C%20Orem%2C%20UT%2084097/97%20S%20State%20St%2C%20Orem%2C%20UT%2084058/210%20E%20Center%20St%2C%20Orem%2C%20UT%2084057/157%20N%20State%20St%2C%20Orem%2C%20UT%2084057/894%20N%20State%20St%2C%20Orem%2C%20UT%2084057/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 62 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/2494%20N%20University%20Pkwy%2C%20Provo%2C%20UT%2084604/1523%20S%20State%20St%2C%20Orem%2C%20UT%2084097/97%20S%20State%20St%2C%20Orem%2C%20UT%2084058/210%20E%20Center%20St%2C%20Orem%2C%20UT%2084057/157%20N%20State%20St%2C%20Orem%2C%20UT%2084057/894%20N%20State%20St%2C%20Orem%2C%20UT%2084057/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -880,67 +915,35 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 5 | Planet Fitness - Orem | Gyms and fitness centers | Also nearby | 157 N State St, Orem | the manager |  | 1 min from stop 4 |
 | 6 | Legends Boxing - Orem | Gyms and fitness centers | Also nearby | 894 N State St, Orem | the manager |  | 3 min from stop 5 |
 
-### Day 60: Bountiful (84010), part 4
+### Day 63: Bountiful (84010), part 6
 
 2 businesses, about 1 h 54 min door to door (43 min out from 3903 W 1700 N, Lehi, UT 84043, 45 min back).
 
-[Open Day 60 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/3052%20S%20Oakwood%20Dr%2C%20Bountiful%2C%20UT%2084010/448%20W%201250%20S%20Ste%201%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 63 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/3052%20S%20Oakwood%20Dr%2C%20Bountiful%2C%20UT%2084010/448%20W%201250%20S%20Ste%201%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | North Canyon Swim & Tennis Club | Gyms and fitness centers | Also nearby | 3052 S Oakwood Dr, Bountiful | Lindsay Hess, (801) 298-2232 | Member-owned private swim and tennis club in Bountiful with a volunteer board and full-time manager. | 43 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | Utah Self Defense & Fitness Blackbelt Academy | Gyms and fitness centers | Also nearby | 448 W 1250 S Ste 1, Bountiful | Carlos M. Ferrer, (801) 295-9274 |  | 7 min from stop 1 |
 
-### Day 61: Herriman: S 5600 W
+### Day 64: Salt Lake City (84111)
 
-6 businesses, about 1 h 54 min door to door (18 min out from 3903 W 1700 N, Lehi, UT 84043, 19 min back).
+4 businesses, about 1 h 55 min door to door (34 min out from 3903 W 1700 N, Lehi, UT 84043, 32 min back).
 
-[Open Day 61 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/12472%20S%20Meadow%20Spring%20Ln%2C%20Riverton%2C%20UT%2084065/4775%20W%20Daybreak%20Pkwy%2C%20Ste%20102%2C%20South%20Jordan%2C%20UT%2084009/13216%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/13276%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/13276%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/5746%20W%2013400%20S%2C%20Herriman%2C%20UT%2084096/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Atlas Combat Sports | Gyms and fitness centers | Also nearby | 12472 S Meadow Spring Ln, Riverton | Zach Evans, (801) 891-6012 |  | 18 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Freedom Integrated Medicine | Physical therapy, chiropractic, and sports medicine | Also nearby | 4775 W Daybreak Pkwy, Ste 102, South Jordan | the manager | Daybreak clinic already offering decompression and laser therapy add-ons | 7 min from stop 1 |
-| 3 | Laionebuilt Fitness | Gyms and fitness centers | Also nearby | 13216 S 5600 W, Herriman | Andrew G., (801) 453-5055 | Group training for athletes, youth and adults plus open gym; shares the 13216 S 5600 W complex with Burn Boot Camp Herriman | 9 min from stop 2 |
-| 4 | A Beautiful SurpriZe Pilates | Gyms and fitness centers | Also nearby | 13276 S 5600 W, Herriman | Chantel Finau Tauteoli, (801) 897-5923 | Brands itself 'Pilates Studio and Complete Wellness' with classes capped at six people | 0 min from stop 3 |
-| 5 | Pilates Collective | Gyms and fitness centers | Also nearby | 13276 S 5600 W, Herriman | Jordan Danielle, (385) 246-2401 | Equipment-based studio and listed on ClassPass and Wellhub | 0 min from stop 4 |
-| 6 | Gracie Barra Herriman | Gyms and fitness centers | Also nearby | 5746 W 13400 S, Herriman | Seidler Rodrigo Ziser, (801) 810-6767 | Founded by 3rd-degree black belt Prof. | 1 min from stop 5 |
-
-### Day 62: Salt Lake City (84106), part 3
-
-4 businesses, about 1 h 55 min door to door (30 min out from 3903 W 1700 N, Lehi, UT 84043, 34 min back).
-
-[Open Day 62 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/675%20E%202100%20S%2C%20Suite%20Q%2C%20Salt%20Lake%20City%2C%20UT%2084106/1298%20S%20900%20E%2C%20Salt%20Lake%20City%2C%20UT%2084105/602%20E%20500%20S%2C%20Salt%20Lake%20City%2C%20UT%2084102/370%20S%20300%20E%2C%20Salt%20Lake%20City%2C%20UT%2084111/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 64 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/370%20S%20300%20E%2C%20Salt%20Lake%20City%2C%20UT%2084111/208%20E%20800%20S%2C%20Suite%20101%2C%20Salt%20Lake%20City%2C%20UT%2084102/602%20E%20500%20S%2C%20Salt%20Lake%20City%2C%20UT%2084102/1298%20S%20900%20E%2C%20Salt%20Lake%20City%2C%20UT%2084105/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Salon Keiji | Salons and beauty studios | Also nearby | 675 E 2100 S, Suite Q, Salt Lake City | the manager |  | 30 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Landis Lifestyle Salon (Sugar House) | Salons and beauty studios | Also nearby | 1298 S 900 E, Salt Lake City | the manager | Multiple Salt Lake locations including the Sugar House salon on 900 East. | 4 min from stop 1 |
-| 3 | Momentum Indoor Climbing (Trolley Square training gym) | Gyms and fitness centers | Also nearby | 602 E 500 S, Salt Lake City | the manager, (385) 259-1563 | Trolley Square is a 7,600 sq ft training-focused gym and Momentum was named USA Climbing's National Training Center partner. | 4 min from stop 2 |
-| 4 | Velocity Combat Club | Gyms and fitness centers | Also nearby | 370 S 300 E, Salt Lake City | the manager, 801-502-8464 | Just opened downtown in June 2026 in the basement of the Church and State building. | 2 min from stop 3 |
+| 1 | Velocity Combat Club | Gyms and fitness centers | Also nearby | 370 S 300 E, Salt Lake City | the manager, 801-502-8464 | Just opened downtown in June 2026 in the basement of the Church and State building. | 34 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | The Backline SLC | Gyms and fitness centers | Also nearby | 208 E 800 S, Suite 101, Salt Lake City | the manager, (801) 631-0995 |  | 3 min from stop 1 |
+| 3 | Momentum Indoor Climbing (Trolley Square training gym) | Gyms and fitness centers | Also nearby | 602 E 500 S, Salt Lake City | the manager, (385) 259-1563 | Trolley Square is a 7,600 sq ft training-focused gym and Momentum was named USA Climbing's National Training Center partner. | 2 min from stop 2 |
+| 4 | Landis Lifestyle Salon (Sugar House) | Salons and beauty studios | Also nearby | 1298 S 900 E, Salt Lake City | the manager | Multiple Salt Lake locations including the Sugar House salon on 900 East. | 4 min from stop 3 |
 
-### Day 63: Lehi: S 850 E
-
-8 businesses, about 1 h 55 min door to door (11 min out from 3903 W 1700 N, Lehi, UT 84043, 9 min back).
-
-[Open Day 63 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/401%20S%20850%20E%2C%20Lehi%2C%20UT%2084043/305%20S%20850%20E%2C%20Lehi%2C%20UT%2084043/68%20W%20Main%20St%2C%20Lehi%2C%20UT%2084043/68%20W%20Main%20St%2C%20Lehi%2C%20UT%2084043/120%20S%201350%20E%20Ste%201%2C%20Lehi%2C%20UT%2084043/1657%20N%20State%20St%2C%20Lehi%2C%20UT%2084043/1560%20Trinnaman%20Ln%20%23B2%2C%20Lehi%2C%20UT%2084043/1600%20N%20Trinnaman%20Ln%2C%20Lehi%2C%20UT%2084043/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Utah Barbell | CrossFit and performance gyms | Good fit | 401 S 850 E, Lehi | the manager | Calls itself the most decorated weightlifting team in Utah history, led by a coach with 30 years in Olympic lifting. | 11 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | CoreFit Studio | Gyms and fitness centers | Also nearby | 305 S 850 E, Lehi | Connie |  | 0 min from stop 1 |
-| 3 | Theta Combat | Gyms and fitness centers | Also nearby | 68 W Main St, Lehi | Jason Greenfield, (801) 228-0177 |  | 2 min from stop 2 |
-| 4 | Warrior Mountain Academy | Gyms and fitness centers | Also nearby | 68 W Main St, Lehi | Duane Sheely, (801) 651-4301 |  | 0 min from stop 3 |
-| 5 | CrossFit Timpanogos | CrossFit and performance gyms | Good fit | 120 S 1350 E Ste 1, Lehi | the manager, (801) 230-8687 | 137 reviews on Birdeye, among the highest-reviewed boxes in Lehi. | 4 min from stop 4 |
-| 6 | Boom Fitness Culture | Gyms and fitness centers | Also nearby | 1657 N State St, Lehi | Tyson Evans, (801) 362-6315 | Runs two locations with 24/7 access plus childcare, and publishes a 'best gyms in American Fork' guide on its blog. | 8 min from stop 5 |
-| 7 | Onyx Gym | CrossFit and performance gyms | Good fit | 1560 Trinnaman Ln #B2, Lehi | the manager, (833) 431-1395 | Raw-powerlifting-focused gym with specialty equipment for serious lifters. | 0 min from stop 6 |
-| 8 | American Athlete | Gyms and fitness centers | Also nearby | 1600 N Trinnaman Ln, Lehi | Dallas Irvin, (385) 999-1293 | Co-founder Dallas Irvin is a retired Team USA bobsled athlete | 0 min from stop 7 |
-
-### Day 64: Orem (84057)
+### Day 65: Orem (84057)
 
 5 businesses, about 1 h 55 min door to door (18 min out from 3903 W 1700 N, Lehi, UT 84043, 24 min back).
 
-[Open Day 64 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1471%20W%20Business%20Park%20Dr%2C%20Suite%20203%2C%20Orem%2C%20UT%2084057/1330%20Sandhill%20Rd%2C%20Orem%2C%20UT%2084058/542%20E%20University%20Pkwy%2C%20Orem%2C%20UT%2084097/360%20S%20State%20St%2C%20Ste%20106%2C%20Orem%2C%20UT%2084058/972%20N%201430%20W%2C%20Orem%2C%20UT%2084057/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 65 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1471%20W%20Business%20Park%20Dr%2C%20Suite%20203%2C%20Orem%2C%20UT%2084057/1330%20Sandhill%20Rd%2C%20Orem%2C%20UT%2084058/542%20E%20University%20Pkwy%2C%20Orem%2C%20UT%2084097/360%20S%20State%20St%2C%20Ste%20106%2C%20Orem%2C%20UT%2084058/972%20N%201430%20W%2C%20Orem%2C%20UT%2084057/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -949,22 +952,6 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 3 | Body Alive Fitness - Orem | Gyms and fitness centers | Also nearby | 542 E University Pkwy, Orem | the manager |  | 6 min from stop 2 |
 | 4 | SWEATFORM Pilates | Gyms and fitness centers | Also nearby | 360 S State St, Ste 106, Orem | the manager, (801) 921-8515 |  | 5 min from stop 3 |
 | 5 | Wasatch Combat Sports | Gyms and fitness centers | Also nearby | 972 N 1430 W, Orem | Benjamin Child, (801) 857-0611 |  | 9 min from stop 4 |
-
-### Day 65: American Fork and Pleasant Grove
-
-7 businesses, about 1 h 55 min door to door (15 min out from 3903 W 1700 N, Lehi, UT 84043, 16 min back).
-
-[Open Day 65 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/636%20E%20State%20Rd%2C%20American%20Fork%2C%20UT%2084003/920%20E%20State%20St%2C%20American%20Fork%2C%20UT%2084003/1809%20W%20State%20St%2C%20Unit%20A5%2C%20Pleasant%20Grove%2C%20UT%2084062/312%20S%202000%20W%2C%20Pleasant%20Grove%2C%20UT%2084062/2415%20W%20700%20S%20Ste%20G%2C%20Pleasant%20Grove%2C%20UT%2084062/710%20S%20Utah%20Valley%20Dr%2C%20American%20Fork%2C%20UT%2084003/1375%20S%20500%20E%2C%20Unit%20123%2C%20American%20Fork%2C%20UT%2084003/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | American Fork Physical Therapy | Physical therapy, chiropractic, and sports medicine | Also nearby | 636 E State Rd, American Fork | the manager, (801) 492-6577 | Four-DPT independent clinic on State Road in American Fork | 15 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Paul Tom's Academy of Brazilian Jiu Jitsu | Gyms and fitness centers | Also nearby | 920 E State St, American Fork | Paul Tom |  | 2 min from stop 1 |
-| 3 | Twinkle Lash Studio | Salons and beauty studios | Also nearby | 1809 W State St, Unit A5, Pleasant Grove | the manager | Two Utah County locations . | 1 min from stop 2 |
-| 4 | The Park Pilates | Gyms and fitness centers | Also nearby | 312 S 2000 W, Pleasant Grove | Alayna Erb |  | 1 min from stop 3 |
-| 5 | Work Training Studio | Gyms and fitness centers | Also nearby | 2415 W 700 S Ste G, Pleasant Grove | Amy and Daniel |  | 3 min from stop 4 |
-| 6 | The Training Room | Gyms and fitness centers | Also nearby | 710 S Utah Valley Dr, American Fork | Phil Templeman, (385) 254-5631 |  | 4 min from stop 5 |
-| 7 | Valhalla Strength Gym | Gyms and fitness centers | Also nearby | 1375 S 500 E, Unit 123, American Fork | Michelle and Niko | 24/7/365 key-fob strongman and powerlifting gym in American Fork with specialty equipment at $70/month. | 3 min from stop 6 |
 
 ### Day 66: Spanish Fork and Springville
 
@@ -979,47 +966,49 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 3 | Trinity Iron Gym | Gyms and fitness centers | Also nearby | 1159 E 1060 N, Spanish Fork | Matt and Laurine, (801) 477-6494 | Hosted the 'Spanish Fork's Strongest' strongman competition in 2025 . | 2 min from stop 2 |
 | 4 | HOTWORX - Spanish Fork | Gyms and fitness centers | Also nearby | 443 E 1000 N, Spanish Fork | the manager |  | 2 min from stop 3 |
 
-### Day 67: Lehi: N 1200 E
-
-6 businesses, about 1 h 55 min door to door (13 min out from 3903 W 1700 N, Lehi, UT 84043, 15 min back).
-
-[Open Day 67 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/61%20W%203200%20N%2C%20Suite%20%2310%2C%20Lehi%2C%20UT%2084043/3397%20N%201200%20E%2C%20Suite%20107%2C%20Lehi%2C%20UT%2084043/3397%20N%201200%20E%20Ste%20106%2C%20Lehi%2C%20UT%2084043/5342%20W%20Parkway%20East%20St%2C%20Highland%2C%20UT%2084003/235%20S%20Main%20St%2C%20Alpine%2C%20UT%2084004/80%20N%20850%20E%20Ste%20A%2C%20Lehi%2C%20UT%2084043/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Sadie Marie | Salons and beauty studios | Also nearby | 61 W 3200 N, Suite #10, Lehi | McKenna, (385) 200-3904 | Luxury lash and brow suite inside Serenity Studios in north Lehi serving all of Utah County. | 13 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Evolve Fitness | Gyms and fitness centers | Also nearby | 3397 N 1200 E, Suite 107, Lehi | Tanya Rasmussen | Women-owned studio with a dedicated 'Owner' page on its site featuring Tanya Rasmussen. | 4 min from stop 1 |
-| 3 | Studio Sculpt Pilates | Gyms and fitness centers | Also nearby | 3397 N 1200 E Ste 106, Lehi | Mariah Martin, (435) 923-4010 | Lehi Free Press : former pro athlete Mariah Martin opened Studio Sculpt Pilates in Lehi | 0 min from stop 2 |
-| 4 | Peak Performance (The Peak Gym) | CrossFit and performance gyms | Good fit | 5342 W Parkway East St, Highland | the manager | Specializes in vertical-jump and speed training for youth athletes in Highland. | 8 min from stop 3 |
-| 5 | Alpine Fitness | Gyms and fitness centers | Also nearby | 235 S Main St, Alpine | Kimberly Blanck, (801) 216-4299 | Combines gym membership with on-site physical therapy and runs a formal Partner Program for local businesses. | 5 min from stop 4 |
-| 6 | Legends Boxing - Lehi | Gyms and fitness centers | Also nearby | 80 N 850 E Ste A, Lehi | Kade Fullmer, (801) 768-4000 |  | 11 min from stop 5 |
-
-### Day 68: Salt Lake City (84101)
-
-4 businesses, about 1 h 55 min door to door (33 min out from 3903 W 1700 N, Lehi, UT 84043, 34 min back).
-
-[Open Day 68 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/660%20S%20400%20W%2C%20Suite%20600%2C%20Salt%20Lake%20City%2C%20UT%2084101/175%20S%20West%20Temple%2C%20Salt%20Lake%20City%2C%20UT%2084101/358%20S%20300%20E%2C%20Salt%20Lake%20City%2C%20UT%2084111/208%20E%20800%20S%2C%20Suite%20101%2C%20Salt%20Lake%20City%2C%20UT%2084102/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Bouldering Project - The Granary (Salt Lake Bouldering Project) | Gyms and fitness centers | Also nearby | 660 S 400 W, Suite 600, Salt Lake City | the manager, (801) 441-1387 | Hosting two premier climbing camps for competitive youth and runs a dedicated youth program . | 33 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | The Gym at City Creek | Gyms and fitness centers | Also nearby | 175 S West Temple, Salt Lake City | the manager |  | 3 min from stop 1 |
-| 3 | SLT Gym | Gyms and fitness centers | Also nearby | 358 S 300 E, Salt Lake City | the manager, 385-315-5174 | SLT already sells contrast therapy and recovery drop-ins alongside memberships, so a chamber slots into an existing recovery menu. | 2 min from stop 2 |
-| 4 | The Backline SLC | Gyms and fitness centers | Also nearby | 208 E 800 S, Suite 101, Salt Lake City | the manager, (801) 631-0995 |  | 3 min from stop 3 |
-
-### Day 69: Salt Lake City and Millcreek, part 2
+### Day 67: Salt Lake City and Millcreek, part 2
 
 5 businesses, about 1 h 55 min door to door (28 min out from 3903 W 1700 N, Lehi, UT 84043, 30 min back).
 
-[Open Day 69 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1227%20E%203300%20S%2C%20Millcreek%2C%20UT%2084106/1180%20Brickyard%20Rd%2C%20Salt%20Lake%20City%2C%20UT%2084106/2682%20S%20Highland%20Dr%20%23201%2C%20Salt%20Lake%20City%2C%20UT%2084106/2188%20Highland%20Dr%2C%20Suite%20104%2C%20Salt%20Lake%20City%2C%20UT%2084106/1056%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084106/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 67 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1227%20E%203300%20S%2C%20Millcreek%2C%20UT%2084106/1140%20E%20Brickyard%20Rd%2C%20%2330%2C%20Salt%20Lake%20City%2C%20UT%2084106/1180%20Brickyard%20Rd%2C%20Salt%20Lake%20City%2C%20UT%2084106/2682%20S%20Highland%20Dr%20%23201%2C%20Salt%20Lake%20City%2C%20UT%2084106/1056%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084106/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Keel Pilates | Gyms and fitness centers | Also nearby | 1227 E 3300 S, Millcreek | the manager |  | 28 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | The Picklr - Salt Lake City | Gyms and fitness centers | Also nearby | 1180 Brickyard Rd, Salt Lake City | the manager, 385-955-4217 | Eight indoor courts open 6am to midnight in Brickyard Plaza. | 1 min from stop 1 |
-| 3 | X365 Fitness | Gyms and fitness centers | Also nearby | 2682 S Highland Dr #201, Salt Lake City | the manager |  | 2 min from stop 2 |
-| 4 | Barry's Salt Lake City | Gyms and fitness centers | Also nearby | 2188 Highland Dr, Suite 104, Salt Lake City | the manager, 801-349-1120 | Opened December 2025 as Barry's first Utah studio . | 3 min from stop 3 |
-| 5 | Deka Lash Sugar House | Salons and beauty studios | Also nearby | 1056 E 2100 S, Salt Lake City | the manager | 27 Yelp reviews for the Sugar House studio on 2100 South. | 1 min from stop 4 |
+| 2 | Club Pilates Millcreek (Brickyard) | Gyms and fitness centers | Also nearby | 1140 E Brickyard Rd, #30, Salt Lake City | the manager, 801-939-2300 |  | 1 min from stop 1 |
+| 3 | The Picklr - Salt Lake City | Gyms and fitness centers | Also nearby | 1180 Brickyard Rd, Salt Lake City | the manager, 385-955-4217 | Eight indoor courts open 6am to midnight in Brickyard Plaza. | 0 min from stop 2 |
+| 4 | X365 Fitness | Gyms and fitness centers | Also nearby | 2682 S Highland Dr #201, Salt Lake City | the manager |  | 2 min from stop 3 |
+| 5 | Deka Lash Sugar House | Salons and beauty studios | Also nearby | 1056 E 2100 S, Salt Lake City | the manager | 27 Yelp reviews for the Sugar House studio on 2100 South. | 3 min from stop 4 |
+
+### Day 68: Herriman: S 5600 W
+
+6 businesses, about 1 h 56 min door to door (18 min out from 3903 W 1700 N, Lehi, UT 84043, 19 min back).
+
+[Open Day 68 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/12472%20S%20Meadow%20Spring%20Ln%2C%20Riverton%2C%20UT%2084065/12544%20S%20Pasture%20Rd%2C%20Riverton%2C%20UT%2084096/4775%20W%20Daybreak%20Pkwy%2C%20Ste%20102%2C%20South%20Jordan%2C%20UT%2084009/13216%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/13276%20S%205600%20W%2C%20Herriman%2C%20UT%2084096/5746%20W%2013400%20S%2C%20Herriman%2C%20UT%2084096/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | Atlas Combat Sports | Gyms and fitness centers | Also nearby | 12472 S Meadow Spring Ln, Riverton | Zach Evans, (801) 891-6012 |  | 18 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Legends Boxing - Riverton | Gyms and fitness centers | Also nearby | 12544 S Pasture Rd, Riverton | the manager, (801) 254-3010 |  | 2 min from stop 1 |
+| 3 | Freedom Integrated Medicine | Physical therapy, chiropractic, and sports medicine | Also nearby | 4775 W Daybreak Pkwy, Ste 102, South Jordan | the manager | Daybreak clinic already offering decompression and laser therapy add-ons | 7 min from stop 2 |
+| 4 | Laionebuilt Fitness (also here: Burn Boot Camp Herriman) | Gyms and fitness centers | Also nearby | 13216 S 5600 W, Herriman | Andrew G., (801) 453-5055 | Group training for athletes, youth and adults plus open gym; shares the 13216 S 5600 W complex with Burn Boot Camp Herriman | 9 min from stop 3 |
+| 5 | A Beautiful SurpriZe Pilates (also here: Pilates Collective) | Gyms and fitness centers | Also nearby | 13276 S 5600 W, Herriman | Chantel Finau Tauteoli, (801) 897-5923 | Brands itself 'Pilates Studio and Complete Wellness' with classes capped at six people | 0 min from stop 4 |
+| 6 | Gracie Barra Herriman | Gyms and fitness centers | Also nearby | 5746 W 13400 S, Herriman | Seidler Rodrigo Ziser, (801) 810-6767 | Founded by 3rd-degree black belt Prof. | 1 min from stop 5 |
+
+### Day 69: Cottonwood Heights and Sandy, Midvale
+
+6 businesses, about 1 h 56 min door to door (17 min out from 3903 W 1700 N, Lehi, UT 84043, 20 min back).
+
+[Open Day 69 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1842%20E%209400%20S%2C%20Sandy%2C%20UT%2084093/2077%20E%209400%20S%2C%20Sandy%2C%20UT%2084093/7817%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/1844%20E%20Fort%20Union%20Blvd%20%238%2C%20Cottonwood%20Heights%2C%20UT%2084121/6953%20S%201300%20E%2C%20Cottonwood%20Heights%2C%20UT%2084121/7690%20Union%20Park%20Ave%2C%20Midvale%2C%20UT%2084047/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | Koko FitClub of Sandy | Gyms and fitness centers | Also nearby | 1842 E 9400 S, Sandy | the manager, (801) 571-5656 |  | 17 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Club Pilates Sandy | Gyms and fitness centers | Also nearby | 2077 E 9400 S, Sandy | the manager |  | 1 min from stop 1 |
+| 3 | TITLE Boxing Club Cottonwood Heights | Gyms and fitness centers | Also nearby | 7817 S Highland Dr, Cottonwood Heights | Dash Cox, (801) 676-1011 | Featured on ABC4 Good Things Utah segment 'Working up a sweat with Title Boxing'. | 7 min from stop 2 |
+| 4 | Curves Cottonwood Heights | Gyms and fitness centers | Also nearby | 1844 E Fort Union Blvd #8, Cottonwood Heights | the manager |  | 4 min from stop 3 |
+| 5 | Orangetheory Fitness Cottonwood Heights | Gyms and fitness centers | Also nearby | 6953 S 1300 E, Cottonwood Heights | the manager |  | 3 min from stop 4 |
+| 6 | HOTWORX Midvale (Sandy) | Gyms and fitness centers | Also nearby | 7690 Union Park Ave, Midvale | the manager | Marketed as the first dry-sauna workout studio in the Sandy/Midvale area. | 3 min from stop 5 |
 
 ### Day 70: North Salt Lake: N Redwood Rd
 
@@ -1033,66 +1022,26 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 2 | Coliseum Fitness NSL | Gyms and fitness centers | Also nearby | 460 N Redwood Rd Unit B, North Salt Lake | Justin Walker, (801) 808-2393 | Named Best Gym in North Salt Lake 2026 by Quality Business Awards. | 0 min from stop 1 |
 | 3 | HOTWORX North Salt Lake (Redwood Rd) | Gyms and fitness centers | Also nearby | 689 N Redwood Rd Ste 110, North Salt Lake | the manager, (385) 576-9909 | Foxboro-center infrared studio serving NSL and Woods Cross. | 1 min from stop 2 |
 
-### Day 71: Salt Lake City (84115)
+### Day 71: Lehi and Highland, Alpine
 
-4 businesses, about 1 h 56 min door to door (31 min out from 3903 W 1700 N, Lehi, UT 84043, 35 min back).
+6 businesses, about 1 h 57 min door to door (15 min out from 3903 W 1700 N, Lehi, UT 84043, 16 min back).
 
-[Open Day 71 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1470%20S%20400%20W%2C%20Salt%20Lake%20City%2C%20UT%2084115/355%20W%20400%20S%2C%20Salt%20Lake%20City%2C%20UT%2084101/320%20W%20200%20S%2C%20Salt%20Lake%20City%2C%20UT%2084101/244%20W%20300%20N%2C%20Suite%20103%2C%20Salt%20Lake%20City%2C%20UT%2084103/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | The Front Climbing Club | Gyms and fitness centers | Also nearby | 1470 S 400 W, Salt Lake City | Dustin Buckthal, (801) 466-7625 | Opened the South Main location in South Salt Lake and has been expanding with RDA backing . | 31 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Mcycle Studios | Gyms and fitness centers | Also nearby | 355 W 400 S, Salt Lake City | Megan Tyrrell and Richmond Tyrrell, 385-270-5185 | SLC's original boutique cycling studio; CEO Megan Tyrrell profiled in CanvasRebel and SLUG. | 6 min from stop 1 |
-| 3 | CHVRCH Cycle | Gyms and fitness centers | Also nearby | 320 W 200 S, Salt Lake City | Naomi Pacheco | Latina-owned studio; runs cycling plus boxing and strength formats under one roof downtown. | 1 min from stop 2 |
-| 4 | Seven Sisters Pilates | Gyms and fitness centers | Also nearby | 244 W 300 N, Suite 103, Salt Lake City | Madeline Hale, 801-215-9318 | Founder Madeline Hale profiled in VoyageUtah; Marmalade-district studio. | 3 min from stop 3 |
-
-### Day 72: Salt Lake City: E 2100 S
-
-5 businesses, about 1 h 56 min door to door (30 min out from 3903 W 1700 N, Lehi, UT 84043, 31 min back).
-
-[Open Day 72 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/2257%20S%20State%20St%2C%20South%20Salt%20Lake%2C%20UT%2084115/615%20Simpson%20Ave%2C%20Salt%20Lake%20City%2C%20UT%2084106/675%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084106/2020%20S%20700%20E%2C%20Salt%20Lake%20City%2C%20UT%2084105/1057%20E%202100%20S%2C%20Salt%20Lake%20City%2C%20UT%2084106/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 71 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/80%20N%20850%20E%20Ste%20A%2C%20Lehi%2C%20UT%2084043/785%20E%20200%20S%2C%20Suite%206%2C%20Lehi%2C%20UT%2084043/1438%20E%20Main%20St%20Ste%207%2C%20Lehi%2C%20UT%2084043/3397%20N%201200%20E%2C%20Suite%20107%2C%20Lehi%2C%20UT%2084043/5342%20W%20Parkway%20East%20St%2C%20Highland%2C%20UT%2084003/235%20S%20Main%20St%2C%20Alpine%2C%20UT%2084004/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Bernales Institute of Martial Arts | Gyms and fitness centers | Also nearby | 2257 S State St, South Salt Lake | William Bernales, 801-463-1727 | Long-running South Salt Lake academy teaching seven disciplines from BJJ to Kali and Silat. | 30 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Renzo Gracie Salt Lake City | Gyms and fitness centers | Also nearby | 615 Simpson Ave, Salt Lake City | Stan Beck, 801-810-6550 | Owner Stan Beck is a 4th-degree black belt under Renzo Gracie. | 3 min from stop 1 |
-| 3 | HOTWORX Salt Lake City (Sugarhouse) | Gyms and fitness centers | Also nearby | 675 E 2100 S, Salt Lake City | Sharon Anderson and Johnny Anderson | Franchisees Sharon and Johnny Anderson were awarded two SLC-market HOTWORX licenses. | 1 min from stop 2 |
-| 4 | Utah Fitness Institute | Gyms and fitness centers | Also nearby | 2020 S 700 E, Salt Lake City | Paul Daniels, PhD, CSCS, 801-326-9126 | Led by one of the few trainers in Utah with a PhD in exercise physiology; profiled in VoyageUtah. | 0 min from stop 3 |
-| 5 | The Bar Method - Salt Lake City Sugarhouse | Gyms and fitness centers | Also nearby | 1057 E 2100 S, Salt Lake City | Carrie Goodwin, 801-485-4227 | Long-running Sugar House barre studio featured in Sugar House Chamber's business spotlight. | 2 min from stop 4 |
+| 1 | Legends Boxing - Lehi | Gyms and fitness centers | Also nearby | 80 N 850 E Ste A, Lehi | Kade Fullmer, (801) 768-4000 |  | 15 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Mandala Beauty Lounge (Candee Lash) | Salons and beauty studios | Also nearby | 785 E 200 S, Suite 6, Lehi | Kimberly, (801) 341-8661 | 101 Birdeye reviews and a ClassPass listing for the Candee Lash lounge in Lehi. | 1 min from stop 1 |
+| 3 | University of Grappling | Gyms and fitness centers | Also nearby | 1438 E Main St Ste 7, Lehi | Ricky Lundell, (801) 358-2336 | Head instructor Ricky Lundell is a two-time world champion submission grappler and UFC-featured coach | 2 min from stop 2 |
+| 4 | Evolve Fitness (also here: Studio Sculpt Pilates) | Gyms and fitness centers | Also nearby | 3397 N 1200 E, Suite 107, Lehi | Tanya Rasmussen | Women-owned studio with a dedicated 'Owner' page on its site featuring Tanya Rasmussen. | 10 min from stop 3 |
+| 5 | Peak Performance (The Peak Gym) | CrossFit and performance gyms | Good fit | 5342 W Parkway East St, Highland | the manager | Specializes in vertical-jump and speed training for youth athletes in Highland. | 8 min from stop 4 |
+| 6 | Alpine Fitness | Gyms and fitness centers | Also nearby | 235 S Main St, Alpine | Kimberly Blanck, (801) 216-4299 | Combines gym membership with on-site physical therapy and runs a formal Partner Program for local businesses. | 5 min from stop 5 |
 
-### Day 73: Heber City: W 600 S
-
-4 businesses, about 1 h 57 min door to door (36 min out from 3903 W 1700 N, Lehi, UT 84043, 37 min back).
-
-[Open Day 73 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/544%20Airport%20Rd%2C%20Unit%20B10%2C%20Heber%20City%2C%20UT%2084032/345%20W%20600%20S%2C%20Ste%20200%2C%20Heber%20City%2C%20UT%2084032/345%20W%20600%20S%20Ste%20409%2C%20Heber%20City%2C%20UT%2084032/345%20W%20600%20S%20Ste%20200%2C%20Heber%20City%2C%20UT%2084032/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Ruthless Performance | CrossFit and performance gyms | Good fit | 544 Airport Rd, Unit B10, Heber City | the manager, 435-671-8423 | Custom athlete programs combining speed/agility, strength and nutrition planning out of the Heber airport-road industrial park. | 36 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | The Fit Stop Health Club | Gyms and fitness centers | Also nearby | 345 W 600 S, Ste 200, Heber City | Wayne Bulkley, (435) 654-5607 | Family-run Heber Valley institution for over 30 years that already pairs the gym with its own physical therapy clinic. | 4 min from stop 1 |
-| 3 | The Pilates Studio Utah | Gyms and fitness centers | Also nearby | 345 W 600 S Ste 409, Heber City | Lisa Wark, (435) 215-7207 | Founder Lisa Wark positions the studio around pain-free movement with small-group and private reformer sessions in Activa Plaza. | 0 min from stop 2 |
-| 4 | BC Boxing Utah | Gyms and fitness centers | Also nearby | 345 W 600 S Ste 200, Heber City | Brittney N., (435) 671-6826 |  | 0 min from stop 3 |
-
-### Day 74: West Jordan: Welby Park Dr
-
-6 businesses, about 1 h 57 min door to door (23 min out from 3903 W 1700 N, Lehi, UT 84043, 19 min back).
-
-[Open Day 74 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/4942%20W%206200%20S%2C%20Kearns%2C%20UT%2084118/7135%20S%20Plaza%20Center%20Dr%2C%20West%20Jordan%2C%20UT%2084084/7742%20S%20Campus%20View%20Dr%2C%20West%20Jordan%2C%20UT%2084084/8014%20Welby%20Park%20Dr%20Ste%20201%2C%20West%20Jordan%2C%20UT%2084088/8018%20Welby%20Park%20Dr%20%232%2C%20West%20Jordan%2C%20UT%2084088/4602%20W%208400%20S%2C%20West%20Jordan%2C%20UT%2084088/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Infinite Martial Arts | Gyms and fitness centers | Also nearby | 4942 W 6200 S, Kearns | Cody Olsen, (801) 964-6900 | Claims to be the only academy in Utah with five certified Gracie Jiu-Jitsu black belts | 23 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | EoS Fitness West Jordan | Gyms and fitness centers | Also nearby | 7135 S Plaza Center Dr, West Jordan | the manager |  | 7 min from stop 1 |
-| 3 | Legends Boxing - Jordan Landing | Gyms and fitness centers | Also nearby | 7742 S Campus View Dr, West Jordan | the manager, (801) 930-9315 |  | 3 min from stop 2 |
-| 4 | Thrive Fitness | Gyms and fitness centers | Also nearby | 8014 Welby Park Dr Ste 201, West Jordan | the manager, (801) 280-8484 | Independent 24/7 gym on Welby Park Dr, in the same complex as Gracie Barra West Jordan | 3 min from stop 3 |
-| 5 | Gracie Barra West Jordan | Gyms and fitness centers | Also nearby | 8018 Welby Park Dr #2, West Jordan | the manager, (385) 220-5284 | Opened February 2022; runs a member-deals partner program with local businesses | 0 min from stop 4 |
-| 6 | Body Mechanics Fitness Training | Gyms and fitness centers | Also nearby | 4602 W 8400 S, West Jordan | the manager, (435) 590-1985 |  | 2 min from stop 5 |
-
-### Day 75: Spanish Fork and Salem, part 2
+### Day 72: Spanish Fork and Salem, part 2
 
 3 businesses, about 1 h 57 min door to door (37 min out from 3903 W 1700 N, Lehi, UT 84043, 34 min back).
 
-[Open Day 75 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/583%20UT-198%2C%20Salem%2C%20UT%2084653/1332%20E%20Center%20St%2C%20Spanish%20Fork%2C%20UT%2084660/652%20N%20800%20E%2C%20Spanish%20Fork%2C%20UT%2084660/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 72 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/583%20UT-198%2C%20Salem%2C%20UT%2084653/1332%20E%20Center%20St%2C%20Spanish%20Fork%2C%20UT%2084660/652%20N%20800%20E%2C%20Spanish%20Fork%2C%20UT%2084660/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1100,50 +1049,11 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 2 | Jazzercise Spanish Fork Fitness Center | Gyms and fitness centers | Also nearby | 1332 E Center St, Spanish Fork | the manager |  | 13 min from stop 1 |
 | 3 | VASA Fitness - Spanish Fork | Gyms and fitness centers | Also nearby | 652 N 800 E, Spanish Fork | the manager |  | 3 min from stop 2 |
 
-### Day 76: Park City (84098), part 4
-
-3 businesses, about 1 h 58 min door to door (40 min out from 3903 W 1700 N, Lehi, UT 84043, 41 min back).
-
-[Open Day 76 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1612%20W%20Ute%20Blvd%2C%20Park%20City%2C%20UT%2084098/6699%20N%20Landmark%20Dr%20Ste%20A-105%2C%20Park%20City%2C%20UT%2084098/2720%20Rasmussen%20Rd%20Ste%20A4%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Peak|45 Lagree Fitness Park City | Gyms and fitness centers | Also nearby | 1612 W Ute Blvd, Park City | Lacy Harrison | Best Version Media profiled Peak|45 as the only official Lagree Fitness studio in Park City; owner Lacy Harrison also runs SLC-area studios. | 40 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | BODYROK Park City | Gyms and fitness centers | Also nearby | 6699 N Landmark Dr Ste A-105, Park City | Cameron Klaus | Opened in Aug 2025 at Junction Commons and has already run ski-prep Pilates community classes with Halfdays. | 2 min from stop 1 |
-| 3 | RISE Boxing | Gyms and fitness centers | Also nearby | 2720 Rasmussen Rd Ste A4, Park City | Maryguenn Vellinga, (435) 800-2104 | KPCW covered their Rock Steady-style boxing program for Parkinson's patients in May 2023; adds Muay Thai and BJJ alongside fitness boxing. | 5 min from stop 2 |
-
-### Day 77: Tooele: S Garnet St
-
-4 businesses, about 1 h 58 min door to door (31 min out from 3903 W 1700 N, Lehi, UT 84043, 33 min back).
-
-[Open Day 77 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/992%20N%20Main%20St%2C%20Tooele%2C%20UT%2084074/1868%20N%20170%20W%2C%20Tooele%2C%20UT%2084074/10%20S%20Garnet%20St%20Bldg%20669%20%234%2C%20Tooele%2C%20UT%2084074/10%20S%20Garnet%20St%20Bldg%20669%20Ste%204%2C%20Tooele%2C%20UT%2084074/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | HOTWORX Tooele | Gyms and fitness centers | Also nearby | 992 N Main St, Tooele | Casey and Tonya Walker; Joseph and Breearna Walker, (385) 787-8090 | Tooele Transcript Bulletin covered the studio's Feb 26-28, 2026 ribbon cutting under new local family ownership. | 31 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Tooele Boxing | Gyms and fitness centers | Also nearby | 1868 N 170 W, Tooele | the manager |  | 4 min from stop 1 |
-| 3 | Tooele Martial Arts Academy | Gyms and fitness centers | Also nearby | 10 S Garnet St Bldg 669 #4, Tooele | Keith Azbury, (435) 882-1212 | Runs BJJ , Muay Thai and a women's self-defense program out of the Garnet St building. | 10 min from stop 2 |
-| 4 | Get Fit With Ty | Gyms and fitness centers | Also nearby | 10 S Garnet St Bldg 669 Ste 4, Tooele | the manager, (435) 840-1025 |  | 0 min from stop 3 |
-
-### Day 78: Salt Lake City and Millcreek, South Salt Lake
-
-5 businesses, about 1 h 58 min door to door (28 min out from 3903 W 1700 N, Lehi, UT 84043, 29 min back).
-
-[Open Day 78 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/3232%20S%20Highland%20Dr%2C%20Salt%20Lake%20City%2C%20UT%2084106/1295%20Miller%20Ave%2C%20Millcreek%2C%20UT%2084106/3065%20S%20Imperial%20St%2C%20Millcreek%2C%20UT%2084106/2471%20S%201700%20E%2C%20Salt%20Lake%20City%2C%20UT%2084106/2695%20S%20900%20E%2C%20South%20Salt%20Lake%2C%20UT%2084106/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | SLC Strength & Conditioning | Gyms and fitness centers | Also nearby | 3232 S Highland Dr, Salt Lake City | Stephen Pizza, (801) 810-0373 | Owner Stephen Pizza is a former collegiate strength coach at University of Utah and University of Hawai'i with a master's in exercise physiology. | 28 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | btone FITNESS Brickyard | Gyms and fitness centers | Also nearby | 1295 Miller Ave, Millcreek | Janeen McCormick, 801-810-4664 | Featured on Salt Lake Chamber's 'Speaking on Business'; locally and women-owned. | 1 min from stop 1 |
-| 3 | Epic Fitness | Gyms and fitness centers | Also nearby | 3065 S Imperial St, Millcreek | Ben Fogel, 385-270-9977 | Already lists rehabilitation and performance training as services, a natural fit for recovery add-ons. | 2 min from stop 2 |
-| 4 | Salt Lake Tennis & Health Club | Gyms and fitness centers | Also nearby | 2471 S 1700 E, Salt Lake City | Laury Hammel, 801-487-3206 | Nearly 50 years old with 11 indoor courts; already runs a reformer Pilates program for members. | 3 min from stop 3 |
-| 5 | The Point Pilates | Gyms and fitness centers | Also nearby | 2695 S 900 E, South Salt Lake | Hollie, 801-940-0928 | Expanded to a second studio at 9th & 9th with Reformer + Pilates Chair classes. | 4 min from stop 4 |
-
-### Day 79: Provo and Springville
+### Day 73: Provo and Springville
 
 4 businesses, about 1 h 58 min door to door (28 min out from 3903 W 1700 N, Lehi, UT 84043, 32 min back).
 
-[Open Day 79 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1640%20S%20State%20St%2C%20Provo%2C%20UT%2084606/1007%20S%20University%20Ave%2C%20Provo%2C%20UT%2084601/655%20E%20400%20S%2C%20Unit%20D%2C%20Springville%2C%20UT%2084663/54%20N%20Main%20St%2C%20Springville%2C%20UT%2084663/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 73 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1640%20S%20State%20St%2C%20Provo%2C%20UT%2084606/1007%20S%20University%20Ave%2C%20Provo%2C%20UT%2084601/655%20E%20400%20S%2C%20Unit%20D%2C%20Springville%2C%20UT%2084663/54%20N%20Main%20St%2C%20Springville%2C%20UT%2084663/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1152,49 +1062,33 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 3 | Orion Physical Therapy | Physical therapy, chiropractic, and sports medicine | Also nearby | 655 E 400 S, Unit D, Springville | the manager, (385) 398-1915 | Positions itself as 'PT and Wellness' - already blending rehab with wellness services | 11 min from stop 2 |
 | 4 | Explosive Fitness | Gyms and fitness centers | Also nearby | 54 N Main St, Springville | Brandie Hubbard, (801) 836-6721 |  | 3 min from stop 3 |
 
-### Day 80: Bountiful (84010), part 5
+### Day 74: Bountiful (84010), part 7
 
-2 businesses, about 1 h 58 min door to door (46 min out from 3903 W 1700 N, Lehi, UT 84043, 48 min back).
+2 businesses, about 1 h 58 min door to door (48 min out from 3903 W 1700 N, Lehi, UT 84043, 46 min back).
 
-[Open Day 80 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/51%20E%20400%20S%2C%20Bountiful%2C%20UT%2084010/1525%20N%20Main%20St%20Ste%20110%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Culture Beauty Studio | Salons and beauty studios | Also nearby | 51 E 400 S, Bountiful | Lauren, (385) 595-5984 | 2026 Best of SLC winner; Lauren left teaching to open Culture in downtown Bountiful in 2019. | 46 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Skills Fitness | Gyms and fitness centers | Also nearby | 1525 N Main St Ste 110, Bountiful | Kenton Farris, (801) 298-5050 | Independent Bountiful gym on N Main with a full group-class schedule and in-house personal training team. | 5 min from stop 1 |
-
-### Day 81: Draper: S State St
-
-7 businesses, about 1 h 59 min door to door (13 min out from 3903 W 1700 N, Lehi, UT 84043, 21 min back).
-
-[Open Day 81 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/129%20E%2013800%20S%2C%20%23B3%2C%20Draper%2C%20UT%2084020/10%20W%20Scenic%20Point%20Dr%2C%20Suite%20107%2C%20Draper%2C%20UT%2084020/241%20E%2012300%20S%2C%20Draper%2C%20UT%2084020/282%20E%2012200%20S%2C%20Suite%20200%2C%20Draper%2C%20UT%2084020/12101%20S%20State%20St%2C%20Draper%2C%20UT%2084020/11483%20S%20State%20St%20Ste%20F%2C%20Draper%2C%20UT%2084020/10975%20Sterling%20View%20Dr%2C%20South%20Jordan%2C%20UT%2084095/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 74 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1525%20N%20Main%20St%20Ste%20110%2C%20Bountiful%2C%20UT%2084010/401%20S%20Main%20St%2C%20Bountiful%2C%20UT%2084010/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Pretty Lash Studio | Salons and beauty studios | Also nearby | 129 E 13800 S, #B3, Draper | the manager, (801) 888-9079 | Operates two studios offering lash extensions, brow tinting and body waxing. | 13 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | House of Lashademics | Salons and beauty studios | Also nearby | 10 W Scenic Point Dr, Suite 107, Draper | the manager, (385) 290-2633 |  | 2 min from stop 1 |
-| 3 | Phenix Salon Suites Draper | Salons and beauty studios | Also nearby | 241 E 12300 S, Draper | the manager, 801-750-4512 | Each private suite at the Draper location is independently owned, so a shared recovery amenity would be a differentiator for leasing. | 4 min from stop 2 |
-| 4 | Rhea Salon Suites | Salons and beauty studios | Also nearby | 282 E 12200 S, Suite 200, Draper | the manager, (385) 644-9001 |  | 0 min from stop 3 |
-| 5 | VASA Fitness Draper | Gyms and fitness centers | Also nearby | 12101 S State St, Draper | the manager |  | 2 min from stop 4 |
-| 6 | Club Pilates Draper | Gyms and fitness centers | Also nearby | 11483 S State St Ste F, Draper | the manager |  | 3 min from stop 5 |
-| 7 | FreedOM Hot Yoga + Pilates SoJo | Gyms and fitness centers | Also nearby | 10975 Sterling View Dr, South Jordan | the manager, (801) 201-5517 | Second studio of the Orem-based FreedOM Hot Yoga brand | 3 min from stop 6 |
+| 1 | Skills Fitness | Gyms and fitness centers | Also nearby | 1525 N Main St Ste 110, Bountiful | Kenton Farris, (801) 298-5050 | Independent Bountiful gym on N Main with a full group-class schedule and in-house personal training team. | 48 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Urban and Ivy Co (Bountiful Lash & Brow Salon) | Salons and beauty studios | Also nearby | 401 S Main St, Bountiful | the manager |  | 5 min from stop 1 |
 
-### Day 82: Centerville (84014)
+### Day 75: Centerville (84014)
 
 2 businesses, about 1 h 59 min door to door (49 min out from 3903 W 1700 N, Lehi, UT 84043, 49 min back).
 
-[Open Day 82 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/158%20W%20Parrish%20Ln%2C%20Centerville%2C%20UT%2084014/156%20N%20Frontage%20Rd%2C%20Centerville%2C%20UT%2084014/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 75 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/158%20W%20Parrish%20Ln%2C%20Centerville%2C%20UT%2084014/156%20N%20Frontage%20Rd%2C%20Centerville%2C%20UT%2084014/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | CrossFit North Salt Lake | CrossFit and performance gyms | Good fit | 158 W Parrish Ln, Centerville | the manager, (801) 872-3396 |  | 49 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 1 | CrossFit North Salt Lake (also here: Centerville Fit Body Boot Camp) | CrossFit and performance gyms | Good fit | 158 W Parrish Ln, Centerville | the manager, (801) 872-3396 |  | 49 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | QURE Studio | Gyms and fitness centers | Also nearby | 156 N Frontage Rd, Centerville | Cameron Millican; Jonathon Kimmings, (385) 324-9777 | Boutique studio blending indoor cycling, boxing and kettlebell strength classes under a mind-spirit-body wellness pitch. | 1 min from stop 1 |
 
-### Day 83: Heber City and Midway
+### Day 76: Heber City and Midway
 
 3 businesses, about 1 h 59 min door to door (34 min out from 3903 W 1700 N, Lehi, UT 84043, 33 min back).
 
-[Open Day 83 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/2211%20W%203000%20S%2C%20Suite%20A%2C%20Heber%20City%2C%20UT%2084032/1099%20S%20Main%20St%20Ste%20160%2C%20Heber%20City%2C%20UT%2084032/65%20N%20200%20W%20Unit%20103%2C%20Midway%2C%20UT%2084049/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 76 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/2211%20W%203000%20S%2C%20Suite%20A%2C%20Heber%20City%2C%20UT%2084032/1099%20S%20Main%20St%20Ste%20160%2C%20Heber%20City%2C%20UT%2084032/65%20N%20200%20W%20Unit%20103%2C%20Midway%2C%20UT%2084049/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1202,11 +1096,53 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 2 | Anytime Fitness Heber City | Gyms and fitness centers | Also nearby | 1099 S Main St Ste 160, Heber City | Josh Cook, (435) 222-5151 |  | 9 min from stop 1 |
 | 3 | Utah Yoga & Wellness / Midway Studio Collective | Gyms and fitness centers | Also nearby | 65 N 200 W Unit 103, Midway | Elise Jones, (435) 709-2097 | Owner Elise Jones is a certified yoga therapist who also runs wellness retreats out of Midway. | 13 min from stop 2 |
 
-### Day 84: Midvale and Sandy, West Jordan
+### Day 77: Riverton: W 12600 S, part 2
+
+7 businesses, about 1 h 59 min door to door (13 min out from 3903 W 1700 N, Lehi, UT 84043, 17 min back).
+
+[Open Day 77 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/13957%20S%20Bangerter%20Pkwy%20Ste%20102%2C%20Draper%2C%20UT%2084020/129%20E%2013800%20S%2C%20%23B3%2C%20Draper%2C%20UT%2084020/974%20W%2014420%20S%20Ste%205%2C%20Bluffdale%2C%20UT%2084065/14003%20S%20Redwood%20Rd%20Ste%20200%2C%20Bluffdale%2C%20UT%2084065/2478%20W%2012600%20S%20Ste%202%2C%20Riverton%2C%20UT%2084065/2582%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/2588%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | Pilates Revolution & Fitness | Gyms and fitness centers | Also nearby | 13957 S Bangerter Pkwy Ste 102, Draper | Stephanie Smith, (801) 890-0538 | Named Best Pilates Studio in Draper 2025 ; 5.0 Yelp rating. | 13 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Pretty Lash Studio | Salons and beauty studios | Also nearby | 129 E 13800 S, #B3, Draper | the manager, (801) 888-9079 | Operates two studios offering lash extensions, brow tinting and body waxing. | 1 min from stop 1 |
+| 3 | Hardbodiez Gym | Gyms and fitness centers | Also nearby | 974 W 14420 S Ste 5, Bluffdale | John and Laci Sharp, (801) 884-9783 | Husband-and-wife owned gym with 63 Birdeye reviews | 7 min from stop 2 |
+| 4 | Atomic Pilates & Chiropractic | Gyms and fitness centers | Also nearby | 14003 S Redwood Rd Ste 200, Bluffdale | Ryan Griffeth and Kristin Griffeth, (801) 901-0867 | Combines reformer Pilates with an in-house chiropractic clinic | 4 min from stop 3 |
+| 5 | The HITFIT Gym Riverton | Gyms and fitness centers | Also nearby | 2478 W 12600 S Ste 2, Riverton | Anthony White, (385) 238-1855 | Promises up to 500 calories in a 35-minute session with a certified trainer always on the floor | 7 min from stop 4 |
+| 6 | The Station Gym | Gyms and fitness centers | Also nearby | 2582 W 12600 S, Riverton | Tanner Mertlich, (801) 608-3312 | Owner Tanner Mertlich also runs The Muscle Bus mobile personal training and blogs about ski-season strength and injury prevention | 0 min from stop 5 |
+| 7 | Aspire Pilates Training Center | Gyms and fitness centers | Also nearby | 2588 W 12600 S, Riverton | Cari Kapele, (801) 302-5720 | Established 2009; all instructors are STOTT PILATES certified with nursing/PT/dance backgrounds | 0 min from stop 6 |
+
+### Day 78: Millcreek and Salt Lake City, South Salt Lake
+
+5 businesses, about 1 h 59 min door to door (28 min out from 3903 W 1700 N, Lehi, UT 84043, 29 min back).
+
+[Open Day 78 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1295%20Miller%20Ave%2C%20Millcreek%2C%20UT%2084106/3065%20S%20Imperial%20St%2C%20Millcreek%2C%20UT%2084106/2471%20S%201700%20E%2C%20Salt%20Lake%20City%2C%20UT%2084106/1155%20E%20Wilmington%20Ave%2C%20Ste%20200%2C%20Salt%20Lake%20City%2C%20UT%2084106/2695%20S%20900%20E%2C%20South%20Salt%20Lake%2C%20UT%2084106/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | btone FITNESS Brickyard | Gyms and fitness centers | Also nearby | 1295 Miller Ave, Millcreek | Janeen McCormick, 801-810-4664 | Featured on Salt Lake Chamber's 'Speaking on Business'; locally and women-owned. | 28 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Epic Fitness | Gyms and fitness centers | Also nearby | 3065 S Imperial St, Millcreek | Ben Fogel, 385-270-9977 | Already lists rehabilitation and performance training as services, a natural fit for recovery add-ons. | 2 min from stop 1 |
+| 3 | Salt Lake Tennis & Health Club | Gyms and fitness centers | Also nearby | 2471 S 1700 E, Salt Lake City | Laury Hammel, 801-487-3206 | Nearly 50 years old with 11 indoor courts; already runs a reformer Pilates program for members. | 3 min from stop 2 |
+| 4 | Rideologie | Gyms and fitness centers | Also nearby | 1155 E Wilmington Ave, Ste 200, Salt Lake City | Ali Babcock, 801-484-1456 | Woman-owned, LGBTQ-friendly spin studio featured by Her Campus as SLC's newest spin studio. | 3 min from stop 3 |
+| 5 | The Point Pilates | Gyms and fitness centers | Also nearby | 2695 S 900 E, South Salt Lake | Hollie, 801-940-0928 | Expanded to a second studio at 9th & 9th with Reformer + Pilates Chair classes. | 3 min from stop 4 |
+
+### Day 79: Park City: Center Dr
+
+3 businesses, about 1 h 59 min door to door (41 min out from 3903 W 1700 N, Lehi, UT 84043, 40 min back).
+
+[Open Day 79 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/2720%20Rasmussen%20Rd%20Ste%20A4%2C%20Park%20City%2C%20UT%2084098/1241%20Center%20Dr%20Ste%20L-120%2C%20Park%20City%2C%20UT%2084098/1153%20Center%20Dr%20Ste%20G190%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+
+| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
+|---|---|---|---|---|---|---|---|
+| 1 | RISE Boxing | Gyms and fitness centers | Also nearby | 2720 Rasmussen Rd Ste A4, Park City | Maryguenn Vellinga, (435) 800-2104 | KPCW covered their Rock Steady-style boxing program for Parkinson's patients in May 2023; adds Muay Thai and BJJ alongside fitness boxing. | 41 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | F45 Training Park City | Gyms and fitness centers | Also nearby | 1241 Center Dr Ste L-120, Park City | Sabrina O'Mara and Clayton Rule, (385) 485-6704 | TownLift reported F45 Park City launched Park City's first in-gym cold plunge , so the owners are already investing in recovery amenities. | 7 min from stop 1 |
+| 3 | Club Pilates Park City | Gyms and fitness centers | Also nearby | 1153 Center Dr Ste G190, Park City | JaNae M., (435) 800-9904 | Owner JaNae also teaches on the floor as a certified instructor at the Redstone studio. | 0 min from stop 2 |
+
+### Day 80: Midvale and Sandy, West Jordan
 
 6 businesses, about 1 h 59 min door to door (18 min out from 3903 W 1700 N, Lehi, UT 84043, 19 min back).
 
-[Open Day 84 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/8496%20S%20Harrison%20St%20Ste%20108%2C%20Midvale%2C%20UT%2084047/741%20W%20Smelter%20St%2C%20Midvale%2C%20UT%2084047/1338%20W%207800%20S%2C%20West%20Jordan%2C%20UT%2084088/7831%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/8645%20S%20Highland%20Dr%2C%20Sandy%2C%20UT%2084093/8679%20S%20Highland%20Dr%2C%20Sandy%2C%20UT%2084093/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 80 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/8496%20S%20Harrison%20St%20Ste%20108%2C%20Midvale%2C%20UT%2084047/741%20W%20Smelter%20St%2C%20Midvale%2C%20UT%2084047/1338%20W%207800%20S%2C%20West%20Jordan%2C%20UT%2084088/7831%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/8645%20S%20Highland%20Dr%2C%20Sandy%2C%20UT%2084093/8679%20S%20Highland%20Dr%2C%20Sandy%2C%20UT%2084093/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1217,11 +1153,11 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 5 | The Picklr Sandy | Gyms and fitness centers | Also nearby | 8645 S Highland Dr, Sandy | Kathryn Bullough, (801) 758-2642 | Markets itself as the Southeast Valley's premier indoor pickleball facility. | 4 min from stop 4 |
 | 6 | Dialed In Fitness | Gyms and fitness centers | Also nearby | 8679 S Highland Dr, Sandy | the manager, (801) 706-9739 | 160+ Birdeye reviews and top-rated gym in Sandy on Yelp. | 0 min from stop 5 |
 
-### Day 85: Sandy: S State St
+### Day 81: Sandy: S State St
 
 7 businesses, about 1 h 59 min door to door (22 min out from 3903 W 1700 N, Lehi, UT 84043, 17 min back).
 
-[Open Day 85 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/220%20W%2010600%20S%2C%20Sandy%2C%20UT%2084070/10450%20S%20State%20St%20%231216%2C%20Sandy%2C%20UT%2084070/9599%20S%20500%20W%2C%20Sandy%2C%20UT%2084070/9507%20S%20560%20W%2C%20Sandy%2C%20UT%2084070/9442%20S%20670%20W%2C%20Sandy%2C%20UT%2084070/9127%20S%20255%20W%2C%20Sandy%2C%20UT%2084070/9138%20S%20State%20St%2C%20Suite%20102%2C%20Sandy%2C%20UT%2084070/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 81 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/220%20W%2010600%20S%2C%20Sandy%2C%20UT%2084070/10450%20S%20State%20St%20%231216%2C%20Sandy%2C%20UT%2084070/9599%20S%20500%20W%2C%20Sandy%2C%20UT%2084070/9507%20S%20560%20W%2C%20Sandy%2C%20UT%2084070/9442%20S%20670%20W%2C%20Sandy%2C%20UT%2084070/9127%20S%20255%20W%2C%20Sandy%2C%20UT%2084070/9138%20S%20State%20St%2C%20Suite%20102%2C%20Sandy%2C%20UT%2084070/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1233,22 +1169,22 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 6 | Justin's School of Brazilian Jiu Jitsu and Gymnastics | Gyms and fitness centers | Also nearby | 9127 S 255 W, Sandy | Justin, (801) 441-9164 |  | 2 min from stop 5 |
 | 7 | BlueWave Lashes | Salons and beauty studios | Also nearby | 9138 S State St, Suite 102, Sandy | Nancy Kinder, (949) 374-8564 | Nancy has spent more than ten years serving Sandy clients and publishes guides on Utah eyelash-extension licensing. | 2 min from stop 6 |
 
-### Day 86: Centerville: N 1250 W
+### Day 82: Centerville: N 1250 W
 
 2 businesses, about 1 h 59 min door to door (49 min out from 3903 W 1700 N, Lehi, UT 84043, 49 min back).
 
-[Open Day 86 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/597%20N%201250%20W%2C%20Suites%203%20%26%204%2C%20Centerville%2C%20UT%2084014/803%20N%201250%20W%20Suite%202%2C%20Centerville%2C%20UT%2084014/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 82 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/597%20N%201250%20W%2C%20Suites%203%20%26%204%2C%20Centerville%2C%20UT%2084014/803%20N%201250%20W%20Suite%202%2C%20Centerville%2C%20UT%2084014/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | ETS Performance - Centerville | CrossFit and performance gyms | Good fit | 597 N 1250 W, Suites 3 & 4, Centerville | the manager | One of two new ETS Performance youth athlete-training centers along the Wasatch Front. | 49 min from 3903 W 1700 N, Lehi, UT 84043 |
 | 2 | Acalo CrossFit | CrossFit and performance gyms | Good fit | 803 N 1250 W Suite 2, Centerville | the manager |  | 1 min from stop 1 |
 
-### Day 87: West Valley City: W 3500 S
+### Day 83: West Valley City: W 3500 S
 
 5 businesses, about 1 h 59 min door to door (27 min out from 3903 W 1700 N, Lehi, UT 84043, 29 min back).
 
-[Open Day 87 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/3749%20S%20Constitution%20Blvd%2C%20West%20Valley%20City%2C%20UT%2084119/3491%20W%203500%20S%2C%20West%20Valley%20City%2C%20UT%2084119/3952%20W%203500%20S%2C%20West%20Valley%20City%2C%20UT%2084120/3420%20S%205600%20W%2C%20West%20Valley%20City%2C%20UT%2084120/5718%20W%203500%20S%20Unit%20136%2C%20West%20Valley%20City%2C%20UT%2084120/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 83 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/3749%20S%20Constitution%20Blvd%2C%20West%20Valley%20City%2C%20UT%2084119/3491%20W%203500%20S%2C%20West%20Valley%20City%2C%20UT%2084119/3952%20W%203500%20S%2C%20West%20Valley%20City%2C%20UT%2084120/3420%20S%205600%20W%2C%20West%20Valley%20City%2C%20UT%2084120/5718%20W%203500%20S%20Unit%20136%2C%20West%20Valley%20City%2C%20UT%2084120/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1258,11 +1194,11 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 4 | VASA Fitness West Valley Centennial | Gyms and fitness centers | Also nearby | 3420 S 5600 W, West Valley City | the manager |  | 7 min from stop 3 |
 | 5 | Boxing Roots | Gyms and fitness centers | Also nearby | 5718 W 3500 S Unit 136, West Valley City | the manager, (801) 738-0744 | Specializes in Cuban-style boxing fundamentals | 1 min from stop 4 |
 
-### Day 88: Sandy: S 700 E, part 2
+### Day 84: Sandy: S 700 E, part 2
 
 7 businesses, about 1 h 59 min door to door (18 min out from 3903 W 1700 N, Lehi, UT 84043, 18 min back).
 
-[Open Day 88 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/8734%20S%20700%20E%2C%20Suite%20210%2C%20Sandy%2C%20UT%2084070/8912%20S%20700%20E%2C%20Sandy%2C%20UT%2084070/9211%20Village%20Shop%20Dr%2C%20Sandy%2C%20UT%2084094/9245%20Village%20Shop%20Dr%2C%20Sandy%2C%20UT%2084094/9844%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/9343%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/8789%20S%20Highland%20Dr%20Ste%20310%2C%20Sandy%2C%20UT%2084093/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 84 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/8734%20S%20700%20E%2C%20Suite%20210%2C%20Sandy%2C%20UT%2084070/8912%20S%20700%20E%2C%20Sandy%2C%20UT%2084070/9211%20Village%20Shop%20Dr%2C%20Sandy%2C%20UT%2084094/9245%20Village%20Shop%20Dr%2C%20Sandy%2C%20UT%2084094/9844%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/9343%20S%201300%20E%2C%20Sandy%2C%20UT%2084094/8789%20S%20Highland%20Dr%20Ste%20310%2C%20Sandy%2C%20UT%2084093/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1274,26 +1210,25 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 6 | Mountain Yoga Sandy | Gyms and fitness centers | Also nearby | 9343 S 1300 E, Sandy | Jackie Wheeler, (801) 501-9642 | 66 Yelp reviews; offers Pilates, barre and Qigong alongside heated flow. | 2 min from stop 5 |
 | 7 | Pilates for Everyone | Gyms and fitness centers | Also nearby | 8789 S Highland Dr Ste 310, Sandy | Tiffany George, (801) 694-3792 | Specializes in small-group reformer classes and the Balanced Body method. | 4 min from stop 6 |
 
-### Day 89: Cottonwood Heights: E Fort Union Blvd
+### Day 85: West Jordan and Kearns, Taylorsville
 
-6 businesses, about 1 h 59 min door to door (21 min out from 3903 W 1700 N, Lehi, UT 84043, 25 min back).
+5 businesses, about 2 h 00 min door to door (19 min out from 3903 W 1700 N, Lehi, UT 84043, 23 min back).
 
-[Open Day 89 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/7076%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/2258%20E%20Fort%20Union%20Blvd%20%23B2%2C%20Cottonwood%20Heights%2C%20UT%2084121/2258%20E%20Fort%20Union%20Blvd%2C%20Cottonwood%20Heights%2C%20UT%2084121/2363%20E%206710%20S%2C%20Cottonwood%20Heights%2C%20UT%2084121/5266%20Cottonwood%20Club%20Dr%2C%20Holladay%2C%20UT%2084117/2046%20E%20Murray%20Holladay%20Rd%2C%20Holladay%2C%20UT%2084117/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 85 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/4602%20W%208400%20S%2C%20West%20Jordan%2C%20UT%2084088/8014%20Welby%20Park%20Dr%20Ste%20201%2C%20West%20Jordan%2C%20UT%2084088/7742%20S%20Campus%20View%20Dr%2C%20West%20Jordan%2C%20UT%2084084/4942%20W%206200%20S%2C%20Kearns%2C%20UT%2084118/5474%20S%20Redwood%20Rd%2C%20Taylorsville%2C%20UT%2084123/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Intermountain Pilates Training Center | Gyms and fitness centers | Also nearby | 7076 S Highland Dr, Cottonwood Heights | Jenny Carr, (801) 942-0275 | Runs a Pilates teacher-training program in addition to classes. | 21 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Canyon Cove Pilates & Activewear | Gyms and fitness centers | Also nearby | 2258 E Fort Union Blvd #B2, Cottonwood Heights | Kate Belcher, (801) 699-5106 | Combines a reformer studio with an activewear boutique in the same space. | 2 min from stop 1 |
-| 3 | Fitness Together Cottonwood Heights | Gyms and fitness centers | Also nearby | 2258 E Fort Union Blvd, Cottonwood Heights | Jacob Jones, (801) 733-7200 | Private and semi-private training suites rather than an open gym floor. | 0 min from stop 2 |
-| 4 | KnockOut Pilates | Gyms and fitness centers | Also nearby | 2363 E 6710 S, Cottonwood Heights | Katie Orndorff-McCoy, (410) 365-4058 | Owner Katie Orndorff-McCoy was profiled in VoyageUtah's 'Life & Work' series. | 1 min from stop 3 |
-| 5 | Pure Skin Care | Salons and beauty studios | Also nearby | 5266 Cottonwood Club Dr, Holladay | Erin Brinton, (801) 810-4397 | Recently launched a new website and runs an 'Advanced Spa Treatments' menu at the Cottonwood Club Dr studio. | 7 min from stop 4 |
-| 6 | Lashvibe | Salons and beauty studios | Also nearby | 2046 E Murray Holladay Rd | Jennifer Baldassarre, (801) 916-1693 | Bills itself as 'Utah's Favorite Lash Studio' with 135+ Birdeye reviews; Jen is a certified lash instructor. | 3 min from stop 5 |
+| 1 | Body Mechanics Fitness Training | Gyms and fitness centers | Also nearby | 4602 W 8400 S, West Jordan | the manager, (435) 590-1985 |  | 19 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Thrive Fitness | Gyms and fitness centers | Also nearby | 8014 Welby Park Dr Ste 201, West Jordan | the manager, (801) 280-8484 | Independent 24/7 gym on Welby Park Dr, in the same complex as Gracie Barra West Jordan | 2 min from stop 1 |
+| 3 | Legends Boxing - Jordan Landing | Gyms and fitness centers | Also nearby | 7742 S Campus View Dr, West Jordan | the manager, (801) 930-9315 |  | 3 min from stop 2 |
+| 4 | Infinite Martial Arts | Gyms and fitness centers | Also nearby | 4942 W 6200 S, Kearns | Cody Olsen, (801) 964-6900 | Claims to be the only academy in Utah with five certified Gracie Jiu-Jitsu black belts | 9 min from stop 3 |
+| 5 | HOTWORX - Taylorsville (Crossroads) | Gyms and fitness centers | Also nearby | 5474 S Redwood Rd, Taylorsville | the manager |  | 13 min from stop 4 |
 
-### Day 90: Murray: S 900 E
+### Day 86: Murray: S 900 E
 
 6 businesses, about 2 h 00 min door to door (22 min out from 3903 W 1700 N, Lehi, UT 84043, 23 min back).
 
-[Open Day 90 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/333%20W%206160%20S%2C%20Murray%2C%20UT%2084107/5914%20S%20350%20W%2C%20Murray%2C%20UT%2084107/4894%20S%20Commerce%20Dr%20Ste%20A%2C%20Murray%2C%20UT%2084107/5445%20S%20900%20E%2C%20Murray%2C%20UT%2084117/5550%20S%20900%20E%2C%20Murray%2C%20UT%2084117/5642%20S%20900%20E%20Unit%20B6%2C%20Murray%2C%20UT%2084121/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 86 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/333%20W%206160%20S%2C%20Murray%2C%20UT%2084107/5914%20S%20350%20W%2C%20Murray%2C%20UT%2084107/4894%20S%20Commerce%20Dr%20Ste%20A%2C%20Murray%2C%20UT%2084107/5445%20S%20900%20E%2C%20Murray%2C%20UT%2084117/5550%20S%20900%20E%2C%20Murray%2C%20UT%2084117/5642%20S%20900%20E%20Unit%20B6%2C%20Murray%2C%20UT%2084121/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -1304,70 +1239,56 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 | 5 | EoS Fitness Murray | Gyms and fitness centers | Also nearby | 5550 S 900 E, Murray | the manager |  | 1 min from stop 4 |
 | 6 | Rumble Boxing Murray | Gyms and fitness centers | Also nearby | 5642 S 900 E Unit B6, Murray | Kristopher "Toph" Allison, (801) 230-3262 | Opened as the first Rumble Boxing in Utah . | 1 min from stop 5 |
 
-### Day 91: Riverton: W 12600 S
+### Day 87: Cottonwood Heights and Holladay
 
-7 businesses, about 2 h 00 min door to door (13 min out from 3903 W 1700 N, Lehi, UT 84043, 17 min back).
+6 businesses, about 2 h 00 min door to door (21 min out from 3903 W 1700 N, Lehi, UT 84043, 25 min back).
 
-[Open Day 91 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/13957%20S%20Bangerter%20Pkwy%20Ste%20102%2C%20Draper%2C%20UT%2084020/974%20W%2014420%20S%20Ste%205%2C%20Bluffdale%2C%20UT%2084065/14003%20S%20Redwood%20Rd%20Ste%20200%2C%20Bluffdale%2C%20UT%2084065/2478%20W%2012600%20S%20Ste%202%2C%20Riverton%2C%20UT%2084065/2582%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/2588%20W%2012600%20S%2C%20Riverton%2C%20UT%2084065/2936%20W%2012600%20S%20Ste%201%262%2C%20Riverton%2C%20UT%2084065/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
-
-| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
-|---|---|---|---|---|---|---|---|
-| 1 | Pilates Revolution & Fitness | Gyms and fitness centers | Also nearby | 13957 S Bangerter Pkwy Ste 102, Draper | Stephanie Smith, (801) 890-0538 | Named Best Pilates Studio in Draper 2025 ; 5.0 Yelp rating. | 13 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Hardbodiez Gym | Gyms and fitness centers | Also nearby | 974 W 14420 S Ste 5, Bluffdale | John and Laci Sharp, (801) 884-9783 | Husband-and-wife owned gym with 63 Birdeye reviews | 7 min from stop 1 |
-| 3 | Atomic Pilates & Chiropractic | Gyms and fitness centers | Also nearby | 14003 S Redwood Rd Ste 200, Bluffdale | Ryan Griffeth and Kristin Griffeth, (801) 901-0867 | Combines reformer Pilates with an in-house chiropractic clinic | 4 min from stop 2 |
-| 4 | The HITFIT Gym Riverton | Gyms and fitness centers | Also nearby | 2478 W 12600 S Ste 2, Riverton | Anthony White, (385) 238-1855 | Promises up to 500 calories in a 35-minute session with a certified trainer always on the floor | 7 min from stop 3 |
-| 5 | The Station Gym | Gyms and fitness centers | Also nearby | 2582 W 12600 S, Riverton | Tanner Mertlich, (801) 608-3312 | Owner Tanner Mertlich also runs The Muscle Bus mobile personal training and blogs about ski-season strength and injury prevention | 0 min from stop 4 |
-| 6 | Aspire Pilates Training Center | Gyms and fitness centers | Also nearby | 2588 W 12600 S, Riverton | Cari Kapele, (801) 302-5720 | Established 2009; all instructors are STOTT PILATES certified with nursing/PT/dance backgrounds | 0 min from stop 5 |
-| 7 | Gracie Barra Riverton | Gyms and fitness centers | Also nearby | 2936 W 12600 S Ste 1&2, Riverton | Seidler Rodrigo Ziser, (801) 436-7373 | Professor Andrea leads female-only classes; same head professor as GB Herriman | 1 min from stop 6 |
-
-### Day 92: Sandy: E 9400 S
-
-6 businesses, about 2 h 00 min door to door (17 min out from 3903 W 1700 N, Lehi, UT 84043, 23 min back).
-
-[Open Day 92 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/1842%20E%209400%20S%2C%20Sandy%2C%20UT%2084093/2077%20E%209400%20S%2C%20Sandy%2C%20UT%2084093/7817%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/7690%20Union%20Park%20Ave%2C%20Midvale%2C%20UT%2084047/1844%20E%20Fort%20Union%20Blvd%20%238%2C%20Cottonwood%20Heights%2C%20UT%2084121/6263%20S%20Highland%20Dr%2C%20Holladay%2C%20UT%2084121/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 87 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/7076%20S%20Highland%20Dr%2C%20Cottonwood%20Heights%2C%20UT%2084121/2258%20E%20Fort%20Union%20Blvd%20%23B2%2C%20Cottonwood%20Heights%2C%20UT%2084121/2363%20E%206710%20S%2C%20Cottonwood%20Heights%2C%20UT%2084121/6263%20S%20Highland%20Dr%2C%20Holladay%2C%20UT%2084121/5266%20Cottonwood%20Club%20Dr%2C%20Holladay%2C%20UT%2084117/2046%20E%20Murray%20Holladay%20Rd%2C%20Holladay%2C%20UT%2084117/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | Koko FitClub of Sandy | Gyms and fitness centers | Also nearby | 1842 E 9400 S, Sandy | the manager, (801) 571-5656 |  | 17 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Club Pilates Sandy | Gyms and fitness centers | Also nearby | 2077 E 9400 S, Sandy | the manager |  | 1 min from stop 1 |
-| 3 | TITLE Boxing Club Cottonwood Heights | Gyms and fitness centers | Also nearby | 7817 S Highland Dr, Cottonwood Heights | Dash Cox, (801) 676-1011 | Featured on ABC4 Good Things Utah segment 'Working up a sweat with Title Boxing'. | 7 min from stop 2 |
-| 4 | HOTWORX Midvale (Sandy) | Gyms and fitness centers | Also nearby | 7690 Union Park Ave, Midvale | the manager | Marketed as the first dry-sauna workout studio in the Sandy/Midvale area. | 4 min from stop 3 |
-| 5 | Curves Cottonwood Heights | Gyms and fitness centers | Also nearby | 1844 E Fort Union Blvd #8, Cottonwood Heights | the manager |  | 4 min from stop 4 |
-| 6 | Fresh Beauty by Jen | Salons and beauty studios | Also nearby | 6263 S Highland Dr, Holladay | the manager |  | 3 min from stop 5 |
+| 1 | Intermountain Pilates Training Center | Gyms and fitness centers | Also nearby | 7076 S Highland Dr, Cottonwood Heights | Jenny Carr, (801) 942-0275 | Runs a Pilates teacher-training program in addition to classes. | 21 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | Canyon Cove Pilates & Activewear (also here: Fitness Together Cottonwood Heights) | Gyms and fitness centers | Also nearby | 2258 E Fort Union Blvd #B2, Cottonwood Heights | Kate Belcher, (801) 699-5106 | Combines a reformer studio with an activewear boutique in the same space. | 2 min from stop 1 |
+| 3 | KnockOut Pilates | Gyms and fitness centers | Also nearby | 2363 E 6710 S, Cottonwood Heights | Katie Orndorff-McCoy, (410) 365-4058 | Owner Katie Orndorff-McCoy was profiled in VoyageUtah's 'Life & Work' series. | 1 min from stop 2 |
+| 4 | Fresh Beauty by Jen | Salons and beauty studios | Also nearby | 6263 S Highland Dr, Holladay | the manager |  | 3 min from stop 3 |
+| 5 | Pure Skin Care | Salons and beauty studios | Also nearby | 5266 Cottonwood Club Dr, Holladay | Erin Brinton, (801) 810-4397 | Recently launched a new website and runs an 'Advanced Spa Treatments' menu at the Cottonwood Club Dr studio. | 5 min from stop 4 |
+| 6 | Lashvibe | Salons and beauty studios | Also nearby | 2046 E Murray Holladay Rd | Jennifer Baldassarre, (801) 916-1693 | Bills itself as 'Utah's Favorite Lash Studio' with 135+ Birdeye reviews; Jen is a certified lash instructor. | 3 min from stop 5 |
 
-### Day 93: Park City: Gold Dust Ln
+### Day 88: West Jordan and South Jordan
 
-3 businesses, about 2 h 00 min door to door (39 min out from 3903 W 1700 N, Lehi, UT 84043, 42 min back).
+5 businesses, about 2 h 00 min door to door (20 min out from 3903 W 1700 N, Lehi, UT 84043, 22 min back).
 
-[Open Day 93 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/2080%20Gold%20Dust%20Ln%2C%20Park%20City%2C%20UT%2084060/2080%20Gold%20Dust%20Ln%2C%20Park%20City%2C%20UT%2084060/4108%20N%20Forestdale%20Dr%2C%20Park%20City%2C%20UT%2084098/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
+[Open Day 88 in Google Maps](https://www.google.com/maps/dir/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043/7759%20S%204800%20W%2C%20West%20Jordan%2C%20UT%2084084/3812%20W%207800%20S%20Ste%20190%2C%20West%20Jordan%2C%20UT%2084088/7135%20S%20Plaza%20Center%20Dr%2C%20West%20Jordan%2C%20UT%2084084/7836%20S%20Redwood%20Rd%2C%20West%20Jordan%2C%20UT%2084088/10467%20S%20Redwood%20Rd%2C%20South%20Jordan%2C%20UT%2084095/3903%20W%201700%20N%2C%20Lehi%2C%20UT%2084043)
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
-| 1 | BJJ Revolution Park City (Malmberg Jiu Jitsu) | Gyms and fitness centers | Also nearby | 2080 Gold Dust Ln, Park City | Ben Malmberg, (435) 714-0321 | Trains out of Silver Mountain Sports Club and also runs BJJ Revolution classes for Heber and Kamas. | 39 min from 3903 W 1700 N, Lehi, UT 84043 |
-| 2 | Silver Mountain Sports Club & Spa | Gyms and fitness centers | Also nearby | 2080 Gold Dust Ln, Park City | Stanton Jones, (435) 649-6670 | Park City's long-running independent athletic club with pool, hot tub, sauna and spa under one roof, so a recovery amenity fits the existing wellness menu. | 0 min from stop 1 |
-| 3 | Park City Fit | Gyms and fitness centers | Also nearby | 4108 N Forestdale Dr, Park City | Chris Spealler | Profiled in TownLift's 'Our Town: Park City Fit, More Than a Gym' and sells an 'Adventure Preparedness Program' for mountain athletes. | 9 min from stop 2 |
+| 1 | Snap Fitness West Jordan | Gyms and fitness centers | Also nearby | 7759 S 4800 W, West Jordan | the manager, (801) 282-2766 |  | 20 min from 3903 W 1700 N, Lehi, UT 84043 |
+| 2 | F45 Training Jordan Landing | Gyms and fitness centers | Also nearby | 3812 W 7800 S Ste 190, West Jordan | the manager, (801) 513-3903 |  | 4 min from stop 1 |
+| 3 | EoS Fitness West Jordan | Gyms and fitness centers | Also nearby | 7135 S Plaza Center Dr, West Jordan | the manager |  | 3 min from stop 2 |
+| 4 | VASA Fitness West Jordan | Gyms and fitness centers | Also nearby | 7836 S Redwood Rd, West Jordan | the manager |  | 8 min from stop 3 |
+| 5 | Burn Boot Camp South Jordan | Gyms and fitness centers | Also nearby | 10467 S Redwood Rd, South Jordan | the manager, (385) 308-3479 |  | 11 min from stop 4 |
 
 ## Far trips: more than two hours round trip
 
 These are beyond a two-hour loop from 3903 W 1700 N, Lehi, UT 84043. Plan each town as a half day, or visit when you are already there.
 
-- **Layton** (24): Wasatch CrossFit (Best bet, Carson Welty); Big 3 Baseball Academy (Good fit); Elite Sports Performance (Good fit); Wasatch Peak Physical Therapy (Good fit, KC Logan; Jason Huffaker); Da Dojo (Also nearby, Bobby King); Evolution Fitness and Personal Training (Also nearby, Cameron Brown); Gracie Barra Layton (Also nearby, Steve Crisler); HOTWORX Layton (Also nearby, Carrie Baugh; Eric Baugh); Lions Pride Barbell & Fitness (Also nearby, Doug Van Tassell); Team Link Utah Training Center (Also nearby, Neal Rowe); Alloy Personal Training Layton (Also nearby, E. Ferwerda); One Hit MMA (Also nearby, Aldo Oreggia); PiNK! Fitness for Women (Also nearby, Sindy Wolthoff); Blue Collar Group Fitness (Also nearby, Coach Gonzo); Fat Albert's Gym & Fitness (Also nearby, Larry Larson); Beauty Mavens Collective (Also nearby, Kristen De Oliveira); SALT Studios (Hot Yoga & Pilates) (Also nearby); Burn Boot Camp Layton (Also nearby); Club Pilates Layton (Also nearby); Anytime Fitness Layton (Also nearby); EoS Fitness Layton (Also nearby); Orangetheory Fitness Layton (Also nearby); Planet Fitness Layton (Also nearby); VASA Fitness Layton (Also nearby)
-- **Ogden** (17): Salt of Earth Float and Wellness Spa (Best bet); Sports Medicine Clinic (Ogden) (Good fit, Chris Dahlberg); Foley's MMA (Also nearby, Dave Foley); Higher Ground Hot Yoga (Also nearby, Debi Muir); Iron Sharpens Iron LLC (Also nearby, Justin San Souci); West Coast World Martial Arts - Ogden (Also nearby, Chris Erickson); All Heart Boxing Gym (Also nearby, Andrea Storey); West Side Jiu-Jitsu Academy (Also nearby, Mark Johnson); Absolute Power & Fitness (Also nearby, Jeremiah); Ogden Lash and Wax (Also nearby, Barbara V.); Street Fighters Martial Arts Academy (Also nearby); The Iron House Gym (Also nearby); iROCK Utah Climbing Wall (Also nearby); EoS Fitness Ogden (Also nearby, Matt McCune); Propulsion Climbing Gym (Also nearby); VASA Fitness Ogden (Also nearby); Burn Boot Camp Ogden (Also nearby)
-- **Kaysville** (12): CrossFit Kaysville (Best bet, Colby Child); PLUNJ Kaysville (Best bet); Brickyard Performance Gym (Good fit); Nimbus Athletics (Good fit); AMIT Clinics (Buhler Athletic Injuries & Human Performance Clinic) (Good fit, Craig Buhler); True North Chiropractic & Wellness Center (Good fit, Jeffrey Knight); Barre Forte Kaysville (Also nearby, Janell Reichenbach; Cyndi Taranto); Lifelong Fitness Personal Training Gym (Also nearby, Griff Neilson); Alloy Personal Training Kaysville (Also nearby); Orangetheory Fitness Kaysville (Also nearby); EoS Fitness Kaysville (Also nearby); VASA Fitness Kaysville (Also nearby)
+- **Layton** (23): Wasatch CrossFit (Best bet, Carson Welty); Big 3 Baseball Academy (Good fit); Elite Sports Performance (Good fit); Wasatch Peak Physical Therapy (Good fit, KC Logan; Jason Huffaker); Da Dojo (Also nearby, Bobby King); Evolution Fitness and Personal Training (Also nearby, Cameron Brown); Gracie Barra Layton (Also nearby, Steve Crisler); HOTWORX Layton (Also nearby, Carrie Baugh; Eric Baugh); Lions Pride Barbell & Fitness (Also nearby, Doug Van Tassell); Team Link Utah Training Center (Also nearby, Neal Rowe); Alloy Personal Training Layton (Also nearby, E. Ferwerda); One Hit MMA (Also nearby, Aldo Oreggia); PiNK! Fitness for Women (Also nearby, Sindy Wolthoff); Blue Collar Group Fitness (Also nearby, Coach Gonzo); Fat Albert's Gym & Fitness (Also nearby, Larry Larson); Beauty Mavens Collective (Also nearby, Kristen De Oliveira); SALT Studios (Hot Yoga & Pilates) (Also nearby); Burn Boot Camp Layton (Also nearby); Club Pilates Layton (Also nearby); EoS Fitness Layton (Also nearby); Orangetheory Fitness Layton (Also nearby); Planet Fitness Layton (Also nearby); VASA Fitness Layton (Also nearby)
+- **Ogden** (15): Salt of Earth Float and Wellness Spa (Best bet); Sports Medicine Clinic (Ogden) (Good fit, Chris Dahlberg); Foley's MMA (Also nearby, Dave Foley); Higher Ground Hot Yoga (Also nearby, Debi Muir); Iron Sharpens Iron LLC (Also nearby, Justin San Souci); West Coast World Martial Arts - Ogden (Also nearby, Chris Erickson); All Heart Boxing Gym (Also nearby, Andrea Storey); West Side Jiu-Jitsu Academy (Also nearby, Mark Johnson); Absolute Power & Fitness (Also nearby, Jeremiah); Ogden Lash and Wax (Also nearby, Barbara V.); Street Fighters Martial Arts Academy (Also nearby); The Iron House Gym (Also nearby); Propulsion Climbing Gym (Also nearby); VASA Fitness Ogden (Also nearby); Burn Boot Camp Ogden (Also nearby)
+- **Kaysville** (11): CrossFit Kaysville (Best bet, Colby Child); PLUNJ Kaysville (Best bet); Nimbus Athletics (Good fit); AMIT Clinics (Buhler Athletic Injuries & Human Performance Clinic) (Good fit, Craig Buhler); True North Chiropractic & Wellness Center (Good fit, Jeffrey Knight); Barre Forte Kaysville (Also nearby, Janell Reichenbach; Cyndi Taranto); Lifelong Fitness Personal Training Gym (Also nearby, Griff Neilson); Alloy Personal Training Kaysville (Also nearby); Orangetheory Fitness Kaysville (Also nearby); EoS Fitness Kaysville (Also nearby); VASA Fitness Kaysville (Also nearby)
 - **South Ogden** (8): i-Float Sensations (Best bet, Keith Guetschow); Training for Warriors Ogden (formerly Destination MMA) (Good fit); The Firm Pilates (XFormer) (Also nearby, Gabrielle Reid and Gina Oliverson); Timeless Fitness Studio (Also nearby, Ray Franklin); Ogden Athletic Club (Also nearby, Jan Browning-Carlsen); Love Lashed (Also nearby, Kylie Grant); Club Pilates South Ogden (Also nearby, JaNae McLaughlin); Orangetheory Fitness South Ogden (Also nearby)
 - **Clearfield** (7): Athletic Republic North Davis (Best bet, Bryce Barker); BoxFit Utah (Also nearby, Pablo); Envision Personal Training (Also nearby, Teresa); GPP Fitness (Clearfield / Syracuse) (Also nearby, Neil Anderson); Strike Boxing & Fitness Club (Also nearby, Suzanne Kemp); World Martial Arts & Fitness Academy (WMA Fitness) (Also nearby, Chris Morris); Prolific Fitness 24/7 (Also nearby, Ron Beard)
-- **Roy** (7): Roy CrossFit (Best bet, Jessie and Kevin Lundell); Joseon Martial Arts Academy (Also nearby, Master Cody); Mori Academy of Martial Arts - Roy (Also nearby, Eduardo Mori); Power MMA (Power Mixed Martial Arts) (Also nearby, Sean Powers); Snap Fitness Roy (Also nearby, Michael Call); EoS Fitness Roy (Also nearby, Bodie Hultz); Rocky Mountain Athletic Center (Also nearby)
+- **Roy** (6): Roy CrossFit (Best bet, Jessie and Kevin Lundell); Joseon Martial Arts Academy (Also nearby, Master Cody); Mori Academy of Martial Arts - Roy (Also nearby, Eduardo Mori); Snap Fitness Roy (Also nearby, Michael Call); EoS Fitness Roy (Also nearby, Bodie Hultz); Rocky Mountain Athletic Center (Also nearby)
 - **North Ogden** (5): Ben Lomond CrossFit (Good fit); Q-Fit Training Zone (Also nearby, Will Harris); Studio Reve Pilates (Also nearby, Andrea Spiesman); The Pilates Body (Also nearby, Kennedy Rogers); Premier Martial Arts North Ogden (Also nearby, Jonathan and Emily Koelling)
-- **West Haven** (4): Tip Top Athlete (Best bet, Nate Tuatagoloa); West Haven CrossFit (Best bet, McKenna Morgan); Utah Performance Institute (Good fit); Studio Nine Fitness (Also nearby)
+- **West Haven** (3): Tip Top Athlete (Best bet, Nate Tuatagoloa); Utah Performance Institute (Good fit); Studio Nine Fitness (Also nearby)
 - **Syracuse** (3): Elite Skills Academy (Best bet, Duane Koski); Snap Fitness Syracuse (Also nearby, Sandy Cunningham); Club Pilates Syracuse (Also nearby)
 - **Clinton** (3): All Fit Bungee (Also nearby, Jana Shaw; Troy Van Buren); Anytime Fitness Clinton (Also nearby); VASA Fitness Clinton (Also nearby)
 - **Morgan** (2): CrossFit Unknown (Best bet, Chans Porter); Morgan Gym (Also nearby)
-- **Uintah** (2): CrossFit Freight Train Co (Best bet, Mesfer Alsharman); CrossFit The Club / Parisi Speed School (Best bet, Lindsay Hassell)
 - **Riverdale** (2): ETS Performance - Ogden (Good fit); Thiago Alves BJJ (Also nearby, Thiago Alves)
 - **Nephi** (2): Quality Fitness & Health (Also nearby, Shannon and Mike McPherson); Curves - Nephi (Also nearby)
 - **Coalville** (2): Coalville Fit (Also nearby, Laura Coghlin); State of Mind Yoga & Fitness Studio (Also nearby, Ashley Battersby)
 - **Farmington** (2): HOTWORX Farmington (Station Park) (Also nearby); Viva Lagree Farmington (Also nearby)
 - **Mount Pleasant** (1): Black Canyon CrossFit (Best bet, Micah Painter)
+- **Uintah** (1): CrossFit Freight Train Co (Best bet, Mesfer Alsharman)
 - **Ephraim** (1): 180 Fitness Ephraim (Also nearby, John Anderson and Lloyd Gleave)
 - **Marriott-Slaterville** (1): Kut Fitness (Also nearby, Cindy Spencer and Shane Spencer)
 - **Gunnison** (1): 180 Fitness Gunnison (Also nearby)
@@ -1379,17 +1300,15 @@ These are beyond a two-hour loop from 3903 W 1700 N, Lehi, UT 84043. Plan each t
 Each of these would be a trip for one business. Visit when you are already in that town, or add one to a nearby day if you have time left.
 
 - KONGO Athletic Club (CrossFit and performance gyms, Best bet): 1261 S 650 W Bldg 2, Farmington. Ask for Chaz Walker, (801) 682-4431.
-- NXTLVL Training (CrossFit and performance gyms, Best bet): 1261 S 650 W, Farmington. Ask for Dave Smith, 435-592-0841.
+- Tooele Valley Physical Therapy (Physical therapy, chiropractic, and sports medicine, Good fit): 225 E Main St, Ste B, Grantsville. Ask for Danielle Moorad, (435) 244-2422.
 - Resilience, A Private Gym (Gyms and fitness centers, Also nearby): 4518 Forestdale Dr, Bldg I, Unit 43, Park City. Ask for Michael Conville, (435) 640-0705.
 - BODYBAR Pilates Farmington (Gyms and fitness centers, Also nearby): 180 N Union Ave, Farmington. Ask for Ashley Van Emmerik, (801) 451-8881.
-- Timpanogos Jiu Jitsu Club (Gyms and fitness centers, Also nearby): 1522 S Daniels Rd, Heber City. Ask for the manager, (801) 573-6806.
 - Ace Athletics Tennis Academy (Gyms and fitness centers, Also nearby): 874 S Shirley Rae Dr, Farmington. Ask for the manager, (385) 500-9788.
 - Awaken Beauty (Salons and beauty studios, Also nearby): 164 N W Promontory, Suite 200, Room 228, Farmington. Ask for the manager, 435-494-9422.
 - Lift at Station Park (Gyms and fitness centers, Also nearby): 172 N East Promontory Ste 200, Farmington. Ask for the manager, (801) 934-3975.
 - VASA Fitness - Provo (Gyms and fitness centers, Also nearby): 460 N 900 E, Provo. Ask for the manager.
 - EoS Fitness - Springville (Gyms and fitness centers, Also nearby): 512 S 950 W, Springville. Ask for the manager, (385) 245-2075.
-- VASA Fitness Bountiful (Gyms and fitness centers, Also nearby): 250 W 1500 S, Bountiful. Ask for the manager, (801) 397-2777.
-- Centerville Fit Body Boot Camp (Gyms and fitness centers, Also nearby): 158 W Parrish Ln, Centerville. Ask for the manager, (801) 683-0126.
+- Orangetheory Fitness Park City (Gyms and fitness centers, Also nearby): 1678 Redstone Center Dr, Park City. Ask for the manager, (435) 575-5575.
 
 ## Email first, do not walk in
 

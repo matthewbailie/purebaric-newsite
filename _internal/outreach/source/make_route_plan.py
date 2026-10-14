@@ -122,12 +122,18 @@ for r in rows[1:]:
         continue
     biz.append(rec)
 
-# merge duplicates (same address and phone)
-seen = {}
+# One stop per building: businesses at the same street address (suites ignored) or the same map point are
+# visited together, the extra names listed as "also here", so no building is driven to twice.
+def _bldg(b):
+    street = re.sub(r"\b(suite|ste|unit|apt|bldg|building|#)\.?\s*[\w-]+\b.*$", "", b["address"], flags=re.I)
+    street = re.sub(r"\s+#.*$", "", street)
+    return (re.sub(r"\W", "", street.lower()), re.sub(r"\W", "", b["city"].lower()))
+seen, bypt = {}, {}
 for b in sorted(biz, key=lambda b: -b["score"]):
-    k = (re.sub(r"\W", "", b["address"].lower())[:14], re.sub(r"\D", "", b["phone"])[-7:]) if b["phone"] else (id(b), 0)
-    if k in seen: seen[k]["also"] = seen[k].get("also", []) + [b["name"]]; continue
-    seen[k] = b
+    k = _bldg(b); pk = (round(b["pt"][0], 4), round(b["pt"][1], 4))
+    host = seen.get(k) or bypt.get(pk)
+    if host is not None: host["also"] = host.get("also", []) + [b["name"]]; continue
+    seen[k] = b; bypt[pk] = b
 biz = list(seen.values())
 
 # ---------- day building ----------
