@@ -293,6 +293,9 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     .kpi.kpi-lead { grid-column: 1 / -1; }
     .viz-grid-2 { grid-template-columns: 1fr; }
     .seg { display: flex; flex-wrap: wrap; border-radius: 14px; }
+    /* The five period buttons stay on one row on a phone instead of the last one wrapping into a full-width bar. */
+    .seg.an-range { flex-wrap: nowrap; width: 100%; }
+    .seg.an-range button { flex: 1 1 0; min-width: 0; padding: 0.5rem 0.2rem; font-size: 0.8rem; white-space: nowrap; }
     .seg button { flex: 1 1 auto; padding: 0.5rem 0.8rem; }
   }
   @media (max-width: 560px) {
@@ -1869,9 +1872,9 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   function _barPair(el, bars, unit) {
     el._vizInit = false; el.innerHTML = '';
     const max = Math.max(1, ...bars.map(b => b.value || 0));
-    const W = 320, H = 150, pad = 28, bw = 70, gap = 60, x0 = (W - (bars.length * bw + (bars.length - 1) * gap)) / 2;
+    const W = 320, H = 160, pad = 28, top = 26, bw = 70, gap = 60, x0 = (W - (bars.length * bw + (bars.length - 1) * gap)) / 2;
     const rects = bars.map((b, i) => {
-      const h = b.value == null ? 0 : Math.round(((H - pad - 10) * b.value) / max);
+      const h = b.value == null ? 0 : Math.round(((H - pad - top) * b.value) / max);
       const x = x0 + i * (bw + gap), y = H - pad - h;
       const txt = b.value == null ? 'no data' : `${b.value.toLocaleString('en-US')} ${b.value === 1 ? unit : unit + 's'}`;
       return `<rect x="${x}" y="${y}" width="${bw}" height="${h}" rx="4" fill="${i === 0 ? '#b8654d' : '#d9c7b5'}"></rect>
