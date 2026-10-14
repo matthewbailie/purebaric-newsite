@@ -290,6 +290,20 @@ ordered_days = main_days + fill_days
 far_by_town = defaultdict(list)
 for b in sorted(far, key=lambda b: -b["score"]): far_by_town[b["city"]].append(b)
 
+# ---------- Pamphlets to take: one per business (shared-address businesses included), by pamphlet ----------
+PAMPHLET_FOR = {"Gyms and fitness centers": "Gyms and fitness", "CrossFit and performance gyms": "CrossFit and performance",
+    "Sports teams and athletic programs": "Sports teams and clubs", "High schools and colleges (athletics)": "High schools and colleges",
+    "Recovery studios and med spas": "Recovery studios and med spas", "Physical therapy, chiropractic, and sports medicine": "Physical therapy and chiropractic",
+    "Physical therapy and chiropractic clinics": "Physical therapy and chiropractic", "Salons and beauty studios": "Salons and day spas"}
+def pamphlets(stops):
+    counts = {}
+    for s in stops:
+        k = PAMPHLET_FOR.get(s["industry"], s["industry"] or "Other"); counts[k] = counts.get(k, 0) + 1 + len(s.get("also", []))
+    items = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+    return sum(counts.values()), ", ".join(f"{n} {name}" for name, n in items)
+for d in days + singles:
+    d["pamphlets_total"], d["pamphlets_by"] = pamphlets(d["stops"])
+
 # ---------- Markdown ----------
 L = []
 tot_stops = sum(len(d["stops"]) for d in days); tot_best = sum(d["best"] for d in days)
@@ -315,7 +329,7 @@ L.append("**How to read each line.** *Businesses* is the number of stops that da
 L.append("")
 for i, d in enumerate(ordered_days, 1):
     bb = ("all " if d["best"] == len(d["stops"]) and d["best"] > 1 else "") + f"{d['best']} best bet" + ("" if d["best"] == 1 else "s")
-    L.append(f"- **Day {i}, {d['area']}:** {len(d['stops'])} businesses, {bb}. About {hm(d['minutes'])} door to door.")
+    L.append(f"- **Day {i}, {d['area']}:** {len(d['stops'])} businesses, {bb}. About {hm(d['minutes'])} door to door. Take {d['pamphlets_total']} pamphlets.")
     if i == len(main_days) and fill_days: L.append(""); L.append("Fill-in days (no best bet):"); L.append("")
 L.append("")
 L.append(f"{len(days)} days in all: {tot_stops} businesses, {tot_best} best bets, about {sum(d['minutes'] for d in days)/60:.0f} hours on the road.")
@@ -327,6 +341,7 @@ for i, d in enumerate(ordered_days, 1):
     L.append(""); L.append(f"### Day {i}: {d['area']}"); L.append("")
     L.append(f"{len(d['stops'])} businesses, about {hm(d['minutes'])} door to door ({round(d['home_out'])} min out from {HOME_LABEL.split(' (')[0]}, {round(d['home_back'])} min back)."); L.append("")
     L.append(f"[Open Day {i} in Google Maps]({d['maps']})"); L.append("")
+    L.append(f"**Pamphlets to take: {d['pamphlets_total']}** ({d['pamphlets_by']}), plus a couple of spares."); L.append("")
     L.append("| Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |")
     L.append("|---|---|---|---|---|---|---|---|")
     for n, (s, leg) in enumerate(zip(d["stops"], d["legs"]), 1):
@@ -367,10 +382,10 @@ for line in [f"Start and end point for every day: {HOME_LABEL}. 'Door to door' t
              "Other sheets: Far trips (over two hours round trip), On their own (pair with an errand), Email first (college athletics and pro teams), Needs an address, Not on any route (with the reason)."]:
     ho.append([line])
 ho.column_dimensions["A"].width = 150
-ds = wbo.create_sheet("Days"); ds.append(["Day", "Area", "Businesses (stops that day)", "Best bets (stops most likely to sign)", "Door to door", "Out from home (min)", "Back home (min)", "Route"])
+ds = wbo.create_sheet("Days"); ds.append(["Day", "Area", "Businesses (stops that day)", "Best bets (stops most likely to sign)", "Door to door", "Out from home (min)", "Back home (min)", "Pamphlets to take", "Which pamphlets", "Route"])
 for i, d in enumerate(ordered_days, 1):
-    ds.append([i, d["area"], len(d["stops"]), d["best"], hm(d["minutes"]), round(d["home_out"]), round(d["home_back"]), f"Open Day {i} in Google Maps"])
-    c = ds.cell(row=ds.max_row, column=8); c.hyperlink = d["maps"]; c.font = Font(color="1F4E79", underline="single")
+    ds.append([i, d["area"], len(d["stops"]), d["best"], hm(d["minutes"]), round(d["home_out"]), round(d["home_back"]), d["pamphlets_total"], d["pamphlets_by"], f"Open Day {i} in Google Maps"])
+    c = ds.cell(row=ds.max_row, column=10); c.hyperlink = d["maps"]; c.font = Font(color="1F4E79", underline="single")
 so = wbo.create_sheet("Stops"); so.append(["Day", "Stop", "Business", "Also at this address", "Kind of business", "Chance of a yes", "Address", "City", "ZIP", "Ask for", "Phone", "Top pick", "Good to know", "Drive to get here (min)", "Map point approximate"])
 for i, d in enumerate(ordered_days, 1):
     for n, (s, leg) in enumerate(zip(d["stops"], d["legs"]), 1):
@@ -386,7 +401,7 @@ for b in sorted(email_first, key=lambda b: b["name"]): ef.append([b["name"], b["
 na = wbo.create_sheet("Needs an address"); na.append(["Business", "Kind of business", "Chance of a yes", "City", "Ask for", "Phone"])
 for b in need_address: na.append([b["name"], b["industry"], tier(b["score"]), b["city"], b["owner"], b["phone"]])
 sk = wbo.create_sheet("Not on any route"); sk.append(["Business", "Reason"]); [sk.append(list(x)) for x in sorted(skipped)]
-for sh, widths in [(ds, [5, 34, 14, 18, 14, 10, 10, 26]), (so, [5, 5, 32, 24, 28, 12, 30, 16, 8, 24, 16, 8, 50, 10, 8]), (ft, [14, 32, 28, 12, 30, 24, 16, 50]), (sg, [32, 28, 12, 30, 16, 24, 16, 50]), (ef, [36, 30, 30, 16]), (na, [32, 28, 12, 16, 24, 16]), (sk, [40, 60])]:
+for sh, widths in [(ds, [5, 34, 14, 18, 14, 10, 10, 10, 44, 26]), (so, [5, 5, 32, 24, 28, 12, 30, 16, 8, 24, 16, 8, 50, 10, 8]), (ft, [14, 32, 28, 12, 30, 24, 16, 50]), (sg, [32, 28, 12, 30, 16, 24, 16, 50]), (ef, [36, 30, 30, 16]), (na, [32, 28, 12, 16, 24, 16]), (sk, [40, 60])]:
     for c in sh[1]: c.font = Font(bold=True, color="FFFFFF"); c.fill = PatternFill("solid", fgColor="2B2320")
     for i, w in enumerate(widths, 1): sh.column_dimensions[get_column_letter(i)].width = w
     sh.freeze_panes = "A2"

@@ -16,38 +16,38 @@ Not visited on these days: college athletics departments and pro teams (email th
 
 **How to read each line.** *Businesses* is the number of stops that day. *Best bets* is how many of those stops are the kinds of business most likely to sign: recovery studios, IV lounges, sauna, cryotherapy, float, stretch studios and performance gyms. The rest of the day's stops are good fits or businesses that are on the way. *Door to door* is the whole trip, including the drive from home and back. Each day's Google Maps link is in its own section under "Stop by stop" below.
 
-- **Day 1, Knoxville and Farragut:** 7 businesses, all 7 best bets. About 1 h 55 min door to door.
-- **Day 2, Knoxville: Kingston Pike, part 1:** 7 businesses, 5 best bets. About 1 h 59 min door to door.
-- **Day 3, Knoxville (37920):** 6 businesses, 4 best bets. About 1 h 58 min door to door.
-- **Day 4, Knoxville (37922):** 6 businesses, 3 best bets. About 1 h 51 min door to door.
-- **Day 5, Maryville: E Broadway Ave:** 5 businesses, 2 best bets. About 1 h 51 min door to door.
-- **Day 6, Powell: Clinton Highway:** 6 businesses, 2 best bets. About 1 h 53 min door to door.
-- **Day 7, Knoxville and Corryton:** 3 businesses, 1 best bet. About 1 h 46 min door to door.
-- **Day 8, Lenoir City: Highway 321 N:** 5 businesses, 1 best bet. About 1 h 54 min door to door.
-- **Day 9, Maryville: US-411:** 5 businesses, 1 best bet. About 1 h 56 min door to door.
+- **Day 1, Knoxville and Farragut:** 7 businesses, all 7 best bets. About 1 h 55 min door to door. Take 7 pamphlets.
+- **Day 2, Knoxville: Kingston Pike, part 1:** 7 businesses, 5 best bets. About 1 h 59 min door to door. Take 8 pamphlets.
+- **Day 3, Knoxville (37920):** 6 businesses, 4 best bets. About 1 h 58 min door to door. Take 6 pamphlets.
+- **Day 4, Knoxville (37922):** 6 businesses, 3 best bets. About 1 h 51 min door to door. Take 6 pamphlets.
+- **Day 5, Maryville: E Broadway Ave:** 5 businesses, 2 best bets. About 1 h 51 min door to door. Take 6 pamphlets.
+- **Day 6, Powell: Clinton Highway:** 6 businesses, 2 best bets. About 1 h 53 min door to door. Take 6 pamphlets.
+- **Day 7, Knoxville and Corryton:** 3 businesses, 1 best bet. About 1 h 46 min door to door. Take 3 pamphlets.
+- **Day 8, Lenoir City: Highway 321 N:** 5 businesses, 1 best bet. About 1 h 54 min door to door. Take 5 pamphlets.
+- **Day 9, Maryville: US-411:** 5 businesses, 1 best bet. About 1 h 56 min door to door. Take 5 pamphlets.
 
 Fill-in days (no best bet):
 
-- **Day 10, Knoxville (37919), part 1:** 2 businesses, 0 best bets. About 1 h 19 min door to door.
-- **Day 11, Maryville (37804):** 3 businesses, 0 best bets. About 1 h 23 min door to door.
-- **Day 12, Seymour: Chapman Hwy, part 1:** 2 businesses, 0 best bets. About 1 h 25 min door to door.
-- **Day 13, Maryville (37801), part 1:** 2 businesses, 0 best bets. About 1 h 26 min door to door.
-- **Day 14, Knoxville: Hardin Valley Rd:** 5 businesses, 0 best bets. About 1 h 34 min door to door.
-- **Day 15, Knoxville (37918):** 4 businesses, 0 best bets. About 1 h 34 min door to door.
-- **Day 16, Farragut: Kingston Pike:** 4 businesses, 0 best bets. About 1 h 37 min door to door.
-- **Day 17, Oak Ridge and Norris, Clinton:** 3 businesses, 0 best bets. About 1 h 39 min door to door.
-- **Day 18, Knoxville: Kingston Pike, part 2:** 6 businesses, 0 best bets. About 1 h 42 min door to door.
-- **Day 19, Maynardville: Maynardville Hwy:** 3 businesses, 0 best bets. About 1 h 49 min door to door.
-- **Day 20, Knoxville (37923):** 6 businesses, 0 best bets. About 1 h 50 min door to door.
-- **Day 21, Knoxville (37919), part 2:** 5 businesses, 0 best bets. About 1 h 52 min door to door.
-- **Day 22, Oak Ridge: Oak Ridge Turnpike:** 6 businesses, 0 best bets. About 1 h 54 min door to door.
-- **Day 23, Maryville (37801), part 2:** 4 businesses, 0 best bets. About 1 h 55 min door to door.
-- **Day 24, Knoxville: Kingston Pike, part 3:** 7 businesses, 0 best bets. About 1 h 56 min door to door.
-- **Day 25, Seymour: Chapman Hwy, part 2:** 5 businesses, 0 best bets. About 1 h 57 min door to door.
-- **Day 26, Knoxville: Kingston Pike, part 4:** 7 businesses, 0 best bets. About 1 h 57 min door to door.
-- **Day 27, Farragut: Parkside Dr:** 8 businesses, 0 best bets. About 1 h 58 min door to door.
-- **Day 28, Knoxville and Oak Ridge:** 6 businesses, 0 best bets. About 1 h 58 min door to door.
-- **Day 29, Maryville and Alcoa:** 5 businesses, 0 best bets. About 2 h 00 min door to door.
+- **Day 10, Knoxville (37919), part 1:** 2 businesses, 0 best bets. About 1 h 19 min door to door. Take 2 pamphlets.
+- **Day 11, Maryville (37804):** 3 businesses, 0 best bets. About 1 h 23 min door to door. Take 3 pamphlets.
+- **Day 12, Seymour: Chapman Hwy, part 1:** 2 businesses, 0 best bets. About 1 h 25 min door to door. Take 2 pamphlets.
+- **Day 13, Maryville (37801), part 1:** 2 businesses, 0 best bets. About 1 h 26 min door to door. Take 2 pamphlets.
+- **Day 14, Knoxville: Hardin Valley Rd:** 5 businesses, 0 best bets. About 1 h 34 min door to door. Take 6 pamphlets.
+- **Day 15, Knoxville (37918):** 4 businesses, 0 best bets. About 1 h 34 min door to door. Take 4 pamphlets.
+- **Day 16, Farragut: Kingston Pike:** 4 businesses, 0 best bets. About 1 h 37 min door to door. Take 4 pamphlets.
+- **Day 17, Oak Ridge and Norris, Clinton:** 3 businesses, 0 best bets. About 1 h 39 min door to door. Take 3 pamphlets.
+- **Day 18, Knoxville: Kingston Pike, part 2:** 6 businesses, 0 best bets. About 1 h 42 min door to door. Take 6 pamphlets.
+- **Day 19, Maynardville: Maynardville Hwy:** 3 businesses, 0 best bets. About 1 h 49 min door to door. Take 3 pamphlets.
+- **Day 20, Knoxville (37923):** 6 businesses, 0 best bets. About 1 h 50 min door to door. Take 6 pamphlets.
+- **Day 21, Knoxville (37919), part 2:** 5 businesses, 0 best bets. About 1 h 52 min door to door. Take 5 pamphlets.
+- **Day 22, Oak Ridge: Oak Ridge Turnpike:** 6 businesses, 0 best bets. About 1 h 54 min door to door. Take 6 pamphlets.
+- **Day 23, Maryville (37801), part 2:** 4 businesses, 0 best bets. About 1 h 55 min door to door. Take 4 pamphlets.
+- **Day 24, Knoxville: Kingston Pike, part 3:** 7 businesses, 0 best bets. About 1 h 56 min door to door. Take 7 pamphlets.
+- **Day 25, Seymour: Chapman Hwy, part 2:** 5 businesses, 0 best bets. About 1 h 57 min door to door. Take 5 pamphlets.
+- **Day 26, Knoxville: Kingston Pike, part 4:** 7 businesses, 0 best bets. About 1 h 57 min door to door. Take 7 pamphlets.
+- **Day 27, Farragut: Parkside Dr:** 8 businesses, 0 best bets. About 1 h 58 min door to door. Take 9 pamphlets.
+- **Day 28, Knoxville and Oak Ridge:** 6 businesses, 0 best bets. About 1 h 58 min door to door. Take 6 pamphlets.
+- **Day 29, Maryville and Alcoa:** 5 businesses, 0 best bets. About 2 h 00 min door to door. Take 5 pamphlets.
 
 29 days in all: 143 businesses, 26 best bets, about 52 hours on the road.
 
@@ -60,6 +60,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 7 businesses, about 1 h 55 min door to door (11 min out from 8843 Brookhaven Dr, Knoxville, TN 37931, 11 min back).
 
 [Open Day 1 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/155%20Sherway%20Rd%2C%20Suite%202%2C%20Knoxville%2C%20TN%2037922/10426%20Jackson%20Oaks%20Way%2C%20Suite%20103%2C%20Knoxville%2C%20TN%2037922/120%20Huxley%20Rd%2C%20Suite%20102%2C%20Knoxville%2C%20TN%2037922/10935%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11533%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/10932%20Murdock%20Dr%20%23102b%2C%20Knoxville%2C%20TN%2037932/11245%20Threadstone%20Lane%2C%20Knoxville%2C%20TN%2037932/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
+
+**Pamphlets to take: 7** (6 Recovery studios and med spas, 1 CrossFit and performance), plus a couple of spares.
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -77,6 +79,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 [Open Day 2 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/4409%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/224%20Brookview%20Centre%20Way%2C%20Suite%20208%2C%20Knoxville%2C%20TN%2037919/318%20Erin%20Dr%2C%20%235%2C%20Knoxville%2C%20TN%2037919/403%20Bearden%20Park%20Circle%2C%20Knoxville%2C%20TN%2037919/6512%20Baum%20Dr%20SW%20%2312%2C%20Knoxville%2C%20TN%2037919/6504%20Deane%20Hill%20Dr%2C%20Knoxville%2C%20TN%2037919/8425%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
 
+**Pamphlets to take: 8** (5 Recovery studios and med spas, 2 CrossFit and performance, 1 Physical therapy and chiropractic), plus a couple of spares.
+
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Prime IV Hydration & Wellness - Knoxville (top pick) | Recovery studios and med spas | Best bet | 4409 Kingston Pike, Knoxville | the manager |  | 18 min from 8843 Brookhaven Dr, Knoxville, TN 37931 |
@@ -93,6 +97,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 [Open Day 3 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/906%20Sevier%20Ave%2C%20Suite%20120%2C%20Knoxville%2C%20TN%2037920/104%20W%20Summit%20Hill%20Dr%20SW%2C%20Knoxville%2C%20TN%2037902/126%20Jennings%20Ave%2C%20Knoxville%2C%20TN%2037917/941%20North%20Broadway%2C%20Knoxville%2C%20TN%2037917/1412%20N.%206th%20Ave%2C%20Knoxville%2C%20TN%2037917/2404%20Dutch%20Valley%20Dr%2C%20Knoxville%2C%20TN%2037918/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
 
+**Pamphlets to take: 6** (3 Recovery studios and med spas, 2 CrossFit and performance, 1 Salons and day spas), plus a couple of spares.
+
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Peak IV Hydration | Recovery studios and med spas | Best bet | 906 Sevier Ave, Suite 120, Knoxville | the manager, (865) 281-5263 | ER physicians, nurses and paramedics who started an IV hydration clinic on Sevier Ave to take pressure off emergency rooms during COVID. | 17 min from 8843 Brookhaven Dr, Knoxville, TN 37931 |
@@ -107,6 +113,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 6 businesses, about 1 h 51 min door to door (11 min out from 8843 Brookhaven Dr, Knoxville, TN 37931, 18 min back).
 
 [Open Day 4 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/151%20Sherway%20Rd%20%231%2C%20Knoxville%2C%20TN%2037922/9311%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922/248%20N%20Peters%20Rd%2C%20Suite%203%2C%20Knoxville%2C%20TN%2037923/9000%20Executive%20Park%20Dr%2C%20Suite%20C150%2C%20Knoxville%2C%20TN%2037923/222%20S%20Peters%20Rd%2C%20Knoxville%2C%20TN%2037923/9411%20S%20Northshore%20Dr%2C%20Suite%20101%2C%20Knoxville%2C%20TN%2037922/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
+
+**Pamphlets to take: 6** (4 Recovery studios and med spas, 1 CrossFit and performance, 1 Physical therapy and chiropractic), plus a couple of spares.
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -123,6 +131,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 [Open Day 5 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/2706%20E%20Broadway%20Ave%2C%20Maryville%2C%20TN%2037804/1410%20Sevierville%20Rd%2C%20Maryville%2C%20TN%2037804/801%20E%20Broadway%20Ave%2C%20Maryville%2C%20TN%2037804/402%20Greenbelt%20Dr%2C%20Maryville%2C%20TN%2037804/325%20West%20Broadway%2C%20Maryville%2C%20TN%2037801/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
 
+**Pamphlets to take: 6** (4 CrossFit and performance, 2 Physical therapy and chiropractic), plus a couple of spares.
+
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Peak Performance Training - Maryville | CrossFit and performance gyms | Good fit | 2706 E Broadway Ave, Maryville | the manager, (865) 272-6645 |  | 23 min from 8843 Brookhaven Dr, Knoxville, TN 37931 |
@@ -136,6 +146,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 6 businesses, about 1 h 53 min door to door (11 min out from 8843 Brookhaven Dr, Knoxville, TN 37931, 13 min back).
 
 [Open Day 6 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/7217%20Clinton%20Highway%2C%20Suite%20D%2C%20Powell%2C%20TN%2037849/7311%20Clinton%20Highway%2C%20Suite%20A%2C%20Powell%2C%20TN%2037849/3547%20W%20Emory%20Rd%2C%20Powell%2C%20TN%2037849/1639%20Dry%20Gap%20Pike%2C%20Knoxville%2C%20TN%2037918/906%20Callahan%20Dr%20%23112%2C%20Knoxville%2C%20TN%2037912/7525%20Brickyard%20Rd%2C%20Powell%2C%20TN%2037849/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
+
+**Pamphlets to take: 6** (2 CrossFit and performance, 2 Physical therapy and chiropractic, 1 Gyms and fitness, 1 Recovery studios and med spas), plus a couple of spares.
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -152,6 +164,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 [Open Day 7 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/5200%20Holston%20Hills%20Road%2C%20Knoxville%2C%20TN%2037914/8309%20Asheville%20Hwy%2C%20Knoxville%2C%20TN%2037924/7307%20Tazewell%20Pike%2C%20Corryton%2C%20TN%2037721/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
 
+**Pamphlets to take: 3** (1 Physical therapy and chiropractic, 1 Recovery studios and med spas, 1 Sports teams and clubs), plus a couple of spares.
+
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Holston Hills Country Club | Sports teams and athletic programs | Good fit | 5200 Holston Hills Road, Knoxville | Chris Dibble, (865) 523-4119 | Historic course profiled by WVLT in May 2025. | 22 min from 8843 Brookhaven Dr, Knoxville, TN 37931 |
@@ -163,6 +177,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 5 businesses, about 1 h 54 min door to door (20 min out from 8843 Brookhaven Dr, Knoxville, TN 37931, 17 min back).
 
 [Open Day 8 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/1005%20E%20Broadway%2C%20Lenoir%20City%2C%20TN%2037771/785%20Highway%20321%20N%2C%20Suite%2020%2C%20Lenoir%20City%2C%20TN%2037771/835%20Highway%20321%20N%2C%20Lenoir%20City%2C%20TN%2037771/1149%20Kevin%20Ln%2C%20Lenoir%20City%2C%20TN%2037772/12284%20N%20Fox%20Den%20Dr%2C%20Farragut%2C%20TN%2037934/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
+
+**Pamphlets to take: 5** (3 Physical therapy and chiropractic, 1 CrossFit and performance, 1 Sports teams and clubs), plus a couple of spares.
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -178,6 +194,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 [Open Day 9 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/2732%20US-411%2C%20Maryville%2C%20TN%2037801/2602%20US-411%2C%20Suite%20103%2C%20Maryville%2C%20TN%2037801/133%20Cherokee%20Heights%20Dr%2C%20Maryville%2C%20TN%2037801/1632%20West%20Broadway%20Avenue%2C%20Maryville%2C%20TN%2037801/1780%20W%20Lamar%20Alexander%20Pkwy%2C%20Maryville%2C%20TN%2037801/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
 
+**Pamphlets to take: 5** (3 Physical therapy and chiropractic, 2 Recovery studios and med spas), plus a couple of spares.
+
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Align Health and Holistic Medical Center | Recovery studios and med spas | Best bet | 2732 US-411, Maryville | Dr. Anderson, (865) 681-5277 | Maryville holistic clinic pairing chiropractic with red light and PEMF therapy. | 27 min from 8843 Brookhaven Dr, Knoxville, TN 37931 |
@@ -192,6 +210,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 [Open Day 10 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/2467%20University%20Commons%20Way%2C%20Knoxville%2C%20TN%2037919/9405%20S%20Northshore%20Dr%2C%20Suite%20102%2C%20Knoxville%2C%20TN%2037922/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
 
+**Pamphlets to take: 2** (2 Gyms and fitness), plus a couple of spares.
+
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | HOTWORX UT Commons | Gyms and fitness centers | Also nearby | 2467 University Commons Way, Knoxville | the manager, 865-315-7723 |  | 22 min from 8843 Brookhaven Dr, Knoxville, TN 37931 |
@@ -202,6 +222,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 3 businesses, about 1 h 23 min door to door (24 min out from 8843 Brookhaven Dr, Knoxville, TN 37931, 25 min back).
 
 [Open Day 11 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/911%20East%20Broadway%2C%20Maryville%2C%20TN%2037804/907%20E%20Lamar%20Alexander%20Pkwy%2C%20Maryville%2C%20TN%2037804/200%20E%20Broadway%20Ave%2C%20Suite%20506%2C%20Maryville%2C%20TN%2037804/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
+
+**Pamphlets to take: 3** (2 Gyms and fitness, 1 Salons and day spas), plus a couple of spares.
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -215,6 +237,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 [Open Day 12 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/10233%20Chapman%20Hwy%2C%20Seymour%2C%20TN%2037865/11503%20Chapman%20Hwy%2C%20Seymour%2C%20TN%2037865/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
 
+**Pamphlets to take: 2** (2 Salons and day spas), plus a couple of spares.
+
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Traditions Salon | Salons and beauty studios | Also nearby | 10233 Chapman Hwy, Seymour | the manager, (865) 773-0880 |  | 28 min from 8843 Brookhaven Dr, Knoxville, TN 37931 |
@@ -226,6 +250,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 [Open Day 13 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/4525%20Martin%20Rd%2C%20Maryville%2C%20TN%2037801/1010%20William%20Blount%20Dr%2C%20Maryville%2C%20TN%2037801/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
 
+**Pamphlets to take: 2** (1 Gyms and fitness, 1 Sports teams and clubs), plus a couple of spares.
+
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | The Shop Indoor Facility | Sports teams and athletic programs | Also nearby | 4525 Martin Rd, Maryville | the manager, (865) 414-7382 | Indoor baseball and softball training and team practice space in Maryville. | 31 min from 8843 Brookhaven Dr, Knoxville, TN 37931 |
@@ -236,6 +262,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 5 businesses, about 1 h 34 min door to door (12 min out from 8843 Brookhaven Dr, Knoxville, TN 37931, 7 min back).
 
 [Open Day 14 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/10901%20Parkside%20Dr%2C%20Suite%20103%2C%20Knoxville%2C%20TN%2037934/10708%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037934/11672%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/10839%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/10254%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
+
+**Pamphlets to take: 6** (6 Gyms and fitness), plus a couple of spares.
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -251,6 +279,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 [Open Day 15 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/5003%20N%20Broadway%2C%20Knoxville%2C%20TN%2037918/2605%20Adair%20Dr%2C%20%23101%2C%20Knoxville%2C%20TN%2037918/4660%20Old%20Broadway%2C%20Knoxville%2C%20TN%2037918/4652%20Fennel%20Rd%2C%20Knoxville%2C%20TN%2037912/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
 
+**Pamphlets to take: 4** (3 Gyms and fitness, 1 Salons and day spas), plus a couple of spares.
+
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Crunch Fitness - Fountain City | Gyms and fitness centers | Also nearby | 5003 N Broadway, Knoxville | the manager | Crunch Franchise announced its Knoxville entry with this club in April 2024 | 24 min from 8843 Brookhaven Dr, Knoxville, TN 37931 |
@@ -263,6 +293,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 4 businesses, about 1 h 37 min door to door (18 min out from 8843 Brookhaven Dr, Knoxville, TN 37931, 15 min back).
 
 [Open Day 16 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/10000%20Martel%20Rd%2C%20Lenoir%20City%2C%20TN%2037772/12572%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11560%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/11521%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
+
+**Pamphlets to take: 4** (3 Gyms and fitness, 1 Salons and day spas), plus a couple of spares.
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -277,6 +309,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 [Open Day 17 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/302%20S%20Illinois%20Ave%2C%20Oak%20Ridge%2C%20TN%2037830/8%20W%20Norris%20Rd%2C%20Suite%20B%2C%20TN%2037828/134%20W%20Broad%20St%2C%20Clinton%2C%20TN%2037716/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
 
+**Pamphlets to take: 3** (2 Physical therapy and chiropractic, 1 Gyms and fitness), plus a couple of spares.
+
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Gold's Gym Oak Ridge | Gyms and fitness centers | Also nearby | 302 S Illinois Ave, Oak Ridge | the manager, (865) 276-3488 | Offers group classes plus traditional and digital personal training. | 15 min from 8843 Brookhaven Dr, Knoxville, TN 37931 |
@@ -288,6 +322,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 6 businesses, about 1 h 42 min door to door (15 min out from 8843 Brookhaven Dr, Knoxville, TN 37931, 18 min back).
 
 [Open Day 18 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/6450%20Kingston%20Pike%2C%20Ste.%20B%2C%20Knoxville%2C%20TN%2037919/133%20S%20Forest%20Park%20Blvd%2C%20Knoxville%2C%20TN%2037919/122%20N%20Forest%20Park%20Blvd%2C%20Knoxville%2C%20TN%2037919/4467%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/4445%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/3337%20Sutherland%20Ave%2C%20Knoxville%2C%20TN%2037919/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
+
+**Pamphlets to take: 6** (6 Gyms and fitness), plus a couple of spares.
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -304,6 +340,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 [Open Day 19 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/110%20Skyline%20Dr%2C%20Suite%201%2C%20Maynardville%2C%20TN%2037807/2915%20Maynardville%20Hwy%2C%20TN%2037807/4356%20Maynardville%20Hwy%2C%20Suite%203%2C%20TN%2037807/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
 
+**Pamphlets to take: 3** (2 Physical therapy and chiropractic, 1 Salons and day spas), plus a couple of spares.
+
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Union County Chiropractic Clinic | Physical therapy, chiropractic, and sports medicine | Good fit | 110 Skyline Dr, Suite 1, Maynardville | Darrell James Johnson, DC, (865) 992-7000 | Combines chiropractic, massage and corrective exercise with free consultations in Union County. | 32 min from 8843 Brookhaven Dr, Knoxville, TN 37931 |
@@ -315,6 +353,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 6 businesses, about 1 h 50 min door to door (11 min out from 8843 Brookhaven Dr, Knoxville, TN 37931, 17 min back).
 
 [Open Day 20 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/130%20N%20Cedar%20Bluff%20Rd%2C%20Knoxville%2C%20TN%2037923/1701%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/8042%20Ray%20Mears%20Blvd%2C%20Knoxville%2C%20TN%2037919/7347%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/302%20Westfield%20Road%2C%20Knoxville%2C%20TN%2037919/7575%20S%20Northshore%20Dr%2C%20Knoxville%2C%20TN%2037919/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
+
+**Pamphlets to take: 6** (2 Gyms and fitness, 2 Physical therapy and chiropractic, 2 Salons and day spas), plus a couple of spares.
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -331,6 +371,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 [Open Day 21 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/101%20Westwood%20Rd%2C%20Ste.%20109%2C%20Knoxville%2C%20TN%2037919/4928%20Homberg%20Dr%2C%20Building%20B%2C%20Knoxville%2C%20TN%2037919/2317%20Lakemoor%20Drive%2C%20Knoxville%2C%20TN%2037920/2325%20Sutherland%20Ave%2C%20Knoxville%2C%20TN%2037919/1060%20Worlds%20Fair%20Park%20Dr%2C%20Unit%20104%2C%20Knoxville%2C%20TN%2037916/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
 
+**Pamphlets to take: 5** (2 Gyms and fitness, 2 Salons and day spas, 1 Physical therapy and chiropractic), plus a couple of spares.
+
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Pilates With Susie | Gyms and fitness centers | Also nearby | 101 Westwood Rd, Ste. 109, Knoxville | Susie, (661) 803-1526 |  | 17 min from 8843 Brookhaven Dr, Knoxville, TN 37931 |
@@ -344,6 +386,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 6 businesses, about 1 h 54 min door to door (14 min out from 8843 Brookhaven Dr, Knoxville, TN 37931, 12 min back).
 
 [Open Day 22 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/700%20S%20Illinois%20Ave%2C%20Suite%20A103%2C%20Oak%20Ridge%2C%20TN%2037830/1153%20Oak%20Ridge%20Turnpike%2C%20TN%2037830/1403%20Oak%20Ridge%20Turnpike%2C%20TN%2037830/176%20Randolph%20Road%2C%20Oak%20Ridge%2C%20TN%2037830/1116%20E%20Tri%20County%20Blvd%2C%20Oliver%20Springs%2C%20TN%2037840/697%20Emory%20Valley%20Rd%2C%20Oak%20Ridge%2C%20TN%2037830/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
+
+**Pamphlets to take: 6** (3 Physical therapy and chiropractic, 1 Gyms and fitness, 1 Salons and day spas, 1 Sports teams and clubs), plus a couple of spares.
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -360,6 +404,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 [Open Day 23 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/2336%20Market%20Place%20Dr%2C%20Maryville%2C%20TN%2037801/1009%20Hampshire%20Drive%2C%20Maryville%2C%20TN%2037801/921%20Foch%20St%2C%20Suite%209%2C%20Maryville%2C%20TN%2037801/605%20Smithview%20Dr%2C%20Ste.%203%2C%20Maryville%2C%20TN%2037803/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
 
+**Pamphlets to take: 4** (2 Physical therapy and chiropractic, 1 Gyms and fitness, 1 Recovery studios and med spas), plus a couple of spares.
+
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Benchmark Physical Therapy - Maryville | Physical therapy, chiropractic, and sports medicine | Also nearby | 2336 Market Place Dr, Maryville | the manager |  | 27 min from 8843 Brookhaven Dr, Knoxville, TN 37931 |
@@ -372,6 +418,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 7 businesses, about 1 h 56 min door to door (17 min out from 8843 Brookhaven Dr, Knoxville, TN 37931, 11 min back).
 
 [Open Day 24 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/5138%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/5908%20Toole%20Drive%20NW%2C%20Suite%20EF%2C%20Knoxville%2C%20TN%2037919/6209%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/6718%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/7015%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037919/1645%20Downtown%20West%20Blvd%2C%20Knoxville%2C%20TN%2037919/8805%20Kingston%20Pike%2C%20Suite%20105%2C%20Knoxville%2C%20TN%2037923/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
+
+**Pamphlets to take: 7** (3 Physical therapy and chiropractic, 2 Salons and day spas, 1 Recovery studios and med spas, 1 Sports teams and clubs), plus a couple of spares.
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -389,6 +437,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 [Open Day 25 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/11729%20Chapman%20Hwy%2C%20Suite%205%2C%20Seymour%2C%20TN%2037865/11653%20Chapman%20Hwy%2C%20Seymour%2C%20TN%2037865/11642%20Chapman%20Hwy%2C%20Seymour%2C%20TN%2037865/119%20Maryville%20Hwy%2C%20Suite%20A%2C%20Seymour%2C%20TN%2037865/124%20Maryville%20Hwy%2C%20Seymour%2C%20TN%2037865/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
 
+**Pamphlets to take: 5** (4 Physical therapy and chiropractic, 1 Recovery studios and med spas), plus a couple of spares.
+
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Troy Buckridge, DC | Physical therapy, chiropractic, and sports medicine | Good fit | 11729 Chapman Hwy, Suite 5, Seymour | Troy Buckridge, DC, (865) 577-2273 | Offers spinal and knee decompression plus in-house physical therapy and massage in Seymour. | 32 min from 8843 Brookhaven Dr, Knoxville, TN 37931 |
@@ -402,6 +452,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 7 businesses, about 1 h 57 min door to door (12 min out from 8843 Brookhaven Dr, Knoxville, TN 37931, 12 min back).
 
 [Open Day 26 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/8915%20George%20Williams%20Rd%2C%20Knoxville%2C%20TN%2037923/245%20S%20Peters%20Road%2C%20Knoxville%2C%20TN%2037923/10001%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922/10321%20Kingston%20Pike%2C%20Ste%20124%2C%20Knoxville%2C%20TN%2037922/10951%20Kingston%20Pike%2C%20Farragut%2C%20TN%2037934/153%20Brooklawn%20Street%2C%20Suite%20153%2C%20Farragut%2C%20TN%2037934/11324%20Parkside%20Dr%2C%20Knoxville%2C%20TN%2037934/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
+
+**Pamphlets to take: 7** (3 Salons and day spas, 2 Gyms and fitness, 2 Physical therapy and chiropractic), plus a couple of spares.
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -418,6 +470,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 8 businesses, about 1 h 58 min door to door (12 min out from 8843 Brookhaven Dr, Knoxville, TN 37931, 12 min back).
 
 [Open Day 27 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/10542%20Kingston%20Pike%2C%20Knoxville%2C%20TN%2037922/10843%20Kingston%20Pike%2C%20Suite%207%2C%20Farragut%2C%20TN%2037934/102%20South%20Campbell%20Station%20Rd%2C%20Suite%2021%2C%20Farragut%2C%20TN%2037934/11416%20Grigsby%20Chapel%20Rd%2C%20Farragut%2C%20TN%2037934/623%20N%20Campbell%20Station%20Rd%2C%20Farragut%2C%20TN%2037934/11673%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/11668%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/11439%20Parkside%20Dr%2C%20Farragut%2C%20TN%2037934/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
+
+**Pamphlets to take: 9** (8 Recovery studios and med spas, 1 Gyms and fitness), plus a couple of spares.
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
@@ -436,6 +490,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 
 [Open Day 28 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/697%20Melton%20Lake%20Dr%2C%20Oak%20Ridge%2C%20TN%2037830/780%20Briarcliff%20Ave%2C%20Oak%20Ridge%2C%20TN%2037830/4900%20Guinn%20Rd%2C%20Knoxville%2C%20TN%2037931/10780%20Hardin%20Valley%20Rd%2C%20Knoxville%2C%20TN%2037932/10966%20Spring%20Bluff%20Way%2C%20Knoxville%2C%20TN%2037932/1750%20Commons%20Point%20Dr%2C%20Lower%20Building%205%2C%20Suite%20102%2C%20Knoxville%2C%20TN%2037932/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
 
+**Pamphlets to take: 6** (2 Physical therapy and chiropractic, 2 Recovery studios and med spas, 1 CrossFit and performance, 1 Sports teams and clubs), plus a couple of spares.
+
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
 | 1 | Oak Ridge Rowing Association (Atomic Rowing) | Sports teams and athletic programs | Also nearby | 697 Melton Lake Dr, Oak Ridge | the manager, (865) 482-6538 | Founded in 1978 and named Club of the Year in 2005; runs Atomic Rowing junior and adult coached programs on Melton Lake. | 10 min from 8843 Brookhaven Dr, Knoxville, TN 37931 |
@@ -450,6 +506,8 @@ In the tables, **Chance of a yes** means: **Best bet**, the kind of business mos
 5 businesses, about 2 h 00 min door to door (24 min out from 8843 Brookhaven Dr, Knoxville, TN 37931, 21 min back).
 
 [Open Day 29 in Google Maps](https://www.google.com/maps/dir/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931/424%20Home%20Avenue%2C%20Maryville%2C%20TN%2037801/520%20W%20Broadway%20Ave%2C%20Maryville%2C%20TN%2037801/1812%20East%20Lamar%20Alexander%20Pkwy%2C%20Maryville%2C%20TN%2037804/2724%20East%20Broadway%20Avenue%2C%20Maryville%2C%20TN%2037804/636%20Vose%20Rd%2C%20Alcoa%2C%20TN%2037701/8843%20Brookhaven%20Dr%2C%20Knoxville%2C%20TN%2037931)
+
+**Pamphlets to take: 5** (4 Physical therapy and chiropractic, 1 Sports teams and clubs), plus a couple of spares.
 
 | Stop | Business | Kind of business | Chance of a yes | Address | Ask for | Good to know | Drive to get here |
 |---|---|---|---|---|---|---|---|
