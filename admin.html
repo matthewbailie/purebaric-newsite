@@ -454,6 +454,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
             <button type="button" data-r="90" onclick="setAnRange(90)">3 months</button>
             <button type="button" data-r="30" onclick="setAnRange(30)">Month</button>
             <button type="button" data-r="7" onclick="setAnRange(7)">Week</button>
+            <button type="button" data-r="1" onclick="setAnRange(1)">Today</button>
           </div>
         </div>
         <p class="viz-note" id="trafficNote">Loading website visits…</p>
@@ -1796,8 +1797,15 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     if (!kpis) return;
     const w = _window(r.chart, _anRange);
     kpis.hidden = !w;
-    note.textContent = 'Visitors (sessions) per day on purebaric.com over the ' + _rangeWords() + (w && w.hasPrev ? ', with ' + _prevWords() + ' dashed.' : '.');
+    note.textContent = _anRange === 1 ? 'Visitors (sessions) on purebaric.com today so far, beside yesterday.' : 'Visitors (sessions) per day on purebaric.com over the ' + _rangeWords() + (w && w.hasPrev ? ', with ' + _prevWords() + ' dashed.' : '.');
     if (!w) return;
+    if (_anRange === 1) {
+      document.getElementById('tkLabel').textContent = 'Visitors so far today';
+      document.getElementById('tkMonth').textContent = w.total.toLocaleString('en-US');
+      document.getElementById('tkMonthSub').innerHTML = w.hasPrev ? `${w.prevTotal.toLocaleString('en-US')} yesterday, whole day` : 'No data for yesterday yet';
+      _windowChartEl(document.getElementById('chartTraffic'), r.chart, w, 'visitor', 'Site visitors');
+      return;
+    }
     document.getElementById('tkLabel').textContent = 'Average visitors per day, ' + _rangeWords();
     document.getElementById('tkMonth').textContent = _n1(w.avg);
     document.getElementById('tkMonthSub').innerHTML = `${w.total.toLocaleString('en-US')} visitors in the ${escape(_rangeWords())}` + (w.hasPrev ? ` · ${_n1(w.prevAvg)} per day in ${escape(_prevWords())}${_delta(w.pct)}` : ` · no data for ${escape(_prevWords())} yet`);
