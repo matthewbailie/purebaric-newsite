@@ -1,5 +1,7 @@
 # Brand art for screens
 
+**Default background art (owner-approved, 13 October 2026):** `purebaric_default_background_art.png` (also `.webp`). Arches and a terracotta sun on plaster, in the brand palette, no logo. Use this first whenever a background art image is needed; the generated pieces below are alternates.
+
 Three minimal pieces in the Purebaric palette (cream, terracotta, ink), no logo, 3840 x 2160 for a TV or lobby screen. Generated 13 October 2026 with Pillow; the colours are the pamphlet palette (`make_pamphlets.py`).
 
 | File | Use |
