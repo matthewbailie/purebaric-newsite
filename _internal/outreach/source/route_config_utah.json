@@ -15,11 +15,11 @@
  ],
  "min_anchor_score": 6,
  "home": [
-  40.3916,
-  -111.8508
+  40.4079574,
+  -111.9121115
  ],
- "home_label": "Lehi",
+ "home_label": "3903 W 1700 N, Lehi, UT 84043",
  "min_day_minutes": 60,
- "home_note": "",
+ "home_note": "Every day starts and ends at 3903 W 1700 N, Lehi.",
  "out_json": "/Users/bailie/projects/purebaric-newsite/netlify/functions/_data/routes_utah.json"
 }

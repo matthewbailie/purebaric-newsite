@@ -114,7 +114,13 @@ for r in rows[1:]:
     if not g or g.get("lat") is None: skipped.append((rec["name"], "address could not be geocoded")); continue
     num = re.match(r"\d+", rec["address"]).group(0); disp = (g.get("display") or "")
     rec["approx"] = bool(g.get("approx")) or (bool(disp) and num not in disp.split(",")[0])
-    rec["pt"] = (g["lat"], g["lon"]); biz.append(rec)
+    rec["pt"] = (g["lat"], g["lon"])
+    if rec["approx"]:
+        # The geocoder could only place this at the street or town, which would bend the day's loop the
+        # wrong way; list it for an address check instead of routing it.
+        (need_address if score >= 4 else skipped).append(rec if score >= 4 else (rec["name"], "map point could not be pinned to the building"))
+        continue
+    biz.append(rec)
 
 # merge duplicates (same address and phone)
 seen = {}
@@ -167,6 +173,28 @@ def _improve(order):
                     i += 1
     return order
 
+def _exact_order(stops):
+    """Shortest loop home -> every stop -> home by Held-Karp dynamic programming (exact for up to 12 stops)."""
+    n = len(stops); pts = [s["pt"] for s in stops]
+    d_home = [dmin(HOME, p) for p in pts]
+    d = [[0.0 if i == j else dmin(pts[i], pts[j]) for j in range(n)] for i in range(n)]
+    INF = float("inf"); full = (1 << n) - 1
+    best = [[INF] * n for _ in range(1 << n)]; parent = [[-1] * n for _ in range(1 << n)]
+    for i in range(n): best[1 << i][i] = d_home[i]
+    for mask in range(1, 1 << n):
+        for last in range(n):
+            cur = best[mask][last]
+            if cur == INF or not (mask >> last) & 1: continue
+            for nxt in range(n):
+                if (mask >> nxt) & 1: continue
+                m2 = mask | (1 << nxt); v = cur + d[last][nxt]
+                if v < best[m2][nxt]: best[m2][nxt] = v; parent[m2][nxt] = last
+    last = min(range(n), key=lambda i: best[full][i] + d_home[i])
+    order = []; mask = full
+    while last != -1:
+        order.append(stops[last]); prev = parent[mask][last]; mask &= ~(1 << last); last = prev
+    return order[::-1]
+
 def route_cost(stops, polish=False):
     """Best loop for a set of stops: nearest-neighbour from every start (polished by _improve when
     asked), scored door to door (drive out, stops, drives between, drive home). Day building uses the
@@ -179,6 +207,10 @@ def route_cost(stops, polish=False):
         if polish and len(order) > 2: order = _improve(order)
         total, legs = _tour_minutes(order)
         if best is None or total < best[0]: best = (total, order, legs)
+    if polish and 3 <= len(stops) <= 12:
+        # Exact answer for the sizes a day can hold; the heuristic above is only a fallback for bigger sets.
+        order = _exact_order(list(stops)); total, legs = _tour_minutes(order)
+        if total < best[0] - 1e-9: best = (total, order, legs)
     return best
 
 far, unassigned = [], []
@@ -304,8 +336,8 @@ if email_first:
     L.append(""); L.append("## Email first, do not walk in"); L.append("")
     for b in sorted(email_first, key=lambda b: b["name"]): L.append(f"- {b['name']}: {b['owner'] or 'athletics office'}{', ' + b['email'] if b['email'] else ''}{', ' + b['phone'] if b['phone'] else ''}")
 if need_address:
-    L.append(""); L.append("## Worth a visit, but the street address is missing"); L.append("")
-    for b in sorted(need_address, key=lambda b: -b["score"]): L.append(f"- {b['name']} ({b['industry']}, {tier(b['score'])}), {b['city']}: {b['owner']}{', ' + b['phone'] if b['phone'] else ''}. Find the address and add it to a nearby day.")
+    L.append(""); L.append("## Worth a visit, but the address could not be pinned on the map"); L.append("")
+    for b in sorted(need_address, key=lambda b: -b["score"]): L.append(f"- {b['name']} ({b['industry']}, {tier(b['score'])}), {b['city']}{': ' + b['address'] if b.get('address') else ''}: {b['owner']}{', ' + b['phone'] if b['phone'] else ''}. {'The map could only place this address at the street or town, so it is kept off the loops; confirm the address and it will route next time.' if b.get('approx') else 'Find the address and add it to a nearby day.'}")
 if skipped:
     L.append(""); L.append("## Not on any route, and why"); L.append("")
     for name, why in sorted(skipped): L.append(f"- {name}: {why}")
@@ -351,11 +383,12 @@ if CFG.get("out_json"):
     import json as _json, hashlib as _hashlib
     def _stop_id(s): return _hashlib.sha1((s["name"] + "|" + s["address"] + "|" + s["city"]).encode("utf8")).hexdigest()[:12]
     plan = {
-        "market": CFG["market_label"], "state": CFG["state_abbrev"], "generated": datetime.date.today().isoformat(), "home_label": HOME_LABEL.split(" (")[0],
+        "market": CFG["market_label"], "state": CFG["state_abbrev"], "generated": datetime.date.today().isoformat(), "home_label": HOME_LABEL.split(" (")[0], "home": list(HOME),
+        "cost_model": {"miles": "haversine", "road_factor": {"under_5_miles": RF, "5_to_12_miles": 1.2, "over_12_miles": 1.15}, "mph": {"under_5_miles": MPH, "5_to_12_miles": 35, "over_12_miles": 50}, "stop_minutes": STOP},
         "days": [{
             "n": i, "area": d["area"], "minutes": round(d["minutes"]), "best": d["best"], "maps": d["maps"],
             "stops": [{"id": _stop_id(s), "stop": n, "name": s["name"], "also": s.get("also", []), "industry": s["industry"], "tier": tier(s["score"]),
-                       "address": s["address"], "city": s["city"], "zip": s["zip"], "owner": s["owner"] or "", "phone": s["phone"] or "", "top": bool(s["top"]), "note": s["hook"] or "",
+                       "address": s["address"], "city": s["city"], "zip": s["zip"], "lat": s["pt"][0], "lon": s["pt"][1], "owner": s["owner"] or "", "phone": s["phone"] or "", "top": bool(s["top"]), "note": s["hook"] or "",
                        "drive_min": round(leg)} for n, (s, leg) in enumerate(zip(d["stops"], d["legs"]), 1)],
         } for i, d in enumerate(ordered_days, 1)],
     }
