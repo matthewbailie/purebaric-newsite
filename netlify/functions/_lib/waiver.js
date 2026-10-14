@@ -80,12 +80,13 @@ const SECTIONS = [
   ] },
 ];
 
+// Static requires so the functions bundler ships both files (a dynamic path is not followed).
+const BUSINESS_DUMPS = { utah: require("../_data/business_waiver_utah.json"), tennessee: require("../_data/business_waiver_tennessee.json") };
 // The business agreement's dumped paragraphs, as sections: everything between the parties block and
 // the signature page, then the exhibits. Party details and signatures are collected by the signing form.
 function businessSections(market) {
   const m = String(market || "utah").toLowerCase() === "tennessee" ? "tennessee" : "utah";
-  let dump;
-  try { dump = require(`../_data/business_waiver_${m}.json`); } catch (e) { dump = require("../_data/business_waiver_utah.json"); }
+  const dump = BUSINESS_DUMPS[m] || BUSINESS_DUMPS.utah;
   const sections = [];
   let cur = null, skipping = false;
   for (const it of dump.items) {
