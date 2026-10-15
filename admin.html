@@ -992,6 +992,9 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         .an-table th, .an-table td{padding:0.5rem 0.45rem;}
         .an-table th{letter-spacing:0;font-size:0.72rem;}
         .an-table td.n, .an-table th.n{width:1%;}
+        /* Four short columns: fit the screen instead of the 640px table minimum, so the number columns stay beside the page name on a phone. */
+        .table-wrap .an-table{min-width:0;}
+        @media(max-width:560px){.an-table th.n{white-space:normal;}}
         .an-card{margin-top:1.5rem;padding-bottom:1.1rem;}
         /* Filter / period switches lock to the top of the viewport and stay there while you scroll a list or chart. */
         .pin-bar{position:sticky;top:0;z-index:20;background:var(--cream-warm);padding:10px 0;margin:0 0 1rem;}
