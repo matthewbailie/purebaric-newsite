@@ -120,6 +120,7 @@ header{position:sticky;top:0;background:rgba(247,242,234,.92);backdrop-filter:bl
 .hero-trust .rating strong{color:var(--ink);font-weight:700}
 .hero-trust .perks{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
 .hero-trust .dot{opacity:.5}
+@media(max-width:400px){.hero-trust .perks{flex-wrap:wrap;gap:4px 0}.hero-trust .perks .dot{display:none}.hero-trust .perks>span{flex:0 0 100%}}
 .layout{display:grid;grid-template-columns:1fr 360px;gap:44px;padding:34px 0 0}
 section{padding:42px 0;border-top:1px solid var(--line)}
 .col section:first-child{border-top:none;padding-top:14px}
