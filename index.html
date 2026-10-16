@@ -217,6 +217,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .fine{font-size:12px;color:var(--muted);text-align:center;margin-top:10px;font-weight:400}
 .mobilebar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-top:1px solid var(--line);padding:12px 18px;align-items:center;justify-content:space-between;gap:12px;cursor:pointer}
 .mb-price{font-size:19px;font-weight:800}.mb-price small{font-size:13px;color:var(--muted);font-weight:500}
+.mb-strike{font-size:13px;color:var(--muted);font-weight:500;text-decoration:line-through}
 .mb-pill{display:inline-block;margin-top:5px;background:var(--ok-bg);color:var(--ok);font-size:12px;font-weight:600;padding:3px 11px;border-radius:999px}
 .sheet-scrim{display:none;position:fixed;inset:0;background:rgba(43,25,15,.45);z-index:60}
 .sheet-scrim.open{display:block}
@@ -329,11 +330,11 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
         <div class="shorts">
           <figure class="short">
             <video src="/media/shorts/book-online-at-home.mp4" poster="/media/shorts/book-online-at-home.jpg" muted playsinline loop controls preload="none" aria-label="Reserving a Purebaric chamber online, then getting into the chamber at home"></video>
-            <figcaption><b>Reserve online</b><span>About a minute on our site. We deliver and set it up.</span></figcaption>
+            <figcaption><b>Reserve online</b><span>Reserve a chamber in about a minute on our site. We then deliver the chamber and set it up.</span></figcaption>
           </figure>
           <figure class="short">
             <video src="/media/shorts/session-at-home.mp4" poster="/media/shorts/session-at-home.jpg" muted playsinline loop controls preload="none" aria-label="Starting a session at home: the oxygen concentrator, the oxygen line, zipping the chamber and the pressure gauge"></video>
-            <figcaption><b>A session at home</b><span>Use the chamber at your convenience, anytime, in your own home.</span></figcaption>
+            <figcaption><b>A session at home</b><span>Then use it whenever you like, as often as you like, without leaving home.</span></figcaption>
           </figure>
         </div>
       </section>
@@ -511,7 +512,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   </div>
 </footer>
 
-<div class="mobilebar" onclick="openSheet()"><div><div class="mb-price">$659<small> /mo</small></div><span class="mb-pill">Save 10%</span></div><a class="btn btn-primary" href="/book" onclick="event.stopPropagation()">Book now</a></div>
+<div class="mobilebar" onclick="openSheet()"><div><div class="mb-price">$659<small> /mo</small> <span class="mb-strike">$729</span></div><span class="mb-pill">Save 10%</span></div><a class="btn btn-primary" href="/book" onclick="event.stopPropagation()">Book now</a></div>
 
 <div class="sheet-scrim" id="scrim" onclick="closeSheet()"></div>
 <div class="sheet" id="sheet">
@@ -555,6 +556,7 @@ function pct(m){return Math.round((BASE-rate(m))/BASE*100)}
 function mos(m){return m+' month'+(m>1?'s':'')}
 function recalc(s){s=s||'';
   var m=+document.getElementById('mo'+s).value,r=rate(m),pp=pct(m);
+  if(typeof updateMobileBar==='function')updateMobileBar();
   document.getElementById('pr'+s).textContent='$'+r;
   document.getElementById('strike'+s).style.display=r<BASE?'inline':'none';
   document.getElementById('mol'+s).textContent=mos(m);
@@ -624,7 +626,13 @@ function applyStaticPrices(){
   if(el=document.getElementById('fromPrice'))el.textContent='$'+rate(1);
   if(el=document.getElementById('cmpSession'))el.textContent=sess;
   if(el=document.getElementById('cmpAnnual'))el.textContent=annual.toLocaleString();
-  if(el=document.querySelector('.mb-price'))el.innerHTML='$'+rate(+document.getElementById('mo').value||3)+'<small> /mo</small>';
+  updateMobileBar();
+}
+/* Sticky bar on phones: current monthly rate, the 1-month rate struck through, and the saving (nothing struck at 1 month). */
+function updateMobileBar(){
+  var mm=+document.getElementById('mo').value||3,r=rate(mm),p=pct(mm),el;
+  if(el=document.querySelector('.mb-price'))el.innerHTML='$'+r+'<small> /mo</small>'+(p>0?' <span class="mb-strike">$'+rate(1)+'</span>':'');
+  if(el=document.querySelector('.mb-pill')){el.textContent=p>0?'Save '+p+'%':'Standard rate';}
 }
 applyStaticPrices();
 fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){
