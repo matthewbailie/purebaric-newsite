@@ -547,6 +547,8 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
      }else if(j&&(j.success||j.ok)){
        // The backend records the canonical booking_request_submit event once,
        // after accepting the request, using this visitor's anonymous GA context.
+       // Meta gets the same lead from the browser: a booking submission, home or business.
+       window.trackPurebaricMeta?.('Lead',{content_category:document.getElementById('rentalType').value||'residential'});
        res.className='result ok';
        if(j.booked){ var bd=new Date(j.startDate+'T00:00:00'); res.innerHTML='<strong>Your chamber is booked</strong>'+(j.booking_number?(' ('+j.booking_number+')'):'')+' for delivery on '+bd.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'. We emailed your confirmation and will text or call to set the delivery time.'; document.getElementById('bookDate').value=''; }
        else res.innerHTML='Reservation received'+(j.booking_number?(' ('+j.booking_number+')'):'')+'. '+(j.message||"Our team will contact you shortly to confirm delivery.");

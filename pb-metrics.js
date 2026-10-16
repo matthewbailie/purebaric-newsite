@@ -55,7 +55,33 @@
     document.head.appendChild(s);
   }
 
-  // "Accept": ensure measurement is granted and the tag is loaded.
+  // Meta (Facebook + Instagram) pixel, for the Meta Ads campaigns. META_PIXEL_ID stays blank
+  // until the owner creates the pixel in Meta Events Manager; blank means nothing loads and
+  // trackPurebaricMeta is a no-op. Same opt-out as GA: a visitor who declined never loads it.
+  // A pixel id is public (it sits in every page's source), so it lives here like GA_ID does.
+  var META_PIXEL_ID = '';
+  var META_READY = /^\d{10,20}$/.test(META_PIXEL_ID);
+  function configMeta() {
+    if (!META_READY || declined || window.purebaricMetaLoaded) return;
+    window.purebaricMetaLoaded = true;
+    var n = window.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+    if (!window._fbq) window._fbq = n;
+    n.push = n; n.loaded = true; n.version = '2.0'; n.queue = [];
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://connect.facebook.net/en_US/fbevents.js';
+    document.head.appendChild(s);
+    window.fbq('init', META_PIXEL_ID);
+    window.fbq('track', 'PageView');
+  }
+
+  // Meta standard events only (Lead, Contact, ...). Same PII rule as trackPurebaricEvent.
+  window.trackPurebaricMeta = function (name, params) {
+    if (!window.purebaricMetaLoaded || typeof window.fbq !== 'function') return;
+    window.fbq('track', name, params || {});
+  };
+
+  // "Accept": ensure measurement is granted and the tags are loaded.
   window.loadPurebaricAnalytics = function () {
     declined = false;
     try { localStorage.setItem('pb_cookie', 'accept'); } catch (e) {}
@@ -66,6 +92,7 @@
       ad_personalization: 'denied'
     });
     configGA();
+    configMeta();
   };
 
   // "Decline": opt out of all measurement, and remember it.
@@ -132,6 +159,6 @@
     try { return sessionStorage.getItem('pb_gclid') || ''; } catch (e) { return ''; }
   };
 
-  // Load GA on page load unless the visitor has opted out (opt-out model).
-  if (!declined) configGA();
+  // Load GA (and the Meta pixel, once it has an id) on page load unless the visitor has opted out.
+  if (!declined) { configGA(); configMeta(); }
 })();
