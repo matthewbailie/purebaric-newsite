@@ -109,6 +109,12 @@ header{position:sticky;top:0;background:rgba(247,242,234,.92);backdrop-filter:bl
 .hero-below .eyebrow2{display:inline-flex;gap:8px;align-items:center;background:var(--cream2);color:var(--terra-d);padding:6px 13px;border-radius:999px;font-size:12px;font-weight:700}
 .hero-below h1{font-size:40px;font-weight:800;line-height:1.06;letter-spacing:-.02em;margin:14px 0 10px}
 .hero-below p{font-size:16px;color:#5f544d;max-width:640px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 14px}
+.hero-ctas .btn{font-size:15px;padding:13px 28px}
+.hero-trust{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px;color:var(--muted)}
+.hero-trust[hidden]{display:none!important}
+.hero-trust .stars{color:#d99a2b;letter-spacing:2px}
+.hero-trust .dot{opacity:.5}
 .layout{display:grid;grid-template-columns:1fr 360px;gap:44px;padding:34px 0 0}
 section{padding:42px 0;border-top:1px solid var(--line)}
 .col section:first-child{border-top:none;padding-top:14px}
@@ -292,6 +298,16 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
         <span class="eyebrow2">● Now delivering across Utah</span>
         <h1>Hyperbaric chamber rentals at home</h1>
         <p>The ultimate hyperbaric experience. Unlimited 1.5 ATA hyperbaric sessions with 95-99.9% oxygen via mask at home.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="/book">Book a chamber</a>
+          <a class="btn btn-ghost" href="/pricing">See pricing</a>
+        </div>
+        <div class="hero-trust" id="heroTrust" hidden>
+          <span class="stars" id="heroStars"></span>
+          <span id="heroRatingText"></span>
+          <span class="dot">·</span><span>Free delivery &amp; setup</span>
+          <span class="dot">·</span><span>No charge until delivery day</span>
+        </div>
       </div>
       <section>
         <h2>Huge savings and convenience</h2><p class="lead">Less than the cost of a single month at a clinic, without leaving home.</p>
@@ -306,7 +322,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
       <section>
         <h2>How it works</h2>
         <div class="steps">
-          <div class="step"><div class="n">1</div><b data-request-text="Reserve">Book</b><span data-request-text="Pick your chamber and rental length. No charge to submit a request. Payment is collected once we confirm availability and your delivery date.">Pick your chamber, rental length, and a delivery date from our calendar. No charge today. We text or call to confirm the delivery time, and payment is collected before delivery.</span></div>
+          <div class="step"><div class="n">1</div><b data-request-text="Reserve">Book</b><span data-request-text="Pick your chamber and rental length. No charge to submit a request. Payment is collected on delivery day, once we've confirmed the chamber fits your home and you're comfortable using it.">Pick your chamber, rental length, and a delivery date from our calendar. No charge today. We text or call to confirm the delivery time. Payment is collected on delivery day, once we've confirmed the chamber fits your home and you're comfortable using it.</span></div>
           <div class="step"><div class="n">2</div><b>We deliver &amp; train</b><span>Our team delivers, installs, and trains you to use the chamber in the convenience of your home.</span></div>
           <div class="step"><div class="n">3</div><b>Use it daily</b><span>Unlimited 1.5 ATA hyperbaric sessions with 95-99.9% oxygen via mask at home. We provide support and pick up the chamber at the end of your rental.</span></div>
         </div>
@@ -404,6 +420,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
     .reviews-band .rv-scroller::-webkit-scrollbar{display:none}
     .reviews-band .rv-card{flex:0 0 calc((100% - 36px)/3);scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 28px;min-width:0;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(43,35,32,.05)}
     .reviews-band .rv-card::before{content:"\201C";font-family:Georgia,'Times New Roman',serif;font-size:46px;line-height:.5;color:var(--terra);opacity:.32;margin-bottom:10px}
+    .reviews-band .rv-stars{color:#d99a2b;font-size:14px;letter-spacing:2px;margin-bottom:10px}
     .reviews-band .rv-q{color:var(--ink);font-size:16px;line-height:1.65;font-weight:500;flex:1}
     .reviews-band .rv-more{margin-top:12px;align-self:flex-start;background:none;border:none;padding:0;color:var(--terra-d);font-weight:600;font-size:13.5px;cursor:pointer;font-family:inherit}
     .reviews-band .rv-more:hover{text-decoration:underline}
@@ -621,6 +638,17 @@ fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){
   fetch('/api/reviews').then(function(r){return r.json();}).then(function(j){
     var reviews=(j&&j.reviews)||[];
     if(!reviews.length)return; // stay hidden until the first review is published
+    // Hero trust row: aggregate rating
+    (function(){
+      var rated=reviews.filter(function(rv){return rv.stars>=1&&rv.stars<=5;});
+      if(!rated.length)return;
+      var avg=rated.reduce(function(a,rv){return a+rv.stars;},0)/rated.length;
+      var s='';for(var i=1;i<=5;i++)s+=i<=Math.round(avg)?'★':'☆';
+      document.getElementById('heroStars').textContent=s;
+      document.getElementById('heroStars').setAttribute('aria-label',(Math.round(avg*10)/10)+' out of 5 stars');
+      document.getElementById('heroRatingText').textContent=(Math.round(avg*10)/10)+' · '+rated.length+(rated.length===1?' verified review':' verified reviews');
+      document.getElementById('heroTrust').hidden=false;
+    })();
     var band=document.getElementById('reviewsBand'),carousel=document.getElementById('rvCarousel'),
         scroller=document.getElementById('rvScroller'),controls=document.getElementById('rvControls'),
         dotsEl=document.getElementById('rvDots');
@@ -632,7 +660,9 @@ fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){
     scroller.innerHTML=reviews.map(function(rv,i){
       var full=rv.text||'',trunc=full.length>RV_LIMIT;
       var shown=trunc?full.slice(0,RV_LIMIT).replace(/\s+\S*$/,'')+'…':full;
-      return '<div class="rv-card"><div class="rv-q">'+esc(shown).replace(/\n/g,'<br>')+'</div>'
+      var st=parseInt(rv.stars,10),stars='';
+      if(st>=1&&st<=5){stars='<div class="rv-stars" aria-label="'+st+' out of 5 stars">';for(var k=1;k<=5;k++)stars+=k<=st?'★':'☆';stars+='</div>';}
+      return '<div class="rv-card">'+stars+'<div class="rv-q">'+esc(shown).replace(/\n/g,'<br>')+'</div>'
         +(trunc?'<button type="button" class="rv-more" data-i="'+i+'">See full review</button>':'')
         +'<div class="rv-meta"><span class="rv-avatar">'+rvInitials(rv)+'</span><span><span class="rv-name">'+esc(rv.firstName)+' '+esc(rv.lastInitial)+'.</span><span class="rv-sub">'+rvSub(rv)+'</span></span></div></div>';
     }).join('');
