@@ -208,36 +208,62 @@ const FUNNEL_EVENTS = [
 const FUNNEL_SIDE_EVENTS = ["booking_form_abandon", "booking_request_error"];
 const FUNNEL_ALL_EVENTS = FUNNEL_EVENTS.concat(FUNNEL_SIDE_EVENTS);
 
-// GA rows (dimensions: eventName, pagePathPlusQueryString; metric: eventCount)
-// -> { home: {eventName: count}, business: {eventName: count} }
+// GA rows (dimensions: eventName, pagePathPlusQueryString, date; metric: eventCount)
+// -> { home: {eventName: {isoDate: count}}, business: {eventName: {isoDate: count}} }
+// Per-day counts so the admin can slice the funnel to the same range as the other analytics cards.
 function funnelRowsToMap(rows) {
   const out = { home: {}, business: {} };
   for (const r of rows || []) {
     const dv = r.dimensionValues || [], mv = r.metricValues || [];
     const event = dv[0] && dv[0].value;
     const path = String((dv[1] && dv[1].value) || "").toLowerCase();
+    const date = dv[2] && dv[2].value;
     if (!FUNNEL_ALL_EVENTS.includes(event)) continue;
     if (path.indexOf("/book") === -1) continue;
+    if (!/^\d{8}$/.test(String(date || ""))) continue;
     const seg = path.indexOf("type=business") !== -1 ? "business" : "home";
+    const iso = gaDateToIso(date);
     const count = Number(mv[0] && mv[0].value) || 0;
-    out[seg][event] = (out[seg][event] || 0) + count;
+    const byDay = out[seg][event] || (out[seg][event] = {});
+    byDay[iso] = (byDay[iso] || 0) + count;
   }
   return out;
 }
 
-async function fetchFunnel(sa, propertyId, fetchFn = fetch) {
+function _shiftIso(iso, deltaDays) {
+  const d = new Date(`${iso}T00:00:00Z`); d.setUTCDate(d.getUTCDate() + deltaDays);
+  return d.toISOString().slice(0, 10);
+}
+// Stage counts for the last `days` days ending `today` inclusive (1 = today only), and for the
+// same-length period just before it, for one segment's {event: {isoDate: count}} map.
+function funnelWindow(segMap, days, today) {
+  const n = Math.max(1, Math.floor(Number(days) || 1));
+  const from = _shiftIso(today, -(n - 1)), prevTo = _shiftIso(from, -1), prevFrom = _shiftIso(prevTo, -(n - 1));
+  const sum = (lo, hi) => {
+    const out = {};
+    for (const [event, byDay] of Object.entries(segMap || {})) {
+      let t = 0;
+      for (const [iso, c] of Object.entries(byDay || {})) if (iso >= lo && iso <= hi) t += Number(c) || 0;
+      out[event] = t;
+    }
+    return out;
+  };
+  return { days: n, from, to: today, prevFrom, prevTo, cur: sum(from, today), prev: sum(prevFrom, prevTo) };
+}
+
+async function fetchFunnel(sa, propertyId, year, fetchFn = fetch) {
   const token = await accessToken(sa, fetchFn);
   const body = {
-    dimensions: [{ name: "eventName" }, { name: "pagePathPlusQueryString" }],
+    dimensions: [{ name: "eventName" }, { name: "pagePathPlusQueryString" }, { name: "date" }],
     metrics: [{ name: "eventCount" }],
-    dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+    dateRanges: [{ startDate: `${year - 1}-01-01`, endDate: "today" }],
     dimensionFilter: {
       andGroup: { expressions: [
         { filter: { fieldName: "eventName", inListFilter: { values: FUNNEL_ALL_EVENTS } } },
         { filter: { fieldName: "pagePathPlusQueryString", stringFilter: { matchType: "CONTAINS", value: "/book" } } },
       ] },
     },
-    limit: 10000,
+    limit: 100000,
   };
   const res = await fetchFn(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`, {
     method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify(body),
@@ -247,4 +273,4 @@ async function fetchFunnel(sa, propertyId, fetchFn = fetch) {
   return funnelRowsToMap(j.rows);
 }
 
-module.exports = { rowsToMap, firstDataDay, yearSeries, summarize, chartData, normalizePage, pageRowsToMap, summarizePages, parseServiceAccount, accessToken, fetchDaily, fetchPagesDaily, fetchFunnel, funnelRowsToMap, FUNNEL_EVENTS, FUNNEL_SIDE_EVENTS, dayIndex, daysInYear };
+module.exports = { rowsToMap, firstDataDay, yearSeries, summarize, chartData, normalizePage, pageRowsToMap, summarizePages, parseServiceAccount, accessToken, fetchDaily, fetchPagesDaily, fetchFunnel, funnelRowsToMap, funnelWindow, FUNNEL_EVENTS, FUNNEL_SIDE_EVENTS, dayIndex, daysInYear };
