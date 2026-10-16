@@ -309,8 +309,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
           <a class="btn btn-primary" href="/book">Book a chamber</a>
           <a class="btn btn-ghost" href="/pricing">See pricing</a>
         </div>
-        <div class="hero-trust" id="heroTrust" hidden>
-          <span class="rating" id="heroRating"><span class="stars" id="heroStars" aria-hidden="true"></span><strong id="heroScore"></strong><span class="count" id="heroCount"></span></span>
+        <!-- Baseline rating is baked in so the row shows at once (scripts/bake-hero-rating.js refreshes it); the live reviews call corrects or hides it. -->
+        <div class="hero-trust" id="heroTrust">
+          <span class="rating" id="heroRating" aria-label="Rated 5.0 out of 5 from 4 verified reviews"><span class="stars" id="heroStars" aria-hidden="true">★★★★★</span><strong id="heroScore">5.0</strong><span class="count" id="heroCount">(4 verified reviews)</span></span>
           <span class="perks"><span>Free delivery &amp; setup</span><span class="dot" aria-hidden="true">·</span><span>No charge until delivery day</span></span>
         </div>
       </div>
@@ -649,11 +650,10 @@ fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   fetch('/api/reviews').then(function(r){return r.json();}).then(function(j){
     var reviews=(j&&j.reviews)||[];
-    if(!reviews.length)return; // stay hidden until the first review is published
-    // Hero trust row: aggregate rating
+    // Hero trust row: the baked-in baseline is replaced by the live aggregate, or hidden if nothing is rated.
     (function(){
       var rated=reviews.filter(function(rv){return rv.stars>=1&&rv.stars<=5;});
-      if(!rated.length)return;
+      if(!rated.length){document.getElementById('heroTrust').hidden=true;return;}
       var avg=rated.reduce(function(a,rv){return a+rv.stars;},0)/rated.length;
       var s='';for(var i=1;i<=5;i++)s+=i<=Math.round(avg)?'★':'☆';
       var score=avg.toFixed(1),n=rated.length;
@@ -663,6 +663,7 @@ fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){
       document.getElementById('heroRating').setAttribute('aria-label','Rated '+score+' out of 5 from '+n+(n===1?' verified review':' verified reviews'));
       document.getElementById('heroTrust').hidden=false;
     })();
+    if(!reviews.length)return; // the reviews band stays hidden until the first review is published
     var band=document.getElementById('reviewsBand'),carousel=document.getElementById('rvCarousel'),
         scroller=document.getElementById('rvScroller'),controls=document.getElementById('rvControls'),
         dotsEl=document.getElementById('rvDots');
