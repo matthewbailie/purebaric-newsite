@@ -16,3 +16,5 @@ All files are vector or large PNG and carry no background unless the name says o
 Two wordmark styles exist. The website, emails, pamphlets and the chamber label use the **serif** wordmark (`images/logo.png`, Fraunces). The `purebaric-logo-dark.svg` / `-cream.svg` pair is a **sans-serif** version recorded from the external design tool in `design-previews/`; keep whichever the owner decides is current, but do not mix them on one piece.
 
 Sources: `images/logo.png`, `images/logo-cream.png`, `images/favicon.svg`, `images/icon-*.png`, `design-previews/purebaric-logo-final-*.svg`, `_internal/outreach/purebaric_chamber_logo.svg` (built by `_internal/outreach/source/mksvg.py`).
+
+- `purebaric-mark-favicon-on-cream.svg` / `-1024.png` / `-512.png`: the favicon mark on the site cream (#f7f2ea), for places that cannot show a transparent icon (added 2026-10-16).
