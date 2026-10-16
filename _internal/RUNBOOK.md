@@ -658,3 +658,9 @@ This is a wellness rental business, **not a medical provider** ("not a medical d
 ## 15. Reusable AI playbooks
 
 `_internal/skills/` holds the human-readable copies of the Claude Code skills used to run the business's research and sales-asset work. `franchise-location-research` reproduces the Knoxville, Tennessee package (market scan and score, legal check, prospect list, LOI and agreement, pamphlets, training, runbook, route plan, critiques) for any new city; the executable copy is `.claude/skills/franchise-location-research/`. See `_internal/skills/README.md`.
+
+## 15. Marketing shorts on the site (added 2026-10-15)
+
+- Two vertical clips (720x1280, 26 s each, with sound) live in `media/shorts/` with poster frames: `book-online-at-home.mp4` (reserving on the laptop, then climbing in) and `session-at-home.mp4` (concentrator, oxygen line, zip, gauge). They appear under the steps on `/how-it-works` ("See it in 30 seconds", `#watch`) and under the home page's "How it works" steps, as `.shorts` / `.short` (CSS in `warm.css` and inline in `index.html`).
+- They play muted while on screen and pause off screen (IntersectionObserver inline script on both pages); the native controls give sound. `preload="none"` so the 5.6 MB files only download when played. `/media/*` is cached a week (netlify.toml).
+- Captions are wellness-only descriptions of what is on screen. New clips: drop them in `media/shorts/`, make a poster with a frame grab, copy a `<figure class="short">`.

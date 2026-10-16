@@ -73,6 +73,24 @@
   </div>
 </section>
 
+<section class="section" id="watch">
+  <div class="wrap">
+    <span class="eyebrow2">Watch</span>
+    <h2 style="font-size:28px;font-weight:800;letter-spacing:-.02em;margin:14px 0 8px">See it in 30 seconds</h2>
+    <p style="color:var(--muted);max-width:620px;margin:0 0 22px">Two short clips filmed in a Utah home: reserving a chamber online, then setting up and settling in for a session.</p>
+    <div class="shorts">
+      <figure class="short">
+        <video src="/media/shorts/book-online-at-home.mp4" poster="/media/shorts/book-online-at-home.jpg" muted playsinline loop controls preload="none" aria-label="Reserving a Purebaric chamber online, then getting into the chamber at home"></video>
+        <figcaption><b>Step 1: reserve online</b><span>Pick a chamber, a rental length, and a delivery date in about a minute. Nothing is charged until we confirm.</span></figcaption>
+      </figure>
+      <figure class="short">
+        <video src="/media/shorts/session-at-home.mp4" poster="/media/shorts/session-at-home.jpg" muted playsinline loop controls preload="none" aria-label="Starting a session at home: the oxygen concentrator, the oxygen line, zipping the chamber and the pressure gauge"></video>
+        <figcaption><b>Step 4: a session at home</b><span>Concentrator on, oxygen line on, zip up, and the gauge climbs to 1.5 ATA. Phones, tablets and headphones are welcome inside.</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
 <section class="section">
   <div class="wrap">
     <div class="section-head">
@@ -127,4 +145,11 @@
 </footer>
 
 <script src="/warm.js"></script>
+<script>
+// Shorts play muted while on screen and pause when scrolled away; the controls give sound.
+(function(){var v=document.querySelectorAll('.short video');if(!('IntersectionObserver' in window)||!v.length)return;
+var io=new IntersectionObserver(function(es){es.forEach(function(e){var el=e.target;if(e.isIntersecting){el.play().catch(function(){});}else{el.pause();}});},{threshold:.5});
+v.forEach(function(el){io.observe(el);});})();
+</script>
+
 </body></html>

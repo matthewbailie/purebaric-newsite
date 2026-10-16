@@ -105,3 +105,11 @@ h2{letter-spacing:-.01em}
   .foot-grid{grid-template-columns:1fr 1fr}.foot-brand{grid-column:1/-1}
 }
 @media(max-width:520px){.gal{grid-template-columns:1fr}}
+/* Marketing shorts (how it works): two phone-shaped videos, one column on narrow screens */
+.shorts{display:grid;grid-template-columns:repeat(2,minmax(0,300px));gap:28px;justify-content:center}
+.short{margin:0;min-width:0}
+.short video{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:16px;border:1px solid var(--line);background:#1a1512}
+.short figcaption{margin-top:12px}
+.short figcaption b{display:block;font-size:15px;margin-bottom:4px}
+.short figcaption span{display:block;font-size:14px;color:var(--muted);line-height:1.5}
+@media(max-width:640px){.shorts{grid-template-columns:minmax(0,320px)}}

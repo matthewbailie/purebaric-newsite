@@ -122,6 +122,13 @@ h2{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .step{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
 .step .n{width:30px;height:30px;border-radius:50%;background:var(--terra);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:12px}
+.shorts{display:grid;grid-template-columns:repeat(2,minmax(0,240px));gap:20px;margin-top:20px}
+.short{margin:0;min-width:0}
+.short video{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:12px;border:1px solid var(--line);background:#1a1512}
+.short figcaption{margin-top:10px}
+.short figcaption b{display:block;font-size:14px;margin-bottom:3px}
+.short figcaption span{display:block;font-size:13px;color:var(--muted);line-height:1.5}
+@media(max-width:560px){.shorts{grid-template-columns:minmax(0,280px)}}
 .step b{display:block;font-size:16px;font-weight:600;margin-bottom:4px}.step span{color:var(--muted);font-size:14px}
 .chambers{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .chamber{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
@@ -302,6 +309,16 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
           <div class="step"><div class="n">1</div><b data-request-text="Reserve">Book</b><span data-request-text="Pick your chamber and rental length. No charge to submit a request. Payment is collected once we confirm availability and your delivery date.">Pick your chamber, rental length, and a delivery date from our calendar. No charge today. We text or call to confirm the delivery time, and payment is collected before delivery.</span></div>
           <div class="step"><div class="n">2</div><b>We deliver &amp; train</b><span>Our team delivers, installs, and trains you to use the chamber in the convenience of your home.</span></div>
           <div class="step"><div class="n">3</div><b>Use it daily</b><span>Unlimited 1.5 ATA hyperbaric sessions with 95-99.9% oxygen via mask at home. We provide support and pick up the chamber at the end of your rental.</span></div>
+        </div>
+        <div class="shorts">
+          <figure class="short">
+            <video src="/media/shorts/book-online-at-home.mp4" poster="/media/shorts/book-online-at-home.jpg" muted playsinline loop controls preload="none" aria-label="Reserving a Purebaric chamber online, then getting into the chamber at home"></video>
+            <figcaption><b>Reserve online</b><span>About a minute on our site. We deliver and set it up.</span></figcaption>
+          </figure>
+          <figure class="short">
+            <video src="/media/shorts/session-at-home.mp4" poster="/media/shorts/session-at-home.jpg" muted playsinline loop controls preload="none" aria-label="Starting a session at home: the oxygen concentrator, the oxygen line, zipping the chamber and the pressure gauge"></video>
+            <figcaption><b>A session at home</b><span>Concentrator on, oxygen line on, zip up, and the gauge climbs to 1.5 ATA.</span></figcaption>
+          </figure>
         </div>
       </section>
 
@@ -687,4 +704,10 @@ fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){
 })();
 </script>
 <script>(function(){var y=String(new Date().getFullYear());document.querySelectorAll(".foot-year").forEach(function(e){e.textContent=y;});})();</script>
+<script>
+// Shorts play muted while on screen and pause when scrolled away; the controls give sound.
+(function(){var v=document.querySelectorAll('.short video');if(!('IntersectionObserver' in window)||!v.length)return;
+var io=new IntersectionObserver(function(es){es.forEach(function(e){var el=e.target;if(e.isIntersecting){el.play().catch(function(){});}else{el.pause();}});},{threshold:.5});
+v.forEach(function(el){io.observe(el);});})();
+</script>
 </body></html>
