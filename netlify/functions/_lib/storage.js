@@ -635,12 +635,14 @@ async function listPublishedReviews() {
 }
 
 async function createReview(data) {
+  const stars = parseInt(data.stars, 10);
   const r = {
     id: newId(),
     firstName: (data.firstName || "").trim().slice(0, 40),
     lastInitial: (data.lastInitial || "").trim().slice(0, 1).toUpperCase(),
     city: (data.city || "").trim().slice(0, 60),
     text: (data.text || "").trim().slice(0, 1500),
+    stars: stars >= 1 && stars <= 5 ? stars : null,
     status: "pending",
     createdAt: nowIso(),
     publishedAt: null,

@@ -347,3 +347,56 @@
 
   root.PurebaricFunnel = { reload: function () { load(true); } };
 })(typeof window !== 'undefined' ? window : globalThis);
+
+/* ─── Admin reviews: star-rating display ───
+   Wraps the inline renderReviews() in admin.html (which this file cannot edit
+   directly) to show each review's star rating in the approval table, so the
+   rating is visible during moderation before a review is published. */
+(function () {
+  function starsHtml(n) {
+    n = parseInt(n, 10);
+    if (!(n >= 1 && n <= 5)) return '<span style="color:#8a7f74;font-size:12px">no rating</span>';
+    var s = '';
+    for (var i = 1; i <= 5; i++) s += i <= n ? '★' : '☆';
+    return '<span style="color:#d99a2b;letter-spacing:1px" title="' + n + ' out of 5 stars">' + s + '</span>';
+  }
+  function decorate() {
+    try {
+      if (typeof _reviews === 'undefined' || !_reviews) return;
+      var list = document.getElementById('reviewsList');
+      if (!list) return;
+      // Mirror the inline filter so rows line up with the rendered table.
+      var rvq = (document.getElementById('reviewSearch') || {}).value || '';
+      var shown = _reviews.filter(function (r) {
+        return window.PurebaricAdminUtils && window.PurebaricAdminUtils.matchesSearch(
+          rvq, [r.firstName, r.lastInitial, r.city, r.text]);
+      });
+      var rows = list.querySelectorAll('tbody tr');
+      rows.forEach(function (tr, i) {
+        var rv = shown[i];
+        if (!rv || tr.dataset.starsDone) return;
+        tr.dataset.starsDone = '1';
+        var tds = tr.querySelectorAll('td');
+        if (tds[1]) {
+          var d = document.createElement('div');
+          d.style.marginTop = '3px';
+          d.innerHTML = starsHtml(rv.stars);
+          tds[1].appendChild(d);
+        }
+      });
+    } catch (e) { /* never break the admin reviews tab */ }
+  }
+  function init() {
+    try {
+      if (typeof window.renderReviews === 'function' && !window.renderReviews._starsWrapped) {
+        var orig = window.renderReviews;
+        var wrapped = function () { orig(); decorate(); };
+        wrapped._starsWrapped = true;
+        window.renderReviews = wrapped;
+        decorate(); // in case the table already rendered
+      }
+    } catch (e) { /* never break the admin page */ }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
