@@ -18,3 +18,4 @@ Two wordmark styles exist. The website, emails, pamphlets and the chamber label 
 Sources: `images/logo.png`, `images/logo-cream.png`, `images/favicon.svg`, `images/icon-*.png`, `design-previews/purebaric-logo-final-*.svg`, `_internal/outreach/purebaric_chamber_logo.svg` (built by `_internal/outreach/source/mksvg.py`).
 
 - `purebaric-mark-favicon-on-cream.svg` / `-1024.png` / `-512.png`: the favicon mark on the site cream (#f7f2ea), for places that cannot show a transparent icon (added 2026-10-16).
+- `purebaric-mark-favicon-on-cream-padded.svg` / `-1024.png` / `-512.png`: the same, with three times the padding on every side (for avatars and profile pictures that crop to a circle).
