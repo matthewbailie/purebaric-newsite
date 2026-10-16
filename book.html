@@ -362,7 +362,7 @@ window.addEventListener('pagehide',function(){if(!bookingFormStarted||bookingFor
     });
   }
   if(BIZ){document.body.classList.add('biz');document.getElementById('rentalType').value='business';document.getElementById('cbiz').required=true;
-    document.getElementById('mo').value=4; // business bookings start at the 4-month rate
+    if(!(m>=1&&m<=12))document.getElementById('mo').value=4; // business bookings default to the 4-month rate unless a term was passed in
     document.querySelector('.page-hero .eyebrow2').textContent='Business rental request';document.querySelector('.page-hero h1').textContent='Request a chamber for your business';
     document.querySelector('.page-hero p').textContent='Tell us about your business, the rental length, and where the chamber would go. From $979 a month per chamber; longer rentals save up to 20%. This is a request, not a booking, and there is no charge today. We will reply within one business day.';
     document.querySelector('.book-side-label').textContent='Your business rental';}
