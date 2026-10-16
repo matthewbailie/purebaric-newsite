@@ -111,9 +111,14 @@ header{position:sticky;top:0;background:rgba(247,242,234,.92);backdrop-filter:bl
 .hero-below p{font-size:16px;color:#5f544d;max-width:640px}
 .hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 14px}
 .hero-ctas .btn{font-size:15px;padding:13px 28px}
-.hero-trust{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px;color:var(--muted)}
+/* Rating row: stars, score and count are one tight unit (as Google, Amazon and Airbnb lay it out);
+   the perks are a second unit, so a line break on phones never strands a separator. */
+.hero-trust{display:flex;align-items:center;gap:6px 18px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
 .hero-trust[hidden]{display:none!important}
-.hero-trust .stars{color:#d99a2b;letter-spacing:2px}
+.hero-trust .rating{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.hero-trust .stars{color:#d99a2b;font-size:15px;line-height:1;letter-spacing:1px}
+.hero-trust .rating strong{color:var(--ink);font-weight:700}
+.hero-trust .perks{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
 .hero-trust .dot{opacity:.5}
 .layout{display:grid;grid-template-columns:1fr 360px;gap:44px;padding:34px 0 0}
 section{padding:42px 0;border-top:1px solid var(--line)}
@@ -304,10 +309,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
           <a class="btn btn-ghost" href="/pricing">See pricing</a>
         </div>
         <div class="hero-trust" id="heroTrust" hidden>
-          <span class="stars" id="heroStars"></span>
-          <span id="heroRatingText"></span>
-          <span class="dot">·</span><span>Free delivery &amp; setup</span>
-          <span class="dot">·</span><span>No charge until delivery day</span>
+          <span class="rating" id="heroRating"><span class="stars" id="heroStars" aria-hidden="true"></span><strong id="heroScore"></strong><span class="count" id="heroCount"></span></span>
+          <span class="perks"><span>Free delivery &amp; setup</span><span class="dot" aria-hidden="true">·</span><span>No charge until delivery day</span></span>
         </div>
       </div>
       <section>
@@ -652,9 +655,11 @@ fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){
       if(!rated.length)return;
       var avg=rated.reduce(function(a,rv){return a+rv.stars;},0)/rated.length;
       var s='';for(var i=1;i<=5;i++)s+=i<=Math.round(avg)?'★':'☆';
+      var score=avg.toFixed(1),n=rated.length;
       document.getElementById('heroStars').textContent=s;
-      document.getElementById('heroStars').setAttribute('aria-label',(Math.round(avg*10)/10)+' out of 5 stars');
-      document.getElementById('heroRatingText').textContent=(Math.round(avg*10)/10)+' ('+rated.length+(rated.length===1?' verified review)':' verified reviews)');
+      document.getElementById('heroScore').textContent=score;
+      document.getElementById('heroCount').textContent='('+n+(n===1?' verified review)':' verified reviews)');
+      document.getElementById('heroRating').setAttribute('aria-label','Rated '+score+' out of 5 from '+n+(n===1?' verified review':' verified reviews'));
       document.getElementById('heroTrust').hidden=false;
     })();
     var band=document.getElementById('reviewsBand'),carousel=document.getElementById('rvCarousel'),
