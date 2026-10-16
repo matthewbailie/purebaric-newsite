@@ -56,6 +56,20 @@
 .result.err{display:block;background:#fbeae5;color:#9a4f3a;border:1px solid #eccdc3}
 .rv-jump[hidden]{display:none!important}
 .rv-jump{display:none;margin-top:16px;color:var(--terra-d);font-weight:700;font-size:15px}
+.rv-agg{display:flex;align-items:center;gap:12px;margin-top:14px}
+.rv-agg[hidden]{display:none!important}
+.rv-agg .score{font-size:30px;font-weight:800;color:var(--ink)}
+.rv-agg .stars{color:#d99a2b;font-size:18px;letter-spacing:2px}
+.rv-agg .count{font-size:13.5px;color:var(--muted)}
+.stars-input{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:2px;margin-top:6px}
+.stars-input label{cursor:pointer}
+.stars-input input{position:absolute;opacity:0;width:1px;height:1px}
+.stars-input span{font-size:30px;color:#d8cbb8;transition:color .12s}
+.stars-input label:hover span,.stars-input label:hover~label span{color:#d99a2b}
+.stars-input input:checked~span,.stars-input input:checked~label span{color:#d99a2b}
+.stars-input input:focus-visible+span{outline:2px solid var(--terra);outline-offset:2px;border-radius:4px}
+.rv-card .stars{color:#d99a2b;font-size:14px;letter-spacing:2px;margin-bottom:8px}
+.lbl{display:block;font-size:13.5px;font-weight:600;margin-bottom:2px;color:var(--ink)}
 #reviews,#write{scroll-margin-top:80px}
 @media(max-width:820px){.rv-grid{grid-template-columns:1fr;gap:28px}.frm .row2{grid-template-columns:2fr 1fr;gap:12px}.formwrap{position:static;order:-1;padding:22px 20px}.rv-jump{display:inline-block}.frm input,.frm textarea{font-size:16px}.section.rv-sec{padding-top:24px}}
 </style>
@@ -86,6 +100,7 @@
     <span class="eyebrow2">Reviews</span>
     <h1>Hear from our renters</h1>
     <p>Real experiences from people who've rented a Purebaric chamber for their home. If you've rented from us, we'd be grateful if you shared yours.</p>
+    <div id="rvAgg" class="rv-agg" hidden></div>
     <a class="rv-jump" href="#reviews" id="rvJump">Read reviews ↓</a>
   </div>
 </section>
@@ -111,6 +126,11 @@
           <div class="fg"><label for="rInitial">Last initial <span class="req">*</span></label><input type="text" id="rInitial" name="lastInitial" maxlength="1" required></div>
         </div>
         <div class="fg"><label for="rCity">City (optional)</label><input type="text" id="rCity" name="city" maxlength="60"></div>
+        <div class="fg"><span class="lbl" id="rStarsLabel">Your rating <span class="req">*</span></span>
+          <div class="stars-input" role="radiogroup" aria-labelledby="rStarsLabel">
+            <label><input type="radio" name="stars" value="5" checked><span>★</span></label><label><input type="radio" name="stars" value="4"><span>★</span></label><label><input type="radio" name="stars" value="3"><span>★</span></label><label><input type="radio" name="stars" value="2"><span>★</span></label><label><input type="radio" name="stars" value="1"><span>★</span></label>
+          </div>
+        </div>
         <div class="fg"><label for="rText">Your review <span class="req">*</span></label><textarea id="rText" name="text" maxlength="1500" required placeholder="What was your experience like, delivery, setup, using the chamber, support?"></textarea></div>
         <label class="consent"><input type="checkbox" id="rConsent" required> I'm okay with Purebaric sharing my review (first name, last initial, and city) on their website.</label>
         <button type="submit" class="btn btn-primary submit" id="rSubmit">Submit review</button>
@@ -157,6 +177,8 @@
 <script src="/warm.js"></script>
 <script>
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function starChars(n){n=Math.max(0,Math.min(5,Math.round(n)||0));var s='';for(var i=1;i<=5;i++)s+=i<=n?'★':'☆';return s;}
+function starsHtml(n){n=parseInt(n,10);if(!(n>=1&&n<=5))return '';return '<div class="stars" aria-label="'+n+' out of 5 stars">'+starChars(n)+'</div>';}
 
 /* Load published reviews */
 function rvYM(iso){try{return new Date(iso).toLocaleDateString('en-US',{month:'long',year:'numeric'});}catch(e){return '';}}
@@ -170,10 +192,18 @@ function rvInitials(rv){return esc(((rv.firstName||'').charAt(0)+(rv.lastInitial
     var jump=document.getElementById('rvJump');
     if(!reviews.length){empty.textContent="No reviews yet, be the first to share your experience.";if(jump)jump.hidden=true;return;}
     if(jump)jump.textContent='Read '+reviews.length+(reviews.length===1?' review':' reviews')+' ↓';
+    // Aggregate rating header
+    var rated=reviews.filter(function(rv){return rv.stars>=1&&rv.stars<=5;});
+    var agg=document.getElementById('rvAgg');
+    if(agg&&rated.length){
+      var avg=rated.reduce(function(a,rv){return a+rv.stars;},0)/rated.length;
+      agg.innerHTML='<span class="score">'+(Math.round(avg*10)/10)+'</span><span><span class="stars">'+starChars(avg)+'</span><span class="count"> · '+rated.length+(rated.length===1?' verified review':' verified reviews')+'</span></span>';
+      agg.hidden=false;
+    }
     list.innerHTML=reviews.map(function(rv,i){
       var full=rv.text||'',trunc=full.length>RV_LIMIT;
       var shown=trunc?full.slice(0,RV_LIMIT).replace(/\s+\S*$/,'')+'…':full;
-      return '<div class="rv-card"><div class="quote">'+esc(shown).replace(/\n/g,'<br>')+'</div>'
+      return '<div class="rv-card">'+starsHtml(rv.stars)+'<div class="quote">'+esc(shown).replace(/\n/g,'<br>')+'</div>'
         +(trunc?'<button type="button" class="rv-more" data-i="'+i+'">See full review</button>':'')
         +'<div class="rv-meta"><span class="rv-avatar">'+rvInitials(rv)+'</span><span><span class="rv-name">'+esc(rv.firstName)+' '+esc(rv.lastInitial)+'.</span><span class="rv-sub">'+rvSubLine(rv)+'</span></span></div></div>';
     }).join('');
@@ -183,7 +213,7 @@ function rvInitials(rv){return esc(((rv.firstName||'').charAt(0)+(rv.lastInitial
 function openReviewModal(rv){
   if(!rv)return;
   var sub=rvSubLine(rv);
-  document.getElementById('rvModalQ').innerHTML=esc(rv.text||'').replace(/\n/g,'<br>');
+  document.getElementById('rvModalQ').innerHTML=starsHtml(rv.stars)+esc(rv.text||'').replace(/\n/g,'<br>');
   document.getElementById('rvModalW').innerHTML=esc(rv.firstName)+' '+esc(rv.lastInitial)+'.'+(sub?' <span class="loc">· '+sub+'</span>':'');
   document.getElementById('rvModal').hidden=false;
 }
@@ -200,6 +230,8 @@ document.getElementById('reviewForm').addEventListener('submit',function(e){
   data.set('firstName',document.getElementById('rFirst').value);
   data.set('lastInitial',document.getElementById('rInitial').value);
   data.set('city',document.getElementById('rCity').value);
+  var starEl=f.querySelector('input[name="stars"]:checked');
+  data.set('stars',starEl?starEl.value:'5');
   data.set('text',document.getElementById('rText').value);
   var orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='Submitting...';
   fetch('/api/reviews-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
