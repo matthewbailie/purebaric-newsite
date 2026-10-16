@@ -456,7 +456,7 @@ function enterBookMode(j){
   if(steps.length>=3){
     steps[0].textContent='Your delivery date is booked. We will text or call shortly to schedule the delivery time.';
     steps[2].textContent=BIZ?'We deliver, install, and train your team hands-on. You start scheduling sessions for your clients, we support you throughout the rental, and we pick up the chamber at the end.':'We deliver, install, and train you hands-on. You start your sessions, we support you throughout the rental, and we pick up the chamber at the end.';
-    steps[1].textContent=BIZ?'We send the business rental agreement to review and collect the one-time $200 training and supplies fee before delivery. Nothing is charged until then.':'We send the rental agreement to review and collect the first month before delivery. Nothing is charged until then.';
+    steps[1].textContent=BIZ?'We send the business rental agreement to review. Payment is collected on delivery day, once we have confirmed the chamber fits your space and your team is comfortable using it.':'We send the rental agreement to review. Payment is collected on delivery day, once we have confirmed the chamber fits your home and you are comfortable using it.';
   }
   if(BIZ)recalcBiz();
 }
