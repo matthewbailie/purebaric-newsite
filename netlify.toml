@@ -199,6 +199,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/admin/ga-funnel"
+  to = "/.netlify/functions/admin-ga-funnel"
+  status = 200
+
+[[redirects]]
   from = "/api/admin/notifications-test"
   to = "/.netlify/functions/admin-notifications-test"
   status = 200

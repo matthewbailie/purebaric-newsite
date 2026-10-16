@@ -188,3 +188,215 @@
 
   root.PurebaricCharts = { lineChart };
 })(typeof window !== 'undefined' ? window : globalThis);
+
+// ─── Booking funnel drop-off widget ───
+// Self-contained: injects its card into the Site analytics tab on page load and pulls
+// funnel numbers from /api/admin/ga-funnel. It lives here (rather than inline in
+// admin.html) so the widget ships as one module. Home vs business is split by the
+// booking page URL (/book vs /book?type=business), so no GA4 custom dimensions needed.
+(function (root) {
+  'use strict';
+
+  var STAGES = [
+    ['booking_form_start', 'Form started'],
+    ['service_area_check', 'Area checked'],
+    ['select_rental_plan', 'Plan selected'],
+    ['select_delivery_date', 'Date selected'],
+    ['booking_request_submit', 'Booking submitted'],
+  ];
+  var seg = 'home';
+  var data = null;
+
+  function esc(s) {
+    if (typeof root.escape === 'function') { try { return root.escape(s); } catch (e) { /* fall through */ } }
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function fetchJson(path) {
+    if (typeof root.api === 'function') return root.api(path);
+    return fetch(path, { headers: { 'Content-Type': 'application/json' } }).then(function (r) {
+      return r.text().then(function (t) { return t ? JSON.parse(t) : {}; });
+    });
+  }
+
+  function cardHtml() {
+    return '' +
+    '<div class="viz-card viz an-card" id="funnelCard">' +
+      '<h3>Booking funnel drop-off</h3>' +
+      '<p class="viz-note">Where reservation requests fall off, for home and business rentals. Last 30 days.</p>' +
+      '<div class="seg" role="group" aria-label="Rental type" style="margin:10px 0 4px;">' +
+        '<button type="button" data-f="home" class="on">Home rentals</button>' +
+        '<button type="button" data-f="business">Business rentals</button>' +
+      '</div>' +
+      '<div id="funnelBody"><div class="renter-line">Loading…</div></div>' +
+      '<div class="renter-line" id="funnelMeta" style="margin-top:8px;"></div>' +
+      '<div style="margin-top:8px;"><button type="button" class="btn btn-ghost btn-sm" id="funnelRefresh">Refresh funnel</button></div>' +
+    '</div>' +
+    '<style>' +
+      '.funnel-callout{background:#fdf6ec;border:1px solid #ecd9b8;border-radius:10px;padding:10px 14px;margin:12px 0;font-size:.92rem;}' +
+      '.funnel-drop{margin:2px 0 0 2.2em;font-size:.78rem;color:var(--stone-muted,#8a7f74);}' +
+      '.funnel-stats{margin-top:10px;}' +
+    '</style>';
+  }
+
+  function inject() {
+    var panel = document.querySelector('[data-panel="analytics"]');
+    if (!panel || document.getElementById('funnelCard')) return false;
+    panel.insertAdjacentHTML('beforeend', cardHtml());
+    panel.querySelectorAll('#funnelCard [data-f]').forEach(function (b) {
+      b.addEventListener('click', function () { setSeg(b.getAttribute('data-f')); });
+    });
+    var rb = document.getElementById('funnelRefresh');
+    if (rb) rb.addEventListener('click', function () { load(true); });
+    return true;
+  }
+
+  function setSeg(s) {
+    seg = s === 'business' ? 'business' : 'home';
+    document.querySelectorAll('#funnelCard [data-f]').forEach(function (b) {
+      b.classList.toggle('on', b.getAttribute('data-f') === seg);
+    });
+    render();
+  }
+
+  function load(refresh) {
+    var body = document.getElementById('funnelBody');
+    if (body && refresh) body.innerHTML = '<div class="renter-line">Refreshing…</div>';
+    return fetchJson('/api/admin/ga-funnel' + (refresh ? '?refresh=1' : '')).then(function (r) {
+      data = r; render();
+    }).catch(function (e) {
+      if (body) body.innerHTML = '<div class="renter-line">Could not load funnel data: ' + esc((e && e.message) || e) + '</div>';
+    });
+  }
+
+  function metaHtml(r) {
+    var when = r.fetchedAt ? new Date(r.fetchedAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) : '';
+    return 'Source: Google Analytics · last 30 days' + (when ? ' · updated ' + esc(when) : '') +
+      (r.stale ? ' · <span style="color:#9a4f3a;">showing the last good copy, refresh failed: ' + esc(String(r.stale)) + '</span>' : '');
+  }
+
+  function render() {
+    var body = document.getElementById('funnelBody'), meta = document.getElementById('funnelMeta');
+    if (!body) return;
+    var r = data;
+    if (!r) { body.innerHTML = '<div class="renter-line">Loading…</div>'; return; }
+    if (!r.configured) {
+      body.innerHTML = '<div class="renter-line">Connect Google Analytics (service account) to see funnel drop-off. The booking events are already being recorded.</div>';
+      if (meta) meta.innerHTML = '';
+      return;
+    }
+    if (r.error && !r.funnel) {
+      body.innerHTML = '<div class="renter-line">Google Analytics returned an error: ' + esc(r.error) + '</div>';
+      return;
+    }
+    var counts0 = (r.funnel && r.funnel[seg]) || {};
+    var counts = STAGES.map(function (st) { return counts0[st[0]] || 0; });
+    var started = counts[0];
+    var segName = seg === 'business' ? 'business' : 'home';
+    function fmt(n) { return n.toLocaleString('en-US'); }
+    if (!started) {
+      body.innerHTML = '<div class="renter-line">No booking funnel activity in the last 30 days for ' + segName + ' rentals.</div>';
+      if (meta) meta.innerHTML = metaHtml(r);
+      return;
+    }
+    var worst = null;
+    var rows = STAGES.map(function (st, i) {
+      var c = counts[i], pct = Math.round((c / started) * 100), drop = null;
+      if (i > 0 && counts[i - 1] > 0) {
+        drop = Math.round(((counts[i - 1] - c) / counts[i - 1]) * 100);
+        if (worst === null || drop > worst.drop) worst = { from: STAGES[i - 1][1], to: st[1], drop: drop };
+      }
+      return { label: st[1], count: c, pct: pct, drop: drop, width: Math.max(2, Math.round((c / started) * 100)) };
+    });
+    var abandoned = counts0['booking_form_abandon'] || 0;
+    var errors = counts0['booking_request_error'] || 0;
+    var submitted = counts[counts.length - 1];
+    var overall = Math.round((submitted / started) * 100);
+    var html = '';
+    if (worst && worst.drop > 0) {
+      html += '<div class="funnel-callout">Biggest drop-off: <strong>' + esc(worst.from) + ' → ' + esc(worst.to) + '</strong> — ' + worst.drop + '% of visitors who got that far didn’t continue.</div>';
+    }
+    html += '<ol class="an-top">';
+    rows.forEach(function (s, i) {
+      html += '<li>' +
+        '<div class="an-top-row"><span class="an-top-rank">' + (i + 1) + '</span><strong class="an-top-name">' + esc(s.label) + '</strong>' +
+        '<span class="an-top-n">' + fmt(s.count) + ' <span style="color:var(--stone-muted,#8a7f74)">(' + s.pct + '% of starters)</span></span></div>' +
+        '<div class="an-top-bar"><div style="width:' + s.width + '%' + (i === rows.length - 1 ? ';background:#2e7d6f' : '') + '"></div></div>' +
+        (s.drop != null && s.drop > 0 ? '<div class="funnel-drop">' + s.drop + '% didn’t continue past the previous step</div>' : '') +
+      '</li>';
+    });
+    html += '</ol>' +
+      '<div class="renter-line funnel-stats">' + fmt(submitted) + ' bookings from ' + fmt(started) + ' started forms (' + overall + '% overall) · ' +
+      fmt(abandoned) + ' left without submitting · ' + fmt(errors) + ' hit an error.</div>';
+    body.innerHTML = html;
+    if (meta) meta.innerHTML = metaHtml(r);
+  }
+
+  function init() {
+    if (!inject()) return;
+    load(false);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  root.PurebaricFunnel = { reload: function () { load(true); } };
+})(typeof window !== 'undefined' ? window : globalThis);
+
+/* ─── Admin reviews: star-rating display ───
+   Wraps the inline renderReviews() in admin.html (which this file cannot edit
+   directly) to show each review's star rating in the approval table, so the
+   rating is visible during moderation before a review is published. */
+(function () {
+  function starsHtml(n) {
+    n = parseInt(n, 10);
+    if (!(n >= 1 && n <= 5)) return '<span style="color:#8a7f74;font-size:12px">no rating</span>';
+    var s = '';
+    for (var i = 1; i <= 5; i++) s += i <= n ? '★' : '☆';
+    return '<span style="color:#d99a2b;letter-spacing:1px" title="' + n + ' out of 5 stars">' + s + '</span>';
+  }
+  function decorate() {
+    try {
+      if (typeof _reviews === 'undefined' || !_reviews) return;
+      var list = document.getElementById('reviewsList');
+      if (!list) return;
+      // Mirror the inline filter so rows line up with the rendered table.
+      var rvq = (document.getElementById('reviewSearch') || {}).value || '';
+      var shown = _reviews.filter(function (r) {
+        return window.PurebaricAdminUtils && window.PurebaricAdminUtils.matchesSearch(
+          rvq, [r.firstName, r.lastInitial, r.city, r.text]);
+      });
+      var rows = list.querySelectorAll('tbody tr');
+      rows.forEach(function (tr, i) {
+        var rv = shown[i];
+        if (!rv || tr.dataset.starsDone) return;
+        tr.dataset.starsDone = '1';
+        var tds = tr.querySelectorAll('td');
+        if (tds[1]) {
+          var d = document.createElement('div');
+          d.style.marginTop = '3px';
+          d.innerHTML = starsHtml(rv.stars);
+          tds[1].appendChild(d);
+        }
+      });
+    } catch (e) { /* never break the admin reviews tab */ }
+  }
+  function init() {
+    try {
+      if (typeof window.renderReviews === 'function' && !window.renderReviews._starsWrapped) {
+        var orig = window.renderReviews;
+        var wrapped = function () { orig(); decorate(); };
+        wrapped._starsWrapped = true;
+        window.renderReviews = wrapped;
+        decorate(); // in case the table already rendered
+      }
+    } catch (e) { /* never break the admin page */ }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();

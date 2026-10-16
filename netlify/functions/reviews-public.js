@@ -11,6 +11,7 @@ exports.handler = async () => {
       lastInitial: r.lastInitial,
       city: r.city || "",
       text: r.text,
+      stars: r.stars >= 1 && r.stars <= 5 ? r.stars : null,
       createdAt: r.createdAt,
       publishedAt: r.publishedAt,
     }));

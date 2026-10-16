@@ -194,4 +194,57 @@ async function fetchPagesDaily(sa, propertyId, year, fetchFn = fetch) {
   return pageRowsToMap(j.rows);
 }
 
-module.exports = { rowsToMap, firstDataDay, yearSeries, summarize, chartData, normalizePage, pageRowsToMap, summarizePages, parseServiceAccount, accessToken, fetchDaily, fetchPagesDaily, dayIndex, daysInYear };
+// ---- Booking funnel drop-off ----
+// The reservation funnel on /book, in the order a visitor normally moves through it.
+// Home vs business is split by the page URL (/book vs /book?type=business), so no
+// custom GA4 dimensions are needed.
+const FUNNEL_EVENTS = [
+  "booking_form_start",
+  "service_area_check",
+  "select_rental_plan",
+  "select_delivery_date",
+  "booking_request_submit",
+];
+const FUNNEL_SIDE_EVENTS = ["booking_form_abandon", "booking_request_error"];
+const FUNNEL_ALL_EVENTS = FUNNEL_EVENTS.concat(FUNNEL_SIDE_EVENTS);
+
+// GA rows (dimensions: eventName, pagePathPlusQueryString; metric: eventCount)
+// -> { home: {eventName: count}, business: {eventName: count} }
+function funnelRowsToMap(rows) {
+  const out = { home: {}, business: {} };
+  for (const r of rows || []) {
+    const dv = r.dimensionValues || [], mv = r.metricValues || [];
+    const event = dv[0] && dv[0].value;
+    const path = String((dv[1] && dv[1].value) || "").toLowerCase();
+    if (!FUNNEL_ALL_EVENTS.includes(event)) continue;
+    if (path.indexOf("/book") === -1) continue;
+    const seg = path.indexOf("type=business") !== -1 ? "business" : "home";
+    const count = Number(mv[0] && mv[0].value) || 0;
+    out[seg][event] = (out[seg][event] || 0) + count;
+  }
+  return out;
+}
+
+async function fetchFunnel(sa, propertyId, fetchFn = fetch) {
+  const token = await accessToken(sa, fetchFn);
+  const body = {
+    dimensions: [{ name: "eventName" }, { name: "pagePathPlusQueryString" }],
+    metrics: [{ name: "eventCount" }],
+    dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+    dimensionFilter: {
+      andGroup: { expressions: [
+        { filter: { fieldName: "eventName", inListFilter: { values: FUNNEL_ALL_EVENTS } } },
+        { filter: { fieldName: "pagePathPlusQueryString", stringFilter: { matchType: "CONTAINS", value: "/book" } } },
+      ] },
+    },
+    limit: 10000,
+  };
+  const res = await fetchFn(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`, {
+    method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify(body),
+  });
+  const j = await res.json();
+  if (!res.ok) throw new Error(`Google Analytics error: ${(j.error && j.error.message) || res.status}`);
+  return funnelRowsToMap(j.rows);
+}
+
+module.exports = { rowsToMap, firstDataDay, yearSeries, summarize, chartData, normalizePage, pageRowsToMap, summarizePages, parseServiceAccount, accessToken, fetchDaily, fetchPagesDaily, fetchFunnel, funnelRowsToMap, FUNNEL_EVENTS, FUNNEL_SIDE_EVENTS, dayIndex, daysInYear };

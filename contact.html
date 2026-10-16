@@ -184,7 +184,7 @@ document.getElementById('contactForm').addEventListener('submit',function(e){
    .then(function(j){
      btn.disabled=false;btn.innerHTML=orig;
      if(j&&(j.ok||j.success)){
-       window.trackPurebaricEvent?.('contact_submit',{topic:document.getElementById('cTopic').value||'unspecified'});
+       window.trackPurebaricEvent?.('contact_submit',{topic:document.getElementById('cTopic').value||'unspecified'});window.trackPurebaricMeta?.('Contact',{content_category:'contact_form'});
        res.className='result ok';
        res.textContent=(j.message)||"Thanks for reaching out. We'll get back to you shortly.";
        f.reset();

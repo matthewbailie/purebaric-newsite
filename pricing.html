@@ -71,7 +71,10 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .biz-wrap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px}
 .biz-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:26px;align-items:start}
 .biz-tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 14px}
-.bt{border:1px solid var(--line);border-radius:12px;padding:14px 12px;text-align:center;background:var(--cream)}
+.bt{border:1px solid var(--line);border-radius:12px;padding:14px 12px;text-align:center;background:var(--cream);cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.bt:hover{border-color:var(--terra)}
+.bt.sel{border:2px solid var(--terra);box-shadow:0 2px 10px rgba(184,101,77,.18);padding:13px 11px}
+.bt:focus-visible{outline:2px solid var(--terra);outline-offset:2px}
 .bt.best{border-color:var(--terra);box-shadow:0 0 0 1px var(--terra)}
 .bt .len{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .bt .amt{font-size:22px;font-weight:800;margin:6px 0 2px;letter-spacing:-.01em}.bt .amt small{font-size:12px;color:var(--muted);font-weight:500}
@@ -114,7 +117,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
       { "@type": "Offer", "name": "Home, 6 months", "priceCurrency": "USD", "price": "579", "url": "https://purebaric.com/book?months=6" },
       { "@type": "Offer", "name": "Home, 12 months", "priceCurrency": "USD", "price": "529", "url": "https://purebaric.com/book?months=12" },
       { "@type": "Offer", "name": "Business, 1 month", "priceCurrency": "USD", "price": "979", "url": "https://purebaric.com/book?type=business" },
-      { "@type": "Offer", "name": "Business, 3 months", "priceCurrency": "USD", "price": "881", "url": "https://purebaric.com/book?type=business" },
+      { "@type": "Offer", "name": "Business, 3 months", "priceCurrency": "USD", "price": "929", "url": "https://purebaric.com/book?type=business" },
       { "@type": "Offer", "name": "Business, 6 months", "priceCurrency": "USD", "price": "832", "url": "https://purebaric.com/book?type=business" },
       { "@type": "Offer", "name": "Business, 12 months", "priceCurrency": "USD", "price": "783", "url": "https://purebaric.com/book?type=business" }
     ]
@@ -166,7 +169,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
           <li><strong>Hands-on training</strong> on safe operation and session protocols.</li>
           <li><strong>Unlimited sessions</strong> for everyone in the household.</li>
           <li><strong>Support throughout</strong>, call or text (801) 901-0873, Mon to Sat.</li>
-          <li><strong>Nothing due today.</strong> We confirm availability and delivery to your ZIP first.</li>
+          <li><strong>Nothing due today.</strong> Payment is collected on delivery day, once we've confirmed the chamber fits your home and you're comfortable using it.</li>
         </ul>
       </div>
       <div class="book">
@@ -183,7 +186,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
         <div class="brow"><span>Delivery and install</span><span class="amt">Included</span></div>
         <div class="total"><span>Due today</span><span>$0</span></div>
         <a class="btn btn-primary" href="/book" onclick="return goBook()">Book a chamber</a>
-        <div class="fine">Free to submit · we confirm availability before any deposit</div>
+        <div class="fine">Free to submit · no charge until delivery day</div>
       </div>
     </div>
   </div>
@@ -216,11 +219,11 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
     <div class="biz-wrap">
       <div class="biz-grid">
         <div>
-          <div class="biz-tiers">
-            <div class="bt"><div class="len">1 month</div><div class="amt"><span id="bizAmt1">$979</span><small> /mo</small></div><div class="sv none">Standard rate</div></div>
-            <div class="bt"><div class="len">3 months</div><div class="amt"><span id="bizAmt3">$881</span><small> /mo</small></div><div class="sv" id="bizSave3">Save 10%</div></div>
-            <div class="bt"><div class="len">6 months</div><div class="amt"><span id="bizAmt6">$832</span><small> /mo</small></div><div class="sv" id="bizSave6">Save 15%</div></div>
-            <div class="bt best"><div class="len">12 months</div><div class="amt"><span id="bizAmt12">$783</span><small> /mo</small></div><div class="sv" id="bizSave12">Save 20%</div></div>
+          <div class="biz-tiers" id="bizTiers">
+            <div class="bt" data-months="1" role="button" tabindex="0"><div class="len">1 month</div><div class="amt"><span id="bizAmt1">$979</span><small> /mo</small></div><div class="sv none">Standard rate</div></div>
+            <div class="bt sel" data-months="3" role="button" tabindex="0"><div class="len">3 months</div><div class="amt"><span id="bizAmt3">$929</span><small> /mo</small></div><div class="sv" id="bizSave3">Save 5%</div></div>
+            <div class="bt" data-months="6" role="button" tabindex="0"><div class="len">6 months</div><div class="amt"><span id="bizAmt6">$832</span><small> /mo</small></div><div class="sv" id="bizSave6">Save 15%</div></div>
+            <div class="bt best" data-months="12" role="button" tabindex="0"><div class="len">12 months</div><div class="amt"><span id="bizAmt12">$783</span><small> /mo</small></div><div class="sv" id="bizSave12">Save 20%</div></div>
           </div>
           <ul class="biz-inc">
             <li><strong>One-time $200</strong> for staff training and your initial masks and cleaning supplies. Delivery and installation are included.</li>
@@ -228,7 +231,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
             <li><strong>Unlimited sessions.</strong> Charge what you like per session; the rental does not change with usage.</li>
             <li><strong>Per chamber.</strong> Want two or more? <a href="/contact?topic=custom" style="color:var(--terra-d);font-weight:600;text-decoration:underline">Ask us for a multi-chamber quote.</a></li>
           </ul>
-          <div class="biz-cta"><a class="btn btn-primary" href="/book?type=business">Book for your business →</a><a class="btn btn-ghost" href="/business">See the full business page</a></div>
+          <div class="biz-cta"><a class="btn btn-primary" href="/book?type=business&months=3" id="bizBook" onclick="return goBookBiz()">Book for your business →</a><a class="btn btn-ghost" href="/business">See the full business page</a></div>
         </div>
         <div class="rev">
           <div class="k">Estimated net revenue, one chamber</div>
@@ -305,7 +308,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 /* booking calculator, same maths as the homepage; both rate tables come from the admin Pricing tab via /api/pricing */
 var PB_PF={1:729,2:659,3:659,4:579,5:579,6:579,7:579,8:579,9:579,10:579,11:579,12:529};
 var PB_PRICING=Object.assign({},PB_PF);
-var BF={1:979,2:979,3:881,4:881,5:881,6:832,7:832,8:832,9:832,10:832,11:832,12:783};
+var BF={1:979,2:979,3:929,4:881,5:881,6:832,7:832,8:832,9:832,10:832,11:832,12:783};
 function money(n){return '$'+Math.round(n).toLocaleString()}
 function rate(m){m=Math.max(1,Math.min(12,parseInt(m,10)||1));return PB_PRICING[m]||PB_PF[m];}
 var BASE=rate(1);
@@ -334,6 +337,18 @@ function recalc(){
   }
 }
 function goBook(){var m=+document.getElementById('mo').value;var z=document.getElementById('zip').value.trim();try{if(z)sessionStorage.setItem('pb_zip',z);}catch(e){}location.href='/book?months='+m;return false;}
+/* business tier cards: tap to pick a term, carried into the booking form */
+var bizMonths=3;
+function goBookBiz(){location.href='/book?type=business&months='+bizMonths;return false;}
+(function(){
+  var tiers=document.getElementById('bizTiers');if(!tiers)return;
+  function select(el){bizMonths=+el.getAttribute('data-months')||3;tiers.querySelectorAll('.bt').forEach(function(b){b.classList.toggle('sel',b===el);b.setAttribute('aria-pressed',b===el?'true':'false');});}
+  tiers.querySelectorAll('.bt').forEach(function(b){
+    b.setAttribute('aria-pressed',b.classList.contains('sel')?'true':'false');
+    b.addEventListener('click',function(){select(b);});
+    b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();select(b);}});
+  });
+})();
 var PB_AREA={prefixes:["840","841","844"],zips:["84201","84244","84601","84602","84603","84604","84605","84606","84626","84633","84651","84653","84660","84663","84664","84050","84018","84648","84645","84628","84639","84621","84623","84627","84629","84630","84642","84647","84667","84622","84632","84634","84643","84646","84662","84665"]};
 function servedZip(z){z=String(z||'').trim();if(!/^\d{5}$/.test(z))return false;for(var i=0;i<PB_AREA.prefixes.length;i++){if(z.indexOf(PB_AREA.prefixes[i])===0)return true;}return PB_AREA.zips.indexOf(z)>=0;}
 function checkZip(){var el=document.getElementById('zip'),n=document.getElementById('zipNote');var z=el.value.trim();if(!/^\d{5}$/.test(z)){n.hidden=true;return;}if(servedZip(z)){n.hidden=false;n.className='zipnote ok';n.textContent='✓ We deliver to '+z+'.';}else{n.hidden=false;n.className='zipnote warn';n.textContent=z+' is outside our delivery area. You can still request, we\'ll reach out if we can help.';}}

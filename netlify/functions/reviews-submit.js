@@ -28,12 +28,20 @@ exports.handler = async (event) => {
     const lastInitial = (body.lastInitial || body.last_initial || "").trim();
     const text = (body.text || body.review || body.message || "").trim();
     const city = (body.city || "").trim();
+    const stars = parseInt(body.stars, 10);
 
     if (!firstName || !lastInitial || !text) {
       return {
         statusCode: 400,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ error: "first name, last initial, and review text are required" }),
+      };
+    }
+    if (!(stars >= 1 && stars <= 5)) {
+      return {
+        statusCode: 400,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ error: "a star rating from 1 to 5 is required" }),
       };
     }
     if (text.length > 1500) {
@@ -44,7 +52,7 @@ exports.handler = async (event) => {
       };
     }
 
-    const review = await createReview({ firstName, lastInitial, city, text });
+    const review = await createReview({ firstName, lastInitial, city, text, stars });
 
     // Await the admin notifications, Lambda freezes pending I/O on return.
     // Errors are caught so a mail hiccup never fails the visitor's submission.

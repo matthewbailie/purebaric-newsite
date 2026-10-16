@@ -56,6 +56,12 @@
 /* business mode uses the same calculator with the business rate table */
 .biz-banner{display:none;background:var(--ink);color:#fff;border-radius:12px;padding:14px 18px;margin-bottom:18px;font-size:15px;line-height:1.5}
 body.biz .biz-banner{display:block}.biz-banner strong{color:#f3ead9}.biz-banner a{color:#e0b9a8;text-decoration:underline}
+.rental-toggle{display:inline-flex;background:var(--cream2);border:1px solid var(--line);border-radius:999px;padding:4px;margin-bottom:16px}
+.rental-toggle button{border:none;background:transparent;padding:9px 26px;border-radius:999px;font-weight:700;font-size:14px;color:var(--muted);cursor:pointer;font-family:inherit}
+.rental-toggle button.on{background:var(--terra);color:#fff}
+.rental-toggle button:focus-visible{outline:2px solid var(--terra-d);outline-offset:2px}
+.lead-note{background:#fdf6ec;border:1px solid #ecd9b8;border-radius:10px;padding:10px 14px;font-size:13.5px;color:var(--ink);margin-bottom:12px;line-height:1.5;max-width:420px}
+.micro{font-size:12.5px;color:var(--muted);margin-top:4px}
 #bizNameRow{display:none}body.biz #bizNameRow{display:block}
 .sv1{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .pill1{background:var(--ok-bg);color:var(--ok);font-size:12px;font-weight:600;padding:4px 11px;border-radius:999px;white-space:nowrap}
@@ -165,7 +171,11 @@ body.biz.bookmode .slider-block{display:block!important}
 
       <form id="resForm" class="frm book-main" novalidate>
         <div class="result" id="resResult" role="status" aria-live="polite"></div>
-        <div class="biz-banner" id="bizBanner"><strong>Business rental request.</strong> For a chamber placed at your gym, studio, salon, or clinic: from $979 a month per chamber plus a one-time $200 fee for staff training and initial supplies. Longer rentals cost less per month: 10% off from 3 months, 15% from 6, 20% at 12. We will reply within one business day to talk through your space. Renting for your home instead? <a href="/book">Switch to a home rental</a>.</div>
+        <div class="rental-toggle" role="group" aria-label="Rental type">
+          <button type="button" data-rt="home">Home</button>
+          <button type="button" data-rt="business">Business</button>
+        </div>
+        <div class="biz-banner" id="bizBanner"><strong>Business rental request.</strong> For a chamber placed at your gym, studio, salon, or clinic: from $979 a month per chamber plus a one-time $200 fee for staff training and initial supplies. Longer rentals cost less per month: 5% off from 3 months, 15% from 6, 20% at 12. We will reply within one business day to talk through your space. Renting for your home instead? <a href="/book">Switch to a home rental</a>.</div>
         <input type="hidden" id="rentalType" name="rental_type" value="residential">
 
         <div class="msum"><div><span class="mp" id="mpr">$659</span><small> /mo</small> <span class="mterm">· <span id="mmo">3 months</span></span></div><a href="#" onclick="document.getElementById('mo').scrollIntoView({block:'center'});return false;">Edit ↓</a></div>
@@ -183,16 +193,16 @@ body.biz.bookmode .slider-block{display:block!important}
           <div class="fg"><label for="cln">Last name <span class="req">*</span></label><input type="text" id="cln" name="last-name" autocomplete="family-name" required></div>
         </div>
         <div class="row2">
-          <div class="fg"><label for="ce">Email <span class="req">*</span></label><input type="email" id="ce" name="customer_email" autocomplete="email" required></div>
-          <div class="fg"><label for="cp">Phone <span class="req">*</span></label><input type="tel" id="cp" name="customer_phone" autocomplete="tel" required></div>
+          <div class="fg"><label for="ce">Email <span class="req">*</span></label><input type="email" id="ce" name="customer_email" autocomplete="email" required><div class="micro">Only used to coordinate your delivery.</div></div>
+          <div class="fg"><label for="cp">Phone <span class="req">*</span></label><input type="tel" id="cp" name="customer_phone" autocomplete="tel" required><div class="micro">We confirm your delivery time by text or call.</div></div>
         </div>
-        <div class="row2">
-          <div class="fg"><label for="ccity">City <span class="req">*</span></label><input type="text" id="ccity" name="city" autocomplete="address-level2" required></div>
-          <div class="fg"><label for="zip">Delivery ZIP <span class="req">*</span></label><input type="text" id="zip" name="zip_code" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Enter your ZIP code" required><div id="zipNote" class="zipnote" hidden></div></div>
+        <div class="fg">
+          <label for="zip">Delivery ZIP <span class="req">*</span></label><input type="text" id="zip" name="zip_code" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Enter your ZIP code" required><div id="zipNote" class="zipnote" hidden></div>
         </div>
         <div class="fg" id="dateReqRow"><label for="cdate">Preferred start date</label><input type="date" id="cdate" name="preferred_date"></div>
         <div class="fg" id="dateBookRow" hidden>
           <label>Delivery date <span class="req">*</span></label>
+          <div class="lead-note">Only dates with open delivery capacity are shown. New dates open as chambers become available — if your preferred date isn't listed, choose the closest one and mention your preference in the notes below.</div>
           <div class="dcal" id="dcal"></div>
           <input type="hidden" id="bookDate" value="">
           <div class="dnote" id="dnote"><strong>We will text or call to confirm the exact delivery time.</strong></div>
@@ -200,7 +210,7 @@ body.biz.bookmode .slider-block{display:block!important}
         <div class="fg"><label for="cnotes">Notes (optional)</label><textarea id="cnotes" name="notes" placeholder="Ground floor setup, stairs, morning delivery preference..."></textarea></div>
 
         <div class="screen">
-          <label class="ck"><input type="checkbox" id="ackReq" required> I understand this is a reservation request, not a confirmed booking. I've reviewed the <a href="/safety" target="_blank" rel="noopener">safety information</a> and have no known contraindications, or I've discussed use with my physician. <span class="req">*</span></label>
+          <label class="ck"><input type="checkbox" id="ackReq" required> I understand my delivery date is subject to availability and the exact delivery time will be confirmed by text or call. I've reviewed the <a href="/safety" target="_blank" rel="noopener">safety information</a> and have no known contraindications, or I've discussed use with my physician. <span class="req">*</span></label>
         </div>
 
         <button type="submit" class="btn btn-primary submit" id="submitBtn">Request reservation →</button>
@@ -230,7 +240,7 @@ body.biz.bookmode .slider-block{display:block!important}
           <div class="brow" id="bizHide"><span>You save</span><span class="amt" id="tot">$210</span></div>
           <div class="brow"><span>Delivery and install</span><span class="amt">Included</span></div>
           <div class="total"><span>Due today</span><span>$0</span></div>
-          <div class="fine">No deposit until we confirm availability · cancel free up to 7 days before delivery</div>
+          <div class="fine">No charge until delivery day · cancel free up to 7 days before delivery</div>
         </div>
         </div>
       </aside>
@@ -241,7 +251,7 @@ body.biz.bookmode .slider-block{display:block!important}
       <div class="next-h">What happens next</div>
       <ol>
         <li><span>1</span><div>We reply within one business day by phone, text, or email to confirm availability and delivery to your ZIP. Your requested dates are held while we confirm.</div></li>
-        <li><span>2</span><div>Once confirmed, we send the rental agreement to review and collect a deposit to hold your delivery date. Nothing is charged before then.</div></li>
+        <li><span>2</span><div>Once confirmed, we send the rental agreement to review. Payment is collected on delivery day, once we've confirmed the chamber fits your home and you're comfortable using it.</div></li>
         <li><span>3</span><div>We deliver, install, and train you hands-on. You start sessions on your schedule; we handle support and pickup.</div></li>
       </ol>
     </div>
@@ -281,7 +291,7 @@ function money(n){return '$'+n.toLocaleString()}
 function rate(m){m=Math.max(1,Math.min(12,parseInt(m,10)||1));return PB_PRICING[m]||PB_PF[m];}
 var BASE=rate(1);
 function pct(m){return Math.round((BASE-rate(m))/BASE*100)}
-var PB_BIZ_PF={1:979,2:979,3:881,4:881,5:881,6:832,7:832,8:832,9:832,10:832,11:832,12:783};
+var PB_BIZ_PF={1:979,2:979,3:929,4:881,5:881,6:832,7:832,8:832,9:832,10:832,11:832,12:783};
 var PB_BIZ=Object.assign({},PB_BIZ_PF);
 function rateBiz(m){m=Math.max(1,Math.min(12,parseInt(m,10)||1));return PB_BIZ[m]||PB_BIZ_PF[m];}
 var BASE_BIZ=rateBiz(1);
@@ -318,10 +328,13 @@ function checkZip(){
 document.getElementById('zip').addEventListener('input',checkZip);
 
 /* analytics: plan choice, service-area result, form start (no PII) */
-document.getElementById('zip').addEventListener('change',function(){var z=this.value.trim();if(!/^\d{5}$/.test(z))return;window.trackPurebaricEvent?.('service_area_check',{result:servedZip(z)?'eligible':'unsupported',rental_months:+document.getElementById('mo').value});});
-document.getElementById('mo').addEventListener('change',function(){var mm=+this.value,rr=rate(mm);window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD'});});
-var bookingFormStarted=false;
-document.getElementById('resForm').addEventListener('focusin',function(){if(bookingFormStarted)return;bookingFormStarted=true;window.trackPurebaricEvent?.('booking_form_start',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:+document.getElementById('mo').value||1,source:'book_page'});});
+document.getElementById('zip').addEventListener('change',function(){var z=this.value.trim();if(!/^\d{5}$/.test(z))return;window.trackPurebaricEvent?.('service_area_check',{result:servedZip(z)?'eligible':'unsupported',rental_months:+document.getElementById('mo').value,rental_type:document.getElementById('rentalType').value||'residential'});});
+document.getElementById('mo').addEventListener('change',function(){var mm=+this.value,rr=rate(mm);window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD',rental_type:document.getElementById('rentalType').value||'residential'});});
+var bookingFormStarted=false,bookingFormSubmitted=false,bookingLastField='';
+document.getElementById('resForm').addEventListener('focusin',function(e){var f=e.target&&e.target.id?e.target.id:'';if(f)bookingLastField=f;if(bookingFormStarted)return;bookingFormStarted=true;window.trackPurebaricEvent?.('booking_form_start',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:+document.getElementById('mo').value||1,source:'book_page',rental_type:document.getElementById('rentalType').value||'residential'});});
+// Drop-off: if the visitor starts the form but leaves without submitting,
+// record how far they got (field id only — never field values).
+window.addEventListener('pagehide',function(){if(!bookingFormStarted||bookingFormSubmitted)return;bookingFormSubmitted=true;window.trackPurebaricEvent?.('booking_form_abandon',{last_field:bookingLastField||'unknown',had_delivery_date:!!document.getElementById('bookDate').value,rental_months:+document.getElementById('mo').value||1,rental_type:document.getElementById('rentalType').value||'residential'});});
 
 /* carry over homepage selection */
 (function(){
@@ -332,8 +345,24 @@ document.getElementById('resForm').addEventListener('focusin',function(){if(book
   // placed in a URL/query string that analytics would capture.
   var z='';try{z=sessionStorage.getItem('pb_zip')||'';}catch(e){}
   if(z&&/^\d{3,5}$/.test(z))document.getElementById('zip').value=z;
+  // Home/Business toggle
+  var tg=document.querySelector('.rental-toggle');
+  if(tg){
+    var btns=tg.querySelectorAll('button');
+    btns.forEach(function(b){
+      var isBiz=b.getAttribute('data-rt')==='business';
+      b.classList.toggle('on',isBiz===BIZ);
+      b.setAttribute('aria-pressed',isBiz===BIZ?'true':'false');
+      b.addEventListener('click',function(){
+        if((b.getAttribute('data-rt')==='business')===BIZ)return;
+        var nq=new URLSearchParams(location.search);
+        if(b.getAttribute('data-rt')==='business')nq.set('type','business');else nq.delete('type');
+        location.href=location.pathname+(nq.toString()?'?'+nq.toString():'');
+      });
+    });
+  }
   if(BIZ){document.body.classList.add('biz');document.getElementById('rentalType').value='business';document.getElementById('cbiz').required=true;
-    document.getElementById('mo').value=4; // business bookings start at the 4-month rate
+    if(!(m>=1&&m<=12))document.getElementById('mo').value=4; // business bookings default to the 4-month rate unless a term was passed in
     document.querySelector('.page-hero .eyebrow2').textContent='Business rental request';document.querySelector('.page-hero h1').textContent='Request a chamber for your business';
     document.querySelector('.page-hero p').textContent='Tell us about your business, the rental length, and where the chamber would go. From $979 a month per chamber; longer rentals save up to 20%. This is a request, not a booking, and there is no charge today. We will reply within one business day.';
     document.querySelector('.book-side-label').textContent='Your business rental';}
@@ -415,10 +444,9 @@ function enterBookMode(j){
   else { eb.textContent='Book a chamber'; h1.textContent='Book your chamber'; hp.textContent='Choose your chamber, rental length, and a delivery date from our calendar. There is no charge today; we text or call to confirm the exact delivery time.'; }
   var lbl=document.querySelector('.book-side-label'); if(lbl)lbl.textContent=BIZ?'Your business booking':'Your booking';
   var head=document.querySelector('#resForm .section-head p'); if(head)head.textContent='Where we deliver and who we are delivering to.';
-  var ack=document.querySelector('#ackReq').parentElement; ack.innerHTML='<input type="checkbox" id="ackReq" required> I understand my delivery date is booked and may be subject to change. The exact delivery time will be confirmed by text or call. I\'ve reviewed the <a href="/safety" target="_blank" rel="noopener">safety information</a>.';
   document.querySelectorAll('.trust span').forEach(function(sp){ if(/Reply within one business day/.test(sp.textContent)) sp.remove(); });
   document.getElementById('submitBtn').textContent=BIZ?'Book chamber for my business →':'Book chamber →';
-  var fine=document.querySelector('.book .fine'); if(fine)fine.textContent=BIZ?'Plus a one-time $200 fee for staff training and initial supplies · no charge today · we confirm the delivery time by text or call':'No charge today · we confirm the delivery time by text or call · cancel free up to 7 days before delivery';
+  var fine=document.querySelector('.book .fine'); if(fine)fine.textContent=BIZ?'Plus a one-time $200 fee for staff training and initial supplies · no charge until delivery day · we confirm the delivery time by text or call':'No charge until delivery day · we confirm the delivery time by text or call · cancel free up to 7 days before delivery';
   var note=document.getElementById('dnote'); if(note&&j.deliveryNote)note.innerHTML='<strong>'+j.deliveryNote.replace(/</g,'&lt;')+'</strong>';
   if(j.styles&&j.styles.length){
     window.__pbSetChamberOptions(j.styles.map(function(t){ var lbl='1.5 ATA '+(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:t.status!=='available'&&t.status!=='later',soon:t.status==='soon',status:t.status,next:t.nextAvailable}; }));
@@ -428,7 +456,7 @@ function enterBookMode(j){
   if(steps.length>=3){
     steps[0].textContent='Your delivery date is booked. We will text or call shortly to schedule the delivery time.';
     steps[2].textContent=BIZ?'We deliver, install, and train your team hands-on. You start scheduling sessions for your clients, we support you throughout the rental, and we pick up the chamber at the end.':'We deliver, install, and train you hands-on. You start your sessions, we support you throughout the rental, and we pick up the chamber at the end.';
-    steps[1].textContent=BIZ?'We send the business rental agreement to review and collect the one-time $200 training and supplies fee before delivery. Nothing is charged until then.':'We send the rental agreement to review and collect the first month before delivery. Nothing is charged until then.';
+    steps[1].textContent=BIZ?'We send the business rental agreement to review. Payment is collected on delivery day, once we have confirmed the chamber fits your space and your team is comfortable using it.':'We send the rental agreement to review. Payment is collected on delivery day, once we have confirmed the chamber fits your home and you are comfortable using it.';
   }
   if(BIZ)recalcBiz();
 }
@@ -479,7 +507,7 @@ function renderDcal(){
   el.querySelector('#dcalMonth').addEventListener('change',function(){ DCAL_MONTH=this.value; renderDcal(); });
   el.querySelector('#dcalPrev').addEventListener('click',function(){shift(-1);});
   el.querySelector('#dcalNext').addEventListener('click',function(){shift(1);});
-  el.querySelectorAll('.dcal-day.ok').forEach(function(b){ b.addEventListener('click',function(){ document.getElementById('bookDate').value=b.dataset.d; renderDcal(); var r=document.getElementById('resResult'); if(r.className==='result err'){r.className='result';r.textContent='';} window.trackPurebaricEvent?.('select_delivery_date'); }); });
+  el.querySelectorAll('.dcal-day.ok').forEach(function(b){ b.addEventListener('click',function(){ document.getElementById('bookDate').value=b.dataset.d; renderDcal(); var r=document.getElementById('resResult'); if(r.className==='result err'){r.className='result';r.textContent='';} window.trackPurebaricEvent?.('select_delivery_date',{rental_type:document.getElementById('rentalType').value||'residential'}); }); });
   var hint=el.parentElement.querySelector('.dnote'); if(hint){ if(!hint.dataset.base)hint.dataset.base=hint.innerHTML; hint.innerHTML=(sel?'<strong>Delivery on '+fmtLong(sel)+'.</strong> ':(hint.dataset.lead||''))+hint.dataset.base; }
 }
 var CACHED_MODE=null; try{CACHED_MODE=localStorage.getItem('pb_booking_mode');}catch(e){}
@@ -515,7 +543,7 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   data.set('last-name',document.getElementById('cln').value.trim());
   data.set('customer_email',document.getElementById('ce').value);
   data.set('customer_phone',document.getElementById('cp').value);
-  data.set('city',document.getElementById('ccity').value);
+  data.set('city','');
   data.set('zip_code',document.getElementById('zip').value);
   data.set('preferred_date',window.BOOKMODE?document.getElementById('bookDate').value:document.getElementById('cdate').value);
   if(window.BOOKMODE){ data.set('booking_mode','book'); data.set('chamber_style',selectedStyle()); data.set('months',String(m)); }
@@ -545,6 +573,7 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
        document.getElementById('bookDate').value=''; refetchDelivery();
        document.getElementById('dcal').scrollIntoView({block:'center',behavior:'smooth'});
      }else if(j&&(j.success||j.ok)){
+       bookingFormSubmitted=true; // submitted — no abandon event on pagehide
        // The backend records the canonical booking_request_submit event once,
        // after accepting the request, using this visitor's anonymous GA context.
        // Meta gets the same lead from the browser: a booking submission, home or business.
@@ -556,14 +585,14 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
        document.getElementById('reserveSection').classList.add('submitted');
        window.scrollTo({top:0,behavior:'smooth'});
      }else{
-       window.trackPurebaricEvent?.('booking_request_error',{error_type:'api_rejected'});
+       window.trackPurebaricEvent?.('booking_request_error',{error_type:'api_rejected',rental_type:document.getElementById('rentalType').value||'residential'});
        res.className='result err';
        res.textContent=(j&&j.message)||'Something went wrong. Please try again, or email hello@purebaric.com.';
      }
    })
    .catch(function(){
      _submitting=false;btn.disabled=false;btn.innerHTML=orig;
-     window.trackPurebaricEvent?.('booking_request_error',{error_type:'network_error'});
+     window.trackPurebaricEvent?.('booking_request_error',{error_type:'network_error',rental_type:document.getElementById('rentalType').value||'residential'});
      res.className='result err';
      res.textContent='Network error. Please try again, or email hello@purebaric.com.';
    });
