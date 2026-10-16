@@ -20,7 +20,11 @@ const URL_ = process.env.REVIEWS_URL || "https://purebaric.com/api/reviews";
   html = html.replace(/(<span class="rating" id="heroRating" aria-label=")[^"]*(")/, `$1${label}$2`)
     .replace(/(<span class="stars" id="heroStars" aria-hidden="true">)[^<]*(<\/span>)/, `$1${stars}$2`)
     .replace(/(<strong id="heroScore">)[^<]*(<\/strong>)/, `$1${score}$2`)
-    .replace(/(<span class="count" id="heroCount">)[^<]*(<\/span>)/, `$1${count}$2`);
+    .replace(/(<a class="count" id="heroCount"[^>]*>)[^<]*(<\/a>)/, `$1${count}$2`)
+    .replace(/(<span class="rating" id="bandRatingUnit" aria-label=")[^"]*(")/, `$1${label}$2`)
+    .replace(/(<span class="stars" id="bandStars" aria-hidden="true">)[^<]*(<\/span>)/, `$1${stars}$2`)
+    .replace(/(<strong id="bandScore">)[^<]*(<\/strong>)/, `$1${score}$2`)
+    .replace(/(<span class="count" id="bandCount">)[^<]*(<\/span>)/, `$1${count}$2`);
   if (html === before) { console.log(`index.html already says ${score} ${count}`); return; }
   fs.writeFileSync(file, html);
   console.log(`index.html hero rating set to ${stars} ${score} ${count}`);
