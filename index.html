@@ -646,7 +646,7 @@ fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){
       var s='';for(var i=1;i<=5;i++)s+=i<=Math.round(avg)?'★':'☆';
       document.getElementById('heroStars').textContent=s;
       document.getElementById('heroStars').setAttribute('aria-label',(Math.round(avg*10)/10)+' out of 5 stars');
-      document.getElementById('heroRatingText').textContent=(Math.round(avg*10)/10)+' · '+rated.length+(rated.length===1?' verified review':' verified reviews');
+      document.getElementById('heroRatingText').textContent=(Math.round(avg*10)/10)+' ('+rated.length+(rated.length===1?' verified review)':' verified reviews)');
       document.getElementById('heroTrust').hidden=false;
     })();
     var band=document.getElementById('reviewsBand'),carousel=document.getElementById('rvCarousel'),
