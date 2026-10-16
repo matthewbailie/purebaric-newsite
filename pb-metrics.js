@@ -55,11 +55,10 @@
     document.head.appendChild(s);
   }
 
-  // Meta (Facebook + Instagram) pixel, for the Meta Ads campaigns. META_PIXEL_ID stays blank
-  // until the owner creates the pixel in Meta Events Manager; blank means nothing loads and
-  // trackPurebaricMeta is a no-op. Same opt-out as GA: a visitor who declined never loads it.
-  // A pixel id is public (it sits in every page's source), so it lives here like GA_ID does.
-  var META_PIXEL_ID = '';
+  // Meta (Facebook + Instagram) pixel, for the Meta Ads campaigns. A pixel id is
+  // public (it sits in every page's source), so it lives here like GA_ID does.
+  // Same opt-out as GA: a visitor who declined never loads it.
+  var META_PIXEL_ID = '1885194068430513'; // "Matthew L. Bailie's Pixel" (Purebaric business)
   var META_READY = /^\d{10,20}$/.test(META_PIXEL_ID);
   function configMeta() {
     if (!META_READY || declined || window.purebaricMetaLoaded) return;
