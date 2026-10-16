@@ -187,7 +187,7 @@ document.getElementById('waitlistForm').addEventListener('submit',function(e){
          urgency:document.getElementById('wlUrgency').value||'unspecified',
          marketing_opt_in:document.getElementById('wlOptin').checked
        });
-       window.trackPurebaricMeta?.('Lead',{content_category:'waitlist'});
+       window.trackPurebaricMeta?.('CompleteRegistration',{content_category:'waitlist'}); // not a Lead: the owner counts only booking submissions
        res.className='result ok';
        res.textContent=(j.message)||"You're on the list. We'll be in touch the moment a chamber opens up.";
        f.reset();
