@@ -29,6 +29,8 @@ exports.handler = async (event, context) => {
       if (typeof body.firstName === "string") patch.firstName = body.firstName.trim().slice(0, 40);
       if (typeof body.lastInitial === "string") patch.lastInitial = body.lastInitial.trim().slice(0, 1).toUpperCase();
       if (typeof body.city === "string") patch.city = body.city.trim().slice(0, 60);
+      const stars = parseInt(body.stars, 10);
+      if (stars >= 1 && stars <= 5) patch.stars = stars;
       const updated = await updateReview(id, patch);
       if (!updated) return json(404, { error: "not_found" });
       return json(200, { review: updated });
