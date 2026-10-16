@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 98">
+  <!-- Same mark as the favicon, with six times its original side padding (20.4 units) on every side, centred on a square cream canvas. -->
+  <rect width="98" height="98" fill="#f7f2ea"/>
+  <g transform="translate(17 18)" fill="none" stroke="#2b2320" stroke-width="3.2" stroke-linecap="round">
+    <circle cx="32" cy="31" r="20"/>
+    <line x1="5" y1="44" x2="59" y2="44"/>
+  </g>
+</svg>
