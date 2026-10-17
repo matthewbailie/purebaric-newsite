@@ -15,3 +15,7 @@ Two genres are not businesses selling sessions and have their own copy: title "H
 | `Purebaric_UT_pamphlet_high-schools-and-colleges.pdf` | High school and college athletics (team copy) |
 
 Regenerated 16 October 2026 without the dashed fold marks (owner request). The generator needs fpdf2; run it with `~/.venvs/purebaric/bin/python make_pamphlets.py utah` (the system Python refuses package installs).
+
+## Writing voice (owner, 16 Oct 2026)
+
+Write as a plain-spoken sales consultant talking to a small-business owner about money, space and effort. Short declarative sentences. Every bullet is a one- or two-word bold label followed by plain text that states a concrete value: what the owner earns, saves, or avoids. Say "business" and "customers", not "facility" or "members". No slogans, no wordplay, no sentence fragments as headings. Describe what the chamber does and how a session works in the same plain terms.

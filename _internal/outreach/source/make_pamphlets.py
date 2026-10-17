@@ -53,7 +53,7 @@ GENRES = [
          ("Weekend competitors", "Runners, cyclists and rec-league players who book sessions around race weekends and tournaments."),
          ("Personal-training clients", "Trainers sell a session as the recovery day in a program, a new line on the trainer's package too."),
          ("Premium-tier members", "Put sessions in the top tier and give the members paying the most one more reason to stay."),
-         ("Midday members", "The quiet hours between the morning and evening rush are the easiest sessions to sell."),
+         ("Midday members", "Sessions in the quiet hours between the morning and evening rush fill time the chamber would otherwise sit empty."),
        ]),
   dict(key="crossfit-and-performance", kind="business", label="CROSSFIT AND PERFORMANCE GYMS", cover="chamber-gym-branded.jpg",
        who_title="Who books sessions?", who=[
@@ -61,13 +61,13 @@ GENRES = [
          ("Members in a heavy block", "Volume before the Open, a meet or a race; sell a 10-pack for the block."),
          ("Masters athletes", "Members over 40 who need more recovery between sessions and have the budget for it."),
          ("Members on a deload week", "A reason to come in and spend during the week they would otherwise skip."),
-         ("Your coaches", "Members buy what their coach does, so coaches who use it sell it."),
+         ("Your coaches", "Members follow what their coaches do. A coach who uses the chamber is your best advertisement."),
        ]),
   dict(key="recovery-studios-and-med-spas", kind="business", label="RECOVERY STUDIOS AND MED SPAS", cover="chamber-clinic-branded.jpg",
        who_title="Who books sessions?", who=[
          ("Your recovery regulars", "Clients already buying sauna, cold plunge, contrast, massage or IV, adding a chamber session to the same visit at the same price point."),
          ("Athletes on a recovery day", "Runners, lifters and weekend competitors who come in after hard training."),
-         ("Clients who want a reset", "The same reason they book a float or a massage, sold the same way."),
+         ("Clients who want a reset", "Clients book a session for the same reason they book a float or a massage: a quiet hour to themselves."),
          ("Spa-day clients", "A session paired with a facial or body service makes a longer, higher-ticket visit."),
          ("Package and membership buyers", "The clients on monthly plans; a chamber adds a tier above the one they have."),
        ]),
@@ -77,7 +77,7 @@ GENRES = [
          ("Patients who already buy extras", "People buying massage, supplements or other add-ons from you are your proven wellness buyers."),
          ("Patients finishing a course of visits", "When the visits end, the revenue ends. A monthly session keeps them coming back and paying."),
          ("Athletes and active patients", "The runners, lifters and weekend athletes who come in for tune-ups and book sessions around their events."),
-         ("Spouses and parents who come along", "The person in your waiting room is an easy sale for a session while they wait."),
+         ("Spouses and parents who come along", "The person waiting in your lobby can take a session in the time they would spend waiting."),
        ]),
   dict(key="salons-and-day-spas", kind="business", label="SALONS AND BEAUTY STUDIOS", cover="chamber-salon-branded.jpg",
        who_title="Who books sessions?", who=[
@@ -205,16 +205,16 @@ for G in GENRES:
     y = heading(0, 13, "What Is a Mild\nHyperbaric Chamber?")
     y = para(0, y+3,
       f"A mild hyperbaric chamber is a soft-shell chamber that {'an' if TEAM else 'a'} {person} lies down inside. "
-      "A quiet machine beside it gently raises the air pressure to **1.5 ATA**, about one and a half "
-      "times normal air pressure, and supplies oxygen-enriched air.")
+      "A quiet machine beside it raises the air pressure to **1.5 ATA**, about one and a half "
+      "times normal air pressure, and supplies oxygen-enriched air through a mask.")
     if TEAM:
         y = para(0, y+2.5,
           "Athletes use sessions for rest and recovery between practices, games and travel. A session usually runs "
           "60 to 90 minutes. It is a wellness amenity, not a medical treatment.")
     else:
         y = para(0, y+2.5,
-          "Clients use sessions for general wellness, rest, and recovery. It suits a wide range of clients, "
-          "anyone who wants a quiet hour to recharge. It is a wellness amenity, not a medical treatment.")
+          "Clients book a session to rest and recover in a quiet, private space. A session runs 60 to 90 minutes. "
+          "It is a wellness amenity, not a medical treatment.")
     img = crop(os.path.join(BRANDED, "chamber-side-branded.jpg"), KEY + "_flap.jpg", CW, 40)
     pdf.image(img, x=px(0)+M, y=y+4, w=CW, h=40); pdf.set_draw_color(*LINE); pdf.rect(px(0)+M, y+4, CW, 40)
     y = sub(0, y+50, "What a session looks like")
@@ -233,8 +233,8 @@ for G in GENRES:
     y = para(1, pdf.get_y()+4,
       ("Book a free 15-minute call. We will walk through your training room, your roster, and the cost "
        "for your program, with no obligation.") if TEAM else
-      ("Book a free 15-minute call. We will walk through your space, your members, and the numbers "
-       "for your business, with no obligation."), size=9.4, color=(230,218,200), lh=4.5)
+      ("Book a free 15-minute call. We will go over your space, your customers, and the numbers "
+       "for your business. No obligation."), size=9.4, color=(230,218,200), lh=4.5)
     pdf.set_fill_color(*TERRA); pdf.rect(px(1)+M, y+6, CW, 27, "F")
     pdf.set_xy(px(1)+M+5, y+10); pdf.set_font("Helvetica","B",12.5); pdf.set_text_color(*WHITE)
     pdf.multi_cell(CW-10, 6.2, CONTACT_PHONE + "\n" + CONTACT_EMAIL + "\npurebaric.com", align="L")
@@ -255,14 +255,14 @@ for G in GENRES:
     pdf.multi_cell(CW, 7.9, TEAM_TITLE if TEAM else BUSINESS_TITLE, align="L")
     y = para(2, pdf.get_y()+4,
       ("A mild hyperbaric chamber in your own training room, for recovery between practices, games and road trips.") if TEAM else
-      ("Offer hyperbaric sessions to the members and clients you already serve."),
+      ("Rent a hyperbaric chamber and sell sessions to the customers you already have."),
       size=9.8, color=MUTED, lh=4.7)
     y = bullets(2, y+6, [
       "**Installed and serviced** by Purebaric",
       "**Staff training** for your athletic trainers and coaches" if TEAM else "**Staff training** included",
-      "**Template consent forms**, including parent consent for athletes under 18" if TEAM else "**Template consent forms** for your intake",
-      "**One flat monthly cost** for the whole roster" if TEAM else "**Marketing pamphlet** crafted for your brand",
-      "**No equipment to buy** or maintain",
+      "**Template consent forms**, including parent consent for athletes under 18" if TEAM else "**Consent forms** ready for your intake",
+      "**One flat monthly cost** for the whole roster" if TEAM else "**Marketing pamphlet** in your brand",
+      "**No equipment** to buy or maintain",
     ], size=9.2, lh=4.3, gap=2.2)
     pdf.set_fill_color(*TERRA); pdf.rect(px(2), PH-10, W, 10, "F")
     pdf.set_xy(px(2), PH-10); pdf.set_font("Helvetica","B",9.3); pdf.set_text_color(*WHITE)
@@ -283,12 +283,12 @@ for G in GENRES:
     else:
         y = heading(0, 13, "Why a Chamber\nMakes You Money")
         y = bullets(0, y+4, [
-          "**Add-on revenue from customers you already have.** Sell sessions, packages, or a premium membership tier to the people already walking through your door.",
-          f"**Recurring income.** {MK['facilities_word']} sell memberships and packs of sessions to regular customers, and those customers come back week after week.",
-          "**A value add your customers will appreciate.** A hyperbaric chamber is a premium amenity that sets your business apart from the gym or studio down the street.",
+          "**Added revenue.** Sell single sessions, packs of sessions, or a premium membership tier to the customers who already walk through your door.",
+          f"**Recurring income.** {MK['facilities_word']} sell memberships and packs of sessions to regular customers. Each regular becomes steady monthly revenue.",
+          "**A value add.** Your customers get a premium amenity on site, in a business they already trust, instead of driving to a clinic across town.",
           "**Retention.** Clients who build a weekly session into their routine regularly walk through your door.",
-          "**It fits in space you already have.** A chamber needs a 4 x 8 foot area and a wall outlet, so an unused corner starts earning.",
-          "**No large investment up front.** You rent the chamber. There is no equipment to buy, finance, or resell.",
+          "**Small footprint.** The chamber needs a 4 by 8 foot area and a wall outlet. An unused room or corner becomes a paid service.",
+          "**No large investment up front.** You rent the chamber by the month. There is no equipment to buy, finance, or resell.",
         ], size=8.6, lh=3.9, gap=1.7)
         who_box(0, y+2, G["who_title"], G["who"], intro="The customers you already have who will pay for sessions.")
 
@@ -375,7 +375,7 @@ for G in GENRES:
     # ---- Inside right: how it works + what's included
     y = heading(2, 13, "How It Works")
     y = steps(2, y+4, [
-      "**Talk with us.** A short call about your training room, roster and schedule." if TEAM else "**Talk with us.** A short call about your space, clients, and goals.",
+      "**Talk with us.** A short call about your training room, roster and schedule." if TEAM else "**Talk with us.** A short call about your space, your customers, and your goals.",
       "**We deliver and install.** We set up the chamber and machine in your training room." if TEAM else "**We deliver and install.** We set up the chamber inside your business.",
       "**We train your staff.** Hands-on training for your athletic trainers and coaches." if TEAM else "**We train your staff.** Hands-on training so your team can run sessions with confidence.",
       "**Your athletes start using it.** Your staff schedule sessions around practices and games." if TEAM else "**You start generating additional income.** Add it to your menu, packages, and memberships.",
@@ -391,11 +391,11 @@ for G in GENRES:
     y = by1+27
     y = heading(2, y+5, "After Installation,\nWe Support Your Needs", size=13, lh=5.7)
     y = bullets(2, y+3.5, [
-      "**Staff training.** Hands-on training with the chamber, so your team learns by running it.",
+      "**Staff training.** Hands-on training on the chamber itself, for every staff member who will run sessions.",
       ("**Template consent forms.** Athlete and parent consent and waiver templates, so the chamber fits your program's paperwork from day one. Have your own counsel review them." if TEAM else
-       "**Template legal consent forms.** Ready-to-use client consent and waiver templates, so the chamber fits into your intake process from day one. Have your own counsel review them for your business."),
+       "**Consent forms.** Client consent and waiver templates, ready for your intake process. Have your own counsel review them."),
       ("**An information sheet for athletes and parents.** We help you craft a one-page explainer, in your team's colors, so families know what a session is." if TEAM else
-       "**A marketing pamphlet for your brand.** We help you craft a client-facing pamphlet, in your brand, to sign up new clients."),
+       "**Marketing pamphlet.** A client-facing pamphlet in your brand, to help you sell sessions."),
       "**Equipment service.** We service and maintain the chamber and machine.",
       "**Ongoing support.** Call or text with questions. If something is not working, we fix it.",
     ], size=8.6, lh=3.9, gap=1.7)
