@@ -20,6 +20,12 @@
     Content-Type = "application/manifest+json"
 
 # ───────── Internal docs (never served publicly) ─────────
+# Printable short link on the pamphlets: sends to the business booking form.
+[[redirects]]
+  from = "/book/business"
+  to = "/book?type=business"
+  status = 302
+
 [[redirects]]
   from = "/_internal/*"
   to = "/"
