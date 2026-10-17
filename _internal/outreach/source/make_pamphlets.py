@@ -281,14 +281,14 @@ for G in GENRES:
         y = bullets(0, y+4, [b.format(notice=G["notice"], lead=G["lead"], lead_lc=G["lead"][0].lower()+G["lead"][1:]) for b in TEAM_WHY], size=8.4, lh=3.8, gap=1.5)
         who_box(0, y+2, G["who_title"], G["who"], size_t=8.1, size_d=7.9, intro="Who the chamber is for.")
     else:
-        y = heading(0, 13, "Why It Makes\nMoney for You")
+        y = heading(0, 13, "Why a Chamber\nMakes You Money")
         y = bullets(0, y+4, [
-          "**Add-on revenue from members you already have.** Sell sessions, packages, or a premium membership tier to people already walking through your door.",
-          f"**Recurring income.** {MK['facilities_word']} sell 10- and 20-session packs and monthly memberships, which turns one-time visits into repeat revenue.",
-          "**A reason to choose you.** A hyperbaric chamber is a premium amenity that helps your facility stand out from the gym or studio down the street.",
-          "**Retention.** Clients who build a weekly session into their routine have one more reason to stay.",
-          "**Earn from idle space.** A chamber needs only a 4 x 8 foot area and a wall outlet.",
-          "**No capital outlay.** You rent the chamber. There is no equipment to buy, finance, or resell.",
+          "**Add-on revenue from customers you already have.** Sell sessions, packages, or a premium membership tier to the people already walking through your door.",
+          f"**Recurring income.** {MK['facilities_word']} sell memberships and packs of sessions to regular customers, and those customers come back week after week.",
+          "**A value add your customers will appreciate.** A hyperbaric chamber is a premium amenity that sets your business apart from the gym or studio down the street.",
+          "**Retention.** Clients who build a weekly session into their routine regularly walk through your door.",
+          "**It fits in space you already have.** A chamber needs a 4 x 8 foot area and a wall outlet, so an unused corner starts earning.",
+          "**No large investment up front.** You rent the chamber. There is no equipment to buy, finance, or resell.",
         ], size=8.6, lh=3.9, gap=1.7)
         who_box(0, y+2, G["who_title"], G["who"], intro="The customers you already have who will pay for sessions.")
 
