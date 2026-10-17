@@ -357,26 +357,25 @@ for G in GENRES:
           "**Staff time:** about 15 minutes per session.",
           "**Masks and cleaning supplies:** about $1.30 per use.",
         ], size=8.3, lh=3.8, gap=1.2)
-        # Break-even, the main selling point: 11 sessions at $75 cover the $783 rental.
-        bk = y+1.5
-        pdf.set_fill_color(*TERRA); pdf.rect(px(1)+M, bk, CW, 19, "F")
-        pdf.set_xy(px(1)+M+4, bk+2.5); pdf.set_font("Georgia","B",10.5); pdf.set_text_color(*WHITE)
-        pdf.cell(CW-8, 5, "Break even at 11 sessions a month")
-        para(1, bk+8, "At $75 a session, 11 sessions cover the $783 rental. That is fewer than three sessions a week. Every session after that is profit.", size=7.9, color=WHITE, lh=3.4, dx=4, w=CW-8)
-        by = bk+19+2
-        pdf.set_fill_color(*TERRA_BG); pdf.rect(px(1)+M, by, CW, 43, "F")
-        pdf.set_xy(px(1)+M+4, by+3.5); pdf.set_font("Georgia","B",10); pdf.set_text_color(*TERRA_D)
-        pdf.cell(CW-8, 5, "Example: moderate usage")
-        pdf.set_font("Helvetica","",8.3); pdf.set_text_color(*INK)
-        rows = [("Session revenue (104 x $75)","$7,800"),("Chamber rental, one-year lease","- $783"),("Masks and cleaning (104 x $1.30)","- $135")]
-        yy = by+9.5
-        for l,v in rows:
-            pdf.set_xy(px(1)+M+4, yy); pdf.cell(CW-30, 4.6, l); pdf.cell(22, 4.6, v, align="R"); yy += 4.5
-        pdf.set_draw_color(*TERRA); pdf.line(px(1)+M+4, yy+0.6, px(1)+M+CW-4, yy+0.6)
-        pdf.set_xy(px(1)+M+4, yy+1.8); pdf.set_font("Helvetica","B",9.2); pdf.set_text_color(*TERRA_D)
-        pdf.cell(CW-30, 5, "Net revenue each month"); pdf.cell(22, 5, "$6,882", align="R")
-        para(1, yy+8, "First month only: subtract the one-time $200 fee for training and initial supplies.", size=7.6, color=MUTED, lh=3.5, dx=4, w=CW-8)
-        para(1, by+45, MK["footnote"], size=6.5, color=MUTED, lh=3.0)
+        # Break-even and revenue potential as one module (design round of 16 Oct 2026, three critics):
+        # a dark terracotta band with the numeral "11" flows through a connector into the revenue rows,
+        # which end on a large net figure. Numerals are Helvetica Bold (Georgia's are old-style figures).
+        top = y+1.5; bx = px(1)+M; ix = bx+4; iw = CW-8
+        pdf.set_fill_color(*TERRA_BG); pdf.rect(bx, top, CW, 54, "F")
+        pdf.set_fill_color(*TERRA_D); pdf.rect(bx, top, CW, 15, "F")
+        pdf.set_xy(ix, top+2.2); pdf.set_font("Helvetica","B",27); pdf.set_text_color(*CREAM); pdf.cell(14, 11, "11")
+        pdf.set_xy(ix+15, top+2.6); pdf.set_font("Helvetica","B",10); pdf.set_text_color(*CREAM); pdf.multi_cell(iw-15, 4.6, "sessions a month\nto break even")
+        cx = ix+6; pdf.set_fill_color(*TERRA_D); pdf.polygon([(cx-2, top+15), (cx+2, top+15), (cx, top+17)], style="F")
+        pdf.set_xy(ix, top+19.5); pdf.set_font("Georgia","B",9); pdf.set_text_color(*TERRA_D); pdf.cell(iw, 4.2, "Revenue potential at moderate usage")
+        pdf.set_xy(ix, top+24); pdf.set_font("Helvetica","",7.6); pdf.set_text_color(*INK); pdf.cell(iw, 3.4, "About 4 sessions a day, 6 days a week")
+        yy = top+29.5
+        for l, v in [("Session revenue (104 \u00d7 $75)", "$7,800"), ("Chamber rental", "- $783"), ("Masks and cleaning (104 \u00d7 $1.30)", "- $135")]:
+            pdf.set_xy(ix, yy); pdf.set_font("Helvetica","",8.5); pdf.set_text_color(*INK); pdf.cell(iw-22, 4.6, l); pdf.cell(22, 4.6, v, align="R"); yy += 4.6
+        pdf.set_draw_color(*TERRA); pdf.set_line_width(0.3); pdf.line(ix, yy+0.6, ix+iw, yy+0.6); pdf.set_line_width(0.2)
+        pdf.set_xy(ix, yy+3.2); pdf.set_font("Helvetica","B",9); pdf.set_text_color(*INK); pdf.cell(iw-34, 8, "Net each month")
+        pdf.set_font("Helvetica","B",21); pdf.set_text_color(*TERRA_D); pdf.cell(34, 8, "$6,882", align="R")
+        para(1, top+54+3, "First month only: less the one-time $200 fee.", size=7.2, color=INK, lh=3.2)
+        para(1, top+54+8.5, MK["footnote"], size=6.5, color=MUTED, lh=3.0)
 
     # ---- Inside right: how it works + what's included
     y = heading(2, 13, "How It Works")
