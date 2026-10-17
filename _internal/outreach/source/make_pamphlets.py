@@ -296,7 +296,7 @@ for G in GENRES:
     if TEAM:
         y = heading(1, 12, "What It Costs")
         y = bullets(1, y+3, [
-          "**Chamber rental:** $979 a month, less on longer terms. Rent for a season or the whole year.",
+          "**Chamber rental:** $783 a month on a one-year lease. Shorter terms cost more per month.",
           "**Training and initial supplies:** one-time $200 fee. Delivery and installation are included.",
           "**Staff time:** about 15 minutes per session to start, end and wipe down the chamber.",
           "**Masks and cleaning supplies:** about $1.30 per session.",
@@ -307,12 +307,12 @@ for G in GENRES:
         pdf.set_xy(px(1)+M+4, by+3.5); pdf.set_font("Georgia","B",10); pdf.set_text_color(*TERRA_D)
         pdf.cell(CW-8, 5, "Example: a 30-athlete roster")
         pdf.set_font("Helvetica","",8.3); pdf.set_text_color(*INK)
-        rows = [("Chamber rental, one month", "$979"), ("Rental per athlete, per month", "about $33"), ("One session at a local " + ("clinic" if MARKET == "tennessee" else "studio") + "(1)", MK["single_range"])]
+        rows = [("Chamber rental, one month", "$783"), ("Rental per athlete, per month", "about $26"), ("One session at a local " + ("clinic" if MARKET == "tennessee" else "studio") + "(1)", MK["single_range"])]
         yy = by+9.5
         for l, v in rows:
             pdf.set_xy(px(1)+M+4, yy); pdf.set_font("Helvetica","",8.3); pdf.cell(CW-32, 4.6, l); pdf.cell(24, 4.6, v, align="R"); yy += 4.5
         pdf.set_draw_color(*TERRA); pdf.line(px(1)+M+4, yy+0.6, px(1)+M+CW-4, yy+0.6)
-        para(1, yy+2.5, "One month of rental costs about the same as ten single sessions. One chamber holds one athlete at a time and runs "
+        para(1, yy+2.5, "One month of rental costs about the same as " + ("eight" if MARKET == "tennessee" else "six to ten") + " single sessions. One chamber holds one athlete at a time and runs "
              "up to 8 sessions in a 10-hour day. That covers one session a week for a 30-person roster when your staff schedule sessions across the day, not only after practice.",
              size=7.8, color=INK, lh=3.5, dx=4, w=CW-8)
         y = by + 50
@@ -352,23 +352,29 @@ for G in GENRES:
             pdf.set_font("Helvetica","B",8.6); pdf.set_text_color(*TERRA_D); pdf.cell(cw[2], rh, c, border=1, align="C", fill=True); pdf.ln(rh)
         y = sub(1, pdf.get_y()+3.5, "What it costs you", size=9.6)
         y = bullets(1, y+2, [
-          "**Chamber rental:** $979 a month, less on longer terms. About 14 sessions a month covers it.",
+          "**Chamber rental:** $783 a month on a one-year lease.",
           "**Training and initial supplies:** one-time $200 fee. Delivery and installation are included.",
           "**Staff time:** about 15 minutes per session.",
           "**Masks and cleaning supplies:** about $1.30 per use.",
         ], size=8.3, lh=3.8, gap=1.2)
-        by = y+1.5
+        # Break-even, the main selling point: 11 sessions at $75 cover the $783 rental.
+        bk = y+1.5
+        pdf.set_fill_color(*TERRA); pdf.rect(px(1)+M, bk, CW, 19, "F")
+        pdf.set_xy(px(1)+M+4, bk+2.5); pdf.set_font("Georgia","B",10.5); pdf.set_text_color(*WHITE)
+        pdf.cell(CW-8, 5, "Break even at 11 sessions a month")
+        para(1, bk+8, "At $75 a session, 11 sessions cover the $783 rental. That is fewer than three sessions a week. Every session after that is profit.", size=7.9, color=WHITE, lh=3.4, dx=4, w=CW-8)
+        by = bk+19+2
         pdf.set_fill_color(*TERRA_BG); pdf.rect(px(1)+M, by, CW, 43, "F")
         pdf.set_xy(px(1)+M+4, by+3.5); pdf.set_font("Georgia","B",10); pdf.set_text_color(*TERRA_D)
         pdf.cell(CW-8, 5, "Example: moderate usage")
         pdf.set_font("Helvetica","",8.3); pdf.set_text_color(*INK)
-        rows = [("Session revenue (104 x $75)","$7,800"),("Chamber rental","- $979"),("Masks and cleaning (104 x $1.30)","- $135")]
+        rows = [("Session revenue (104 x $75)","$7,800"),("Chamber rental, one-year lease","- $783"),("Masks and cleaning (104 x $1.30)","- $135")]
         yy = by+9.5
         for l,v in rows:
             pdf.set_xy(px(1)+M+4, yy); pdf.cell(CW-30, 4.6, l); pdf.cell(22, 4.6, v, align="R"); yy += 4.5
         pdf.set_draw_color(*TERRA); pdf.line(px(1)+M+4, yy+0.6, px(1)+M+CW-4, yy+0.6)
         pdf.set_xy(px(1)+M+4, yy+1.8); pdf.set_font("Helvetica","B",9.2); pdf.set_text_color(*TERRA_D)
-        pdf.cell(CW-30, 5, "Net revenue each month"); pdf.cell(22, 5, "$6,686", align="R")
+        pdf.cell(CW-30, 5, "Net revenue each month"); pdf.cell(22, 5, "$6,882", align="R")
         para(1, yy+8, "First month only: subtract the one-time $200 fee for training and initial supplies.", size=7.6, color=MUTED, lh=3.5, dx=4, w=CW-8)
         para(1, by+45, MK["footnote"], size=6.5, color=MUTED, lh=3.0)
 
