@@ -427,6 +427,11 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
     .reviews-band .rv-icon svg{width:24px;height:24px}
     .reviews-band .rv-agg{margin-top:6px}
     .reviews-band .rv-carousel{margin-top:16px}
+    .reviews-band .rv-video{margin:18px 0 0;max-width:760px;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(43,35,32,.05)}
+    .reviews-band .rv-video video{display:block;width:100%;aspect-ratio:16/9;background:#1a1512}
+    .reviews-band .rv-video figcaption{padding:12px 16px 14px}
+    .reviews-band .rv-video figcaption b{display:block;font-size:14.5px;margin-bottom:2px}
+    .reviews-band .rv-video figcaption span{display:block;font-size:13.5px;color:var(--muted);line-height:1.5}
     .reviews-band .rv-scroller{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;padding:6px 3px 10px;scrollbar-width:none}
     .reviews-band .rv-scroller::-webkit-scrollbar{display:none}
     .reviews-band .rv-card{flex:0 0 calc((100% - 36px)/3);scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 28px;min-width:0;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(43,35,32,.05)}
@@ -465,6 +470,10 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   </style>
   <div class="rv-head"><span class="rv-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.3c2.9 0 5 1.9 5 4.7"/></svg></span><div><h2>Hear from our renters</h2><p class="lead">Real experiences from Purebaric renters.</p>
   <div class="hero-trust rv-agg" id="bandRating"><span class="rating" id="bandRatingUnit" aria-label="Rated 5.0 out of 5 from 4 verified reviews"><span class="stars" id="bandStars" aria-hidden="true">★★★★★</span><strong id="bandScore">5.0</strong><span class="count" id="bandCount">(4 verified reviews)</span></span></div></div></div>
+  <figure class="rv-video">
+    <video src="/media/testimonials/charity-purebaric-customer.mp4" poster="/media/testimonials/charity-purebaric-customer.jpg" controls playsinline preload="none" aria-label="Charity, a Purebaric customer, talks about renting a chamber for her home"></video>
+    <figcaption><b>Charity, Purebaric customer</b><span>In her own words: what renting a chamber at home has been like. About a minute and a half.</span></figcaption>
+  </figure>
   <div class="rv-carousel" id="rvCarousel">
     <div class="rv-scroller" id="rvScroller"></div>
     <div class="rv-controls" id="rvControls" hidden><button class="rv-arrow" id="rvPrev" type="button" aria-label="Previous review">‹</button><div class="rv-dots" id="rvDots"></div><button class="rv-arrow" id="rvNext" type="button" aria-label="Next review">›</button></div>
