@@ -665,6 +665,10 @@ This is a wellness rental business, **not a medical provider** ("not a medical d
 
 - The stars + score + count in the home hero are **baked into `index.html`** so they paint at once; the live `/api/reviews` call (1 to 2 s, deliberately `no-store`) then replaces the numbers or hides the row if nothing is rated. When reviews change, run `node scripts/bake-hero-rating.js` before deploying so the baseline matches; if you forget, the page still corrects itself within a couple of seconds.
 
+## 14c. Python tooling (pamphlets, business card)
+
+- `make_pamphlets.py` and `make_business_card.py` need fpdf2 (and qrcode/pillow). Homebrew Python 3.14 refuses `pip install` (PEP 668), so they run from the venv `~/.venvs/purebaric` (`python3 -m venv ~/.venvs/purebaric && ~/.venvs/purebaric/bin/pip install fpdf2 qrcode pillow`). Pamphlets print without fold marks since 16 Oct 2026.
+
 ## 15. Marketing shorts on the site (added 2026-10-15)
 
 - Two vertical clips (720x1280, 26 s each, with sound) live in `media/shorts/` with poster frames: `book-online-at-home.mp4` (reserving on the laptop, then climbing in) and `session-at-home.mp4` (concentrator, oxygen line, zip, gauge). They appear under the steps on `/how-it-works` ("See it in 30 seconds", `#watch`) and under the home page's "How it works" steps, as `.shorts` / `.short` (CSS in `warm.css` and inline in `index.html`).

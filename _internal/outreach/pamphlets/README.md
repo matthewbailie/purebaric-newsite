@@ -13,3 +13,5 @@ Two genres are not businesses selling sessions and have their own copy: title "H
 | `Purebaric_UT_pamphlet_salons-and-day-spas.pdf` | Salons and beauty studios |
 | `Purebaric_UT_pamphlet_sports-teams-and-clubs.pdf` | Sports teams and athletic programs (team copy) |
 | `Purebaric_UT_pamphlet_high-schools-and-colleges.pdf` | High school and college athletics (team copy) |
+
+Regenerated 16 October 2026 without the dashed fold marks (owner request). The generator needs fpdf2; run it with `~/.venvs/purebaric/bin/python make_pamphlets.py utah` (the system Python refuses package installs).

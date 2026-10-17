@@ -173,9 +173,7 @@ for G in GENRES:
         return y
 
     def folds():
-        pdf.set_draw_color(*LINE); pdf.set_dash_pattern(dash=1.2, gap=1.2)
-        for k in (1,2): pdf.line(px(k),0,px(k),PH)
-        pdf.set_dash_pattern()
+        pass  # no printed fold marks (owner, 16 Oct 2026): the panels fold cleanly without them
 
     def logo(i, y, w=30, cream=False):
         f = os.path.join(SRC, "logo-cream.png" if cream else "logo.png")
