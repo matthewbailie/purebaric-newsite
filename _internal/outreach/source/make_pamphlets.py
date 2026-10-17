@@ -399,12 +399,13 @@ for G in GENRES:
       "**Equipment service.** We service and maintain the chamber and machine.",
       "**Ongoing support.** Call or text with questions. If something is not working, we fix it.",
     ], size=8.6, lh=3.9, gap=1.7)
-    pdf.set_fill_color(*INK); pdf.rect(px(2), PH-30, W, 30, "F")
-    pdf.set_xy(px(2)+M, PH-26); pdf.set_font("Georgia","B",10.5); pdf.set_text_color(*CREAM2)
+    # The box starts at the content margin, not the fold, so it never shows on the middle panel when folded; it still runs off the right edge.
+    pdf.set_fill_color(*INK); pdf.rect(px(2)+M, PH-30, W-M, 30, "F")
+    pdf.set_xy(px(2)+M+5, PH-26); pdf.set_font("Georgia","B",10.5); pdf.set_text_color(*CREAM2)
     pdf.cell(CW, 5.5, "Ready to book?")
-    pdf.set_xy(px(2)+M, PH-19); pdf.set_font("Helvetica","B",10); pdf.set_text_color(*WHITE)
+    pdf.set_xy(px(2)+M+5, PH-19); pdf.set_font("Helvetica","B",10); pdf.set_text_color(*WHITE)
     pdf.cell(CW, 5, "purebaric.com/book/business")
-    pdf.set_xy(px(2)+M, PH-12.5); pdf.set_font("Helvetica","B",9.2); pdf.set_text_color(*WHITE)
+    pdf.set_xy(px(2)+M+5, PH-12.5); pdf.set_font("Helvetica","B",9.2); pdf.set_text_color(*WHITE)
     pdf.cell(CW, 5, CONTACT_PHONE + "  |  " + CONTACT_EMAIL)
     folds()
 
