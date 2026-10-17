@@ -175,10 +175,11 @@ for G in GENRES:
     def folds():
         pass  # no printed fold marks (owner, 16 Oct 2026): the panels fold cleanly without them
 
-    def logo(i, y, w=30, cream=False):
+    def logo(i, y, w=30, cream=False, center=False):
         f = os.path.join(SRC, "logo-cream.png" if cream else "logo.png")
         im = Image.open(f); h = w*im.height/im.width
-        pdf.image(f, x=px(i)+M, y=y, w=w, h=h); return y+h
+        x = px(i) + (W - w)/2 if center else px(i)+M
+        pdf.image(f, x=x, y=y, w=w, h=h); return y+h
 
     def who_box(i, y, title, rows, size_t=8.3, size_d=8.1, intro=""):
         """Tinted box listing who books/uses, sized to its content."""
@@ -246,7 +247,7 @@ for G in GENRES:
       size=6.8, color=(170,158,146), lh=3.2)
 
     # ---- Cover (right)
-    cy = logo(2, 13, w=34)
+    cy = logo(2, 12, w=46, center=True)  # cover logo: centred and larger (owner, 16 Oct 2026)
     src_im = Image.open(os.path.join(BRANDED, COVER_IMG))
     ih = W * src_im.height / src_im.width          # whole photo, no crop, so the full chamber shows
     img = crop(os.path.join(BRANDED, COVER_IMG), KEY + "_cover.jpg", W, ih)
@@ -261,7 +262,7 @@ for G in GENRES:
       "**Installed and serviced** by Purebaric",
       "**Staff training** for your athletic trainers and coaches" if TEAM else "**Staff training** included",
       "**Template consent forms**, including parent consent for athletes under 18" if TEAM else "**Consent forms** ready for your intake",
-      "**One flat monthly cost** for the whole roster" if TEAM else "**Marketing pamphlet** in your brand",
+      "**One flat monthly cost** for the whole roster" if TEAM else "**Customer pamphlet** made for your business",
       "**No equipment** to buy or maintain",
     ], size=9.2, lh=4.3, gap=2.2)
     pdf.set_fill_color(*TERRA); pdf.rect(px(2), PH-10, W, 10, "F")
