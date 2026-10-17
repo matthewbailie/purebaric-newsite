@@ -376,9 +376,9 @@ for G in GENRES:
     y = heading(2, 13, "How It Works")
     y = steps(2, y+4, [
       "**Talk with us.** A short call about your training room, roster and schedule." if TEAM else "**Talk with us.** A short call about your space, clients, and goals.",
-      "**We deliver and install.** We set up the chamber and machine in your training room." if TEAM else "**We deliver and install.** We set up the chamber and machine in your room.",
+      "**We deliver and install.** We set up the chamber and machine in your training room." if TEAM else "**We deliver and install.** We set up the chamber inside your business.",
       "**We train your staff.** Hands-on training for your athletic trainers and coaches." if TEAM else "**We train your staff.** Hands-on training so your team can run sessions with confidence.",
-      "**Your athletes start using it.** Your staff schedule sessions around practices and games." if TEAM else "**You start selling sessions.** Add it to your menu, packages, and memberships.",
+      "**Your athletes start using it.** Your staff schedule sessions around practices and games." if TEAM else "**You start generating additional income.** Add it to your menu, packages, and memberships.",
     ], gap=2.2)
     by1 = y+1
     pdf.set_fill_color(*TERRA_BG); pdf.rect(px(2)+M, by1, CW, 27, "F")
