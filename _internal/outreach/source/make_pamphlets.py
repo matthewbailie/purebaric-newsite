@@ -374,8 +374,7 @@ for G in GENRES:
         pdf.set_draw_color(*TERRA); pdf.set_line_width(0.3); pdf.line(ix, yy+0.6, ix+iw, yy+0.6); pdf.set_line_width(0.2)
         pdf.set_xy(ix, yy+3.2); pdf.set_font("Helvetica","B",9); pdf.set_text_color(*INK); pdf.cell(iw-34, 8, "Net each month")
         pdf.set_font("Helvetica","B",21); pdf.set_text_color(*TERRA_D); pdf.cell(34, 8, "$6,882", align="R")
-        para(1, top+54+3, "First month only: less the one-time $200 fee.", size=7.2, color=INK, lh=3.2)
-        para(1, top+54+8.5, MK["footnote"], size=6.5, color=MUTED, lh=3.0)
+        para(1, top+54+3.5, MK["footnote"], size=6.5, color=MUTED, lh=3.0)
 
     # ---- Inside right: how it works + what's included
     y = heading(2, 13, "How It Works")
