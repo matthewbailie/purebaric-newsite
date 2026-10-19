@@ -63,6 +63,8 @@ body.biz .biz-banner{display:block}.biz-banner strong{color:#f3ead9}.biz-banner 
 .lead-note{background:#fdf6ec;border:1px solid #ecd9b8;border-radius:10px;padding:10px 14px;font-size:13.5px;color:var(--ink);margin-bottom:12px;line-height:1.5;max-width:420px}
 .micro{font-size:12.5px;color:var(--muted);margin-top:4px}
 #bizNameRow{display:none}body.biz #bizNameRow{display:block}
+/* business requests lead to a site visit, so the street address is taken on the call, not the form */
+body.biz #addrRow{display:none}
 .sv1{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .pill1{background:var(--ok-bg);color:var(--ok);font-size:12px;font-weight:600;padding:4px 11px;border-radius:999px;white-space:nowrap}
 .txt1{font-size:14px;color:var(--ok);font-weight:500}
@@ -195,6 +197,10 @@ body.biz.bookmode .slider-block{display:block!important}
         <div class="row2">
           <div class="fg"><label for="ce">Email <span class="req">*</span></label><input type="email" id="ce" name="customer_email" autocomplete="email" required><div class="micro">Only used to coordinate your delivery.</div></div>
           <div class="fg"><label for="cp">Phone <span class="req">*</span></label><input type="tel" id="cp" name="customer_phone" autocomplete="tel" required><div class="micro">We confirm your delivery time by text or call.</div></div>
+        </div>
+        <div class="row2" id="addrRow">
+          <div class="fg"><label for="cstreet">Street address <span class="req">*</span></label><input type="text" id="cstreet" name="street-address" autocomplete="address-line1" maxlength="120" required></div>
+          <div class="fg"><label for="ccity">City <span class="req">*</span></label><input type="text" id="ccity" name="city" autocomplete="address-level2" maxlength="60" required></div>
         </div>
         <div class="fg">
           <label for="zip">Delivery ZIP <span class="req">*</span></label><input type="text" id="zip" name="zip_code" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Enter your ZIP code" required><div id="zipNote" class="zipnote" hidden></div>
@@ -361,7 +367,7 @@ window.addEventListener('pagehide',function(){if(!bookingFormStarted||bookingFor
       });
     });
   }
-  if(BIZ){document.body.classList.add('biz');document.getElementById('rentalType').value='business';document.getElementById('cbiz').required=true;
+  if(BIZ){document.body.classList.add('biz');document.getElementById('rentalType').value='business';document.getElementById('cbiz').required=true;document.getElementById('cstreet').required=false;document.getElementById('ccity').required=false;
     if(!(m>=1&&m<=12))document.getElementById('mo').value=4; // business bookings default to the 4-month rate unless a term was passed in
     document.querySelector('.page-hero .eyebrow2').textContent='Business rental request';document.querySelector('.page-hero h1').textContent='Request a chamber for your business';
     document.querySelector('.page-hero p').textContent='Tell us about your business, the rental length, and where the chamber would go. From $979 a month per chamber; longer rentals save up to 20%. This is a request, not a booking, and there is no charge today. We will reply within one business day.';
@@ -543,7 +549,8 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   data.set('last-name',document.getElementById('cln').value.trim());
   data.set('customer_email',document.getElementById('ce').value);
   data.set('customer_phone',document.getElementById('cp').value);
-  data.set('city','');
+  data.set('street-address',BIZ?'':document.getElementById('cstreet').value.trim());
+  data.set('city',BIZ?'':document.getElementById('ccity').value.trim());
   data.set('zip_code',document.getElementById('zip').value);
   data.set('preferred_date',window.BOOKMODE?document.getElementById('bookDate').value:document.getElementById('cdate').value);
   if(window.BOOKMODE){ data.set('booking_mode','book'); data.set('chamber_style',selectedStyle()); data.set('months',String(m)); }
