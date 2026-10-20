@@ -51,7 +51,7 @@ GENRES = [
        who_title="Who books sessions?", who=[
          ("Members who already buy extras", "The people paying for training, classes or massage are the first to add a chamber pack."),
          ("Weekend competitors", "Runners, cyclists and rec-league players who book sessions around race weekends and tournaments."),
-         ("Personal-training clients", "Trainers sell a session as the recovery day in a program, a new line on the trainer's package too."),
+         ("Personal-training clients", "Trainers sell a session as the recovery day in a program."),
          ("Premium-tier members", "Put sessions in the top tier and give the members paying the most one more reason to stay."),
          ("Midday members", "Sessions in the quiet hours between the morning and evening rush fill time the chamber would otherwise sit empty."),
        ]),
