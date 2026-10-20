@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType, LevelFormat, PageBreak, Footer, PageNumber, TabStopType } = require("docx");
+const { Document, Packer, Paragraph, TextRun, ImageRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, ShadingType, LevelFormat, PageBreak, Footer, PageNumber, TabStopType } = require("docx");
 
 const STATE_KEY = (process.env.STATE || "utah").toLowerCase();
 const STATES = {
@@ -10,7 +10,8 @@ const STATES = {
 };
 const ST = STATES[STATE_KEY]; if (!ST) throw new Error("unknown STATE " + STATE_KEY);
 const OUT = process.env.WAIVER_OUT || "/Users/bailie/projects/purebaric-newsite/_internal/outreach/purebaric_business_rental_agreement_and_liability_waiver.docx";
-const FONT = "Calibri";
+const FONT = "Calibri"; const SERIF = "Georgia";
+const LOGO = require("fs").readFileSync(require("path").join(__dirname, "../../../images/logo.png"));
 const INK = "2B2320", TERRA = "9A4F3A", MUTED = "6F635B";
 
 const DUMP = process.env.WAIVER_DUMP ? [] : null;
@@ -21,8 +22,8 @@ function runs(text, o = {}) {
   const parts = String(text).split(/(\*\*[^*]+\*\*)/g).filter(Boolean);
   return parts.map(s => s.startsWith("**") ? new TextRun({ text: s.slice(2, -2), bold: true, font: FONT, size: o.size ?? 22, color: o.color }) : new TextRun({ text: s, font: FONT, size: o.size ?? 22, bold: o.bold, italics: o.italics, color: o.color, allCaps: o.caps }));
 }
-const h1 = t => { rec("h1", t); return new Paragraph({ heading: HeadingLevel.HEADING_1, keepNext: true, spacing: { before: 280, after: 120 }, children: [new TextRun({ text: t, bold: true, font: FONT, size: 26, color: TERRA })] }); };
-const h2 = t => { rec("h2", t); return new Paragraph({ heading: HeadingLevel.HEADING_2, keepNext: true, spacing: { before: 200, after: 80 }, children: [new TextRun({ text: t, bold: true, font: FONT, size: 22, color: INK })] }); };
+const h1 = t => { rec("h1", t); return new Paragraph({ heading: HeadingLevel.HEADING_1, keepNext: true, spacing: { before: 280, after: 120 }, children: [new TextRun({ text: t, bold: true, font: SERIF, size: 26, color: TERRA })] }); };
+const h2 = t => { rec("h2", t); return new Paragraph({ heading: HeadingLevel.HEADING_2, keepNext: true, spacing: { before: 200, after: 80 }, children: [new TextRun({ text: t, bold: true, font: SERIF, size: 22, color: INK })] }); };
 const bullet = (t, lvl = 0) => { rec("li", t); return new Paragraph({ numbering: { reference: "bullets", level: lvl }, spacing: { after: 80, line: 276 }, children: runs(t) }); };
 const num = (t) => { rec("li", t); return new Paragraph({ numbering: { reference: "numbers", level: 0 }, spacing: { after: 80, line: 276 }, children: runs(t) }); };
 const caps = t => { rec("b", t); return new Paragraph({ spacing: { after: 120, line: 276 }, children: [new TextRun({ text: t, font: FONT, size: 22, bold: true })] }); };
@@ -40,8 +41,8 @@ function kv(rows) {
 
 const children = [];
 // ---------- Title ----------
-children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 60 }, children: [new TextRun({ text: "PUREBARIC", bold: true, font: FONT, size: 40, color: INK })] }));
-children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 60 }, children: [new TextRun({ text: "BUSINESS RENTAL AGREEMENT AND LIABILITY WAIVER", bold: true, font: FONT, size: 28, color: TERRA })] }));
+children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 160 }, children: [new ImageRun({ type: "png", data: LOGO, transformation: { width: 213, height: 36 } })] }));
+children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 60 }, children: [new TextRun({ text: "Business Rental Agreement and Liability Waiver", bold: true, font: SERIF, size: 30, color: INK })] }));
 children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 240 }, children: [new TextRun({ text: "Mild Hyperbaric Chamber Placed at a Business Location" + ST.subtitleSuffix, font: FONT, size: 22, color: MUTED })] }));
 children.push(new Paragraph({ spacing: { after: 200 }, border: { top: { style: BorderStyle.SINGLE, size: 6, color: "E6DCCD" }, bottom: { style: BorderStyle.SINGLE, size: 6, color: "E6DCCD" } }, children: [new TextRun({ text: "THIS AGREEMENT CONTAINS A RELEASE OF LIABILITY, AN ASSUMPTION OF RISK, AND AN INDEMNITY. IT LIMITS PUREBARIC'S LIABILITY AND AFFECTS YOUR LEGAL RIGHTS. READ IT CAREFULLY BEFORE SIGNING.", bold: true, font: FONT, size: 20 })] }));
 
