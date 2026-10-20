@@ -259,9 +259,9 @@ for G in GENRES:
       ("Rent a hyperbaric chamber and sell sessions to the customers you already have."),
       size=9.8, color=MUTED, lh=4.7)
     y = bullets(2, y+6, [
-      "**Installed and serviced** by Purebaric",
+      "**Installation and service** included",
       "**Staff training** for your athletic trainers and coaches" if TEAM else "**Staff training** included",
-      "**Template consent forms**, including parent consent for athletes under 18" if TEAM else "**Consent forms** ready for your intake",
+      "**Template consent forms**, including parent consent for athletes under 18" if TEAM else "**Consent forms** provided for your business",
       "**One flat monthly cost** for the whole roster" if TEAM else "**Customer pamphlet** made for your business",
       "**No equipment** to buy or maintain",
     ], size=9.2, lh=4.3, gap=2.2)
