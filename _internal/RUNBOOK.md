@@ -661,6 +661,13 @@ This is a wellness rental business, **not a medical provider** ("not a medical d
 
 `_internal/skills/` holds the human-readable copies of the Claude Code skills used to run the business's research and sales-asset work. `franchise-location-research` reproduces the Knoxville, Tennessee package (market scan and score, legal check, prospect list, LOI and agreement, pamphlets, training, runbook, route plan, critiques) for any new city; the executable copy is `.claude/skills/franchise-location-research/`. See `_internal/skills/README.md`.
 
+## 14a. Home rental waiver, Word version (2026-10-19)
+
+- `_internal/outreach/source/make_home_waiver.js` builds the home waiver as a Word file from the same text the admin uses for finger signatures (`netlify/functions/_lib/waiver.js`, sections 1 to 11), so the two never drift. `STATE=utah` writes `_internal/outreach/Purebaric_Home_Rental_Waiver_Utah.docx`; `STATE=tennessee` writes `_internal/research/knoxville-tennessee/Purebaric - Home - Rental Waiver.docx` with Michael's details. Run with `NODE_PATH="$(npm root -g)"`.
+- Last page: Section 12 with seven signature rows (every adult user signs; row 1 is the primary renter) and Section 13, parent or guardian consent for minors (three rows), then the provider line. No per-page initials: the footer carries the document name, version and page X of Y, and the signature statement says the signer read every page.
+- Wording change (version `home-2026-10c`): Section 1 gained "Who must sign"; Section 4's child line now requires a signed Minors page and a parent present for the whole session. The admin's finger-signature flow still records one signer per rental, so households with several adult users or minors sign the paper version.
+- Owner to confirm with counsel: in Utah a parent's pre-injury release of a minor's own negligence claim is generally not enforceable (Hawkins v. Peart, 2001), so the Minors page works as consent, assumption of risk and the parent's own release and indemnity, not as a complete bar.
+
 ## 14b. Home hero rating row (baked baseline, 2026-10-16)
 
 - The stars + score + count in the home hero are **baked into `index.html`** so they paint at once; the live `/api/reviews` call (1 to 2 s, deliberately `no-store`) then replaces the numbers or hides the row if nothing is rated. When reviews change, run `node scripts/bake-hero-rating.js` before deploying so the baseline matches; if you forget, the page still corrects itself within a couple of seconds.
