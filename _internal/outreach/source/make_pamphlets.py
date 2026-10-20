@@ -285,7 +285,6 @@ for G in GENRES:
         y = heading(0, 13, "Why a Chamber\nMakes You Money")
         y = bullets(0, y+4, [
           "**Added revenue.** Sell single sessions, packs of sessions, or a premium membership tier to the customers who already walk through your door.",
-          f"**Recurring income.** {MK['facilities_word']} sell memberships and packs of sessions to regular customers. Each regular becomes steady monthly revenue.",
           "**A value add for your customers.** Your customers will see the addition of a hyperbaric chamber as a premium amenity and a reason to keep coming back to your business.",
           "**Retention.** Clients who build a weekly session into their routine regularly walk through your door.",
           "**Small footprint.** The chamber needs a 4 by 8 foot area and a wall outlet. An unused room or corner becomes a paid service.",
