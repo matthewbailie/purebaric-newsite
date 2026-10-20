@@ -121,6 +121,10 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   .data-table th, .data-table td { padding: 0.75rem 0.9rem; text-align: left; border-bottom: 1px solid var(--line); font-size: 0.9rem; vertical-align: top; }
   .data-table th { background: var(--cream-warm); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--stone-muted); }
   .data-table tr:last-child td { border-bottom: none; }
+  /* Rows that open a detail pop-up (Home tab lists). */
+  .data-table tr.row-link { cursor: pointer; }
+  .data-table tr.row-link:hover td, .data-table tr.row-link:focus-visible td { background: var(--cream-warm); }
+  .data-table tr.row-link:focus-visible { outline: 2px solid var(--terracotta); outline-offset: -2px; }
   .pill { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
   .pill-active   { background: #dbeacd; color: #3d5a26; }
   .pill-available { background: #dbeacd; color: #3d5a26; }
@@ -2070,7 +2074,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         ? '<span class="pill pill-scheduled">Start of contract</span>'
         : '<span class="pill pill-expired">End of contract</span>';
       const term = r.rateType === 'weekly' ? `${rentalWeeks(r)} wk` : `${rentalMonths(r)} mo`;
-      return `<tr><td><strong>${escape(fmtDate(date))}</strong><div class="renter-line">${when(date)}</div></td>
+      return `<tr class="row-link" role="button" tabindex="0" title="Open rental details" onclick='viewRentalDetails(${JSON.stringify(r.id)})' onkeydown='if(event.key==="Enter"||event.key===" "){event.preventDefault();viewRentalDetails(${JSON.stringify(r.id)})}'><td><strong>${escape(fmtDate(date))}</strong><div class="renter-line">${when(date)}</div></td>
         <td>${tag}</td>
         <td>${escape((r.renter && r.renter.name) || '—')}${r.businessName ? `<div class="renter-line">${escape(r.businessName)}</div>` : ''}</td>
         <td>${escape(chamber ? chamber.name : '—')}</td>
