@@ -30,7 +30,14 @@ exports.handler = async (event, context) => {
       const buf = Buffer.from(blob);
       const signed = rental.waiverSigned && rental.waiverSigned.signatureKey === rental.waiverFileKey;
       if (signed && q.raw !== "1") {
-        const html = W.renderSignedHtml(rental.waiverSigned, `data:image/png;base64,${buf.toString("base64")}`);
+        // Further signers (other adults, parents signing for minors) each have their own signature image.
+        const extras = [];
+        for (const rec of (rental.waiverSignings || []).filter((x) => x && x.signatureKey && x.signatureKey !== rental.waiverFileKey)) {
+          let dataUrl = "";
+          try { const g = await getWaiver(rec.signatureKey); if (g.blob) dataUrl = `data:image/png;base64,${Buffer.from(g.blob).toString("base64")}`; } catch (e) { /* shown as missing */ }
+          extras.push({ record: rec, dataUrl });
+        }
+        const html = W.renderSignedHtml(rental.waiverSigned, `data:image/png;base64,${buf.toString("base64")}`, extras);
         return { statusCode: 200, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" }, body: html };
       }
       return {
@@ -50,14 +57,21 @@ exports.handler = async (event, context) => {
       const s = v.signing;
       const rental = await store(STORES.rentals).get(s.rentalId, { type: "json" });
       if (!rental) return json(404, { error: "rental_not_found" });
+      // The first adult signing is the rental's waiver (waiverSigned); every signing, first included, is
+      // listed in waiverSignings so other adults and parents of minors can be added later.
+      const first = !rental.waiverSigned || rental.waiverSigned.signatureKey !== rental.waiverFileKey;
+      if (first && s.role === "guardian") return json(400, { error: "An adult renter signs first; then add parents signing for minors" });
       const signatureKey = await saveWaiver(s.rentalId, s.png, "image/png");
-      const waiverSigned = {
+      const record = {
         at: new Date().toISOString(), kind: s.kind, businessName: s.businessName, signerTitle: s.signerTitle,
+        role: s.role, minorName: s.minorName, minorAge: s.minorAge,
         name: s.signerName, email: s.signerEmail, phone: s.signerPhone, address: s.signerAddress,
         equipmentCondition: s.equipmentCondition, market: s.market, version: W.WAIVER_VERSIONS[s.kind], signatureKey,
         rentalId: s.rentalId, userAgent: String((event.headers || {})["user-agent"] || "").slice(0, 200),
       };
-      const updated = await updateRental(s.rentalId, { waiverFileKey: signatureKey, waiverSigned });
+      const signings = [...(rental.waiverSignings || []), record];
+      const patch = first ? { waiverFileKey: signatureKey, waiverSigned: record, waiverSignings: signings } : { waiverSignings: signings };
+      const updated = await updateRental(s.rentalId, patch);
       return json(200, { ok: true, rental: updated });
     }
 
@@ -69,7 +83,7 @@ exports.handler = async (event, context) => {
       }
       const buf = Buffer.from(dataBase64, "base64");
       const key = await saveWaiver(rentalId, buf, contentType || "application/octet-stream");
-      const rental = await updateRental(rentalId, { waiverFileKey: key, waiverSigned: null });
+      const rental = await updateRental(rentalId, { waiverFileKey: key, waiverSigned: null, waiverSignings: [] });
       if (!rental) return json(404, { error: "rental_not_found" });
       return json(200, { ok: true, rental });
     }

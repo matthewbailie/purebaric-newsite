@@ -2800,7 +2800,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         <td><span class="pill pill-${r.status}">${r.status}</span></td>
         <td><span class="pill pill-${payStatus}">${escape(paymentLabel)}</span></td>
         <td>${r.waiverFileKey
-            ? `<a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color: var(--terracotta);">${r.waiverSigned ? 'View signed waiver' : 'View waiver'}</a>${r.waiverSigned ? `<div class="renter-line">Signed ${escape(fmtDate(String(r.waiverSigned.at).slice(0, 10)))}</div>` : ''}`
+            ? `<a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color: var(--terracotta);">${r.waiverSigned ? 'View signed waiver' : 'View waiver'}</a>${r.waiverSigned ? `<div class="renter-line">Signed ${escape(fmtDate(String(r.waiverSigned.at).slice(0, 10)))}${waiverSignerSummary(r) ? ' · ' + escape(waiverSignerSummary(r)) : ''}</div>` : ''}`
             : `<div class="row-actions"><button class="btn btn-primary btn-sm" onclick='openWaiverSign(${JSON.stringify(r.id)})'>Sign waiver</button><label class="btn btn-ghost btn-sm" style="cursor: pointer;">Attach file<input type="file" accept="application/pdf,image/*" style="display:none;" onchange="uploadWaiver(event, '${r.id}')"></label></div>`}</td>
         <td>
           <div class="row-actions">
@@ -2847,7 +2847,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     if (r.paymentDate) payParts.push(`on ${escape(r.paymentDate)}`);
     const waiverHtml = r.waiverFileKey
       ? (r.waiverSigned
-        ? `Signed electronically by ${escape(r.waiverSigned.name)} on ${escape(fmtDate(String(r.waiverSigned.at).slice(0, 10)))} · <a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color: var(--terracotta);">View signed waiver</a>`
+        ? `Signed electronically by ${escape(r.waiverSigned.name)} on ${escape(fmtDate(String(r.waiverSigned.at).slice(0, 10)))}${waiverSignerSummary(r) ? ' · ' + escape(waiverSignerSummary(r)) : ''} · <a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color: var(--terracotta);">View signed waiver</a>${waiverAddSignerButton(r)}`
         : `<a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color: var(--terracotta);">View attached waiver</a>`)
       : `Not signed yet (${rentalIsBusiness(r) ? 'business rental agreement and liability waiver' : 'home rental waiver'}) · <button class="btn btn-primary btn-sm" onclick='openWaiverSign(${JSON.stringify(r.id)})'>Sign ${rentalIsBusiness(r) ? 'agreement' : 'waiver'} on this phone</button>`;
     const body = `
@@ -3380,17 +3380,36 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       const chamber = _chambers.find(x => x.id === r.chamberId);
       const label = `${escape(fmtDate(r.startDate))} → ${escape(fmtDate(r.endDate))}${chamber ? ' · ' + escape(chamber.name) : ''}`;
       const doc = rentalIsBusiness(r) ? 'business rental agreement and liability waiver' : 'home rental waiver';
-      if (r.waiverSigned) return `<li>${label}: <span class="pill pill-paid">Signed</span> ${escape(doc)}${r.waiverSigned.businessName ? ` for ${escape(r.waiverSigned.businessName)}` : ''} by ${escape(r.waiverSigned.name)}${r.waiverSigned.signerTitle ? ` (${escape(r.waiverSigned.signerTitle)})` : ''} on ${escape(fmtDate(String(r.waiverSigned.at).slice(0, 10)))} · <a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color:var(--terracotta);">View signed copy</a></li>`;
+      if (r.waiverSigned) return `<li>${label}: <span class="pill pill-paid">Signed</span> ${escape(doc)}${r.waiverSigned.businessName ? ` for ${escape(r.waiverSigned.businessName)}` : ''} by ${escape(r.waiverSigned.name)}${r.waiverSigned.signerTitle ? ` (${escape(r.waiverSigned.signerTitle)})` : ''} on ${escape(fmtDate(String(r.waiverSigned.at).slice(0, 10)))}${waiverSignerSummary(r) ? ' · ' + escape(waiverSignerSummary(r)) : ''} · <a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color:var(--terracotta);">View signed copy</a>${waiverAddSignerButton(r)}</li>`;
       if (r.waiverFileKey) return `<li>${label}: <span class="pill pill-paid">Attached</span> · <a href="/api/admin/waiver?rentalId=${r.id}" target="_blank" style="color:var(--terracotta);">View file</a></li>`;
       return `<li>${label}: <span class="pill pill-unpaid">Not signed</span> (${escape(doc)}) <button class="btn btn-primary btn-sm" onclick='openWaiverSign(${JSON.stringify(r.id)})'>Sign ${rentalIsBusiness(r) ? 'agreement' : 'waiver'} on this phone</button></li>`;
     }).join('')}</ul>`;
   }
 
+  // Who has signed a rental's waiver beyond the first renter: other adult users and parents of minors.
+  function waiverSignerSummary(r) {
+    const all = Array.isArray(r.waiverSignings) ? r.waiverSignings : [];
+    const extra = all.filter(x => x && x.signatureKey && x.signatureKey !== r.waiverFileKey);
+    const adults = extra.filter(x => x.role !== 'guardian').length, minors = extra.filter(x => x.role === 'guardian').length;
+    const parts = [];
+    if (adults) parts.push(`${adults} more adult${adults === 1 ? '' : 's'}`);
+    if (minors) parts.push(`${minors} minor${minors === 1 ? '' : 's'} with parent consent`);
+    return parts.join(', ');
+  }
+  function waiverAddSignerButton(r) {
+    if (rentalIsBusiness(r) || !r.waiverSigned) return '';
+    return ` · <button class="btn btn-ghost btn-sm" onclick='openWaiverSign(${JSON.stringify(r.id)}, "adult")'>Add a signer</button>`;
+  }
+
   // ─── Digital waiver signature: show the waiver on this phone, the renter signs with a finger ───
   const _waiverTexts = {}; let _waiverText = null, _sigPad = null;
-  async function openWaiverSign(rentalId) {
+  // role: undefined = the first renter's signing; "adult" or "guardian" = a further signer on a home rental
+  // (another adult user, or a parent/guardian signing for a minor).
+  async function openWaiverSign(rentalId, role) {
     const r = (_rentals || []).find(x => x.id === rentalId);
     if (!r) { toast('Rental not found', true); return; }
+    const extra = role === 'adult' || role === 'guardian';
+    _wvRole = extra ? role : 'adult';
     // A business rental signs the Business Rental Agreement and Liability Waiver; a home rental signs the home waiver.
     const kind = rentalIsBusiness(r) ? 'business' : 'home';
     try { if (!_waiverTexts[kind]) _waiverTexts[kind] = await api(`/api/admin/waiver/text?kind=${kind}`); } catch (err) { toast(err.message, true); return; }
@@ -3405,23 +3424,35 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       });
       return html + (inList ? '</ul>' : '');
     }).join('');
-    openModal(w.title, `
-      <div class="wv-head renter-line">Provider / Business: <strong>${escape(w.provider.name)}</strong> · ${escape(w.provider.phone)} / ${escape(w.provider.email)}</div>
+    const roleFields = extra ? `
+        <div class="seg" role="group" aria-label="Who is signing" style="grid-column:1 / -1;">
+          <button type="button" id="wvRoleAdult" class="${role === 'adult' ? 'on' : ''}" onclick="wvSetRole('adult')">Another adult user</button>
+          <button type="button" id="wvRoleGuardian" class="${role === 'guardian' ? 'on' : ''}" onclick="wvSetRole('guardian')">Parent or guardian, for a minor</button>
+        </div>
+        <label id="wvNameLabel">${role === 'guardian' ? 'Parent or guardian name' : 'Adult user\'s name'} <input id="wvName" value="" autocomplete="off"></label>
+        <div id="wvMinorFields" style="display:${role === 'guardian' ? 'contents' : 'none'};">
+          <label>Minor's name <input id="wvMinorName" value="" autocomplete="off"></label>
+          <label>Minor's age <input id="wvMinorAge" type="number" inputmode="numeric" min="0" max="17" value="" autocomplete="off"></label>
+        </div>
+        <label>Phone / Email (optional) <input id="wvContact" value="" autocomplete="off"></label>
+        <input id="wvAddress" type="hidden" value="${escape(addr)}">` : '';
+    openModal(extra ? `${w.title}: add a signer` : w.title, `
+      <div class="wv-head renter-line">Provider / Business: <strong>${escape(w.provider.name)}</strong> · ${escape(w.provider.phone)} / ${escape(w.provider.email)}${extra ? ` · Rental of ${escape(p.name || '')}` : ''}</div>
       <div class="wv-fields">
-        ${kind === 'business' ? `<label>Business (legal name) <input id="wvBusiness" value="${escape(r.businessName || '')}" autocomplete="off"></label>
+        ${extra ? roleFields : kind === 'business' ? `<label>Business (legal name) <input id="wvBusiness" value="${escape(r.businessName || '')}" autocomplete="off"></label>
         <label>Authorized signer <input id="wvName" value="${escape(p.name || '')}" autocomplete="off"></label>
         <label>Signer's title <input id="wvTitle" placeholder="Owner, manager…" autocomplete="off"></label>` : `<label>Renter name <input id="wvName" value="${escape(p.name || '')}" autocomplete="off"></label>`}
-        <label>Phone / Email <input id="wvContact" value="${escape([p.phone, p.email].filter(Boolean).join(' / '))}" autocomplete="off"></label>
-        <label>${kind === 'business' ? 'Business address (installation location)' : 'Address'} <input id="wvAddress" value="${escape(addr)}" autocomplete="off"></label>
+        ${extra ? '' : `<label>Phone / Email <input id="wvContact" value="${escape([p.phone, p.email].filter(Boolean).join(' / '))}" autocomplete="off"></label>
+        <label>${kind === 'business' ? 'Business address (installation location)' : 'Address'} <input id="wvAddress" value="${escape(addr)}" autocomplete="off"></label>`}
       </div>
       <div class="wv-text" id="wvText">${sections}</div>
-      <h4>${kind === 'business' ? 'Signature' : '12. Acknowledgment &amp; Signature'}</h4>
-      <label class="wv-agree"><input type="checkbox" id="wvAgree" onchange="wvUpdateSubmit()"> ${kind === 'business' ? 'I am authorized to sign for the Business, I have read this Agreement including its exhibits, and the Business agrees to it.' : 'I have read this Agreement fully, I understand it, and I am signing voluntarily.'}</label>
+      <h4 id="wvSigHead">${kind === 'business' ? 'Signature' : extra && role === 'guardian' ? '13. Minors: Parent or Guardian Consent' : '12. Acknowledgment &amp; Signatures'}</h4>
+      <label class="wv-agree"><input type="checkbox" id="wvAgree" onchange="wvUpdateSubmit()"> <span id="wvAgreeText">${kind === 'business' ? 'I am authorized to sign for the Business, I have read this Agreement including its exhibits, and the Business agrees to it.' : extra && role === 'guardian' ? WV_AGREE_GUARDIAN : WV_AGREE_ADULT}</span></label>
       <div class="renter-line" style="margin:8px 0 4px;">Sign with your finger in the box below.</div>
       <div class="wv-pad"><canvas id="wvCanvas" aria-label="Signature area"></canvas></div>
       <div class="wv-actions">
         <button type="button" class="btn btn-ghost btn-sm" onclick="wvClear()">Clear signature</button>
-        <label style="flex:1 1 200px;">${kind === 'business' ? 'Equipment condition at installation (optional)' : 'Equipment condition at delivery (optional)'} <input id="wvCondition" placeholder="e.g. clean, no marks" autocomplete="off"></label>
+        ${extra ? '<input id="wvCondition" type="hidden" value="">' : `<label style="flex:1 1 200px;">${kind === 'business' ? 'Equipment condition at installation (optional)' : 'Equipment condition at delivery (optional)'} <input id="wvCondition" placeholder="e.g. clean, no marks" autocomplete="off"></label>`}
       </div>
       <div class="modal-actions" style="margin-top:12px;">
         <button type="button" class="btn btn-primary" id="wvSubmit" disabled onclick='submitWaiverSign(${JSON.stringify(rentalId)})'>Record signature</button>
@@ -3430,6 +3461,19 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       <div class="renter-line" style="margin-top:8px;">Today: ${escape(fmtDate(localToday()))}. The signed copy is kept with this rental and can be viewed or printed from the Rentals and Customers tabs.</div>`);
     _sigPad = wvInitPad(document.getElementById('wvCanvas'));
     document.getElementById('wvText').scrollTop = 0;
+  }
+  const WV_AGREE_ADULT = 'I am 18 or older, I have read this Agreement fully, I understand it, and I am signing voluntarily.';
+  const WV_AGREE_GUARDIAN = 'I am the parent or legal guardian of the minor named above and have the authority to sign for them. I have read this Agreement. I consent to the minor\'s use of the chamber, I accept this Agreement on the minor\'s behalf and my own, including the Release of Liability and the Indemnification, and a parent or guardian will be present for every session the minor uses.';
+  let _wvRole = 'adult';
+  function wvSetRole(role) {
+    _wvRole = role === 'guardian' ? 'guardian' : 'adult';
+    const g = _wvRole === 'guardian';
+    document.getElementById('wvRoleAdult').classList.toggle('on', !g); document.getElementById('wvRoleGuardian').classList.toggle('on', g);
+    document.getElementById('wvMinorFields').style.display = g ? 'contents' : 'none';
+    document.getElementById('wvNameLabel').firstChild.textContent = g ? 'Parent or guardian name ' : "Adult user's name ";
+    document.getElementById('wvSigHead').textContent = g ? '13. Minors: Parent or Guardian Consent' : '12. Acknowledgment & Signatures';
+    document.getElementById('wvAgreeText').textContent = g ? WV_AGREE_GUARDIAN : WV_AGREE_ADULT;
+    document.getElementById('wvAgree').checked = false; wvUpdateSubmit();
   }
   // A small signature pad: pointer events (finger, stylus or mouse), crisp on high-density screens.
   function wvInitPad(canvas) {
@@ -3459,8 +3503,10 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const contact = document.getElementById('wvContact').value.trim();
     const [phone, email] = contact.includes('@') ? [contact.split('/')[0].includes('@') ? '' : contact.split('/')[0].trim(), contact.split('/').find(x => x.includes('@')).trim()] : [contact, ''];
     const bizEl = document.getElementById('wvBusiness'), titleEl = document.getElementById('wvTitle');
+    const minorNameEl = document.getElementById('wvMinorName'), minorAgeEl = document.getElementById('wvMinorAge');
     const body = {
       rentalId, kind: _waiverText.kind, businessName: bizEl ? bizEl.value : '', signerTitle: titleEl ? titleEl.value : '',
+      role: _wvRole, minorName: _wvRole === 'guardian' && minorNameEl ? minorNameEl.value : '', minorAge: _wvRole === 'guardian' && minorAgeEl ? minorAgeEl.value : '',
       signerName: document.getElementById('wvName').value, signerPhone: phone, signerEmail: email,
       signerAddress: document.getElementById('wvAddress').value, equipmentCondition: document.getElementById('wvCondition').value,
       agreed: document.getElementById('wvAgree').checked === true, signaturePng: _sigPad.canvas.toDataURL('image/png'), waiverVersion: _waiverText.version,
@@ -3468,7 +3514,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     try {
       const r = await api('/api/admin/waiver/sign', { method: 'POST', body: JSON.stringify(body) });
       const i = (_rentals || []).findIndex(x => x.id === rentalId); if (i !== -1) _rentals[i] = r.rental;
-      closeModal(); toast('Waiver signed and saved with the rental');
+      closeModal(); toast(_wvRole === 'guardian' ? 'Parent consent recorded with the rental' : 'Signature saved with the rental');
       await loadAll();
     } catch (err) { toast(err.message, true); if (btn) btn.disabled = false; }
   }

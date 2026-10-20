@@ -70,6 +70,33 @@ test("waiver: a finger signature is stored on the rental and the signed copy ren
   assert.equal(missing.statusCode, 404);
 });
 
+test("waiver: a home rental collects several signers; a parent cannot sign for a minor before an adult renter has signed", async () => {
+  const rentals = { h1: { id: "h1", rentalType: "residential" } };
+  let n = 0; const blobs = {};
+  const storage = {
+    STORES: { rentals: "rentals" },
+    store: () => ({ get: async (id) => rentals[id] || null }),
+    saveWaiver: async (rentalId, buf) => { const k = `${rentalId}/sig${++n}`; blobs[k] = buf; return k; },
+    getWaiver: async (key) => ({ blob: blobs[key] || null, metadata: { contentType: "image/png" } }),
+    updateRental: async (id, patch) => { rentals[id] = { ...rentals[id], ...patch }; return rentals[id]; },
+  };
+  const { handler } = loadWithStubs("admin-waiver.js", { "_lib/storage": storage, "_lib/admin": adminStub() });
+  const base = { rentalId: "h1", agreed: true, signaturePng: png, waiverVersion: W.WAIVER_VERSION };
+  const early = await call(handler, "POST", "/api/admin/waiver/sign", { ...base, signerName: "Jane Renter", role: "guardian", minorName: "Sam", minorAge: 9 });
+  assert.equal(early.statusCode, 400); assert.match(early.body, /adult renter signs first/);
+  assert.equal((await call(handler, "POST", "/api/admin/waiver/sign", { ...base, signerName: "Jane Renter" })).statusCode, 200);
+  assert.equal((await call(handler, "POST", "/api/admin/waiver/sign", { ...base, signerName: "Tom Renter", role: "adult" })).statusCode, 200);
+  assert.equal((await call(handler, "POST", "/api/admin/waiver/sign", { ...base, signerName: "Jane Renter", role: "guardian", minorName: "Sam Renter", minorAge: 9 })).statusCode, 200);
+  const r = rentals.h1;
+  assert.equal(r.waiverSigned.name, "Jane Renter"); assert.equal(r.waiverFileKey, "h1/sig1");
+  assert.equal(r.waiverSignings.length, 3);
+  assert.deepEqual(r.waiverSignings.map((x) => x.role), ["adult", "adult", "guardian"]);
+  const page = await call(handler, "GET", "/api/admin/waiver", null, { rentalId: "h1" });
+  assert.equal(page.statusCode, 200);
+  assert.match(page.body, /Tom Renter/); assert.match(page.body, /Sam Renter, age 9/);
+  assert.equal((page.body.match(/<img src="data:image\/png;base64,/g) || []).length, 3, "three signature images");
+});
+
 test("routes: the Utah plan loads from the bundle, progress is saved per day, and unknown days are 404", async () => {
   const settings = {};
   const storage = { STORES: { settings: "settings" }, store: () => ({ get: async (k) => settings[k] || null, setJSON: async (k, v) => { settings[k] = v; } }) };

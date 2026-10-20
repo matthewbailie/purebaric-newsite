@@ -68,3 +68,23 @@ test("the signed copy carries the text, the renter, the time in Mountain time an
   assert.match(html, /Clean, no marks/);
   assert.match(html, /Matthew Bailie \/ Purebaric/);
 });
+
+test("home rentals take further signers: adults for themselves, a parent or guardian for a minor", () => {
+  const adult = W.validateSigning({ ...good, role: "adult" });
+  assert.equal(adult.ok, true); assert.equal(adult.signing.role, "adult"); assert.equal(adult.signing.minorName, "");
+  assert.match(W.validateSigning({ ...good, role: "guardian" }).error, /minor's name/);
+  assert.match(W.validateSigning({ ...good, role: "guardian", minorName: "Sam", minorAge: 18 }).error, /0 to 17/);
+  const g = W.validateSigning({ ...good, role: "guardian", minorName: " Sam Renter ", minorAge: "12" });
+  assert.equal(g.ok, true); assert.equal(g.signing.role, "guardian"); assert.equal(g.signing.minorName, "Sam Renter"); assert.equal(g.signing.minorAge, 12);
+  const biz = W.waiverText("utah", "business");
+  assert.match(W.validateSigning({ ...good, kind: "business", businessName: "X", waiverVersion: biz.version, role: "guardian", minorName: "Sam", minorAge: 9 }).error, /one authorized signer/);
+  const html = W.renderSignedHtml({ at: "2026-10-19T20:00:00.000Z", name: "Jane Renter", rentalId: "r1", market: "utah" }, "data:image/png;base64,AAAA", [
+    { record: { role: "adult", name: "Tom Renter", at: "2026-10-19T20:05:00.000Z" }, dataUrl: "data:image/png;base64,BBBB" },
+    { record: { role: "guardian", name: "Jane Renter", minorName: "Sam Renter", minorAge: 12, at: "2026-10-19T20:06:00.000Z" }, dataUrl: "" },
+  ]);
+  assert.match(html, /12\. Acknowledgment &amp; Signatures|12\. Acknowledgment & Signatures/);
+  assert.match(html, /Adult user<\/td><td>Tom Renter/);
+  assert.match(html, /13\. Minors: Parent or Guardian Consent/);
+  assert.match(html, /Minor<\/td><td>Sam Renter, age 12/);
+  assert.match(html, /Signature image missing/);
+});

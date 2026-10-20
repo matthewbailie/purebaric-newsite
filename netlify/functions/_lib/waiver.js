@@ -131,8 +131,19 @@ function validateSigning(body) {
   if (version !== WAIVER_VERSIONS[kind]) return { ok: false, error: "The waiver text changed while this page was open; reload and sign again" };
   const businessName = String(b.businessName || "").trim().slice(0, 160);
   if (kind === "business" && !businessName) return { ok: false, error: "The business name is required on the business agreement" };
+  // Home rentals take several signers: each adult user signs for themselves ("adult"), and a parent or
+  // legal guardian signs for each user under 18 ("guardian", with the minor's name and age).
+  const role = String(b.role || "adult").toLowerCase() === "guardian" ? "guardian" : "adult";
+  const minorName = String(b.minorName || "").trim().slice(0, 120);
+  const minorAge = Number.parseInt(b.minorAge, 10);
+  if (role === "guardian") {
+    if (kind === "business") return { ok: false, error: "The business agreement has one authorized signer; minors are not signed for here" };
+    if (!minorName) return { ok: false, error: "The minor's name is required" };
+    if (!(minorAge >= 0 && minorAge <= 17)) return { ok: false, error: "The minor's age must be 0 to 17" };
+  }
   return { ok: true, signing: {
     kind, businessName, signerTitle: String(b.signerTitle || "").trim().slice(0, 80),
+    role, minorName: role === "guardian" ? minorName : "", minorAge: role === "guardian" ? minorAge : null,
     rentalId: String(b.rentalId), signerName: name,
     signerEmail: String(b.signerEmail || "").trim().slice(0, 160), signerPhone: String(b.signerPhone || "").trim().slice(0, 40),
     signerAddress: String(b.signerAddress || "").trim().slice(0, 240),
@@ -156,7 +167,19 @@ function renderItems(items) {
 
 // A complete, printable copy of a signed waiver: the text as signed, the renter's details, the
 // signature image and the signing record. `record` is rental.waiverSigned; `signatureDataUrl` is the PNG.
-function renderSignedHtml(record, signatureDataUrl) {
+// `extras` lists the rental's further signings (rental.waiverSignings beyond the first) as
+// { record, dataUrl }: adult users sign in section 12, parents or guardians sign for minors in section 13.
+const whenOf = (at) => at ? new Date(at).toLocaleString("en-US", { timeZone: "America/Denver", dateStyle: "long", timeStyle: "short" }) + " (Mountain time)" : "";
+function signerBlock(rec, dataUrl) {
+  const guardian = rec.role === "guardian";
+  return `<table>${guardian ? `<tr><td>Minor</td><td>${esc(rec.minorName)}${rec.minorAge != null ? `, age ${esc(rec.minorAge)}` : ""}</td></tr><tr><td>Parent or guardian</td><td>${esc(rec.name)}</td></tr>` : `<tr><td>Adult user</td><td>${esc(rec.name)}</td></tr>`}
+${rec.email || rec.phone ? `<tr><td>Phone / Email</td><td>${esc([rec.phone, rec.email].filter(Boolean).join(" / "))}</td></tr>` : ""}
+<tr><td>Signed</td><td>${esc(whenOf(rec.at))}</td></tr>
+<tr><td>Signature</td><td><div class="sig">${dataUrl ? `<img src="${dataUrl}" alt="Signature of ${esc(rec.name)}" width="400">` : "<span class=\"muted\">Signature image missing</span>"}</div></td></tr></table>`;
+}
+function renderSignedHtml(record, signatureDataUrl, extras = []) {
+  const adults = (extras || []).filter((x) => x && x.record && x.record.role !== "guardian");
+  const guardians = (extras || []).filter((x) => x && x.record && x.record.role === "guardian");
   const w = waiverText(record.market, record.kind);
   const signedAt = record.at ? new Date(record.at) : null;
   const when = signedAt ? signedAt.toLocaleString("en-US", { timeZone: "America/Denver", dateStyle: "long", timeStyle: "short" }) + " (Mountain time)" : "";
@@ -172,11 +195,14 @@ ${record.address ? `<tr><td>Address</td><td>${esc(record.address)}</td></tr>` : 
 ${record.email || record.phone ? `<tr><td>Phone / Email</td><td>${esc([record.phone, record.email].filter(Boolean).join(" / "))}</td></tr>` : ""}
 <tr><td>Rental</td><td>${esc(record.rentalId)}</td></tr></table>
 ${body}
-<h2>${isBiz ? "Signature" : "12. Acknowledgment & Signature"}</h2>
+<h2>${isBiz ? "Signature" : "12. Acknowledgment & Signatures"}</h2>
+${isBiz ? "" : "<p>Each adult who will use the chamber signed below, confirming they had read the whole Agreement.</p>"}
 <table><tr><td>${isBiz ? "Signed for the Business by" : "Renter name"}</td><td>${esc(record.name)}${isBiz && record.signerTitle ? `, ${esc(record.signerTitle)}` : ""}</td></tr><tr><td>Signed</td><td>${esc(when)}</td></tr>
 <tr><td>Signature</td><td><div class="sig"><img src="${signatureDataUrl}" alt="Signature of ${esc(record.name)}" width="400"></div></td></tr>
 ${record.equipmentCondition ? `<tr><td>Equipment condition at delivery</td><td>${esc(record.equipmentCondition)}</td></tr>` : ""}
 <tr><td>Signing record</td><td class="muted">Signed on the provider's device in the ${isBiz ? "signer's" : "renter's"} presence, after confirming they had read the agreement. ${record.userAgent ? esc(record.userAgent) : ""}</td></tr></table>
+${adults.map((x) => signerBlock(x.record, x.dataUrl)).join("")}
+${guardians.length ? `<h2>13. Minors: Parent or Guardian Consent</h2><p>Each parent or legal guardian below signed for the minor named, consenting to the minor's use of the chamber, accepting the Agreement on the minor's behalf and their own, and agreeing a parent or guardian is present for every session.</p>${guardians.map((x) => signerBlock(x.record, x.dataUrl)).join("")}` : ""}
 </body></html>`;
 }
 
