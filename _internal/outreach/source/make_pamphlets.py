@@ -288,7 +288,7 @@ for G in GENRES:
           "**A value add for your customers.** Your customers will see the addition of a hyperbaric chamber as a premium amenity and a reason to keep coming back to your business.",
           "**Retention.** Clients who build a weekly session into their routine regularly walk through your door.",
           "**Small footprint.** The chamber needs a 4 by 8 foot area and a wall outlet. An unused room or corner becomes a paid service.",
-          "**No large investment up front.** You rent the chamber by the month. There is no equipment to buy, finance, or resell.",
+          "**No large investment up front.** You rent the chamber by the month. There is no equipment to buy, finance, or resell, which keeps the cost of a new revenue stream low.",
         ], size=8.6, lh=3.9, gap=1.7)
         who_box(0, y+2, G["who_title"], G["who"], intro="The customers you already have who will pay for sessions.")
 
