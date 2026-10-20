@@ -19,3 +19,5 @@ Regenerated 16 October 2026 without the dashed fold marks (owner request). The g
 ## Writing voice (owner, 16 Oct 2026)
 
 Write as a plain-spoken sales consultant talking to a small-business owner about money, space and effort. Short declarative sentences. Every bullet is a one- or two-word bold label followed by plain text that states a concrete value: what the owner earns, saves, or avoids. Say "business" and "customers", not "facility" or "members". No slogans, no wordplay, no sentence fragments as headings. Describe what the chamber does and how a session works in the same plain terms.
+
+Owner decision (20 Oct 2026): no revenue or break-even figures on the cover. They read as a price. The numbers live on the inside page only.
