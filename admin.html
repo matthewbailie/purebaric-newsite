@@ -2868,7 +2868,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       <div class="modal-row"><strong>Chamber</strong><div>${escape(chamber ? chamber.name : '(deleted chamber)')}${chamber && chamber.style ? ` · ${escape(chamber.style)}` : ''}</div></div>
       <div class="modal-row"><strong>Machine</strong><div>${machine ? escape(machine.name) : '(none assigned)'}</div></div>
       <div class="modal-row"><strong>Contact</strong><div>${escape(renter.name || ', ')}<br>${escape(renter.email || ', ')}<br>${escape(renter.phone || ', ')}</div></div>
-      <div class="modal-row"><strong>${rentalIsBusiness(r) ? 'Installation address' : 'Delivery address'}</strong><div>${escape(address).replace(/\n/g, '<br>')}</div></div>
+      <div class="modal-row"><strong>${rentalIsBusiness(r) ? 'Installation address' : 'Delivery address'}</strong><div id="rentalDetailAddr">${escape(address).replace(/\n/g, '<br>')}</div></div>
       <div class="modal-row"><strong>Dates</strong><div>${escape(fmtDate(r.startDate))} → ${escape(fmtDate(r.endDate))} <span style="color:var(--stone-muted);">(≈ ${isWeekly ? `${weeks} week${weeks > 1 ? 's' : ''}` : `${months} month${months > 1 ? 's' : ''}`}, ${days} days)</span></div></div>
       <div class="modal-row"><strong>Rate</strong><div>$${(r.monthlyRate || 0).toLocaleString()}/${isWeekly ? 'wk' : 'mo'}${isWeekly ? ' <span style="color:var(--terracotta);">(custom weekly billing)</span>' : ''} · est. total $${estTotal.toLocaleString()}</div></div>
       <div class="modal-row"><strong>Payment</strong><div><span class="pill pill-${payStatus}">${escape(payParts.join(' · '))}</span></div></div>
@@ -2885,6 +2885,17 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         ${renter.phone ? `<a href="tel:${escape(renter.phone)}" class="btn btn-ghost btn-sm">Call</a>` : ''}
       </div>`;
     openModal(`Rental · ${renter.name || (chamber ? chamber.name : 'details')}`, body);
+    // No address on the rental and the customer list is not loaded yet (Home tab): look the customer up now.
+    if (address === '—' && (renter.name || renter.email || renter.phone) && window.PurebaricAdminUtils) {
+      api(`/api/admin/customers?q=${encodeURIComponent(renter.name || renter.email || renter.phone)}`).then(data => {
+        const c = window.PurebaricAdminUtils.findCustomerFor((data && data.customers) || [], renter);
+        const a = c ? customerAddress(c) : null;
+        const el = document.getElementById('rentalDetailAddr');
+        if (!el || !hasAddr(a)) return;
+        const l2 = [a.city, a.state].filter(Boolean).join(', ') + (a.zip ? ` ${a.zip}` : '');
+        el.innerHTML = [a.street, l2.trim()].filter(Boolean).map(escape).join('<br>');
+      }).catch(() => { /* leave the dash */ });
+    }
   }
 
   // "+ New rental": always start from a clean, exception-free dropdown build —
