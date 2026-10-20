@@ -907,6 +907,10 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       <p class="renter-line" style="margin:0 0 12px;max-width:760px;">Monthly rate per chamber for business rentals by rental length. The 1-month rate is the base; shorter rates at longer lengths show as a percentage discount on the business booking page. Defaults: $979, 10% off from 3 months, 15% from 6, 20% at 12.</p>
       <div id="bizPricingGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px 24px;max-width:720px;"></div>
 
+      <h3 class="inv-heading" style="margin-top:30px;">Stripe payment links by rental length</h3>
+      <p class="renter-line" style="margin:0 0 12px;max-width:760px;">Paste the Stripe payment link for each rental length (buy.stripe.com or checkout.stripe.com links only). Copy sends the link to the clipboard to text or email a renter. Saved with the Save pricing button.</p>
+      <div class="table-wrap" style="max-width:980px;"><table class="data-table" id="paymentLinksTable"><thead><tr><th>Length</th><th>Home rental link</th><th>Business rental link</th></tr></thead><tbody></tbody></table></div>
+
       <h3 class="inv-heading" style="margin-top:34px;">Payments (Stripe)</h3>
       <p class="renter-line" style="margin:0 0 12px;max-width:760px;">Connect Stripe so a rental's payment link is generated in the portal and paid rentals auto-reconcile. Keys are stored securely and never shown again after saving. <strong>Setup:</strong> in your Stripe dashboard, copy the <em>Secret key</em> (Developers → API keys), and add a webhook endpoint at <code>https://purebaric.com/api/stripe-webhook</code> (events <code>payment_intent.succeeded</code>, <code>checkout.session.completed</code>) then copy its <em>Signing secret</em>.</p>
       <div id="stripeStatus" class="renter-line" style="margin-bottom:12px;"></div>
@@ -4283,7 +4287,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   // ─── Pricing ───
   async function loadPricing() {
     const data = await api('/api/admin/pricing');
-    _bizPricing = (data && data.business) || _bizPricing; _pricing = data.months || {};
+    _bizPricing = (data && data.business) || _bizPricing; _pricing = data.months || {}; _paymentLinks = (data && data.links) || { home: {}, business: {} };
     renderPricing();
   }
 
@@ -4702,6 +4706,30 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     };
     draw('pricingGrid', 'pm', _pricing, PRICING_FALLBACK);
     draw('bizPricingGrid', 'bm', _bizPricing, BIZ_PRICING_FALLBACK);
+    renderPaymentLinks();
+  }
+  let _paymentLinks = { home: {}, business: {} };
+  function renderPaymentLinks() {
+    const body = document.querySelector('#paymentLinksTable tbody');
+    if (!body) return;
+    const cell = (kind, m) => {
+      const v = (_paymentLinks[kind] || {})[m] || '';
+      return `<td><div style="display:flex;gap:6px;align-items:center;min-width:260px;">
+        <input type="url" id="pl-${kind}-${m}" value="${escape(v)}" placeholder="https://buy.stripe.com/…" autocomplete="off" style="flex:1 1 auto;min-width:0;padding:7px 9px;border:1px solid var(--line,#e6dccd);border-radius:8px;font-family:inherit;font-size:13px;">
+        <button type="button" class="btn btn-ghost btn-sm" onclick="copyPaymentLink('${kind}', ${m})" ${v ? '' : 'disabled'}>Copy</button>
+        ${v ? `<a class="btn btn-ghost btn-sm" href="${escape(v)}" target="_blank" rel="noopener" title="Open the link">Open</a>` : ''}
+      </div></td>`;
+    };
+    let html = '';
+    for (let m = 1; m <= 12; m++) html += `<tr><td style="white-space:nowrap;">${m} month${m > 1 ? 's' : ''}</td>${cell('home', m)}${cell('business', m)}</tr>`;
+    body.innerHTML = html;
+  }
+  async function copyPaymentLink(kind, m) {
+    const el = document.getElementById(`pl-${kind}-${m}`);
+    const v = el ? el.value.trim() : '';
+    if (!v) { toast('No link saved for that length', true); return; }
+    try { await navigator.clipboard.writeText(v); toast(`${m}-month ${kind} link copied`); }
+    catch (e) { el.select(); toast('Copy blocked by the browser; the link is selected, press copy', true); }
   }
   // "% off" follows what is typed: each month compared with the 1-month rate in the same table.
   function refreshPricingOff(prefix) {
@@ -4719,8 +4747,9 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     if (/^bm-\d+$/.test(e.target.id)) refreshPricingOff('bm');
   });
   async function savePricing() {
-    const months = {}, business = {};
+    const months = {}, business = {}, links = { home: {}, business: {} };
     for (let m = 1; m <= 12; m++) {
+      for (const kind of ['home', 'business']) { const le = document.getElementById(`pl-${kind}-${m}`); if (le && le.value.trim()) links[kind][m] = le.value.trim(); }
       const el = document.getElementById('pm-' + m);
       const v = el ? parseInt(el.value, 10) : NaN;
       if (v > 0) months[m] = v;
@@ -4729,9 +4758,12 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       if (bv > 0) business[m] = bv;
     }
     try {
-      const data = await api('/api/admin/pricing', { method: 'PUT', body: JSON.stringify({ months, business }) });
+      const data = await api('/api/admin/pricing', { method: 'PUT', body: JSON.stringify({ months, business, links }) });
       _pricing = data.months || months;
       _bizPricing = data.business || business;
+      _paymentLinks = data.links || links;
+      const dropped = ['home', 'business'].reduce((n, k) => n + Object.keys(links[k]).filter(m => !(_paymentLinks[k] || {})[m]).length, 0);
+      if (dropped) toast(`${dropped} link${dropped === 1 ? ' was' : 's were'} not saved: only buy.stripe.com or checkout.stripe.com links are accepted`, true);
       renderPricing();
       toast('Pricing saved, live on the site');
     } catch (err) { toast(err.message, true); }

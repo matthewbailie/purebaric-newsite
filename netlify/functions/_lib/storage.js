@@ -697,6 +697,31 @@ async function setPricing(months) {
   return clean;
 }
 
+// ───────── Stripe payment links per rental length ─────────
+// One blob at settings/paymentLinks: { home: { "12": "https://buy.stripe.com/…" }, business: { … } }.
+// Only Stripe-hosted links are kept, so a typo cannot send a renter to another site.
+const PAYMENT_LINK_RE = /^https:\/\/(buy|checkout)\.stripe\.com\/\S+$/;
+function normalizePaymentLinks(links) {
+  const out = { home: {}, business: {} };
+  for (const kind of ["home", "business"]) {
+    const src = (links && links[kind]) || {};
+    for (let m = 1; m <= 12; m++) {
+      const v = String(src[m] == null ? "" : src[m]).trim().slice(0, 300);
+      if (v && PAYMENT_LINK_RE.test(v)) out[kind][m] = v;
+    }
+  }
+  return out;
+}
+async function getPaymentLinks() {
+  const doc = await store(STORES.settings).get("paymentLinks", { type: "json" });
+  return normalizePaymentLinks(doc);
+}
+async function setPaymentLinks(links) {
+  const clean = normalizePaymentLinks(links);
+  await store(STORES.settings).setJSON("paymentLinks", { id: "paymentLinks", ...clean, updatedAt: nowIso() });
+  return clean;
+}
+
 // ───────── Waivers (binary blob storage) ─────────
 
 async function saveWaiver(rentalId, buffer, contentType) {
@@ -762,6 +787,7 @@ async function deleteAdminSession(sessionId) {
 }
 
 module.exports = {
+  normalizePaymentLinks, getPaymentLinks, setPaymentLinks,
   inventoryInputs,
   getDeliveryAvailability,
   setDeliveryAvailability,
