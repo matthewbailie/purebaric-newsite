@@ -18,7 +18,7 @@ MARKETS = {
   "tennessee": dict(
     prefix="Purebaric_TN_pamphlet_", phone="(801) 884-2113", email="mlebailie@hotmail.com",
     out_default=os.path.expanduser("~/Desktop/Tennessee Purbaric V2.0/pamphlets"),
-    local="**Now serving Knoxville, Tennessee.** Purebaric chambers are in use in homes and businesses today, and we are now delivering to the Knoxville area. You work directly with the owner, from the first call through installation and ongoing support.",
+    local="**Now serving Knoxville, Tennessee.** Purebaric chambers are in use in homes and businesses today, and we are now delivering to the Knoxville area.",
     facilities_word="Facilities", charge_label="What facilities charge today(1)",
     price_rows=[("Single session (60 min)", "$100", ""), ("10-session pack", "$800", "$80 a session"), ("20-session pack", "$1,400", "$70 a session")],
     footnote="(1) Published 2026 prices for 60-minute mild-chamber sessions from a Knoxville-area clinic. All figures are estimates before staff time, facility overhead, and taxes.",
@@ -27,7 +27,7 @@ MARKETS = {
   "utah": dict(
     prefix="Purebaric_UT_pamphlet_", phone="(801) 901-0873", email="hello@purebaric.com",
     out_default=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "pamphlets"),
-    local="**Utah-based and local.** Purebaric chambers are in use across the Wasatch Front today. You work directly with the owner, from the first call through installation and ongoing support.",
+    local="**Utah-based and local.** Purebaric chambers are in use across the Wasatch Front today.",
     facilities_word="Utah facilities", charge_label="What Utah facilities charge today(1)",
     price_rows=[("Single session (60 min)", "$79 - $129", ""), ("10-session pack", "$750 - $1,290", "$75 - $129 a session"), ("20-session pack", "$1,400 - $2,580", "$70 - $129 a session")],
     footnote="(1) Published 2026 prices from facilities in Lehi, Orem, and Salt Lake City. All figures are estimates before staff time, facility overhead, and taxes.",
