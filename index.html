@@ -628,11 +628,11 @@ document.addEventListener('keydown',function(e){var lb=document.getElementById('
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
   var photoN=0;
   slides.forEach(function(s,i){var b=document.createElement('button');b.type='button';if(s.tagName==='VIDEO'){b.setAttribute('aria-label','Play customer testimonial video');}else{photoN++;b.setAttribute('aria-label','Show photo '+photoN);}if(i===0)b.className='on';b.addEventListener('click',function(){go(i);restart();});dots.appendChild(b);});
-  function go(i){idx=(i+slides.length)%slides.length;slides.forEach(function(s,j){s.classList.toggle('active',j===idx);});dots.querySelectorAll('button').forEach(function(d,j){d.classList.toggle('on',j===idx);});var v=document.getElementById('heroVideo');if(v){if(slides[idx]===v){if(timer){clearInterval(timer);timer=null;}v.currentTime=0;v.muted=true;if(!reduce){var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});}}else{v.pause();}}}
+  function go(i){idx=(i+slides.length)%slides.length;slides.forEach(function(s,j){s.classList.toggle('active',j===idx);});dots.querySelectorAll('button').forEach(function(d,j){d.classList.toggle('on',j===idx);});var v=document.getElementById('heroVideo');if(v){if(slides[idx]===v){if(timer){clearInterval(timer);timer=null;}v.currentTime=0;v.muted=true;if(!reduce){var pr=v.play();if(pr&&pr.catch)pr.catch(function(){start();});}}else{v.pause();}}}
   function start(){if(reduce)return;timer=setInterval(function(){go(idx+1);},5000);}
   function restart(){if(timer)clearInterval(timer);if(slides[idx]&&slides[idx].tagName==='VIDEO')return;start();}
   var hv=document.getElementById('heroVideo');
-  if(hv){hv.addEventListener('ended',function(){go(idx+1);restart();});}
+  if(hv){hv.addEventListener('ended',function(){go(idx+1);restart();});var hs=hv.querySelector('source');if(hs)hs.addEventListener('error',function(){if(slides[idx]===hv){go(idx+1);restart();}});}
   // swipe left or right anywhere on the photo to change slides (touch and pen; mouse drags are ignored)
   var wrap=slides[0].parentElement, sx=null, sy=null;
   wrap.style.touchAction='pan-y';
