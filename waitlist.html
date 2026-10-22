@@ -28,6 +28,25 @@
 .frm .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .req{color:var(--terra)}
 .helper{font-size:12.5px;color:var(--muted);margin-top:6px}
+/* availability calendar for the start date (same look as the booking page) */
+.dcal{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:12px 12px 10px;max-width:420px;margin-top:8px}
+.dcal[hidden]{display:none}
+.dcal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.dcal-month{font:inherit;font-size:15px;font-weight:700;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:8px;padding:5px 8px;max-width:220px;cursor:pointer}
+.dcal-nav{border:1px solid var(--line);background:#fff;border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:16px;line-height:1;color:var(--ink)}
+.dcal-nav:disabled{opacity:.35;cursor:default}
+.dcal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dcal-dow{font-size:11px;font-weight:700;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.04em;padding:2px 0 4px}
+.dcal-day{border:1px solid transparent;background:transparent;border-radius:8px;height:38px;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;font-family:inherit}
+.dcal-day.ok{background:var(--ok-bg);border-color:#cfdcb6;color:var(--ok)}
+.dcal-day.ok:hover{border-color:var(--ok)}
+.dcal-day.off{color:#b9b0a6;cursor:default;text-decoration:line-through}
+.dcal-day.pad{visibility:hidden}
+.dcal-day.sel{background:var(--terra);border-color:var(--terra-d);color:#fff}
+.dcal-key{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted);margin-top:8px}
+.dcal-key i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px}
+.dcal-clear{margin-left:auto;background:none;border:none;font:inherit;font-size:12px;font-weight:600;color:var(--terra-d);cursor:pointer;text-decoration:underline;padding:0}
+#wlDate[readonly]{cursor:pointer;background:#fff}
 .divider{margin:26px 0 16px;padding-top:20px;border-top:1px solid var(--line)}
 .divider:first-of-type{border-top:none;padding-top:0;margin-top:0}
 .divider h3{font-size:17px;font-weight:700;margin-bottom:4px}
@@ -109,7 +128,7 @@
           <option>I'm planning ahead, flexible</option>
         </select>
       </div>
-      <div class="fg"><label for="wlDate">Earliest date you'd want to start</label><input type="date" name="earliest_start" id="wlDate"><p class="helper">Optional, if you have a specific date in mind.</p></div>
+      <div class="fg"><label for="wlDate">Earliest date you'd want to start</label><input type="date" name="earliest_start" id="wlDate" autocomplete="off"><div class="dcal" id="wlCal" hidden></div><p class="helper" id="wlDateHelp">Optional, if you have a specific date in mind.</p></div>
       <div class="fg"><label for="wlNotes">Anything we should know?</label><textarea name="notes" id="wlNotes" placeholder="Specific scheduling needs, questions, or context that would help us serve you better."></textarea></div>
 
       <label class="ck"><input type="checkbox" name="consent_no_guarantee" id="wlConsent" required> I understand that joining the waitlist does not guarantee a reservation, and that availability is offered on a first-come, first-served basis. <span class="req">*</span></label>
@@ -158,6 +177,63 @@ var outOfArea=false;
   document.getElementById('wlIntro').textContent="We're Utah-only today, and focused on the Wasatch Front and Utah Valley. Drop your details and we'll let you know the moment Purebaric is available where you live.";
 })();
 
+/* Start-date calendar: the same open-delivery-day data the booking page uses
+   (/api/delivery-availability). When it has open days, the date field opens this
+   calendar instead of the browser's picker, so only days a chamber can actually be
+   delivered are selectable. If the data is missing or nothing is open, the plain
+   date input stays as it was. */
+(function(){
+  var inp=document.getElementById('wlDate'), cal=document.getElementById('wlCal'), help=document.getElementById('wlDateHelp'), len=document.getElementById('wlLength');
+  if(!inp||!cal)return;
+  var DATES=null, MONTH=null, ISO='';
+  function monthsFor(){ var v=len?len.value:''; return /^1 /.test(v)?1:/^2/.test(v)?2:/^4/.test(v)?4:/^12/.test(v)?12:1; }
+  function fmtLong(iso){ var d=new Date(iso+'T00:00:00'); return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}); }
+  function load(){
+    fetch('/api/delivery-availability?style=lying&months='+monthsFor()).then(function(r){return r.json();}).then(function(j){
+      var dates=(j&&j.dates)||[];
+      if(!dates.some(function(d){return d.ok;})){ DATES=null; cal.hidden=true; return; }
+      DATES=dates;
+      if(inp.type!=='text'){ inp.type='text'; inp.readOnly=true; inp.placeholder='Pick an open delivery day'; inp.setAttribute('inputmode','none'); }
+      if(ISO&&!dates.some(function(d){return d.date===ISO&&d.ok;})){ ISO=''; inp.value=''; }
+      var first=dates.filter(function(d){return d.ok;})[0];
+      if(!MONTH||!dates.some(function(d){return d.ok&&d.date.slice(0,7)===MONTH;})) MONTH=(ISO||first.date).slice(0,7);
+      help.textContent='Optional. Green days are open for delivery'+(j.nextAvailable&&j.today&&j.nextAvailable>j.today?'; the first open day is '+fmtLong(j.nextAvailable)+'.':'.');
+      if(!cal.hidden)render();
+    }).catch(function(){});
+  }
+  function render(){
+    var dates=DATES; if(!dates)return;
+    var byDate={}; dates.forEach(function(d){byDate[d.date]=d.ok;});
+    var first=dates[0].date.slice(0,7), last=dates[dates.length-1].date.slice(0,7);
+    if(MONTH<first)MONTH=first; if(MONTH>last)MONTH=last;
+    var y=+MONTH.slice(0,4), mo=+MONTH.slice(5,7)-1;
+    var start=new Date(Date.UTC(y,mo,1)), daysIn=new Date(Date.UTC(y,mo+1,0)).getUTCDate();
+    var cells=''; var dows=['Su','Mo','Tu','We','Th','Fr','Sa'];
+    for(var i=0;i<7;i++)cells+='<div class="dcal-dow">'+dows[i]+'</div>';
+    for(var p=0;p<start.getUTCDay();p++)cells+='<button type="button" class="dcal-day pad" tabindex="-1"></button>';
+    for(var d=1;d<=daysIn;d++){
+      var iso=MONTH+'-'+(d<10?'0':'')+d; var ok=byDate[iso]===true;
+      cells+='<button type="button" class="dcal-day '+(ok?'ok':'off')+(iso===ISO?' sel':'')+'" data-d="'+iso+'" '+(ok?'':'disabled aria-disabled="true"')+' aria-label="'+iso+(ok?' open':' not available')+'">'+d+'</button>';
+    }
+    var pm=MONTH>first, nm=MONTH<last;
+    var monthsList=[]; dates.forEach(function(d){ var ym=d.date.slice(0,7); if(monthsList.indexOf(ym)<0)monthsList.push(ym); });
+    var monthSel='<select class="dcal-month" id="wlCalMonth" aria-label="Choose a month">'+monthsList.map(function(ym){ var dt=new Date(Date.UTC(+ym.slice(0,4),+ym.slice(5,7)-1,1)); var open=dates.some(function(d){return d.ok&&d.date.slice(0,7)===ym;}); return '<option value="'+ym+'"'+(ym===MONTH?' selected':'')+'>'+dt.toLocaleDateString('en-US',{month:'long',year:'numeric',timeZone:'UTC'})+(open?'':' (full)')+'</option>'; }).join('')+'</select>';
+    cal.innerHTML='<div class="dcal-head"><button type="button" class="dcal-nav" id="wlCalPrev" '+(pm?'':'disabled')+' aria-label="Previous month">&#8249;</button>'+monthSel+'<button type="button" class="dcal-nav" id="wlCalNext" '+(nm?'':'disabled')+' aria-label="Next month">&#8250;</button></div><div class="dcal-grid">'+cells+'</div><div class="dcal-key"><span><i style="background:var(--ok-bg);border:1px solid #cfdcb6"></i>Open</span><span><i style="background:var(--terra)"></i>Your date</span><span><i style="background:#eee"></i>Not available</span>'+(ISO?'<button type="button" class="dcal-clear" id="wlCalClear">Clear date</button>':'')+'</div>';
+    function shift(n){ var dt=new Date(Date.UTC(y,mo+n,1)); MONTH=dt.toISOString().slice(0,7); render(); }
+    cal.querySelector('#wlCalMonth').addEventListener('change',function(){ MONTH=this.value; render(); });
+    cal.querySelector('#wlCalPrev').addEventListener('click',function(){shift(-1);});
+    cal.querySelector('#wlCalNext').addEventListener('click',function(){shift(1);});
+    cal.querySelectorAll('.dcal-day.ok').forEach(function(b){ b.addEventListener('click',function(){ ISO=b.dataset.d; inp.value=fmtLong(ISO); cal.hidden=true; }); });
+    var clr=cal.querySelector('#wlCalClear'); if(clr)clr.addEventListener('click',function(){ ISO=''; inp.value=''; render(); });
+  }
+  function open(){ if(!DATES)return; cal.hidden=!cal.hidden; if(!cal.hidden)render(); }
+  inp.addEventListener('click',open);
+  inp.addEventListener('keydown',function(e){ if(DATES&&(e.key==='Enter'||e.key===' ')){ e.preventDefault(); open(); } });
+  if(len)len.addEventListener('change',load);
+  load();
+  window.__wlStartIso=function(){ return DATES?ISO:inp.value; };
+})();
+
 document.getElementById('waitlistForm').addEventListener('submit',function(e){
   e.preventDefault();
   var f=e.target,btn=document.getElementById('wlSubmit'),res=document.getElementById('wlResult');
@@ -171,7 +247,7 @@ document.getElementById('waitlistForm').addEventListener('submit',function(e){
   data.set('city_zip',document.getElementById('wlCityZip').value);
   data.set('rental_length',document.getElementById('wlLength').value);
   data.set('urgency',document.getElementById('wlUrgency').value);
-  data.set('earliest_start',document.getElementById('wlDate').value);
+  data.set('earliest_start',window.__wlStartIso?window.__wlStartIso():document.getElementById('wlDate').value);
   data.set('notes',document.getElementById('wlNotes').value);
   if(document.getElementById('wlConsent').checked)data.set('consent_no_guarantee','on');
   if(document.getElementById('wlOptin').checked)data.set('opt_in_updates','yes');
