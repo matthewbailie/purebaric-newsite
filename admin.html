@@ -1177,6 +1177,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       <div class="seg or-sub" role="group" aria-label="Outreach section" style="margin-bottom:1rem;">
         <button type="button" data-sub="email" class="on" onclick="setOutreachSub('email')">Email outreach</button>
         <button type="button" data-sub="routes" onclick="setOutreachSub('routes')">Driving paths</button>
+        <button type="button" data-sub="promo" onclick="setOutreachSub('promo')">Promotions list</button>
       </div>
       <div id="orSubEmail">
       <div class="panel-actions">
@@ -1257,6 +1258,23 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         #orTable select { padding: 3px 6px; border: 1px solid var(--line); border-radius: 6px; font-size: 0.78rem; }
       </style>
           </div><!-- /orSubEmail -->
+      <div id="orSubPromo" hidden>
+        <div class="panel-actions">
+          <h2>Promotions list</h2>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-ghost btn-sm" onclick="loadPromoList()">Refresh</button>
+            <button class="btn btn-primary btn-sm" id="promoCopyBtn" onclick="copyPromoEmails()" disabled>Copy all emails</button>
+          </div>
+        </div>
+        <p class="renter-line" style="margin:0 0 14px;max-width:820px;">People who asked for occasional promotions: the checkbox on the waitlist form and the sign-up at the bottom of the homepage. When a slow month is coming, copy the emails into a BCC line and send the offer from your own mailbox. Include a line saying they can reply to be removed, then use Remove here.</p>
+        <div class="form-card open" style="display:block;max-width:820px;margin-bottom:18px;"><div class="renter-line" id="promoSummary">Loading…</div></div>
+        <div class="table-wrap">
+          <table class="data-table" id="promoTable">
+            <thead><tr><th>Added</th><th>Name</th><th>Email</th><th>Phone</th><th>Source</th><th></th></tr></thead>
+            <tbody id="promoRows"><tr><td colspan="6" class="or-sub" style="padding:18px;"><span class="or-spin"></span>Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div><!-- /orSubPromo -->
       <div id="orSubRoutes" hidden>
         <div class="panel-actions">
           <h2>Driving paths</h2>
@@ -4985,15 +5003,54 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
 
   // ─── Outreach: Email outreach / Driving paths sub-tabs ───
   let _orSub = 'email';
-  try { const v = localStorage.getItem('pb_outreach_sub'); if (v === 'routes' || v === 'email') _orSub = v; } catch (e) { /* storage blocked */ }
+  try { const v = localStorage.getItem('pb_outreach_sub'); if (v === 'routes' || v === 'email' || v === 'promo') _orSub = v; } catch (e) { /* storage blocked */ }
   function setOutreachSub(sub) {
-    _orSub = sub === 'routes' ? 'routes' : 'email';
+    _orSub = sub === 'routes' ? 'routes' : sub === 'promo' ? 'promo' : 'email';
     try { localStorage.setItem('pb_outreach_sub', _orSub); } catch (e) { /* not critical */ }
     document.querySelectorAll('.or-sub button').forEach(b => b.classList.toggle('on', b.dataset.sub === _orSub));
-    const em = document.getElementById('orSubEmail'), rt = document.getElementById('orSubRoutes');
+    const em = document.getElementById('orSubEmail'), rt = document.getElementById('orSubRoutes'), pr = document.getElementById('orSubPromo');
     if (em) em.hidden = _orSub !== 'email';
     if (rt) rt.hidden = _orSub !== 'routes';
+    if (pr) pr.hidden = _orSub !== 'promo';
     if (_orSub === 'routes' && !_routes) loadRoutes(false).catch(() => {});
+    if (_orSub === 'promo' && !_promo) loadPromoList().catch(() => {});
+  }
+
+  // ── Promotions list (Outreach → Promotions list) ──
+  let _promo = null;
+  const PROMO_SOURCE = { waitlist: 'Waitlist form', homepage: 'Homepage sign-up' };
+  async function loadPromoList() {
+    const rows = document.getElementById('promoRows'), sum = document.getElementById('promoSummary'), copyBtn = document.getElementById('promoCopyBtn');
+    try {
+      const r = await api('/api/admin/promo-list');
+      _promo = r.subscribers || [];
+    } catch (e) {
+      sum.innerHTML = `<strong style="color:#82402f;">Could not load the promotions list: ${escape(e.message)}</strong>`;
+      rows.innerHTML = '';
+      return;
+    }
+    const n = _promo.length;
+    sum.innerHTML = `<strong>${n}</strong> ${n === 1 ? 'person' : 'people'} on the promotions list` + (n ? ` · newest added ${fmtDate(_promo[0].createdAt)}` : '');
+    copyBtn.disabled = !n;
+    rows.innerHTML = n ? _promo.map(p => `<tr>
+        <td class="or-sub">${fmtDate(p.createdAt)}</td>
+        <td>${escape(p.name || '')}</td>
+        <td><a href="mailto:${escape(p.email)}">${escape(p.email)}</a></td>
+        <td class="or-sub">${escape(p.phone || '')}</td>
+        <td class="or-sub">${escape(PROMO_SOURCE[p.source] || p.source || '')}</td>
+        <td style="text-align:right;"><button class="btn btn-ghost btn-sm" onclick="removePromo('${escape(p.email)}')">Remove</button></td>
+      </tr>`).join('') : '<tr><td colspan="6" class="or-sub" style="padding:18px;">Nobody has signed up yet.</td></tr>';
+  }
+  async function copyPromoEmails() {
+    if (!_promo || !_promo.length) return;
+    const text = _promo.map(p => p.email).join(', ');
+    try { await navigator.clipboard.writeText(text); toast(`${_promo.length} email${_promo.length === 1 ? '' : 's'} copied`); }
+    catch (e) { window.prompt('Copy the emails:', text); }
+  }
+  async function removePromo(email) {
+    if (!confirm(`Remove ${email} from the promotions list?`)) return;
+    try { await api('/api/admin/promo-list/' + encodeURIComponent(email), { method: 'DELETE' }); toast('Removed'); await loadPromoList(); }
+    catch (e) { toast('Could not remove: ' + e.message, true); }
   }
   document.addEventListener('DOMContentLoaded', () => setOutreachSub(_orSub));
 

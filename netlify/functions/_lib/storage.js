@@ -15,6 +15,7 @@ const STORES = {
   machines: "machines",
   rentals: "rentals",
   waitlist: "waitlist",
+  promoList: "promoList",
   waivers: "waivers",
   bookings: "bookings",
   customers: "customers",
@@ -85,6 +86,40 @@ async function putOne(storeName, value) {
 
 async function deleteOne(storeName, id) {
   await store(storeName).delete(id);
+}
+
+// ───────── Promotions list ─────────
+// People who asked for occasional promotions (waitlist checkbox, homepage sign-up).
+// One record per email, keyed by the lowercased email: { id, email, name, phone, source, createdAt, updatedAt }.
+const PROMO_EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+function normalizePromoEmail(email) {
+  const e = String(email || "").trim().toLowerCase();
+  return PROMO_EMAIL_RE.test(e) && e.length <= 254 ? e : "";
+}
+async function addPromoSubscriber({ email, name, phone, source } = {}) {
+  const id = normalizePromoEmail(email);
+  if (!id) return null;
+  const existing = await getOne(STORES.promoList, id);
+  const now = nowIso();
+  const rec = {
+    id, email: id,
+    name: String(name || existing?.name || "").trim().slice(0, 120),
+    phone: String(phone || existing?.phone || "").trim().slice(0, 40),
+    source: String(source || existing?.source || "").trim().slice(0, 40),
+    createdAt: existing?.createdAt || now,
+    updatedAt: now,
+  };
+  return putOne(STORES.promoList, rec);
+}
+async function listPromoSubscribers() {
+  const all = await listAll(STORES.promoList);
+  return all.sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
+}
+async function removePromoSubscriber(id) {
+  const key = normalizePromoEmail(id);
+  if (!key) return false;
+  await deleteOne(STORES.promoList, key);
+  return true;
 }
 
 // ───────── Chambers ─────────
@@ -788,6 +823,7 @@ async function deleteAdminSession(sessionId) {
 
 module.exports = {
   normalizePaymentLinks, getPaymentLinks, setPaymentLinks,
+  normalizePromoEmail, addPromoSubscriber, listPromoSubscribers, removePromoSubscriber,
   inventoryInputs,
   getDeliveryAvailability,
   setDeliveryAvailability,

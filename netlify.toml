@@ -59,6 +59,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/promo-join"
+  to = "/.netlify/functions/promo-join"
+  status = 200
+
+[[redirects]]
   from = "/api/contact-submit"
   to = "/.netlify/functions/contact-submit"
   status = 200
@@ -229,6 +234,15 @@
 [[redirects]]
   from = "/api/admin/routes/*"
   to = "/.netlify/functions/admin-routes/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/promo-list"
+  to = "/.netlify/functions/admin-promo-list"
+  status = 200
+[[redirects]]
+  from = "/api/admin/promo-list/*"
+  to = "/.netlify/functions/admin-promo-list/:splat"
   status = 200
 
 [[redirects]]

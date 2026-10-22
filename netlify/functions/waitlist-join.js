@@ -1,4 +1,4 @@
-const { createWaitlistEntry } = require("./_lib/storage");
+const { createWaitlistEntry, addPromoSubscriber } = require("./_lib/storage");
 const { notifyAdminWaitlistJoin } = require("./_lib/email");
 
 function parseBody(event) {
@@ -56,6 +56,13 @@ exports.handler = async (event) => {
       preferredStartDate: (body["preferred-start"] || body.preferredStartDate || body.earliest_start || "").trim(),
     });
 
+    // "Occasional promotions" checkbox → the promotions list (admin → Outreach → Promotions list).
+    let promo = null;
+    if (/^(yes|on|true|1)$/i.test(String(body.opt_in_updates || body.opt_in_promotions || ""))) {
+      try { promo = await addPromoSubscriber({ email, name, phone: entry.phone, source: "waitlist" }); }
+      catch (err) { console.error("promo list add failed", err); }
+    }
+
     // Await the admin notification, Lambda freezes pending I/O on return, so
     // fire-and-forget .catch() patterns lose the in-flight request before Resend
     // receives it. Errors are caught so they don't fail the user's submission.
@@ -71,7 +78,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ok: true, success: true, id: entry.id, message: "You've been added to the priority waitlist. We'll reach out the moment a chamber opens up.", adminEmail: adminEmailResult }),
+      body: JSON.stringify({ ok: true, success: true, id: entry.id, promo: !!promo, message: "You've been added to the priority waitlist. We'll reach out the moment a chamber opens up.", adminEmail: adminEmailResult }),
     };
   } catch (err) {
     console.error("waitlist-join error", err);
