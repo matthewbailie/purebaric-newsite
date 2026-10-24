@@ -223,7 +223,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .total{display:flex;justify-content:space-between;font-weight:700;font-size:16px;border-top:1px solid var(--line);margin-top:16px;padding-top:16px}
 .book .btn-primary{width:100%;margin-top:16px;padding:14px;font-size:16px;text-align:center}
 .fine{font-size:12px;color:var(--muted);text-align:center;margin-top:10px;font-weight:400}
-.mobilebar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-top:1px solid var(--line);padding:12px 18px;align-items:center;justify-content:space-between;gap:12px;cursor:pointer}
+.mobilebar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-top:1px solid var(--line);padding:18px 18px 12px;align-items:center;justify-content:space-between;gap:12px;cursor:pointer}
+.mobilebar .grip{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:40px;height:4px;border-radius:999px;background:var(--line)}
 .mb-price{font-size:19px;font-weight:800}.mb-price small{font-size:13px;color:var(--muted);font-weight:500}
 .mb-strike{font-size:13px;color:var(--muted);font-weight:500;text-decoration:line-through}
 .mb-pill{display:inline-block;margin-top:5px;background:var(--ok-bg);color:var(--ok);font-size:12px;font-weight:600;padding:3px 11px;border-radius:999px}
@@ -231,7 +232,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .sheet-scrim.open{display:block}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--card);border-radius:16px 16px 0 0;padding:18px 18px 24px;transform:translateY(100%);transition:transform .28s ease;border-top:1px solid var(--line)}
 .sheet.open{transform:translateY(0)}
-.sheet .grip{width:40px;height:4px;border-radius:999px;background:var(--line);margin:0 auto 14px}
+.sheet .grip{width:40px;height:4px;border-radius:999px;background:var(--line);margin:0 auto 14px;cursor:pointer}
 .sheet .close{position:absolute;right:16px;top:14px;border:none;background:var(--cream2);width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;color:#7a6d64}
 
 /* ── footer ── */
@@ -536,11 +537,11 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   </div>
 </footer>
 
-<div class="mobilebar" onclick="openSheet()"><div><div class="mb-price">$579<small> /mo</small> <span class="mb-strike">$729</span></div><span class="mb-pill">Save 21%</span></div><a class="btn btn-primary" href="/book" onclick="event.stopPropagation();return goBook('2')">Book now</a></div>
+<div class="mobilebar" onclick="openSheet()"><div class="grip" aria-hidden="true"></div><div><div class="mb-price">$579<small> /mo</small> <span class="mb-strike">$729</span></div><span class="mb-pill">Save 21%</span></div><a class="btn btn-primary" href="/book" onclick="event.stopPropagation();return goBook('2')">Book now</a></div>
 
 <div class="sheet-scrim" id="scrim" onclick="closeSheet()"></div>
 <div class="sheet" id="sheet">
-  <div class="grip"></div><button class="close" onclick="closeSheet()" aria-label="Close">×</button>
+  <div class="grip" onclick="closeSheet()"></div><button class="close" onclick="closeSheet()" aria-label="Close">×</button>
   <div class="book" style="border:none;padding:0">
     <div class="ptop"><span class="price" id="pr2">$579</span><span class="permo">/mo</span><span class="strike" id="strike2">$729</span></div>
     <div class="svwrap open" id="svw2"><div class="sv1"><span class="pill1" id="badge2">Save 21%</span><span class="txt1" id="save2">$150/mo off</span></div></div>
