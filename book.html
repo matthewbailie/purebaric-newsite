@@ -216,7 +216,7 @@ body.biz.bookmode .slider-block{display:block!important}
         <div class="fg"><label for="cnotes">Notes (optional)</label><textarea id="cnotes" name="notes" placeholder="Ground floor setup, stairs, morning delivery preference..."></textarea></div>
 
         <div class="screen">
-          <label class="ck"><input type="checkbox" id="ackReq" required> I understand my delivery date is subject to availability and the exact delivery time will be confirmed by text or call. I've reviewed the <a href="/safety" target="_blank" rel="noopener">safety information</a> and have no known contraindications, or I've discussed use with my physician. <span class="req">*</span></label>
+          <label class="ck"><input type="checkbox" id="ackReq" required> I understand my delivery date is subject to availability and the exact delivery time will be confirmed by text or call. I've reviewed the <a href="/safety" target="_blank" rel="noopener">safety information</a>. <span class="req">*</span></label>
         </div>
 
         <button type="submit" class="btn btn-primary submit" id="submitBtn">Request reservation →</button>
@@ -538,7 +538,7 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   var plan=BIZ?('Business rental: Soft-Shell 1.5 ATA, '+months+' at $'+rb+'/mo per chamber'+(pb>0?(' (save '+pb+'%, $'+((BASE_BIZ-rb)*m).toLocaleString()+' total off)'):'')+', plus $200 training and initial supplies. Est. rental total '+money(rb*m)+'. Business: '+document.getElementById('cbiz').value.trim()+'. Location ZIP '+document.getElementById('zip').value+'.')
     :('Selected plan: Soft-Shell 1.5 ATA, '+months+' rental at $'+r+'/mo'+(p>0?(' (save '+p+'%, $'+save.toLocaleString()+' total off)'):'')+'. Est. rental total '+money(total)+'. Delivery ZIP '+document.getElementById('zip').value+'.');
   var notes=document.getElementById('cnotes').value.trim();
-  var ack='Acknowledged: reviewed safety/contraindications; understands this is a request pending confirmation.';
+  var ack='Acknowledged: reviewed safety information; understands this is a request pending confirmation.';
   var full=(notes?(notes+'\n\n'):'')+plan+'\n'+ack;
   var data=new URLSearchParams();
   data.set('chamber_id',document.getElementById('ch').value);
