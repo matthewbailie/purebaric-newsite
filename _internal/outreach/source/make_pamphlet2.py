@@ -90,22 +90,22 @@ y = steps(0, y+2.5, [
 # ---- Back (middle): credibility + offer + contact
 pdf.set_fill_color(*INK); pdf.rect(px(1), 0, W, PH, "F")
 ly = logo(1, 16, w=38, cream=True)
-pdf.set_xy(px(1)+M, ly+10); pdf.set_font("Georgia","B",15); pdf.set_text_color(*CREAM2)
+pdf.set_xy(px(1)+M, ly+10); pdf.set_font("Georgia","B",15); pdf.set_text_color(*WHITE)
 pdf.multi_cell(CW, 6.6, "See if a chamber fits\nyour facility", align="L")
 y = para(1, pdf.get_y()+4,
-  "Book a free 15-minute call. We will walk through your space, your members, and the numbers "
-  "for your facility, with no obligation.", size=9.4, color=(230,218,200), lh=4.5)
+  "Book a free 15-minute call. We will go over where a chamber could fit in your facility and how it "
+  "makes sense for your members, then run the numbers for your facility. No obligation.", size=9.4, color=(255,255,255), lh=4.5)
 pdf.set_fill_color(*TERRA); pdf.rect(px(1)+M, y+6, CW, 27, "F")
 pdf.set_xy(px(1)+M+5, y+10); pdf.set_font("Helvetica","B",12.5); pdf.set_text_color(*WHITE)
 pdf.multi_cell(CW-10, 6.2, "(801) 901-0873\nhello@purebaric.com\npurebaric.com", align="L")
 y = y + 6 + 27
 y = para(1, y+9, "**Utah-based and local.** Purebaric chambers are in use across the Wasatch Front today. "
   "You work directly with the owner, from the first call through installation and ongoing support.",
-  size=9, color=(230,218,200), lh=4.3)
+  size=9, color=(255,255,255), lh=4.3)
 para(1, PH-30,
   "Purebaric provides general-wellness equipment. It is not a medical device and is not intended to "
   "diagnose, treat, cure, or prevent any disease. Revenue figures in this pamphlet are estimates, not guarantees.",
-  size=6.8, color=(170,158,146), lh=3.2)
+  size=6.8, color=(255,255,255), lh=3.2)
 
 # ---- Cover (right)
 cy = logo(2, 13, w=34)

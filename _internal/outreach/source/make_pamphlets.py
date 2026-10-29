@@ -18,7 +18,7 @@ MARKETS = {
   "tennessee": dict(
     prefix="Purebaric_TN_pamphlet_", phone="(801) 884-2113", email="mlebailie@hotmail.com",
     out_default=os.path.expanduser("~/Desktop/Tennessee Purbaric V2.0/pamphlets"),
-    local="**Now serving Knoxville, Tennessee.** Purebaric chambers are in use in homes and businesses today, and we are now delivering to the Knoxville area.",
+    local="**Now serving Knoxville, Tennessee.** Purebaric chambers are in use in homes and businesses today, and we are now delivering to the Knoxville area. Read our customer reviews at purebaric.com/reviews.",
     facilities_word="Facilities", charge_label="What facilities charge today(1)",
     price_rows=[("Single session (60 min)", "$100", ""), ("10-session pack", "$800", "$80 a session"), ("20-session pack", "$1,400", "$70 a session")],
     footnote="(1) Published 2026 prices for 60-minute mild-chamber sessions from a Knoxville-area clinic. All figures are estimates before staff time, facility overhead, and taxes.",
@@ -27,7 +27,7 @@ MARKETS = {
   "utah": dict(
     prefix="Purebaric_UT_pamphlet_", phone="(801) 901-0873", email="hello@purebaric.com",
     out_default=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "pamphlets"),
-    local="**Utah-based and local.** Purebaric chambers are in use across the Wasatch Front today.",
+    local="**Utah-based and local.** Purebaric is a small business based in Lehi, and our chambers are in use across the Wasatch Front today. You work directly with the owner, and calls and texts get a same-day reply. Read our customer reviews at purebaric.com/reviews.",
     facilities_word="Utah facilities", charge_label="What Utah facilities charge today(1)",
     price_rows=[("Single session (60 min)", "$79 - $129", ""), ("10-session pack", "$750 - $1,290", "$75 - $129 a session"), ("20-session pack", "$1,400 - $2,580", "$70 - $129 a session")],
     footnote="(1) Published 2026 prices from facilities in Lehi, Orem, and Salt Lake City. All figures are estimates before staff time, facility overhead, and taxes.",
@@ -229,22 +229,22 @@ for G in GENRES:
     # ---- Back (middle): credibility + offer + contact
     pdf.set_fill_color(*INK); pdf.rect(px(1), 0, W, PH, "F")
     ly = logo(1, 16, w=38, cream=True)
-    pdf.set_xy(px(1)+M, ly+10); pdf.set_font("Georgia","B",15); pdf.set_text_color(*CREAM2)
+    pdf.set_xy(px(1)+M, ly+10); pdf.set_font("Georgia","B",15); pdf.set_text_color(*WHITE)
     pdf.multi_cell(CW, 6.6, "See if a chamber fits\nyour program" if TEAM else "See if a chamber fits\nyour business", align="L")
     y = para(1, pdf.get_y()+4,
-      ("Book a free 15-minute call. We will walk through your training room, your roster, and the cost "
-       "for your program, with no obligation.") if TEAM else
-      ("Book a free 15-minute call. We will go over your space, your customers, and the numbers "
-       "for your business. No obligation."), size=9.4, color=(230,218,200), lh=4.5)
+      ("Book a free 15-minute call. We will go over where a chamber could fit in your training room and how it "
+       "helps your athletes, then run the cost for your program. No obligation.") if TEAM else
+      ("Book a free 15-minute call. We will go over where a chamber could fit in your business and how it "
+       "makes sense for your customers, then run the numbers for your business. No obligation."), size=9.4, color=(255,255,255), lh=4.5)
     pdf.set_fill_color(*TERRA); pdf.rect(px(1)+M, y+6, CW, 27, "F")
     pdf.set_xy(px(1)+M+5, y+10); pdf.set_font("Helvetica","B",12.5); pdf.set_text_color(*WHITE)
     pdf.multi_cell(CW-10, 6.2, CONTACT_PHONE + "\n" + CONTACT_EMAIL + "\npurebaric.com", align="L")
     y = y + 6 + 27
-    y = para(1, y+9, MK["local"], size=9, color=(230,218,200), lh=4.3)
+    y = para(1, y+9, MK["local"], size=9, color=(255,255,255), lh=4.3)
     para(1, PH-30,
       "Purebaric provides general-wellness equipment. It is not a medical device and is not intended to "
       "diagnose, treat, cure, or prevent any disease. " + ("Figures" if TEAM else "Revenue figures") + " in this pamphlet are estimates, not guarantees.",
-      size=6.8, color=(170,158,146), lh=3.2)
+      size=6.8, color=(255,255,255), lh=3.2)
 
     # ---- Cover (right)
     cy = logo(2, 12, w=46, center=True)  # cover logo: centred and larger (owner, 16 Oct 2026)

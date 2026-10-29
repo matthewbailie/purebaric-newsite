@@ -67,7 +67,7 @@ def logo(i, y, w=30, cream=False):
 
 
 B = "/Users/bailie/Library/CloudStorage/OneDrive-Adobe/DMe-C&P/Claude_AI/purebaric-outreach/branded-images/"
-SOFT=(230,218,200)
+SOFT=(255,255,255)
 
 def box(i, y, h, title):
     pdf.set_fill_color(*TERRA_BG); pdf.rect(px(i)+M, y, CW, h, "F")
@@ -108,7 +108,7 @@ y = steps(0, y+2.5, [
 # ---- Back: how to book
 pdf.set_fill_color(*INK); pdf.rect(px(1), 0, W, PH, "F")
 ly = logo(1, 16, w=38, cream=True)
-pdf.set_xy(px(1)+M, ly+10); pdf.set_font("Georgia","B",15); pdf.set_text_color(*CREAM2)
+pdf.set_xy(px(1)+M, ly+10); pdf.set_font("Georgia","B",15); pdf.set_text_color(*WHITE)
 pdf.multi_cell(CW, 6.6, "Book your\nfirst session", align="L")
 y = para(1, pdf.get_y()+4,
   "Add a session before or after your lash appointment, or come in just for the chamber.",
@@ -125,7 +125,7 @@ para(1, PH-38,
   "and is not intended to diagnose, treat, cure, or prevent any disease or skin condition. The studies summarized "
   "inside used different pressures, oxygen levels, and schedules than this chamber, and individual results vary. "
   "Talk with your doctor before a session if you are pregnant or have a health condition.",
-  size=6.8, color=(170,158,146), lh=3.2)
+  size=6.8, color=(255,255,255), lh=3.2)
 
 # ---- Cover
 cy = logo(2, 13, w=34)
