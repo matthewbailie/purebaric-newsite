@@ -438,7 +438,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       </div>
       <div class="viz-grid-2">
         <div class="viz-card viz">
-          <h3>Active subscribers</h3>
+          <h3>Active subscribers by week</h3>
           <p class="viz-note" data-note="subs"></p>
           <div id="chartSubs"></div>
         </div>
@@ -2123,10 +2123,12 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
 
     const noPrevNote = !M.seriesHasActivity(cur) ? `No rentals in ${year} yet.` : hasPrev ? '' : `No ${year - 1} rentals on record yet, so there's no prior-year line.`;
     ['mrr', 'avg'].forEach(k => { document.querySelector(`[data-note="${k}"]`).textContent = noPrevNote; });
-    // Subscribers are plotted as the peak in each month (see dashboard-metrics.js),
-    // not the month-end snapshot, so say so under the chart and give today's count.
+    // The subscribers line is week by week (see weekSeries in dashboard-metrics.js):
+    // one point per Monday-to-Sunday week, counted at the week's end, so a
+    // change like 8 to 7 shows in the week it happened. The monthly table
+    // below still shows peak subscribers per month.
     document.querySelector('[data-note="subs"]').textContent = (noPrevNote ? noPrevNote + ' ' : '') +
-      `Peak subscribers in each month: the highest count on any day that month, so a subscriber who leaves mid-month still counts for that month. Today: ${o.subscribers}.`;
+      `Weekly: each point is the subscriber count at the end of that week (today for the current week). Today: ${o.subscribers}.`;
     const axisMoney = n => n >= 1000 ? '$' + (n / 1000) + 'k' : '$' + n;
     // Months before a year's first rental are "no data" (a gap), not a zero — the business
     // hadn't started yet — so the line begins where the first rental does. The
@@ -2143,7 +2145,36 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       return { series, format, axisFormat, ariaLabel: `${what} by month, ${year}${hasPrev ? ` compared with ${year - 1}` : ''}. Latest: ${last == null ? 'no data' : format(last)}.` };
     };
     C.lineChart(document.getElementById('chartMrr'), build('mrr', money, axisMoney, 'Monthly recurring revenue'));
-    C.lineChart(document.getElementById('chartSubs'), build('peakSubscribers', String, String, 'Peak active subscribers', 'peakSubscribers'));
+    // Weekly subscribers line: points are the weekSeries snapshots, aligned by
+    // week index from the start of the year. The x axis still reads months:
+    // a tick sits at the first week ending in each month, and hovering a
+    // point reads "Week ending Oct 25". Weeks before the year's first
+    // rental are gaps, not zeros, as with the monthly charts.
+    const curW = M.weekSeries(_rentals || [], year, today);
+    const prevW = M.weekSeries(_rentals || [], year - 1, today);
+    const hasPrevW = M.seriesHasActivity(prevW);
+    const weekValues = (points) => {
+      const first = points.findIndex(p => p && p.rentals > 0);
+      return points.map((p, i) => p && first !== -1 && i >= first ? p.subscribers : null);
+    };
+    const weekLabels = curW.map(p => p ? `Week ending ${MONTH_NAMES[Number(p.day.slice(5, 7)) - 1].slice(0, 3)} ${Number(p.day.slice(8, 10))}` : '');
+    const weekTicks = [];
+    curW.forEach((p, i) => {
+      if (!p) return;
+      const label = MONTH_NAMES[Number(p.day.slice(5, 7)) - 1].slice(0, 3);
+      if (!weekTicks.some(t => t.label === label)) weekTicks.push({ i, label });
+    });
+    const weekAligned = (points) => {
+      const vals = weekValues(points);
+      while (vals.length < curW.length) vals.push(null);
+      return vals.slice(0, curW.length);
+    };
+    const weekLast = weekValues(curW).filter(v => v != null).pop();
+    C.lineChart(document.getElementById('chartSubs'), {
+      series: [{ label: String(year), values: weekValues(curW) }].concat(hasPrevW ? [{ label: String(year - 1), values: weekAligned(prevW) }] : []),
+      format: String, axisFormat: String, labels: weekLabels, ticks: weekTicks,
+      ariaLabel: `Active subscribers by week, ${year}${hasPrevW ? ` compared with ${year - 1}` : ''}. Latest: ${weekLast == null ? 'no data' : weekLast}.`
+    });
     C.lineChart(document.getElementById('chartAvg'), build('avgPrice', money, axisMoney, 'Average monthly price per chamber'));
     const fmtMonths = v => (Math.round(v * 10) / 10) + ' mo';
     C.lineChart(document.getElementById('chartLen'), build('avgLength', fmtMonths, fmtMonths, 'Average rental length in months'));

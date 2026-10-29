@@ -114,6 +114,23 @@ test("peakSubscribers preserves a subscriber who leaves mid-month (Heather, Oct 
   assert.equal(M.peakSubscribersInRange(eight, "2026-10-28", "2026-10-31"), 7);
 });
 
+test("weekSeries is one Monday-to-Sunday snapshot per week, showing the 8 to 7 drop in its week", () => {
+  const eight = Array.from({ length: 8 }, (_, i) =>
+    r(300 + i, `wk${i}@x.com`, "2026-10-01", i === 0 ? "2026-10-27" : "2026-10-31", 500));
+  const weeks = M.weekSeries(eight, 2026, "2026-10-29");
+  assert.equal(weeks.length, 53);
+  assert.equal(weeks[0].weekStart, "2025-12-29"); // week containing Jan 1 starts the Monday before
+  assert.equal(weeks[0].day, "2026-01-04"); // measured at the Sunday ending the week
+  const byDay = Object.fromEntries(weeks.filter(Boolean).map(p => [p.day, p]));
+  assert.equal(byDay["2026-10-25"].subscribers, 8); // Heather's last full week
+  assert.equal(byDay["2026-10-29"].subscribers, 7); // current week, measured at today
+  assert.equal(weeks[weeks.length - 1].subscribers, null); // weeks after today keep their slot but no count
+  assert.equal(weeks[weeks.length - 1].day, "2026-12-31"); // final partial week ends at Dec 31
+  const prev = M.weekSeries(eight, 2025, "2026-10-29");
+  assert.ok(prev.every(p => p.subscribers !== null), "a completed year has no future weeks");
+  assert.equal(prev[prev.length - 1].day, "2025-12-31");
+});
+
 test("peakSubscribers counts a rental that starts and ends inside the month, and ignores cancelled rentals", () => {
   const inside = [r(200, "inside@x.com", "2026-10-10", "2026-10-15", 500)];
   const s = M.yearSeries(inside, 2026, "2026-10-28");
