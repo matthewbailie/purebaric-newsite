@@ -13,7 +13,17 @@
 //    weekly rate x 52/12.
 //  - MRR = sum of monthly-equivalent revenue of the rentals counting that day.
 //    Monthly points are month-end snapshots (today, for the current month).
+//    A rental that starts and ends inside one month therefore never shows in a
+//    month-end MRR figure.
 //  - Subscribers = distinct renter emails with a counting rental that day.
+//    Each monthly point also carries peakSubscribers: the highest subscriber
+//    count on any single day in that month, from the 1st through the
+//    measurement day. A month-end snapshot rewrites itself when someone
+//    leaves mid-month (October would drop from 8 to 7 the day after a
+//    subscriber's last day), erasing the fact that 8 people were subscribed
+//    during the month. The peak cannot go down as the month goes on, so it
+//    preserves that history. The chart and table use the peak; the KPI at
+//    the top of the Home tab still shows today's count.
 //  - Average price = MRR / counting rentals (per chamber, not per customer).
 (function (root, factory) {
   const api = factory();
@@ -99,14 +109,36 @@
     };
   }
 
+  // Highest distinct-subscriber count on any day in [fromDay, toDay], using
+  // the same counting rule as snapshot(). Scans day by day; the upper bound
+  // is the number of distinct renters with a countable rental, so it can
+  // stop early once every such renter is counted on one day.
+  function peakSubscribersInRange(rentals, fromDay, toDay) {
+    const countable = (rentals || []).filter((r) => isCounted(r) && r.status !== 'scheduled');
+    const ceiling = new Set(countable.map(emailOf)).size;
+    let peak = 0;
+    for (let day = fromDay; day <= toDay; day = addDays(day, 1)) {
+      const n = subscriberSet(countable, day).size;
+      if (n > peak) peak = n;
+      if (peak >= ceiling) break;
+    }
+    return peak;
+  }
+
   // 12 monthly points for a calendar year. Months after `today` are null (no data
   // yet); the current month is measured at `today`, past months at month end.
+  // Every point also carries peakSubscribers (see the header comment): the
+  // highest subscriber count on any day in the month up to the measurement
+  // day, so a mid-month departure does not rewrite the month's history.
   function yearSeries(rentals, year, today) {
     const out = [];
     for (let m = 0; m < 12; m += 1) {
       if (monthStart(year, m) > today) { out.push(null); continue; }
       const end = monthEnd(year, m);
-      out.push({ month: m, ...snapshot(rentals, end > today ? today : end) });
+      const day = end > today ? today : end;
+      const point = snapshot(rentals, day);
+      point.peakSubscribers = peakSubscribersInRange(rentals, monthStart(year, m), day);
+      out.push({ month: m, ...point });
     }
     return out;
   }
@@ -251,5 +283,5 @@
     };
   }
 
-  return { monthlyEquivalent, isCounted, countsFrom, activeOn, avgTermMonths, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon, startsAndEnds };
+  return { monthlyEquivalent, isCounted, countsFrom, activeOn, avgTermMonths, snapshot, yearSeries, peakSubscribersInRange, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon, startsAndEnds };
 });
