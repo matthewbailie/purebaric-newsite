@@ -262,7 +262,7 @@ for G in GENRES:
       "**Installation and service** included",
       "**Staff training** for your athletic trainers and coaches" if TEAM else "**Staff training** included",
       "**Template consent forms**, including parent consent for athletes under 18" if TEAM else "**Consent forms** provided for your business",
-      "**One flat monthly cost** for the whole roster" if TEAM else "**Customer pamphlet** made for your business",
+      "**One flat monthly cost** for the whole roster" if TEAM else "**Marketing pamphlet** to help you sell sessions",
       "**No equipment** to buy or maintain",
     ], size=9.2, lh=4.3, gap=2.2)
     pdf.set_fill_color(*TERRA); pdf.rect(px(2), PH-10, W, 10, "F")
