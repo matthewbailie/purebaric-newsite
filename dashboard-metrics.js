@@ -24,6 +24,13 @@
 //    during the month. The peak cannot go down as the month goes on, so it
 //    preserves that history. The chart and table use the peak; the KPI at
 //    the top of the Home tab still shows today's count.
+//  - Weekly subscribers (weekSeries, for the subscribers chart only): the
+//    chart is week by week, not month by month. Weeks run Monday to Sunday,
+//    each point is the subscriber snapshot at the Sunday ending the week
+//    (today, for the current week; Dec 31 for the final partial week).
+//    That is what shows a mid-month change, like 8 dropping to 7, in the
+//    week it happened, instead of only at the month's end. The monthly
+//    table below the chart still shows peak subscribers per month.
 //  - Average price = MRR / counting rentals (per chamber, not per customer).
 (function (root, factory) {
   const api = factory();
@@ -139,6 +146,38 @@
       const point = snapshot(rentals, day);
       point.peakSubscribers = peakSubscribersInRange(rentals, monthStart(year, m), day);
       out.push({ month: m, ...point });
+    }
+    return out;
+  }
+
+  // One snapshot per Monday-to-Sunday week in the year, measured at the
+  // Sunday ending the week (today for the current week, Dec 31 for the
+  // final partial week). Weeks after `today` still appear, with a null
+  // subscriber count, so the x axis keeps its month ticks through
+  // December. The first week is
+  // the one containing Jan 1, so it can start in the previous December;
+  // its point is still measured inside this year. Each point carries
+  // weekStart/weekEnd plus the usual snapshot fields (day is the day the
+  // snapshot was taken). Series for different years line up by week
+  // index from the start of the year, not by calendar date.
+  function weekSeries(rentals, year, today) {
+    const jan1 = `${year}-01-01`;
+    const dec31 = `${year}-12-31`;
+    const back = (new Date(utc(jan1)).getUTCDay() + 6) % 7; // days since Monday
+    let weekStart = addDays(jan1, -back);
+    const out = [];
+    while (weekStart <= dec31) {
+      const weekEnd = addDays(weekStart, 6);
+      const end = weekEnd > dec31 ? dec31 : weekEnd;
+      if (weekStart > today) {
+        // Future week: keep the slot (so month ticks and the prior-year
+        // line stay aligned) with no count, rather than dropping it.
+        out.push({ weekStart, weekEnd: end, day: end, mrr: 0, rentals: 0, subscribers: null, avgPrice: null, avgLength: null, chambersInUse: 0 });
+      } else {
+        const day = end > today ? today : end;
+        out.push({ weekStart, weekEnd: end, ...snapshot(rentals, day) });
+      }
+      weekStart = addDays(weekStart, 7);
     }
     return out;
   }
@@ -283,5 +322,5 @@
     };
   }
 
-  return { monthlyEquivalent, isCounted, countsFrom, activeOn, avgTermMonths, snapshot, yearSeries, peakSubscribersInRange, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon, startsAndEnds };
+  return { monthlyEquivalent, isCounted, countsFrom, activeOn, avgTermMonths, snapshot, yearSeries, peakSubscribersInRange, weekSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon, startsAndEnds };
 });
