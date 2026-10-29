@@ -180,7 +180,7 @@ def build(key, cfg):
     pdf.image(img, x=px(0)+M, y=y+4, w=CW, h=40); pdf.set_draw_color(*LINE); pdf.rect(px(0)+M, y+4, CW, 40)
     y = sub(0, y+50, "What a session looks like")
     y = steps(0, y+2.5, ["The client lies down inside and your trained staff member closes the chamber.",
-                         "The chamber pressurizes gradually over a few minutes. Ears may pop, like on a plane.",
+                         "The chamber pressurizes gradually over a few minutes.",
                          "The client rests, reads or naps for the session; staff stay on the premises.",
                          "The chamber depressurizes gradually and the client steps out."])
     # back panel

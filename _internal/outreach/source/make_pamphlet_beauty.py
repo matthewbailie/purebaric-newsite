@@ -100,7 +100,7 @@ pdf.image(img, x=px(0)+M, y=y+4, w=CW, h=40); pdf.set_draw_color(*LINE); pdf.rec
 y = sub(0, y+50, "What your session looks like")
 y = steps(0, y+2.5, [
   "**Settle in.** Lie down inside and get comfortable. Our team closes the chamber.",
-  "**Pressure rises gently.** It takes a few minutes. Your ears may pop, like on a plane.",
+  "**Pressure rises gently.** It takes a few minutes.",
   "**Relax for 60 minutes.** Rest, nap, read, or use your phone or tablet.",
   "**Pressure eases off** and you step out, ready for the rest of your day.",
 ])

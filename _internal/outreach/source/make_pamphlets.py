@@ -221,7 +221,7 @@ for G in GENRES:
     y = sub(0, y+50, "What a session looks like")
     y = steps(0, y+2.5, [
       f"The {person} lies down inside and {staff} closes the chamber.",
-      "The chamber pressurizes gradually over a few minutes. Ears may pop, like on a plane.",
+      "The chamber pressurizes gradually over a few minutes.",
       f"The {person} rests, reads, or naps for the session.",
       f"The chamber depressurizes gradually and the {person} steps out.",
     ])
