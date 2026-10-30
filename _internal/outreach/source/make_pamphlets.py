@@ -27,7 +27,7 @@ MARKETS = {
   "utah": dict(
     prefix="Purebaric_UT_pamphlet_", phone="(801) 901-0873", email="hello@purebaric.com",
     out_default=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "pamphlets"),
-    local="**About Purebaric.** Purebaric is a small business based in Lehi, and our chambers are in use across the Wasatch Front today. You work directly with the owner, and calls and texts get a same-day reply. Read our customer reviews at purebaric.com/reviews.",
+    local="**About Purebaric.** Purebaric is a small business based in Lehi, and our chambers are in use across the Wasatch Front today. Calls and texts get a same-day reply. Read our customer reviews at purebaric.com/reviews.",
     facilities_word="Utah facilities", charge_label="What Utah facilities charge today(1)",
     price_rows=[("Single session (60 min)", "$79 - $129", ""), ("10-session pack", "$750 - $1,290", "$75 - $129 a session"), ("20-session pack", "$1,400 - $2,580", "$70 - $129 a session")],
     footnote="(1) Published 2026 prices from facilities in Lehi, Orem, and Salt Lake City. All figures are estimates before staff time, facility overhead, and taxes.",
