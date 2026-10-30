@@ -26,6 +26,12 @@ test("Home startup excludes unrelated slow admin endpoints", () => {
   assert.doesNotMatch(loadAll, /loadServiceArea\(\)/);
 });
 
+test("route stops link their address to Google Maps directions", () => {
+  assert.match(adminHtml, /class="rt-map"/);
+  assert.match(adminHtml, /google\.com\/maps\/dir\/\?api=1&destination=/);
+  assert.match(adminHtml, /encodeURIComponent\(addr\)/);
+});
+
 test("non-dashboard tabs load their data on demand", () => {
   assert.match(adminHtml, /outreach: \(\) => Promise\.all\(\[loadOutreach\(\), loadRoutes\(false\)\.catch\(\(\) => \{\}\)\]\)/);
   assert.match(adminHtml, /pricing: \(\) => Promise\.all\(\[loadPricing\(\), loadStripeConfig\(\)\]\)/);
