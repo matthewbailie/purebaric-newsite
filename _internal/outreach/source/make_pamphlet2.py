@@ -99,7 +99,7 @@ pdf.set_fill_color(*TERRA); pdf.rect(px(1)+M, y+6, CW, 27, "F")
 pdf.set_xy(px(1)+M+5, y+10); pdf.set_font("Helvetica","B",12.5); pdf.set_text_color(*WHITE)
 pdf.multi_cell(CW-10, 6.2, "(801) 901-0873\nhello@purebaric.com\npurebaric.com", align="L")
 y = y + 6 + 27
-y = para(1, y+9, "**Utah-based and local.** Purebaric chambers are in use across the Wasatch Front today. "
+y = para(1, y+9, "**About Purebaric.** Purebaric chambers are in use across the Wasatch Front today. "
   "You work directly with the owner, from the first call through installation and ongoing support.",
   size=9, color=(255,255,255), lh=4.3)
 para(1, PH-30,
