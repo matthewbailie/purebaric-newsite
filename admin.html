@@ -1283,6 +1283,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           .rt-stop:last-child{border-bottom:0;}
           .rt-stop input{width:20px;height:20px;margin-top:2px;}
           .rt-stop.delivered .rt-name{text-decoration:line-through;color:var(--stone-muted);}
+          .rt-stop a.rt-map{color:var(--terracotta,#b8654d);text-decoration:underline;text-underline-offset:2px;}
           .rt-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 0;}
           .rt-bar{height:10px;border-radius:5px;background:#efe7db;overflow:hidden;margin:8px 0 4px;}
           .rt-bar div{height:100%;background:var(--terracotta,#b8654d);}
@@ -5069,12 +5070,18 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       const deliveredSet = new Set(prog.delivered || []);
       const open = _routeOpen.has(d.n);
       const pam = p.pamphlets.byPamphlet.map(x => `${x.count} ${escape(x.pamphlet)}`).join(' · ');
-      const stops = d.stops.map(st => `<label class="rt-stop ${deliveredSet.has(st.id) ? 'delivered' : ''}">
+      const stops = d.stops.map(st => {
+          const addr = [st.address, st.city, st.zip].filter(Boolean).join(', ');
+          const mapsHref = addr ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(addr)}` : '';
+          const addrHtml = mapsHref
+            ? `<a class="rt-map" href="${escape(mapsHref)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" title="Directions to ${escape(st.name)}">${escape(st.address)}, ${escape(st.city)}</a>`
+            : `${escape(st.address)}, ${escape(st.city)}`;
+          return `<label class="rt-stop ${deliveredSet.has(st.id) ? 'delivered' : ''}">
           <input type="checkbox" ${deliveredSet.has(st.id) ? 'checked' : ''} onchange="setStopDelivered(${d.n}, ${JSON.stringify(st.id)}, this.checked)" aria-label="Pamphlet delivered to ${escape(st.name)}">
           <div><div class="rt-name"><strong>${st.stop}. ${escape(st.name)}</strong>${st.top ? ' <span class="pill pill-approved">top pick</span>' : ''} <span class="rt-meta">${escape(st.tier)} · ${escape(st.industry)}</span></div>
-            <div class="renter-line">${escape(st.address)}, ${escape(st.city)}${st.also && st.also.length ? ` · also here: ${escape(st.also.join(', '))}` : ''}</div>
+            <div class="renter-line">${addrHtml}${st.also && st.also.length ? ` · also here: ${escape(st.also.join(', '))}` : ''}</div>
             <div class="renter-line">Ask for ${escape(st.owner || 'the manager')}${st.phone ? ` · ${escape(st.phone)}` : ''} · ${st.drive_min} min drive${st.note ? ` · ${escape(st.note)}` : ''}</div></div>
-        </label>`).join('');
+        </label>`; }).join('');
       return `<div class="rt-day ${p.completed ? 'done' : ''} ${open ? 'open' : ''}" id="rtDay${d.n}">
         <div class="rt-head" onclick="toggleRouteDay(${d.n})">
           <h4>Day ${d.n}: ${escape(d.area)}</h4>
