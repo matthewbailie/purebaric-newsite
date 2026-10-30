@@ -227,7 +227,7 @@ for G in GENRES:
     ])
 
     # ---- Back (middle): credibility + offer + contact
-    pdf.set_fill_color(*INK); pdf.rect(px(1), 0, W, PH, "F")
+    pdf.set_fill_color(20,16,15); pdf.rect(px(1)-8, 0, W+8, PH, "F")
     ly = logo(1, 16, w=38, cream=True)
     pdf.set_xy(px(1)+M, ly+10); pdf.set_font("Georgia","B",15); pdf.set_text_color(*WHITE)
     pdf.multi_cell(CW, 6.6, "See if a chamber fits\nyour program" if TEAM else "See if a chamber fits\nyour business", align="L")
