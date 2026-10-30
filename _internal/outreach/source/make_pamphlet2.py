@@ -93,7 +93,7 @@ ly = logo(1, 16, w=38, cream=True)
 pdf.set_xy(px(1)+M, ly+10); pdf.set_font("Georgia","B",15); pdf.set_text_color(*WHITE)
 pdf.multi_cell(CW, 6.6, "See if a chamber fits\nyour facility", align="L")
 y = para(1, pdf.get_y()+4,
-  "Book a free 15-minute call. We will go over where a chamber could fit in your facility and how it "
+  "Contact us. We will go over where a chamber could fit in your facility and how it "
   "makes sense for your members, then run the numbers for your facility. No obligation.", size=9.4, color=(255,255,255), lh=4.5)
 pdf.set_fill_color(*TERRA); pdf.rect(px(1)+M, y+6, CW, 27, "F")
 pdf.set_xy(px(1)+M+5, y+10); pdf.set_font("Helvetica","B",12.5); pdf.set_text_color(*WHITE)

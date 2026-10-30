@@ -188,7 +188,7 @@ def build(key, cfg):
     ly = logo(1, 16, w=38, cream=True)
     pdf.set_xy(px(1)+M, ly+10); pdf.set_font("Georgia","B",15); pdf.set_text_color(*CREAM2)
     pdf.multi_cell(CW, 6.6, "See if a chamber fits\nyour " + ("program" if program else "business"), align="L")
-    y = para(1, pdf.get_y()+4, "Book a free 15-minute call. We will walk through your space, your " + ("athletes" if program else "clients") + " and the numbers, with no obligation.", size=9.4, color=(230,218,200), lh=4.5)
+    y = para(1, pdf.get_y()+4, "Contact us. We will walk through your space, your " + ("athletes" if program else "clients") + " and the numbers, with no obligation.", size=9.4, color=(230,218,200), lh=4.5)
     pdf.set_fill_color(*TERRA); pdf.rect(px(1)+M, y+6, CW, 27, "F")
     pdf.set_xy(px(1)+M+5, y+10); pdf.set_font("Helvetica","B",12.5); pdf.set_text_color(*WHITE)
     pdf.multi_cell(CW-10, 6.2, f"{CONTACT_PHONE}\n{CONTACT_EMAIL}\n{CONTACT_WEB}", align="L")
