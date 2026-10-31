@@ -5055,7 +5055,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     box.innerHTML = `
       <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;">
         <strong>Completion score: ${summary.pct}%</strong>
-        <span class="renter-line">${escape(plan.market)} · ${summary.days} days · generated ${escape(fmtDate(plan.generated))}</span>
+        <span class="renter-line">${escape(plan.market)} · ${summary.days} days · generated ${escape(fmtDate(plan.generated))} · build 20261030d</span>
       </div>
       <div class="rt-bar"><div style="width:${summary.pct}%"></div></div>
       <div class="rt-kpis">
@@ -5092,6 +5092,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           <a class="btn btn-primary btn-sm" href="${escape(d.maps)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Open route in Google Maps</a>
         </div>
         <div class="rt-body">
+          <div id="rtErrTop${d.n}" class="rt-err">${escape(_routeErr[d.n] || '')}</div>
           <div class="rt-pamphlets"><strong>Pamphlets to take: ${p.pamphlets.total}</strong>${pam ? ` · ${pam}` : ''}. Add a couple of spares.</div>
           ${stops}
           <div class="rt-actions">
