@@ -5039,7 +5039,6 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   // ─── Driving paths (pamphlet routes): /api/admin/routes ───
   let _routes = null, _routeFilter = 'todo', _routeOpen = new Set();
   const _routeErr = {}, _routePatchChains = {}, _routePending = {};
-  let _rtSaveStatus = '';
   async function loadRoutes(refresh) {
     const box = document.getElementById('rtSummary'); if (!box) return;
     if (refresh) box.innerHTML = '<div class="renter-line">Refreshing…</div>';
@@ -5056,11 +5055,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     box.innerHTML = `
       <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;">
         <strong>Completion score: ${summary.pct}%</strong>
-        <span class="renter-line">${escape(plan.market)} · ${summary.days} days · generated ${escape(fmtDate(plan.generated))} · build 20261030e</span>
-      </div>
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;">
-        <button class="btn btn-primary btn-sm" id="rtSaveBtn" onclick="saveAllRouteProgress()">Save route progress</button>
-        <span id="rtSaveStatus" class="renter-line">${escape(_rtSaveStatus || '')}</span>
+        <span class="renter-line">${escape(plan.market)} · ${summary.days} days · generated ${escape(fmtDate(plan.generated))} · build 20261030f</span>
       </div>
       <div class="rt-bar"><div style="width:${summary.pct}%"></div></div>
       <div class="rt-kpis">
@@ -5083,12 +5078,12 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           const addrHtml = mapsHref
             ? `<a class="rt-map" href="${escape(mapsHref)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" title="Directions to ${escape(st.name)}">${escape(st.address)}, ${escape(st.city)}</a>`
             : `${escape(st.address)}, ${escape(st.city)}`;
-          return `<label class="rt-stop ${deliveredSet.has(st.id) ? 'delivered' : ''}">
-          <input type="checkbox" data-day="${d.n}" data-stop="${escape(st.id)}" ${deliveredSet.has(st.id) ? 'checked' : ''} onchange="setStopDelivered(${d.n}, ${JSON.stringify(st.id)}, this.checked)" aria-label="Pamphlet delivered to ${escape(st.name)}">
+          return `<div class="rt-stop ${deliveredSet.has(st.id) ? 'delivered' : ''}">
+          <input type="checkbox" ${deliveredSet.has(st.id) ? 'checked' : ''} onchange="setStopDelivered(${d.n}, ${JSON.stringify(st.id)}, this.checked)" aria-label="Pamphlet delivered to ${escape(st.name)}">
           <div><div class="rt-name"><strong>${st.stop}. ${escape(st.name)}</strong>${st.top ? ' <span class="pill pill-approved">top pick</span>' : ''} <span class="rt-meta">${escape(st.tier)} · ${escape(st.industry)}</span></div>
             <div class="renter-line">${addrHtml}${st.also && st.also.length ? ` · also here: ${escape(st.also.join(', '))}` : ''}</div>
             <div class="renter-line">Ask for ${escape(st.owner || 'the manager')}${st.phone ? ` · ${escape(st.phone)}` : ''} · ${st.drive_min} min drive${st.note ? ` · ${escape(st.note)}` : ''}</div></div>
-        </label>`; }).join('');
+        </div>`; }).join('');
       return `<div class="rt-day ${p.completed ? 'done' : ''} ${open ? 'open' : ''}" id="rtDay${d.n}">
         <div class="rt-head" onclick="toggleRouteDay(${d.n})">
           <h4>Day ${d.n}: ${escape(d.area)}</h4>
@@ -5144,31 +5139,6 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   }
   function setRouteDone(n, done) { _routeOpen.add(n); patchRoute(n, { completed: done }); if (done) toast('Route marked complete'); }
   function saveRouteNote(n) { const el = document.getElementById(`rtNote${n}`); _routeOpen.add(n); patchRoute(n, { note: el ? el.value : '' }); }
-  async function saveAllRouteProgress() {
-    const boxes = [...document.querySelectorAll('#rtList .rt-stop input[type="checkbox"]')];
-    const byDay = {};
-    boxes.forEach(cb => {
-      const n = cb.dataset.day, id = cb.dataset.stop;
-      if (!n || !id) return;
-      if (!byDay[n]) byDay[n] = [];
-      if (cb.checked) byDay[n].push(id);
-    });
-    const days = Object.keys(byDay);
-    if (!days.length) { _rtSaveStatus = 'Nothing to save.'; renderRoutes(); return; }
-    const btn = document.getElementById('rtSaveBtn');
-    if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
-    let failed = false;
-    for (const n of days) {
-      _routePending[String(n)] = new Set(byDay[n]);
-      await patchRoute(n, { delivered: byDay[n] });
-      if (_routeErr[n]) failed = true;
-    }
-    _rtSaveStatus = failed
-      ? 'Save failed, see the red line on the day card.'
-      : `Saved ${new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}.`;
-    if (!failed) toast('Route progress saved');
-    renderRoutes();
-  }
 
   async function loadOutreach() {
     const card = document.getElementById('orSettingsCard');
