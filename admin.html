@@ -1284,6 +1284,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           .rt-stop input{width:20px;height:20px;margin-top:2px;}
           .rt-stop.delivered .rt-name{text-decoration:line-through;color:var(--stone-muted);}
           .rt-stop a.rt-map{color:var(--terracotta,#b8654d);text-decoration:underline;text-underline-offset:2px;}
+          .rt-err{color:#82402f;font-size:13px;padding:4px 0;}
           .rt-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 0;}
           .rt-bar{height:10px;border-radius:5px;background:#efe7db;overflow:hidden;margin:8px 0 4px;}
           .rt-bar div{height:100%;background:var(--terracotta,#b8654d);}
@@ -5037,6 +5038,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
 
   // ─── Driving paths (pamphlet routes): /api/admin/routes ───
   let _routes = null, _routeFilter = 'todo', _routeOpen = new Set();
+  const _routeErr = {}, _routePatchChains = {}, _routePending = {};
   async function loadRoutes(refresh) {
     const box = document.getElementById('rtSummary'); if (!box) return;
     if (refresh) box.innerHTML = '<div class="renter-line">Refreshing…</div>';
@@ -5098,20 +5100,41 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
               : `<button class="btn btn-primary btn-sm" onclick="setRouteDone(${d.n}, true)">Mark route complete (all pamphlets handed out)</button>`}
             <input id="rtNote${d.n}" placeholder="Note for this route (optional)" value="${escape(prog.note || '')}" style="flex:1 1 220px;padding:7px 10px;border:1px solid var(--line,#e6dccd);border-radius:8px;">
             <button class="btn btn-ghost btn-sm" onclick="saveRouteNote(${d.n})">Save note</button>
+            <div id="rtErr${d.n}" class="rt-err">${escape(_routeErr[d.n] || '')}</div>
           </div>
         </div>
       </div>`;
     }).join('');
   }
-  async function patchRoute(n, body) {
-    try { const r = await api(`/api/admin/routes/${n}`, { method: 'PATCH', body: JSON.stringify(body) }); _routes.progress = r.progress; _routes.summary = r.summary; renderRoutes(); }
-    catch (err) { toast(err.message, true); }
+  function patchRoute(n, body) {
+    const run = async () => {
+      try {
+        const r = await api(`/api/admin/routes/${n}`, { method: 'PATCH', body: JSON.stringify(body) });
+        _routes.progress = r.progress; _routes.summary = r.summary;
+        delete _routeErr[n];
+        const pend = _routePending[String(n)];
+        if (pend) {
+          const saved = new Set(((r.progress.days || {})[String(n)] || {}).delivered || []);
+          if (pend.size === saved.size && [...pend].every(id => saved.has(id))) delete _routePending[String(n)];
+        }
+        renderRoutes();
+      } catch (err) {
+        toast(err.message, true);
+        _routeErr[n] = `Save failed: ${err.message}. Nothing was saved.`;
+        delete _routePending[String(n)];
+        try { _routes = await api('/api/admin/routes'); } catch (e) { /* keep last known state */ }
+        renderRoutes();
+      }
+    };
+    _routePatchChains[n] = (_routePatchChains[n] || Promise.resolve()).then(run, run);
+    return _routePatchChains[n];
   }
   function setStopDelivered(n, stopId, on) {
-    const cur = new Set(((_routes.progress.days || {})[String(n)] || {}).delivered || []);
-    if (on) cur.add(stopId); else cur.delete(stopId);
+    const key = String(n);
+    if (!_routePending[key]) _routePending[key] = new Set(((_routes.progress.days || {})[key] || {}).delivered || []);
+    if (on) _routePending[key].add(stopId); else _routePending[key].delete(stopId);
     _routeOpen.add(n);
-    patchRoute(n, { delivered: [...cur] });
+    patchRoute(n, { delivered: [..._routePending[key]] });
   }
   function setRouteDone(n, done) { _routeOpen.add(n); patchRoute(n, { completed: done }); if (done) toast('Route marked complete'); }
   function saveRouteNote(n) { const el = document.getElementById(`rtNote${n}`); _routeOpen.add(n); patchRoute(n, { note: el ? el.value : '' }); }

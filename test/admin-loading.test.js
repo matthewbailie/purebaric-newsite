@@ -32,6 +32,13 @@ test("route stops link their address to Google Maps directions", () => {
   assert.match(adminHtml, /encodeURIComponent\(addr\)/);
 });
 
+test("route saves are serialized per day, merge rapid ticks, and show a persistent error on failure", () => {
+  assert.match(adminHtml, /_routePatchChains\[n\] = \(_routePatchChains\[n\] \|\| Promise\.resolve\(\)\)\.then\(run, run\)/);
+  assert.match(adminHtml, /_routePending\[key\] = new Set/);
+  assert.match(adminHtml, /id="rtErr\$\{d\.n\}"/);
+  assert.match(adminHtml, /Save failed: \$\{err\.message\}\. Nothing was saved\./);
+});
+
 test("non-dashboard tabs load their data on demand", () => {
   assert.match(adminHtml, /outreach: \(\) => Promise\.all\(\[loadOutreach\(\), loadRoutes\(false\)\.catch\(\(\) => \{\}\)\]\)/);
   assert.match(adminHtml, /pricing: \(\) => Promise\.all\(\[loadPricing\(\), loadStripeConfig\(\)\]\)/);
