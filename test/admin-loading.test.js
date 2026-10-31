@@ -36,6 +36,8 @@ test("route saves are serialized per day, merge rapid ticks, and show a persiste
   assert.match(adminHtml, /_routePatchChains\[n\] = \(_routePatchChains\[n\] \|\| Promise\.resolve\(\)\)\.then\(run, run\)/);
   assert.match(adminHtml, /_routePending\[key\] = new Set/);
   assert.match(adminHtml, /id="rtErr\$\{d\.n\}"/);
+  assert.match(adminHtml, /id="rtErrTop\$\{d\.n\}"/);
+  assert.match(adminHtml, /build 20261030d/);
   assert.match(adminHtml, /Save failed: \$\{err\.message\}\. Nothing was saved\./);
 });
 
