@@ -45,8 +45,16 @@ test("driving paths stops are plain divs, not labels, and carry no save button",
   assert.doesNotMatch(adminHtml, /saveAllRouteProgress/);
   assert.doesNotMatch(adminHtml, /label class="rt-stop"/);
   assert.match(adminHtml, /div class="rt-stop/);
-  assert.match(adminHtml, /build 20261030f/);
+  assert.match(adminHtml, /build 20261030g/);
   assert.match(adminHtml, /id="rtErrTop\$\{d\.n\}"/);
+});
+test("route toggles update the page immediately and the save is verified against the server", () => {
+  assert.match(adminHtml, /function recomputeRouteSummary\(\)/);
+  assert.match(adminHtml, /_routes\.progress\.days\[key\] = Object\.assign\(\{\}, _routes\.progress\.days\[key\], \{ delivered: \[\.\.\._routePending\[key\]\] \}\)/);
+  assert.match(adminHtml, /recomputeRouteSummary\(\);\s*\n\s*renderRoutes\(\);\s*\n\s*patchRoute\(n, \{ delivered:/);
+  assert.match(adminHtml, /AbortController/);
+  assert.match(adminHtml, /Save timed out after 15 seconds/);
+  assert.match(adminHtml, /The server did not keep the change/);
 });
 
 test("non-dashboard tabs load their data on demand", () => {

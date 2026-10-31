@@ -5055,7 +5055,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     box.innerHTML = `
       <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;">
         <strong>Completion score: ${summary.pct}%</strong>
-        <span class="renter-line">${escape(plan.market)} · ${summary.days} days · generated ${escape(fmtDate(plan.generated))} · build 20261030f</span>
+        <span class="renter-line">${escape(plan.market)} · ${summary.days} days · generated ${escape(fmtDate(plan.generated))} · build 20261030g</span>
       </div>
       <div class="rt-bar"><div style="width:${summary.pct}%"></div></div>
       <div class="rt-kpis">
@@ -5107,11 +5107,33 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       </div>`;
     }).join('');
   }
+  function recomputeRouteSummary() {
+    if (!_routes || !_routes.plan) return;
+    const { plan, progress } = _routes;
+    const oldByDay = (_routes.summary && _routes.summary.byDay) || [];
+    let stops = 0, delivered = 0, daysDone = 0;
+    const byDay = plan.days.map(d => {
+      const prog = (progress.days || {})[String(d.n)] || { delivered: [], completed: false };
+      const ids = new Set(d.stops.map(s => s.id));
+      const done = (prog.delivered || []).filter(id => ids.has(id)).length;
+      stops += ids.size; delivered += done; if (prog.completed) daysDone += 1;
+      const old = oldByDay.find(x => x.n === d.n) || {};
+      return { n: d.n, delivered: done, stops: ids.size, completed: !!prog.completed, completedAt: prog.completedAt || old.completedAt || null, note: prog.note || old.note || '', pamphlets: old.pamphlets || { total: 0, byPamphlet: [] } };
+    });
+    _routes.summary = { stops, delivered, pct: stops ? Math.round(delivered / stops * 100) : 0, days: plan.days.length, daysDone, byDay };
+  }
   function patchRoute(n, body) {
     const run = async () => {
+      const ctl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      const timer = ctl ? setTimeout(() => ctl.abort(), 15000) : null;
       try {
-        const r = await api(`/api/admin/routes/${n}`, { method: 'PATCH', body: JSON.stringify(body) });
+        const r = await api(`/api/admin/routes/${n}`, { method: 'PATCH', body: JSON.stringify(body), signal: ctl ? ctl.signal : undefined });
         _routes.progress = r.progress; _routes.summary = r.summary;
+        if (Array.isArray(body.delivered)) {
+          const saved = new Set(((r.progress.days || {})[String(n)] || {}).delivered || []);
+          const sent = new Set(body.delivered);
+          if (saved.size !== sent.size || ![...sent].every(id => saved.has(id))) throw new Error('The server did not keep the change. Please try again.');
+        }
         delete _routeErr[n];
         const pend = _routePending[String(n)];
         if (pend) {
@@ -5119,12 +5141,15 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           if (pend.size === saved.size && [...pend].every(id => saved.has(id))) delete _routePending[String(n)];
         }
         renderRoutes();
-      } catch (err) {
+      } catch (e) {
+        const err = e && e.name === 'AbortError' ? new Error('Save timed out after 15 seconds. Nothing was saved.') : e;
         toast(err.message, true);
         _routeErr[n] = `Save failed: ${err.message}. Nothing was saved.`;
         delete _routePending[String(n)];
-        try { _routes = await api('/api/admin/routes'); } catch (e) { /* keep last known state */ }
+        try { _routes = await api('/api/admin/routes'); } catch (e2) { /* keep last known state */ }
         renderRoutes();
+      } finally {
+        if (timer) clearTimeout(timer);
       }
     };
     _routePatchChains[n] = (_routePatchChains[n] || Promise.resolve()).then(run, run);
@@ -5135,10 +5160,36 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     if (!_routePending[key]) _routePending[key] = new Set(((_routes.progress.days || {})[key] || {}).delivered || []);
     if (on) _routePending[key].add(stopId); else _routePending[key].delete(stopId);
     _routeOpen.add(n);
+    // The tap itself is the record: update the local progress and totals and
+    // re-render immediately, so the checkbox, the strikethrough, the day pill
+    // and the totals always agree. The PATCH that follows confirms the change
+    // against the server, and a failure or a server mismatch reverts to the
+    // server state with a visible error instead of leaving them disagreeing.
+    if (!_routes.progress.days) _routes.progress.days = {};
+    _routes.progress.days[key] = Object.assign({}, _routes.progress.days[key], { delivered: [..._routePending[key]] });
+    recomputeRouteSummary();
+    renderRoutes();
     patchRoute(n, { delivered: [..._routePending[key]] });
   }
-  function setRouteDone(n, done) { _routeOpen.add(n); patchRoute(n, { completed: done }); if (done) toast('Route marked complete'); }
-  function saveRouteNote(n) { const el = document.getElementById(`rtNote${n}`); _routeOpen.add(n); patchRoute(n, { note: el ? el.value : '' }); }
+  function setRouteDone(n, done) {
+    _routeOpen.add(n);
+    const key = String(n);
+    const day = _routes.plan.days.find(d => d.n === n);
+    if (!_routes.progress.days) _routes.progress.days = {};
+    const cur = _routes.progress.days[key] || { delivered: [], completed: false, completedAt: null, note: '' };
+    _routes.progress.days[key] = Object.assign({}, cur, { completed: done, completedAt: done ? (cur.completedAt || new Date().toISOString()) : null, delivered: done ? (day ? day.stops.map(s => s.id) : cur.delivered) : cur.delivered });
+    recomputeRouteSummary();
+    renderRoutes();
+    patchRoute(n, { completed: done }); if (done) toast('Route marked complete');
+  }
+  function saveRouteNote(n) {
+    const el = document.getElementById(`rtNote${n}`); _routeOpen.add(n);
+    const key = String(n);
+    if (!_routes.progress.days) _routes.progress.days = {};
+    _routes.progress.days[key] = Object.assign({}, _routes.progress.days[key], { note: el ? el.value : '' });
+    renderRoutes();
+    patchRoute(n, { note: el ? el.value : '' });
+  }
 
   async function loadOutreach() {
     const card = document.getElementById('orSettingsCard');
