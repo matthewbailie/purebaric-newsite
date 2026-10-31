@@ -37,8 +37,15 @@ test("route saves are serialized per day, merge rapid ticks, and show a persiste
   assert.match(adminHtml, /_routePending\[key\] = new Set/);
   assert.match(adminHtml, /id="rtErr\$\{d\.n\}"/);
   assert.match(adminHtml, /id="rtErrTop\$\{d\.n\}"/);
-  assert.match(adminHtml, /build 20261030d/);
   assert.match(adminHtml, /Save failed: \$\{err\.message\}\. Nothing was saved\./);
+});
+
+test("driving paths has an explicit save button that saves ticked boxes from the page", () => {
+  assert.match(adminHtml, /id="rtSaveBtn" onclick="saveAllRouteProgress\(\)">Save route progress</);
+  assert.match(adminHtml, /id="rtSaveStatus"/);
+  assert.match(adminHtml, /data-day="\$\{d\.n\}" data-stop="\$\{escape\(st\.id\)\}"/);
+  assert.match(adminHtml, /async function saveAllRouteProgress\(\)/);
+  assert.match(adminHtml, /build 20261030e/);
 });
 
 test("non-dashboard tabs load their data on demand", () => {
