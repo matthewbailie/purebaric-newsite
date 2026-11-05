@@ -4113,7 +4113,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           ${outOfAreaBadge}
           ${routingBadge}
         </td>
-        <td>${b.bookingMode === 'book' ? `<span class="pill pill-approved">Booked online</span><div style="margin-top:4px;"><strong>Delivery ${escape(fmtDate(b.startDate))}</strong> · ${Number(b.months) || 1} month${Number(b.months) === 1 ? '' : 's'}${b.endDate ? ' through ' + escape(fmtDate(b.endDate)) : ''} · ${b.chamberStyle === 'sitting' ? 'sitting' : 'lying'} chamber</div>` : `${escape(b.startDate || ', ')} · ${escape(b.rentalLength || ', ')}`}${/ata/i.test(b.requestedType || '') && b.bookingMode !== 'book' ? `<div class="renter-line">Style: ${escape(b.requestedType)}</div>` : ''}<div class="renter-line">${escape((b.reason || '').slice(0, 120))}</div>${flags}</td>
+        <td>${b.bookingMode === 'book' ? `<span class="pill pill-approved">Booked online</span><div style="margin-top:4px;"><strong>Delivery ${escape(fmtDate(b.startDate))}</strong> · ${Number(b.months) || 1} month${Number(b.months) === 1 ? '' : 's'}${b.endDate ? ' through ' + escape(fmtDate(b.endDate)) : ''} · ${b.chamberStyle === 'sitting' ? 'sitting' : 'lying'} chamber</div>` : `${escape(b.startDate || ', ')} · ${escape(b.rentalLength || ', ')}`}${/ata/i.test(b.requestedType || '') && b.bookingMode !== 'book' ? `<div class="renter-line">Style: ${escape(b.requestedType)}</div>` : ''}${b.promo === 'black-friday-2026' ? '<div style="margin-top:4px;"><span class="pill" style="background:#2b2320;color:#fff;">Black Friday: $200 off first month</span></div>' : ''}<div class="renter-line">${escape((b.reason || '').slice(0, 120))}</div>${flags}</td>
         <td><select class="booking-status-sel" data-id="${b.id}" style="padding: 0.3rem 0.5rem; font-size: 0.85rem;">${statusOptions}</select></td>
         <td>
           <div class="row-actions">
@@ -5057,7 +5057,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
 
   // ── Promotions list (Outreach → Promotions list) ──
   let _promo = null;
-  const PROMO_SOURCE = { waitlist: 'Waitlist form', homepage: 'Homepage sign-up' };
+  const PROMO_SOURCE = { waitlist: 'Waitlist form', homepage: 'Homepage sign-up', 'black-friday': 'Black Friday (not ready to book)' };
   async function loadPromoList() {
     const rows = document.getElementById('promoRows'), sum = document.getElementById('promoSummary'), copyBtn = document.getElementById('promoCopyBtn');
     try {

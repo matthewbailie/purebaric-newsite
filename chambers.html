@@ -19,6 +19,11 @@
 <link rel="stylesheet" href="/warm.css">
   <script src="/pb-metrics.js"></script>
 </head><body>
+<!-- bf2026: Black Friday 2026 banner. Switches itself off after Friday, Nov 27 (end of day, Mountain time). Remove this block after the promo. -->
+<div id="bfBanner" style="background:#2b2320;color:#fff;text-align:center;font:600 14px/1.4 Inter,system-ui,sans-serif;padding:10px 16px">Black Friday: $200 off your first month, ends Friday, Nov 27. <a href="/book" style="color:#e0b9a8;text-decoration:underline">Get the offer</a></div>
+<style>html:not(.bf-on) .bf-only{display:none!important}html.bf-on .bf-off{display:none!important}.bf-pill{display:inline-flex;align-items:center;background:#2b2320;color:#fff;border-radius:999px;font-size:12px;font-weight:700;padding:6px 13px}</style>
+<script>window.PB_BF=Date.now()<Date.UTC(2026,10,28,7);document.documentElement.classList.toggle('bf-on',window.PB_BF);if(!window.PB_BF)document.getElementById('bfBanner').remove();</script>
+<!-- /bf2026 -->
 <header>
   <div class="wrap nav">
     <a class="brand" href="/"><img class="brand-logo" src="/images/logo.png?v=3" alt="Purebaric"></a>

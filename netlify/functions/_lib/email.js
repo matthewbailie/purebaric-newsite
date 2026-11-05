@@ -283,6 +283,7 @@ async function notifyCustomerBookingConfirmed(booking, { deliveryNote } = {}) {
       <tr><td style="padding:4px 14px 4px 0; color:#6f635b;">Chamber</td><td style="padding:4px 0; font-weight:700;">${escapeHtml(style)}</td></tr>
       <tr><td style="padding:4px 14px 4px 0; color:#6f635b;">Rental length</td><td style="padding:4px 0; font-weight:700;">${escapeHtml(length)}${booking.endDate ? ` <span style="font-weight:400; color:#6f635b;">(through ${escapeHtml(formatDeliveryDate(booking.endDate))})</span>` : ""}</td></tr>
       <tr><td style="padding:4px 14px 4px 0; color:#6f635b;">Anticipated delivery</td><td style="padding:4px 0; font-weight:700;">${escapeHtml(when)}</td></tr>
+      ${booking.promo === "black-friday-2026" ? `<tr><td style="padding:4px 14px 4px 0; color:#6f635b;">Black Friday</td><td style="padding:4px 0; font-weight:700;">$200 off your first month${isBiz ? ", and the one-time $200 training and supplies fee waived" : ""}</td></tr>` : ""}
     </table>
     <p style="margin:0 0 16px;">We will contact you shortly to coordinate a delivery time. ${escapeHtml(note)}</p>
     <p style="margin:0;">Questions before then? Reply to this email or call us at <a href="tel:+18019010873" style="color:#b8654d;">(801) 901-0873</a>.</p>

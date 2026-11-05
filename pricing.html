@@ -126,6 +126,11 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 </script>
   <script src="/pb-metrics.js"></script>
 </head><body>
+<!-- bf2026: Black Friday 2026 banner. Switches itself off after Friday, Nov 27 (end of day, Mountain time). Remove this block after the promo. -->
+<div id="bfBanner" style="background:#2b2320;color:#fff;text-align:center;font:600 14px/1.4 Inter,system-ui,sans-serif;padding:10px 16px">Black Friday: $200 off your first month, ends Friday, Nov 27. <a href="/book" style="color:#e0b9a8;text-decoration:underline">Get the offer</a></div>
+<style>html:not(.bf-on) .bf-only{display:none!important}html.bf-on .bf-off{display:none!important}.bf-pill{display:inline-flex;align-items:center;background:#2b2320;color:#fff;border-radius:999px;font-size:12px;font-weight:700;padding:6px 13px}</style>
+<script>window.PB_BF=Date.now()<Date.UTC(2026,10,28,7);document.documentElement.classList.toggle('bf-on',window.PB_BF);if(!window.PB_BF)document.getElementById('bfBanner').remove();</script>
+<!-- /bf2026 -->
 <header>
   <div class="wrap nav">
     <a class="brand" href="/"><img class="brand-logo" src="/images/logo.png?v=3" alt="Purebaric"></a>
@@ -174,6 +179,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
       <div class="book">
         <div class="ptop"><span class="price" id="pr">$659</span><span class="permo">/mo</span><span class="strike" id="strike">$729</span></div>
         <div class="svwrap open" id="svw"><div class="sv1"><span class="pill1" id="badge">Save 10%</span><span class="txt1" id="save">$70/mo off</span></div></div>
+        <div class="bf-only" style="margin:10px 0 4px"><span class="bf-pill">Black Friday: $200 off first month, ends Nov 27</span><p id="bfFine" style="font-size:13px;color:var(--muted);margin:8px 0 0">First month $459 with Black Friday. Then $659 a month. Book by Friday, Nov 27.</p></div>
         <div class="selrow"><label>Chamber</label>
           <select id="ch"><option>1.5 ATA Lying chamber</option><option disabled>1.5 ATA Sitting Chamber, Coming soon</option></select></div>
         <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol">3 months</span></div>
@@ -225,7 +231,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
             <div class="bt sel" data-months="12" role="button" tabindex="0"><div class="len">12 months</div><div class="amt"><span id="bizAmt12">$783</span><small> /mo</small></div><div class="sv" id="bizSave12">Save 20%</div></div>
           </div>
           <ul class="biz-inc">
-            <li><strong>One-time $200</strong> for staff training and your initial masks and cleaning supplies. Delivery and installation are included.</li>
+            <li class="bf-off"><strong>One-time $200</strong> for staff training and your initial masks and cleaning supplies. Delivery and installation are included.</li>
+            <li class="bf-only"><strong>Black Friday:</strong> $200 off your first month and the one-time $200 training and supplies fee waived when you book by Friday, Nov 27. Delivery and installation are included.</li>
             <li><strong>Service and support for the whole rental.</strong> Call or text our team; we handle maintenance and swaps.</li>
             <li><strong>Unlimited sessions.</strong> The rental does not change with usage.</li>
             <li><strong>Per chamber.</strong> Want two or more? <a href="/contact?topic=custom" style="color:var(--terra-d);font-weight:600;text-decoration:underline">Ask us for a multi-chamber quote.</a></li>
@@ -323,6 +330,7 @@ function recalc(){
   document.getElementById('bd').textContent='$'+r+' × '+mos(m);
   document.getElementById('sub').textContent=money(r*m);
   document.getElementById('tot').textContent=money((BASE-r)*m);
+  var bff=document.getElementById('bfFine');if(bff&&window.PB_BF)bff.textContent='First month $'+(r-200)+' with Black Friday.'+(m>1?' Then $'+r+' a month.':'')+' Book by Friday, Nov 27.';
   var mo=document.getElementById('mo'),f=Math.round((m-1)/11*100);
   mo.style.background='linear-gradient(90deg,var(--terra) '+f+'%,var(--cream2) '+f+'%)';
   var wrap=document.getElementById('svw'),pill=document.getElementById('badge'),txt=document.getElementById('save');

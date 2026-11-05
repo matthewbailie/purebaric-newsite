@@ -139,6 +139,11 @@ body.biz.bookmode .slider-block{display:block!important}
 </style>
   <script src="/pb-metrics.js"></script>
 </head><body>
+<!-- bf2026: Black Friday 2026 banner. Switches itself off after Friday, Nov 27 (end of day, Mountain time). Remove this block after the promo. -->
+<div id="bfBanner" style="background:#2b2320;color:#fff;text-align:center;font:600 14px/1.4 Inter,system-ui,sans-serif;padding:10px 16px">Black Friday: $200 off your first month, ends Friday, Nov 27. <a href="/book" style="color:#e0b9a8;text-decoration:underline">Get the offer</a></div>
+<style>html:not(.bf-on) .bf-only{display:none!important}html.bf-on .bf-off{display:none!important}.bf-pill{display:inline-flex;align-items:center;background:#2b2320;color:#fff;border-radius:999px;font-size:12px;font-weight:700;padding:6px 13px}</style>
+<script>window.PB_BF=Date.now()<Date.UTC(2026,10,28,7);document.documentElement.classList.toggle('bf-on',window.PB_BF);if(!window.PB_BF)document.getElementById('bfBanner').remove();</script>
+<!-- /bf2026 -->
 <header>
   <div class="wrap nav">
     <a class="brand" href="/"><img class="brand-logo" src="/images/logo.png?v=3" alt="Purebaric"></a>
@@ -177,7 +182,7 @@ body.biz.bookmode .slider-block{display:block!important}
           <button type="button" data-rt="home">Home</button>
           <button type="button" data-rt="business">Business</button>
         </div>
-        <div class="biz-banner" id="bizBanner"><strong>Business rental request.</strong> For a chamber placed at your gym, studio, salon, or clinic: from $979 a month per chamber plus a one-time $200 fee for staff training and initial supplies. Longer rentals cost less per month: 5% off from 3 months, 15% from 6, 20% at 12. We will reply within one business day to talk through your space. Renting for your home instead? <a href="/book">Switch to a home rental</a>.</div>
+        <div class="biz-banner" id="bizBanner"><strong>Business rental request.</strong> For a chamber placed at your gym, studio, salon, or clinic: from $979 a month per chamber<span class="bf-off"> plus a one-time $200 fee for staff training and initial supplies</span>. <span class="bf-only">Black Friday: $200 off your first month and the one-time $200 training and supplies fee waived when you book by Friday, Nov 27. </span>Longer rentals cost less per month: 5% off from 3 months, 15% from 6, 20% at 12. We will reply within one business day to talk through your space. Renting for your home instead? <a href="/book">Switch to a home rental</a>.</div>
         <input type="hidden" id="rentalType" name="rental_type" value="residential">
 
         <div class="msum"><div><span class="mp" id="mpr">$579</span><small> /mo</small> <span class="mterm">· <span id="mmo">4 months</span></span></div><a href="#" onclick="document.getElementById('mo').scrollIntoView({block:'center'});return false;">Edit ↓</a></div>
@@ -243,9 +248,12 @@ body.biz.bookmode .slider-block{display:block!important}
           <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol">4 months</span></div>
             <input type="range" min="1" max="12" step="1" value="4" id="mo" oninput="recalc()" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
           <div class="brow"><span id="bd">$579 × 4 months</span><span id="sub">$2,316</span></div>
+          <div class="brow bf-only" id="bfRow"><span>Black Friday: $200 off first month</span><span class="amt">-$200</span></div>
+          <div class="brow bf-only" id="bfFeeRow" style="display:none"><span>Training and supplies fee</span><span class="amt">Waived</span></div>
           <div class="brow" id="bizHide"><span>You save</span><span class="amt" id="tot">$600</span></div>
           <div class="brow"><span>Delivery and install</span><span class="amt">Included</span></div>
           <div class="total"><span>Due today</span><span>$0</span></div>
+          <div class="bf-only" id="bfFirst" style="font-size:12.5px;line-height:1.45;color:var(--ink);font-weight:600;text-align:center;margin-top:12px">First month $379, then $579 a month. Book by Friday, Nov 27.</div>
           <div class="fine">No charge until delivery and setup · cancel free any time before delivery</div>
         </div>
         </div>
@@ -293,6 +301,10 @@ body.biz.bookmode .slider-block{display:block!important}
 <script>
 var PB_PF={1:729,2:659,3:659,4:579,5:579,6:579,7:579,8:579,9:579,10:579,11:579,12:529};
 var PB_PRICING=Object.assign({},PB_PF);
+/* Black Friday 2026 (set by the banner snippet at the top of the page; false after Friday, Nov 27) */
+var BF=!!window.PB_BF, BF_OFF=200;
+function bfFirst(r,m){var e=document.getElementById('bfFirst');if(e)e.textContent='First month $'+(r-BF_OFF)+(m>1?', then $'+r+' a month':'')+'. Book by Friday, Nov 27.';var f=document.getElementById('bfFeeRow');if(f)f.style.display=BIZ?'':'none';}
+function bizFeeText(){return BF?'Black Friday: $200 training and supplies fee waived':'Plus a one-time $200 fee for staff training and initial supplies';}
 function money(n){return '$'+n.toLocaleString()}
 function rate(m){m=Math.max(1,Math.min(12,parseInt(m,10)||1));return PB_PRICING[m]||PB_PF[m];}
 var BASE=rate(1);
@@ -314,7 +326,8 @@ function recalc(){
   var mm2=document.getElementById('mmo');if(mm2)mm2.textContent=mos(m);
   document.getElementById('bd').textContent='$'+r+' × '+mos(m);
   document.getElementById('sub').textContent=money(r*m);
-  document.getElementById('tot').textContent=money((BASE-r)*m);
+  document.getElementById('tot').textContent=money((BASE-r)*m+(BF?BF_OFF:0));
+  bfFirst(r,m);
   var mo=document.getElementById('mo'),f=Math.round((m-1)/11*100);
   mo.style.background='linear-gradient(90deg,var(--terra) '+f+'%,var(--cream2) '+f+'%)';
   var w=document.getElementById('svw');
@@ -384,13 +397,14 @@ function recalcBiz(){
   var mm2=document.getElementById('mmo');if(mm2)mm2.textContent=mos(m);
   document.getElementById('bd').textContent='$'+r+' × '+mos(m)+', per chamber';
   document.getElementById('sub').textContent=money(r*m);
-  document.getElementById('tot').textContent=money((BASE_BIZ-r)*m);
+  document.getElementById('tot').textContent=money((BASE_BIZ-r)*m+(BF?BF_OFF:0));
+  bfFirst(r,m);
   var mo=document.getElementById('mo'),f=Math.round((m-1)/11*100);
   mo.style.background='linear-gradient(90deg,var(--terra) '+f+'%,var(--cream2) '+f+'%)';
   var w=document.getElementById('svw');
   if(pp<=0){w.classList.add('hide');}
   else{w.classList.remove('hide');document.getElementById('badge').textContent='Save '+pp+'%';document.getElementById('save').textContent=money(BASE_BIZ-r)+'/mo off';}
-  var fine=document.querySelector('.book .fine');if(fine&&!window.BOOKMODE)fine.textContent='Plus a one-time $200 fee for staff training and initial supplies · delivery and install included · no charge until we confirm';
+  var fine=document.querySelector('.book .fine');if(fine&&!window.BOOKMODE)fine.textContent=bizFeeText()+' · delivery and install included · no charge until we confirm';
 }
 
 /* live pricing so the calculator matches the admin-managed rates */
@@ -446,13 +460,13 @@ function enterBookMode(j){
   document.getElementById('dateReqRow').hidden=true; document.getElementById('dateBookRow').hidden=false;
   document.getElementById('cdate').removeAttribute('name');
   var eb=document.querySelector('.page-hero .eyebrow2'), h1=document.querySelector('.page-hero h1'), hp=document.querySelector('.page-hero p');
-  if(BIZ){ eb.textContent='Business booking'; h1.textContent='Book a chamber for your business'; hp.textContent='Choose the chamber, your rental length, and a delivery date from our calendar. From $979 a month per chamber plus a one-time $200 fee for staff training and initial supplies; longer rentals save up to 20%. There is no charge today; we text or call to confirm the delivery time.'; }
+  if(BIZ){ eb.textContent='Business booking'; h1.textContent='Book a chamber for your business'; hp.textContent='Choose the chamber, your rental length, and a delivery date from our calendar. From $979 a month per chamber'+(BF?'. Black Friday: $200 off your first month and the one-time $200 training and supplies fee waived':' plus a one-time $200 fee for staff training and initial supplies')+'; longer rentals save up to 20%. There is no charge today; we text or call to confirm the delivery time.'; }
   else { eb.textContent='Book a chamber'; h1.textContent='Book your chamber'; hp.textContent='Choose your chamber, rental length, and a delivery date from our calendar. There is no charge today; we text or call to confirm the exact delivery time.'; }
   var lbl=document.querySelector('.book-side-label'); if(lbl)lbl.textContent=BIZ?'Your business booking':'Your booking';
   var head=document.querySelector('#resForm .section-head p'); if(head)head.textContent='Where we deliver and who we are delivering to.';
   document.querySelectorAll('.trust span').forEach(function(sp){ if(/Reply within one business day/.test(sp.textContent)) sp.remove(); });
   document.getElementById('submitBtn').textContent=BIZ?'Book chamber for my business →':'Book chamber →';
-  var fine=document.querySelector('.book .fine'); if(fine)fine.textContent=BIZ?'Plus a one-time $200 fee for staff training and initial supplies · no charge until delivery day · we confirm the delivery time by text or call':'No charge until delivery day · we confirm the delivery time by text or call · cancel free up to 7 days before delivery';
+  var fine=document.querySelector('.book .fine'); if(fine)fine.textContent=BIZ?bizFeeText()+' · no charge until delivery day · we confirm the delivery time by text or call':'No charge until delivery day · we confirm the delivery time by text or call · cancel free up to 7 days before delivery';
   var note=document.getElementById('dnote'); if(note&&j.deliveryNote)note.innerHTML='<strong>'+j.deliveryNote.replace(/</g,'&lt;')+'</strong>';
   if(j.styles&&j.styles.length){
     window.__pbSetChamberOptions(j.styles.map(function(t){ var lbl='1.5 ATA '+(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:t.status!=='available'&&t.status!=='later',soon:t.status==='soon',status:t.status,next:t.nextAvailable}; }));
@@ -535,8 +549,8 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   var m=+document.getElementById('mo').value,r=rate(m),p=pct(m),total=r*m,save=(BASE-r)*m;
   var months=mos(m);
   var rb=rateBiz(m),pb=pctBiz(m);
-  var plan=BIZ?('Business rental: Soft-Shell 1.5 ATA, '+months+' at $'+rb+'/mo per chamber'+(pb>0?(' (save '+pb+'%, $'+((BASE_BIZ-rb)*m).toLocaleString()+' total off)'):'')+', plus $200 training and initial supplies. Est. rental total '+money(rb*m)+'. Business: '+document.getElementById('cbiz').value.trim()+'. Location ZIP '+document.getElementById('zip').value+'.')
-    :('Selected plan: Soft-Shell 1.5 ATA, '+months+' rental at $'+r+'/mo'+(p>0?(' (save '+p+'%, $'+save.toLocaleString()+' total off)'):'')+'. Est. rental total '+money(total)+'. Delivery ZIP '+document.getElementById('zip').value+'.');
+  var plan=BIZ?('Business rental: Soft-Shell 1.5 ATA, '+months+' at $'+rb+'/mo per chamber'+(pb>0?(' (save '+pb+'%, $'+((BASE_BIZ-rb)*m).toLocaleString()+' total off)'):'')+(BF?'. Black Friday 2026: $200 off the first month, one-time $200 training and supplies fee waived. Est. rental total ':', plus $200 training and initial supplies. Est. rental total ')+money(rb*m)+'. Business: '+document.getElementById('cbiz').value.trim()+'. Location ZIP '+document.getElementById('zip').value+'.')
+    :('Selected plan: Soft-Shell 1.5 ATA, '+months+' rental at $'+r+'/mo'+(p>0?(' (save '+p+'%, $'+save.toLocaleString()+' total off)'):'')+'. Est. rental total '+money(total)+'. Delivery ZIP '+document.getElementById('zip').value+'.'+(BF?' Black Friday 2026: $200 off the first month.':''));
   var notes=document.getElementById('cnotes').value.trim();
   var ack='Acknowledged: reviewed safety information; understands this is a request pending confirmation.';
   var full=(notes?(notes+'\n\n'):'')+plan+'\n'+ack;
@@ -555,6 +569,7 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   data.set('preferred_date',window.BOOKMODE?document.getElementById('bookDate').value:document.getElementById('cdate').value);
   if(window.BOOKMODE){ data.set('booking_mode','book'); data.set('chamber_style',selectedStyle()); data.set('months',String(m)); }
   data.set('notes',full);
+  if(BF)data.set('promo','black-friday-2026');
   data.set('gclid',window.getPurebaricGclid?window.getPurebaricGclid():'');
   var analyticsContext=window.getPurebaricAnalyticsContext
     ? await window.getPurebaricAnalyticsContext()

@@ -282,6 +282,11 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 </style>
   <script src="/pb-metrics.js"></script>
 </head><body>
+<!-- bf2026: Black Friday 2026 banner. Switches itself off after Friday, Nov 27 (end of day, Mountain time). Remove this block after the promo. -->
+<div id="bfBanner" style="background:#2b2320;color:#fff;text-align:center;font:600 14px/1.4 Inter,system-ui,sans-serif;padding:10px 16px">Black Friday: $200 off your first month, ends Friday, Nov 27. <a href="/book" style="color:#e0b9a8;text-decoration:underline">Get the offer</a></div>
+<style>html:not(.bf-on) .bf-only{display:none!important}html.bf-on .bf-off{display:none!important}.bf-pill{display:inline-flex;align-items:center;background:#2b2320;color:#fff;border-radius:999px;font-size:12px;font-weight:700;padding:6px 13px}</style>
+<script>window.PB_BF=Date.now()<Date.UTC(2026,10,28,7);document.documentElement.classList.toggle('bf-on',window.PB_BF);if(!window.PB_BF)document.getElementById('bfBanner').remove();</script>
+<!-- /bf2026 -->
 <header>
   <div class="wrap nav">
     <a class="brand" href="/"><img class="brand-logo" src="/images/logo.png?v=3" alt="Purebaric"></a>
@@ -319,7 +324,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   <div class="layout">
     <div class="col">
       <div class="hero-below">
-        <span class="eyebrow2">● Now delivering across Utah</span>
+        <span class="eyebrow2">● Now delivering across Utah</span> <span class="bf-pill bf-only">Black Friday: $200 off, ends Nov 27</span>
         <h1>Hyperbaric chamber rentals at home</h1>
         <p>The ultimate hyperbaric experience. Unlimited 1.5 ATA hyperbaric sessions with 99.9% oxygen via mask at home.</p>
         <div class="hero-ctas">
@@ -526,8 +531,10 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 <div class="promo-band"><div class="wrap">
   <div class="promo-card">
     <div>
-      <h2>Occasional promotions from Purebaric</h2>
-      <p>Leave your email and we will let you know when we run a promotion on chamber rentals. No spam, unsubscribe anytime.</p>
+      <h2 class="bf-off">Occasional promotions from Purebaric</h2>
+      <p class="bf-off">Leave your email and we will let you know when we run a promotion on chamber rentals. No spam, unsubscribe anytime.</p>
+      <h2 class="bf-only">Not ready to book yet?</h2>
+      <p class="bf-only">Leave your email and we will reach out before the Black Friday offer ends on Friday, Nov 27. No spam, unsubscribe anytime.</p>
     </div>
     <form class="promo-form" id="promoForm" novalidate>
       <input type="text" name="bot-field" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
@@ -646,11 +653,11 @@ function checkZip(s){s=s||'';var el=document.getElementById('zip'+s),n=document.
     var email=inp.value.trim();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ note.className='promo-note err'; note.textContent='Please enter a valid email address.'; inp.focus(); return; }
     var orig=btn.textContent; btn.disabled=true; btn.textContent='Adding…'; note.className='promo-note'; note.textContent='';
-    var data=new URLSearchParams(); data.set('email',email); data.set('source','homepage'); data.set('bot-field',f.querySelector('[name="bot-field"]').value);
+    var data=new URLSearchParams(); data.set('email',email); data.set('source',window.PB_BF?'black-friday':'homepage'); data.set('bot-field',f.querySelector('[name="bot-field"]').value);
     fetch('/api/promo-join',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
       .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
       .then(function(x){
-        if(x.ok&&x.j&&x.j.ok){ note.className='promo-note ok'; note.textContent='You are on the list. We will email you when we run a promotion.'; inp.value=''; window.trackPurebaricEvent?.('promo_signup',{source:'homepage'}); }
+        if(x.ok&&x.j&&x.j.ok){ note.className='promo-note ok'; note.textContent='You are on the list. We will email you when we run a promotion.'; inp.value=''; window.trackPurebaricEvent?.('promo_signup',{source:window.PB_BF?'black-friday':'homepage'}); }
         else { note.className='promo-note err'; note.textContent=(x.j&&x.j.message)||'Something went wrong. Please try again.'; }
       })
       .catch(function(){ note.className='promo-note err'; note.textContent='Something went wrong. Please try again.'; })

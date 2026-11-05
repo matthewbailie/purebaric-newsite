@@ -18,6 +18,7 @@ const { cleanGclid } = require("./_lib/analytics");
 const { cleanRentalType, cleanBusinessName } = require("./_lib/rental-type");
 const { zipServed } = require("./_lib/servicearea");
 const { parseBookingName } = require("./_lib/booking-name");
+const { activePromo, withPromoNote } = require("./_lib/promo");
 const { smsForEvent, smsNumbersForEvent, emailsForEvent } = require("./_lib/notifications");
 const {
   notifyAdminBooking,
@@ -105,6 +106,8 @@ exports.handler = async (event) => {
       booked = { bookingMode: "book", chamberStyle: style, months, endDate: check.endDate };
     }
 
+    // Black Friday 2026 applies by itself to every booking made before the cut-off; the note lands in the booking notes.
+    const promo = activePromo();
     const booking = await createBooking({
       firstName, lastName, email,
       rentalType,
@@ -117,7 +120,8 @@ exports.handler = async (event) => {
       startDate: (body["start-date"] || body.preferred_date || "").trim(),
       rentalLength: (body["rental-length"] || body.rental_duration || "").trim(),
       requestedType: (body.chamber_id || body.chamber_type || "").trim(),
-      reason: (body.reason || body.notes || "").trim(),
+      reason: withPromoNote(body.reason || body.notes, promo, rentalType),
+      promo: promo ? promo.id : "",
       priorExperience: (body["prior-experience"] || "").trim(),
       medicalScreeningFlags: (body["medical-screening-flags"] || "none").trim(),
       consentMedical: bool(body["consent-medical"]),
