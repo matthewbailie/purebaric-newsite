@@ -26,6 +26,37 @@ test("Home startup excludes unrelated slow admin endpoints", () => {
   assert.doesNotMatch(loadAll, /loadServiceArea\(\)/);
 });
 
+test("route stops link their address to Google Maps directions", () => {
+  assert.match(adminHtml, /class="rt-map"/);
+  assert.match(adminHtml, /google\.com\/maps\/dir\/\?api=1&destination=/);
+  assert.match(adminHtml, /encodeURIComponent\(addr\)/);
+});
+
+test("route saves are serialized per day, merge rapid ticks, and show a persistent error on failure", () => {
+  assert.match(adminHtml, /_routePatchChains\[n\] = \(_routePatchChains\[n\] \|\| Promise\.resolve\(\)\)\.then\(run, run\)/);
+  assert.match(adminHtml, /_routePending\[key\] = new Set/);
+  assert.match(adminHtml, /id="rtErr\$\{d\.n\}"/);
+  assert.match(adminHtml, /id="rtErrTop\$\{d\.n\}"/);
+  assert.match(adminHtml, /Save failed: \$\{err\.message\}\. Nothing was saved\./);
+});
+
+test("driving paths stops are plain divs, not labels, and carry no save button", () => {
+  assert.doesNotMatch(adminHtml, /id="rtSaveBtn"/);
+  assert.doesNotMatch(adminHtml, /saveAllRouteProgress/);
+  assert.doesNotMatch(adminHtml, /label class="rt-stop"/);
+  assert.match(adminHtml, /div class="rt-stop/);
+  assert.match(adminHtml, /build 20261030g/);
+  assert.match(adminHtml, /id="rtErrTop\$\{d\.n\}"/);
+});
+test("route toggles update the page immediately and the save is verified against the server", () => {
+  assert.match(adminHtml, /function recomputeRouteSummary\(\)/);
+  assert.match(adminHtml, /_routes\.progress\.days\[key\] = Object\.assign\(\{\}, _routes\.progress\.days\[key\], \{ delivered: \[\.\.\._routePending\[key\]\] \}\)/);
+  assert.match(adminHtml, /recomputeRouteSummary\(\);\s*\n\s*renderRoutes\(\);\s*\n\s*patchRoute\(n, \{ delivered:/);
+  assert.match(adminHtml, /AbortController/);
+  assert.match(adminHtml, /Save timed out after 15 seconds/);
+  assert.match(adminHtml, /The server did not keep the change/);
+});
+
 test("non-dashboard tabs load their data on demand", () => {
   assert.match(adminHtml, /outreach: \(\) => Promise\.all\(\[loadOutreach\(\), loadRoutes\(false\)\.catch\(\(\) => \{\}\)\]\)/);
   assert.match(adminHtml, /pricing: \(\) => Promise\.all\(\[loadPricing\(\), loadStripeConfig\(\)\]\)/);

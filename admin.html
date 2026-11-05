@@ -438,7 +438,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       </div>
       <div class="viz-grid-2">
         <div class="viz-card viz">
-          <h3>Active subscribers</h3>
+          <h3>Active subscribers by week</h3>
           <p class="viz-note" data-note="subs"></p>
           <div id="chartSubs"></div>
         </div>
@@ -1301,6 +1301,8 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           .rt-stop:last-child{border-bottom:0;}
           .rt-stop input{width:20px;height:20px;margin-top:2px;}
           .rt-stop.delivered .rt-name{text-decoration:line-through;color:var(--stone-muted);}
+          .rt-stop a.rt-map{color:var(--terracotta,#b8654d);text-decoration:underline;text-underline-offset:2px;}
+          .rt-err{color:#82402f;font-size:13px;padding:4px 0;}
           .rt-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 0;}
           .rt-bar{height:10px;border-radius:5px;background:#efe7db;overflow:hidden;margin:8px 0 4px;}
           .rt-bar div{height:100%;background:var(--terracotta,#b8654d);}
@@ -2140,22 +2142,59 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     setText('kpiArr', money(o.arr));
 
     const noPrevNote = !M.seriesHasActivity(cur) ? `No rentals in ${year} yet.` : hasPrev ? '' : `No ${year - 1} rentals on record yet, so there's no prior-year line.`;
-    ['mrr', 'subs', 'avg'].forEach(k => { document.querySelector(`[data-note="${k}"]`).textContent = noPrevNote; });
+    ['mrr', 'avg'].forEach(k => { document.querySelector(`[data-note="${k}"]`).textContent = noPrevNote; });
+    // The subscribers line is week by week (see weekSeries in dashboard-metrics.js):
+    // one point per Monday-to-Sunday week, counted at the week's end, so a
+    // change like 8 to 7 shows in the week it happened. The monthly table
+    // below still shows peak subscribers per month.
+    document.querySelector('[data-note="subs"]').textContent = (noPrevNote ? noPrevNote + ' ' : '') +
+      `Weekly: each point is the subscriber count at the end of that week (today for the current week). Today: ${o.subscribers}.`;
     const axisMoney = n => n >= 1000 ? '$' + (n / 1000) + 'k' : '$' + n;
     // Months before a year's first rental are "no data" (a gap), not a zero — the business
-    // hadn't started yet — so the line begins where the first rental does.
-    const values = (points, key) => {
-      const first = points.findIndex(p => p && p.rentals > 0);
+    // hadn't started yet — so the line begins where the first rental does. The
+    // subscribers line starts at the first month with a peak subscriber, since a
+    // month can have a peak even when no rental is left at its end.
+    const values = (points, key, activityKey) => {
+      const first = points.findIndex(p => p && p[activityKey || 'rentals'] > 0);
       return points.map((p, i) => p && first !== -1 && i >= first ? p[key] : null);
     };
-    const build = (key, format, axisFormat, what) => {
-      const series = [{ label: String(year), values: values(cur, key) }];
-      if (hasPrev) series.push({ label: String(year - 1), values: values(prev, key) });
+    const build = (key, format, axisFormat, what, activityKey) => {
+      const series = [{ label: String(year), values: values(cur, key, activityKey) }];
+      if (hasPrev) series.push({ label: String(year - 1), values: values(prev, key, activityKey) });
       const last = series[0].values.filter(v => v != null).pop();
       return { series, format, axisFormat, ariaLabel: `${what} by month, ${year}${hasPrev ? ` compared with ${year - 1}` : ''}. Latest: ${last == null ? 'no data' : format(last)}.` };
     };
     C.lineChart(document.getElementById('chartMrr'), build('mrr', money, axisMoney, 'Monthly recurring revenue'));
-    C.lineChart(document.getElementById('chartSubs'), build('subscribers', String, String, 'Active subscribers'));
+    // Weekly subscribers line: points are the weekSeries snapshots, aligned by
+    // week index from the start of the year. The x axis still reads months:
+    // a tick sits at the first week ending in each month, and hovering a
+    // point reads "Week ending Oct 25". Weeks before the year's first
+    // rental are gaps, not zeros, as with the monthly charts.
+    const curW = M.weekSeries(_rentals || [], year, today);
+    const prevW = M.weekSeries(_rentals || [], year - 1, today);
+    const hasPrevW = M.seriesHasActivity(prevW);
+    const weekValues = (points) => {
+      const first = points.findIndex(p => p && p.rentals > 0);
+      return points.map((p, i) => p && first !== -1 && i >= first ? p.subscribers : null);
+    };
+    const weekLabels = curW.map(p => p ? `Week ending ${MONTH_NAMES[Number(p.day.slice(5, 7)) - 1].slice(0, 3)} ${Number(p.day.slice(8, 10))}` : '');
+    const weekTicks = [];
+    curW.forEach((p, i) => {
+      if (!p) return;
+      const label = MONTH_NAMES[Number(p.day.slice(5, 7)) - 1].slice(0, 3);
+      if (!weekTicks.some(t => t.label === label)) weekTicks.push({ i, label });
+    });
+    const weekAligned = (points) => {
+      const vals = weekValues(points);
+      while (vals.length < curW.length) vals.push(null);
+      return vals.slice(0, curW.length);
+    };
+    const weekLast = weekValues(curW).filter(v => v != null).pop();
+    C.lineChart(document.getElementById('chartSubs'), {
+      series: [{ label: String(year), values: weekValues(curW) }].concat(hasPrevW ? [{ label: String(year - 1), values: weekAligned(prevW) }] : []),
+      format: String, axisFormat: String, labels: weekLabels, ticks: weekTicks,
+      ariaLabel: `Active subscribers by week, ${year}${hasPrevW ? ` compared with ${year - 1}` : ''}. Latest: ${weekLast == null ? 'no data' : weekLast}.`
+    });
     C.lineChart(document.getElementById('chartAvg'), build('avgPrice', money, axisMoney, 'Average monthly price per chamber'));
     const fmtMonths = v => (Math.round(v * 10) / 10) + ' mo';
     C.lineChart(document.getElementById('chartLen'), build('avgLength', fmtMonths, fmtMonths, 'Average rental length in months'));
@@ -2163,8 +2202,8 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const cell = (p, key, f) => p && p[key] != null ? f(p[key]) : '—';
     const short = MONTH_NAMES.map(n => n.slice(0, 3));
     document.getElementById('monthlyTable').innerHTML =
-      `<thead><tr><th>Month</th><th>MRR ${year}</th><th>MRR ${year - 1}</th><th>Subscribers ${year}</th><th>Subscribers ${year - 1}</th><th>Avg price ${year}</th><th>Avg price ${year - 1}</th></tr></thead><tbody>` +
-      short.map((m, i) => `<tr><td>${m}</td><td>${cell(cur[i], 'mrr', money)}</td><td>${cell(prev[i], 'mrr', money)}</td><td>${cell(cur[i], 'subscribers', String)}</td><td>${cell(prev[i], 'subscribers', String)}</td><td>${cell(cur[i], 'avgPrice', money)}</td><td>${cell(prev[i], 'avgPrice', money)}</td></tr>`).join('') + '</tbody>';
+      `<thead><tr><th>Month</th><th>MRR ${year}</th><th>MRR ${year - 1}</th><th>Peak subscribers ${year}</th><th>Peak subscribers ${year - 1}</th><th>Avg price ${year}</th><th>Avg price ${year - 1}</th></tr></thead><tbody>` +
+      short.map((m, i) => `<tr><td>${m}</td><td>${cell(cur[i], 'mrr', money)}</td><td>${cell(prev[i], 'mrr', money)}</td><td>${cell(cur[i], 'peakSubscribers', String)}</td><td>${cell(prev[i], 'peakSubscribers', String)}</td><td>${cell(cur[i], 'avgPrice', money)}</td><td>${cell(prev[i], 'avgPrice', money)}</td></tr>`).join('') + '</tbody>';
 
     const tiles = [
       ['Chamber utilization', o.utilization.pct == null ? '—' : o.utilization.pct + '%', `${o.utilization.inUse} of ${o.utilization.activeChambers} active chambers rented today`],
@@ -5056,6 +5095,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
 
   // ─── Driving paths (pamphlet routes): /api/admin/routes ───
   let _routes = null, _routeFilter = 'todo', _routeOpen = new Set();
+  const _routeErr = {}, _routePatchChains = {}, _routePending = {};
   async function loadRoutes(refresh) {
     const box = document.getElementById('rtSummary'); if (!box) return;
     if (refresh) box.innerHTML = '<div class="renter-line">Refreshing…</div>';
@@ -5072,7 +5112,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     box.innerHTML = `
       <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;">
         <strong>Completion score: ${summary.pct}%</strong>
-        <span class="renter-line">${escape(plan.market)} · ${summary.days} days · generated ${escape(fmtDate(plan.generated))}</span>
+        <span class="renter-line">${escape(plan.market)} · ${summary.days} days · generated ${escape(fmtDate(plan.generated))} · build 20261030g</span>
       </div>
       <div class="rt-bar"><div style="width:${summary.pct}%"></div></div>
       <div class="rt-kpis">
@@ -5089,12 +5129,18 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       const deliveredSet = new Set(prog.delivered || []);
       const open = _routeOpen.has(d.n);
       const pam = p.pamphlets.byPamphlet.map(x => `${x.count} ${escape(x.pamphlet)}`).join(' · ');
-      const stops = d.stops.map(st => `<label class="rt-stop ${deliveredSet.has(st.id) ? 'delivered' : ''}">
+      const stops = d.stops.map(st => {
+          const addr = [st.address, st.city, st.zip].filter(Boolean).join(', ');
+          const mapsHref = addr ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(addr)}` : '';
+          const addrHtml = mapsHref
+            ? `<a class="rt-map" href="${escape(mapsHref)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" title="Directions to ${escape(st.name)}">${escape(st.address)}, ${escape(st.city)}</a>`
+            : `${escape(st.address)}, ${escape(st.city)}`;
+          return `<div class="rt-stop ${deliveredSet.has(st.id) ? 'delivered' : ''}">
           <input type="checkbox" ${deliveredSet.has(st.id) ? 'checked' : ''} onchange="setStopDelivered(${d.n}, ${JSON.stringify(st.id)}, this.checked)" aria-label="Pamphlet delivered to ${escape(st.name)}">
           <div><div class="rt-name"><strong>${st.stop}. ${escape(st.name)}</strong>${st.top ? ' <span class="pill pill-approved">top pick</span>' : ''} <span class="rt-meta">${escape(st.tier)} · ${escape(st.industry)}</span></div>
-            <div class="renter-line">${escape(st.address)}, ${escape(st.city)}${st.also && st.also.length ? ` · also here: ${escape(st.also.join(', '))}` : ''}</div>
+            <div class="renter-line">${addrHtml}${st.also && st.also.length ? ` · also here: ${escape(st.also.join(', '))}` : ''}</div>
             <div class="renter-line">Ask for ${escape(st.owner || 'the manager')}${st.phone ? ` · ${escape(st.phone)}` : ''} · ${st.drive_min} min drive${st.note ? ` · ${escape(st.note)}` : ''}</div></div>
-        </label>`).join('');
+        </div>`; }).join('');
       return `<div class="rt-day ${p.completed ? 'done' : ''} ${open ? 'open' : ''}" id="rtDay${d.n}">
         <div class="rt-head" onclick="toggleRouteDay(${d.n})">
           <h4>Day ${d.n}: ${escape(d.area)}</h4>
@@ -5103,6 +5149,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           <a class="btn btn-primary btn-sm" href="${escape(d.maps)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Open route in Google Maps</a>
         </div>
         <div class="rt-body">
+          <div id="rtErrTop${d.n}" class="rt-err">${escape(_routeErr[d.n] || '')}</div>
           <div class="rt-pamphlets"><strong>Pamphlets to take: ${p.pamphlets.total}</strong>${pam ? ` · ${pam}` : ''}. Add a couple of spares.</div>
           ${stops}
           <div class="rt-actions">
@@ -5111,23 +5158,95 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
               : `<button class="btn btn-primary btn-sm" onclick="setRouteDone(${d.n}, true)">Mark route complete (all pamphlets handed out)</button>`}
             <input id="rtNote${d.n}" placeholder="Note for this route (optional)" value="${escape(prog.note || '')}" style="flex:1 1 220px;padding:7px 10px;border:1px solid var(--line,#e6dccd);border-radius:8px;">
             <button class="btn btn-ghost btn-sm" onclick="saveRouteNote(${d.n})">Save note</button>
+            <div id="rtErr${d.n}" class="rt-err">${escape(_routeErr[d.n] || '')}</div>
           </div>
         </div>
       </div>`;
     }).join('');
   }
-  async function patchRoute(n, body) {
-    try { const r = await api(`/api/admin/routes/${n}`, { method: 'PATCH', body: JSON.stringify(body) }); _routes.progress = r.progress; _routes.summary = r.summary; renderRoutes(); }
-    catch (err) { toast(err.message, true); }
+  function recomputeRouteSummary() {
+    if (!_routes || !_routes.plan) return;
+    const { plan, progress } = _routes;
+    const oldByDay = (_routes.summary && _routes.summary.byDay) || [];
+    let stops = 0, delivered = 0, daysDone = 0;
+    const byDay = plan.days.map(d => {
+      const prog = (progress.days || {})[String(d.n)] || { delivered: [], completed: false };
+      const ids = new Set(d.stops.map(s => s.id));
+      const done = (prog.delivered || []).filter(id => ids.has(id)).length;
+      stops += ids.size; delivered += done; if (prog.completed) daysDone += 1;
+      const old = oldByDay.find(x => x.n === d.n) || {};
+      return { n: d.n, delivered: done, stops: ids.size, completed: !!prog.completed, completedAt: prog.completedAt || old.completedAt || null, note: prog.note || old.note || '', pamphlets: old.pamphlets || { total: 0, byPamphlet: [] } };
+    });
+    _routes.summary = { stops, delivered, pct: stops ? Math.round(delivered / stops * 100) : 0, days: plan.days.length, daysDone, byDay };
+  }
+  function patchRoute(n, body) {
+    const run = async () => {
+      const ctl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      const timer = ctl ? setTimeout(() => ctl.abort(), 15000) : null;
+      try {
+        const r = await api(`/api/admin/routes/${n}`, { method: 'PATCH', body: JSON.stringify(body), signal: ctl ? ctl.signal : undefined });
+        _routes.progress = r.progress; _routes.summary = r.summary;
+        if (Array.isArray(body.delivered)) {
+          const saved = new Set(((r.progress.days || {})[String(n)] || {}).delivered || []);
+          const sent = new Set(body.delivered);
+          if (saved.size !== sent.size || ![...sent].every(id => saved.has(id))) throw new Error('The server did not keep the change. Please try again.');
+        }
+        delete _routeErr[n];
+        const pend = _routePending[String(n)];
+        if (pend) {
+          const saved = new Set(((r.progress.days || {})[String(n)] || {}).delivered || []);
+          if (pend.size === saved.size && [...pend].every(id => saved.has(id))) delete _routePending[String(n)];
+        }
+        renderRoutes();
+      } catch (e) {
+        const err = e && e.name === 'AbortError' ? new Error('Save timed out after 15 seconds. Nothing was saved.') : e;
+        toast(err.message, true);
+        _routeErr[n] = `Save failed: ${err.message}. Nothing was saved.`;
+        delete _routePending[String(n)];
+        try { _routes = await api('/api/admin/routes'); } catch (e2) { /* keep last known state */ }
+        renderRoutes();
+      } finally {
+        if (timer) clearTimeout(timer);
+      }
+    };
+    _routePatchChains[n] = (_routePatchChains[n] || Promise.resolve()).then(run, run);
+    return _routePatchChains[n];
   }
   function setStopDelivered(n, stopId, on) {
-    const cur = new Set(((_routes.progress.days || {})[String(n)] || {}).delivered || []);
-    if (on) cur.add(stopId); else cur.delete(stopId);
+    const key = String(n);
+    if (!_routePending[key]) _routePending[key] = new Set(((_routes.progress.days || {})[key] || {}).delivered || []);
+    if (on) _routePending[key].add(stopId); else _routePending[key].delete(stopId);
     _routeOpen.add(n);
-    patchRoute(n, { delivered: [...cur] });
+    // The tap itself is the record: update the local progress and totals and
+    // re-render immediately, so the checkbox, the strikethrough, the day pill
+    // and the totals always agree. The PATCH that follows confirms the change
+    // against the server, and a failure or a server mismatch reverts to the
+    // server state with a visible error instead of leaving them disagreeing.
+    if (!_routes.progress.days) _routes.progress.days = {};
+    _routes.progress.days[key] = Object.assign({}, _routes.progress.days[key], { delivered: [..._routePending[key]] });
+    recomputeRouteSummary();
+    renderRoutes();
+    patchRoute(n, { delivered: [..._routePending[key]] });
   }
-  function setRouteDone(n, done) { _routeOpen.add(n); patchRoute(n, { completed: done }); if (done) toast('Route marked complete'); }
-  function saveRouteNote(n) { const el = document.getElementById(`rtNote${n}`); _routeOpen.add(n); patchRoute(n, { note: el ? el.value : '' }); }
+  function setRouteDone(n, done) {
+    _routeOpen.add(n);
+    const key = String(n);
+    const day = _routes.plan.days.find(d => d.n === n);
+    if (!_routes.progress.days) _routes.progress.days = {};
+    const cur = _routes.progress.days[key] || { delivered: [], completed: false, completedAt: null, note: '' };
+    _routes.progress.days[key] = Object.assign({}, cur, { completed: done, completedAt: done ? (cur.completedAt || new Date().toISOString()) : null, delivered: done ? (day ? day.stops.map(s => s.id) : cur.delivered) : cur.delivered });
+    recomputeRouteSummary();
+    renderRoutes();
+    patchRoute(n, { completed: done }); if (done) toast('Route marked complete');
+  }
+  function saveRouteNote(n) {
+    const el = document.getElementById(`rtNote${n}`); _routeOpen.add(n);
+    const key = String(n);
+    if (!_routes.progress.days) _routes.progress.days = {};
+    _routes.progress.days[key] = Object.assign({}, _routes.progress.days[key], { note: el ? el.value : '' });
+    renderRoutes();
+    patchRoute(n, { note: el ? el.value : '' });
+  }
 
   async function loadOutreach() {
     const card = document.getElementById('orSettingsCard');

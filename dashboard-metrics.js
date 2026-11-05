@@ -13,7 +13,24 @@
 //    weekly rate x 52/12.
 //  - MRR = sum of monthly-equivalent revenue of the rentals counting that day.
 //    Monthly points are month-end snapshots (today, for the current month).
+//    A rental that starts and ends inside one month therefore never shows in a
+//    month-end MRR figure.
 //  - Subscribers = distinct renter emails with a counting rental that day.
+//    Each monthly point also carries peakSubscribers: the highest subscriber
+//    count on any single day in that month, from the 1st through the
+//    measurement day. A month-end snapshot rewrites itself when someone
+//    leaves mid-month (October would drop from 8 to 7 the day after a
+//    subscriber's last day), erasing the fact that 8 people were subscribed
+//    during the month. The peak cannot go down as the month goes on, so it
+//    preserves that history. The chart and table use the peak; the KPI at
+//    the top of the Home tab still shows today's count.
+//  - Weekly subscribers (weekSeries, for the subscribers chart only): the
+//    chart is week by week, not month by month. Weeks run Monday to Sunday,
+//    each point is the subscriber snapshot at the Sunday ending the week
+//    (today, for the current week; Dec 31 for the final partial week).
+//    That is what shows a mid-month change, like 8 dropping to 7, in the
+//    week it happened, instead of only at the month's end. The monthly
+//    table below the chart still shows peak subscribers per month.
 //  - Average price = MRR / counting rentals (per chamber, not per customer).
 (function (root, factory) {
   const api = factory();
@@ -99,14 +116,68 @@
     };
   }
 
+  // Highest distinct-subscriber count on any day in [fromDay, toDay], using
+  // the same counting rule as snapshot(). Scans day by day; the upper bound
+  // is the number of distinct renters with a countable rental, so it can
+  // stop early once every such renter is counted on one day.
+  function peakSubscribersInRange(rentals, fromDay, toDay) {
+    const countable = (rentals || []).filter((r) => isCounted(r) && r.status !== 'scheduled');
+    const ceiling = new Set(countable.map(emailOf)).size;
+    let peak = 0;
+    for (let day = fromDay; day <= toDay; day = addDays(day, 1)) {
+      const n = subscriberSet(countable, day).size;
+      if (n > peak) peak = n;
+      if (peak >= ceiling) break;
+    }
+    return peak;
+  }
+
   // 12 monthly points for a calendar year. Months after `today` are null (no data
   // yet); the current month is measured at `today`, past months at month end.
+  // Every point also carries peakSubscribers (see the header comment): the
+  // highest subscriber count on any day in the month up to the measurement
+  // day, so a mid-month departure does not rewrite the month's history.
   function yearSeries(rentals, year, today) {
     const out = [];
     for (let m = 0; m < 12; m += 1) {
       if (monthStart(year, m) > today) { out.push(null); continue; }
       const end = monthEnd(year, m);
-      out.push({ month: m, ...snapshot(rentals, end > today ? today : end) });
+      const day = end > today ? today : end;
+      const point = snapshot(rentals, day);
+      point.peakSubscribers = peakSubscribersInRange(rentals, monthStart(year, m), day);
+      out.push({ month: m, ...point });
+    }
+    return out;
+  }
+
+  // One snapshot per Monday-to-Sunday week in the year, measured at the
+  // Sunday ending the week (today for the current week, Dec 31 for the
+  // final partial week). Weeks after `today` still appear, with a null
+  // subscriber count, so the x axis keeps its month ticks through
+  // December. The first week is
+  // the one containing Jan 1, so it can start in the previous December;
+  // its point is still measured inside this year. Each point carries
+  // weekStart/weekEnd plus the usual snapshot fields (day is the day the
+  // snapshot was taken). Series for different years line up by week
+  // index from the start of the year, not by calendar date.
+  function weekSeries(rentals, year, today) {
+    const jan1 = `${year}-01-01`;
+    const dec31 = `${year}-12-31`;
+    const back = (new Date(utc(jan1)).getUTCDay() + 6) % 7; // days since Monday
+    let weekStart = addDays(jan1, -back);
+    const out = [];
+    while (weekStart <= dec31) {
+      const weekEnd = addDays(weekStart, 6);
+      const end = weekEnd > dec31 ? dec31 : weekEnd;
+      if (weekStart > today) {
+        // Future week: keep the slot (so month ticks and the prior-year
+        // line stay aligned) with no count, rather than dropping it.
+        out.push({ weekStart, weekEnd: end, day: end, mrr: 0, rentals: 0, subscribers: null, avgPrice: null, avgLength: null, chambersInUse: 0 });
+      } else {
+        const day = end > today ? today : end;
+        out.push({ weekStart, weekEnd: end, ...snapshot(rentals, day) });
+      }
+      weekStart = addDays(weekStart, 7);
     }
     return out;
   }
@@ -251,5 +322,5 @@
     };
   }
 
-  return { monthlyEquivalent, isCounted, countsFrom, activeOn, avgTermMonths, snapshot, yearSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon, startsAndEnds };
+  return { monthlyEquivalent, isCounted, countsFrom, activeOn, avgTermMonths, snapshot, yearSeries, peakSubscribersInRange, weekSeries, seriesHasActivity, overview, lifetimePaid, upcomingRenewals, endingSoon, startsAndEnds };
 });

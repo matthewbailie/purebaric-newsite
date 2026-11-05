@@ -165,10 +165,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
           <p>The Soft-Shell 1.5 ATA in your home with unlimited daily sessions. Choose any length from 1 to 12 months; the longer you rent, the lower the monthly rate.</p>
         </div>
         <ul class="home-inc">
-          <li><strong>Delivery, setup and pickup</strong> are included, with a pressure test on install.</li>
+          <li><strong>Delivery, setup and pickup</strong> are included.</li>
           <li><strong>Hands-on training</strong> on safe operation and session protocols.</li>
-          <li><strong>Unlimited sessions</strong> for everyone in the household.</li>
-          <li><strong>Support throughout</strong>, call or text (801) 901-0873, Mon to Sat.</li>
+          <li><strong>Support throughout your rental</strong>.</li>
           <li><strong>Nothing due today.</strong> Payment is collected on delivery day, once we've confirmed the chamber fits your home and you're comfortable using it.</li>
         </ul>
       </div>
@@ -221,17 +220,17 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
         <div>
           <div class="biz-tiers" id="bizTiers">
             <div class="bt" data-months="1" role="button" tabindex="0"><div class="len">1 month</div><div class="amt"><span id="bizAmt1">$979</span><small> /mo</small></div><div class="sv none">Standard rate</div></div>
-            <div class="bt sel" data-months="3" role="button" tabindex="0"><div class="len">3 months</div><div class="amt"><span id="bizAmt3">$929</span><small> /mo</small></div><div class="sv" id="bizSave3">Save 5%</div></div>
+            <div class="bt" data-months="3" role="button" tabindex="0"><div class="len">3 months</div><div class="amt"><span id="bizAmt3">$929</span><small> /mo</small></div><div class="sv" id="bizSave3">Save 5%</div></div>
             <div class="bt" data-months="6" role="button" tabindex="0"><div class="len">6 months</div><div class="amt"><span id="bizAmt6">$832</span><small> /mo</small></div><div class="sv" id="bizSave6">Save 15%</div></div>
-            <div class="bt best" data-months="12" role="button" tabindex="0"><div class="len">12 months</div><div class="amt"><span id="bizAmt12">$783</span><small> /mo</small></div><div class="sv" id="bizSave12">Save 20%</div></div>
+            <div class="bt sel" data-months="12" role="button" tabindex="0"><div class="len">12 months</div><div class="amt"><span id="bizAmt12">$783</span><small> /mo</small></div><div class="sv" id="bizSave12">Save 20%</div></div>
           </div>
           <ul class="biz-inc">
             <li><strong>One-time $200</strong> for staff training and your initial masks and cleaning supplies. Delivery and installation are included.</li>
-            <li><strong>Service and support for the whole rental.</strong> Call or text our team, Monday to Saturday; we handle maintenance and swaps.</li>
-            <li><strong>Unlimited sessions.</strong> Charge what you like per session; the rental does not change with usage.</li>
+            <li><strong>Service and support for the whole rental.</strong> Call or text our team; we handle maintenance and swaps.</li>
+            <li><strong>Unlimited sessions.</strong> The rental does not change with usage.</li>
             <li><strong>Per chamber.</strong> Want two or more? <a href="/contact?topic=custom" style="color:var(--terra-d);font-weight:600;text-decoration:underline">Ask us for a multi-chamber quote.</a></li>
           </ul>
-          <div class="biz-cta"><a class="btn btn-primary" href="/book?type=business&months=3" id="bizBook" onclick="return goBookBiz()">Book for your business →</a><a class="btn btn-ghost" href="/business">See the full business page</a></div>
+          <div class="biz-cta"><a class="btn btn-primary" href="/book?type=business&months=12" id="bizBook" onclick="return goBookBiz()">Book for your business →</a><a class="btn btn-ghost" href="/business">See the full business page</a></div>
         </div>
         <div class="rev">
           <div class="k">Estimated net revenue, one chamber</div>
@@ -338,11 +337,11 @@ function recalc(){
 }
 function goBook(){var m=+document.getElementById('mo').value;var z=document.getElementById('zip').value.trim();try{if(z)sessionStorage.setItem('pb_zip',z);}catch(e){}location.href='/book?months='+m;return false;}
 /* business tier cards: tap to pick a term, carried into the booking form */
-var bizMonths=3;
+var bizMonths=12;
 function goBookBiz(){location.href='/book?type=business&months='+bizMonths;return false;}
 (function(){
   var tiers=document.getElementById('bizTiers');if(!tiers)return;
-  function select(el){bizMonths=+el.getAttribute('data-months')||3;tiers.querySelectorAll('.bt').forEach(function(b){b.classList.toggle('sel',b===el);b.setAttribute('aria-pressed',b===el?'true':'false');});}
+  function select(el){bizMonths=+el.getAttribute('data-months')||12;tiers.querySelectorAll('.bt').forEach(function(b){b.classList.toggle('sel',b===el);b.setAttribute('aria-pressed',b===el?'true':'false');});}
   tiers.querySelectorAll('.bt').forEach(function(b){
     b.setAttribute('aria-pressed',b.classList.contains('sel')?'true':'false');
     b.addEventListener('click',function(){select(b);});

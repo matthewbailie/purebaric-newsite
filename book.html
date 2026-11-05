@@ -180,7 +180,7 @@ body.biz.bookmode .slider-block{display:block!important}
         <div class="biz-banner" id="bizBanner"><strong>Business rental request.</strong> For a chamber placed at your gym, studio, salon, or clinic: from $979 a month per chamber plus a one-time $200 fee for staff training and initial supplies. Longer rentals cost less per month: 5% off from 3 months, 15% from 6, 20% at 12. We will reply within one business day to talk through your space. Renting for your home instead? <a href="/book">Switch to a home rental</a>.</div>
         <input type="hidden" id="rentalType" name="rental_type" value="residential">
 
-        <div class="msum"><div><span class="mp" id="mpr">$659</span><small> /mo</small> <span class="mterm">· <span id="mmo">3 months</span></span></div><a href="#" onclick="document.getElementById('mo').scrollIntoView({block:'center'});return false;">Edit ↓</a></div>
+        <div class="msum"><div><span class="mp" id="mpr">$579</span><small> /mo</small> <span class="mterm">· <span id="mmo">4 months</span></span></div><a href="#" onclick="document.getElementById('mo').scrollIntoView({block:'center'});return false;">Edit ↓</a></div>
 
         <div class="section-head" style="margin-bottom:18px">
           <h2 style="font-size:22px">Your details</h2>
@@ -216,7 +216,7 @@ body.biz.bookmode .slider-block{display:block!important}
         <div class="fg"><label for="cnotes">Notes (optional)</label><textarea id="cnotes" name="notes" placeholder="Ground floor setup, stairs, morning delivery preference..."></textarea></div>
 
         <div class="screen">
-          <label class="ck"><input type="checkbox" id="ackReq" required> I understand my delivery date is subject to availability and the exact delivery time will be confirmed by text or call. I've reviewed the <a href="/safety" target="_blank" rel="noopener">safety information</a> and have no known contraindications, or I've discussed use with my physician. <span class="req">*</span></label>
+          <label class="ck"><input type="checkbox" id="ackReq" required> I understand my delivery date is subject to availability and the exact delivery time will be confirmed by text or call. I've reviewed the <a href="/safety" target="_blank" rel="noopener">safety information</a>. <span class="req">*</span></label>
         </div>
 
         <button type="submit" class="btn btn-primary submit" id="submitBtn">Request reservation →</button>
@@ -232,18 +232,18 @@ body.biz.bookmode .slider-block{display:block!important}
         <div class="book-sticky">
         <div class="book-side-label">Your reservation</div>
         <div class="book">
-          <div class="ptop"><span class="price" id="pr">$659</span><span class="permo">/mo</span><span class="strike" id="strike">$729</span></div>
-          <div class="svwrap" id="svw"><div class="sv1"><span class="pill1" id="badge">Save 10%</span><span class="txt1" id="save">$70/mo off</span></div></div>
+          <div class="ptop"><span class="price" id="pr">$579</span><span class="permo">/mo</span><span class="strike" id="strike">$729</span></div>
+          <div class="svwrap" id="svw"><div class="sv1"><span class="pill1" id="badge">Save 21%</span><span class="txt1" id="save">$150/mo off</span></div></div>
           <div class="selrow"><label>Chamber</label>
             <input type="hidden" id="ch" name="chamber_id" value="">
             <div class="cdd" id="chDD">
               <button type="button" class="cdd-btn" id="chDDBtn" aria-haspopup="listbox" aria-expanded="false"><span id="chDDLabel">1.5 ATA Lying chamber</span><svg class="cdd-caret" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
               <ul class="cdd-list" id="chDDList" role="listbox" hidden></ul>
             </div></div>
-          <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol">3 months</span></div>
-            <input type="range" min="1" max="12" step="1" value="3" id="mo" oninput="recalc()" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
-          <div class="brow"><span id="bd">$659 × 3 months</span><span id="sub">$1,977</span></div>
-          <div class="brow" id="bizHide"><span>You save</span><span class="amt" id="tot">$210</span></div>
+          <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol">4 months</span></div>
+            <input type="range" min="1" max="12" step="1" value="4" id="mo" oninput="recalc()" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
+          <div class="brow"><span id="bd">$579 × 4 months</span><span id="sub">$2,316</span></div>
+          <div class="brow" id="bizHide"><span>You save</span><span class="amt" id="tot">$600</span></div>
           <div class="brow"><span>Delivery and install</span><span class="amt">Included</span></div>
           <div class="total"><span>Due today</span><span>$0</span></div>
           <div class="fine">No charge until delivery and setup · cancel free any time before delivery</div>
@@ -538,7 +538,7 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   var plan=BIZ?('Business rental: Soft-Shell 1.5 ATA, '+months+' at $'+rb+'/mo per chamber'+(pb>0?(' (save '+pb+'%, $'+((BASE_BIZ-rb)*m).toLocaleString()+' total off)'):'')+', plus $200 training and initial supplies. Est. rental total '+money(rb*m)+'. Business: '+document.getElementById('cbiz').value.trim()+'. Location ZIP '+document.getElementById('zip').value+'.')
     :('Selected plan: Soft-Shell 1.5 ATA, '+months+' rental at $'+r+'/mo'+(p>0?(' (save '+p+'%, $'+save.toLocaleString()+' total off)'):'')+'. Est. rental total '+money(total)+'. Delivery ZIP '+document.getElementById('zip').value+'.');
   var notes=document.getElementById('cnotes').value.trim();
-  var ack='Acknowledged: reviewed safety/contraindications; understands this is a request pending confirmation.';
+  var ack='Acknowledged: reviewed safety information; understands this is a request pending confirmation.';
   var full=(notes?(notes+'\n\n'):'')+plan+'\n'+ack;
   var data=new URLSearchParams();
   data.set('chamber_id',document.getElementById('ch').value);

@@ -234,7 +234,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .total{display:flex;justify-content:space-between;font-weight:700;font-size:16px;border-top:1px solid var(--line);margin-top:16px;padding-top:16px}
 .book .btn-primary{width:100%;margin-top:16px;padding:14px;font-size:16px;text-align:center}
 .fine{font-size:12px;color:var(--muted);text-align:center;margin-top:10px;font-weight:400}
-.mobilebar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-top:1px solid var(--line);padding:12px 18px;align-items:center;justify-content:space-between;gap:12px;cursor:pointer}
+.mobilebar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-top:1px solid var(--line);padding:18px 18px 12px;align-items:center;justify-content:space-between;gap:12px;cursor:pointer}
+.mobilebar .grip{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:40px;height:4px;border-radius:999px;background:var(--line)}
 .mb-price{font-size:19px;font-weight:800}.mb-price small{font-size:13px;color:var(--muted);font-weight:500}
 .mb-strike{font-size:13px;color:var(--muted);font-weight:500;text-decoration:line-through}
 .mb-pill{display:inline-block;margin-top:5px;background:var(--ok-bg);color:var(--ok);font-size:12px;font-weight:600;padding:3px 11px;border-radius:999px}
@@ -242,7 +243,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .sheet-scrim.open{display:block}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--card);border-radius:16px 16px 0 0;padding:18px 18px 24px;transform:translateY(100%);transition:transform .28s ease;border-top:1px solid var(--line)}
 .sheet.open{transform:translateY(0)}
-.sheet .grip{width:40px;height:4px;border-radius:999px;background:var(--line);margin:0 auto 14px}
+.sheet .grip{width:40px;height:4px;border-radius:999px;background:var(--line);margin:0 auto 14px;cursor:pointer}
 .sheet .close{position:absolute;right:16px;top:14px;border:none;background:var(--cream2);width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;color:#7a6d64}
 
 /* ── footer ── */
@@ -320,7 +321,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
       <div class="hero-below">
         <span class="eyebrow2">● Now delivering across Utah</span>
         <h1>Hyperbaric chamber rentals at home</h1>
-        <p>The ultimate hyperbaric experience. Unlimited 1.5 ATA hyperbaric sessions with 95-99.9% oxygen via mask at home.</p>
+        <p>The ultimate hyperbaric experience. Unlimited 1.5 ATA hyperbaric sessions with 99.9% oxygen via mask at home.</p>
         <div class="hero-ctas">
           <a class="btn btn-primary" href="/book">Book a chamber</a>
           <a class="btn btn-ghost" href="/pricing">See pricing</a>
@@ -346,7 +347,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
         <div class="steps">
           <div class="step"><div class="n">1</div><b data-request-text="Reserve">Book</b><span data-request-text="Pick your chamber and rental length. No charge to submit a request. Payment is collected on delivery day, once we've confirmed the chamber fits your home and you're comfortable using it.">Pick your chamber, rental length, and a delivery date from our calendar. No charge today. We text or call to confirm the delivery time. Payment is collected on delivery day, once we've confirmed the chamber fits your home and you're comfortable using it.</span></div>
           <div class="step"><div class="n">2</div><b>We deliver &amp; train</b><span>Our team delivers, installs, and trains you to use the chamber in the convenience of your home.</span></div>
-          <div class="step"><div class="n">3</div><b>Use it daily</b><span>Unlimited 1.5 ATA hyperbaric sessions with 95-99.9% oxygen via mask at home. We provide support and pick up the chamber at the end of your rental.</span></div>
+          <div class="step"><div class="n">3</div><b>Use it daily</b><span>Unlimited 1.5 ATA hyperbaric sessions with 99.9% oxygen via mask at home. We provide support and pick up the chamber at the end of your rental.</span></div>
         </div>
         <div class="shorts">
           <figure class="short">
@@ -371,17 +372,17 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
       </section>
 
       <section>
-        <h2>Soft-Shell 1.5 ATA mild hyperbaric chambers</h2><p class="lead">Available now as a lying chamber, with an upright sitting chamber coming soon.</p>
+        <h2>Soft-Shell 1.5 ATA mild hyperbaric chambers</h2><p class="lead">Available now as a lying chamber, with an upright sitting chamber coming in November.</p>
         <div class="chambers">
           <div class="chamber">
             <img src="/images/chamber-side.jpg?v=2" width="1800" height="1013" loading="lazy" alt="Soft-shell 1.5 ATA chamber">
             <div class="b"><b>1.5 ATA Lying Chamber</b><div class="price"><span id="fromPrice">$729</span><small> /mo · rent longer, save more</small></div>
-              <ul><li>1.5 ATA operating pressure</li><li>95 to 99.9% O₂ concentrator + mask</li><li>Fits most bedrooms</li></ul>
+              <ul><li>1.5 ATA operating pressure</li><li>99.9% O₂ concentrator + mask</li><li>Fits most bedrooms</li></ul>
               <a class="btn btn-primary" href="/book">Book now</a></div>
           </div>
           <div class="chamber soon">
-            <div class="imgwrap"><img src="/images/chamber-hero.jpg?v=2" width="1800" height="1013" loading="lazy" alt="1.5 ATA sitting chamber (coming soon)"><span class="soon-badge">Coming soon</span></div>
-            <div class="b"><b>1.5 ATA Sitting Chamber</b><div class="price" style="color:var(--muted)">Coming soon</div>
+            <div class="imgwrap"><img src="/images/chamber-hero.jpg?v=2" width="1800" height="1013" loading="lazy" alt="1.5 ATA sitting chamber (coming November)"><span class="soon-badge">Coming November</span></div>
+            <div class="b"><b>1.5 ATA Sitting Chamber</b><div class="price" style="color:var(--muted)">Coming November</div>
               <ul><li>Upright, seated design</li><li>1.5 ATA mild pressure</li><li>Easier entry &amp; exit</li></ul>
               <a class="waitlink" href="/waitlist">Join the waitlist →</a></div>
           </div>
@@ -415,16 +416,16 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 
     <aside>
       <div class="book">
-        <div class="ptop"><span class="price" id="pr">$659</span><span class="permo">/mo</span><span class="strike" id="strike">$729</span></div>
-        <div class="svwrap open" id="svw"><div class="sv1"><span class="pill1" id="badge">Save 10%</span><span class="txt1" id="save">$70/mo off</span></div></div>
+        <div class="ptop"><span class="price" id="pr">$579</span><span class="permo">/mo</span><span class="strike" id="strike">$729</span></div>
+        <div class="svwrap open" id="svw"><div class="sv1"><span class="pill1" id="badge">Save 21%</span><span class="txt1" id="save">$150/mo off</span></div></div>
         <div class="selrow"><label>Chamber</label>
-          <select id="ch"><option>1.5 ATA Lying chamber</option><option disabled>1.5 ATA Sitting Chamber, Coming soon</option></select></div>
-        <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol">3 months</span></div>
-          <input type="range" min="1" max="12" step="1" value="3" id="mo" oninput="recalc('')" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
+          <select id="ch"><option>1.5 ATA Lying chamber</option><option disabled>1.5 ATA Sitting Chamber, Coming November</option></select></div>
+        <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol">4 months</span></div>
+          <input type="range" min="1" max="12" step="1" value="4" id="mo" oninput="recalc('')" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
         <div class="field"><label>Delivery ZIP</label><input placeholder="Enter your ZIP code" id="zip" aria-label="Delivery ZIP" autocomplete="postal-code" inputmode="numeric" oninput="checkZip('')"></div>
         <div class="zipnote" id="zipNote" hidden></div>
-        <div class="brow"><span id="bd">$659 × 3 months</span><span id="sub">$1,977</span></div>
-        <div class="brow"><span>You save</span><span class="amt" id="tot">$210</span></div>
+        <div class="brow"><span id="bd">$579 × 4 months</span><span id="sub">$2,316</span></div>
+        <div class="brow"><span>You save</span><span class="amt" id="tot">$600</span></div>
         <div class="brow"><span>Delivery and install</span><span class="amt">Included</span></div>
         <div class="total"><span>Due today</span><span>$0</span></div>
         <a class="btn btn-primary" href="/book" onclick="return goBook('')">Book a chamber</a>
@@ -563,20 +564,20 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   </div>
 </footer>
 
-<div class="mobilebar" onclick="openSheet()"><div><div class="mb-price">$659<small> /mo</small> <span class="mb-strike">$729</span></div><span class="mb-pill">Save 10%</span></div><a class="btn btn-primary" href="/book" onclick="event.stopPropagation()">Book now</a></div>
+<div class="mobilebar" onclick="openSheet()"><div class="grip" aria-hidden="true"></div><div><div class="mb-price">$579<small> /mo</small> <span class="mb-strike">$729</span></div><span class="mb-pill">Save 21%</span></div><a class="btn btn-primary" href="/book" onclick="event.stopPropagation();return goBook('2')">Book now</a></div>
 
 <div class="sheet-scrim" id="scrim" onclick="closeSheet()"></div>
 <div class="sheet" id="sheet">
-  <div class="grip"></div><button class="close" onclick="closeSheet()" aria-label="Close">×</button>
+  <div class="grip" onclick="closeSheet()"></div><button class="close" onclick="closeSheet()" aria-label="Close">×</button>
   <div class="book" style="border:none;padding:0">
-    <div class="ptop"><span class="price" id="pr2">$659</span><span class="permo">/mo</span><span class="strike" id="strike2">$729</span></div>
-    <div class="svwrap open" id="svw2"><div class="sv1"><span class="pill1" id="badge2">Save 10%</span><span class="txt1" id="save2">$70/mo off</span></div></div>
-    <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol2">3 months</span></div>
-      <input type="range" min="1" max="12" step="1" value="3" id="mo2" oninput="recalc('2')" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
+    <div class="ptop"><span class="price" id="pr2">$579</span><span class="permo">/mo</span><span class="strike" id="strike2">$729</span></div>
+    <div class="svwrap open" id="svw2"><div class="sv1"><span class="pill1" id="badge2">Save 21%</span><span class="txt1" id="save2">$150/mo off</span></div></div>
+    <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol2">4 months</span></div>
+      <input type="range" min="1" max="12" step="1" value="4" id="mo2" oninput="recalc('2')" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
     <div class="field"><label>Delivery ZIP</label><input placeholder="Enter your ZIP code" id="zip2" aria-label="Delivery ZIP" autocomplete="postal-code" inputmode="numeric" oninput="checkZip('2')"></div>
     <div class="zipnote" id="zipNote2" hidden></div>
-    <div class="brow"><span id="bd2">$659 × 3 months</span><span id="sub2">$1,977</span></div>
-    <div class="brow"><span>You save</span><span class="amt" id="tot2">$210</span></div>
+    <div class="brow"><span id="bd2">$579 × 4 months</span><span id="sub2">$2,316</span></div>
+    <div class="brow"><span>You save</span><span class="amt" id="tot2">$600</span></div>
     <a class="btn btn-primary" href="/book" onclick="return goBook('2')" style="width:100%;margin-top:16px;padding:14px;font-size:16px;text-align:center">Book a chamber</a>
   </div>
 </div>
