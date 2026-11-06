@@ -48,7 +48,7 @@
 <section class="section" style="border-top:none">
   <div class="wrap">
     <div class="nf">
-      <div class="code">Request received</div>
+      <div class="code" id="tyEyebrow">Request received</div>
       <h1 id="tyHead">Thank you</h1>
       <p id="tyMsg">We have your booking request. Our team will reach out soon to confirm delivery.</p>
       <div class="next" style="text-align:left;margin:0 0 26px">
@@ -101,7 +101,7 @@
   var b=null;
   try{b=JSON.parse(sessionStorage.getItem('pb_booked')||'null');sessionStorage.removeItem('pb_booked');}catch(e){}
   if(!b)return;
-  if(b.booked&&b.date){document.getElementById('tyHead').textContent='Your chamber is booked';document.getElementById('tyMsg').textContent='Delivery is set for '+b.date+'. We emailed your confirmation and will text or call to set the delivery time.';}
+  if(b.booked&&b.date){document.getElementById('tyEyebrow').textContent='Booking confirmed';document.getElementById('tyHead').textContent='Your chamber is booked';document.getElementById('tyMsg').textContent='Delivery is set for '+b.date+'. We emailed your confirmation and will text or call to set the delivery time.';}
   window.trackPurebaricEvent&&window.trackPurebaricEvent('booking_thank_you',{rental_type:b.type||'residential'});
 })();
 </script>
