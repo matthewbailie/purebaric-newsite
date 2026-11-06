@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thank you, Purebaric</title>
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg?v=2">
+<link rel="icon" href="/images/favicon.ico">
+<link rel="apple-touch-icon" href="/images/logo.png?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/warm.css">
+<script src="/pb-metrics.js"></script>
+<style>
+.nf{max-width:620px;margin:0 auto;text-align:center;padding:70px 0}
+.nf .code{font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--terra-d)}
+.nf h1{font-size:38px;font-weight:800;letter-spacing:-.02em;margin:12px 0 12px}
+.nf p{font-size:16px;color:#5f544d;margin-bottom:26px}
+.nf .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.next{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+.next-h{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600;margin-bottom:12px}
+.next ol{list-style:none;padding:0;margin:0}
+.next li{display:flex;gap:11px;align-items:flex-start;font-size:14px;color:#5f544d;padding:6px 0}
+.next li span{width:22px;height:22px;border-radius:50%;background:var(--terra);color:#fff;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex:none}
+</style>
+</head><body>
+<!-- bf2026: Black Friday 2026 banner. Hidden unless the script below turns it on, and the script stops turning it on at 12:00 am Mountain time on Saturday, Nov 28. Remove this block after the promo. -->
+<div id="bfBanner" style="display:none;background:#2b2320;color:#fff;text-align:center;font:600 14px/1.4 Inter,system-ui,sans-serif;padding:10px 16px">Black Friday: $200 off your first month, ends Friday, Nov 27. <a href="/book" style="color:#e0b9a8;text-decoration:underline">Get the offer</a></div>
+<style>html:not(.bf-on) .bf-only{display:none!important}html.bf-on .bf-off{display:none!important}.bf-pill{display:inline-flex;align-items:center;background:#2b2320;color:#fff;border-radius:999px;font-size:12px;font-weight:700;padding:6px 13px}</style>
+<script>window.PB_BF=Date.now()<Date.UTC(2026,10,28,7);document.documentElement.classList.toggle('bf-on',window.PB_BF);(function(b){if(window.PB_BF)b.style.display='block';else b.remove();})(document.getElementById('bfBanner'));</script>
+<!-- /bf2026 -->
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><img class="brand-logo" src="/images/logo.png?v=3" alt="Purebaric"></a>
+    <nav class="nav-links">
+      <a href="/how-it-works">How it works</a><a href="/chambers">Chambers</a><a href="/pricing">Pricing</a><a href="/about">About</a><a href="/reviews">Reviews</a><a href="/faq">FAQ</a><a href="/contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="nav-biz" href="/business">For businesses</a>
+      <a class="btn btn-primary" href="/book">Book a chamber</a>
+    </div>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu">
+    <a href="/">Home</a>
+    <a href="/how-it-works">How it works</a><a href="/chambers">Chambers</a><a href="/pricing">Pricing</a><a href="/about">About</a><a href="/reviews">Reviews</a><a href="/faq">FAQ</a><a href="/contact">Contact</a>
+    <a href="/business">For businesses</a>
+    <a class="btn btn-primary mm-cta" href="/book">Book a chamber</a>
+  </nav>
+</header>
+
+<section class="section" style="border-top:none">
+  <div class="wrap">
+    <div class="nf">
+      <div class="code">Request received</div>
+      <h1 id="tyHead">Thank you</h1>
+      <p id="tyMsg">We have your booking request. Our team will reach out soon to confirm delivery.</p>
+      <div class="next" style="text-align:left;margin:0 0 26px">
+        <div class="next-h">What happens next</div>
+        <ol>
+          <li><span>1</span><div>We reply within one business day by phone, text, or email to confirm availability and delivery to your ZIP. Your requested dates are held while we confirm.</div></li>
+          <li><span>2</span><div>Once confirmed, we send the rental agreement to review. Payment is collected on delivery day, once we've confirmed the chamber fits your home and you're comfortable using it.</div></li>
+          <li><span>3</span><div>We deliver, install, and train you hands-on. You start sessions on your schedule; we handle support and pickup.</div></li>
+        </ol>
+      </div>
+      <div class="row">
+        <a class="btn btn-primary" href="/">Back to home</a>
+        <a class="btn btn-ghost" href="tel:+18019010873">Call (801) 901-0873</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img class="foot-logo" src="/images/logo-cream.png?v=3" alt="Purebaric">
+        <p class="foot-tag">Hyperbaric chamber rentals, delivered across Utah.</p>
+        <p class="foot-desc">Professional-grade mild hyperbaric oxygen therapy brought to your home, delivery, setup, and support included, for less than the cost of a single month at a clinic.</p>
+      </div>
+      <div class="foot-col"><h5>Service</h5><ul>
+        <li><a href="/how-it-works">How it works</a></li><li><a href="/chambers">Chambers</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/service-area">Service area</a></li><li><a href="/business">For businesses</a></li><li><a href="/book">Book now</a></li><li><a href="/waitlist">Waitlist</a></li></ul></div>
+      <div class="foot-col"><h5>Company</h5><ul>
+        <li><a href="/about">About</a></li><li><a href="/reviews">Reviews</a></li><li><a href="/faq">FAQ</a></li><li><a href="/contact">Contact</a></li><li><a href="/safety">Safety &amp; disclosures</a></li><li><a href="/terms">Terms</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/sms-consent">SMS Consent</a></li></ul></div>
+      <div class="foot-col"><h5>Get in touch</h5><ul>
+        <li><a href="tel:+18019010873">(801) 901-0873</a></li>
+        <li><a href="mailto:hello@purebaric.com">hello@purebaric.com</a></li>
+        <li class="foot-muted" style="margin-top:12px">Mon–Sat, 8:00 AM – 6:00 PM MT</li>
+        <li class="foot-muted">Lehi, UT</li></ul></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span class="foot-year">2026</span> Purebaric. All rights reserved.</span>
+      <span class="foot-disc">Provided for general wellness and relaxation only. Not a medical device; not intended to diagnose, treat, cure, or prevent any disease. Consult your physician before use.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/warm.js"></script>
+<script>
+/* Fires the booking conversion event once per booking. book.html sets pb_booked
+   only after the server accepts a request; it is removed here, so a refresh or a
+   direct visit to /thank-you records the page view but no conversion. */
+(function(){
+  var b=null;
+  try{b=JSON.parse(sessionStorage.getItem('pb_booked')||'null');sessionStorage.removeItem('pb_booked');}catch(e){}
+  if(!b)return;
+  if(b.booked&&b.date){document.getElementById('tyHead').textContent='Your chamber is booked';document.getElementById('tyMsg').textContent='Delivery is set for '+b.date+'. We emailed your confirmation and will text or call to set the delivery time.';}
+  window.trackPurebaricEvent&&window.trackPurebaricEvent('booking_thank_you',{rental_type:b.type||'residential'});
+})();
+</script>
+</body></html>

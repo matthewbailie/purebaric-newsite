@@ -606,6 +606,10 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
        f.reset();document.getElementById('mo').value=m;recalc();document.getElementById('zipNote').hidden=true;
        document.getElementById('reserveSection').classList.add('submitted');
        window.scrollTo({top:0,behavior:'smooth'});
+       // Send the visitor to the thank-you page (the Google Ads conversion page). The short
+       // delay lets the Meta Lead request above leave the browser before we navigate.
+       try{sessionStorage.setItem('pb_booked',JSON.stringify({booked:!!j.booked,date:j.booked?bd.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}):'',type:document.getElementById('rentalType').value||'residential'}));}catch(e){}
+       setTimeout(function(){location.href='/thank-you';},600);
      }else{
        window.trackPurebaricEvent?.('booking_request_error',{error_type:'api_rejected',rental_type:document.getElementById('rentalType').value||'residential'});
        res.className='result err';
