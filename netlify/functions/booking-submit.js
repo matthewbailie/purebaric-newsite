@@ -1,6 +1,7 @@
 const {
   createBooking,
   updateBooking,
+  getBooking,
   createWaitlistEntry,
   countAvailableToday,
   listBookings,
@@ -82,6 +83,72 @@ exports.handler = async (event) => {
     const notifCfg = await getNotifications();
     const twilio = await getTwilioConfig();
 
+    // ─── Step 1 lead: the short first step of the two-step booking form.
+    //     Creates (or updates) a lead record immediately, before the visitor
+    //     has filled in address, date, or consent. A lead never enters
+    //     auto-routing, never counts as untriaged "new" demand, and never
+    //     fires the booking conversion event; the full submit converts it. ───
+    if (body.lead_stage === "step1") {
+      const step1RentalType = cleanRentalType(body.rental_type);
+      const leadFields = {
+        firstName, lastName, email,
+        rentalType: step1RentalType,
+        businessName: step1RentalType === "business" ? cleanBusinessName(body.business_name) : "",
+        phone: (body.phone || body.customer_phone || "").trim(),
+        zip,
+        rentalLength: (body["rental-length"] || body.rental_duration || "").trim(),
+        requestedType: (body.chamber_id || body.chamber_type || "").trim(),
+        outOfArea,
+      };
+      let lead = null;
+      if (body.lead_id) {
+        const existingLead = await getBooking(body.lead_id);
+        if (existingLead && existingLead.bookingMode === "lead") {
+          lead = await updateBooking(existingLead.id, leadFields);
+        }
+      }
+      if (!lead) {
+        lead = await createBooking({ ...leadFields, status: "lead", bookingMode: "lead" });
+      }
+      let adminEmail = null;
+      try {
+        if (outOfArea) {
+          await notifyAdminOutOfArea(lead, emailsForEvent(notifCfg, "reservation_out"));
+        } else {
+          await notifyAdminBooking(lead, { autoNotified: "lead" }, emailsForEvent(notifCfg, "reservation_in"));
+        }
+        adminEmail = "sent";
+      } catch (err) {
+        console.error("admin step-1 lead notify failed", err);
+        adminEmail = `failed: ${err.message}`;
+      }
+      try {
+        await notifyAdminSms(lead, {
+          outOfArea,
+          gateways: smsForEvent(notifCfg, outOfArea ? "reservation_out" : "reservation_in"),
+          numbers: smsNumbersForEvent(notifCfg, outOfArea ? "reservation_out" : "reservation_in"),
+          twilio,
+        });
+      } catch (err) { console.error("admin sms failed", err); }
+      return {
+        statusCode: 200,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ok: true,
+          success: true,
+          lead: true,
+          outOfArea,
+          id: lead.id,
+          booking_number: lead.id.slice(0, 8).toUpperCase(),
+          message: outOfArea
+            ? `Thanks. We don't deliver to ${zip} yet. We've saved your request, and we'll reach out if we're able to deliver to your area.`
+            : "Thanks. We've saved your details. Finish step 2 to request your delivery.",
+          emailResults: { admin: adminEmail },
+        }),
+      };
+    }
+
+
     const analyticsConsent = typeof body.analytics_consent === "undefined"
       ? null
       : bool(body.analytics_consent);
@@ -108,7 +175,7 @@ exports.handler = async (event) => {
 
     // Black Friday 2026 applies by itself to every booking made before the cut-off; the note lands in the booking notes.
     const promo = activePromo();
-    const booking = await createBooking({
+    const bookingFields = {
       firstName, lastName, email,
       rentalType,
       businessName: rentalType === "business" ? cleanBusinessName(body.business_name) : "",
@@ -134,7 +201,18 @@ exports.handler = async (event) => {
         sessionId: cleanSessionId(body.analytics_session_id),
       },
       ...(booked || { bookingMode: "request" }),
-    });
+    };
+
+    // A step-1 lead converts into the full request instead of creating a
+    // second record, so the lead and the request stay one callable thread.
+    let booking = null;
+    if (body.lead_id) {
+      const existingLead = await getBooking(body.lead_id);
+      if (existingLead && existingLead.bookingMode === "lead") {
+        booking = await updateBooking(existingLead.id, { ...bookingFields, status: "new" });
+      }
+    }
+    if (!booking) booking = await createBooking(bookingFields);
 
     // ─── Out-of-area: do NOT send the customer a reservation confirmation and do
     //     NOT route to the waitlist. Log it and alert the admin so they can follow up. ───
@@ -158,7 +236,7 @@ exports.handler = async (event) => {
           id: booking.id,
           booking_number: booking.id.slice(0, 8).toUpperCase(),
           message:
-            "Thanks. Your delivery ZIP is outside our current service area, so we haven't scheduled a delivery, but we've logged your request and our team will reach out to see if we can help.",
+            `Thanks. We don't deliver to ${zip} yet. We've saved your request, and we'll reach out if we're able to deliver to your area.`,
           emailResults: { admin: adminEmail },
         }),
       };

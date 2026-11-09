@@ -429,6 +429,12 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
           <input type="range" min="1" max="12" step="1" value="4" id="mo" oninput="recalc('')" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
         <div class="field"><label>Delivery ZIP</label><input placeholder="Enter your ZIP code" id="zip" aria-label="Delivery ZIP" autocomplete="postal-code" inputmode="numeric" oninput="checkZip('')"></div>
         <div class="zipnote" id="zipNote" hidden></div>
+        <div class="area-waitlist" id="areaWaitlist" hidden>
+          <div class="field"><label>Name</label><input id="awName" aria-label="Name" autocomplete="name" maxlength="120"></div>
+          <div class="field"><label>Phone</label><input id="awPhone" aria-label="Phone" autocomplete="tel" inputmode="tel" maxlength="30"></div>
+          <button type="button" class="btn btn-primary" onclick="submitAreaWaitlist('')" style="width:100%;margin-top:10px;padding:12px;font-size:15px;text-align:center">Join the waitlist</button>
+          <div class="zipnote" id="awResult" hidden></div>
+        </div>
         <div class="brow"><span id="bd">$579 × 4 months</span><span id="sub">$2,316</span></div>
         <div class="brow"><span>You save</span><span class="amt" id="tot">$600</span></div>
         <div class="brow"><span>Delivery and install</span><span class="amt">Included</span></div>
@@ -583,6 +589,12 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
       <input type="range" min="1" max="12" step="1" value="4" id="mo2" oninput="recalc('2')" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
     <div class="field"><label>Delivery ZIP</label><input placeholder="Enter your ZIP code" id="zip2" aria-label="Delivery ZIP" autocomplete="postal-code" inputmode="numeric" oninput="checkZip('2')"></div>
     <div class="zipnote" id="zipNote2" hidden></div>
+    <div class="area-waitlist" id="areaWaitlist2" hidden>
+      <div class="field"><label>Name</label><input id="awName2" aria-label="Name" autocomplete="name" maxlength="120"></div>
+      <div class="field"><label>Phone</label><input id="awPhone2" aria-label="Phone" autocomplete="tel" inputmode="tel" maxlength="30"></div>
+      <button type="button" class="btn btn-primary" onclick="submitAreaWaitlist('2')" style="width:100%;margin-top:10px;padding:12px;font-size:15px;text-align:center">Join the waitlist</button>
+      <div class="zipnote" id="awResult2" hidden></div>
+    </div>
     <div class="brow"><span id="bd2">$579 × 4 months</span><span id="sub2">$2,316</span></div>
     <div class="brow"><span>You save</span><span class="amt" id="tot2">$600</span></div>
     <a class="btn btn-primary" href="/book" onclick="return goBook('2')" style="width:100%;margin-top:16px;padding:14px;font-size:16px;text-align:center">Book a chamber</a>
@@ -641,7 +653,8 @@ function goBook(s){s=s||'';var m=+document.getElementById('mo'+s).value;var zEl=
 var PB_AREA={prefixes:["840","841","844"],zips:["84201","84244","84601","84602","84603","84604","84605","84606","84626","84633","84651","84653","84660","84663","84664","84050","84018","84648","84645","84628","84639","84621","84623","84627","84629","84630","84642","84647","84667","84622","84632","84634","84643","84646","84662","84665"]};
 function servedZip(z){z=String(z||'').trim();if(!/^\d{5}$/.test(z))return false;for(var i=0;i<PB_AREA.prefixes.length;i++){if(z.indexOf(PB_AREA.prefixes[i])===0)return true;}return PB_AREA.zips.indexOf(z)>=0;}
 fetch('/api/service-area').then(function(r){return r.json();}).then(function(j){if(j&&(j.prefixes||j.zips)){PB_AREA={prefixes:j.prefixes||[],zips:j.zips||[]};checkZip('');checkZip('2');}}).catch(function(){});
-function checkZip(s){s=s||'';var el=document.getElementById('zip'+s),n=document.getElementById('zipNote'+s);if(!el||!n)return;var z=el.value.trim();if(!/^\d{5}$/.test(z)){n.hidden=true;return;}if(servedZip(z)){n.hidden=false;n.className='zipnote ok';n.textContent='✓ We deliver to '+z+'.';}else{n.hidden=false;n.className='zipnote warn';n.textContent=z+' is outside our delivery area. You can still request, we\'ll reach out if we can help.';}}
+function checkZip(s){s=s||'';var el=document.getElementById('zip'+s),n=document.getElementById('zipNote'+s);if(!el||!n)return;var w=document.getElementById('areaWaitlist'+s);var z=el.value.trim();if(!/^\d{5}$/.test(z)){n.hidden=true;if(w)w.hidden=true;return;}if(servedZip(z)){n.hidden=false;n.className='zipnote ok';n.textContent='✓ We deliver to '+z+'.';if(w)w.hidden=true;}else{n.hidden=false;n.className='zipnote warn';n.textContent=z+' is outside our delivery area. You can still request, we\'ll reach out if we can help.';if(w)w.hidden=false;}}
+function submitAreaWaitlist(s){s=s||'';var nameEl=document.getElementById('awName'+s),phoneEl=document.getElementById('awPhone'+s),zEl=document.getElementById('zip'+s),r=document.getElementById('awResult'+s);if(!nameEl||!phoneEl||!zEl||!r)return;var name=nameEl.value.trim(),phone=phoneEl.value.trim(),z=zEl.value.trim();if(!name||!phone){r.hidden=false;r.className='zipnote warn';r.textContent='Please add your name and phone number.';return;}if(!/^\d{5}$/.test(z)){r.hidden=false;r.className='zipnote warn';r.textContent='Please enter a 5-digit ZIP code first.';return;}fetch('/api/area-waitlist',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({name:name,phone:phone,zip:z}).toString()}).then(function(resp){return resp.json().catch(function(){return {};});}).then(function(j){r.hidden=false;if(j&&j.ok){r.className='zipnote ok';r.textContent=j.message||"You're on the list. We'll reach out if we're able to deliver to your area.";}else{r.className='zipnote warn';r.textContent=(j&&j.error)||'Something went wrong. Please try again.';}}).catch(function(){r.hidden=false;r.className='zipnote warn';r.textContent='Network error. Please try again.';});}
 
 
 /* promotions sign-up (bottom of the page) → /api/promo-join → admin Outreach → Promotions list */

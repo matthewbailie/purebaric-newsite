@@ -347,7 +347,8 @@ async function updateWaitlistEntry(id, patch) {
 
 // ───────── Bookings ─────────
 // shape: {
-//   id, status: "new"|"contacted"|"approved"|"rejected"|"converted",
+//   id, status: "new"|"contacted"|"approved"|"rejected"|"converted"|"lead",
+//   bookingMode: "request"|"book"|"lead" ("lead" = step 1 only, no address/date/consent yet),
 //   firstName, lastName, email, phone, zip,
 //   streetAddress, city, state,
 //   startDate, rentalLength, reason, priorExperience,
