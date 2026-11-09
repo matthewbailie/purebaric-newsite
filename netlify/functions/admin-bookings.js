@@ -59,7 +59,7 @@ exports.handler = async (event, context) => {
       if (!existing) return json(404, { error: "not_found" });
       const body = parseBody(event);
       const patch = {};
-      if (["new", "contacted", "approved", "rejected", "converted"].includes(body.status)) {
+      if (["new", "contacted", "approved", "rejected", "converted", "lead"].includes(body.status)) {
         patch.status = body.status;
       }
       if (typeof body.adminNotes === "string") patch.adminNotes = body.adminNotes;

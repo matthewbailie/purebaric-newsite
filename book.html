@@ -176,8 +176,9 @@ body.biz.bookmode .slider-block{display:block!important}
   <div class="wrap">
     <div class="book-layout">
 
-      <form id="resForm" class="frm book-main" novalidate>
+      <div class="book-main">
         <div class="result" id="resResult" role="status" aria-live="polite"></div>
+        <form id="leadForm" class="frm" novalidate>
         <div class="rental-toggle" role="group" aria-label="Rental type">
           <button type="button" data-rt="home">Home</button>
           <button type="button" data-rt="business">Business</button>
@@ -210,6 +211,20 @@ body.biz.bookmode .slider-block{display:block!important}
         <div class="fg">
           <label for="zip">Delivery ZIP <span class="req">*</span></label><input type="text" id="zip" name="zip_code" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Enter your ZIP code" required><div id="zipNote" class="zipnote" hidden></div>
         </div>
+        <button type="submit" class="btn btn-primary submit" id="leadBtn">Check availability →</button>
+
+        <div class="trust">
+          <span><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Your details stay private</span>
+          <span><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Free to submit a request</span>
+          <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Reply within one business day</span>
+        </div>
+        </form>
+        <form id="resForm" class="frm" novalidate hidden>
+        <div class="section-head" style="margin-bottom:18px">
+          <h2 style="font-size:22px">Delivery details</h2>
+          <p>Where the chamber goes and when you'd like it.</p>
+        </div>
+        <input type="hidden" id="leadId" value="">
         <div class="fg" id="dateReqRow"><label for="cdate">Preferred start date</label><input type="date" id="cdate" name="preferred_date"></div>
         <div class="fg" id="dateBookRow" hidden>
           <label>Delivery date <span class="req">*</span></label>
@@ -224,14 +239,11 @@ body.biz.bookmode .slider-block{display:block!important}
           <label class="ck"><input type="checkbox" id="ackReq" required> I understand my delivery date is subject to availability and the exact delivery time will be confirmed by text or call. I've reviewed the <a href="/safety" target="_blank" rel="noopener">safety information</a>. <span class="req">*</span></label>
         </div>
 
+        <button type="button" id="backBtn" style="background:none;border:none;color:var(--terra-d);font-weight:700;cursor:pointer;padding:0 0 14px;font-size:14px;font-family:inherit;">← Edit contact details</button>
         <button type="submit" class="btn btn-primary submit" id="submitBtn">Request reservation →</button>
 
-        <div class="trust">
-          <span><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Your details stay private</span>
-          <span><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Free to submit a request</span>
-          <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Reply within one business day</span>
-        </div>
       </form>
+      </div>
 
       <aside class="book-side">
         <div class="book-sticky">
@@ -347,10 +359,11 @@ function checkZip(){
 document.getElementById('zip').addEventListener('input',checkZip);
 
 /* analytics: plan choice, service-area result, form start (no PII) */
-document.getElementById('zip').addEventListener('change',function(){var z=this.value.trim();if(!/^\d{5}$/.test(z))return;window.trackPurebaricEvent?.('service_area_check',{result:servedZip(z)?'eligible':'unsupported',rental_months:+document.getElementById('mo').value,rental_type:document.getElementById('rentalType').value||'residential'});});
-document.getElementById('mo').addEventListener('change',function(){var mm=+this.value,rr=rate(mm);window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD',rental_type:document.getElementById('rentalType').value||'residential'});});
+var areaFired=false,planFired=false,dateFired=false;
+document.getElementById('zip').addEventListener('change',function(){var z=this.value.trim();if(!/^\d{5}$/.test(z))return;areaFired=true;window.trackPurebaricEvent?.('service_area_check',{result:servedZip(z)?'eligible':'unsupported',rental_months:+document.getElementById('mo').value,rental_type:document.getElementById('rentalType').value||'residential'});});
+document.getElementById('mo').addEventListener('change',function(){var mm=+this.value,rr=rate(mm);planFired=true;window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD',rental_type:document.getElementById('rentalType').value||'residential'});});
 var bookingFormStarted=false,bookingFormSubmitted=false,bookingLastField='';
-document.getElementById('resForm').addEventListener('focusin',function(e){var f=e.target&&e.target.id?e.target.id:'';if(f)bookingLastField=f;if(bookingFormStarted)return;bookingFormStarted=true;window.trackPurebaricEvent?.('booking_form_start',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:+document.getElementById('mo').value||1,source:'book_page',rental_type:document.getElementById('rentalType').value||'residential'});});
+['leadForm','resForm'].forEach(function(fid){var fm=document.getElementById(fid);if(!fm)return;fm.addEventListener('focusin',function(e){var f=e.target&&e.target.id?e.target.id:'';if(f)bookingLastField=f;if(bookingFormStarted)return;bookingFormStarted=true;window.trackPurebaricEvent?.('booking_form_start',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:+document.getElementById('mo').value||1,source:'book_page',rental_type:document.getElementById('rentalType').value||'residential'});});});
 // Drop-off: if the visitor starts the form but leaves without submitting,
 // record how far they got (field id only — never field values).
 window.addEventListener('pagehide',function(){if(!bookingFormStarted||bookingFormSubmitted)return;bookingFormSubmitted=true;window.trackPurebaricEvent?.('booking_form_abandon',{last_field:bookingLastField||'unknown',had_delivery_date:!!document.getElementById('bookDate').value,rental_months:+document.getElementById('mo').value||1,rental_type:document.getElementById('rentalType').value||'residential'});});
@@ -463,7 +476,7 @@ function enterBookMode(j){
   if(BIZ){ eb.textContent='Business booking'; h1.textContent='Book a chamber for your business'; hp.textContent='Choose the chamber, your rental length, and a delivery date from our calendar. From $979 a month per chamber'+(BF?'. Black Friday: $200 off your first month and the one-time $200 training and supplies fee waived':' plus a one-time $200 fee for staff training and initial supplies')+'; longer rentals save up to 20%. There is no charge today; we text or call to confirm the delivery time.'; }
   else { eb.textContent='Book a chamber'; h1.textContent='Book your chamber'; hp.textContent='Choose your chamber, rental length, and a delivery date from our calendar. There is no charge today; we text or call to confirm the exact delivery time.'; }
   var lbl=document.querySelector('.book-side-label'); if(lbl)lbl.textContent=BIZ?'Your business booking':'Your booking';
-  var head=document.querySelector('#resForm .section-head p'); if(head)head.textContent='Where we deliver and who we are delivering to.';
+  var head=document.querySelector('#leadForm .section-head p'); if(head)head.textContent='Where we deliver and who we are delivering to.';
   document.querySelectorAll('.trust span').forEach(function(sp){ if(/Reply within one business day/.test(sp.textContent)) sp.remove(); });
   document.getElementById('submitBtn').textContent=BIZ?'Book chamber for my business →':'Book chamber →';
   var fine=document.querySelector('.book .fine'); if(fine)fine.textContent=BIZ?bizFeeText()+' · no charge until delivery day · we confirm the delivery time by text or call':'No charge until delivery day · we confirm the delivery time by text or call · cancel free up to 7 days before delivery';
@@ -527,7 +540,7 @@ function renderDcal(){
   el.querySelector('#dcalMonth').addEventListener('change',function(){ DCAL_MONTH=this.value; renderDcal(); });
   el.querySelector('#dcalPrev').addEventListener('click',function(){shift(-1);});
   el.querySelector('#dcalNext').addEventListener('click',function(){shift(1);});
-  el.querySelectorAll('.dcal-day.ok').forEach(function(b){ b.addEventListener('click',function(){ document.getElementById('bookDate').value=b.dataset.d; renderDcal(); var r=document.getElementById('resResult'); if(r.className==='result err'){r.className='result';r.textContent='';} window.trackPurebaricEvent?.('select_delivery_date',{rental_type:document.getElementById('rentalType').value||'residential'}); }); });
+  el.querySelectorAll('.dcal-day.ok').forEach(function(b){ b.addEventListener('click',function(){ document.getElementById('bookDate').value=b.dataset.d; renderDcal(); var r=document.getElementById('resResult'); if(r.className==='result err'){r.className='result';r.textContent='';} dateFired=true; window.trackPurebaricEvent?.('select_delivery_date',{rental_type:document.getElementById('rentalType').value||'residential'}); }); });
   var hint=el.parentElement.querySelector('.dnote'); if(hint){ if(!hint.dataset.base)hint.dataset.base=hint.innerHTML; hint.innerHTML=(sel?'<strong>Delivery on '+fmtLong(sel)+'.</strong> ':(hint.dataset.lead||''))+hint.dataset.base; }
 }
 var CACHED_MODE=null; try{CACHED_MODE=localStorage.getItem('pb_booking_mode');}catch(e){}
@@ -535,14 +548,78 @@ if(CACHED_MODE==='book'){ enterBookMode({dates:[],styles:[]}); var dc=document.g
 fetchDelivery().then(function(j){ if(j&&j.mode==='book'){ if(!window.BOOKMODE)enterBookMode(j); else { if(j.styles&&j.styles.length)window.__pbSetChamberOptions(j.styles.map(function(t){ var lbl='1.5 ATA '+(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:t.status!=='available'&&t.status!=='later',soon:t.status==='soon',status:t.status,next:t.nextAvailable}; })); var note=document.getElementById('dnote'); if(note&&j.deliveryNote){note.innerHTML='<strong>'+j.deliveryNote.replace(/</g,'&lt;')+'</strong>';delete note.dataset.base;} applyDelivery(j); } } }).catch(function(){});
 
 ['cfn','cln'].forEach(function(id){ var el=document.getElementById(id); el.addEventListener('input',function(){ el.setCustomValidity(''); }); });
+/* ───── Step 1: short contact form that creates the lead immediately ───── */
+var _leadSubmitting=false;
+document.getElementById('leadForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  if(_leadSubmitting)return;
+  var f=e.target,btn=document.getElementById('leadBtn'),res=document.getElementById('resResult');
+  if(document.getElementById('botField').value)return;
+  var fnEl=document.getElementById('cfn'),lnEl=document.getElementById('cln');
+  [fnEl,lnEl].forEach(function(el){ el.setCustomValidity(el.value.trim()?'':'Please fill out this field.'); });
+  if(!f.checkValidity()){f.reportValidity();return;}
+  _leadSubmitting=true;
+  var m=+document.getElementById('mo').value;
+  var data=new URLSearchParams();
+  data.set('lead_stage','step1');
+  var existingLead=document.getElementById('leadId').value;
+  if(existingLead)data.set('lead_id',existingLead);
+  data.set('rental-length',mos(m));
+  data.set('rental_type',BIZ?'business':'residential');
+  if(BIZ)data.set('business_name',document.getElementById('cbiz').value.trim());
+  data.set('first-name',document.getElementById('cfn').value.trim());
+  data.set('last-name',document.getElementById('cln').value.trim());
+  data.set('customer_email',document.getElementById('ce').value);
+  data.set('customer_phone',document.getElementById('cp').value);
+  data.set('zip_code',document.getElementById('zip').value);
+  data.set('chamber_id',document.getElementById('ch').value);
+  // Measurement: a homepage-prefilled ZIP never fires a change event and a
+  // default length never fires one either, so fire them here if not yet fired.
+  if(!areaFired){areaFired=true;window.trackPurebaricEvent?.('service_area_check',{result:servedZip(document.getElementById('zip').value.trim())?'eligible':'unsupported',rental_months:m,rental_type:document.getElementById('rentalType').value||'residential'});}
+  if(!planFired){planFired=true;var rr=BIZ?rateBiz(m):rate(m);window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:m,monthly_rate:rr,estimated_total:rr*m,currency:'USD',rental_type:document.getElementById('rentalType').value||'residential'});}
+  var orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='Checking...';
+  fetch('/api/booking-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
+   .then(function(r){return r.json().catch(function(){return {};});})
+   .then(function(j){
+     _leadSubmitting=false;btn.disabled=false;btn.innerHTML=orig;
+     if(j&&j.lead){
+       document.getElementById('leadId').value=j.id;
+       if(j.outOfArea){
+         // Out-of-area is a confirmation only: no second form, no re-entry.
+         res.className='result warn';
+         res.textContent=j.message||"Thanks. We don't deliver to your area yet. We've saved your request, and we'll reach out if we're able to deliver to your area.";
+         document.getElementById('reserveSection').classList.add('submitted','hide-steps');
+         window.scrollTo({top:0,behavior:'smooth'});
+       }else{
+         f.hidden=true;
+         document.getElementById('resForm').hidden=false;
+         document.getElementById('resForm').scrollIntoView({block:'start',behavior:'smooth'});
+       }
+     }else{
+       window.trackPurebaricEvent?.('booking_request_error',{error_type:'api_rejected',rental_type:document.getElementById('rentalType').value||'residential'});
+       res.className='result err';
+       res.textContent=(j&&j.message)||'Something went wrong. Please try again, or email hello@purebaric.com.';
+     }
+   })
+   .catch(function(){
+     _leadSubmitting=false;btn.disabled=false;btn.innerHTML=orig;
+     window.trackPurebaricEvent?.('booking_request_error',{error_type:'network_error',rental_type:document.getElementById('rentalType').value||'residential'});
+     res.className='result err';
+     res.textContent='Network error. Please try again, or email hello@purebaric.com.';
+   });
+});
+document.getElementById('backBtn').addEventListener('click',function(){
+  document.getElementById('resForm').hidden=true;
+  var lf=document.getElementById('leadForm');lf.hidden=false;
+  lf.scrollIntoView({block:'start',behavior:'smooth'});
+});
+
 var _submitting=false; // idempotency guard: blocks double-clicks / re-entry for one submission
 document.getElementById('resForm').addEventListener('submit',async function(e){
   e.preventDefault();
   if(_submitting)return;
   var f=e.target,btn=document.getElementById('submitBtn'),res=document.getElementById('resResult');
   if(document.getElementById('botField').value)return;
-  var fnEl=document.getElementById('cfn'),lnEl=document.getElementById('cln');
-  [fnEl,lnEl].forEach(function(el){ el.setCustomValidity(el.value.trim()?'':'Please fill out this field.'); });
   if(!f.checkValidity()){f.reportValidity();return;}
   if(window.BOOKMODE&&!document.getElementById('bookDate').value){ res.className='result err'; res.textContent='Please pick a delivery date on the calendar.'; document.getElementById('dcal').scrollIntoView({block:'center',behavior:'smooth'}); return; }
   _submitting=true;
@@ -556,6 +633,7 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   var full=(notes?(notes+'\n\n'):'')+plan+'\n'+ack;
   var data=new URLSearchParams();
   data.set('chamber_id',document.getElementById('ch').value);
+  var leadIdVal=document.getElementById('leadId').value;if(leadIdVal)data.set('lead_id',leadIdVal);
   data.set('rental-length',months);
   data.set('rental_type',BIZ?'business':'residential');
   if(BIZ)data.set('business_name',document.getElementById('cbiz').value.trim());
@@ -578,6 +656,10 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   if(analyticsContext.clientId)data.set('analytics_client_id',analyticsContext.clientId);
   if(analyticsContext.sessionId)data.set('analytics_session_id',analyticsContext.sessionId);
   var orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='Submitting...';
+  // Measurement: a typed preferred date never fires a calendar-click event,
+  // so fire the delivery-date step here if a date is present and not yet fired.
+  var dateVal=window.BOOKMODE?document.getElementById('bookDate').value:document.getElementById('cdate').value;
+  if(dateVal&&!dateFired){dateFired=true;window.trackPurebaricEvent?.('select_delivery_date',{rental_type:document.getElementById('rentalType').value||'residential'});}
   fetch('/api/booking-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
    .then(function(r){return r.json().catch(function(){return {};});})
    .then(function(j){
@@ -585,7 +667,7 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
      if(j&&j.outOfArea){
        // Out-of-area is NOT a confirmed reservation, so no conversion fires.
        res.className='result warn';
-       res.textContent=j.message||"Thanks. Your ZIP is outside our current delivery area, so we haven't scheduled a delivery, but we've logged your request and our team will reach out to see if we can help.";
+       res.textContent=j.message||"Thanks. We don't deliver to your area yet. We've saved your request, and we'll reach out if we're able to deliver to your area.";
        f.reset();document.getElementById('mo').value=m;recalc();document.getElementById('zipNote').hidden=true;
        document.getElementById('reserveSection').classList.add('submitted','hide-steps');
        window.scrollTo({top:0,behavior:'smooth'});
