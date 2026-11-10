@@ -45,12 +45,17 @@ test("booking-submit handles step-1 leads and converts them on full submit", () 
   assert.match(bookingSubmit, /existingLead\.bookingMode === "lead"/);
   assert.match(bookingSubmit, /\{ \.\.\.bookingFields, status: "new" \}/);
   // A step-1 lead never fires the booking conversion event: the lead branch
-  // returns before routing and before sendBookingRequestSubmitted.
+  // returns before routing and before sendBookingRequestSubmitted. It does fire
+  // the lead event booking_lead_submit, but only for a newly created lead, so a
+  // back-button re-submit does not double-count in GA4.
   const leadBranch = bookingSubmit.slice(
     bookingSubmit.indexOf('body.lead_stage === "step1"'),
     bookingSubmit.indexOf("const analyticsConsent")
   );
   assert.doesNotMatch(leadBranch, /sendBookingRequestSubmitted/);
+  assert.match(leadBranch, /sendBookingLeadSubmitted/);
+  assert.match(leadBranch, /isNewLead/);
+  assert.match(leadBranch, /analytics_client_id/);
   assert.doesNotMatch(leadBranch, /countAvailableToday/);
   // Out-of-area copy uses "if", not a guaranteed "when".
   assert.match(bookingSubmit, /We don't deliver to \$\{zip\} yet\. We've saved your request, and we'll reach out if we're able to deliver to your area\./);
@@ -86,4 +91,22 @@ test("measurement fires for defaults: plan, area, and typed dates count", () => 
   assert.match(bookHtml, /if\(!areaFired\)\{areaFired=true/);
   assert.match(bookHtml, /if\(!planFired\)\{planFired=true/);
   assert.match(bookHtml, /if\(dateVal&&!dateFired\)\{dateFired=true/);
+});
+
+test("step-1 submit fires a Meta Lead once, step 2 fires CompleteRegistration", () => {
+  // A new lead is a Meta Lead the moment it is created; a re-submit of an
+  // existing lead (back button, edit, re-submit) does not fire again.
+  assert.match(bookHtml, /if\(!existingLead\)window\.trackPurebaricMeta\?\.\('Lead',\{content_category:document\.getElementById\('rentalType'\)\.value\|\|'residential'\}\)/);
+  // The full submit fires CompleteRegistration, not a second Lead, so one
+  // visitor is never counted as two Leads.
+  assert.match(bookHtml, /trackPurebaricMeta\?\.\('CompleteRegistration',\{content_category:document\.getElementById\('rentalType'\)\.value\|\|'residential'\}\)/);
+  // Step 1 sends the anonymous GA identifiers so the backend can send the
+  // server-side lead event for the new lead.
+  assert.match(bookHtml, /data\.set\('analytics_client_id',analyticsContext\.clientId\)/);
+});
+
+test("homepage promo signup and area waitlist fire Meta Leads", () => {
+  assert.match(indexHtml, /trackPurebaricMeta\?\.\('Lead',\{content_category:window\.PB_BF\?'black-friday':'homepage'\}\)/);
+  assert.match(indexHtml, /trackPurebaricEvent\?\.\('waitlist_join',\{source:'homepage'\}\)/);
+  assert.match(indexHtml, /trackPurebaricMeta\?\.\('Lead',\{content_category:'waitlist'\}\)/);
 });

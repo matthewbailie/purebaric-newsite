@@ -202,6 +202,7 @@ const FUNNEL_EVENTS = [
   "booking_form_start",
   "service_area_check",
   "select_rental_plan",
+  "booking_lead_submit",
   "select_delivery_date",
   "booking_request_submit",
 ];

@@ -550,7 +550,7 @@ fetchDelivery().then(function(j){ if(j&&j.mode==='book'){ if(!window.BOOKMODE)en
 ['cfn','cln'].forEach(function(id){ var el=document.getElementById(id); el.addEventListener('input',function(){ el.setCustomValidity(''); }); });
 /* ───── Step 1: short contact form that creates the lead immediately ───── */
 var _leadSubmitting=false;
-document.getElementById('leadForm').addEventListener('submit',function(e){
+document.getElementById('leadForm').addEventListener('submit',async function(e){
   e.preventDefault();
   if(_leadSubmitting)return;
   var f=e.target,btn=document.getElementById('leadBtn'),res=document.getElementById('resResult');
@@ -577,6 +577,14 @@ document.getElementById('leadForm').addEventListener('submit',function(e){
   // default length never fires one either, so fire them here if not yet fired.
   if(!areaFired){areaFired=true;window.trackPurebaricEvent?.('service_area_check',{result:servedZip(document.getElementById('zip').value.trim())?'eligible':'unsupported',rental_months:m,rental_type:document.getElementById('rentalType').value||'residential'});}
   if(!planFired){planFired=true;var rr=BIZ?rateBiz(m):rate(m);window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:m,monthly_rate:rr,estimated_total:rr*m,currency:'USD',rental_type:document.getElementById('rentalType').value||'residential'});}
+  // Measurement: capture the anonymous GA identifiers so the backend can send the
+  // server-side lead event for this lead (same pattern as the step-2 submit).
+  var analyticsContext=window.getPurebaricAnalyticsContext
+    ? await window.getPurebaricAnalyticsContext()
+    : {consentGranted:false};
+  data.set('analytics_consent',analyticsContext.consentGranted?'true':'false');
+  if(analyticsContext.clientId)data.set('analytics_client_id',analyticsContext.clientId);
+  if(analyticsContext.sessionId)data.set('analytics_session_id',analyticsContext.sessionId);
   var orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='Checking...';
   fetch('/api/booking-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
    .then(function(r){return r.json().catch(function(){return {};});})
@@ -584,6 +592,11 @@ document.getElementById('leadForm').addEventListener('submit',function(e){
      _leadSubmitting=false;btn.disabled=false;btn.innerHTML=orig;
      if(j&&j.lead){
        document.getElementById('leadId').value=j.id;
+       // Measurement: a new lead is a Meta Lead the moment it is created, so the ad
+       // campaign can see and optimize for the leads the funnel produces. A re-submit
+       // of an existing lead (back button, edit, re-submit) does not fire again.
+       // Step 2 fires CompleteRegistration instead, so one visitor is never two Leads.
+       if(!existingLead)window.trackPurebaricMeta?.('Lead',{content_category:document.getElementById('rentalType').value||'residential'});
        if(j.outOfArea){
          // Out-of-area is a confirmation only: no second form, no re-entry.
          res.className='result warn';
@@ -680,8 +693,9 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
        bookingFormSubmitted=true; // submitted — no abandon event on pagehide
        // The backend records the canonical booking_request_submit event once,
        // after accepting the request, using this visitor's anonymous GA context.
-       // Meta gets the same lead from the browser: a booking submission, home or business.
-       window.trackPurebaricMeta?.('Lead',{content_category:document.getElementById('rentalType').value||'residential'});
+       // Meta gets the completed request as CompleteRegistration; the Lead itself
+       // fired at step 1, so one visitor is never counted as two Leads.
+       window.trackPurebaricMeta?.('CompleteRegistration',{content_category:document.getElementById('rentalType').value||'residential'});
        res.className='result ok';
        if(j.booked){ var bd=new Date(j.startDate+'T00:00:00'); res.innerHTML='<strong>Your chamber is booked</strong>'+(j.booking_number?(' ('+j.booking_number+')'):'')+' for delivery on '+bd.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'. We emailed your confirmation and will text or call to set the delivery time.'; document.getElementById('bookDate').value=''; }
        else res.innerHTML='Reservation received'+(j.booking_number?(' ('+j.booking_number+')'):'')+'. '+(j.message||"Our team will contact you shortly to confirm delivery.");

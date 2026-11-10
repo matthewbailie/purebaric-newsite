@@ -59,6 +59,25 @@ async function sendEvent({ booking, name, params }) {
   return { sent: true, event: name };
 }
 
+async function sendBookingLeadSubmitted({ booking }) {
+  const rentalMonthsMatch = String(booking.rentalLength || "").match(/\d+/);
+  const rentalType = booking.rentalType === "business" ? "business" : "residential";
+  return sendEvent({
+    booking,
+    name: "booking_lead_submit",
+    params: {
+      form_name: "lead_capture",
+      rental_months: rentalMonthsMatch ? Number(rentalMonthsMatch[0]) : 1,
+      rental_type: rentalType,
+      // page_location lets the funnel report split this server-side event into the
+      // home vs business funnels by URL, the same way the browser events split.
+      page_location: "https://purebaric.com/book" + (rentalType === "business" ? "?type=business" : ""),
+      booking_id: booking.id,
+      source: "booking_api",
+    },
+  });
+}
+
 async function sendBookingRequestSubmitted({ booking }) {
   const rentalMonthsMatch = String(booking.rentalLength || "").match(/\d+/);
   const rentalType = booking.rentalType === "business" ? "business" : "residential";
@@ -99,6 +118,7 @@ module.exports = {
   cleanClientId,
   cleanSessionId,
   cleanGclid,
+  sendBookingLeadSubmitted,
   sendBookingRequestSubmitted,
   sendRentalConfirmed,
 };

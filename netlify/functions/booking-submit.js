@@ -33,6 +33,7 @@ const {
 const {
   cleanClientId,
   cleanSessionId,
+  sendBookingLeadSubmitted,
   sendBookingRequestSubmitted,
 } = require("./_lib/analytics");
 
@@ -87,9 +88,14 @@ exports.handler = async (event) => {
     //     Creates (or updates) a lead record immediately, before the visitor
     //     has filled in address, date, or consent. A lead never enters
     //     auto-routing, never counts as untriaged "new" demand, and never
-    //     fires the booking conversion event; the full submit converts it. ───
+    //     fires the booking conversion event; the full submit converts it.
+    //     It does fire the lead event booking_lead_submit (below) so GA4 can
+    //     see step-1 volume; that is a lead event, not a booking conversion. ───
     if (body.lead_stage === "step1") {
       const step1RentalType = cleanRentalType(body.rental_type);
+      const step1AnalyticsConsent = typeof body.analytics_consent === "undefined"
+        ? null
+        : bool(body.analytics_consent);
       const leadFields = {
         firstName, lastName, email,
         rentalType: step1RentalType,
@@ -99,8 +105,14 @@ exports.handler = async (event) => {
         rentalLength: (body["rental-length"] || body.rental_duration || "").trim(),
         requestedType: (body.chamber_id || body.chamber_type || "").trim(),
         outOfArea,
+        analytics: {
+          consentGranted: step1AnalyticsConsent,
+          clientId: cleanClientId(body.analytics_client_id),
+          sessionId: cleanSessionId(body.analytics_session_id),
+        },
       };
       let lead = null;
+      let isNewLead = false;
       if (body.lead_id) {
         const existingLead = await getBooking(body.lead_id);
         if (existingLead && existingLead.bookingMode === "lead") {
@@ -109,6 +121,7 @@ exports.handler = async (event) => {
       }
       if (!lead) {
         lead = await createBooking({ ...leadFields, status: "lead", bookingMode: "lead" });
+        isNewLead = true;
       }
       let adminEmail = null;
       try {
@@ -130,6 +143,26 @@ exports.handler = async (event) => {
           twilio,
         });
       } catch (err) { console.error("admin sms failed", err); }
+      // Server-side lead event for GA4, sent only for a newly created lead so a
+      // back-button re-submit does not double-count. Without a GA client id (ad
+      // blocker, declined cookies) the sender reports missing_client_id and
+      // nothing is sent; the lead record itself is unaffected either way.
+      if (isNewLead) {
+        try {
+          const leadAnalyticsResult = await sendBookingLeadSubmitted({ booking: lead });
+          if (leadAnalyticsResult.sent) {
+            await updateBooking(lead.id, {
+              analytics: {
+                ...(lead.analytics || {}),
+                bookingLeadSubmittedAt: new Date().toISOString(),
+                bookingLeadSubmittedEvent: "booking_lead_submit",
+              },
+            });
+          }
+        } catch (err) {
+          console.error("booking lead analytics failed", err.message);
+        }
+      }
       return {
         statusCode: 200,
         headers: { "Content-Type": "application/json" },
