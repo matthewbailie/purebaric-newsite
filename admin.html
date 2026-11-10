@@ -2014,7 +2014,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     const freeMachines = (_machines || []).filter(m => m.status === 'active' && !committedM.has(m.id)).length;
     const available = Math.min(freeChambers, freeMachines); // bookable = free chamber AND free machine
     const queued = _waitlist.filter(w => w.status === 'queued' || w.status === 'hold').length;
-    const newBookings = _bookings.filter(b => b.status === 'new').length;
+    const newBookings = _bookings.filter(b => b.status === 'new' || b.status === 'lead').length;
     const pendingReviews = (_reviews || []).filter(r => r.status === 'pending').length;
     // State of each chamber today: in use (an active rental covers today), available (active, nothing booked),
     // scheduled (booked for a later start), maintenance. Archived chambers are not counted.
