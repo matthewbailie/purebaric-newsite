@@ -6,6 +6,7 @@ const {
   cleanClientId,
   cleanSessionId,
   cleanGclid,
+  sendBookingLeadSubmitted,
   sendRentalConfirmed,
 } = require("../netlify/functions/_lib/analytics");
 
@@ -49,6 +50,41 @@ test("close_convert_lead sends value without customer PII", async () => {
       transaction_id: "rental-1",
       booking_id: "booking-1",
       source: "admin_confirmed",
+      session_id: "789",
+    },
+  }]);
+  assert.equal(JSON.stringify(request.body).includes("person@example.com"), false);
+});
+
+test("booking_lead_submit sends the lead event without customer PII", async () => {
+  let request;
+  global.fetch = async (url, options) => {
+    request = { url: String(url), body: JSON.parse(options.body) };
+    return { ok: true, status: 204 };
+  };
+
+  const result = await sendBookingLeadSubmitted({
+    booking: {
+      id: "booking-1",
+      rentalLength: "4 months",
+      rentalType: "residential",
+      analytics: { consentGranted: true, clientId: "123.456", sessionId: "789" },
+    },
+  });
+
+  assert.deepEqual(result, { sent: true, event: "booking_lead_submit" });
+  assert.match(request.url, /^https:\/\/www\.google-analytics\.com\/mp\/collect\?/);
+  assert.equal(request.body.client_id, "123.456");
+  assert.deepEqual(request.body.events, [{
+    name: "booking_lead_submit",
+    params: {
+      engagement_time_msec: 1,
+      form_name: "lead_capture",
+      rental_months: 4,
+      rental_type: "residential",
+      page_location: "https://purebaric.com/book",
+      booking_id: "booking-1",
+      source: "booking_api",
       session_id: "789",
     },
   }]);

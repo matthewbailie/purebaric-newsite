@@ -47,7 +47,7 @@ test("windows: today vs yesterday, and the last N days vs the N before", () => {
 });
 
 test("funnel stage order matches the booking flow", () => {
-  assert.deepEqual(ga.FUNNEL_EVENTS, ["booking_form_start", "service_area_check", "select_rental_plan", "select_delivery_date", "booking_request_submit"]);
+  assert.deepEqual(ga.FUNNEL_EVENTS, ["booking_form_start", "service_area_check", "select_rental_plan", "booking_lead_submit", "select_delivery_date", "booking_request_submit"]);
 });
 
 test("empty or missing rows map to empty segments", () => {
