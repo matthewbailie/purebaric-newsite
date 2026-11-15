@@ -82,21 +82,22 @@
 <section class="section">
   <div class="wrap">
     <div class="section-head">
-      <span class="eyebrow2">Coming soon</span>
+      <span class="eyebrow2">Available now</span>
       <h2>1.5 ATA Sitting Chamber</h2>
       <p>An upright, seated design for easier entry and exit, same mild 1.5 ATA pressure, new form factor.</p>
     </div>
     <div class="soon-card">
-      <div class="imgwrap"><img src="/images/chamber-hero.jpg?v=2" alt="1.5 ATA sitting chamber (coming soon)"><span class="soon-badge">Coming soon</span></div>
+      <div class="photo-soon">Sitting chamber photos coming soon</div>
       <div class="b">
         <h3>1.5 ATA Sitting Chamber</h3>
-        <p>Designed for people who prefer to sit upright during their session. Join the waitlist and we'll notify you the moment it's available to reserve.</p>
+        <p>Designed for people who prefer to sit upright during their session. Available to reserve now.</p>
         <ul>
           <li>Upright, seated design</li>
           <li>1.5 ATA mild pressure</li>
           <li>Easier entry &amp; exit</li>
         </ul>
-        <a class="btn btn-ghost" href="/waitlist">Join the waitlist →</a>
+        <div class="feat-price">from <span id="fromPriceSitting">$529</span><small> /mo · 12-month rate</small></div>
+        <a class="btn btn-primary" href="/book">Reserve this chamber →</a>
       </div>
     </div>
   </div>
@@ -146,6 +147,8 @@
 fetch('/api/pricing').then(function(r){return r.json();}).then(function(j){
   var p12=(j&&j.months&&j.months[12])||529, el=document.getElementById('fromPrice');
   if(el)el.textContent='$'+p12;
+  var elS=document.getElementById('fromPriceSitting');
+  if(elS)elS.textContent='$'+p12;
 }).catch(function(){});
 </script>
 </body></html>
