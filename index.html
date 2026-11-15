@@ -152,9 +152,7 @@ h2{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
 .chamber ul{list-style:none;margin-top:12px;font-size:13px;color:#5f544d}
 .chamber li{padding:3px 0 3px 20px;position:relative}.chamber li:before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
 .imgwrap{position:relative;overflow:hidden}
-.soon-badge{position:absolute;top:12px;left:12px;background:#2b2320;color:#fff;font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:6px 11px;border-radius:999px}
-.chamber.soon img{filter:grayscale(.55) brightness(1.02) blur(14px);transform:scale(1.12)}.chamber.soon .b b{color:var(--muted)}
-.waitlink{display:inline-block;margin-top:12px;font-size:13px;font-weight:600;color:var(--terra-d);cursor:pointer}
+.photo-soon{display:flex;align-items:center;justify-content:center;text-align:center;background:var(--cream2);color:var(--muted);font-size:13px;line-height:1.5;padding:0 18px;height:150px}
 .chamber .btn-primary{margin-top:12px;padding:10px 16px;font-size:13px;text-align:center}
 .math{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
 .math .side{padding:22px}.math .side.win{background:var(--terra-bg)}
@@ -377,7 +375,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
       </section>
 
       <section>
-        <h2>Soft-Shell 1.5 ATA mild hyperbaric chambers</h2><p class="lead">Available now as a lying chamber, with an upright sitting chamber coming in November.</p>
+        <h2>Soft-Shell 1.5 ATA mild hyperbaric chambers</h2><p class="lead">Available now as a lying chamber or an upright sitting chamber.</p>
         <div class="chambers">
           <div class="chamber">
             <img src="/images/chamber-side.jpg?v=2" width="1800" height="1013" loading="lazy" alt="Soft-shell 1.5 ATA chamber">
@@ -385,11 +383,11 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
               <ul><li>1.5 ATA operating pressure</li><li>99.9% O₂ concentrator + mask</li><li>Fits most bedrooms</li></ul>
               <a class="btn btn-primary" href="/book">Book now</a></div>
           </div>
-          <div class="chamber soon">
-            <div class="imgwrap"><img src="/images/chamber-hero.jpg?v=2" width="1800" height="1013" loading="lazy" alt="1.5 ATA sitting chamber (coming November)"><span class="soon-badge">Coming November</span></div>
-            <div class="b"><b>1.5 ATA Sitting Chamber</b><div class="price" style="color:var(--muted)">Coming November</div>
+          <div class="chamber">
+            <div class="photo-soon">Sitting chamber photos coming soon</div>
+            <div class="b"><b>1.5 ATA Sitting Chamber</b><div class="price"><span id="fromPriceSitting">$729</span><small> /mo · rent longer, save more</small></div>
               <ul><li>Upright, seated design</li><li>1.5 ATA mild pressure</li><li>Easier entry &amp; exit</li></ul>
-              <a class="waitlink" href="/waitlist">Join the waitlist →</a></div>
+              <a class="btn btn-primary" href="/book">Book now</a></div>
           </div>
         </div>
       </section>
@@ -424,7 +422,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
         <div class="ptop"><span class="price" id="pr">$579</span><span class="permo">/mo</span><span class="strike" id="strike">$729</span></div>
         <div class="svwrap open" id="svw"><div class="sv1"><span class="pill1" id="badge">Save 21%</span><span class="txt1" id="save">$150/mo off</span></div></div>
         <div class="selrow"><label>Chamber</label>
-          <select id="ch"><option>1.5 ATA Lying chamber</option><option disabled>1.5 ATA Sitting Chamber, Coming November</option></select></div>
+          <select id="ch"><option>1.5 ATA Lying chamber</option><option>1.5 ATA Sitting Chamber</option></select></div>
         <div class="slider-block"><div class="slider-head"><label>Rental length</label><span id="mol">4 months</span></div>
           <input type="range" min="1" max="12" step="1" value="4" id="mo" oninput="recalc('')" aria-label="Rental length in months"><div class="ticks"><span>1 mo</span><span>12 mo</span></div></div>
         <div class="field"><label>Delivery ZIP</label><input placeholder="Enter your ZIP code" id="zip" aria-label="Delivery ZIP" autocomplete="postal-code" inputmode="numeric" oninput="checkZip('')"></div>
@@ -720,6 +718,7 @@ function applyStaticPrices(){
   var a12=rate(12),annual=a12*12,sess=Math.floor(annual/(365*2)),el; // two sessions a day at the 1-year rate
   ['strike','strike2'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='$'+rate(1);});
   if(el=document.getElementById('fromPrice'))el.textContent='$'+rate(1);
+  if(el=document.getElementById('fromPriceSitting'))el.textContent='$'+rate(1);
   if(el=document.getElementById('cmpSession'))el.textContent=sess;
   if(el=document.getElementById('cmpAnnual'))el.textContent=annual.toLocaleString();
   updateMobileBar();
