@@ -25,14 +25,18 @@
 .exp-card:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(43,35,32,.10);border-color:#d8c9b6}
 .exp-card:focus-within{border-color:var(--terra)}
 .exp-art{height:150px;display:flex;align-items:flex-end;padding:16px 20px;color:#fff;
-  /* a still preview: the hub never flashes or animates */
-  background:radial-gradient(ellipse 60% 90% at 50% 55%,rgba(255,170,90,.95) 0%,rgba(255,170,90,.5) 40%,rgba(255,170,90,0) 80%),
-             radial-gradient(ellipse 40% 60% at 75% 30%,rgba(255,120,110,.35),rgba(255,120,110,0) 100%),#0b0b10}
+  /* a still preview: the hub never flashes or animates. --rgb is set per card. */
+  background:radial-gradient(ellipse 60% 90% at 50% 55%,rgba(var(--rgb),.95) 0%,rgba(var(--rgb),.5) 40%,rgba(var(--rgb),0) 80%),
+             radial-gradient(ellipse 40% 60% at 75% 30%,rgba(255,120,110,.30),rgba(255,120,110,0) 100%),#0b0b10}
 .exp-art b{font-size:34px;font-weight:800;letter-spacing:-.02em;text-shadow:0 1px 12px rgba(0,0,0,.45)}
 .exp-art span{margin-left:8px;font-size:14px;font-weight:600;opacity:.92;text-shadow:0 1px 8px rgba(0,0,0,.5)}
 .exp-body{padding:22px 24px 24px;display:flex;flex-direction:column;gap:14px}
 .exp-tags{display:flex;flex-wrap:wrap;gap:8px}
+.exp-tags .ev{background:transparent;border:1px solid var(--terra);color:var(--terra-d)}
+.exp-tags .hz{background:#2b2320;color:#fff}
 .exp-tags span{background:var(--cream2);color:var(--terra-d);font-size:12px;font-weight:700;letter-spacing:.02em;padding:5px 11px;border-radius:999px}
+.exp-card{scroll-margin-top:90px}
+.exp-card:target{border-color:var(--terra)}
 .exp-card h2{font-size:24px;font-weight:800;letter-spacing:-.015em;margin:0;line-height:1.15}
 .exp-card h2 a{color:inherit;text-decoration:none}
 .exp-card h2 a::after{content:"";position:absolute;inset:0;z-index:1}   /* stretched link: click anywhere on the card */
@@ -85,42 +89,13 @@
 
 <section class="section">
   <div class="wrap">
-    <!-- To add an experience: copy one <article class="exp-card">, point its title link at the new page,
-         and list the studies behind it (with what each one actually found). -->
-    <div class="exp-grid">
+    <!-- Cards are drawn from /experiences/data.js (one entry per experience). To add one, see the top of that file. -->
+    <div class="exp-grid" id="grid"></div>
+    <noscript><p>Experiences need JavaScript. Direct links:
+      <a href="/experiences/40hz/">40 Hz Light &amp; Sound</a>, <a href="/experiences/alpha-calm/">Alpha Calm</a>,
+      <a href="/experiences/wind-down/">Wind Down</a>, <a href="/experiences/quiet-alpha/">Quiet Alpha</a>.</p></noscript>
 
-      <article class="exp-card">
-        <div class="exp-art" aria-hidden="true"><b>40 Hz</b><span>light + sound</span></div>
-        <div class="exp-body">
-          <div class="exp-tags"><span>Brain-wave research</span><span>15 to 60 min</span><span>Use on your phone</span></div>
-          <h2><a href="/experiences/40hz/">40 Hz Light &amp; Sound</a></h2>
-          <p>A soft amber glow and gentle music that pulse together 40 times a second. 40 Hz is in the &ldquo;gamma&rdquo; range of brain-wave activity. Start it on your phone and let it run while you rest.</p>
-
-          <h3>Why it&rsquo;s getting attention</h3>
-          <p>Researchers at MIT and other labs have been studying whether 40 Hz light and sound could support the brain in Alzheimer&rsquo;s disease and dementia. In mouse models it was linked to less amyloid and tau buildup and better memory. In small, early human studies it was safe and well tolerated, with preliminary signs worth following up.</p>
-          <p class="exp-note"><strong>Still early.</strong> Most of the evidence is from mice, and the human studies are small. It has not been shown to treat, slow or prevent Alzheimer&rsquo;s or dementia in people. We offer it as a calming, research-inspired experience for relaxation.</p>
-
-          <h3>The research</h3>
-          <ul class="exp-research">
-            <li><a href="https://doi.org/10.1038/nature20587" target="_blank" rel="noopener">Iaccarino et al., <em>Nature</em>, 2016</a>
-              <small>40 Hz light flicker lowered amyloid in Alzheimer&rsquo;s mouse models. Mice.</small></li>
-            <li><a href="https://pubmed.ncbi.nlm.nih.gov/30879788/" target="_blank" rel="noopener">Martorell et al., <em>Cell</em>, 2019</a>
-              <small>Light plus sound reduced amyloid and tau and improved memory in mice.</small></li>
-            <li><a href="https://pubmed.ncbi.nlm.nih.gov/38418876/" target="_blank" rel="noopener">Murdock et al., <em>Nature</em>, 2024</a>
-              <small>Helped the brain&rsquo;s waste-clearing pathways remove amyloid in mice.</small></li>
-            <li><a href="https://doi.org/10.1371/journal.pone.0278412" target="_blank" rel="noopener">Chan et al., <em>PLOS ONE</em>, 2022</a>
-              <small>Early human study: safe and well tolerated; 15 people with mild Alzheimer&rsquo;s showed preliminary, exploratory signs. Small trial.</small></li>
-          </ul>
-
-          <p class="exp-safety"><strong>Uses flashing light.</strong> Not for anyone with photosensitive epilepsy or seizures triggered by flashing lights. The page checks your screen first and only turns the light on if it can show it accurately. Sound-only mode is always available.</p>
-
-          <div class="exp-cta"><span class="go">Open this experience &rarr;</span><span class="meta">Opens on this phone</span></div>
-        </div>
-      </article>
-
-    </div>
-
-    <p class="exp-disclaimer">Experiences are provided for general wellness and relaxation only. They are not medical devices and are not intended to diagnose, treat, cure, or prevent any disease, including Alzheimer&rsquo;s disease or dementia. The research cited is preliminary and is linked so you can read it yourself. Talk to your physician before use, especially if you have a medical condition.</p>
+    <p class="exp-disclaimer">Experiences are provided for general wellness and relaxation only. They are not medical devices and are not intended to diagnose, treat, cure, or prevent any disease, including Alzheimer&rsquo;s disease, dementia, depression, anxiety, pain or sleep disorders. The research cited is preliminary and is linked so you can read it yourself. Talk to your physician before use, especially if you have a medical condition.</p>
   </div>
 </section>
 
@@ -150,4 +125,39 @@
 </footer>
 
 <script src="/warm.js"></script>
+<script src="/experiences/data.js"></script>
+<script>
+/* Draws one card per experience in /experiences/data.js. The whole card is a link (stretched title link);
+   the research links sit above it so they open on their own. */
+(function () {
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function hzText(e) { return e.stages.map(function (s) { return s.hz; }).join(' \u2192 '); }
+  var html = (window.EXPERIENCES || []).map(function (e) {
+    var lightChip = e.light ? 'Light ' + hzText(e) + ' Hz' : 'No flashing light';
+    var soundChip = (e.audio.mode === 'binaural' ? 'Binaural beat ' : 'Sound ') + hzText(e) + ' Hz';
+    var tags = ['<span class="ev">' + esc(e.evidence.label) + '</span>',
+                '<span class="hz">' + esc(lightChip) + '</span>', '<span class="hz">' + esc(soundChip) + '</span>']
+      .concat(e.tags.map(function (t) { return '<span>' + esc(t) + '</span>'; }))
+      .concat(['<span>' + e.minutes + ' min</span>']).join('');
+    var studies = e.studies.map(function (st) {
+      return '<li><a href="' + esc(st.url) + '" target="_blank" rel="noopener">' + esc(st.label) + '</a><small>' + esc(st.summary) + '</small></li>';
+    }).join('');
+    var safety = e.light
+      ? '<p class="exp-safety"><strong>Uses flashing light.</strong> Not for anyone with photosensitive epilepsy or seizures triggered by flashing lights. The page checks your screen first and only turns the light on if it can show it accurately. Sound-only mode is always available.</p>'
+      : '<p class="exp-safety"><strong>No flashing light.</strong> Use stereo headphones, because a binaural beat does not work through a speaker.</p>';
+    return '<article class="exp-card" id="' + esc(e.slug) + '" style="--rgb:' + esc(e.art.rgb) + '">' +
+      '<div class="exp-art" aria-hidden="true"><b>' + esc(e.art.big) + '</b><span>' + esc(e.art.small) + '</span></div>' +
+      '<div class="exp-body"><div class="exp-tags">' + tags + '</div>' +
+      '<h2><a href="/experiences/' + esc(e.slug) + '/">' + esc(e.title) + '</a></h2>' +
+      '<p>' + esc(e.overview) + '</p>' +
+      '<h3>Why it\u2019s getting attention</h3><p>' + esc(e.why) + '</p>' +
+      '<p class="exp-note"><strong>Still early.</strong> ' + esc(e.note) + '</p>' +
+      '<h3>The research</h3><ul class="exp-research">' + studies + '</ul>' + safety +
+      '<div class="exp-cta"><span class="go">Open this experience &rarr;</span><span class="meta">Opens on this phone</span></div>' +
+      '</div></article>';
+  }).join('');
+  document.getElementById('grid').innerHTML = html;
+  if (location.hash) { var t = document.getElementById(location.hash.slice(1)); if (t && t.scrollIntoView) t.scrollIntoView(); }
+})();
+</script>
 </body></html>

@@ -181,3 +181,17 @@
 **Context:** The owner asked for the card to say the experience is intended to help improve and prevent Alzheimer's and dementia, based on the research. The site's FAQ, Safety and Terms pages already state the offering is for general wellness and relaxation only and is not intended to diagnose, treat, cure, or prevent any disease, and the human evidence is a 15-person exploratory pilot. An intended-use disease claim would contradict those pages and could create regulatory and advertising exposure.
 **Alternatives considered:** Writing the claim as requested (contradicts the site's own disclaimers and overstates the evidence); omitting the research (loses what the owner wanted to communicate). Research links come from PubMed/DOI identifiers found by search and were not opened from the build environment, so click them before promoting the page.
 **Status:** Pending owner review
+
+## 2026-11-17 Drive every experience from one data file and one shared player
+
+**Decision:** `experiences/data.js` is the single source of truth for each experience (rates and schedule, audio design, card text, evidence level, research links). The hub draws its cards from it and every `/experiences/<slug>/` page is a tiny shell that loads `player.js` + `support.js`. Light support is decided per experience from the screen's refresh rate: each flicker rate must divide into a whole number (2 or more) of frames, so 10 Hz alpha works on ordinary 60 Hz screens while 40 Hz needs 120 or 240 Hz. A multi-step experience (Wind Down: 10, 6, 4, 2 Hz) needs every step to fit. Sound is always available. An experience with `light: false` skips the screen check.
+**Context:** The owner asked for more experiences based on audio and visual stimulation research, with each card opening an experience that shows its light Hz and sound Hz and whether the device supports it. The first version hard-coded 40 Hz.
+**Alternatives considered:** One copy of the player per experience (four copies to keep in sync); a Netlify rewrite to one player file (adds a hosting dependency and is harder to test locally).
+**Status:** Confirmed
+
+## 2026-11-17 Which experiences were built, and which were deliberately not
+
+**Decision:** Built 40 Hz Light & Sound (gamma), Alpha Calm (10 Hz light and sound), Wind Down (10, 6, 4, 2 Hz) and Quiet Alpha (10 Hz binaural beat, no flicker). Not built: a standalone depression/mood card, a focus card, and a 20 Hz seasonal-affective-disorder protocol. A guard test fails the build if any flickering experience uses a rate between 15 and 25 Hz.
+**Context:** Human evidence for audio-visual stimulation and depression is thin: one mouse study of alpha flicker, a small 20 Hz trial for seasonal affective disorder, and a registered 40 Hz depression trial without published results that we could find. Mood research is therefore shown inside Alpha Calm with its limits stated. Evidence for 10 Hz flicker and attention is mixed. 15 to 25 Hz is the band most likely to trigger seizures in people with photosensitive epilepsy.
+**Alternatives considered:** A "mood lift" card (would overstate the evidence); a 20 Hz protocol copied from the seasonal-affective-disorder trial (highest seizure risk).
+**Status:** Pending owner review. All research links come from search results and were not opened from the build environment.
