@@ -174,3 +174,10 @@
 
 **Context:** The site's health-content policy (RUNBOOK section 14) is wellness-only and asks for a qualified reviewer on new health claims; that section would have put the strongest medical claims on the site on a public, indexable page. Everything a renter needs to operate the chamber safely is on the page.
 
+
+## 2026-11-17 Present the 40 Hz experience as research-inspired wellness, not as a disease claim
+
+**Decision:** `/experiences/` is a hub of cards (stretched-link, whole card opens the experience) and each experience lives at `/experiences/<name>/`. The 40 Hz card describes the published research (MIT mouse studies, one small human pilot), says plainly that it is early and unproven in people, links the four papers, and carries the site's wellness-only disclaimer. It does not say the experience improves, treats or prevents Alzheimer's or dementia. The hub is `noindex` and not in the nav or sitemap until the owner reviews the wording.
+**Context:** The owner asked for the card to say the experience is intended to help improve and prevent Alzheimer's and dementia, based on the research. The site's FAQ, Safety and Terms pages already state the offering is for general wellness and relaxation only and is not intended to diagnose, treat, cure, or prevent any disease, and the human evidence is a 15-person exploratory pilot. An intended-use disease claim would contradict those pages and could create regulatory and advertising exposure.
+**Alternatives considered:** Writing the claim as requested (contradicts the site's own disclaimers and overstates the evidence); omitting the research (loses what the owner wanted to communicate). Research links come from PubMed/DOI identifiers found by search and were not opened from the build environment, so click them before promoting the page.
+**Status:** Pending owner review
