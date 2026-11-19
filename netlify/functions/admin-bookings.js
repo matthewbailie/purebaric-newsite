@@ -11,6 +11,7 @@ const {
 const { cleanRentalType, cleanBusinessName } = require("./_lib/rental-type");
 const { requireAuth, parseBody, parsePathSegments, json } = require("./_lib/admin");
 const { sendRentalConfirmed } = require("./_lib/analytics");
+const { notifyArchivedBulk } = require("./_lib/email");
 
 exports.handler = async (event, context) => {
   const authErr = await requireAuth(event, context);
@@ -24,6 +25,34 @@ exports.handler = async (event, context) => {
     if (method === "GET" && !id) {
       const bookings = await listBookings({ status: q.status || undefined });
       return json(200, { bookings });
+    }
+
+    // Bulk email to every archived rental requester with an email address.
+    // One individual email per person (never a group send), paced under the
+    // Resend 2/sec limit; a failed send is reported, not fatal to the batch.
+    // Each emailed booking gets lastBulkEmailedAt stamped so the admin portal
+    // can show who was already emailed.
+    if (method === "POST" && id === "email-archived") {
+      const body = parseBody(event);
+      const subject = String(body.subject || "").trim();
+      const message = String(body.message || "").trim();
+      if (!subject || !message) return json(400, { error: "subject_and_message_required" });
+      if (message.length > 5000) return json(400, { error: "message_too_long" });
+      const archived = await listBookings({ status: "archived" });
+      const sent = [], skipped = [], failed = [];
+      for (const b of archived) {
+        if (!b.email) { skipped.push({ id: b.id, reason: "no_email" }); continue; }
+        try {
+          await notifyArchivedBulk(b, subject, message);
+          const updated = await updateBooking(b.id, { lastBulkEmailedAt: new Date().toISOString() });
+          sent.push({ id: b.id, email: b.email, lastBulkEmailedAt: updated.lastBulkEmailedAt });
+        } catch (err) {
+          console.error("archived bulk email failed", b.id, err.message);
+          failed.push({ id: b.id, email: b.email, reason: err.message || "send_failed" });
+        }
+        await new Promise((r) => setTimeout(r, 600));
+      }
+      return json(200, { sent, skipped, failed });
     }
 
     // Admin-entered request (a signed paper agreement, a phone call): same record shape as the public form,
@@ -59,7 +88,7 @@ exports.handler = async (event, context) => {
       if (!existing) return json(404, { error: "not_found" });
       const body = parseBody(event);
       const patch = {};
-      if (["new", "contacted", "approved", "rejected", "converted", "lead"].includes(body.status)) {
+      if (["new", "contacted", "approved", "rejected", "converted", "lead", "archived"].includes(body.status)) {
         patch.status = body.status;
       }
       if (typeof body.adminNotes === "string") patch.adminNotes = body.adminNotes;
@@ -109,6 +138,15 @@ exports.handler = async (event, context) => {
           analytics.rentalConfirmedPendingReason = analyticsResult.reason;
         }
         patch.analytics = analytics;
+      }
+
+      // Archiving stamps the date; unarchiving clears it so the stamp always
+      // means "archived right now, since this date".
+      if (patch.status === "archived" && existing.status !== "archived") {
+        patch.archivedAt = new Date().toISOString();
+      }
+      if (patch.status && patch.status !== "archived" && existing.status === "archived") {
+        patch.archivedAt = null;
       }
 
       const updated = await updateBooking(id, patch);

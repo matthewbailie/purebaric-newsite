@@ -67,9 +67,9 @@ test("step-1 lead admin email keeps the Booking request subject with a lead tag"
 });
 
 test("admin can see and triage step-1 leads", () => {
-  assert.match(adminBookings, /"lead"\]\.includes\(body\.status\)/);
+  assert.match(adminBookings, /"archived"\]\.includes\(body\.status\)/);
   assert.match(adminHtml, /<option value="lead">Step 1 lead<\/option>/);
-  assert.match(adminHtml, /const STATUSES = \['new', 'lead', 'contacted', 'approved', 'rejected', 'converted'\]/);
+  assert.match(adminHtml, /const STATUSES = \['new', 'lead', 'contacted', 'approved', 'rejected', 'converted', 'archived'\]/);
   assert.match(adminHtml, /const leadBadge = b\.bookingMode === 'lead'/);
   assert.match(adminHtml, /Step 1 lead · no address, date, or consent yet/);
 });

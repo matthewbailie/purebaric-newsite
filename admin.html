@@ -131,6 +131,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   .pill-rented   { background: #d9e2eb; color: #2e4a66; }
   .pill-maintenance { background: #f2e5d2; color: #6b5326; }
   .pill-archived { background: #e8e2d6; color: #6b6357; }
+  .data-table tr.archived-row td { background: #f7f3ea; }
   .pill-new      { background: #f2cfa1; color: #6b3f12; }
   .pill-contacted{ background: #d9e2eb; color: #2e4a66; }
   .pill-approved { background: #dbeacd; color: #3d5a26; }
@@ -769,7 +770,27 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           <option value="approved">Approved</option>
           <option value="rejected">Rejected</option>
           <option value="converted">Converted</option>
+          <option value="archived">Archived</option>
         </select>
+        <button class="btn btn-primary btn-sm" id="emailArchivedBtn" hidden onclick="openArchivedEmail()">Email all archived</button>
+      </div>
+      <div class="form-card" id="archivedEmailForm" hidden>
+        <h3>Email archived rental requests</h3>
+        <p class="renter-line" id="archivedEmailTo" style="margin:0 0 12px;"></p>
+        <form id="archivedEmailFormEl" onsubmit="return submitArchivedEmail(event)">
+          <div class="form-group"><label>Subject<span class="req">*</span></label><input name="subject" required maxlength="150" value="Still thinking about a hyperbaric chamber at home?"></div>
+          <div class="form-group"><label>Message<span class="req">*</span></label><textarea name="message" rows="6" required>Hi [first name],
+
+You reached out about renting a Purebaric chamber a while back, and we never heard back. A chamber is still available if you would like to try one at home.
+
+Reply to this email or call (801) 901-0873 and we will get you set up.
+
+The Purebaric team</textarea></div>
+          <div class="form-buttons">
+            <button type="submit" class="btn btn-primary btn-sm" id="archivedEmailSendBtn">Send</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="cancelArchivedEmail()">Cancel</button>
+          </div>
+        </form>
       </div>
       <div id="bookingsList"></div>
     </section>
@@ -4071,16 +4092,26 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   function renderBookings() {
     const list = document.getElementById('bookingsList');
     // The active queue shows only open requests. Once a request is converted to
-    // a rental (or rejected) it's resolved and drops out of the list, unless the
-    // owner explicitly filters to that status.
+    // a rental (or rejected, or archived) it's resolved and drops out of the list,
+    // unless the owner explicitly filters to that status.
     const filter = document.getElementById('bookingStatusFilter').value;
     const visible = filter
       ? _bookings
-      : _bookings.filter(b => b.status !== 'converted' && b.status !== 'rejected');
+      : _bookings.filter(b => b.status !== 'converted' && b.status !== 'rejected' && b.status !== 'archived');
+    // The bulk-email button only makes sense on the archived view.
+    const emailBtn = document.getElementById('emailArchivedBtn');
+    if (emailBtn) {
+      const withEmail = visible.filter(b => b.email);
+      emailBtn.hidden = filter !== 'archived';
+      emailBtn.disabled = !withEmail.length;
+      emailBtn.textContent = `Email all archived (${withEmail.length})`;
+    }
+    const emailForm = document.getElementById('archivedEmailForm');
+    if (emailForm && filter !== 'archived') emailForm.hidden = true;
     if (!visible.length) {
       list.innerHTML = `<div class="empty-state">${filter
         ? 'No rental requests with this status.'
-        : 'No open rental requests. Converted and rejected requests are hidden — pick a status above to see them.'}</div>`;
+        : 'No open rental requests. Converted, rejected, and archived requests are hidden — pick a status above to see them.'}</div>`;
       return;
     }
     const rows = visible.map(b => {
@@ -4088,7 +4119,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       const flags = (b.medicalScreeningFlags && b.medicalScreeningFlags !== 'none')
         ? `<div class="renter-line" style="color:#82402f;"><strong>Flags:</strong> ${escape(b.medicalScreeningFlags)}</div>` : '';
       const address = [b.streetAddress, b.city, b.state, b.zip].filter(Boolean).join(', ');
-      const STATUSES = ['new', 'lead', 'contacted', 'approved', 'rejected', 'converted'];
+      const STATUSES = ['new', 'lead', 'contacted', 'approved', 'rejected', 'converted', 'archived'];
       const statusOptions = STATUSES.map(s => `<option value="${s}"${s === b.status ? ' selected' : ''}>${s}</option>`).join('');
       let routingBadge = '';
       if (b.autoNotified === 'available') {
@@ -4107,8 +4138,12 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       const leadBadge = b.bookingMode === 'lead'
         ? `<div class="renter-line"><span style="display:inline-block;background:#efe6d6;color:#7a5a2c;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;padding:2px 8px;border-radius:999px;">Step 1 lead · no address, date, or consent yet</span></div>`
         : '';
+      const archivedLine = b.status === 'archived' && b.archivedAt
+        ? `<div class="renter-line">Archived ${escape(fmtDate(b.archivedAt))}</div>` : '';
+      const emailedLine = b.lastBulkEmailedAt
+        ? `<div class="renter-line">Emailed ${escape(fmtDate(b.lastBulkEmailedAt))}</div>` : '';
       return `
-      <tr${b.outOfArea ? ' style="background:#fbf3ec;"' : ''}>
+      <tr${b.status === 'archived' ? ' class="archived-row"' : ''}${b.outOfArea ? ' style="background:#fbf3ec;"' : ''}>
         <td>${escape(created)}</td>
         <td><strong>${escape(b.firstName + ' ' + (b.lastName || ''))}</strong>
           <div class="renter-line">${escape(b.email)}${b.phone ? ' · ' + escape(b.phone) : ''}</div>
@@ -4117,13 +4152,16 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           ${outOfAreaBadge}
           ${leadBadge}
           ${routingBadge}
+          ${archivedLine}
+          ${emailedLine}
         </td>
         <td>${b.bookingMode === 'book' ? `<span class="pill pill-approved">Booked online</span><div style="margin-top:4px;"><strong>Delivery ${escape(fmtDate(b.startDate))}</strong> · ${Number(b.months) || 1} month${Number(b.months) === 1 ? '' : 's'}${b.endDate ? ' through ' + escape(fmtDate(b.endDate)) : ''} · ${b.chamberStyle === 'sitting' ? 'sitting' : 'lying'} chamber</div>` : `${escape(b.startDate || ', ')} · ${escape(b.rentalLength || ', ')}`}${/ata/i.test(b.requestedType || '') && b.bookingMode !== 'book' ? `<div class="renter-line">Style: ${escape(b.requestedType)}</div>` : ''}${b.promo === 'black-friday-2026' ? '<div style="margin-top:4px;"><span class="pill" style="background:#2b2320;color:#fff;">Black Friday: $200 off first month</span></div>' : ''}<div class="renter-line">${escape((b.reason || '').slice(0, 120))}</div>${flags}</td>
         <td><select class="booking-status-sel" data-id="${b.id}" style="padding: 0.3rem 0.5rem; font-size: 0.85rem;">${statusOptions}</select></td>
         <td>
           <div class="row-actions">
             <button class="btn btn-ghost btn-sm" onclick='viewBookingDetails(${JSON.stringify(b.id)})'>Details</button>
-            ${b.status !== 'converted' && b.status !== 'rejected' ? `<button class="btn btn-primary btn-sm" onclick='convertBookingToRental(${JSON.stringify(b.id)})'>→ Rental</button>` : ''}
+            ${b.status !== 'converted' && b.status !== 'rejected' && b.status !== 'archived' ? `<button class="btn btn-primary btn-sm" onclick='convertBookingToRental(${JSON.stringify(b.id)})'>→ Rental</button>` : ''}
+            ${b.status !== 'archived' ? `<button class="btn btn-ghost btn-sm" onclick='setBookingStatus(${JSON.stringify(b.id)}, "archived")'>Archive</button>` : `<button class="btn btn-ghost btn-sm" onclick='setBookingStatus(${JSON.stringify(b.id)}, "contacted")'>Unarchive</button>`}
             <button class="btn btn-ghost btn-sm" onclick='deleteBooking(${JSON.stringify(b.id)})'>Delete</button>
           </div>
         </td>
@@ -4145,6 +4183,43 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
         } catch (err) { toast(err.message, true); }
       });
     });
+  }
+
+  // One-click archive / unarchive from the row. Unarchiving returns the request
+  // to Contacted, since the owner had already been in touch before archiving it.
+  async function setBookingStatus(id, status) {
+    try {
+      await api(`/api/admin/bookings/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
+      toast(status === 'archived' ? 'Request archived' : 'Request moved back to Contacted');
+      await loadAll();
+    } catch (err) { toast(err.message, true); }
+  }
+
+  function openArchivedEmail() {
+    const withEmail = (_bookings || []).filter(b => b.status === 'archived' && b.email);
+    document.getElementById('archivedEmailTo').textContent = `To: ${withEmail.length} archived request${withEmail.length === 1 ? '' : 's'} with an email address. Each person gets their own email.`;
+    document.getElementById('archivedEmailForm').hidden = false;
+  }
+
+  function cancelArchivedEmail() { document.getElementById('archivedEmailForm').hidden = true; }
+
+  async function submitArchivedEmail(event) {
+    event.preventDefault();
+    const form = event.target;
+    const subject = form.subject.value.trim();
+    const message = form.message.value.trim();
+    if (!subject || !message) { toast('Subject and message are required', true); return false; }
+    const btn = document.getElementById('archivedEmailSendBtn');
+    btn.disabled = true;
+    try {
+      const result = await api('/api/admin/bookings/email-archived', { method: 'POST', body: JSON.stringify({ subject, message }) });
+      const sent = (result.sent || []).length, skipped = (result.skipped || []).length, failed = (result.failed || []).length;
+      toast(`Emailed ${sent} archived request${sent === 1 ? '' : 's'}${skipped ? `, ${skipped} skipped (no email)` : ''}${failed ? `, ${failed} failed` : ''}`, failed > 0);
+      cancelArchivedEmail();
+      await loadAll();
+    } catch (err) { toast(err.message, true); }
+    btn.disabled = false;
+    return false;
   }
 
   function viewBookingDetails(id) {
@@ -4182,7 +4257,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
       </div>
       <div class="modal-actions">
         <button class="btn btn-primary btn-sm" onclick='saveBookingNotes(${JSON.stringify(b.id)})'>Save notes</button>
-        ${b.status !== 'converted' && b.status !== 'rejected' ? `<button class="btn btn-primary btn-sm" onclick='convertBookingToRental(${JSON.stringify(b.id)})'>Convert → rental</button>` : ''}
+        ${b.status !== 'converted' && b.status !== 'rejected' && b.status !== 'archived' ? `<button class="btn btn-primary btn-sm" onclick='convertBookingToRental(${JSON.stringify(b.id)})'>Convert → rental</button>` : ''}
         <a href="mailto:${escape(b.email)}" class="btn btn-ghost btn-sm">Email renter</a>
         ${b.phone ? `<a href="tel:${escape(b.phone)}" class="btn btn-ghost btn-sm">Call</a>` : ''}
       </div>

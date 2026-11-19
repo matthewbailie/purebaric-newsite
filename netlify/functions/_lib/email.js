@@ -472,8 +472,24 @@ async function notifyAdminEndingSoonSms(list, { days, gateways, numbers, twilio 
   return deliverAdminSms({ numbers, gateways, text: endingSmsText(list, days), subject: "Purebaric rentals ending", twilio });
 }
 
+// Bulk email to one archived rental requester. Each recipient gets their own
+// email (never a group send); [first name] in the message is replaced per person.
+// The opt-out line is in every email: these are prior inquirers, not cold prospects.
+async function notifyArchivedBulk(booking, subject, message) {
+  const first = String(booking.firstName || "there").trim() || "there";
+  const text = String(message).replace(/\[first name\]/gi, first);
+  const html = wrap(`
+    <p style="margin:0 0 16px;">Hi ${escapeHtml(first)},</p>
+    <p style="margin:0 0 16px;">${escapeHtml(text).replace(/\n/g, "<br>")}</p>
+    <p style="margin:24px 0 0; font-size:12px; color:#7a6f63;">You asked about a Purebaric chamber rental earlier, so we are checking in. Reply to this email or call (801) 901-0873 if you would like us to stop emailing you about it.</p>
+    ${signoff("The Purebaric team")}
+  `);
+  return send({ to: booking.email, subject, html, text });
+}
+
 module.exports = {
   send,
+  notifyArchivedBulk,
   notifyAdminEndingSoon,
   notifyAdminEndingSoonSms,
   notifyAdminReview,
