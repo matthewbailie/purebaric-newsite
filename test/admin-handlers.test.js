@@ -130,3 +130,69 @@ test("reviews: delete is refused, archive and publish update the record", async 
   assert.equal(published.review.publishedAt, "2026-10-14T00:00:00Z");
   assert.ok(db.x);
 });
+
+test("bookings: archive stamps archivedAt, unarchive clears it, and an invalid status is ignored", async () => {
+  const db = { a1: { id: "a1", status: "contacted", firstName: "Tyra", email: "tyra@example.com" } };
+  const storage = {
+    STORES: { bookings: "bookings" },
+    store: () => ({ delete: async () => {} }),
+    listBookings: async ({ status } = {}) => Object.values(db).filter((b) => !status || b.status === status),
+    getBooking: async (id) => db[id] || null,
+    updateBooking: async (id, patch) => { if (!db[id]) return null; db[id] = { ...db[id], ...patch }; return db[id]; },
+    listRentals: async () => [],
+    getRental: async () => null,
+    createBooking: async (data) => ({ id: "new", ...data }),
+  };
+  const { handler } = loadWithStubs("admin-bookings.js", {
+    "_lib/storage": storage, "_lib/admin": adminStub(),
+    "_lib/analytics": { sendRentalConfirmed: async () => ({ sent: true }) },
+    "_lib/email": { notifyArchivedBulk: async () => ({}) },
+  });
+  const archived = JSON.parse((await call(handler, "PATCH", "/api/admin/bookings/a1", { status: "archived" })).body);
+  assert.equal(archived.booking.status, "archived");
+  assert.equal(typeof archived.booking.archivedAt, "string");
+  assert.ok(!Number.isNaN(Date.parse(archived.booking.archivedAt)));
+  const back = JSON.parse((await call(handler, "PATCH", "/api/admin/bookings/a1", { status: "contacted" })).body);
+  assert.equal(back.booking.status, "contacted");
+  assert.equal(back.booking.archivedAt, null);
+  const bogus = JSON.parse((await call(handler, "PATCH", "/api/admin/bookings/a1", { status: "bogus" })).body);
+  assert.equal(bogus.booking.status, "contacted");
+  assert.equal((await call(handler, "PATCH", "/api/admin/bookings/nope", { status: "archived" })).statusCode, 404);
+});
+
+test("bookings: bulk email goes to archived requesters only, one email each, and stamps lastBulkEmailedAt", async () => {
+  const db = {
+    a2: { id: "a2", status: "lead", firstName: "NoMail", email: "" },
+    a3: { id: "a3", status: "archived", firstName: "Old", email: "old@example.com", archivedAt: "2026-11-18T00:00:00Z" },
+    a4: { id: "a4", status: "archived", firstName: "Bad", email: "bad@example.com" },
+    a5: { id: "a5", status: "archived", firstName: "Quiet", email: "" },
+  };
+  const sentTo = [];
+  const storage = {
+    STORES: { bookings: "bookings" },
+    store: () => ({ delete: async () => {} }),
+    listBookings: async ({ status } = {}) => Object.values(db).filter((b) => !status || b.status === status),
+    getBooking: async (id) => db[id] || null,
+    updateBooking: async (id, patch) => { if (!db[id]) return null; db[id] = { ...db[id], ...patch }; return db[id]; },
+    listRentals: async () => [],
+    getRental: async () => null,
+    createBooking: async (data) => ({ id: "new", ...data }),
+  };
+  const { handler } = loadWithStubs("admin-bookings.js", {
+    "_lib/storage": storage, "_lib/admin": adminStub(),
+    "_lib/analytics": { sendRentalConfirmed: async () => ({ sent: true }) },
+    "_lib/email": { notifyArchivedBulk: async (b, subject, message) => { sentTo.push({ id: b.id, subject, message }); if (b.id === "a4") throw new Error("bad address"); } },
+  });
+  const bad = await call(handler, "POST", "/api/admin/bookings/email-archived", { subject: "", message: "hi" });
+  assert.equal(bad.statusCode, 400);
+  const res = await call(handler, "POST", "/api/admin/bookings/email-archived", { subject: "Still thinking?", message: "Hi [first name], checking in." });
+  assert.equal(res.statusCode, 200);
+  const body = JSON.parse(res.body);
+  assert.deepEqual(body.sent.map((s) => s.id), ["a3"]);
+  assert.equal(typeof db.a3.lastBulkEmailedAt, "string");
+  assert.deepEqual(body.skipped.map((s) => s.id), ["a5"]);
+  assert.deepEqual(body.failed.map((s) => s.id), ["a4"]);
+  assert.equal(db.a4.lastBulkEmailedAt, undefined, "a failed send does not stamp the record");
+  assert.equal(sentTo.length, 2, "one send attempt per archived requester with an email");
+  assert.ok(sentTo.every((s) => s.subject === "Still thinking?" && s.message.includes("[first name]")));
+});

@@ -355,7 +355,9 @@ async function updateWaitlistEntry(id, patch) {
 //   medicalScreeningFlags, consentMedical, consentTerms,
 //   outOfArea (true = ZIP outside the delivery area; no customer email sent),
 //   analytics: { consentGranted, clientId, sessionId, rentalConfirmedAt, rentalConfirmedEvent },
-//   adminNotes, convertedRentalId, createdAt, updatedAt
+//   adminNotes, convertedRentalId, createdAt, updatedAt,
+//   archivedAt (set when status becomes "archived", cleared on unarchive),
+//   lastBulkEmailedAt (stamped by the archived bulk-email endpoint per recipient)
 // }
 
 async function listBookings({ status } = {}) {
