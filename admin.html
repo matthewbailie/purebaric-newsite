@@ -4107,7 +4107,7 @@ The Purebaric team</textarea></div>
       emailBtn.textContent = `Email all archived (${withEmail.length})`;
     }
     const emailForm = document.getElementById('archivedEmailForm');
-    if (emailForm && filter !== 'archived') emailForm.hidden = true;
+    if (emailForm && filter !== 'archived') { emailForm.classList.remove('open'); emailForm.hidden = true; }
     if (!visible.length) {
       list.innerHTML = `<div class="empty-state">${filter
         ? 'No rental requests with this status.'
@@ -4198,10 +4198,18 @@ The Purebaric team</textarea></div>
   function openArchivedEmail() {
     const withEmail = (_bookings || []).filter(b => b.status === 'archived' && b.email);
     document.getElementById('archivedEmailTo').textContent = `To: ${withEmail.length} archived request${withEmail.length === 1 ? '' : 's'} with an email address. Each person gets their own email.`;
-    document.getElementById('archivedEmailForm').hidden = false;
+    // Form cards are display:none until they get the open class (see the
+    // .form-card CSS); the hidden attribute alone does not show one.
+    const card = document.getElementById('archivedEmailForm');
+    card.hidden = false;
+    card.classList.add('open');
   }
 
-  function cancelArchivedEmail() { document.getElementById('archivedEmailForm').hidden = true; }
+  function cancelArchivedEmail() {
+    const card = document.getElementById('archivedEmailForm');
+    card.classList.remove('open');
+    card.hidden = true;
+  }
 
   async function submitArchivedEmail(event) {
     event.preventDefault();
