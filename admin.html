@@ -4136,7 +4136,7 @@ The Purebaric team</textarea></div>
         ? `<div class="renter-line"><span style="display:inline-block;background:#f4e7df;color:#9a4f3a;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;padding:2px 8px;border-radius:999px;">⚠ Out of area · no auto-email sent</span></div>`
         : '';
       const leadBadge = b.bookingMode === 'lead'
-        ? `<div class="renter-line"><span style="display:inline-block;background:#efe6d6;color:#7a5a2c;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;padding:2px 8px;border-radius:999px;">Step 1 lead · no address, date, or consent yet</span></div>`
+        ? `<div class="renter-line"><span style="display:inline-block;background:#efe6d6;color:#7a5a2c;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;padding:2px 8px;border-radius:999px;">Step 1 lead · step 2 not confirmed yet</span></div>`
         : '';
       const archivedLine = b.status === 'archived' && b.archivedAt
         ? `<div class="renter-line">Archived ${escape(fmtDate(b.archivedAt))}</div>` : '';

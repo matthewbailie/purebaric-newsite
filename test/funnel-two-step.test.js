@@ -71,7 +71,7 @@ test("admin can see and triage step-1 leads", () => {
   assert.match(adminHtml, /<option value="lead">Step 1 lead<\/option>/);
   assert.match(adminHtml, /const STATUSES = \['new', 'lead', 'contacted', 'approved', 'rejected', 'converted', 'archived'\]/);
   assert.match(adminHtml, /const leadBadge = b\.bookingMode === 'lead'/);
-  assert.match(adminHtml, /Step 1 lead · no address, date, or consent yet/);
+  assert.match(adminHtml, /Step 1 lead · step 2 not confirmed yet/);
 });
 
 test("homepage ZIP checker offers a short area waitlist only when out of area", () => {
@@ -109,4 +109,25 @@ test("homepage promo signup and area waitlist fire Meta Leads", () => {
   assert.match(indexHtml, /trackPurebaricMeta\?\.\('Lead',\{content_category:window\.PB_BF\?'black-friday':'homepage'\}\)/);
   assert.match(indexHtml, /trackPurebaricEvent\?\.\('waitlist_join',\{source:'homepage'\}\)/);
   assert.match(indexHtml, /trackPurebaricMeta\?\.\('Lead',\{content_category:'waitlist'\}\)/);
+});
+
+test("step 1 asks for ZIP and delivery date first, contact details last, and sends address and date", () => {
+  const lead = bookHtml.slice(bookHtml.indexOf('id="leadForm"'), bookHtml.indexOf('id="resForm"'));
+  const at = (s) => { const i = lead.indexOf(s); assert.ok(i > 0, s); return i; };
+  assert.ok(at('id="zip"') < at('id="dateBookRow"'));
+  assert.ok(at('id="dateBookRow"') < at('id="cstreet"'));
+  assert.ok(at('id="cstreet"') < at('id="cfn"'));
+  assert.ok(at('id="cfn"') < at('id="leadBtn"'));
+  assert.match(bookHtml, /data\.set\('street-address',document\.getElementById\('cstreet'\)\.value\.trim\(\)\);data\.set\('city'/);
+  assert.match(bookHtml, /if\(leadDate\)data\.set\('preferred_date',leadDate\)/);
+  const leadBranch = bookingSubmit.slice(bookingSubmit.indexOf('body.lead_stage === "step1"'), bookingSubmit.indexOf("let lead = null"));
+  assert.match(leadBranch, /streetAddress:/);
+  assert.match(leadBranch, /startDate:/);
+});
+
+test("business savings count the waived fee, and the homepage carries the chamber", () => {
+  assert.match(bookHtml, /money\(\(BASE_BIZ-r\)\*m\+\(BF\?BF_OFF\+BIZ_FEE:0\)\)/);
+  assert.match(indexHtml, /&chamber=sitting/);
+  assert.match(bookHtml, /get\('chamber'\)/);
+  assert.match(read("business.html"), /<a href="\/book\?type=business" style="color:#e0b9a8/);
 });

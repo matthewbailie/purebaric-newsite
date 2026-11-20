@@ -102,6 +102,11 @@ exports.handler = async (event) => {
         businessName: step1RentalType === "business" ? cleanBusinessName(body.business_name) : "",
         phone: (body.phone || body.customer_phone || "").trim(),
         zip,
+        // Step 1 now collects the address and the delivery date too, so the
+        // step-1 lead email shows where and when. A lead never holds the date.
+        streetAddress: step1RentalType === "business" ? "" : (body["street-address"] || "").trim().slice(0, 120),
+        city: step1RentalType === "business" ? "" : (body.city || "").trim().slice(0, 60),
+        startDate: /^\d{4}-\d{2}-\d{2}$/.test((body.preferred_date || "").trim()) ? body.preferred_date.trim() : "",
         rentalLength: (body["rental-length"] || body.rental_duration || "").trim(),
         requestedType: (body.chamber_id || body.chamber_type || "").trim(),
         outOfArea,

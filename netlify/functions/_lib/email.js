@@ -317,7 +317,7 @@ async function notifyAdminBooking(b, routing = {}, to) {
   } else if (routing.autoNotified === "waitlist") {
     routingBlock = `<p style="padding:12px 14px; background:#f4e7df; color:#7a4a1e; border-radius:8px; margin:0 0 16px;"><strong>Auto-routed: no chambers available.</strong><br>Customer was added to the waitlist and emailed about it. Linked waitlist id: <code>${or(routing.linkedWaitlistId)}</code></p>`;
   } else if (routing.autoNotified === "lead") {
-    routingBlock = `<p style="padding:12px 14px; background:#efe6d6; color:#7a5a2c; border-radius:8px; margin:0 0 16px;"><strong>Step 1 lead.</strong><br>They completed step 1 of the booking form (contact details, ZIP, and rental length) but have not finished step 2 yet, so no address, date, or consent is on file and no customer email was sent. Action: follow up to complete the request.</p>`;
+    routingBlock = `<p style="padding:12px 14px; background:#efe6d6; color:#7a5a2c; border-radius:8px; margin:0 0 16px;"><strong>Step 1 lead.</strong><br>They completed step 1 of the booking form (ZIP, delivery date, address, contact details, and rental length) but have not confirmed step 2 yet, so no consent is on file, the date is not held, and no customer email was sent. Action: follow up to complete the request.</p>`;
   }
   // Only when a chamber is actually free — the message says "I have a chamber ready".
   let followUpBlock = "";

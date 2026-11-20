@@ -37,7 +37,7 @@ test("every public page carries the self-expiring banner with the same cut-off a
     assert.equal((s.match(/id="bfBanner"/g) || []).length, 1, f + " has one banner");
     assert.ok(s.includes(clientCutoff), f + " uses the server cut-off");
     assert.ok(s.includes('<div id="bfBanner" style="display:none;'), f + " banner is off unless the script turns it on");
-    assert.ok(s.includes('ends Friday, Nov 27. <a href="/book"'), f + " banner names the end date and links to booking");
+    assert.ok(s.includes('ends Friday, Nov 27. <a href="/book'), f + " banner names the end date and links to booking");
   }
 });
 
