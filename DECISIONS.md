@@ -214,3 +214,10 @@
 **Context:** A walk-through of both paths found the date only appeared after the visitor had typed name, email, phone and address, and step-1 lead emails showed only a ZIP because the address was collected but not sent. The owner asked for all funnel fixes from that walk-through. Lead capture stays at step 1, so the Meta Lead, booking_lead_submit and the abandon event are unchanged, and step 2 still fires CompleteRegistration and redirects to /thank-you.
 **Alternatives considered:** Moving contact details to step 2 (would lose the step-1 lead for visitors who leave after picking a date); a three-step form (one more click before the lead).
 **Status:** Deployed.
+
+## Local SEO: city landing pages and title fixes (2026-11-22)
+
+**Decision:** Added five city landing pages under `/hyperbaric-chamber-rental/` (salt-lake-city, utah-county, draper-sandy, park-city, ogden), each with its own local copy, delivery towns, pricing, a short FAQ and Service, BreadcrumbList and FAQPage structured data that points at the homepage `#business` entity. The homepage title now reads "Hyperbaric Chamber Rental in Utah, Delivered | Purebaric" (it was just the brand). /book and the use-case page titles were shortened to 60 characters or fewer, use-case pages share the homepage business `@id`, and their Twitter images use absolute URLs. The service-area page and the homepage delivery block link to the city pages. The sitemap adds the city pages and /reviews and uses each page's real last-change date.
+**Context:** The owner asked for a best-in-class SEO plan after deciding not to use an AI blog autopilot (Soro), which cannot publish to this hand-coded site. Local "hyperbaric chamber rental + city" searches had no page to land on. City pages use only facts already on the site (pricing, room needs, delivery included, payment on delivery day) and carry the wellness-only disclaimer in the footer; they make no treatment claims.
+**Alternatives considered:** One page per small town (thin, near-duplicate pages); an automated blog tool (no publishing route, and generated health content is risky).
+**Status:** Deployed.
