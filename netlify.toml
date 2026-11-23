@@ -310,6 +310,11 @@
 [functions."expire-holds"]
   schedule = "0 * * * *"
 
+# Safety net behind the Stripe webhook: brings every open rental's billing dates and rate in line
+# with its Stripe subscription. Hourly at :20 (the admin rentals list also runs it when stale).
+[functions."stripe-billing-sync"]
+  schedule = "20 * * * *"
+
 # Weekly digest (email + text) of running rentals ending within the next 10 days.
 # Mondays at 15:00 UTC (9:00 AM Utah in summer, 8:00 AM in winter).
 [functions."rental-ending-notify"]

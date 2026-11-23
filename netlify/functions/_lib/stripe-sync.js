@@ -25,10 +25,12 @@ function amountDueToDate(rental, today) {
   const rate = Number(rental.monthlyRate) || 0;
   if (!start || !end || !rate || start > today) return 0;
   const last = end < today ? end : today;
+  // A Stripe subscription set to stop makes no charge on the day it stops (stripe-billing.js).
+  const stop = day10(rental.stripeSubscriptionId && rental.stripeBilling && rental.stripeBilling.stopsOn);
   let n = 0;
   for (let k = 0; k < 600; k += 1) {
     const date = rental.rateType === "weekly" ? addDays(start, 7 * k) : addMonths(start, k);
-    if (date > last) break;
+    if (date > last || (k > 0 && stop && date >= stop)) break;
     n += 1;
   }
   return rate * n;

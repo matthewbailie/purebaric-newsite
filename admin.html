@@ -2913,6 +2913,18 @@ The Purebaric team</textarea></div>
     viewRentalDetails(id);
   }
 
+  // Billing facts read from the rental's Stripe subscription (kept in sync by the backend; Stripe wins).
+  function stripeBillingRow(r) {
+    const b = r.stripeSubscriptionId && r.stripeBilling;
+    if (!b) return '<div class="modal-row"><strong>Stripe billing</strong><div class="renter-line">No Stripe subscription linked yet. Dates and rate are the portal’s own until one starts.</div></div>';
+    const per = b.interval === 'week' ? 'wk' : 'mo';
+    const parts = [`$${Number(b.amount || 0).toLocaleString('en-US', { maximumFractionDigits: 2 })}/${per}`, escape(b.status || '')];
+    if (b.currentPeriodStart && b.currentPeriodEnd) parts.push(`current period ${escape(fmtDate(b.currentPeriodStart))} → ${escape(fmtDate(b.currentPeriodEnd))}`);
+    parts.push(b.stopsOn ? `stops ${escape(fmtDate(b.stopsOn))}` : `next charge ${escape(fmtDate(b.currentPeriodEnd))}`);
+    const reserved = r.reservedStartDate ? ` Originally reserved ${escape(fmtDate(r.reservedStartDate))} → ${escape(fmtDate(r.reservedEndDate || r.endDate))}.` : '';
+    return `<div class="modal-row"><strong>Stripe billing</strong><div>${parts.join(' · ')}<div class="renter-line">Dates and rate follow this subscription.${reserved}</div></div></div>`;
+  }
+
   function viewRentalDetails(id) {
     const r = _rentals.find(x => x.id === id);
     if (!r) return;
@@ -2954,6 +2966,7 @@ The Purebaric team</textarea></div>
       <div class="modal-row"><strong>${rentalIsBusiness(r) ? 'Installation address' : 'Delivery address'}</strong><div id="rentalDetailAddr">${escape(address).replace(/\n/g, '<br>')}</div></div>
       <div class="modal-row"><strong>Dates</strong><div>${escape(fmtDate(r.startDate))} → ${escape(fmtDate(r.endDate))} <span style="color:var(--stone-muted);">(≈ ${isWeekly ? `${weeks} week${weeks > 1 ? 's' : ''}` : `${months} month${months > 1 ? 's' : ''}`}, ${days} days)</span></div></div>
       <div class="modal-row"><strong>Rate</strong><div>$${(r.monthlyRate || 0).toLocaleString()}/${isWeekly ? 'wk' : 'mo'}${isWeekly ? ' <span style="color:var(--terracotta);">(custom weekly billing)</span>' : ''} · est. total $${estTotal.toLocaleString()}</div></div>
+      ${stripeBillingRow(r)}
       <div class="modal-row"><strong>Payment</strong><div><span class="pill pill-${payStatus}">${escape(payParts.join(' · '))}</span></div></div>
       <div class="modal-row"><strong>Waiver</strong><div>${waiverHtml}</div></div>
       ${r.createdAt ? `<div class="modal-row"><strong>Created</strong><div>${new Date(r.createdAt).toLocaleString()}</div></div>` : ''}
@@ -3146,9 +3159,14 @@ The Purebaric team</textarea></div>
       form.querySelector('[name="paymentStatus"]').value = r.paymentStatus || 'unpaid';
       form.querySelector('[name="paymentDate"]').value = r.paymentDate || '';
       form.querySelector('[name="paymentMethod"]').value = r.paymentMethod || '';
-      note.textContent = n
+      if (res.billingUpdated) {
+        form.querySelector('[name="startDate"]').value = r.startDate || '';
+        form.querySelector('[name="endDate"]').value = r.endDate || '';
+        form.querySelector('[name="monthlyRate"]').value = r.monthlyRate || '';
+      }
+      note.textContent = (res.billingUpdated ? 'Billing dates and rate updated from the Stripe subscription. ' : '') + (n
         ? `Stripe shows ${n} payment${n === 1 ? '' : 's'} totalling $${Number(res.total).toLocaleString('en-US')}. Marked ${r.paymentStatus}.`
-        : 'No payments found in Stripe for this rental (matched by its payment link and the renter email).';
+        : 'No payments found in Stripe for this rental (matched by its payment link and the renter email).');
       toast('Payments synced from Stripe');
       await loadRentals();
     } catch (err) { note.textContent = ''; toast(err.message, true); }

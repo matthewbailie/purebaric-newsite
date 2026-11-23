@@ -1,5 +1,6 @@
 const { listRentals, createRental, updateRental, findRentalConflict, listBookings, updateBooking, store, STORES } = require("./_lib/storage");
 const { requireAuth, parseBody, parsePathSegments, json } = require("./_lib/admin");
+const { isStale, runBillingSync } = require("./_lib/stripe-billing-job");
 
 function buildRenter(body) {
   return {
@@ -52,6 +53,11 @@ exports.handler = async (event, context) => {
 
   try {
     if (method === "GET" && !id) {
+      // Stripe is the source of truth for billing dates and rates. If the scheduled check hasn't run
+      // in the last half hour, bring rentals in line with Stripe before listing them.
+      try {
+        if (await isStale()) await runBillingSync({ budgetMs: 4000 });
+      } catch (err) { console.error("billing sync before list failed", err.message); }
       const rentals = await listRentals({
         chamberId: q.chamberId || undefined,
         status: q.status || undefined,

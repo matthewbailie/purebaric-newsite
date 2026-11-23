@@ -206,6 +206,9 @@
   // The first payment is at the start date, so renewals are the later billing dates: each monthly
   // anniversary of the start (weekly rentals: every 7 days). A date after the rental's end is not a
   // renewal, so the final period has none. Returns [{ rental, date, amount }] soonest first.
+  // A rental linked to a Stripe subscription (r.stripeBilling, kept in sync by the backend) renews on
+  // Stripe's own billing dates: each anniversary of the subscription's billing anchor up to the end,
+  // except the day it is set to stop, when Stripe makes no charge.
   function upcomingRenewals(rentals, today, days = 7) {
     const last = addDays(today, days);
     const out = [];
@@ -213,6 +216,18 @@
       if (!r || (r.status !== 'active' && r.status !== 'scheduled')) return;
       const start = day10(r.startDate), end = day10(r.endDate);
       if (!start || !end) return;
+      const b = r.stripeSubscriptionId && r.stripeBilling;
+      if (b && day10(b.anchorDate)) {
+        const count = Number(b.intervalCount) || 1;
+        const stop = day10(b.stopsOn);
+        const amount = Number(b.amount) || Number(r.monthlyRate) || 0;
+        for (let k = 1; k <= 520; k += 1) {
+          const date = b.interval === 'week' ? addDays(day10(b.anchorDate), 7 * count * k) : addMonthsClamped(day10(b.anchorDate), count * k);
+          if (date > end || date > last || (stop && date >= stop)) break;
+          if (date >= today && date > start) out.push({ rental: r, date, amount });
+        }
+        return;
+      }
       const weekly = r.rateType === 'weekly';
       for (let k = 1; k <= 520; k += 1) {
         const date = weekly ? addDays(start, 7 * k) : addMonthsClamped(start, k);
