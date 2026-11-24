@@ -183,6 +183,7 @@ document.getElementById('contactForm').addEventListener('submit',function(e){
   data.set('phone',document.getElementById('cPhone').value);
   data.set('topic',document.getElementById('cTopic').value);
   data.set('message',document.getElementById('cMsg').value);
+  if(window.markPurebaricInternalLead)window.markPurebaricInternalLead(data,{name:document.getElementById('cName').value,email:document.getElementById('cEmail').value});
   var orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='Sending...';
   fetch('/api/contact-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
    .then(function(r){return r.json().catch(function(){return {};});})
