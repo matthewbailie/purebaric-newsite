@@ -31,6 +31,9 @@ async function sendEvent({ booking, name, params }) {
   const clientId = cleanClientId(booking?.analytics?.clientId);
   const sessionId = cleanSessionId(booking?.analytics?.sessionId);
 
+  // Internal / TEST records (pb_internal, TEST names, the owner's own email)
+  // are never sent to GA4, so they cannot count as real leads or rentals.
+  if (booking?.internal) return { sent: false, reason: "internal" };
   if (booking?.analytics?.consentGranted === false) {
     return { sent: false, reason: "analytics_opt_out" };
   }
