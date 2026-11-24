@@ -33,7 +33,7 @@ test("step 1 is InitiateCheckout; the completed request is the only Lead, with v
   assert.match(ok, /trackPurebaricMeta\?\.\('Lead',\{content_category:rtype,value:Number\(leadValue\)\|\|0,currency:'USD'\},\{eventID:leadEventId\}\)/);
   assert.match(ok, /var leadEventId=String\(j\.id\|\|leadIdVal\|\|''\)/);
   assert.match(ok, /trackPurebaricMeta\?\.\('CompleteRegistration',\{content_category:rtype\},\{eventID:leadEventId\+':complete'\}\)/);
-  assert.match(ok, /trackPurebaricEvent\?\.\('generate_lead',\{value:Number\(leadValue\)\|\|0,currency:'USD'/);
+  assert.match(ok, /trackPurebaricEvent\?\.\('generate_lead',pbFunnel\(\{value:Number\(leadValue\)\|\|0,currency:'USD'/);
   // The value is the selected plan's monthly rate (home rate() or business rateBiz()).
   assert.match(book, /var leadValue=BIZ\?rb:r;/);
   // generate_lead fires on step-2 success only.
@@ -52,9 +52,9 @@ test("waitlist and promo sign-ups are Subscribe, never Lead", () => {
   }
 });
 
-test("every lead form flags TEST/internal submissions (pb_internal) before sending", () => {
+test("every lead form sends the first touch and the internal flag with the submission", () => {
   for (const page of ["book.html", "waitlist.html", "contact.html", "index.html"]) {
-    assert.match(read(page), /window\.markPurebaricInternalLead\(/, page);
+    assert.match(read(page), /window\.appendPurebaricLeadSource\(/, page);
   }
-  assert.equal((book.match(/markPurebaricInternalLead\(data/g) || []).length, 2, "step 1 and step 2");
+  assert.equal((book.match(/appendPurebaricLeadSource\(data/g) || []).length, 2, "step 1 and step 2");
 });
