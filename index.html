@@ -315,8 +315,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
     <img class="slide" src="/images/chamber-homegym.webp" width="1672" height="941" loading="lazy" alt="Purebaric hyperbaric chamber in a home gym">
     <img class="slide" src="/images/chamber-basement.webp?v=2" width="1672" height="941" loading="lazy" alt="Purebaric hyperbaric chamber in a finished basement room">
     <img class="slide" src="/images/chamber-gym.webp" width="1672" height="941" loading="lazy" alt="Purebaric hyperbaric chamber set up in a modern gym">
+    <img class="slide" src="/images/chamber-sitting.jpg?v=1" width="1792" height="1008" loading="lazy" alt="Purebaric 1.5 ATA sitting chamber in a modern living room">
     <div class="hero-dots" id="heroDots" aria-label="Hero photos"></div>
-    <button class="gallery-pill" onclick="lbOpen(0)">▦ View all 5 photos</button>
+    <button class="gallery-pill" onclick="lbOpen(0)">▦ View all 6 photos</button>
   </div>
 
   <div class="layout">
@@ -677,7 +678,7 @@ function submitAreaWaitlist(s){s=s||'';var nameEl=document.getElementById('awNam
 })();
 
 /* photo lightbox */
-var LBI=['/images/chamber-living.webp?v=3','/images/chamber-den.webp','/images/chamber-homegym.webp','/images/chamber-basement.webp?v=2','/images/chamber-gym.webp'];
+var LBI=['/images/chamber-living.webp?v=3','/images/chamber-den.webp','/images/chamber-homegym.webp','/images/chamber-basement.webp?v=2','/images/chamber-gym.webp','/images/chamber-sitting.jpg?v=1'];
 var lbi=0;
 function lbShow(){document.getElementById('lbImg').src=LBI[lbi];document.getElementById('lbCount').textContent=(lbi+1)+' / '+LBI.length;}
 function lbOpen(i){lbi=i||0;lbShow();document.getElementById('lb').hidden=false;}
