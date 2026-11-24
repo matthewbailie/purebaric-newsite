@@ -1,4 +1,6 @@
 const { send } = require("./_lib/email");
+const { createContactMessage } = require("./_lib/storage");
+const { leadSourceFields, leadSourceLines } = require("./_lib/lead-source");
 
 const ADMIN_NOTIFY = "matthewbailie@gmail.com";
 
@@ -36,6 +38,19 @@ exports.handler = async (event) => {
 
     const phone = (body.phone || "").trim();
     const topic = (body.topic || "General").trim();
+    const attribution = leadSourceFields(body, { name, email });
+
+    // Keep a record of every contact message (Netlify Blobs "contacts"), so
+    // inquiries can be counted as real leads by source. A storage failure never
+    // blocks the email to the owner.
+    let record = null;
+    try {
+      record = await createContactMessage({ name, email, phone, topic, message: message.slice(0, 5000), ...attribution });
+    } catch (err) {
+      console.error("contact record failed", err);
+    }
+    const sourceHtml = leadSourceLines(attribution)
+      .map(([k, v]) => `<p><strong>${esc(k)}:</strong> ${esc(v)}</p>`).join("");
 
     const html = `
       <h2>New contact message</h2>
@@ -45,6 +60,7 @@ exports.handler = async (event) => {
       <p><strong>Topic:</strong> ${esc(topic)}</p>
       <p><strong>Message:</strong></p>
       <p>${esc(message).replace(/\n/g, "<br>")}</p>
+      ${sourceHtml}
     `;
 
     let emailResult = "sent";
@@ -63,6 +79,7 @@ exports.handler = async (event) => {
         success: true,
         message: "Thanks for reaching out! We'll get back to you shortly.",
         emailResult,
+        id: record ? record.id : null,
       }),
     };
   } catch (err) {
