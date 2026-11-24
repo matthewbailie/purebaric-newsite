@@ -130,6 +130,11 @@
             <option>Other</option>
           </select>
         </div>
+        <div class="row2">
+          <div class="fg"><label for="cHeard">How did you first hear about us? (optional)</label><select name="heard_about" id="cHeard"><option value="">Choose one</option><option>Facebook or Instagram</option><option>Facebook Marketplace</option><option>Google search</option><option>Google Maps</option><option>Friend or family</option><option>Gym, studio, clinic or salon</option><option>Other</option></select></div>
+          <div class="fg"><label for="cType">Customer type (optional)</label><select name="customer_type" id="cType"><option value="">Choose one</option><option value="home">Home</option><option value="athlete">Athlete</option><option value="gym">Gym</option><option value="clinic">Clinic</option><option value="salon">Salon</option><option value="other">Other</option></select></div>
+        </div>
+        <div class="fg"><label for="cUse">What would you mainly use it for? (optional)</label><select id="cUse" name="use_case"><option value="">Choose one</option><option value="recovery">Recovery after activity</option><option value="wellness">General wellness and relaxation</option><option value="performance">Athletic performance</option><option value="business_amenity">An amenity for my business</option><option value="other">Other</option></select></div>
         <div class="fg"><label for="cMsg">Your message <span class="req">*</span></label><textarea id="cMsg" name="message" required placeholder="Tell us what you're thinking about, what you'd like to know, or how we can help."></textarea></div>
         <button type="submit" class="btn btn-primary submit" id="cSubmit">Send message</button>
         <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.5">Purebaric can't provide personalized medical advice. Please don't include sensitive health details here, for medical questions, talk with your physician.</p>
@@ -184,6 +189,9 @@ document.getElementById('contactForm').addEventListener('submit',function(e){
   data.set('phone',document.getElementById('cPhone').value);
   data.set('topic',document.getElementById('cTopic').value);
   data.set('message',document.getElementById('cMsg').value);
+  data.set('heard_about',document.getElementById('cHeard').value);
+  data.set('customer_type',document.getElementById('cType').value);data.set('use_case',document.getElementById('cUse').value);
+  if(window.appendPurebaricLeadSource)window.appendPurebaricLeadSource(data,{name:document.getElementById('cName').value,email:document.getElementById('cEmail').value});
   var orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='Sending...';
   fetch('/api/contact-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
    .then(function(r){return r.json().catch(function(){return {};});})
