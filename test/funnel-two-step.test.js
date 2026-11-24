@@ -43,7 +43,7 @@ test("booking-submit handles step-1 leads and converts them on full submit", () 
   assert.match(bookingSubmit, /body\.lead_stage === "step1"/);
   assert.match(bookingSubmit, /status: "lead", bookingMode: "lead"/);
   assert.match(bookingSubmit, /existingLead\.bookingMode === "lead"/);
-  assert.match(bookingSubmit, /\{ \.\.\.bookingFields, status: "new" \}/);
+  assert.match(bookingSubmit, /\{ \.\.\.keepAttribution\(existingLead, bookingFields\), status: "new" \}/);
   // A step-1 lead never fires the booking conversion event: the lead branch
   // returns before routing and before sendBookingRequestSubmitted. It does fire
   // the lead event booking_lead_submit, but only for a newly created lead, so a
@@ -86,6 +86,12 @@ test("homepage ZIP checker offers a short area waitlist only when out of area", 
   assert.match(areaWaitlist, /reason: "Area waitlist via homepage ZIP checker"/);
 });
 
+test("booking_form_start and abandon carry device/variant (pbFunnel) and source", () => {
+  assert.match(bookHtml, /'booking_form_start',pbFunnel\(\{chamber_id:[^;]*source:'book_page'/);
+  assert.match(bookHtml, /'booking_form_abandon',pbFunnel\(\{last_field:[^;]*source:'book_page'/);
+  assert.match(bookHtml, /function pbFunnel\(o\)\{return window\.PBMetrics&&window\.PBMetrics\.funnelParams\?window\.PBMetrics\.funnelParams\(o\):o;\}/);
+});
+
 test("measurement fires for defaults: plan, area, and typed dates count", () => {
   assert.match(bookHtml, /var areaFired=false,planFired=false,dateFired=false/);
   assert.match(bookHtml, /if\(!areaFired\)\{areaFired=true/);
@@ -93,22 +99,24 @@ test("measurement fires for defaults: plan, area, and typed dates count", () => 
   assert.match(bookHtml, /if\(dateVal&&!dateFired\)\{dateFired=true/);
 });
 
-test("step-1 submit fires a Meta Lead once, step 2 fires CompleteRegistration", () => {
-  // A new lead is a Meta Lead the moment it is created; a re-submit of an
-  // existing lead (back button, edit, re-submit) does not fire again.
-  assert.match(bookHtml, /if\(!existingLead\)window\.trackPurebaricMeta\?\.\('Lead',\{content_category:document\.getElementById\('rentalType'\)\.value\|\|'residential'\}\)/);
-  // The full submit fires CompleteRegistration, not a second Lead, so one
-  // visitor is never counted as two Leads.
-  assert.match(bookHtml, /trackPurebaricMeta\?\.\('CompleteRegistration',\{content_category:document\.getElementById\('rentalType'\)\.value\|\|'residential'\}\)/);
+test("step-1 submit fires InitiateCheckout once, step 2 fires Lead and CompleteRegistration", () => {
+  // A step-1 save is a partial lead: InitiateCheckout once per new lead; a
+  // re-submit of an existing lead (back button, edit, re-submit) does not fire again.
+  assert.match(bookHtml, /if\(!existingLead\)window\.trackPurebaricMeta\?\.\('InitiateCheckout',\{content_category:document\.getElementById\('rentalType'\)\.value\|\|'residential'\},\{eventID:j\.id\+':step1'\}\)/);
+  // The completed request is the Lead (one per visitor), plus CompleteRegistration.
+  assert.match(bookHtml, /trackPurebaricMeta\?\.\('Lead',\{content_category:rtype,value:Number\(leadValue\)\|\|0,currency:'USD'\},\{eventID:leadEventId\}\)/);
+  assert.match(bookHtml, /trackPurebaricMeta\?\.\('CompleteRegistration',\{content_category:rtype\},\{eventID:leadEventId\+':complete'\}\)/);
   // Step 1 sends the anonymous GA identifiers so the backend can send the
   // server-side lead event for the new lead.
   assert.match(bookHtml, /data\.set\('analytics_client_id',analyticsContext\.clientId\)/);
 });
 
-test("homepage promo signup and area waitlist fire Meta Leads", () => {
-  assert.match(indexHtml, /trackPurebaricMeta\?\.\('Lead',\{content_category:window\.PB_BF\?'black-friday':'homepage'\}\)/);
+test("homepage promo signup and area waitlist fire Meta Subscribe, not Lead", () => {
+  assert.match(indexHtml, /trackPurebaricMeta\?\.\('Subscribe',\{content_category:window\.PB_BF\?'black-friday':'homepage'\}\)/);
   assert.match(indexHtml, /trackPurebaricEvent\?\.\('waitlist_join',\{source:'homepage'\}\)/);
-  assert.match(indexHtml, /trackPurebaricMeta\?\.\('Lead',\{content_category:'waitlist'\}\)/);
+  assert.match(indexHtml, /trackPurebaricMeta\?\.\('Subscribe',\{content_category:'waitlist'\}\)/);
+  assert.doesNotMatch(indexHtml, /trackPurebaricMeta\?\.\('Lead'/);
+  assert.match(indexHtml, /appendPurebaricLeadSource\(awData,\{name:name\}\)/);
 });
 
 test("step 1 asks for ZIP and delivery date first, contact details last, and sends address and date", () => {
