@@ -47,7 +47,7 @@ test("cleanLeadSource keeps allowlisted, sanitised values and labels the channel
   assert.equal(LS.channelOf({}), "Direct");
 });
 
-test("customer type options are exactly Home, Athlete, Gym, Clinic, Salon, Other; use cases use no medical wording", () => {
+test("customer type values are home, athlete, gym, clinic, salon, other (visible: Home user, Athlete, Gym, Clinic, Salon, Other); use cases use no medical wording", () => {
   assert.deepEqual(Object.values(LS.CUSTOMER_TYPE_LABELS), ["Home", "Athlete", "Gym", "Clinic", "Salon", "Other"]);
   const words = Object.values(LS.USE_CASE_LABELS).join(" ").toLowerCase();
   assert.doesNotMatch(words, /treat|cure|heal|therap|diagnos|fda|medical|disease|surgery|pain/);
@@ -55,7 +55,7 @@ test("customer type options are exactly Home, Athlete, Gym, Clinic, Salon, Other
     const html = fs.readFileSync(path.join(__dirname, "..", page), "utf8");
     const sel = html.match(/<select[^>]*name="customer_type"[^>]*>([\s\S]*?)<\/select>/);
     assert.ok(sel, `${page} has the customer type field`);
-    assert.deepEqual([...sel[1].matchAll(/<option value="([a-z]+)">([^<]+)<\/option>/g)].map((m) => m[2]), ["Home", "Athlete", "Gym", "Clinic", "Salon", "Other"]);
+    assert.deepEqual([...sel[1].matchAll(/<option value="([a-z]+)">([^<]+)<\/option>/g)].map((m) => [m[1], m[2]]), [["home", "Home user"], ["athlete", "Athlete"], ["gym", "Gym"], ["clinic", "Clinic"], ["salon", "Salon"], ["other", "Other"]]);
     assert.match(html, /name="use_case"/);
     assert.match(html, /name="heard_about"/);
     assert.doesNotMatch(sel[0], /required/);
