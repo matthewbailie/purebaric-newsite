@@ -16,6 +16,7 @@ const {
 const delivery = require("./_lib/delivery");
 const { monthsFromLength } = require("./_lib/followup");
 const { cleanGclid } = require("./_lib/analytics");
+const { isInternalLead } = require("./_lib/internal-lead");
 const { cleanRentalType, cleanBusinessName } = require("./_lib/rental-type");
 const { zipServed } = require("./_lib/servicearea");
 const { parseBookingName } = require("./_lib/booking-name");
@@ -99,6 +100,8 @@ exports.handler = async (event) => {
       const leadFields = {
         firstName, lastName, email,
         rentalType: step1RentalType,
+        // TEST / internal: excluded from real leads and never sent to GA4.
+        internal: isInternalLead({ firstName, lastName, email, flag: body.pb_internal }),
         businessName: step1RentalType === "business" ? cleanBusinessName(body.business_name) : "",
         phone: (body.phone || body.customer_phone || "").trim(),
         zip,
@@ -121,7 +124,7 @@ exports.handler = async (event) => {
       if (body.lead_id) {
         const existingLead = await getBooking(body.lead_id);
         if (existingLead && existingLead.bookingMode === "lead") {
-          lead = await updateBooking(existingLead.id, leadFields);
+          lead = await updateBooking(existingLead.id, { ...leadFields, internal: !!(leadFields.internal || existingLead.internal) });
         }
       }
       if (!lead) {
@@ -152,7 +155,8 @@ exports.handler = async (event) => {
       // back-button re-submit does not double-count. Without a GA client id (ad
       // blocker, declined cookies) the sender reports missing_client_id and
       // nothing is sent; the lead record itself is unaffected either way.
-      if (isNewLead) {
+      // Internal / TEST leads never reach GA4 (checked before any Measurement Protocol send).
+      if (isNewLead && !lead.internal) {
         try {
           const leadAnalyticsResult = await sendBookingLeadSubmitted({ booking: lead });
           if (leadAnalyticsResult.sent) {
@@ -233,6 +237,7 @@ exports.handler = async (event) => {
       consentTerms: bool(body["consent-terms"]),
       outOfArea,
       gclid: cleanGclid(body.gclid),
+      internal: isInternalLead({ firstName, lastName, email, flag: body.pb_internal }),
       analytics: {
         consentGranted: analyticsConsent,
         clientId: cleanClientId(body.analytics_client_id),
@@ -247,7 +252,7 @@ exports.handler = async (event) => {
     if (body.lead_id) {
       const existingLead = await getBooking(body.lead_id);
       if (existingLead && existingLead.bookingMode === "lead") {
-        booking = await updateBooking(existingLead.id, { ...bookingFields, status: "new" });
+        booking = await updateBooking(existingLead.id, { ...bookingFields, internal: !!(bookingFields.internal || existingLead.internal), status: "new" });
       }
     }
     if (!booking) booking = await createBooking(bookingFields);
@@ -385,7 +390,8 @@ exports.handler = async (event) => {
 
     // Send the accepted reservation event from the backend so a successful API
     // response and the analytics event cannot drift apart or double-count.
-    try {
+    // Internal / TEST requests never reach GA4 (checked before the Measurement Protocol send).
+    if (!booking.internal) try {
       const analyticsResult = await sendBookingRequestSubmitted({ booking });
       if (analyticsResult.sent) {
         await updateBooking(booking.id, {

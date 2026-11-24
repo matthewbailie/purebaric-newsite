@@ -584,6 +584,8 @@ document.getElementById('leadForm').addEventListener('submit',async function(e){
   if(!BIZ){data.set('street-address',document.getElementById('cstreet').value.trim());data.set('city',document.getElementById('ccity').value.trim());}
   var leadDate=window.BOOKMODE?document.getElementById('bookDate').value:document.getElementById('cdate').value;
   if(leadDate)data.set('preferred_date',leadDate);
+  // A TEST/internal lead is flagged pb_internal=1 and switches tracking off for the session.
+  if(window.markPurebaricInternalLead)window.markPurebaricInternalLead(data,{firstName:document.getElementById('cfn').value,lastName:document.getElementById('cln').value,email:document.getElementById('ce').value});
   // Measurement: a homepage-prefilled ZIP never fires a change event and a
   // default length never fires one either, so fire them here if not yet fired.
   if(!areaFired){areaFired=true;window.trackPurebaricEvent?.('service_area_check',{result:servedZip(document.getElementById('zip').value.trim())?'eligible':'unsupported',rental_months:m,rental_type:document.getElementById('rentalType').value||'residential'});}
@@ -603,11 +605,10 @@ document.getElementById('leadForm').addEventListener('submit',async function(e){
      _leadSubmitting=false;btn.disabled=false;btn.innerHTML=orig;
      if(j&&j.lead){
        document.getElementById('leadId').value=j.id;
-       // Measurement: a new lead is a Meta Lead the moment it is created, so the ad
-       // campaign can see and optimize for the leads the funnel produces. A re-submit
-       // of an existing lead (back button, edit, re-submit) does not fire again.
-       // Step 2 fires CompleteRegistration instead, so one visitor is never two Leads.
-       if(!existingLead)window.trackPurebaricMeta?.('Lead',{content_category:document.getElementById('rentalType').value||'residential'});
+       // Measurement: a step-1 save is a PARTIAL lead, so Meta gets InitiateCheckout
+       // (not Lead) once per new lead; a re-submit (back button, edit) does not fire again.
+       // The Lead itself fires only when step 2 completes the request.
+       if(!existingLead)window.trackPurebaricMeta?.('InitiateCheckout',{content_category:document.getElementById('rentalType').value||'residential'},{eventID:j.id+':step1'});
        if(j.outOfArea){
          // Out-of-area is a confirmation only: no second form, no re-entry.
          res.className='result warn';
@@ -671,6 +672,9 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   data.set('notes',full);
   if(BF)data.set('promo','black-friday-2026');
   data.set('gclid',window.getPurebaricGclid?window.getPurebaricGclid():'');
+  if(window.markPurebaricInternalLead)window.markPurebaricInternalLead(data,{firstName:document.getElementById('cfn').value,lastName:document.getElementById('cln').value,email:document.getElementById('ce').value});
+  // Lead value for Meta/GA4: the selected plan's monthly rate (the first month's rate), in USD.
+  var leadValue=BIZ?rb:r;
   var analyticsContext=window.getPurebaricAnalyticsContext
     ? await window.getPurebaricAnalyticsContext()
     : {consentGranted:false};
@@ -702,9 +706,15 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
        bookingFormSubmitted=true; // submitted — no abandon event on pagehide
        // The backend records the canonical booking_request_submit event once,
        // after accepting the request, using this visitor's anonymous GA context.
-       // Meta gets the completed request as CompleteRegistration; the Lead itself
-       // fired at step 1, so one visitor is never counted as two Leads.
-       window.trackPurebaricMeta?.('CompleteRegistration',{content_category:document.getElementById('rentalType').value||'residential'});
+       // A completed request is the real Lead: Meta Lead with value/currency and
+       // eventID = the booking id (dedup key for a future Conversions API), plus
+       // CompleteRegistration (eventID id:complete) and GA4 generate_lead. Internal
+       // and TEST leads never get here with tracking on (markPurebaricInternalLead).
+       var leadEventId=String(j.id||leadIdVal||'');
+       var rtype=document.getElementById('rentalType').value||'residential';
+       window.trackPurebaricMeta?.('Lead',{content_category:rtype,value:Number(leadValue)||0,currency:'USD'},{eventID:leadEventId});
+       window.trackPurebaricMeta?.('CompleteRegistration',{content_category:rtype},{eventID:leadEventId+':complete'});
+       window.trackPurebaricEvent?.('generate_lead',{value:Number(leadValue)||0,currency:'USD',rental_type:rtype,rental_months:m,source:'book_page',form_name:'reservation_request'});
        res.className='result ok';
        if(j.booked){ var bd=new Date(j.startDate+'T00:00:00'); res.innerHTML='<strong>Your chamber is booked</strong>'+(j.booking_number?(' ('+j.booking_number+')'):'')+' for delivery on '+bd.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'. We emailed your confirmation and will text or call to set the delivery time.'; document.getElementById('bookDate').value=''; }
        else res.innerHTML='Reservation received'+(j.booking_number?(' ('+j.booking_number+')'):'')+'. '+(j.message||"Our team will contact you shortly to confirm delivery.");

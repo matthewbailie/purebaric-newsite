@@ -257,6 +257,7 @@ document.getElementById('waitlistForm').addEventListener('submit',function(e){
   if(document.getElementById('wlConsent').checked)data.set('consent_no_guarantee','on');
   if(document.getElementById('wlOptin').checked)data.set('opt_in_updates','yes');
   if(outOfArea)data.set('category','out-of-area');
+  if(window.markPurebaricInternalLead)window.markPurebaricInternalLead(data,{firstName:document.getElementById('wlFirst').value,lastName:document.getElementById('wlLast').value,email:document.getElementById('wlEmail').value});
   var orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='Submitting...';
   fetch('/api/waitlist-join',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
    .then(function(r){return r.json().catch(function(){return {};});})
@@ -268,7 +269,8 @@ document.getElementById('waitlistForm').addEventListener('submit',function(e){
          urgency:document.getElementById('wlUrgency').value||'unspecified',
          marketing_opt_in:document.getElementById('wlOptin').checked
        });
-       window.trackPurebaricMeta?.('Lead',{content_category:'waitlist'});
+       // A waitlist signup is a Meta Subscribe (not a Lead): Lead is reserved for completed booking requests.
+       window.trackPurebaricMeta?.('Subscribe',{content_category:'waitlist'});
        res.className='result ok';
        res.textContent=(j.message)||"You're on the list. We'll be in touch the moment a chamber opens up.";
        f.reset();
