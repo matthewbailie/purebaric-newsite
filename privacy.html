@@ -30,6 +30,7 @@
 .legal .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-top:18px;font-size:14px;color:#5f544d}
 </style>
   <script src="/pb-metrics.js"></script>
+  <script src="/pb-personalize.js" defer></script>
 </head><body>
 <!-- bf2026: Black Friday 2026 banner. Hidden unless the script below turns it on, and the script stops turning it on at 12:00 am Mountain time on Saturday, Nov 28. Remove this block after the promo. -->
 <div id="bfBanner" style="display:none;background:#2b2320;color:#fff;text-align:center;font:600 14px/1.4 Inter,system-ui,sans-serif;padding:10px 16px">Black Friday: $200 off your first month, ends Friday, Nov 27. <a href="/book" style="color:#e0b9a8;text-decoration:underline">Get the offer</a></div>
@@ -112,6 +113,10 @@
     <p><strong>Sharing:</strong> No mobile information will be shared with third parties or affiliates for marketing or promotional purposes. We do not sell, rent, or share mobile numbers, SMS opt-in data, or SMS consent information with any third parties, other than Twilio as our delivery provider acting on our instructions.</p>
     <p><strong>Opting out:</strong> reply STOP to any message to stop receiving texts, or turn off SMS notifications in the admin portal. Reply HELP, email <a href="mailto:hello@purebaric.com">hello@purebaric.com</a> or call <a href="tel:+18019010873">(801) 901-0873</a> for help. Consent is optional and is not a condition of any purchase or service.</p>
     <p>Twilio processes message-delivery information as a service provider to Purebaric. SMS consent records are retained only as needed to operate the notification service, document consent, comply with applicable requirements, and honor opt-out requests. See also the SMS terms in our <a href="/terms#sms-terms">Terms of Service</a>.</p>
+
+    <h3 id="personalization" style="margin-top:18px">Homepage personalization</h3>
+    <p>To show you the chamber you looked at when you come back, this site keeps a small record in your own browser (local storage, not a cookie). It notes which chamber type or business rental you showed interest in (including through one of our ads), which of our Utah city pages you read (we go by the page you read, not your location), the rental length you last picked, whether you've recently sent a request, your visit count, and a randomly assigned group. It holds no name, contact details, ZIP code, address, or health information, and it expires after 45 days without a visit. The record itself stays in your browser. From it, Google Analytics receives only this, like other site events: on the homepage, which version you saw (for example, "sitting chamber") and why (an ad, pages you viewed, or a city page), whether a city line or reminder showed, and whether it's your first or a return visit; on every page, whether you're in the personalized group or the comparison group, the 1 in 10 visitors who always see the standard homepage. None of this is kept or sent if you turn off analytics or personalization, or if your browser sends Global Privacy Control or Do Not Track.</p>
+    <p><button class="btn btn-ghost" id="pzOptOut" type="button" onclick="try{window.PBPZ?PBPZ.optOut():localStorage.setItem('pb_pz_off','1');localStorage.removeItem('pb_pz');}catch(e){}this.textContent='Personalization is off on this device';this.disabled=true">Turn off personalization on this device</button></p>
 
     <h2>How long we keep it</h2>
     <p>We keep your information for as long as needed to answer your inquiry or support your rental relationship, and as required for our records. You can ask us to delete it at any time.</p>
