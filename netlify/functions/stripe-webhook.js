@@ -27,8 +27,13 @@ exports.handler = async (event) => {
   }
 
   try {
+    // Billing-date sync runs on its own so a failure there never blocks recording the payment
+    // below; the hourly stripe-billing-sync job retries it.
     const subId = subscriptionIdOf(evt);
-    if (subId) await syncSubscription(stripe, subId);
+    if (subId) {
+      try { await syncSubscription(stripe, subId); }
+      catch (err) { console.error("stripe webhook: billing sync failed", subId, err.message); }
+    }
     const hint = await paymentHint(stripe, evt);
     if (hint) await reconcile(stripe, hint);
     return { statusCode: 200, body: JSON.stringify({ received: true }) };
