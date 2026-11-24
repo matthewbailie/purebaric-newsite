@@ -876,10 +876,10 @@ The Purebaric team</textarea></div>
           <input type="hidden" name="id">
           <div class="form-row">
             <div class="form-group"><label>Name<span class="req">*</span></label><input name="name" required></div>
-            <div class="form-group"><label>Email</label><input type="email" name="email" placeholder="Optional"></div>
+            <div class="form-group"><label>Email (optional)</label><input type="email" name="email"><label class="no-email-check" style="display:flex;align-items:center;gap:6px;font-weight:400;margin-top:6px;"><input type="checkbox" name="noEmail" value="1" onchange="toggleNoEmail(this)" style="width:auto;"> No email for this person</label></div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>Phone</label><input type="tel" name="phone"></div>
+            <div class="form-group"><label>Phone (optional)</label><input type="tel" name="phone"></div>
             <div class="form-group"><label>Tags (comma-separated)</label><input name="tags" placeholder="VIP, practitioner-referral, medical"></div>
           </div>
           <div class="form-row triple">
@@ -3103,7 +3103,7 @@ The Purebaric team</textarea></div>
         ? `<span class="renter-line">Stripe cancellation requested ${escape(r.stripeCancelRequestedAt.slice(0, 10))}</span>`
         : `<button class="btn btn-primary btn-sm" onclick='openStripeCancel(${JSON.stringify(r.id)})'>Cancel Stripe subscription</button>`;
       return `<div class="modal-row"><strong>${escape((r.renter && r.renter.name) || '—')}</strong><div>Ends ${escape(fmtDate(r.endDate))} · ${escape(chamber ? chamber.name : '—')}
-        <div class="renter-line">${escape((r.renter && r.renter.email) || 'no email')} · ${escape((r.renter && r.renter.phone) || 'no phone')}</div>${done}</div></div>`;
+        <div class="renter-line">${emailText(r.renter && r.renter.email, 'no email')} · ${escape((r.renter && r.renter.phone) || 'no phone')}</div>${done}</div></div>`;
     }).join('');
     openModal('Rentals ending in the next 10 days', rows || '<p class="renter-line">No rentals end in the next 10 days.</p>');
   }
@@ -3473,7 +3473,7 @@ The Purebaric team</textarea></div>
           <div class="customer-body">
             <div class="customer-card-head">
               <div>
-                <div class="renter-line">${escape(c.email || 'no email')}${c.phone ? ' · ' + escape(c.phone) : ''}</div>
+                <div class="renter-line">${emailText(c.email, 'no email')}${c.phone ? ' · ' + escape(c.phone) : ''}</div>
                 ${addressLine ? `<div class="renter-line cust-address"><span class="cust-address-text">${escape(addressLine)}</span><button type="button" class="btn btn-ghost btn-sm" data-copy="${escape(addressLine)}" onclick="copyAddress(this)">Copy address</button></div>` : ''}
                 ${notesBlock}
               </div>
@@ -3657,7 +3657,27 @@ The Purebaric team</textarea></div>
   // "+ Add customer": always start from the Customers tab's own anchor —
   // otherwise it could still be sitting wherever a rental's inline "Edit
   // customer" last placed it.
-  function openAddCustomer() { resetFormPosition('customerForm', 'customerFormAnchor'); toggleForm('customerForm'); document.querySelector('#customerFormEl [name="email"]').required = true; }
+  function openAddCustomer() { resetFormPosition('customerForm', 'customerFormAnchor'); toggleForm('customerForm'); resetNoEmail(); }
+  // Name is the only required field. "No email for this person" clears and locks the Email box.
+  function toggleNoEmail(cb) {
+    const el = document.querySelector('#customerFormEl [name="email"]');
+    if (!el) return;
+    if (cb.checked) el.value = '';
+    el.disabled = cb.checked;
+    el.required = false;
+  }
+  function resetNoEmail(email) {
+    const cb = document.querySelector('#customerFormEl [name="noEmail"]');
+    const el = document.querySelector('#customerFormEl [name="email"]');
+    if (el) { el.required = false; el.disabled = false; }
+    if (cb) { cb.checked = !!(email && isPlaceholderEmail(email)); toggleNoEmail(cb); }
+  }
+  function isPlaceholderEmail(e) { const s = String(e || '').trim().toLowerCase(); const d = s.slice(s.lastIndexOf('@') + 1); return s.includes('@') && (d === 'invalid' || d.endsWith('.invalid')); }
+  // Shows an address, or a "Placeholder, no email" badge for a placeholder address.
+  function emailText(e, fallback) {
+    if (isPlaceholderEmail(e)) return '<span class="pill" style="background:#efe7db;color:#6f635b;">Placeholder, no email</span>';
+    return escape(e || fallback || '');
+  }
   // Cancel returns the form home regardless of where it was opened from
   // (Customers tab or embedded in a rental's "Customer record" section).
   // Close it first (while still possibly nested — see toggleForm's ancestor
@@ -3670,7 +3690,8 @@ The Purebaric team</textarea></div>
     const data = Object.fromEntries(new FormData(form));
     // Opened from a rental's "Customer record" section? Checked before the form is moved back home below.
     const fromRental = document.getElementById('rentalForm').contains(document.getElementById('customerForm'));
-    if (!String(data.name || '').trim()) { toast('A name is required', true); return false; }
+    if (!String(data.name || '').trim()) { toast('Add a name to save this customer.', true); return false; }
+    if (data.noEmail) { data.noEmail = true; data.email = ''; } else delete data.noEmail;
     try {
       if (data.id) {
         const { id, ...patch } = data;
@@ -3726,8 +3747,8 @@ The Purebaric team</textarea></div>
       tags: (c.tags || []).join(', '),
       notes: c.notes || '',
     });
-    // Email is required to edit a customer; only a new customer added from a historical rental may omit it.
-    document.querySelector('#customerFormEl [name="email"]').required = true;
+    // Name is the only required field; a placeholder address shows as "No email for this person".
+    resetNoEmail(c.email);
   }
 
   // ── Rental ↔ Customer link ──
@@ -3748,7 +3769,7 @@ The Purebaric team</textarea></div>
     resetFormPosition('customerForm', 'rentalCustomerFormAnchor');
     toggleForm('customerForm');
     // Email is optional: a customer with none is grouped by phone, else by name.
-    document.querySelector('#customerFormEl [name="email"]').required = false;
+    resetNoEmail();
     // A rental that already names its renter (for example one filed under the wrong customer) seeds the new record.
     const snap = getRentalRenter();
     const nameEl = document.querySelector('#customerFormEl [name="name"]');
@@ -3877,7 +3898,7 @@ The Purebaric team</textarea></div>
     const hits = all.filter(c => window.PurebaricAdminUtils.matchesSearch(q, [c.name, c.email, c.phone])).slice(0, 8);
     results.hidden = false;
     results.innerHTML = hits.length
-      ? hits.map(c => `<button type="button" data-key="${escape(c.key)}"><strong>${escape(c.name || '(no name)')}</strong><div class="pick-sub">${escape(c.email || 'no email')}${c.phone ? ' · ' + escape(c.phone) : ''}</div></button>`).join('')
+      ? hits.map(c => `<button type="button" data-key="${escape(c.key)}"><strong>${escape(c.name || '(no name)')}</strong><div class="pick-sub">${emailText(c.email, 'no email')}${c.phone ? ' · ' + escape(c.phone) : ''}</div></button>`).join('')
       : '<div class="pick-empty">No customers match. Use Add new customer.</div>';
   }
   (function () {
@@ -3945,7 +3966,7 @@ The Purebaric team</textarea></div>
       return `
       <tr data-id="${escape(w.id)}">
         <td>${escape(created)}</td>
-        <td><strong>${escape(w.name)}</strong>${w.rentalType === 'business' ? ` <span class="pill" style="background:#2b2320;color:#f3ead9;font-size:0.65rem;">Business${w.businessName ? ' · ' + escape(w.businessName) : ''}</span>` : ''}${w.wantsDiscount ? ` <span class="pill pill-discount">Requesting discount${w.discountPrice ? ' · $' + Number(w.discountPrice).toLocaleString('en-US') + '/mo' : ''}</span>` : ''}${w.category === 'out-of-area' ? ' <span class="pill pill-out-of-area">Out-of-area</span>' : ''}<div class="renter-line">${escape(w.email)}${w.phone ? ' · ' + escape(w.phone) : ''}${w.zip ? ' · ' + escape(w.zip) : ''}</div></td>
+        <td><strong>${escape(w.name)}</strong>${w.rentalType === 'business' ? ` <span class="pill" style="background:#2b2320;color:#f3ead9;font-size:0.65rem;">Business${w.businessName ? ' · ' + escape(w.businessName) : ''}</span>` : ''}${w.wantsDiscount ? ` <span class="pill pill-discount">Requesting discount${w.discountPrice ? ' · $' + Number(w.discountPrice).toLocaleString('en-US') + '/mo' : ''}</span>` : ''}${w.category === 'out-of-area' ? ' <span class="pill pill-out-of-area">Out-of-area</span>' : ''}${w.internal ? ' <span class="pill" style="background:#e6dccd;color:#2b2320;font-size:0.65rem;">Internal / TEST</span>' : ''}${leadSourceSummary(w) ? `<div class="renter-line">Source: ${escape(leadSourceSummary(w))}</div>` : ''}<div class="renter-line">${escape(w.email)}${w.phone ? ' · ' + escape(w.phone) : ''}${w.zip ? ' · ' + escape(w.zip) : ''}</div></td>
         <td>${escape(fmtDate(w.preferredStartDate) || 'any')}<div class="renter-line">${escape((w.reason || '').slice(0, 80))}</div>${notesPreview}</td>
         <td><span class="pill pill-${w.status}">${w.status}</span>${holdNote}${positionNote}</td>
         <td>
@@ -4009,6 +4030,7 @@ The Purebaric team</textarea></div>
       <div class="modal-row"><strong>ZIP</strong><div>${escape(w.zip || ', ')}</div></div>
       <div class="modal-row"><strong>Preferred start</strong><div>${escape(fmtDate(w.preferredStartDate) || 'any')}</div></div>
       <div class="modal-row"><strong>Reason / context</strong><div>${escape(w.reason || ', ')}</div></div>
+      ${leadSourceRows(w)}
       <div class="modal-row"><strong>Status</strong><div><span class="pill pill-${w.status}">${w.status}</span></div></div>
       ${w.holdExpiresAt ? `<div class="modal-row"><strong>Hold expires</strong><div>${new Date(w.holdExpiresAt).toLocaleString()}</div></div>` : ''}
       <div class="modal-row"><strong>Added</strong><div>${new Date(w.createdAt).toLocaleString()}</div></div>
@@ -4169,6 +4191,8 @@ The Purebaric team</textarea></div>
           ${bizBadge}
           ${outOfAreaBadge}
           ${leadBadge}
+          ${b.internal ? `<div class="renter-line"><span style="display:inline-block;background:#e6dccd;color:#2b2320;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;padding:2px 8px;border-radius:999px;">Internal / TEST · not a real lead</span></div>` : ''}
+          ${leadSourceSummary(b) ? `<div class="renter-line">Source: ${escape(leadSourceSummary(b))}</div>` : ''}
           ${routingBadge}
           ${archivedLine}
           ${emailedLine}
@@ -4276,6 +4300,7 @@ The Purebaric team</textarea></div>
       <div class="modal-row"><strong>Safety flags</strong><div>${flagsHtml}</div></div>
       <div class="modal-row"><strong>Consent</strong><div>Medical: ${b.consentMedical ? '✓' : '✗'} · Terms: ${b.consentTerms ? '✓' : '✗'}</div></div>
       ${b.gclid ? `<div class="modal-row"><strong>Ad click ID</strong><div>${escape(b.gclid)} <span class="renter-line">(this request followed a Google Ads click)</span></div></div>` : ''}
+      ${leadSourceRows(b)}
       <div class="modal-row"><strong>Received</strong><div>${new Date(b.createdAt).toLocaleString()}</div></div>
       <div class="modal-section">
         <h4>Internal notes</h4>
@@ -5502,6 +5527,37 @@ The Purebaric team</textarea></div>
     try { const r = await api('/api/admin/outreach/test', { method: 'POST', body: JSON.stringify(body) });
       toast(`Business outreach TEST sent to ${r.to}. Subject: ${r.subject}${r.postalAddressSet ? '' : ' (postal address placeholder; set it in Outreach settings)'}`); }
     catch (e) { toast(e.message, true); }
+  }
+
+  // Lead source (first touch, self-reported answers, internal flag) for a booking,
+  // waitlist entry or contact record. Shown next to "Ad click ID". See _lib/lead-source.js.
+  const CUSTOMER_TYPE_LABELS = { home: 'Home', athlete: 'Athlete', gym: 'Gym', clinic: 'Clinic', salon: 'Salon', other: 'Other' };
+  const USE_CASE_LABELS = { recovery: 'Recovery after activity', wellness: 'General wellness and relaxation', performance: 'Athletic performance', business_amenity: 'An amenity for my business', other: 'Other' };
+  const customerTypeLabel = (v) => (v ? CUSTOMER_TYPE_LABELS[v] || v : '');
+  const useCaseLabel = (v) => (v ? USE_CASE_LABELS[v] || v : '');
+  function leadSourceSummary(r) {
+    if (!r) return '';
+    const ls = r.leadSource || null;
+    return [ls && ls.channel, r.heardAbout && `heard: ${r.heardAbout}`, customerTypeLabel(r.customerType), useCaseLabel(r.useCase)].filter(Boolean).join(' · ');
+  }
+  function leadSourceRows(r) {
+    if (!r) return '';
+    const ls = r.leadSource || null;
+    const row = (k, v) => v ? `<div class="modal-row"><strong>${k}</strong><div>${escape(v)}</div></div>` : '';
+    const utm = ls ? [ls.utmSource, ls.utmMedium, ls.utmCampaign, ls.utmContent, ls.utmTerm].filter(Boolean).join(' / ') : '';
+    return [
+      row('Customer type', customerTypeLabel(r.customerType)),
+      row('Use case', useCaseLabel(r.useCase)),
+      row('Heard about us', r.heardAbout),
+      ls ? row('Lead source', ls.channel || 'Unknown') : row('Lead source', r.heardAbout || r.customerType || r.useCase ? 'Not captured (privacy setting or older page)' : ''),
+      ls ? row('UTM (source / medium / campaign / content / term)', utm) : '',
+      ls ? row('Meta click ID', ls.fbclid) : '',
+      ls && ls.gclid && ls.gclid !== r.gclid ? row('Google click ID (first visit)', ls.gclid) : '',
+      ls ? row('Referrer', ls.referrer) : '',
+      ls ? row('Landing page', ls.landingPath) : '',
+      ls && ls.firstTouchAt ? row('First visit', new Date(ls.firstTouchAt).toLocaleString()) : '',
+      r.internal ? `<div class="modal-row"><strong>Internal / TEST</strong><div>Yes: excluded from real-lead counts and analytics</div></div>` : '',
+    ].join('');
   }
 
   function escape(s) {
