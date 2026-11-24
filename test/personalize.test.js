@@ -107,3 +107,20 @@ test("homepage copy is reused site copy with no medical claims", () => {
   const copy = JSON.stringify(PZ.HOME);
   assert.ok(!/treat|cure|heal|diagnos|disease|FDA|therapy/i.test(copy), copy);
 });
+
+test("request mode: nudge and business CTA use the request-mode wording (Proof-reader, Nov 24)", () => {
+  const doc = (req) => ({ documentElement: { classList: { contains: (c) => req && c === "reqmode-site" } } });
+  assert.equal(PZ.requestMode(doc(true)), true);
+  assert.equal(PZ.requestMode(doc(false)), false);
+  assert.equal(PZ.requestMode({}), false);
+  assert.equal(PZ.NUDGE.book, "See delivery dates \u2192");
+  assert.equal(PZ.NUDGE.request, "Reserve a chamber \u2192");
+  assert.equal(PZ.HOME.business.ctaTextReq, "Request a business rental");
+  assert.ok(!/revenue|check availability/i.test(JSON.stringify(PZ.HOME) + PZ.NUDGE.book + PZ.NUDGE.request));
+});
+
+test("approved hero copy matches the Proof-reader sign-off", () => {
+  assert.equal(PZ.HOME.sitting.h1, "A sitting hyperbaric chamber, at home");
+  assert.equal(PZ.HOME.sitting.p, "An upright, seated design for easier entry and exit, at the same mild 1.5 ATA pressure as our lying chamber. Delivered, set up, and serviced in your home.");
+  assert.equal(PZ.HOME.business.h1, "Add hyperbaric sessions to your business, without buying a chamber");
+});

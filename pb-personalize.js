@@ -304,15 +304,15 @@
     sitting: {
       label: 'sitting chamber',
       h1: 'A sitting hyperbaric chamber, at home',
-      p: 'An upright, seated design for easier entry and exit, same mild 1.5 ATA pressure. Delivered, set up, and maintained directly in your home.',
+      p: 'An upright, seated design for easier entry and exit, at the same mild 1.5 ATA pressure as our lying chamber. Delivered, set up, and serviced in your home.',
       cta: '/book?chamber=sitting',
       slide: 'chamber-sitting'
     },
     lying: { label: 'lying chamber', cta: '/book?chamber=lying' },
     business: {
-      h1: 'A new revenue-generating amenity for your business',
+      h1: 'Add hyperbaric sessions to your business, without buying a chamber',
       p: 'Offer mild hyperbaric sessions to the members and clients you already serve. Purebaric installs the chamber, trains your staff, and services the equipment.',
-      cta: '/book?type=business', ctaText: 'Book a chamber for your business',
+      cta: '/book?type=business', ctaText: 'Book a chamber for your business', ctaTextReq: 'Request a business rental',
       ghost: '/business', ghostText: 'For businesses',
       slide: 'chamber-gym.webp'
     }
@@ -322,6 +322,12 @@
   function unhide(d) { try { d.documentElement.classList.remove('pz-wait'); } catch (e) {} }
   /* Safe to call more than once and in either order: the inline hook after the hero copy calls it,
      and so does boot() when this (async) file arrives after the hero was already parsed. */
+  // Nudge link wording, approved by the Proof-reader (Nov 24). Request mode = the site's
+  // "reservation request" mode (html.reqmode-site), where /book has no live calendar.
+  var NUDGE_BOOK = 'See delivery dates \u2192';
+  var NUDGE_REQ = 'Reserve a chamber \u2192';
+  function requestMode(d) { try { return d.documentElement.classList.contains('reqmode-site'); } catch (e) { return false; } }
+
   function applyHome(doc) {
     var d = doc || (win && win.document);
     if (!d || homeDone) return null;
@@ -347,7 +353,7 @@
     if (v.h1 && h1) h1.textContent = v.h1;
     if (v.p && p) p.textContent = v.p;
     var ctas = hb.querySelectorAll('.hero-ctas a');
-    if (ctas[0]) { ctas[0].setAttribute('href', v.cta + (dec.months && dec.interest !== 'business' ? '&months=' + dec.months : '')); if (v.ctaText) ctas[0].textContent = v.ctaText; }
+    if (ctas[0]) { ctas[0].setAttribute('href', v.cta + (dec.months && dec.interest !== 'business' ? '&months=' + dec.months : '')); if (v.ctaText) ctas[0].textContent = (requestMode(d) && v.ctaTextReq) ? v.ctaTextReq : v.ctaText; }
     if (ctas[1] && v.ghost) { ctas[1].setAttribute('href', v.ghost); ctas[1].textContent = v.ghostText; }
     // Put that chamber's photo first in the hero carousel (the carousel script runs later and follows DOM order).
     if (v.slide) {
@@ -372,7 +378,12 @@
       var a = d.createElement('a');
       a.setAttribute('href', v.cta + (dec.months ? '&months=' + dec.months : ''));
       a.setAttribute('style', 'color:#9a4f3a;font-weight:700;text-decoration:underline');
-      a.textContent = 'Check availability \u2192';
+      // The site's booking-mode script swaps [data-request-text] links between modes; data-book-text
+      // pins the book-mode wording so a later swap back never picks up the request wording. If this
+      // async file runs after that script already switched to request mode, write the request text now.
+      a.setAttribute('data-request-text', NUDGE_REQ);
+      a.setAttribute('data-book-text', NUDGE_BOOK);
+      a.textContent = requestMode(d) ? NUDGE_REQ : NUDGE_BOOK;
       n.appendChild(a);
       var ctaRow = hb.querySelector('.hero-ctas');
       if (ctaRow && ctaRow.parentNode) ctaRow.parentNode.insertBefore(n, ctaRow.nextSibling);
@@ -404,6 +415,7 @@
     signalsFromUrl: signalsFromUrl, cityFromPath: cityFromPath, interestFromHref: interestFromHref,
     CONFIG: { KEY: KEY, HALF_LIFE_DAYS: HALF_LIFE_DAYS, TTL_DAYS: TTL_DAYS, HOLDOUT: HOLDOUT, MIN_SCORE: MIN_SCORE, MIN_MARGIN: MIN_MARGIN, WEIGHTS: WEIGHTS, CITIES: CITIES },
     // browser
-    boot: boot, decideForHome: decideForHome, report: report, record: record, erase: erase, applyHome: applyHome, optOut: optOut, HOME: HOME
+    boot: boot, decideForHome: decideForHome, report: report, record: record, erase: erase, applyHome: applyHome, optOut: optOut, HOME: HOME,
+    requestMode: requestMode, NUDGE: { book: NUDGE_BOOK, request: NUDGE_REQ }
   };
 });
