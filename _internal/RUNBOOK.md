@@ -22,9 +22,9 @@ _Last updated: 2026-09-26._
 - **Email:** outbound via **Resend**; inbound `@purebaric.com` forwarded via **ImprovMX**.
 - **SMS lead alerts:** admin-managed, per-number, consent-gated (see §7c — this changed substantially on 2026-09-26; read it before touching Notifications).
 - **Analytics/SEO:** GA4, consent-gated (analytics + Google Ads **measurement** on after consent; personalized ads/remarketing off). `robots.txt` + `sitemap.xml` + JSON-LD structured data present.
-- **Source:** `~/projects/purebaric-newsite` (local git). **As of 2026-09-26 this also has a GitHub remote**, `github.com/matthewbailie/purebaric-newsite` (private) — see §5a before you assume pushing there deploys anything, **it currently does not**.
-- **Ship a change (current, real, working method):** edit → `netlify deploy` (preview) → `netlify deploy --prod --dir .` → `git commit` → `git push` (see §5a for the GitHub-account gotcha). **Do not stop doing this** because a repo now exists — read §5a first.
-- **⚠️ Known broken/pending as of this writing (2026-09-26), check before assuming otherwise:** Stripe is **not configured** in production (secret key + webhook secret still need to be entered — see §7e); Netlify is **not yet Git-linked** to the new GitHub repo (§5a); Twilio SMS has **not been activated** by the owner (§7c).
+- **Source:** `~/projects/purebaric-newsite` (local git), with GitHub remote `github.com/matthewbailie/purebaric-newsite` (private). Netlify is Git-linked: **merges to `main` auto-deploy to production** (§5a).
+- **Ship a change (current method, 2026-11-24):** branch → `npm test` + e2e → PR → owner's yes → merge to `main` (Netlify builds and deploys automatically). **Never run `netlify deploy --prod` or trigger manual builds** (free-tier build minutes); batch to one push to `main` a day, two at most. See §5a.
+- **⚠️ Known broken/pending as of this writing (2026-09-26), check before assuming otherwise:** Stripe is **not configured** in production (secret key + webhook secret still need to be entered — see §7e); Twilio SMS has **not been activated** by the owner (§7c).
 
 ---
 
@@ -86,7 +86,7 @@ Owner: **Matthew Bailie**. No secrets are stored here — get credentials from t
 - Site name: **purebaric**
 - Site ID: **3e2c12f7-e737-4849-90aa-6b6134edbfab**
 - Custom domain: **purebaric.com** (SSL on)
-- Deploy method: **still manual** via `netlify deploy --prod --dir .`. A decision to switch to Git-based CI is recorded (`DECISIONS.md`, 2026-09-26) and `netlify.toml` already has `command = "npm test"` under `[build]` in anticipation — **but Netlify's site is not actually linked to the GitHub repo yet** (confirmed via `netlify api getSite` → `build_settings: {}`). Until someone completes that link in the Netlify dashboard (Site configuration → Build & deploy → Link repository), **manual `netlify deploy` remains the only thing that publishes changes** — see §5a.
+- Deploy method: **Git-based.** Merges/pushes to `main` auto-deploy to production (`netlify.toml` runs `npm test` first). Do not run manual `netlify deploy`; see §5a.
 
 ### Public contact details (shown on the site)
 - Email: **hello@purebaric.com** (forwarded by ImprovMX)
@@ -117,24 +117,17 @@ Values live only in Netlify. Env-var changes require a redeploy to take effect f
 
 ## 5. Source of truth, deploy workflow, rollback
 
-All code lives locally at **`~/projects/purebaric-newsite`**. Edit here, then deploy.
+All code lives locally at **`~/projects/purebaric-newsite`**. Edit here, then open a PR; merging to `main` deploys.
 
 ```bash
 cd ~/projects/purebaric-newsite
 
 # 1. Edit files (HTML/CSS/JS in the root; functions in netlify/functions/)
 
-# 2. Preview to a temporary URL (does NOT affect the live site)
-netlify deploy
-
-# 3. Publish to the live site — THIS is what actually goes live (see §5a)
-netlify deploy --prod --dir .
-#    If you changed anything in netlify/functions/, add --skip-functions-cache
-#    so the updated function code is bundled:
-#    netlify deploy --prod --dir . --skip-functions-cache
-#    Note: netlify.toml's [build] command is now "npm test" (added 2026-09-26),
-#    so this also runs the test suite (test/*.test.js) as part of every deploy,
-#    including this manual CLI one. A failing test blocks the deploy.
+# 2. Do NOT run `netlify deploy` (preview or --prod). Merging to main is what
+#    deploys (Netlify auto-builds main and runs `npm test`), and manual deploys
+#    burn free-tier build minutes. Batch: one push to main a day, two at most.
+#    Previews: open a PR and test locally instead of a CLI preview deploy.
 
 # 4. Record it in git history, then push to GitHub (see §5a for the account gotcha)
 git add <specific files>   # NOT `git add -A` — see the design-previews/ warning below
@@ -152,17 +145,19 @@ First-time CLI setup: `npm i -g netlify-cli` → `netlify login` → `netlify li
 
 ---
 
-## 5a. GitHub repo + the (unfinished) move to Git-based CI — read this before touching deploys
+## 5a. GitHub repo + Git-based deploys (main auto-deploys on Netlify) — read this before touching deploys
 
 **Git identity (fixed 2026-10-04).** The remote is the owner's **personal** repo `github.com/matthewbailie/purebaric-newsite`; pushes go through the `matthewbailie` `gh` account (`gh auth switch --user matthewbailie` → push → `gh auth switch --user bailie_adobe`). The machine's *global* git config carries the owner's **Adobe** email, so this repo now has a **repo-local** `user.email = matthewbailie@gmail.com`. Nothing about Purebaric may ever be pushed to, or authored as, Adobe: before committing, confirm `git config user.email` prints the Gmail address, and never add an Adobe remote. Commits before 2026-10-04 still carry the Adobe author email in history (left alone; rewriting would need a force-push the owner has not asked for).
 
-**Deploy batching (owner rule, 2026-10-04).** Netlify bills per deploy. Finish a request (and any queued follow-ups), verify locally (`npm test`, headless renders), then deploy **once** with `netlify deploy --prod --dir . --skip-functions-cache`, then commit + push. Do not deploy after every edit. If the owner says "don't push to production until I say", keep committing locally but hold the deploy.
+**Deploys are Git-based now (confirmed 2026-11-24).** The Netlify site (`3e2c12f7-e737-4849-90aa-6b6134edbfab`) is linked to `matthewbailie/purebaric-newsite`. **Every merge or push to `main` triggers a production build and deploy automatically** (verified: merging PR #33 at 1:05 PM MT on Nov 24 produced production deploy `6b05ee1bb04eebde5ee68610` from commit `a9d36d1`, branch `main`, context `production`). `netlify.toml` runs `npm test` as the build command, so a failing suite blocks the deploy.
 
-**What exists:** a private GitHub repo, **`github.com/matthewbailie/purebaric-newsite`**, created 2026-09-26, containing this project's full local git history pushed to `main`. `netlify.toml` already has `[build] command = "npm test"` (also added 2026-09-26) so that both a manual `netlify deploy` *and* a future Git-triggered build would run the test suite first.
+**Do NOT run manual deploys.** Never run `netlify deploy --prod` (or any `netlify deploy`, or "Trigger deploy" in the dashboard) for this site. A manual deploy is an extra build on top of the automatic one, and the site is on Netlify's free tier, so build minutes are limited.
 
-**What does NOT exist yet:** an actual connection between the Netlify site and that repo. Confirmed via `netlify api getSite --data '{"site_id":"3e2c12f7-e737-4849-90aa-6b6134edbfab"}'` → `"build_settings": {}` (empty — no linked repo). **This means pushing to GitHub `main` does not deploy anything.** The only thing that publishes to production right now is manual `netlify deploy --prod --dir .` from this machine, exactly as it always has. `DECISIONS.md` records the *intent* to switch to Git-based deploys, gated on `npm test` — the intent is confirmed, the implementation is not finished.
+**Release batching (owner rule, updated 2026-11-24).** Batch production changes into **one push to `main` a day, two at most** when something can't wait. Work on branches, verify locally (`npm test`, the e2e harness), open a PR, and merge only after the owner's own yes. Every merge to `main` is a production release. Rollback = restore/publish the previous production deploy in Netlify (no rebuild needed), not a new commit.
 
-**If you're an AI agent picking this up:** do not assume a `git push` deployed anything. Verify with `netlify api getSite --data '{"site_id":"3e2c12f7-e737-4849-90aa-6b6134edbfab"}' | grep -A5 build_settings` — a populated `repo` object means it's since been connected (great, switch to Git-based deploys and stop using manual CLI); an empty `{}` means it's still not connected and you must keep using `netlify deploy --prod --dir .` after every change, same as before. **Connecting it requires a GitHub OAuth/App-authorization step** (Netlify's own "Link to Git provider" flow) that only the owner can complete via the Netlify dashboard — a coding agent should not attempt to drive that flow blind (it was explicitly declined for an agent to complete unattended on 2026-09-26; the owner does it via **Site configuration → Build & deploy → Link repository → GitHub → `matthewbailie/purebaric-newsite` → branch `main`**).
+**What exists:** a private GitHub repo, **`github.com/matthewbailie/purebaric-newsite`**, created 2026-09-26, with this project's full history on `main`. `netlify.toml` has `[build] command = "npm test"`.
+
+**History (superseded):** before the repo was linked, `build_settings` was empty and the only way to publish was a manual `netlify deploy --prod --dir .` from this machine. That is no longer true; ignore older notes that say pushing to `main` deploys nothing.
 
 **The dual-GitHub-account gotcha (important, easy to get wrong):** the `gh` CLI on this machine is logged into **two** GitHub accounts — `bailie_adobe` (an Adobe work identity, the default/active one) and `matthewbailie` (the owner's personal account, matching `matthewbailie@gmail.com` — the same identity the Netlify login uses). The `purebaric-newsite` repo lives under `matthewbailie`, not `bailie_adobe`. A `git push`/`git pull` against `origin` uses whichever account is currently active in `gh`'s credential helper — if that's `bailie_adobe`, you'll get `remote: Repository not found` (GitHub 404s a private repo you can't see, rather than 403). **Before pushing or pulling:** `gh auth switch --user matthewbailie`, do the git operation, then `gh auth switch --user bailie_adobe` to restore the default (so you don't leave other work on this machine authenticated as the wrong account). Check current state anytime with `gh auth status`.
 
@@ -585,7 +580,7 @@ Individual units, both managed on the admin **Chambers** tab. No "types" or pool
 
 ## 13. Rules / gotchas
 
-- **Deploy is still manual, despite a GitHub remote now existing.** Nothing goes live until `netlify deploy --prod --dir .`. See §5a — do not assume `git push` deploys anything until you've confirmed otherwise.
+- **Merges to `main` auto-deploy to production.** Never run manual `netlify deploy` (free-tier build minutes); batch to one push to `main` a day, two at most, and only after the owner's yes. See §5a.
 - **Never `git add -A`.** `design-previews/*` is edited live by an external tool outside git; a blanket add sweeps it in. Always add an explicit file list. See §5.
 - **Never commit or print secrets.** Keys/tokens live only in Netlify env vars, the admin portal's own masked settings (Twilio/Stripe), and the password manager.
 - **Do not change DNS.** Namecheap delegates to Netlify DNS.
@@ -638,7 +633,7 @@ This is a wellness rental business, **not a medical provider** ("not a medical d
 ## 15. Known open follow-ups / owner tasks
 
 **Freshest / most likely to matter first (all added or re-confirmed 2026-09-26):**
-- **Finish connecting Netlify to GitHub for CI** (§5a) — owner action, Netlify dashboard → Site configuration → Build & deploy → Link repository → GitHub → `matthewbailie/purebaric-newsite` → `main`. Until then, keep using manual `netlify deploy --prod --dir .`.
+- ~~Finish connecting Netlify to GitHub for CI~~ — done; confirmed 2026-11-24 that merges to `main` auto-deploy (§5a).
 - **Configure Stripe** (§7e) — owner action, needs a real Stripe account: secret key + webhook signing secret into admin → Pricing & Payments, plus registering the webhook endpoint in the Stripe dashboard. Confirmed still not done via a live `503` from the webhook endpoint.
 - **Activate Twilio SMS** (§7c) — owner action, needs a real Twilio account: create it, buy a number (~$1.15/mo), enter Account SID + Auth Token + From number in admin → Notifications. Free carrier email-to-text still works as a fallback but is unreliable (confirmed dropped on Verizon on this site).
 - **(Optional) Twilio inbound STOP webhook** (§7f) — not built; Twilio already honors STOP at the network level regardless, so this is a data-hygiene nicety (keeping our own `consent.status` in sync), not a compliance gap. Only build if asked.
