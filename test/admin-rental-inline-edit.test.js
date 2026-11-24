@@ -68,7 +68,8 @@ test("rentals API stores the historical flag without changing conflict rules", (
 test("a rental needs a renter with an email or a phone, unless it is historical; customers never need an email", () => {
   assert.match(adminHtml, /\(!data\['renter-email'\] && !data\['renter-phone'\] && !data\.historical\)/);
   // Customers are grouped by email, else phone, else name, so the customer form's email is never required.
-  assert.match(adminHtml, /\[name="email"\]'\)\.required = false/);
+  assert.match(adminHtml, /function resetNoEmail\(email\) \{[\s\S]*?el\.required = false/);
+  assert.doesNotMatch(adminHtml, /\[name="email"\]'\)\.required = true/);
   assert.match(adminHtml, /window\.PurebaricAdminUtils\.customerKey\(snap\)/);
   assert.doesNotMatch(adminHtml, /const noEmail = fromRental/);
 });
