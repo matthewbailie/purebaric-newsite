@@ -18,6 +18,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/warm.css">
   <script src="/pb-metrics.js"></script>
+  <script src="/pb-personalize.js" defer></script>
 </head><body>
 <!-- bf2026: Black Friday 2026 banner. Hidden unless the script below turns it on, and the script stops turning it on at 12:00 am Mountain time on Saturday, Nov 28. Remove this block after the promo. -->
 <div id="bfBanner" style="display:none;background:#2b2320;color:#fff;text-align:center;font:600 14px/1.4 Inter,system-ui,sans-serif;padding:10px 16px">Black Friday: $200 off your first month, ends Friday, Nov 27. <a href="/book" style="color:#e0b9a8;text-decoration:underline">Get the offer</a></div>
@@ -52,7 +53,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" data-pz-interest="lying" data-pz-dwell>
   <div class="wrap">
     <div class="two-col">
       <div class="feature-img">
@@ -73,13 +74,13 @@
           <li><span class="spec-label">Elevation</span> <span class="spec-value">Holds reliable pressure at Utah elevations</span></li>
           <li><span class="spec-label">Includes</span> <span class="spec-value">Delivery, setup &amp; training</span></li>
         </ul>
-        <a class="btn btn-primary" href="/book" style="margin-top:22px">Reserve this chamber →</a>
+        <a class="btn btn-primary" href="/book?chamber=lying" style="margin-top:22px">Reserve this chamber →</a>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section">
+<section class="section" data-pz-interest="sitting" data-pz-dwell>
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow2">Available now</span>
@@ -97,7 +98,7 @@
           <li>Easier entry &amp; exit</li>
         </ul>
         <div class="feat-price">from <span id="fromPriceSitting">$529</span><small> /mo · 12-month rate</small></div>
-        <a class="btn btn-primary" href="/book">Reserve this chamber →</a>
+        <a class="btn btn-primary" href="/book?chamber=sitting">Reserve this chamber →</a>
       </div>
     </div>
   </div>
