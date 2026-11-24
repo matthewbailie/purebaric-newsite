@@ -137,8 +137,17 @@ test("declining on /privacy stops tracking immediately and forgets the session g
 });
 
 
-test("/privacy says GPC and DNT are honored, with no cookie banner", () => {
+test("/privacy carries the Proof-reader's final GPC/DNT, Meta and remarketing text", () => {
   const privacy = fs.readFileSync(path.join(__dirname, "..", "privacy.html"), "utf8");
-  assert.match(privacy, /We honor Global Privacy Control and Do Not Track/);
-  assert.match(privacy, /id="gaOptOut"/);
+  const text = privacy.replace(/<[^>]+>/g, "").replace(/\s+/g, " ");
+  for (const s of [
+    "We honor Global Privacy Control and Do Not Track. If your browser sends either signal, or you turn off analytics on this device, Google Analytics and the Meta (Facebook) pixel don't load at all.",
+    "We may use the Meta pixel to show our own ads again, on Facebook and Instagram, to people who've visited our site. If your browser sends Global Privacy Control or Do Not Track, or you turn off analytics on this device, the pixel doesn't load and you won't be included. Purebaric does not send names, email addresses, phone numbers, addresses, ZIP codes, health information, notes, or form contents to Google Analytics or Google Ads.",
+    "Meta (Facebook), through its pixel, unless you opt out, so we can measure whether our Facebook and Instagram ads led to a request, and show our ads again to past visitors. It doesn't receive your name, email, phone, address, ZIP, city, or the contents of your messages.",
+  ]) assert.ok(text.includes(s), s.slice(0, 60));
+  // The GPC/DNT sentence sits right after the opt-out button.
+  assert.match(privacy, /Turn off analytics on this device<\/button><\/p>\s*<p>We honor Global Privacy Control/);
+  for (const bad of ["turn analytics off below", "cookie banner", "does not enable personalized advertising or remarketing"]) {
+    assert.ok(!text.toLowerCase().includes(bad), bad);
+  }
 });
