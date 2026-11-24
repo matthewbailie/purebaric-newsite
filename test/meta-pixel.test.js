@@ -1,34 +1,60 @@
-// The Meta pixel is wired but inert until META_PIXEL_ID is set; the booking page reports a Lead
-// the moment step 1 creates a lead, and CompleteRegistration when step 2 completes the request.
-// An out-of-area full submit fires no Meta event: it is not a confirmed reservation.
+// Meta pixel after the Nov 2026 tracking fix:
+//  - step-1 save (a PARTIAL lead) = InitiateCheckout, once per new lead
+//  - completed step-2 request = Lead with value + USD + eventID (the booking id),
+//    plus CompleteRegistration (eventID id:complete) and GA4 generate_lead
+//  - waitlist and promo sign-ups = Subscribe, never Lead
+//  - out-of-area submits fire nothing
+//  - neither tag loads under GPC, DNT, the /privacy opt-out, or the internal flag
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("fs");
 const path = require("path");
 
-const metrics = fs.readFileSync(path.join(__dirname, "..", "pb-metrics.js"), "utf8");
-const book = fs.readFileSync(path.join(__dirname, "..", "book.html"), "utf8");
+const read = (p) => fs.readFileSync(path.join(__dirname, "..", p), "utf8");
+const metrics = read("pb-metrics.js");
+const book = read("book.html");
 
-test("the Meta pixel loads only with a numeric id and never for a visitor who opted out", () => {
+test("the Meta pixel loads only with a numeric id and never when tracking is blocked", () => {
   assert.match(metrics, /var META_PIXEL_ID = '(\d{10,20})?';/);
-  assert.match(metrics, /if \(!META_READY \|\| declined \|\| window\.purebaricMetaLoaded\) return;/);
+  assert.match(metrics, /if \(!META_READY \|\| blocked \|\| window\.purebaricMetaLoaded\) return;/);
+  assert.match(metrics, /if \(!READY \|\| blocked \|\| window\.purebaricAnalyticsLoaded\) return;/);
   assert.match(metrics, /window\.trackPurebaricMeta = function/);
   assert.match(metrics, /connect\.facebook\.net\/en_US\/fbevents\.js/);
+  assert.match(metrics, /navigator\.globalPrivacyControl === true/);
+  assert.match(metrics, /navigator\.doNotTrack === '1'/);
+  assert.match(metrics, /window\.doNotTrack === '1'/);
 });
 
-test("a step-1 lead is the Meta Lead, with only the rental type attached", () => {
-  const leadBranch = book.slice(book.indexOf("j&&j.lead"), book.indexOf("document.getElementById('backBtn')"));
-  const params = leadBranch.match(/trackPurebaricMeta\?\.\('Lead',(\{[^}]*\})\)/);
-  assert.ok(params, "Lead fires when a step-1 lead is created");
-  assert.match(params[1], /^\{content_category:[^,]*\}$/, "only the rental type travels with the Lead");
-  // The full submit fires CompleteRegistration, not a second Lead, so one
-  // visitor is never counted as two Leads.
-  const okBranch = book.slice(book.indexOf("j.success||j.ok"), book.indexOf("}else{", book.indexOf("j.success||j.ok")));
-  assert.match(okBranch, /trackPurebaricMeta\?\.\('CompleteRegistration',\{content_category:[^,]*\}\)/);
-  assert.doesNotMatch(okBranch, /trackPurebaricMeta\?\.\('Lead'/);
-  // The out-of-area full submit still fires no Meta event: it is not a
-  // confirmed reservation.
+test("step 1 is InitiateCheckout; the completed request is the only Lead, with value, USD and eventID", () => {
+  const step1 = book.slice(book.indexOf("j&&j.lead"), book.indexOf("document.getElementById('backBtn')"));
+  assert.match(step1, /if\(!existingLead\)window\.trackPurebaricMeta\?\.\('InitiateCheckout',\{content_category:[^}]*\},\{eventID:j\.id\+':step1'\}\)/);
+  assert.doesNotMatch(step1, /'Lead'/);
+  const ok = book.slice(book.indexOf("j.success||j.ok"), book.indexOf("}else{", book.indexOf("j.success||j.ok")));
+  assert.match(ok, /trackPurebaricMeta\?\.\('Lead',\{content_category:rtype,value:Number\(leadValue\)\|\|0,currency:'USD'\},\{eventID:leadEventId\}\)/);
+  assert.match(ok, /var leadEventId=String\(j\.id\|\|leadIdVal\|\|''\)/);
+  assert.match(ok, /trackPurebaricMeta\?\.\('CompleteRegistration',\{content_category:rtype\},\{eventID:leadEventId\+':complete'\}\)/);
+  assert.match(ok, /trackPurebaricEvent\?\.\('generate_lead',\{value:Number\(leadValue\)\|\|0,currency:'USD'/);
+  // The value is the selected plan's monthly rate (home rate() or business rateBiz()).
+  assert.match(book, /var leadValue=BIZ\?rb:r;/);
+  // generate_lead fires on step-2 success only.
+  assert.equal((book.match(/'generate_lead'/g) || []).length, 1);
   const outOfArea = book.slice(book.indexOf("j&&j.outOfArea"), book.indexOf("j.success||j.ok"));
   assert.doesNotMatch(outOfArea, /trackPurebaricMeta/);
-  assert.equal((book.match(/trackPurebaricMeta/g) || []).length, 2);
+  assert.equal((book.match(/trackPurebaricMeta/g) || []).length, 3);
+  assert.equal((book.match(/trackPurebaricMeta\?\.\('Lead'/g) || []).length, 1);
+});
+
+test("waitlist and promo sign-ups are Subscribe, never Lead", () => {
+  for (const page of ["index.html", "waitlist.html"]) {
+    const html = read(page);
+    assert.doesNotMatch(html, /trackPurebaricMeta\?\.\('Lead'/, page);
+    assert.match(html, /trackPurebaricMeta\?\.\('Subscribe'/, page);
+  }
+});
+
+test("every lead form flags TEST/internal submissions (pb_internal) before sending", () => {
+  for (const page of ["book.html", "waitlist.html", "contact.html", "index.html"]) {
+    assert.match(read(page), /window\.markPurebaricInternalLead\(/, page);
+  }
+  assert.equal((book.match(/markPurebaricInternalLead\(data/g) || []).length, 2, "step 1 and step 2");
 });
