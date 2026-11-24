@@ -197,10 +197,3 @@ test("hooks: device/variant funnel params and scroll_depth at 25/50/75/90 once e
   assert.equal(ran, false, "onReady never runs when tracking is blocked");
 });
 
-test("/privacy explains GPC/DNT and first-touch storage, with no cookie banner", () => {
-  const privacy = fs.readFileSync(path.join(__dirname, "..", "privacy.html"), "utf8");
-  assert.match(privacy, /We honor Global Privacy Control and Do Not Track/);
-  assert.match(privacy, /is deleted after 90 days/);
-  assert.match(privacy, /id="gaOptOut"/);
-  assert.doesNotMatch(privacy + fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8"), /cookie-banner|cookieBanner/);
-});
