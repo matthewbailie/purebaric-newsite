@@ -279,6 +279,10 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 }
 </style>
   <script src="/pb-metrics.js"></script>
+  <!-- Homepage personalization: small, first-party, runs before the hero paints (see _internal/personalization/README.md). -->
+  <script src="/pb-personalize.js" async blocking="render"></script>
+  <script>/* Browsers without blocking="render": briefly hide only the hero for visitors in the personalized group (max 800ms), so it never flickers. */try{if(!('blocking' in HTMLScriptElement.prototype)&&/"g":"p"/.test(localStorage.getItem('pb_pz')||'')){var pzd=document.documentElement;pzd.classList.add('pz-wait');setTimeout(function(){pzd.classList.remove('pz-wait');},800);}}catch(e){}</script>
+  <style>html.pz-wait .hero,html.pz-wait .hero-below{visibility:hidden}</style>
 </head><body>
 <!-- bf2026: Black Friday 2026 banner. Hidden unless the script below turns it on, and the script stops turning it on at 12:00 am Mountain time on Saturday, Nov 28. Remove this block after the promo. -->
 <div id="bfBanner" style="display:none;background:#2b2320;color:#fff;text-align:center;font:600 14px/1.4 Inter,system-ui,sans-serif;padding:10px 16px">Black Friday: $200 off your first month, ends Friday, Nov 27. <a href="/book" style="color:#e0b9a8;text-decoration:underline">Get the offer</a></div>
@@ -336,6 +340,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
           <span class="perks"><span>Free delivery &amp; setup</span><span class="dot" aria-hidden="true">·</span><span>No charge until delivery day</span></span>
         </div>
       </div>
+      <script>window.__pzHero=1;try{window.PBPZ&&PBPZ.applyHome();}catch(e){}</script>
       <section>
         <h2>Huge savings and convenience</h2><p class="lead">Less than the cost of a single month at a clinic, without leaving home.</p>
         <div class="math">
@@ -378,17 +383,17 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
       <section>
         <h2>Soft-Shell 1.5 ATA mild hyperbaric chambers</h2><p class="lead">Available now as a lying chamber or an upright sitting chamber.</p>
         <div class="chambers">
-          <div class="chamber">
+          <div class="chamber" data-pz-interest="lying">
             <img src="/images/chamber-side.jpg?v=2" width="1800" height="1013" loading="lazy" alt="Soft-shell 1.5 ATA chamber">
             <div class="b"><b>1.5 ATA Lying Chamber</b><div class="price"><span id="fromPrice">$729</span><small> /mo · rent longer, save more</small></div>
               <ul><li>1.5 ATA operating pressure</li><li>99.9% O₂ concentrator + mask</li><li>Fits most bedrooms</li></ul>
-              <a class="btn btn-primary" href="/book">Book now</a></div>
+              <a class="btn btn-primary" href="/book?chamber=lying">Book now</a></div>
           </div>
-          <div class="chamber">
+          <div class="chamber" data-pz-interest="sitting">
             <img src="/images/chamber-sitting.jpg?v=1" width="1792" height="1008" loading="lazy" alt="Purebaric 1.5 ATA sitting chamber in a modern living room">
             <div class="b"><b>1.5 ATA Sitting Chamber</b><div class="price"><span id="fromPriceSitting">$729</span><small> /mo · rent longer, save more</small></div>
               <ul><li>Upright, seated design</li><li>1.5 ATA mild pressure</li><li>Easier entry &amp; exit</li></ul>
-              <a class="btn btn-primary" href="/book">Book now</a></div>
+              <a class="btn btn-primary" href="/book?chamber=sitting">Book now</a></div>
           </div>
         </div>
       </section>
