@@ -1,6 +1,7 @@
 const { Resend } = require("resend");
 const { isComplete, sendSms } = require("./sms");
 const { buildFollowUpText, formatDeliveryDate } = require("./followup");
+const { leadSourceLines } = require("./lead-source");
 const { daysUntil, cancelLink, endingSoonLink, shortDate, endingSmsText } = require("./rental-ending");
 
 const FROM = "Purebaric <noreply@purebaric.com>";
@@ -157,6 +158,14 @@ function or(v) {
   return escapeHtml(v || "-");
 }
 
+// Lead source block for admin notifications: first-touch channel, UTM, click ids,
+// "how did you hear about us", customer type, and the internal/TEST flag.
+function leadSourceBlock(rec) {
+  const lines = leadSourceLines(rec || {});
+  if (!lines.length) return "";
+  return `<p style="margin:0 0 16px;"><strong style="color:#2b2320;">Lead source:</strong><br>${lines.map(([k, v]) => `${escapeHtml(k)}: ${escapeHtml(v)}`).join("<br>")}</p>`;
+}
+
 async function notifyAdminWaitlistJoin(entry) {
   const html = wrap(`
     <p style="margin:0 0 16px;"><strong style="color:#2b2320;">New waitlist signup</strong></p>
@@ -164,6 +173,7 @@ async function notifyAdminWaitlistJoin(entry) {
     Phone: ${or(entry.phone)}<br>
     ZIP: ${or(entry.zip)}<br>
     Preferred start: ${or(entry.preferredStartDate)}</p>
+    ${leadSourceBlock(entry)}
     <p style="margin:0;"><strong style="color:#2b2320;">Reason / context:</strong><br>${escapeHtml(entry.reason || "-").replace(/\n/g, "<br>")}</p>
   `);
   return send({ to: ADMIN_NOTIFY, subject: `Waitlist: ${entry.name}`, html });
@@ -349,6 +359,7 @@ async function notifyAdminBooking(b, routing = {}, to) {
     Reason / notes: ${escapeHtml(b.reason || "-").replace(/\n/g, "<br>")}<br>
     Prior experience: ${or(b.priorExperience)}</p>
     <p style="margin:0 0 16px;"><strong style="color:#2b2320;">Safety screening flags:</strong> ${flags}</p>
+    ${leadSourceBlock(b)}
     <p style="margin:0;"><a href="https://purebaric.com/admin.html" style="color:#b8654d;">View in admin →</a></p>
   `);
   const subjectWho = isBiz ? `${b.businessName || name} (business)` : name;
@@ -370,6 +381,7 @@ async function notifyAdminOutOfArea(b, to) {
     Start: ${or(b.startDate)}<br>
     Length: ${or(b.rentalLength)}<br>
     Notes: ${escapeHtml(b.reason || "-").replace(/\n/g, "<br>")}</p>
+    ${leadSourceBlock(b)}
     <p style="margin:0;"><a href="https://purebaric.com/admin.html" style="color:#b8654d;">View in admin →</a></p>
   `);
   return send({ to: adminTo(to), subject: `Out-of-area request: ${name} (ZIP ${b.zip || "?"})`, html });

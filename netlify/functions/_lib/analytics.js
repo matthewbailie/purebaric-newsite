@@ -17,6 +17,25 @@ function cleanSessionId(value) {
   return /^\d{1,20}$/.test(sessionId) ? sessionId : null;
 }
 
+// Funnel params from metrics.md section 2. device: the browser's own value
+// (mobile/desktop) when it sent one, else a User-Agent class; variant: the
+// homepage personalization arm. Allowlisted values only, never PII.
+function cleanDevice(value, userAgent) {
+  const v = String(value || "").trim();
+  if (v === "mobile" || v === "desktop") return v;
+  const ua = String(userAgent || "");
+  if (!ua) return "unknown";
+  return /Mobi|Android|iPhone|iPod/i.test(ua) ? "mobile" : "desktop";
+}
+function cleanVariant(value) {
+  const v = String(value || "").trim();
+  return v === "personalized" || v === "control" ? v : "none";
+}
+function funnelParams(booking) {
+  const a = booking?.analytics || {};
+  return { device: a.device || "unknown", variant: a.variant || "none" };
+}
+
 function rentalMonths(startDate, endDate) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(startDate || "") || !/^\d{4}-\d{2}-\d{2}$/.test(endDate || "")) {
     return 1;
@@ -31,6 +50,9 @@ async function sendEvent({ booking, name, params }) {
   const clientId = cleanClientId(booking?.analytics?.clientId);
   const sessionId = cleanSessionId(booking?.analytics?.sessionId);
 
+  // Internal / TEST records (pb_internal, TEST names, the owner's own email)
+  // are never sent to GA4, so they cannot count as real leads or rentals.
+  if (booking?.internal) return { sent: false, reason: "internal" };
   if (booking?.analytics?.consentGranted === false) {
     return { sent: false, reason: "analytics_opt_out" };
   }
@@ -66,6 +88,7 @@ async function sendBookingLeadSubmitted({ booking }) {
     booking,
     name: "booking_lead_submit",
     params: {
+      ...funnelParams(booking),
       form_name: "lead_capture",
       rental_months: rentalMonthsMatch ? Number(rentalMonthsMatch[0]) : 1,
       rental_type: rentalType,
@@ -85,6 +108,7 @@ async function sendBookingRequestSubmitted({ booking }) {
     booking,
     name: "booking_request_submit",
     params: {
+      ...funnelParams(booking),
       form_name: "reservation_request",
       rental_months: rentalMonthsMatch ? Number(rentalMonthsMatch[0]) : 1,
       rental_type: rentalType,
@@ -118,6 +142,8 @@ module.exports = {
   cleanClientId,
   cleanSessionId,
   cleanGclid,
+  cleanDevice,
+  cleanVariant,
   sendBookingLeadSubmitted,
   sendBookingRequestSubmitted,
   sendRentalConfirmed,
