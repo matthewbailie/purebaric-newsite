@@ -79,6 +79,8 @@ test("booking_lead_submit sends the lead event without customer PII", async () =
     name: "booking_lead_submit",
     params: {
       engagement_time_msec: 1,
+      device: "unknown", // metrics.md section 2 funnel params; no client value on this record
+      variant: "none",
       form_name: "lead_capture",
       rental_months: 4,
       rental_type: "residential",
