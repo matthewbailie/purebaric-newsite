@@ -112,4 +112,13 @@ function findMergeTarget(all, data) {
   return null;
 }
 
-module.exports = { groupCustomers, findMergeTarget };
+// Another manual record that already holds this email (not the record being saved, and not the
+// same-person record a new save merges into). Used to stop duplicate customers on Add/Edit customer.
+function emailOnAnotherCustomer(all, data, selfId) {
+  const email = normEmail(data.email);
+  if (!email) return null;
+  const self = selfId || ((findMergeTarget(all, data) || {}).id);
+  return (all || []).find((c) => normEmail(c.email) === email && c.id !== self) || null;
+}
+
+module.exports = { groupCustomers, findMergeTarget, emailOnAnotherCustomer };

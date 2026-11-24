@@ -135,6 +135,11 @@
         </select>
       </div>
       <div class="fg"><label for="wlDate">Earliest date you'd want to start</label><input type="date" name="earliest_start" id="wlDate" autocomplete="off"><div class="dcal" id="wlCal" hidden></div><p class="helper" id="wlDateHelp">Optional, if you have a specific date in mind.</p></div>
+      <div class="row2">
+        <div class="fg"><label for="wlHeard">How did you first hear about us? (optional)</label><select name="heard_about" id="wlHeard"><option value="">Choose one</option><option>Facebook or Instagram</option><option>Facebook Marketplace</option><option>Google search</option><option>Google Maps</option><option>Friend or family</option><option>Gym, studio, clinic or salon</option><option>Other</option></select></div>
+        <div class="fg"><label for="wlType">Which best describes you? (optional)</label><select name="customer_type" id="wlType"><option value="">Choose one</option><option value="home">Home user</option><option value="athlete">Athlete</option><option value="gym">Gym</option><option value="clinic">Clinic</option><option value="salon">Salon</option><option value="other">Other</option></select></div>
+      </div>
+      <div class="fg"><label for="wlUse">What would you mainly use it for? (optional)</label><select id="wlUse" name="use_case"><option value="">Choose one</option><option value="recovery">After workouts or activity</option><option value="wellness">General wellness and relaxation</option><option value="performance">Part of my training routine</option><option value="business_amenity">An amenity for my business</option><option value="other">Other</option></select></div>
       <div class="fg"><label for="wlNotes">Anything we should know?</label><textarea name="notes" id="wlNotes" placeholder="Specific scheduling needs, questions, or context that would help us serve you better."></textarea></div>
 
       <label class="ck"><input type="checkbox" name="consent_no_guarantee" id="wlConsent" required> I understand that joining the waitlist does not guarantee a reservation, and that availability is offered on a first-come, first-served basis. <span class="req">*</span></label>
@@ -258,7 +263,9 @@ document.getElementById('waitlistForm').addEventListener('submit',function(e){
   if(document.getElementById('wlConsent').checked)data.set('consent_no_guarantee','on');
   if(document.getElementById('wlOptin').checked)data.set('opt_in_updates','yes');
   if(outOfArea)data.set('category','out-of-area');
-  if(window.markPurebaricInternalLead)window.markPurebaricInternalLead(data,{firstName:document.getElementById('wlFirst').value,lastName:document.getElementById('wlLast').value,email:document.getElementById('wlEmail').value});
+  data.set('heard_about',document.getElementById('wlHeard').value);
+  data.set('customer_type',document.getElementById('wlType').value);data.set('use_case',document.getElementById('wlUse').value);
+  if(window.appendPurebaricLeadSource)window.appendPurebaricLeadSource(data,{firstName:document.getElementById('wlFirst').value,lastName:document.getElementById('wlLast').value,email:document.getElementById('wlEmail').value});
   var orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='Submitting...';
   fetch('/api/waitlist-join',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
    .then(function(r){return r.json().catch(function(){return {};});})

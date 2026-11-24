@@ -1,5 +1,6 @@
 const { createWaitlistEntry, addPromoSubscriber } = require("./_lib/storage");
 const { notifyAdminWaitlistJoin } = require("./_lib/email");
+const { leadSourceFields } = require("./_lib/lead-source");
 
 function parseBody(event) {
   if (!event.body) return {};
@@ -54,6 +55,8 @@ exports.handler = async (event) => {
       zip,
       reason,
       preferredStartDate: (body["preferred-start"] || body.preferredStartDate || body.earliest_start || "").trim(),
+      // First-touch attribution, "how did you hear about us", customer type, internal/TEST flag.
+      ...leadSourceFields(body, { name, email }),
     });
 
     // "Occasional promotions" checkbox → the promotions list (admin → Outreach → Promotions list).

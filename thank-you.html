@@ -103,7 +103,7 @@
   try{b=JSON.parse(sessionStorage.getItem('pb_booked')||'null');sessionStorage.removeItem('pb_booked');}catch(e){}
   if(!b)return;
   if(b.booked&&b.date){document.getElementById('tyEyebrow').textContent='Booking confirmed';document.getElementById('tyHead').textContent='Your chamber is booked';document.getElementById('tyMsg').textContent='Delivery is set for '+b.date+'. We emailed your confirmation and will text or call to set the delivery time.';}
-  window.trackPurebaricEvent&&window.trackPurebaricEvent('booking_thank_you',{rental_type:b.type||'residential'});
+  window.trackPurebaricEvent&&window.trackPurebaricEvent('booking_thank_you',window.PBMetrics&&window.PBMetrics.funnelParams?window.PBMetrics.funnelParams({rental_type:b.type||'residential',source:'book_page'}):{rental_type:b.type||'residential'});
 })();
 </script>
 </body></html>

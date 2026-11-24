@@ -22,7 +22,7 @@
 /* form */
 .frm .fg{margin-bottom:16px}
 .frm label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
-.frm input,.frm textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:11px 12px;font-family:inherit;font-size:15px;background:#fff;color:var(--ink)}
+.frm input,.frm textarea,.frm select{width:100%;border:1px solid var(--line);border-radius:8px;padding:11px 12px;font-family:inherit;font-size:15px;background:#fff;color:var(--ink)}
 .frm input:focus,.frm textarea:focus{outline:none;border-color:var(--terra)}
 .frm textarea{min-height:92px;resize:vertical}
 .frm .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -220,6 +220,11 @@ body.biz.bookmode .slider-block{display:block!important}
           <div class="fg"><label for="ce">Email <span class="req">*</span></label><input type="email" id="ce" name="customer_email" autocomplete="email" required><div class="micro">Only used to coordinate your delivery.</div></div>
           <div class="fg"><label for="cp">Phone <span class="req">*</span></label><input type="tel" id="cp" name="customer_phone" autocomplete="tel" required><div class="micro">We confirm your delivery time by text or call.</div></div>
         </div>
+        <div class="row2">
+          <div class="fg"><label for="cheard">How did you first hear about us? <span class="micro" style="display:inline">(optional)</span></label><select id="cheard" name="heard_about"><option value="">Choose one</option><option>Facebook or Instagram</option><option>Facebook Marketplace</option><option>Google search</option><option>Google Maps</option><option>Friend or family</option><option>Gym, studio, clinic or salon</option><option>Other</option></select></div>
+          <div class="fg"><label for="ctype">Which best describes you? <span class="micro" style="display:inline">(optional)</span></label><select id="ctype" name="customer_type"><option value="">Choose one</option><option value="home">Home user</option><option value="athlete">Athlete</option><option value="gym">Gym</option><option value="clinic">Clinic</option><option value="salon">Salon</option><option value="other">Other</option></select></div>
+        </div>
+        <div class="fg"><label for="cuse">What would you mainly use it for? <span class="micro" style="display:inline">(optional)</span></label><select id="cuse" name="use_case"><option value="">Choose one</option><option value="recovery">After workouts or activity</option><option value="wellness">General wellness and relaxation</option><option value="performance">Part of my training routine</option><option value="business_amenity">An amenity for my business</option><option value="other">Other</option></select></div>
         <button type="submit" class="btn btn-primary submit" id="leadBtn">Secure my $200 off →</button>
 
         <div class="trust">
@@ -364,10 +369,12 @@ var areaFired=false,planFired=false,dateFired=false;
 document.getElementById('zip').addEventListener('change',function(){var z=this.value.trim();if(!/^\d{5}$/.test(z))return;areaFired=true;window.trackPurebaricEvent?.('service_area_check',{result:servedZip(z)?'eligible':'unsupported',rental_months:+document.getElementById('mo').value,rental_type:document.getElementById('rentalType').value||'residential'});});
 document.getElementById('mo').addEventListener('change',function(){var mm=+this.value,rr=rate(mm);planFired=true;window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD',rental_type:document.getElementById('rentalType').value||'residential'});});
 var bookingFormStarted=false,bookingFormSubmitted=false,bookingLastField='';
-['leadForm','resForm'].forEach(function(fid){var fm=document.getElementById(fid);if(!fm)return;fm.addEventListener('focusin',function(e){var f=e.target&&e.target.id?e.target.id:'';if(f)bookingLastField=f;if(bookingFormStarted)return;bookingFormStarted=true;window.trackPurebaricEvent?.('booking_form_start',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:+document.getElementById('mo').value||1,source:'book_page',rental_type:document.getElementById('rentalType').value||'residential'});});});
+// Funnel params from metrics.md section 2 (device, variant); allowlisted, no PII.
+function pbFunnel(o){return window.PBMetrics&&window.PBMetrics.funnelParams?window.PBMetrics.funnelParams(o):o;}
+['leadForm','resForm'].forEach(function(fid){var fm=document.getElementById(fid);if(!fm)return;fm.addEventListener('focusin',function(e){var f=e.target&&e.target.id?e.target.id:'';if(f)bookingLastField=f;if(bookingFormStarted)return;bookingFormStarted=true;window.trackPurebaricEvent?.('booking_form_start',pbFunnel({chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:+document.getElementById('mo').value||1,source:'book_page',rental_type:document.getElementById('rentalType').value||'residential'}));});});
 // Drop-off: if the visitor starts the form but leaves without submitting,
 // record how far they got (field id only — never field values).
-window.addEventListener('pagehide',function(){if(!bookingFormStarted||bookingFormSubmitted)return;bookingFormSubmitted=true;window.trackPurebaricEvent?.('booking_form_abandon',{last_field:bookingLastField||'unknown',had_delivery_date:!!document.getElementById('bookDate').value,rental_months:+document.getElementById('mo').value||1,rental_type:document.getElementById('rentalType').value||'residential'});});
+window.addEventListener('pagehide',function(){if(!bookingFormStarted||bookingFormSubmitted)return;bookingFormSubmitted=true;window.trackPurebaricEvent?.('booking_form_abandon',pbFunnel({last_field:bookingLastField||'unknown',had_delivery_date:!!document.getElementById('bookDate').value,rental_months:+document.getElementById('mo').value||1,source:'book_page',rental_type:document.getElementById('rentalType').value||'residential'}));});
 
 /* carry over homepage selection */
 (function(){
@@ -585,8 +592,11 @@ document.getElementById('leadForm').addEventListener('submit',async function(e){
   if(!BIZ){data.set('street-address',document.getElementById('cstreet').value.trim());data.set('city',document.getElementById('ccity').value.trim());}
   var leadDate=window.BOOKMODE?document.getElementById('bookDate').value:document.getElementById('cdate').value;
   if(leadDate)data.set('preferred_date',leadDate);
+  // Lead source: optional answers plus the visitor's first touch (utm/click ids/referrer/landing).
   // A TEST/internal lead is flagged pb_internal=1 and switches tracking off for the session.
-  if(window.markPurebaricInternalLead)window.markPurebaricInternalLead(data,{firstName:document.getElementById('cfn').value,lastName:document.getElementById('cln').value,email:document.getElementById('ce').value});
+  data.set('heard_about',document.getElementById('cheard').value);
+  data.set('customer_type',document.getElementById('ctype').value);data.set('use_case',document.getElementById('cuse').value);
+  if(window.appendPurebaricLeadSource)window.appendPurebaricLeadSource(data,{firstName:document.getElementById('cfn').value,lastName:document.getElementById('cln').value,email:document.getElementById('ce').value});
   // Measurement: a homepage-prefilled ZIP never fires a change event and a
   // default length never fires one either, so fire them here if not yet fired.
   if(!areaFired){areaFired=true;window.trackPurebaricEvent?.('service_area_check',{result:servedZip(document.getElementById('zip').value.trim())?'eligible':'unsupported',rental_months:m,rental_type:document.getElementById('rentalType').value||'residential'});}
@@ -673,7 +683,9 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   data.set('notes',full);
   if(BF)data.set('promo','black-friday-2026');
   data.set('gclid',window.getPurebaricGclid?window.getPurebaricGclid():'');
-  if(window.markPurebaricInternalLead)window.markPurebaricInternalLead(data,{firstName:document.getElementById('cfn').value,lastName:document.getElementById('cln').value,email:document.getElementById('ce').value});
+  data.set('heard_about',document.getElementById('cheard').value);
+  data.set('customer_type',document.getElementById('ctype').value);data.set('use_case',document.getElementById('cuse').value);
+  if(window.appendPurebaricLeadSource)window.appendPurebaricLeadSource(data,{firstName:document.getElementById('cfn').value,lastName:document.getElementById('cln').value,email:document.getElementById('ce').value});
   // Lead value for Meta/GA4: the selected plan's monthly rate (the first month's rate), in USD.
   var leadValue=BIZ?rb:r;
   var analyticsContext=window.getPurebaricAnalyticsContext
@@ -710,12 +722,12 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
        // A completed request is the real Lead: Meta Lead with value/currency and
        // eventID = the booking id (dedup key for a future Conversions API), plus
        // CompleteRegistration (eventID id:complete) and GA4 generate_lead. Internal
-       // and TEST leads never get here with tracking on (markPurebaricInternalLead).
+       // and TEST leads never get here with tracking on (appendPurebaricLeadSource).
        var leadEventId=String(j.id||leadIdVal||'');
        var rtype=document.getElementById('rentalType').value||'residential';
        window.trackPurebaricMeta?.('Lead',{content_category:rtype,value:Number(leadValue)||0,currency:'USD'},{eventID:leadEventId});
        window.trackPurebaricMeta?.('CompleteRegistration',{content_category:rtype},{eventID:leadEventId+':complete'});
-       window.trackPurebaricEvent?.('generate_lead',{value:Number(leadValue)||0,currency:'USD',rental_type:rtype,rental_months:m,source:'book_page',form_name:'reservation_request'});
+       window.trackPurebaricEvent?.('generate_lead',pbFunnel({value:Number(leadValue)||0,currency:'USD',rental_type:rtype,rental_months:m,source:'book_page',form_name:'reservation_request'}));
        res.className='result ok';
        if(j.booked){ var bd=new Date(j.startDate+'T00:00:00'); res.innerHTML='<strong>Your chamber is booked</strong>'+(j.booking_number?(' ('+j.booking_number+')'):'')+' for delivery on '+bd.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'. We emailed your confirmation and will text or call to set the delivery time.'; document.getElementById('bookDate').value=''; }
        else res.innerHTML='Reservation received'+(j.booking_number?(' ('+j.booking_number+')'):'')+'. '+(j.message||"Our team will contact you shortly to confirm delivery.");

@@ -6,6 +6,12 @@ const {
   STORES,
 } = require("./_lib/storage");
 const { requireAuth, parseBody, parsePathSegments, json } = require("./_lib/admin");
+const { listManualCustomers } = require("./_lib/storage");
+const { emailOnAnotherCustomer } = require("./_lib/customers");
+
+async function findEmailOnAnotherCustomer(data, selfId) {
+  return emailOnAnotherCustomer(await listManualCustomers(), data, selfId);
+}
 
 exports.handler = async (event, context) => {
   const authErr = await requireAuth(event, context);
@@ -33,9 +39,13 @@ exports.handler = async (event, context) => {
 
     if (method === "POST" && !id) {
       const body = parseBody(event);
-      if (!String(body.name || "").trim() && !body.email && !body.phone) return json(400, { error: "a name, email, or phone is required" });
+      // Name is the only required field; email and phone are optional.
+      if (!String(body.name || "").trim()) return json(400, { error: "Add a name to save this customer." });
+      const email = body.noEmail ? "" : String(body.email || "").trim();
+      const dupe = await findEmailOnAnotherCustomer({ ...body, email });
+      if (dupe) return json(409, { error: "That email is already on another customer. Search for them instead of adding a duplicate." });
       const customer = await createManualCustomer({
-        email: body.email,
+        email,
         name: body.name || "",
         phone: body.phone || "",
         address: {
@@ -55,7 +65,9 @@ exports.handler = async (event, context) => {
       const patch = {};
       if (typeof body.name === "string") patch.name = body.name.trim();
       if (typeof body.phone === "string") patch.phone = body.phone.trim();
-      if (typeof body.email === "string") patch.email = body.email.trim();
+      if (body.noEmail) patch.email = "";
+      else if (typeof body.email === "string") patch.email = body.email.trim();
+
       if (typeof body.notes === "string") patch.notes = body.notes;
       if (body.address) patch.address = body.address;
       if (typeof body.street === "string" || typeof body.city === "string" || typeof body.state === "string" || typeof body.zip === "string") {

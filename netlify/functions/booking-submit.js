@@ -16,7 +16,7 @@ const {
 const delivery = require("./_lib/delivery");
 const { monthsFromLength } = require("./_lib/followup");
 const { cleanGclid } = require("./_lib/analytics");
-const { isInternalLead } = require("./_lib/internal-lead");
+const { leadSourceFields } = require("./_lib/lead-source");
 const { cleanRentalType, cleanBusinessName } = require("./_lib/rental-type");
 const { zipServed } = require("./_lib/servicearea");
 const { parseBookingName } = require("./_lib/booking-name");
@@ -34,6 +34,8 @@ const {
 const {
   cleanClientId,
   cleanSessionId,
+  cleanDevice,
+  cleanVariant,
   sendBookingLeadSubmitted,
   sendBookingRequestSubmitted,
 } = require("./_lib/analytics");
@@ -51,6 +53,19 @@ function parseBody(event) {
   }
   const params = new URLSearchParams(event.body);
   return Object.fromEntries(params);
+}
+
+// A step-1 lead converted (or re-submitted) keeps its earlier attribution and
+// answers when the later submission did not carry them, and stays internal once flagged.
+function keepAttribution(existing, fields) {
+  return {
+    ...fields,
+    leadSource: fields.leadSource || existing.leadSource || null,
+    heardAbout: fields.heardAbout || existing.heardAbout || "",
+    customerType: fields.customerType || existing.customerType || "",
+    useCase: fields.useCase || existing.useCase || "",
+    internal: !!(fields.internal || existing.internal),
+  };
 }
 
 function bool(v) {
@@ -100,8 +115,9 @@ exports.handler = async (event) => {
       const leadFields = {
         firstName, lastName, email,
         rentalType: step1RentalType,
-        // TEST / internal: excluded from real leads and never sent to GA4.
-        internal: isInternalLead({ firstName, lastName, email, flag: body.pb_internal }),
+        // First-touch attribution, "how did you hear about us", customer type,
+        // and the internal/TEST flag (excluded from real leads and analytics).
+        ...leadSourceFields(body, { firstName, lastName, email }),
         businessName: step1RentalType === "business" ? cleanBusinessName(body.business_name) : "",
         phone: (body.phone || body.customer_phone || "").trim(),
         zip,
@@ -117,6 +133,8 @@ exports.handler = async (event) => {
           consentGranted: step1AnalyticsConsent,
           clientId: cleanClientId(body.analytics_client_id),
           sessionId: cleanSessionId(body.analytics_session_id),
+          device: cleanDevice(body.pb_device, event.headers["user-agent"] || event.headers["User-Agent"]),
+          variant: cleanVariant(body.pb_variant),
         },
       };
       let lead = null;
@@ -124,7 +142,7 @@ exports.handler = async (event) => {
       if (body.lead_id) {
         const existingLead = await getBooking(body.lead_id);
         if (existingLead && existingLead.bookingMode === "lead") {
-          lead = await updateBooking(existingLead.id, { ...leadFields, internal: !!(leadFields.internal || existingLead.internal) });
+          lead = await updateBooking(existingLead.id, keepAttribution(existingLead, leadFields));
         }
       }
       if (!lead) {
@@ -237,11 +255,13 @@ exports.handler = async (event) => {
       consentTerms: bool(body["consent-terms"]),
       outOfArea,
       gclid: cleanGclid(body.gclid),
-      internal: isInternalLead({ firstName, lastName, email, flag: body.pb_internal }),
+      ...leadSourceFields(body, { firstName, lastName, email }),
       analytics: {
         consentGranted: analyticsConsent,
         clientId: cleanClientId(body.analytics_client_id),
         sessionId: cleanSessionId(body.analytics_session_id),
+        device: cleanDevice(body.pb_device, event.headers["user-agent"] || event.headers["User-Agent"]),
+        variant: cleanVariant(body.pb_variant),
       },
       ...(booked || { bookingMode: "request" }),
     };
@@ -252,7 +272,7 @@ exports.handler = async (event) => {
     if (body.lead_id) {
       const existingLead = await getBooking(body.lead_id);
       if (existingLead && existingLead.bookingMode === "lead") {
-        booking = await updateBooking(existingLead.id, { ...bookingFields, internal: !!(bookingFields.internal || existingLead.internal), status: "new" });
+        booking = await updateBooking(existingLead.id, { ...keepAttribution(existingLead, bookingFields), status: "new" });
       }
     }
     if (!booking) booking = await createBooking(bookingFields);

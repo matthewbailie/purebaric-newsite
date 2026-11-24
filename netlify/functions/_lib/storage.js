@@ -18,6 +18,8 @@ const STORES = {
   promoList: "promoList",
   waivers: "waivers",
   bookings: "bookings",
+  // Contact-form messages (contact-submit.js), with lead source; see createContactMessage.
+  contacts: "contacts",
   customers: "customers",
   reviews: "reviews",
   settings: "settings",
@@ -345,6 +347,18 @@ async function updateWaitlistEntry(id, patch) {
   return putOne(STORES.waitlist, updated);
 }
 
+// ───────── Contact messages ─────────
+// shape: { id, name, email, phone, topic, message, leadSource, heardAbout,
+//          customerType, useCase, internal, createdAt }
+async function createContactMessage(data) {
+  return putOne(STORES.contacts, { id: newId(), createdAt: nowIso(), ...data });
+}
+
+async function listContactMessages() {
+  const all = await listAll(STORES.contacts);
+  return all.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
 // ───────── Bookings ─────────
 // shape: {
 //   id, status: "new"|"contacted"|"approved"|"rejected"|"converted"|"lead",
@@ -355,6 +369,9 @@ async function updateWaitlistEntry(id, patch) {
 //   medicalScreeningFlags, consentMedical, consentTerms,
 //   outOfArea (true = ZIP outside the delivery area; no customer email sent),
 //   analytics: { consentGranted, clientId, sessionId, rentalConfirmedAt, rentalConfirmedEvent },
+//   leadSource: { utmSource, utmMedium, utmCampaign, utmContent, utmTerm, fbclid, gclid,
+//                 referrer, landingPath, firstTouchAt, channel } | null (first touch; _lib/lead-source.js),
+//   heardAbout, customerType, useCase (optional self-reported answers; portal only, never GA/Meta), internal (TEST/internal: not a real lead),
 //   adminNotes, convertedRentalId, createdAt, updatedAt,
 //   archivedAt (set when status becomes "archived", cleared on unarchive),
 //   lastBulkEmailedAt (stamped by the archived bulk-email endpoint per recipient)
@@ -865,6 +882,8 @@ module.exports = {
   autoTransitionRentals,
   listWaitlist,
   createWaitlistEntry,
+  createContactMessage,
+  listContactMessages,
   updateWaitlistEntry,
   listBookings,
   getBooking,

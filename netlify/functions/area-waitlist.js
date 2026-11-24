@@ -1,5 +1,6 @@
 const { createWaitlistEntry } = require("./_lib/storage");
 const { notifyAdminWaitlistJoin } = require("./_lib/email");
+const { leadSourceFields } = require("./_lib/lead-source");
 
 function parseBody(event) {
   if (!event.body) return {};
@@ -44,6 +45,8 @@ exports.handler = async (event) => {
       phone,
       zip,
       reason: "Area waitlist via homepage ZIP checker",
+      // First-touch attribution and the internal/TEST flag.
+      ...leadSourceFields(body, { name, email: (body.email || "").trim() }),
     });
 
     let adminEmailResult = null;
