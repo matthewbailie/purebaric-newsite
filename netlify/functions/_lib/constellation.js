@@ -268,7 +268,7 @@ function periodSpend({ ga, meta, campaigns, from, to }) {
     lastUpdatedAt: S.latest(google.live ? null : google.lastUpdatedAt, fb.live ? null : fb.lastUpdatedAt) };
 }
 function spendLine(spend, ga, meta) {
-  const part = (name, p, liveFrom) => `${name} ${usd(p.amount)} ${p.live ? `(live from ${liveFrom})` : `(entered by hand, ${p.days === 1 ? "1 day" : p.days + " days"})`}`;
+  const part = (name, p, liveFrom) => `${name} ${usd(p.amount)} ${p.live ? `(live from ${liveFrom})` : `(entered by hand for ${p.days === 1 ? "1 day" : p.days + " days"})`}`;
   const why = [];
   if (!spend.google.live) why.push(ga && ga.ok ? "Google Ads cost isn't available in GA4." : "Google Ads cost needs Google Analytics.");
   if (!spend.meta.live) why.push(meta && meta.configured ? "Meta could not be read." : "Meta isn't connected.");
@@ -492,7 +492,7 @@ function buildReport(input) {
     return row({ id, section: "leading", label, source: "GA4", provisional: prov(key), ...build() });
   };
   const thin = (num, den, unitNote) => (den >= minN ? { value: Math.round((num / den) * 1000) / 1000, note: `Rate ${Math.round((num / den) * 100)}%.${unitNote ? " " + unitNote : ""}` }
-    : { status: "too_thin", note: `Counts, not a rate, at current volume.${unitNote ? " " + unitNote : ""}` });
+    : { status: "too_thin", note: `Too few for a rate yet.${unitNote ? " " + unitNote : ""}` });
   gaRow("booking_completion_rate", "Booking completion rate", "bookingCompletionRate", () => ({
     display: `${completed} completed of ${ga.formStarts} form starts`, ...thin(completed, ga.formStarts, "Completed from the portal; starts from GA4.") }));
   gaRow("form_starts", "Form starts", "formStarts", () => ({ value: ga.formStarts, display: String(ga.formStarts), note: "GA4 booking_form_start events." }));

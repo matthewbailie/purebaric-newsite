@@ -454,5 +454,5 @@ test("last updated: every report carries the MT time its data was read, shown on
   const panel = html.slice(html.indexOf('<div class="an-okrs">'), html.indexOf('id="mxFoot"'));
   assert.equal((panel.match(/data-mx-updated/g) || []).length, 3);
   assert.match(html, /document\.querySelectorAll\('\[data-mx-updated\]'\)/);
-  assert.match(html, /Not live: press Refresh to read again\./);
+  assert.match(html, /\}\. Refresh to update\./);
 });

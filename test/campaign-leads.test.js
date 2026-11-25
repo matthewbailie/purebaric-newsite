@@ -261,7 +261,7 @@ test("admin.html: Leads by Campaign keeps the 'Last updated … MT' stamp and st
   const block = html.slice(start, html.indexOf("// ───────── OKRs, KPIs, and Metrics", start));
   assert.ok(start > 0 && block.includes("renderLeadsByCampaign"));
   assert.doesNotMatch(block, /localStorage|sessionStorage|document\.cookie/);
-  assert.match(block, /Not live: press Refresh to read again\./);
+  assert.match(block, /\}\. Refresh to update\./);
   const toml = require("fs").readFileSync(path.join(__dirname, "..", "netlify.toml"), "utf8");
   assert.match(toml, /from = "\/api\/admin\/campaign-leads"\n  to = "\/\.netlify\/functions\/admin-campaign-leads"/);
   assert.match(toml, /from = "\/api\/admin\/campaigns"\n  to = "\/\.netlify\/functions\/admin-campaigns"/);

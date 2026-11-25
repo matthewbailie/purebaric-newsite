@@ -135,6 +135,20 @@ test("GA4 rows read live when the key works; custom-dimension rows auto-detect a
   assert.equal(down.form_starts.status, "not_connected"); assert.equal(down.form_starts.note, "Google Analytics could not be read: quota");
 });
 
+test("Proof-reader edits (@7e812fc): thin-rate notes, spend-days wording, page-note and refresh strings", () => {
+  const thinGa = { ...gaOk(), formStarts: 3, paid: { sessions: 4, starts: 1 } };
+  const by = Object.fromEntries(report({ ga: thinGa, paidCampaigns: ["30d_home_v1"] }).rows.map((r) => [r.id, r]));
+  assert.equal(by.booking_completion_rate.note, "Too few for a rate yet. Completed from the portal; starts from GA4.");
+  assert.equal(by.paid_form_start_rate.note, "Too few for a rate yet. Campaigns: 30d_home_v1.");
+  // N in "(entered by hand for N days)" is the number of days of spend in the period, not the entry's age.
+  const one = Object.fromEntries(report({ campaigns: [CAMPAIGNS[1]] }).rows.map((r) => [r.id, r]));
+  assert.match(one.cpl.note, /Google \$7\.00 \(entered by hand for 1 day\) \+ Meta \$0\.00 \(entered by hand for 0 days\)/);
+  const html = fs.readFileSync(path.join(__dirname, "..", "admin.html"), "utf8");
+  for (const str of ["'Google Analytics: live.'", "'Meta spend: live.'", `"Couldn't read Meta, so Meta spend is entered by hand."`, "'Meta spend is entered by hand.'"]) assert.ok(html.includes(str), str);
+  for (const gone of ["Not live: press Refresh to read again.", "Google Analytics: live read.", "Meta spend: live read.", "hand-entered amount"]) assert.ok(!html.includes(gone), gone);
+  assert.equal((html.match(/\$\{d\.updated\.label\}\. Refresh to update\./g) || []).length, 2);
+});
+
 test("collecting-since note follows the config date once set", () => {
   const c = cfg(); c.ga4CustomDimensionsSince = "2026-11-25";
   const by = Object.fromEntries(report({ ga: gaOk(), config: c }).rows.map((r) => [r.id, r]));
@@ -165,7 +179,7 @@ test("CPL and CAC: static with ' *' and Last updated on hand-entered spend, live
   assert.equal(by.cpl.static, true);
   assert.equal(by.cpl.display, "$16.25 (2 real leads)");
   assert.equal(by.cpl.lastUpdated.label, "Last updated Nov 21, 2026, 6:00 PM MT");
-  assert.match(by.cpl.note, /^Spend \$32\.50: Google \$7\.00 \(entered by hand, 1 day\) \+ Meta \$25\.50 \(entered by hand, 2 days\)\./);
+  assert.match(by.cpl.note, /^Spend \$32\.50: Google \$7\.00 \(entered by hand for 1 day\) \+ Meta \$25\.50 \(entered by hand for 2 days\)\./);
   assert.equal(S.staticLabel(by.cpl.label, by.cpl.static), "Cost per real lead *");
   const live = Object.fromEntries(report({ campaigns: CAMPAIGNS, bookings: leads, ga: gaOk(), meta: { ok: true, configured: true, total: 50 } }).rows.map((r) => [r.id, r]));
   assert.equal(live.cpl.static, false); assert.equal(live.cpl.lastUpdated, null);

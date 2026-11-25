@@ -2008,7 +2008,7 @@ The Purebaric team</textarea></div>
     const r = d.range || {};
     document.getElementById('lcFrom').value = r.from || '';
     document.getElementById('lcTo').value = r.to || '';
-    const stamp = d.updated && d.updated.label ? `${d.updated.label}. Not live: press Refresh to read again.` : 'Last updated: unknown.';
+    const stamp = d.updated && d.updated.label ? `${d.updated.label}. Refresh to update.` : 'Last updated: unknown.';
     document.querySelectorAll('[data-lc-updated]').forEach(el => { el.textContent = stamp; });
     const stripeLine = d.stripe && d.stripe.ok ? 'Paying rentals are matched in Stripe by email, within 30 days of first touch.' : (d.stripe && d.stripe.configured ? 'Stripe could not be read, so paying rentals show —.' : 'Stripe is not configured, so paying rentals show —.');
     document.getElementById('lcNote').textContent = `${r.from} to ${r.to} (Mountain time), by each lead's first touch. ${stripeLine}`;
@@ -2143,14 +2143,14 @@ The Purebaric team</textarea></div>
     const rows = d.rows || [];
     const put = (id, section) => { document.getElementById(id).innerHTML = rows.filter(r => r.section === section).map(mxRow).join('') || '<p class="renter-line">Nothing to show.</p>'; };
     put('mxOkr', 'okr'); put('mxKpi', 'kpi'); put('mxLeading', 'leading');
-    const stamp = d.updated && d.updated.label ? `${d.updated.label}. Not live: press Refresh to read again.` : 'Last updated: unknown.';
+    const stamp = d.updated && d.updated.label ? `${d.updated.label}. Refresh to update.` : 'Last updated: unknown.';
     document.querySelectorAll('[data-mx-updated]').forEach(el => { el.textContent = stamp; });
     const p = d.period || {};
     const asOf = p.asOf ? new Date(p.asOf).toLocaleString('en-US', { timeZone: 'America/Denver', dateStyle: 'medium', timeStyle: 'short' }) + ' MT' : '';
     const stripeLine = d.stripe && d.stripe.ok ? 'Stripe: live read.' : (d.stripe && d.stripe.configured ? 'Stripe could not be read; Stripe rows show no data.' : 'Stripe is not configured; Stripe rows show no data.');
     const src = d.sources || {};
-    const gaLine = src.ga4 === 'live' ? 'Google Analytics: live read.' : 'Google Analytics is not connected; its rows say why.';
-    const metaLine = src.meta === 'live' ? 'Meta spend: live read.' : (src.meta === 'error' ? 'Meta could not be read; Meta spend is the hand-entered amount.' : 'Meta spend is the hand-entered amount.');
+    const gaLine = src.ga4 === 'live' ? 'Google Analytics: live.' : 'Google Analytics is not connected; its rows say why.';
+    const metaLine = src.meta === 'live' ? 'Meta spend: live.' : (src.meta === 'error' ? "Couldn't read Meta, so Meta spend is entered by hand." : 'Meta spend is entered by hand.');
     document.getElementById('mxNote').textContent = `${p.start === p.end ? p.start : p.start + ' to ' + p.end} (Mountain time). Point-in-time values as of ${asOf}; flows are summed over the period. ${stripeLine} ${gaLine} ${metaLine}`;
     const tol = d.config && d.config.scorecardTolerance;
     document.getElementById('mxFoot').textContent = `Read-only. Targets * come from the metrics config (${d.config ? d.config.version : ''}); ${d.config ? d.config.provisionalCount : ''} rows are provisional until the glossary lock.`
