@@ -25,7 +25,8 @@ function publicHtml() {
 }
 
 const C_NEW = [
-  ["index.html", "The ultimate hyperbaric experience. Daily 1.5 ATA hyperbaric sessions with 99.9% oxygen via mask at home, with no per-session fees."],
+  ["index.html", "Daily 1.5 ATA hyperbaric sessions at home, with 99.9% oxygen via mask and no per-session fees."],
+  ["index.html", "A month at home costs less than six clinic sessions."],
   ["index.html", "at the 1-year rate with two sessions a day · no per-session fees"],
   ["index.html", "Use it every day, up to two sessions"],
   ["index.html", "Up to two 1.5 ATA sessions a day with 99.9% oxygen via mask, at home."],
@@ -55,7 +56,7 @@ const D_NEW = [
   ["pricing.html", "40 sessions: $5,160 to $7,000"],
   ["pricing.html", "Foothill Wellness (Salt Lake City, $129)"],
   ["pricing.html", "SLC Lymphatic Care (Millcreek, $175)"],
-  ["use-cases/athletic-recovery.html", "At the 1-year rate, used daily, that's about $17 a session. Salt Lake-area clinics we checked charge $129 to $175 a session."],
+  ["use-cases/athletic-recovery.html", "On the 1-year rate, with one session a day, that's about $17 a session. Salt Lake-area clinics we checked charge $129 to $175 a session."],
 ];
 const D_OLD_INDEX_PRICING = [
   "$75–$150",
@@ -68,7 +69,7 @@ const D_OLD_INDEX_PRICING = [
   "Medical hard-chamber HBOT centers charge $300 to $400",
 ];
 const TAGLINE = "Mild 1.5 ATA hyperbaric chambers brought to your home, with delivery, setup and support included.";
-const C12 = "We bring professional-grade mild hyperbaric chambers to your home. Use it daily on your own schedule, with no per-session fees, for less than the cost of a single month at a clinic. We handle delivery, setup, and support, so all you have to do is relax.";
+const C12 = "We bring mild 1.5 ATA hyperbaric chambers to your home. Use yours daily on your own schedule, with no per-session fees. We handle delivery, setup and support.";
 const OLD_SHORT = "Professional-grade mild hyperbaric oxygen therapy brought to your home, delivery, setup, and support included, for less than the cost of a single month at a clinic.";
 const OLD_LONG = "Enjoy unlimited daily sessions on your own schedule, for less than the cost of a single month at a clinic. Our dedicated team handles delivery, setup, and support, ensuring a seamless experience so you can focus entirely on your wellness and recovery journey.";
 
@@ -158,4 +159,46 @@ test("signed /book step-1 strings and final button in every mode", () => {
   assert.doesNotMatch(book, /leadBtn'\)\.textContent='Continue →'/);
   // Date-validation copy is owned by the step-1 rework branch; leave it untouched.
   assert.equal((book.match(/Please pick a delivery date on the calendar\./g) || []).length, 2);
+});
+
+
+test("Proof-reader Nov 25 edits: C1, C12, lead, D7, keywords and JSON-LD", () => {
+  const index = read("index.html");
+  assert.ok(index.includes("Daily 1.5 ATA hyperbaric sessions at home, with 99.9% oxygen via mask and no per-session fees."));
+  assert.doesNotMatch(index, /The ultimate hyperbaric experience/);
+  assert.ok(index.includes("A month at home costs less than six clinic sessions."));
+  assert.doesNotMatch(index, /Less than the cost of a single month at a clinic, without leaving home/);
+
+  const kwMatch = index.match(/<meta name="keywords" content="([^"]*)"/);
+  assert.ok(kwMatch, "missing keywords meta");
+  assert.equal(
+    kwMatch[1],
+    "hyperbaric chamber rental Utah, mild hyperbaric chamber Park City, hyperbaric chamber Salt Lake City, Purebaric"
+  );
+  assert.doesNotMatch(kwMatch[1], /therapy/i);
+  assert.doesNotMatch(kwMatch[1], /mHBOT/i);
+
+  const blocks = [...index.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+  assert.equal(blocks.length, 1, `expected 1 JSON-LD block, got ${blocks.length}`);
+  const ld = JSON.parse(blocks[0]);
+  assert.equal(
+    ld.description,
+    "Rent a mild 1.5 ATA hyperbaric chamber in Utah. Delivered, installed and serviced in your home across the Wasatch Front and Utah Valley."
+  );
+  const ldText = JSON.stringify(ld);
+  assert.doesNotMatch(ldText, /therapy/i);
+  assert.doesNotMatch(ldText, /mHBOT/i);
+
+  const athletic = read("use-cases/athletic-recovery.html");
+  assert.ok(athletic.includes("On the 1-year rate, with one session a day, that's about $17 a session. Salt Lake-area clinics we checked charge $129 to $175 a session."));
+  assert.doesNotMatch(athletic, /At the 1-year rate, used daily,/);
+
+  const c12Pages = publicHtml().filter((rel) => read(rel).includes(C12));
+  assert.equal(c12Pages.length, 13, `C12 should be on exactly 13 pages, got ${c12Pages.length}: ${c12Pages.join(", ")}`);
+  for (const rel of publicHtml()) {
+    assert.doesNotMatch(
+      read(rel),
+      /We bring professional-grade mild hyperbaric chambers to your home/
+    );
+  }
 });
