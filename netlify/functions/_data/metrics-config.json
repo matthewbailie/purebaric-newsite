@@ -3,7 +3,7 @@
   "version": "2026-11-24-provisional",
   "updatedAt": "2026-11-25T19:19:52Z",
   "_updatedAtAbout": "When these targets were last saved to main (commit time, UTC). Bump it in the same commit whenever a target, baseline or flag changes; the admin shows it as 'Targets last updated'.",
-  "ga4CustomDimensionsSince": null,
+  "ga4CustomDimensionsSince": "2026-11-25",
   "_ga4CustomDimensionsSinceAbout": "MT date (YYYY-MM-DD) the GA4 event-scope dimensions percent, page_path, device and variant were registered. Shown as 'Collecting since'; null shows a generic note.",
   "machinesFallback": 8,
   "tooThinMinN": 8,
