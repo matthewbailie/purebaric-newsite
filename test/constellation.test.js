@@ -163,13 +163,22 @@ test("report: waitlist signups vs active waitlist, serviceable split, too-thin r
   assert.match(by.lead_to_rental.display, /of 6 real leads/);
   assert.equal(by.lead_source_coverage.status, "too_thin");
   assert.equal(by.step1_to_step2.status, "too_thin");
-  for (const id of ["cpl", "cac", "personalization", "booking_completion_rate", "form_starts", "paid_form_start_rate", "booking_page_visits", "scroll_depth", "device_split"]) {
+  // No GA4 key in this fixture: every GA4 row says Not connected, with the reason.
+  for (const id of ["personalization", "booking_completion_rate", "form_starts", "paid_form_start_rate", "booking_page_visits", "scroll_depth", "device_split"]) {
     assert.equal(by[id].status, "not_connected", id);
     assert.equal(by[id].value, null, id);
+    assert.match(by[id].note, /GA4_SERVICE_ACCOUNT/, id);
   }
-  assert.equal(by.renewal_touch.status, "no_data");
-  assert.equal(by.reply_time.status, "no_data");
-  assert.deepEqual(r.sources, { ga4: "not_connected", ads: "not_connected" });
+  // CPL and CAC fall back to hand-entered spend (none here), so they are static.
+  assert.equal(by.cpl.static, true);
+  assert.equal(by.cac.static, true);
+  // Renewal touch and reply time are team-entered static rows, never removed.
+  assert.equal(by.renewal_touch.static, true);
+  assert.equal(by.reply_time.static, true);
+  assert.equal(by.renewal_touch.display, "Not entered yet");
+  assert.equal(by.renewal_touch.lastUpdated, null);
+  assert.deepEqual(r.sources, { ga4: "not_connected", googleAds: "not_connected", meta: "not_connected", readAt: null });
+  assert.equal(r.staticFootnote, "* Static: updated by the team; accurate only when kept current.");
   // Sections in layout order.
   const order = [...new Set(r.rows.map((x) => x.section))];
   assert.deepEqual(order, ["okr", "kpi", "leading"]);
@@ -183,9 +192,9 @@ test("report: no PII in the payload, only whitelisted keys", () => {
   for (const bad of ["@example.com", "placeholder.invalid", "555-01", "555 01", "Alex", "Tyra", "Scott", "Shanto", "Cassie", "Muse", "Main St", "Elm", "gate code", "secret", "call back", "Is it safe", "cus_", "b1", "w1", "c1", "k1", "r1"]) {
     assert.ok(!text.includes(bad), `payload leaks ${bad}`);
   }
-  assert.deepEqual(Object.keys(r).sort(), ["config", "period", "rows", "sources", "stripe", "updated"]);
+  assert.deepEqual(Object.keys(r).sort(), ["config", "period", "rows", "sources", "staticFootnote", "stripe", "updated"]);
   assert.deepEqual(Object.keys(r.updated).sort(), ["at", "computedAt", "label", "portalAt", "stripeAt"]);
-  const allowed = new Set(["id", "section", "label", "source", "value", "display", "target", "stretch", "progress", "status", "statusLabel", "provisional", "note"]);
+  const allowed = new Set(["id", "section", "label", "source", "value", "display", "target", "stretch", "progress", "status", "statusLabel", "provisional", "note", "static", "lastUpdated", "editable"]);
   for (const row of r.rows) {
     for (const k of Object.keys(row)) assert.ok(allowed.has(k), `unexpected row key ${k}`);
     assert.ok(row.value == null || typeof row.value === "number", row.id);
@@ -276,6 +285,7 @@ function storageStub(writes) {
     listBookings: async () => f.bookings, listWaitlist: async () => f.waitlist, listManualCustomers: async () => f.customers,
     listContactMessages: async () => f.contacts, listMachines: async () => MACHINES.filter((m) => m.status !== "archived"), listRentals: async () => [],
     getStripeConfig: async () => ({ secretKey: "fixture-key-not-real", source: "env" }),
+    getCampaignList: async () => [], getStaticMetrics: async () => ({ id: "staticMetrics", values: {} }),
     store: () => ({ setJSON: no("setJSON"), set: no("set"), delete: no("delete"), get: async () => null, list: async () => ({ blobs: [] }) }),
     updateBooking: no("updateBooking"), updateWaitlistEntry: no("updateWaitlistEntry"), updateRental: no("updateRental"),
   };

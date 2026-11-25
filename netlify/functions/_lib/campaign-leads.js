@@ -11,12 +11,15 @@
 //  - Null leadSource: the browser sends no privacy marker, so a site-form lead from before the Release 3
 //    cutoff is "Before source tracking" and any later one with nothing else to go on is "Unattributed".
 //    There is no separate privacy group and no new capture.
-//  - Spend is only what an admin typed into the campaign list (Meta and Google, from Demand Gen's daily
-//    check). There are no ad-platform API reads. No spend entries for the range means no spend or cost shown.
+//  - Spend: a Google row with an "Ad platform campaign name" reads Google Ads cost live through GA4; a Meta
+//    row with one reads Meta spend live (Marketing API, only when META_ADS_TOKEN and META_AD_ACCOUNT_ID are
+//    set). Otherwise spend is what an admin typed into the campaign list, shown as static (" *" plus
+//    "Last updated"). The ad name is used only to match spend, never to group leads.
 //  - Counts only: no percentages or conversion rates. Cost per real lead shows its n.
 //  - The payload is aggregates and campaign-list rows only: no names, emails, phones, notes or record ids.
 
 const C = require("./constellation");
+const S = require("./static-metrics");
 
 const DAY_MS = 86400000;
 const CHANNELS = ["Meta", "Google", "Marketplace", "KSL", "Retention email", "Outreach", "Other"];
@@ -81,10 +84,12 @@ function newCampaign(input = {}, rows = [], { nowIso = new Date().toISOString(),
   if (portalTag && !/^[a-z0-9][a-z0-9\-]{0,59}$/.test(portalTag)) return { error: "Portal tag: lowercase letters, numbers or - only." };
   if (!portalTag) portalTag = "campaign-" + tagKey(utmCampaign);
   if (rows.some((r) => r.portalTag === portalTag)) return { error: "That portal tag is already used by another campaign." };
+  const adsCampaignName = cleanText(input.adsCampaignName, 120);
   return {
     row: {
       id: id || `cmp_${utmCampaign}`,
       name, utmCampaign, channel, owner, start: input.start, end: end || null, spendSource, portalTag,
+      adsCampaignName: adsCampaignName || null, adsCampaignNameAt: adsCampaignName ? nowIso : null,
       spend: [], createdAt: nowIso, endedAt: null,
     },
   };
@@ -97,6 +102,28 @@ function endCampaign(rows, id, end, { nowIso = new Date().toISOString() } = {}) 
   if (!isDay(end) || end < row.start) return { error: "End date must be on or after the start date." };
   if (row.end && end > row.end) return { error: "A campaign can be ended early, not extended. Add a new row instead." };
   return { rows: rows.map((r) => (r.id === id ? { ...r, end, endedAt: nowIso } : r)) };
+}
+
+// Sets or clears the optional ad platform campaign name (Google Ads or Meta, exactly as named there). Used
+// only to match live spend to the row; it never changes which leads the row gets.
+function setAdsName(rows, id, name, { nowIso = new Date().toISOString() } = {}) {
+  const row = rows.find((r) => r.id === id);
+  if (!row) return { error: "Campaign not found." };
+  if (!["Meta", "Google"].includes(row.channel)) return { error: "Only Meta and Google campaigns have an ad platform campaign name." };
+  const adsCampaignName = cleanText(name, 120) || null;
+  return { rows: rows.map((r) => (r.id === id ? { ...r, adsCampaignName, adsCampaignNameAt: nowIso } : r)) };
+}
+
+// Live spend for one row from the ad-platform reads, or null when there is no live read for it.
+// live: { google: { ok, byCampaign }, meta: { ok, byCampaign } } (by campaign name, for the report's range).
+function liveSpendFor(row, live) {
+  if (!row || !row.adsCampaignName || !live) return null;
+  const src = row.channel === "Google" ? live.google : row.channel === "Meta" ? live.meta : null;
+  if (!src || !src.ok || !src.byCampaign) return null;
+  const want = lc(row.adsCampaignName);
+  let amount = 0;
+  for (const [name, v] of Object.entries(src.byCampaign)) if (lc(name) === want) amount += Number(v) || 0;
+  return { amount: money(amount), from: row.channel === "Google" ? "Google Ads" : "Meta" };
 }
 
 // Records one day's hand-entered spend (from Demand Gen's daily check). Entering a day again replaces it.
@@ -198,7 +225,7 @@ function resolveRange({ from, to, campaignId, rows = [], today }) {
 
 function spendInRange(row, from, to) {
   const entries = (row.spend || []).filter((s) => s.day >= from && s.day <= to);
-  return entries.length ? { amount: money(entries.reduce((t, s) => t + Number(s.amount || 0), 0)), days: entries.length } : null;
+  return entries.length ? { amount: money(entries.reduce((t, s) => t + Number(s.amount || 0), 0)), days: entries.length, lastEnteredAt: S.latest(entries.map((s) => s.enteredAt)) } : null;
 }
 
 // input: { bookings, waitlist, customers, contacts, campaigns, subs, stripe: { configured, error }, nowMs,
@@ -248,9 +275,15 @@ function buildCampaignReport(input) {
   const rowById = new Map(rows.map((r) => [r.id, r]));
   const out = [...groups.values()].map((g) => {
     const row = g.campaignId ? rowById.get(g.campaignId) : null;
-    let spend = null, spendDisplay = null, cplDisplay = null, cpl = null;
-    if (row) {
+    let spend = null, spendDisplay = null, cplDisplay = null, cpl = null, spendStatic = false, spendUpdated = null;
+    const liveSpend = liveSpendFor(row, input.liveSpend);
+    if (row && liveSpend) {
+      spend = liveSpend.amount; spendDisplay = `${usd(spend)} (live from ${liveSpend.from})`;
+      if (g.realLeads >= 1) { cpl = money(spend / g.realLeads); cplDisplay = `${usd(cpl)} (${g.realLeads === 1 ? "1 real lead" : g.realLeads + " real leads"})`; }
+      else cplDisplay = "No real leads yet";
+    } else if (row) {
       const s = row.spendSource === "manual" ? spendInRange(row, range.from, toDay) : null;
+      if (row.spendSource === "manual") { spendStatic = true; spendUpdated = s ? S.stamp(s.lastEnteredAt) : null; }
       if (s) {
         spend = s.amount; spendDisplay = `${usd(s.amount)} (${s.days} day${s.days === 1 ? "" : "s"} entered)`;
         if (g.realLeads >= 1) { cpl = money(s.amount / g.realLeads); cplDisplay = `${usd(cpl)} (${g.realLeads === 1 ? "1 real lead" : g.realLeads + " real leads"})`; }
@@ -263,7 +296,7 @@ function buildCampaignReport(input) {
       dates: row ? `${row.start} to ${row.end || "open"}` : null,
       owner: row ? row.owner : null,
       payingRentals: stripeOk ? g.payingRentals : null,
-      spend, spendDisplay, cpl, cplDisplay,
+      spend, spendDisplay, cpl, cplDisplay, spendStatic, spendUpdated,
     };
   });
   const order = ["campaign", "intake", "utm_unlisted", "click", "referrer", "self", "offsite", "before", "none"];
@@ -284,6 +317,7 @@ function buildCampaignReport(input) {
     },
     internal: { realLeads: internalReal, partialLeads: internalPartial },
     campaigns: rows.map(publicRow),
+    staticFootnote: S.STATIC_FOOTNOTE,
   };
 }
 
@@ -293,11 +327,13 @@ function publicRow(r) {
     id: r.id, name: r.name, utmCampaign: r.utmCampaign, channel: r.channel, owner: r.owner, start: r.start, end: r.end || null,
     spendSource: r.spendSource, spendSourceLabel: SPEND_SOURCE_LABEL[r.spendSource] || r.spendSource, portalTag: r.portalTag,
     spend: (r.spend || []).map((s) => ({ day: s.day, amount: s.amount })),
+    adsCampaignName: r.adsCampaignName || null,
+    lastUpdated: S.stamp(S.latest(r.createdAt, r.endedAt, r.adsCampaignNameAt, (r.spend || []).map((s) => s.enteredAt))),
   };
 }
 
 module.exports = {
   CHANNELS, SPEND_SOURCES, SPEND_SOURCE_LABEL, RULES, UNATTRIBUTED_NOTE, BEFORE_NOTE, OFFSITE_LABEL,
-  newCampaign, endCampaign, setSpend, inCampaignWindow, attribute, groupByPerson, resolveRange, spendInRange,
+  newCampaign, endCampaign, setSpend, setAdsName, liveSpendFor, inCampaignWindow, attribute, groupByPerson, resolveRange, spendInRange,
   buildCampaignReport, publicRow,
 };

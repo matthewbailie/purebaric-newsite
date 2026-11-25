@@ -1,11 +1,13 @@
 // /api/admin/campaigns — the campaign list behind admin "Leads by Campaign" (stored server-side in the
 // settings Blobs doc "campaignList"). Add and end only: there is no delete, and lead records are never
-// touched. Spend is typed in by hand (Meta and Google, from Demand Gen's daily check); nothing here calls
-// an ad platform.
+// touched. Spend is typed in by hand here; live spend is read elsewhere (admin-campaign-leads.js), and
+// nothing here calls an ad platform.
 //   GET                                   → { campaigns }
 //   POST { action: "add", ...fields }     → add a row (duplicate UTM campaign tag rejected)
 //   POST { action: "end", id, end }       → set or bring forward the end date
 //   POST { action: "spend", id, day, amount } → record one day's spend (re-entering a day replaces it)
+//   POST { action: "ads_name", id, adsCampaignName } → set or clear the ad platform campaign name (Meta or
+//                                          Google rows; used only to match live spend)
 const { requireAuth, json, parseBody } = require("./_lib/admin");
 const storage = require("./_lib/storage");
 const C = require("./_lib/constellation");
@@ -33,6 +35,8 @@ exports.handler = async (event, context) => {
       result = L.endCampaign(rows, String(body.id || ""), String(body.end || today), { nowIso });
     } else if (body.action === "spend") {
       result = L.setSpend(rows, String(body.id || ""), String(body.day || ""), body.amount, { nowIso, today });
+    } else if (body.action === "ads_name") {
+      result = L.setAdsName(rows, String(body.id || ""), body.adsCampaignName, { nowIso });
     } else {
       return json(400, { error: "bad_action", message: "Unknown action." });
     }

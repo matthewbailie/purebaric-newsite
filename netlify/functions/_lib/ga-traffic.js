@@ -144,9 +144,21 @@ function summarizePages(byPage, today) {
 }
 
 // ---- Google auth + report (not unit-tested; needs the network) ----
+// GA4_SERVICE_ACCOUNT holds the service-account JSON key, either raw or base64-encoded (base64 survives
+// pasting into the Netlify UI without mangled line breaks or quotes). Returns null when unset or unreadable;
+// never logs or returns the raw value.
 function parseServiceAccount(raw) {
   if (!raw) return null;
-  try { const sa = JSON.parse(raw); return sa && sa.client_email && sa.private_key ? sa : null; } catch (e) { return null; }
+  const ok = (sa) => (sa && typeof sa === "object" && sa.client_email && sa.private_key ? sa : null);
+  const text = String(raw).trim();
+  if (text.startsWith("{")) {
+    try { return ok(JSON.parse(text)); } catch (e) { return null; }
+  }
+  if (!/^[A-Za-z0-9+/=_\-\s]+$/.test(text)) return null;
+  try {
+    const decoded = Buffer.from(text.replace(/\s+/g, "").replace(/-/g, "+").replace(/_/g, "/"), "base64").toString("utf8").trim();
+    return decoded.startsWith("{") ? ok(JSON.parse(decoded)) : null;
+  } catch (e) { return null; }
 }
 const b64url = (buf) => Buffer.from(buf).toString("base64").replace(/=+$/, "").replace(/\+/g, "-").replace(/\//g, "_");
 async function accessToken(sa, fetchFn = fetch) {
@@ -192,6 +204,25 @@ async function fetchPagesDaily(sa, propertyId, year, fetchFn = fetch) {
   const j = await res.json();
   if (!res.ok) throw new Error(`Google Analytics error: ${(j.error && j.error.message) || res.status}`);
   return pageRowsToMap(j.rows);
+}
+
+// One Data API runReport call with a token already in hand. Throws "Google Analytics error: …" on failure.
+async function runReport(token, propertyId, body, fetchFn = fetch) {
+  const res = await fetchFn(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`, {
+    method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify(body),
+  });
+  const j = await res.json();
+  if (!res.ok) throw new Error(`Google Analytics error: ${(j.error && j.error.message) || res.status}`);
+  return j;
+}
+// The property's dimension and metric names (custom dimensions included once registered).
+async function getMetadata(token, propertyId, fetchFn = fetch) {
+  const res = await fetchFn(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}/metadata`, {
+    method: "GET", headers: { Authorization: `Bearer ${token}` },
+  });
+  const j = await res.json();
+  if (!res.ok) throw new Error(`Google Analytics error: ${(j.error && j.error.message) || res.status}`);
+  return { dimensions: (j.dimensions || []).map((d) => d.apiName), metrics: (j.metrics || []).map((m) => m.apiName) };
 }
 
 // ---- Booking funnel drop-off ----
@@ -274,4 +305,4 @@ async function fetchFunnel(sa, propertyId, year, fetchFn = fetch) {
   return funnelRowsToMap(j.rows);
 }
 
-module.exports = { rowsToMap, firstDataDay, yearSeries, summarize, chartData, normalizePage, pageRowsToMap, summarizePages, parseServiceAccount, accessToken, fetchDaily, fetchPagesDaily, fetchFunnel, funnelRowsToMap, funnelWindow, FUNNEL_EVENTS, FUNNEL_SIDE_EVENTS, dayIndex, daysInYear };
+module.exports = { runReport, getMetadata, rowsToMap, firstDataDay, yearSeries, summarize, chartData, normalizePage, pageRowsToMap, summarizePages, parseServiceAccount, accessToken, fetchDaily, fetchPagesDaily, fetchFunnel, funnelRowsToMap, funnelWindow, FUNNEL_EVENTS, FUNNEL_SIDE_EVENTS, dayIndex, daysInYear };

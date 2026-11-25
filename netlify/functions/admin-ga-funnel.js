@@ -2,7 +2,7 @@
 // per-day event counts per funnel stage since 1 Jan of last year, split into home vs business
 // rentals by the booking page URL (/book vs /book?type=business), plus ready-made windows
 // (today, 7, 30, 90, 365 days, each with the period before) so the card follows the tab's range picker.
-// Results are cached in the settings store for one hour so the Google API is not hit on every load.
+// Results are cached in the settings store for about 5 minutes so the Google API is not hit on every click.
 const { requireAuth, json } = require("./_lib/admin");
 const { store, STORES } = require("./_lib/storage");
 const { mountainToday } = require("./_lib/delivery");
@@ -10,7 +10,7 @@ const ga = require("./_lib/ga-traffic");
 
 const CACHE_KEY = "gaFunnelDaily";
 const RANGES = [1, 7, 30, 90, 365];
-const CACHE_MS = 60 * 60 * 1000;
+const CACHE_MS = 5 * 60 * 1000; // about 5 minutes: close to live without calling Google on every click
 const PROPERTY = (process.env.GA4_PROPERTY_ID || "555169638").trim();
 
 exports.handler = async (event, context) => {
