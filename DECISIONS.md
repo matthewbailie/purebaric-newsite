@@ -228,3 +228,13 @@
 **Context:** The owner found Cassie Johnson's rental ending Dec 2 in the portal while her Stripe period ends Dec 5: a chamber is reserved in the portal before it is delivered and billing starts, so portal dates drift from Stripe. He asked that the portal always follow Stripe, including price changes, automatically.
 **Alternatives considered:** Showing Stripe dates only on the Home tab (availability, digests and payment status would still use the old dates); syncing only from the webhook (a missed or unsubscribed event would leave drift).
 **Status:** Deployed. The Stripe webhook destination must include the subscription events listed above for instant updates; until then the hourly check catches every change.
+
+## Footer and /safety FDA line is a single drop-in (2026-11-25)
+
+**Decision:** The "not a medical device" sentence is removed from the sitewide footer and the /safety positioning paragraph until Matthew provides approved FDA wording. The one edit point is `fda-disclaimer.js`: set `window.PUREBARIC_FDA_DISCLAIMER_LINE` to that exact sentence. Public pages include the script and mount it at `[data-fda-line]`. An empty string shows nothing. Do not ship placeholder text. If wording is not in by Friday, the line stays out.
+
+**Context:** The Proof-reader held the previous "not a medical device" line because it may conflict with FDA Class II status. Matthew's wording is still pending. The rest of the footer stays: general wellness and relaxation only, and "Consult your physician before use."
+
+**Alternatives considered:** Leaving the current line in place; shipping placeholder copy; editing every footer again when the wording arrives.
+
+**Status:** On `feat/claims-cleanup`. Not deployed.

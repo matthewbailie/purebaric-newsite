@@ -1,5 +1,5 @@
-// Review-form compliance: no steered 5-star default, no "verified review" labels,
-// counts follow the reviews API, and published reviews of every rating stay public.
+// Review-form compliance: no steered 5-star default, keep "verified review(s)"
+// (Matthew confirms each reviewer). Counts follow the reviews API.
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
 const path = require("path");
@@ -51,18 +51,18 @@ test("reviews.html has no default checked star, requires a rating, and does not 
   assert.doesNotMatch(submit, /data\.set\(\s*['"]stars['"]\s*,\s*[^)]*['"]5['"]/);
   assert.match(submit, /if\s*\(\s*!starEl\s*\)\s*\{[^}]*return;[^}]*\}/);
   assert.match(submit, /data\.set\(\s*['"]stars['"]\s*,\s*starEl\.value\s*\)/);
-  assert.match(html, new RegExp(PREFACE.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
-  assert.match(html, new RegExp(STAR_HELP.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  assert.doesNotMatch(html, new RegExp(PREFACE.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  assert.doesNotMatch(html, new RegExp(STAR_HELP.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 });
 
-test("reviews.html, index.html, and bake-hero-rating.js have no 'verified review' string", () => {
+test("reviews.html, index.html, and bake-hero-rating.js use 'verified review(s)'", () => {
   for (const rel of ["reviews.html", "index.html", "scripts/bake-hero-rating.js"]) {
     const text = read(rel);
-    assert.doesNotMatch(text, /verified review/i, rel);
+    assert.match(text, /verified review/i, rel);
   }
 });
 
-test("homepage and /reviews count labels use review/reviews and follow the API n", () => {
+test("homepage and /reviews count labels use verified review(s) and follow the API n", () => {
   const index = read("index.html");
   const reviews = read("reviews.html");
   const bake = read("scripts/bake-hero-rating.js");
@@ -70,23 +70,21 @@ test("homepage and /reviews count labels use review/reviews and follow the API n
   const heroExpr = index.match(/heroCount'\)\.textContent=(.+);/);
   assert.ok(heroExpr, "hero count updater present");
   const heroCount = new Function("n", "return " + heroExpr[1]);
-  assert.equal(heroCount(1), "(1 review)");
-  assert.equal(heroCount(6), "(6 reviews)");
+  assert.equal(heroCount(1), "(1 verified review)");
+  assert.equal(heroCount(6), "(6 verified reviews)");
 
   const labelExpr = index.match(/var label=(.+);/);
   assert.ok(labelExpr, "hero aria-label updater present");
   const heroLabel = new Function("score", "n", "return " + labelExpr[1]);
-  assert.equal(heroLabel("4.5", 1), "Rated 4.5 out of 5 from 1 review");
-  assert.equal(heroLabel("3.0", 2), "Rated 3.0 out of 5 from 2 reviews");
+  assert.equal(heroLabel("4.5", 1), "Rated 4.5 out of 5 from 1 verified review");
+  assert.equal(heroLabel("3.0", 2), "Rated 3.0 out of 5 from 2 verified reviews");
 
-  assert.match(reviews, /rated\.length\s*\+\s*\(rated\.length===1\s*\?\s*' review'\s*:\s*' reviews'\)/);
-  assert.match(bake, /const count = `\(\$\{n\} review\$\{n === 1 \? "" : "s"\}\)`/);
-  assert.match(bake, /from \$\{n\} review\$\{n === 1 \? "" : "s"\}/);
-  // Baked hero/band copy must itself be a live-API count in the review(s) wording,
-  // not a leftover hardcoded "4 verified reviews".
-  assert.match(index, /id="heroCount"[^>]*>\(\d+ reviews?\)<\/a>/);
-  assert.match(index, /id="bandCount">\(\d+ reviews?\)<\/span>/);
-  assert.match(index, /id="heroRating" aria-label="Rated [\d.]+ out of 5 from \d+ reviews?"/);
+  assert.match(reviews, /rated\.length\s*\+\s*\(rated\.length===1\s*\?\s*' verified review'\s*:\s*' verified reviews'\)/);
+  assert.match(bake, /const count = `\(\$\{n\} verified review\$\{n === 1 \? "" : "s"\}\)`/);
+  assert.match(bake, /from \$\{n\} verified review\$\{n === 1 \? "" : "s"\}/);
+  assert.match(index, /id="heroCount"[^>]*>\(\d+ verified reviews?\)<\/a>/);
+  assert.match(index, /id="bandCount">\(\d+ verified reviews?\)<\/span>/);
+  assert.match(index, /id="heroRating" aria-label="Rated [\d.]+ out of 5 from \d+ verified reviews?"/);
 });
 
 test("bake-hero-rating.js writes the fixture API count, not a stale baseline", async () => {
@@ -107,14 +105,14 @@ test("bake-hero-rating.js writes the fixture API count, not a stale baseline", a
   const tmpIndex = path.join(tmpDir, "index.html");
   // Minimal markers the bake script replaces; stale count on purpose.
   fs.writeFileSync(tmpIndex, [
-    '<span class="rating" id="heroRating" aria-label="Rated 5.0 out of 5 from 4 reviews">',
+    '<span class="rating" id="heroRating" aria-label="Rated 5.0 out of 5 from 4 verified reviews">',
     '<span class="stars" id="heroStars" aria-hidden="true">★★★★★</span>',
     '<strong id="heroScore">5.0</strong>',
-    '<a class="count" id="heroCount" href="#reviewsBand">(4 reviews)</a></span>',
-    '<span class="rating" id="bandRatingUnit" aria-label="Rated 5.0 out of 5 from 4 reviews">',
+    '<a class="count" id="heroCount" href="#reviewsBand">(4 verified reviews)</a></span>',
+    '<span class="rating" id="bandRatingUnit" aria-label="Rated 5.0 out of 5 from 4 verified reviews">',
     '<span class="stars" id="bandStars" aria-hidden="true">★★★★★</span>',
     '<strong id="bandScore">5.0</strong>',
-    '<span class="count" id="bandCount">(4 reviews)</span></span>',
+    '<span class="count" id="bandCount">(4 verified reviews)</span></span>',
   ].join(""));
   try {
     const result = await new Promise((resolve, reject) => {
@@ -129,11 +127,11 @@ test("bake-hero-rating.js writes the fixture API count, not a stale baseline", a
     });
     assert.equal(result.status, 0, result.stderr || result.stdout);
     const out = fs.readFileSync(tmpIndex, "utf8");
-    assert.match(out, /id="heroCount"[^>]*>\(2 reviews\)<\/a>/);
-    assert.match(out, /id="bandCount">\(2 reviews\)</);
-    assert.match(out, /aria-label="Rated 3.0 out of 5 from 2 reviews"/g);
+    assert.match(out, /id="heroCount"[^>]*>\(2 verified reviews\)<\/a>/);
+    assert.match(out, /id="bandCount">\(2 verified reviews\)</);
+    assert.match(out, /aria-label="Rated 3.0 out of 5 from 2 verified reviews"/g);
     assert.match(out, /id="heroScore">3.0<\/strong>/);
-    assert.doesNotMatch(out, /4 reviews|verified/i);
+    assert.doesNotMatch(out, /4 verified reviews|4 reviews/i);
   } finally {
     server.close();
     fs.rmSync(tmpDir, { recursive: true, force: true });

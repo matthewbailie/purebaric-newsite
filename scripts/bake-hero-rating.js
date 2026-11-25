@@ -13,7 +13,7 @@ const URL_ = process.env.REVIEWS_URL || "https://purebaric.com/api/reviews";
   if (!rated.length) { console.log("no rated reviews; leaving index.html as is"); return; }
   const avg = rated.reduce((a, r) => a + r.stars, 0) / rated.length, n = rated.length;
   const score = avg.toFixed(1), stars = "★★★★★☆☆☆☆☆".slice(5 - Math.round(avg), 10 - Math.round(avg));
-  const count = `(${n} review${n === 1 ? "" : "s"})`, label = `Rated ${score} out of 5 from ${n} review${n === 1 ? "" : "s"}`;
+  const count = `(${n} verified review${n === 1 ? "" : "s"})`, label = `Rated ${score} out of 5 from ${n} verified review${n === 1 ? "" : "s"}`;
   const file = process.env.BAKE_INDEX || path.join(__dirname, "..", "index.html");
   let html = fs.readFileSync(file, "utf8");
   const before = html;

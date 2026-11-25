@@ -135,7 +135,6 @@
       <form id="reviewForm" class="frm formwrap" novalidate>
         <span id="write"></span>
         <h3 style="font-size:19px;font-weight:700;margin-bottom:16px">Write a review</h3>
-        <p class="rv-form-preface">Only leave a review if you've rented a chamber from Purebaric. Use your own words, and please skip any health details.</p>
         <div class="result" id="rResult" role="status" aria-live="polite"></div>
         <p hidden><label>Do not fill this out <input name="bot-field" id="rBot" tabindex="-1" autocomplete="off"></label></p>
 
@@ -145,10 +144,9 @@
         </div>
         <div class="fg"><label for="rCity">City (optional)</label><input type="text" id="rCity" name="city" maxlength="60"></div>
         <div class="fg"><span class="lbl" id="rStarsLabel">Your rating <span class="req">*</span></span>
-          <div class="stars-input" role="radiogroup" aria-labelledby="rStarsLabel" aria-describedby="rStarsHelp">
+          <div class="stars-input" role="radiogroup" aria-labelledby="rStarsLabel">
             <label><input type="radio" name="stars" value="5" required><span>★</span></label><label><input type="radio" name="stars" value="4" required><span>★</span></label><label><input type="radio" name="stars" value="3" required><span>★</span></label><label><input type="radio" name="stars" value="2" required><span>★</span></label><label><input type="radio" name="stars" value="1" required><span>★</span></label>
           </div>
-          <p class="stars-help" id="rStarsHelp">Pick the star rating that fits your experience.</p>
         </div>
         <div class="fg"><label for="rText">Your review <span class="req">*</span></label><textarea id="rText" name="text" maxlength="1500" required placeholder="What was your experience like, delivery, setup, using the chamber, support?"></textarea></div>
         <label class="consent"><input type="checkbox" id="rConsent" required> I'm okay with Purebaric sharing my review (first name, last initial, and city) on their website.</label>
@@ -166,7 +164,7 @@
       <div class="foot-brand">
         <img class="foot-logo" src="/images/logo-cream.png?v=3" alt="Purebaric">
         <p class="foot-tag">Hyperbaric chamber rentals, delivered across Utah.</p>
-        <p class="foot-desc">Professional-grade mild hyperbaric oxygen therapy brought to your home, delivery, setup, and support included, for less than the cost of a single month at a clinic.</p>
+        <p class="foot-desc">Mild 1.5 ATA hyperbaric chambers brought to your home, with delivery, setup and support included.</p>
       </div>
       <div class="foot-col"><h5>Service</h5><ul>
         <li><a href="/how-it-works">How it works</a></li><li><a href="/chambers">Chambers</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/service-area">Service area</a></li><li><a href="/business">For businesses</a></li><li><a href="/book">Book now</a></li><li><a href="/waitlist">Waitlist</a></li></ul></div>
@@ -180,7 +178,7 @@
     </div>
     <div class="foot-bottom">
       <span>© <span class="foot-year">2026</span> Purebaric. All rights reserved.</span>
-      <span class="foot-disc">Provided for general wellness and relaxation only. Not a medical device; not intended to diagnose, treat, cure, or prevent any disease. Consult your physician before use.</span>
+      <span class="foot-disc">Provided for general wellness and relaxation only. Consult your physician before use.</span><span data-fda-line hidden></span>
     </div>
   </div>
 </footer>
@@ -216,7 +214,7 @@ function rvInitials(rv){return esc(((rv.firstName||'').charAt(0)+(rv.lastInitial
     var agg=document.getElementById('rvAgg');
     if(agg&&rated.length){
       var avg=rated.reduce(function(a,rv){return a+rv.stars;},0)/rated.length;
-      agg.innerHTML='<span class="score">'+(Math.round(avg*10)/10)+'</span><span><span class="stars">'+starChars(avg)+'</span><span class="count"> · '+rated.length+(rated.length===1?' review':' reviews')+'</span></span>';
+      agg.innerHTML='<span class="score">'+(Math.round(avg*10)/10)+'</span><span><span class="stars">'+starChars(avg)+'</span><span class="count"> · '+rated.length+(rated.length===1?' verified review':' verified reviews')+'</span></span>';
       agg.hidden=false;
     }
     list.innerHTML=reviews.map(function(rv,i){
@@ -276,4 +274,5 @@ document.getElementById('reviewForm').addEventListener('submit',function(e){
    });
 });
 </script>
+<script src="/fda-disclaimer.js" defer></script>
 </body></html>

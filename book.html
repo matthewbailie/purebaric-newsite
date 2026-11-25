@@ -190,6 +190,7 @@ body.biz.bookmode .slider-block{display:block!important}
         <div class="msum"><div><span class="mp" id="mpr">$579</span><small> /mo</small> <span class="mterm">· <span id="mmo">4 months</span></span></div><a href="#" onclick="document.getElementById('mo').scrollIntoView({block:'center'});return false;">Edit ↓</a></div>
 
         <div class="section-head" style="margin-bottom:18px">
+          <p class="step-progress">Step 1 of 2</p>
           <h2 style="font-size:22px"><span class="bf-only">Secure your $200 off</span><span class="bf-off">Start your booking</span></h2>
           <p>Check your ZIP and pick a delivery date, then tell us who we are delivering to.<span class="bf-only"> Book by Friday, Nov 27 to save $200 on your first month.</span></p>
         </div>
@@ -225,7 +226,7 @@ body.biz.bookmode .slider-block{display:block!important}
           <div class="fg"><label for="ctype">Which best describes you? <span class="micro" style="display:inline">(optional)</span></label><select id="ctype" name="customer_type"><option value="">Choose one</option><option value="home">Home user</option><option value="athlete">Athlete</option><option value="gym">Gym</option><option value="clinic">Clinic</option><option value="salon">Salon</option><option value="other">Other</option></select></div>
         </div>
         <div class="fg"><label for="cuse">What would you mainly use it for? <span class="micro" style="display:inline">(optional)</span></label><select id="cuse" name="use_case"><option value="">Choose one</option><option value="recovery">After workouts or activity</option><option value="wellness">General wellness and relaxation</option><option value="performance">Part of my training routine</option><option value="business_amenity">An amenity for my business</option><option value="other">Other</option></select></div>
-        <button type="submit" class="btn btn-primary submit" id="leadBtn">Secure my $200 off →</button>
+        <button type="submit" class="btn btn-primary submit" id="leadBtn">Save and continue →</button>
 
         <div class="trust">
           <span><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Your details stay private</span>
@@ -235,7 +236,7 @@ body.biz.bookmode .slider-block{display:block!important}
         </form>
         <form id="resForm" class="frm" novalidate hidden>
         <div class="section-head" style="margin-bottom:18px">
-          <h2 style="font-size:22px">Last step</h2>
+          <h2 style="font-size:22px">Step 2 of 2</h2>
           <p id="s2sum">Add any notes for our delivery team and confirm below.</p>
         </div>
         <input type="hidden" id="leadId" value="">
@@ -296,7 +297,7 @@ body.biz.bookmode .slider-block{display:block!important}
       <div class="foot-brand">
         <img class="foot-logo" src="/images/logo-cream.png?v=3" alt="Purebaric">
         <p class="foot-tag">Hyperbaric chamber rentals, delivered across Utah.</p>
-        <p class="foot-desc">Professional-grade mild hyperbaric oxygen therapy brought to your home, delivery, setup, and support included, for less than the cost of a single month at a clinic.</p>
+        <p class="foot-desc">Mild 1.5 ATA hyperbaric chambers brought to your home, with delivery, setup and support included.</p>
       </div>
       <div class="foot-col"><h5>Service</h5><ul>
         <li><a href="/how-it-works">How it works</a></li><li><a href="/chambers">Chambers</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/service-area">Service area</a></li><li><a href="/business">For businesses</a></li><li><a href="/book">Book now</a></li><li><a href="/waitlist">Waitlist</a></li></ul></div>
@@ -310,12 +311,13 @@ body.biz.bookmode .slider-block{display:block!important}
     </div>
     <div class="foot-bottom">
       <span>© <span class="foot-year">2026</span> Purebaric. All rights reserved.</span>
-      <span class="foot-disc">Provided for general wellness and relaxation only. Not a medical device; not intended to diagnose, treat, cure, or prevent any disease. Consult your physician before use.</span>
+      <span class="foot-disc">Provided for general wellness and relaxation only. Consult your physician before use.</span><span data-fda-line hidden></span>
     </div>
   </div>
 </footer>
 
 <script src="/warm.js"></script>
+<script src="/book-funnel-events.js"></script>
 <script>
 var PB_PF={1:729,2:659,3:659,4:579,5:579,6:579,7:579,8:579,9:579,10:579,11:579,12:529};
 var PB_PRICING=Object.assign({},PB_PF);
@@ -366,15 +368,12 @@ document.getElementById('zip').addEventListener('input',checkZip);
 
 /* analytics: plan choice, service-area result, form start (no PII) */
 var areaFired=false,planFired=false,dateFired=false;
-document.getElementById('zip').addEventListener('change',function(){var z=this.value.trim();if(!/^\d{5}$/.test(z))return;areaFired=true;window.trackPurebaricEvent?.('service_area_check',{result:servedZip(z)?'eligible':'unsupported',rental_months:+document.getElementById('mo').value,rental_type:document.getElementById('rentalType').value||'residential'});});
+document.getElementById('zip').addEventListener('change',function(){var z=this.value.trim();if(!/^\d{5}$/.test(z))return;areaFired=true;var inArea=servedZip(z);window.trackPurebaricEvent?.('service_area_check',{result:inArea?'eligible':'unsupported',in_area:!!inArea,rental_months:+document.getElementById('mo').value,rental_type:document.getElementById('rentalType').value||'residential'});});
 document.getElementById('mo').addEventListener('change',function(){var mm=+this.value,rr=rate(mm);planFired=true;window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD',rental_type:document.getElementById('rentalType').value||'residential'});});
-var bookingFormStarted=false,bookingFormSubmitted=false,bookingLastField='';
 // Funnel params from metrics.md section 2 (device, variant); allowlisted, no PII.
 function pbFunnel(o){return window.PBMetrics&&window.PBMetrics.funnelParams?window.PBMetrics.funnelParams(o):o;}
-['leadForm','resForm'].forEach(function(fid){var fm=document.getElementById(fid);if(!fm)return;fm.addEventListener('focusin',function(e){var f=e.target&&e.target.id?e.target.id:'';if(f)bookingLastField=f;if(bookingFormStarted)return;bookingFormStarted=true;window.trackPurebaricEvent?.('booking_form_start',pbFunnel({chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:+document.getElementById('mo').value||1,source:'book_page',rental_type:document.getElementById('rentalType').value||'residential'}));});});
-// Drop-off: if the visitor starts the form but leaves without submitting,
-// record how far they got (field id only — never field values).
-window.addEventListener('pagehide',function(){if(!bookingFormStarted||bookingFormSubmitted)return;bookingFormSubmitted=true;window.trackPurebaricEvent?.('booking_form_abandon',pbFunnel({last_field:bookingLastField||'unknown',had_delivery_date:!!document.getElementById('bookDate').value,rental_months:+document.getElementById('mo').value||1,source:'book_page',rental_type:document.getElementById('rentalType').value||'residential'}));});
+// v2 booking events (O&P contract): start/abandon/step1_save + in_area + pbtest. See book-funnel-events.js.
+if(window.PBBookFunnel)window.PBBookFunnel.install(window,document);
 
 /* carry over homepage selection */
 (function(){
@@ -402,7 +401,6 @@ window.addEventListener('pagehide',function(){if(!bookingFormStarted||bookingFor
     });
   }
   var bfa=document.querySelector('#bfBanner a');if(bfa&&BIZ)bfa.setAttribute('href','/book?type=business');
-  if(!BF){var lb=document.getElementById('leadBtn');if(lb)lb.textContent='Continue →';}
   if(BIZ){document.body.classList.add('biz');document.getElementById('rentalType').value='business';document.getElementById('cbiz').required=true;document.getElementById('cstreet').required=false;document.getElementById('ccity').required=false;
     if(!(m>=1&&m<=12))document.getElementById('mo').value=4; // business bookings default to the 4-month rate unless a term was passed in
     document.querySelector('.page-hero .eyebrow2').textContent='Business rental request';document.querySelector('.page-hero h1').textContent='Request a chamber for your business';
@@ -492,7 +490,7 @@ function enterBookMode(j){
   var lbl=document.querySelector('.book-side-label'); if(lbl)lbl.textContent=BIZ?'Your business booking':'Your booking';
   var head=document.querySelector('#leadForm .section-head p'); if(head)head.innerHTML='Check your ZIP and pick a delivery date, then tell us who we are delivering to.'+(BF?' Book by Friday, Nov 27 to save $200 on your first month.':'');
   document.querySelectorAll('.trust span').forEach(function(sp){ if(/Reply within one business day/.test(sp.textContent)) sp.remove(); });
-  document.getElementById('submitBtn').textContent=BIZ?'Book chamber for my business →':'Book chamber →';
+  document.getElementById('submitBtn').textContent='Request reservation →';
   var fine=document.querySelector('.book .fine'); if(fine)fine.textContent=BIZ?bizFeeText()+' · no charge until delivery day · we confirm the delivery time by text or call':'No charge until delivery day · we confirm the delivery time by text or call · cancel free up to 7 days before delivery';
   var note=document.getElementById('dnote'); if(note&&j.deliveryNote)note.innerHTML='<strong>'+j.deliveryNote.replace(/</g,'&lt;')+'</strong>';
   if(j.styles&&j.styles.length){
@@ -599,7 +597,7 @@ document.getElementById('leadForm').addEventListener('submit',async function(e){
   if(window.appendPurebaricLeadSource)window.appendPurebaricLeadSource(data,{firstName:document.getElementById('cfn').value,lastName:document.getElementById('cln').value,email:document.getElementById('ce').value});
   // Measurement: a homepage-prefilled ZIP never fires a change event and a
   // default length never fires one either, so fire them here if not yet fired.
-  if(!areaFired){areaFired=true;window.trackPurebaricEvent?.('service_area_check',{result:servedZip(document.getElementById('zip').value.trim())?'eligible':'unsupported',rental_months:m,rental_type:document.getElementById('rentalType').value||'residential'});}
+  if(!areaFired){areaFired=true;var inArea=servedZip(document.getElementById('zip').value.trim());window.trackPurebaricEvent?.('service_area_check',{result:inArea?'eligible':'unsupported',in_area:!!inArea,rental_months:m,rental_type:document.getElementById('rentalType').value||'residential'});}
   if(!planFired){planFired=true;var rr=BIZ?rateBiz(m):rate(m);window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:m,monthly_rate:rr,estimated_total:rr*m,currency:'USD',rental_type:document.getElementById('rentalType').value||'residential'});}
   // Measurement: capture the anonymous GA identifiers so the backend can send the
   // server-side lead event for this lead (same pattern as the step-2 submit).
@@ -611,10 +609,11 @@ document.getElementById('leadForm').addEventListener('submit',async function(e){
   if(analyticsContext.sessionId)data.set('analytics_session_id',analyticsContext.sessionId);
   var orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='Checking...';
   fetch('/api/booking-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
-   .then(function(r){return r.json().catch(function(){return {};});})
+   .then(function(r){return r.json().catch(function(){return {};}).then(function(j){j=j||{};j._httpStatus=r.status;return j;});})
    .then(function(j){
      _leadSubmitting=false;btn.disabled=false;btn.innerHTML=orig;
      if(j&&j.lead){
+       if(j._httpStatus===200&&window.PBBookFunnel)window.PBBookFunnel.step1Save(window,!j.outOfArea);
        document.getElementById('leadId').value=j.id;
        // Measurement: a step-1 save is a PARTIAL lead, so Meta gets InitiateCheckout
        // (not Lead) once per new lead; a re-submit (back button, edit) does not fire again.
@@ -716,7 +715,7 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
        document.getElementById('bookDate').value=''; refetchDelivery(); showStep1();
        document.getElementById('dcal').scrollIntoView({block:'center',behavior:'smooth'});
      }else if(j&&(j.success||j.ok)){
-       bookingFormSubmitted=true; // submitted — no abandon event on pagehide
+       if(window.PBBookFunnel)window.PBBookFunnel.markSubmitted(); // submitted — no abandon event on pagehide
        // The backend records the canonical booking_request_submit event once,
        // after accepting the request, using this visitor's anonymous GA context.
        // A completed request is the real Lead: Meta Lead with value/currency and
@@ -752,4 +751,5 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
    });
 });
 </script>
+<script src="/fda-disclaimer.js" defer></script>
 </body></html>
