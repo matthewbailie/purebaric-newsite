@@ -39,8 +39,8 @@ test("out-of-area on /book joins the area waitlist, not a booking lead", () => {
   assert.match(bookHtml, /fetch\('\/api\/area-waitlist'/);
   assert.match(bookHtml, /new URLSearchParams\(\{name:name,phone:phone,zip:z,email:email,source:'book_page'\}\)/);
   assert.match(bookHtml, /appendPurebaricLeadSource\(awData,\{name:name,email:email\}\)/);
-  assert.match(bookHtml, /trackPurebaricEvent\?\.\('waitlist_join',pbFunnel\(\{source:'book_page',in_area:false\}\)\)/);
-  assert.match(bookHtml, /trackPurebaricMeta\?\.\('Subscribe',\{content_category:'waitlist'\}\)/);
+  assert.match(bookHtml, /pbTrack\('waitlist_join',pbFunnel\(\{source:'book_page',in_area:false\}\)\)/);
+  assert.match(bookHtml, /pbMeta\('Subscribe',\{content_category:'waitlist'\}\)/);
   const wait = bookHtml.slice(bookHtml.indexOf("var _waitlistJoining"), bookHtml.indexOf("var _submitting"));
   assert.doesNotMatch(wait, /booking-submit/);
   assert.doesNotMatch(wait, /booking_step1_save/);
@@ -107,7 +107,7 @@ test("booking page installs v2 funnel events and keeps pbFunnel", () => {
 
 test("measurement fires for defaults: plan, area, and typed dates count", () => {
   assert.match(bookHtml, /var areaFired=false,planFired=false,dateFired=false/);
-  assert.match(bookHtml, /if\(!areaFired\)\{areaFired=true/);
+  assert.match(bookHtml, /fireServiceAreaCheck\(document\.getElementById\('zip'\)\.value\)/);
   assert.match(bookHtml, /if\(!planFired\)\{planFired=true/);
   assert.match(bookHtml, /if\(dateVal&&!dateFired\)\{dateFired=true/);
 });
@@ -115,10 +115,10 @@ test("measurement fires for defaults: plan, area, and typed dates count", () => 
 test("step-1 submit fires InitiateCheckout once, step 2 fires Lead and CompleteRegistration", () => {
   // A step-1 save is a partial lead: InitiateCheckout once per new lead; a
   // re-submit of an existing lead (back button, edit, re-submit) does not fire again.
-  assert.match(bookHtml, /if\(!existingLead\)window\.trackPurebaricMeta\?\.\('InitiateCheckout',\{content_category:document\.getElementById\('rentalType'\)\.value\|\|'residential'\},\{eventID:j\.id\+':step1'\}\)/);
+  assert.match(bookHtml, /if\(!existingLead\)pbMeta\('InitiateCheckout',\{content_category:document\.getElementById\('rentalType'\)\.value\|\|'residential'\},\{eventID:j\.id\+':step1'\}\)/);
   // The completed request is the Lead (one per visitor), plus CompleteRegistration.
-  assert.match(bookHtml, /trackPurebaricMeta\?\.\('Lead',\{content_category:rtype,value:Number\(leadValue\)\|\|0,currency:'USD'\},\{eventID:leadEventId\}\)/);
-  assert.match(bookHtml, /trackPurebaricMeta\?\.\('CompleteRegistration',\{content_category:rtype\},\{eventID:leadEventId\+':complete'\}\)/);
+  assert.match(bookHtml, /pbMeta\('Lead',\{content_category:rtype,value:Number\(leadValue\)\|\|0,currency:'USD'\},\{eventID:leadEventId\}\)/);
+  assert.match(bookHtml, /pbMeta\('CompleteRegistration',\{content_category:rtype\},\{eventID:leadEventId\+':complete'\}\)/);
   // Step 1 sends the anonymous GA identifiers so the backend can send the
   // server-side lead event for the new lead.
   assert.match(bookHtml, /data\.set\('analytics_client_id',analyticsContext\.clientId\)/);

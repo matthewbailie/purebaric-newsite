@@ -383,8 +383,24 @@ document.getElementById('zip').addEventListener('input',checkZip);
 
 /* analytics: plan choice, service-area result, form start (no PII). Event contract (OPT Nov 25). */
 var areaFired=false,planFired=false,dateFired=false;
-document.getElementById('zip').addEventListener('change',function(){var z=this.value.trim();if(!/^\d{5}$/.test(z))return;areaFired=true;var inArea=servedZip(z);window.trackPurebaricEvent?.('service_area_check',{result:inArea?'eligible':'unsupported',in_area:!!inArea,rental_months:+document.getElementById('mo').value,rental_type:document.getElementById('rentalType').value||'residential'});});
-document.getElementById('mo').addEventListener('change',function(){var mm=+this.value,rr=rate(mm);planFired=true;window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD',rental_type:document.getElementById('rentalType').value||'residential'});});
+// Last checked ZIP stays in memory only (never storage): a ZIP is PII-adjacent.
+var lastAreaZip='';
+function pbBlocked(){return !!(window.PBMetrics&&typeof window.PBMetrics.isBlocked==='function'&&window.PBMetrics.isBlocked());}
+function pbTrack(name,params){if(pbBlocked())return;window.trackPurebaricEvent?.(name,params);}
+function pbMeta(name,params,opts){if(pbBlocked())return;window.trackPurebaricMeta?.(name,params,opts);}
+function fireServiceAreaCheck(z){
+  z=String(z||'').trim();
+  if(!/^\d{5}$/.test(z))return;
+  if(z===lastAreaZip)return;
+  lastAreaZip=z;
+  areaFired=true;
+  if(pbBlocked())return;
+  var inArea=servedZip(z);
+  pbTrack('service_area_check',{result:inArea?'eligible':'unsupported',in_area:!!inArea,rental_months:+document.getElementById('mo').value,rental_type:document.getElementById('rentalType').value||'residential'});
+}
+document.getElementById('zip').addEventListener('change',function(){fireServiceAreaCheck(this.value);});
+document.getElementById('zip').addEventListener('blur',function(){fireServiceAreaCheck(this.value);});
+document.getElementById('mo').addEventListener('change',function(){var mm=+this.value,rr=rate(mm);planFired=true;pbTrack('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD',rental_type:document.getElementById('rentalType').value||'residential'});});
 // Funnel params from metrics.md section 2 (device, variant); allowlisted, no PII.
 function pbFunnel(o){return window.PBMetrics&&window.PBMetrics.funnelParams?window.PBMetrics.funnelParams(o):o;}
 // v2 booking events (O&P contract): start/abandon/step1_save + in_area + pbtest. See book-funnel-events.js.
@@ -570,7 +586,7 @@ function renderDcal(){
   el.querySelector('#dcalMonth').addEventListener('change',function(){ DCAL_MONTH=this.value; renderDcal(); });
   el.querySelector('#dcalPrev').addEventListener('click',function(){shift(-1);});
   el.querySelector('#dcalNext').addEventListener('click',function(){shift(1);});
-  el.querySelectorAll('.dcal-day.ok').forEach(function(b){ b.addEventListener('click',function(){ document.getElementById('bookDate').value=b.dataset.d; renderDcal(); var r=document.getElementById('resResult'); if(r.className==='result err'){r.className='result';r.textContent='';} dateFired=true; window.trackPurebaricEvent?.('select_delivery_date',pbFunnel({rental_type:document.getElementById('rentalType').value||'residential'})); }); });
+  el.querySelectorAll('.dcal-day.ok').forEach(function(b){ b.addEventListener('click',function(){ document.getElementById('bookDate').value=b.dataset.d; renderDcal(); var r=document.getElementById('resResult'); if(r.className==='result err'){r.className='result';r.textContent='';} dateFired=true; pbTrack('select_delivery_date',pbFunnel({rental_type:document.getElementById('rentalType').value||'residential'})); }); });
   var hint=el.parentElement.querySelector('.dnote'); if(hint){ if(!hint.dataset.base)hint.dataset.base=hint.innerHTML; hint.innerHTML=(sel?'<strong>Delivery on '+fmtLong(sel)+'.</strong> ':(hint.dataset.lead||''))+hint.dataset.base; }
 }
 var CACHED_MODE=null; try{CACHED_MODE=localStorage.getItem('pb_booking_mode');}catch(e){}
@@ -610,8 +626,8 @@ document.getElementById('leadForm').addEventListener('submit',async function(e){
   if(window.appendPurebaricLeadSource)window.appendPurebaricLeadSource(data,{firstName:document.getElementById('cfn').value,lastName:document.getElementById('cln').value,email:document.getElementById('ce').value});
   // Measurement: a homepage-prefilled ZIP never fires a change event and a
   // default length never fires one either, so fire them here if not yet fired.
-  if(!areaFired){areaFired=true;var inArea=servedZip(document.getElementById('zip').value.trim());window.trackPurebaricEvent?.('service_area_check',{result:inArea?'eligible':'unsupported',in_area:!!inArea,rental_months:m,rental_type:document.getElementById('rentalType').value||'residential'});}
-  if(!planFired){planFired=true;var rr=BIZ?rateBiz(m):rate(m);window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:m,monthly_rate:rr,estimated_total:rr*m,currency:'USD',rental_type:document.getElementById('rentalType').value||'residential'});}  // Measurement: capture the anonymous GA identifiers so the backend can send the
+  fireServiceAreaCheck(document.getElementById('zip').value);
+  if(!planFired){planFired=true;var rr=BIZ?rateBiz(m):rate(m);pbTrack('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:m,monthly_rate:rr,estimated_total:rr*m,currency:'USD',rental_type:document.getElementById('rentalType').value||'residential'});}  // Measurement: capture the anonymous GA identifiers so the backend can send the
   // server-side lead event for this lead (same pattern as the step-2 submit).
   var analyticsContext=window.getPurebaricAnalyticsContext
     ? await window.getPurebaricAnalyticsContext()
@@ -636,7 +652,7 @@ document.getElementById('leadForm').addEventListener('submit',async function(e){
        // Measurement: a step-1 save is a PARTIAL lead, so Meta gets InitiateCheckout
        // (not Lead) once per new lead; a re-submit (back button, edit) does not fire again.
        // The Lead itself fires only when step 2 completes the request.
-       if(!existingLead)window.trackPurebaricMeta?.('InitiateCheckout',{content_category:document.getElementById('rentalType').value||'residential'},{eventID:j.id+':step1'});
+       if(!existingLead)pbMeta('InitiateCheckout',{content_category:document.getElementById('rentalType').value||'residential'},{eventID:j.id+':step1'});
        res.className='result ok';
        res.textContent=window.BOOKMODE?'Saved. Now pick your delivery date.':'Saved. One more step to send your request.';
        f.hidden=true;
@@ -644,14 +660,14 @@ document.getElementById('leadForm').addEventListener('submit',async function(e){
        document.getElementById('resForm').hidden=false;
        scrollToStep2();
      }else{
-       window.trackPurebaricEvent?.('booking_request_error',{error_type:'api_rejected',rental_type:document.getElementById('rentalType').value||'residential'});
+       pbTrack('booking_request_error',{error_type:'api_rejected',rental_type:document.getElementById('rentalType').value||'residential'});
        res.className='result err';
        res.textContent=(j&&j.message)||'Something went wrong. Please try again, or email hello@purebaric.com.';
      }
    })
    .catch(function(){
      _leadSubmitting=false;btn.disabled=false;btn.innerHTML=orig;
-     window.trackPurebaricEvent?.('booking_request_error',{error_type:'network_error',rental_type:document.getElementById('rentalType').value||'residential'});
+     pbTrack('booking_request_error',{error_type:'network_error',rental_type:document.getElementById('rentalType').value||'residential'});
      res.className='result err';
      res.textContent='Network error. Please try again, or email hello@purebaric.com.';
    });
@@ -691,8 +707,8 @@ document.getElementById('waitlistBtn').addEventListener('click',function(){
        res.className='result ok';
        res.textContent=j.message||"You're on the list. We'll reach out if we're able to deliver to your area.";
        document.getElementById('reserveSection').classList.add('submitted','hide-steps');
-       window.trackPurebaricEvent?.('waitlist_join',pbFunnel({source:'book_page',in_area:false}));
-       window.trackPurebaricMeta?.('Subscribe',{content_category:'waitlist'});
+       pbTrack('waitlist_join',pbFunnel({source:'book_page',in_area:false}));
+       pbMeta('Subscribe',{content_category:'waitlist'});
        window.scrollTo({top:0,behavior:'smooth'});
      }else{
        res.className='result err';
@@ -756,7 +772,7 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   // Measurement: a typed preferred date never fires a calendar-click event,
   // so fire the delivery-date step here if a date is present and not yet fired.
   var dateVal=window.BOOKMODE?document.getElementById('bookDate').value:document.getElementById('cdate').value;
-  if(dateVal&&!dateFired){dateFired=true;window.trackPurebaricEvent?.('select_delivery_date',pbFunnel({rental_type:document.getElementById('rentalType').value||'residential'}));}
+  if(dateVal&&!dateFired){dateFired=true;pbTrack('select_delivery_date',pbFunnel({rental_type:document.getElementById('rentalType').value||'residential'}));}
   fetch('/api/booking-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
    .then(function(r){return r.json().catch(function(){return {};});})
    .then(function(j){
@@ -783,9 +799,9 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
        // and TEST leads never get here with tracking on (appendPurebaricLeadSource).
        var leadEventId=String(j.id||leadIdVal||'');
        var rtype=document.getElementById('rentalType').value||'residential';
-       window.trackPurebaricMeta?.('Lead',{content_category:rtype,value:Number(leadValue)||0,currency:'USD'},{eventID:leadEventId});
-       window.trackPurebaricMeta?.('CompleteRegistration',{content_category:rtype},{eventID:leadEventId+':complete'});
-       window.trackPurebaricEvent?.('generate_lead',pbFunnel({value:Number(leadValue)||0,currency:'USD',rental_type:rtype,rental_months:m,source:'book_page',form_name:'reservation_request'}));
+       pbMeta('Lead',{content_category:rtype,value:Number(leadValue)||0,currency:'USD'},{eventID:leadEventId});
+       pbMeta('CompleteRegistration',{content_category:rtype},{eventID:leadEventId+':complete'});
+       pbTrack('generate_lead',pbFunnel({value:Number(leadValue)||0,currency:'USD',rental_type:rtype,rental_months:m,source:'book_page',form_name:'reservation_request'}));
        res.className='result ok';
        if(j.booked){ var bd=new Date(j.startDate+'T00:00:00'); res.innerHTML='<strong>Your chamber is booked</strong>'+(j.booking_number?(' ('+j.booking_number+')'):'')+' for delivery on '+bd.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'. We emailed your confirmation and will text or call to set the delivery time.'; document.getElementById('bookDate').value=''; }
        else res.innerHTML='Reservation received'+(j.booking_number?(' ('+j.booking_number+')'):'')+'. '+(j.message||"Our team will contact you shortly to confirm delivery.");
@@ -797,14 +813,14 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
        try{sessionStorage.setItem('pb_booked',JSON.stringify({booked:!!j.booked,date:j.booked?bd.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}):'',type:document.getElementById('rentalType').value||'residential'}));}catch(e){}
        setTimeout(function(){location.href='/thank-you';},600);
      }else{
-       window.trackPurebaricEvent?.('booking_request_error',{error_type:'api_rejected',rental_type:document.getElementById('rentalType').value||'residential'});
+       pbTrack('booking_request_error',{error_type:'api_rejected',rental_type:document.getElementById('rentalType').value||'residential'});
        res.className='result err';
        res.textContent=(j&&j.message)||'Something went wrong. Please try again, or email hello@purebaric.com.';
      }
    })
    .catch(function(){
      _submitting=false;btn.disabled=false;btn.innerHTML=orig;
-     window.trackPurebaricEvent?.('booking_request_error',{error_type:'network_error',rental_type:document.getElementById('rentalType').value||'residential'});
+     pbTrack('booking_request_error',{error_type:'network_error',rental_type:document.getElementById('rentalType').value||'residential'});
      res.className='result err';
      res.textContent='Network error. Please try again, or email hello@purebaric.com.';
    });

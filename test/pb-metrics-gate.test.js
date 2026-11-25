@@ -18,13 +18,18 @@ function storage(init = {}) {
   };
 }
 
-function browser({ nav = {}, win = {}, local = {}, session = {}, search = "", pathname = "/", referrer = "", width = 1280 } = {}) {
+function throwingStore() {
+  const boom = () => { throw new Error("storage denied"); };
+  return { getItem: boom, setItem: boom, removeItem: boom };
+}
+
+function browser({ nav = {}, win = {}, local = {}, session = {}, search = "", pathname = "/", referrer = "", width = 1280, throwStorage = false } = {}) {
   const scripts = [];
   const listeners = {};
   const window = {
     navigator: { ...nav },
-    localStorage: storage(local),
-    sessionStorage: storage(session),
+    localStorage: throwStorage ? throwingStore() : storage(local),
+    sessionStorage: throwStorage ? throwingStore() : storage(session),
     location: { search, pathname, hostname: "purebaric.com" },
     innerWidth: width,
     innerHeight: 800,
@@ -197,3 +202,20 @@ test("hooks: device/variant funnel params and scroll_depth at 25/50/75/90 once e
   assert.equal(ran, false, "onReady never runs when tracking is blocked");
 });
 
+test("?internal=1 blocks every GA and Meta event even when storage is unavailable", () => {
+  const b = browser({ search: "?internal=1", throwStorage: true });
+  assert.deepEqual(loadedTags(b.scripts), { ga: false, meta: false });
+  assert.equal(b.window.PBMetrics.isBlocked(), true);
+  assert.equal(b.window.PBMetrics.blockReason(), "internal");
+  const before = b.window.dataLayer.length;
+  let fbqCalls = 0;
+  b.window.fbq = function () { fbqCalls++; };
+  for (const name of ["service_area_check", "booking_step1_save", "waitlist_join", "generate_lead"]) {
+    b.window.trackPurebaricEvent(name, { in_area: true });
+  }
+  b.window.trackPurebaricMeta("InitiateCheckout", { content_category: "residential" });
+  b.window.trackPurebaricMeta("Subscribe", { content_category: "waitlist" });
+  b.window.gtag("event", "service_area_check", { in_area: true });
+  assert.equal(b.window.dataLayer.length, before, "no GA event queued");
+  assert.equal(fbqCalls, 0, "no Meta event sent");
+});

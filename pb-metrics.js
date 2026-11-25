@@ -37,11 +37,13 @@
   function query() { try { return new URLSearchParams(window.location.search || ''); } catch (e) { return { get: function () { return null; } }; } }
 
   // ?internal=1 marks this browser as internal (owner, team, QA) so it never
-  // reaches GA4 or Meta; ?internal=0 clears it.
+  // reaches GA4 or Meta; ?internal=0 clears it. The query is also kept in
+  // memory so a storage failure cannot leak internal traffic to GA or Meta.
+  var internalFromQuery = false;
   (function () {
     var q = query().get('internal');
-    if (q === '1') { set(ls(), 'pb_internal', '1'); set(ss(), 'pb_internal', '1'); }
-    else if (q === '0') { del(ls(), 'pb_internal'); del(ss(), 'pb_internal'); }
+    if (q === '1') { internalFromQuery = true; set(ls(), 'pb_internal', '1'); set(ss(), 'pb_internal', '1'); }
+    else if (q === '0') { internalFromQuery = false; del(ls(), 'pb_internal'); del(ss(), 'pb_internal'); }
   })();
 
   function gpc() { return navigator.globalPrivacyControl === true; }
@@ -52,7 +54,10 @@
   function declinedFlag() {
     return get(ls(), 'pb_cookie') === 'decline' || get(ls(), 'purebaric_cookie_consent') === 'declined';
   }
-  function internalFlag() { return get(ls(), 'pb_internal') === '1' || get(ss(), 'pb_internal') === '1'; }
+  function internalFlag() {
+    if (internalFromQuery || query().get('internal') === '1') return true;
+    return get(ls(), 'pb_internal') === '1' || get(ss(), 'pb_internal') === '1';
+  }
 
   // Why tracking is off on this page view, or '' when it is allowed.
   function blockReason() {

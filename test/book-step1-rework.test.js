@@ -96,7 +96,7 @@ test("firstOpenCalendarMonth opens the first month with at least 5 open days, el
 test("step-1 200 fires PBBookFunnel.step1Save and InitiateCheckout for a new lead, not Lead", () => {
   const step1 = book.slice(book.indexOf("if(j&&j.lead)"), book.indexOf("function showStep1"));
   assert.match(step1, /j\._httpStatus===200&&window\.PBBookFunnel\)window\.PBBookFunnel\.step1Save\(window,!j\.outOfArea\)/);
-  assert.match(step1, /if\(!existingLead\)window\.trackPurebaricMeta\?\.\('InitiateCheckout'/);
+  assert.match(step1, /if\(!existingLead\)pbMeta\('InitiateCheckout'/);
   assert.doesNotMatch(step1, /'Lead'/);
   assert.doesNotMatch(step1, /generate_lead/);
   // A leftover direct track call would double-count the start-to-step-1 rate.
@@ -117,12 +117,14 @@ test("service_area_check includes in_area; the v2 module is installed for pbtest
 
 test("booking events use the gated track helpers and never put PII in params", () => {
   const script = book.slice(book.lastIndexOf("<script>") + 8, book.lastIndexOf("</script>"));
-  const eventCalls = [...script.matchAll(/trackPurebaricEvent\?\.\(([^;]+)\)/g)].map((m) => m[1]);
+  const eventCalls = [...script.matchAll(/pbTrack\(([^;]+)\)/g)].map((m) => m[1]);
   assert.ok(eventCalls.length >= 6, "expected several GA events");
   for (const call of eventCalls) {
     assert.doesNotMatch(call, /customer_email|customer_phone|first-name|last-name|cfn|cln|ce\.value|cp\.value|zip\.value|cstreet|hello@/);
   }
-  // Calls go through the gated helpers, not gtag/fbq directly.
+  // Call sites go through pbTrack/pbMeta, which no-op when blocked, not gtag/fbq directly.
+  assert.equal((script.match(/window\.trackPurebaricEvent\?\.\(/g) || []).length, 1);
+  assert.equal((script.match(/window\.trackPurebaricMeta\?\.\(/g) || []).length, 1);
   assert.doesNotMatch(script, /gtag\('event'/);
   assert.doesNotMatch(script, /fbq\(/);
   // The helpers themselves no-op on GPC, DNT, /privacy opt-out, and internal.
@@ -144,4 +146,76 @@ test("the date-missing guard stays on step 2 and uses N7", () => {
   assert.match(step2, /Please pick a delivery date\./);
   assert.doesNotMatch(step2, /showStep1\(\)/);
   assert.match(step2, /getElementById\('dcal'\)\.scrollIntoView/);
+});
+
+test("service_area_check fires at most once per ZIP value per page session", () => {
+  const src = extractFunction("fireServiceAreaCheck");
+  assert.doesNotMatch(src, /sessionStorage|localStorage/);
+  assert.match(book, /var lastAreaZip=''/);
+  assert.match(book, /addEventListener\('change',function\(\)\{fireServiceAreaCheck\(this\.value\)/);
+  assert.match(book, /addEventListener\('blur',function\(\)\{fireServiceAreaCheck\(this\.value\)/);
+
+  function run(blocked) {
+    const events = [];
+    const ctx = {
+      lastAreaZip: "",
+      areaFired: false,
+      servedZip: (z) => String(z).startsWith("84"),
+      pbBlocked: () => blocked,
+      pbTrack: (n, p) => events.push({ n, p }),
+      document: {
+        getElementById(id) {
+          if (id === "mo") return { value: "4" };
+          if (id === "rentalType") return { value: "residential" };
+          return { value: "" };
+        },
+      },
+    };
+    vm.runInNewContext(src + "; this.fireServiceAreaCheck = fireServiceAreaCheck;", ctx);
+    return { events, fire: ctx.fireServiceAreaCheck };
+  }
+
+  const a = run(false);
+  a.fire("84043"); // change
+  a.fire("84043"); // blur, same ZIP
+  assert.equal(a.events.length, 1, "change followed by blur on the same ZIP sends 1 event");
+  assert.equal(a.events[0].n, "service_area_check");
+  assert.equal(a.events[0].p.in_area, true);
+  assert.equal(a.events[0].p.result, "eligible");
+  a.fire("90210"); // new ZIP
+  assert.equal(a.events.length, 2, "editing to a new ZIP sends a second event");
+  assert.equal(a.events[1].p.in_area, false);
+  assert.equal(a.events[1].p.result, "unsupported");
+  a.fire("90210"); // same ZIP again
+  assert.equal(a.events.length, 2, "the same ZIP again sends no new event");
+});
+
+test("internal traffic never calls the GA or Meta helpers from /book", () => {
+  const trackSrc = extractFunction("pbTrack");
+  const metaSrc = extractFunction("pbMeta");
+  const areaSrc = extractFunction("fireServiceAreaCheck");
+  const calls = [];
+  const ctx = {
+    lastAreaZip: "",
+    areaFired: false,
+    servedZip: () => true,
+    pbBlocked: () => true,
+    pbTrack: function (n, p) { return undefined; },
+    document: { getElementById() { return { value: "4" }; } },
+    window: {
+      trackPurebaricEvent(name, params) { calls.push(["ga", name]); },
+      trackPurebaricMeta(name, params) { calls.push(["meta", name]); },
+      PBMetrics: { isBlocked() { return true; } },
+    },
+  };
+  vm.runInNewContext(
+    trackSrc + "\n" + metaSrc + "\n" + areaSrc + "; this.pbTrack = pbTrack; this.pbMeta = pbMeta; this.fireServiceAreaCheck = fireServiceAreaCheck;",
+    ctx
+  );
+  ctx.fireServiceAreaCheck("84043");
+  ctx.pbTrack("booking_step1_save", { in_area: true, def_v: 2 });
+  ctx.pbTrack("waitlist_join", { source: "book_page", in_area: false });
+  ctx.pbMeta("InitiateCheckout", { content_category: "residential" });
+  ctx.pbMeta("Subscribe", { content_category: "waitlist" });
+  assert.deepEqual(calls, [], "no GA or Meta helper calls when blocked");
 });
