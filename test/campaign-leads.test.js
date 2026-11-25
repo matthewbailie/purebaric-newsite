@@ -29,7 +29,7 @@ test("rule 1: a UTM campaign tag that matches a list row inside its window credi
 
 test("out-of-window and unlisted UTM tags are never credited to a campaign", () => {
   const early = attr([rec("booking", "2026-11-27T18:00:00Z", { leadSource: ls({ utmCampaign: "30d_home_v1", fbclid: "x" }) })]);
-  assert.equal(early.key, "utm:30d_home_v1"); assert.match(early.label, /outside the campaign window/);
+  assert.equal(early.key, "utm:30d_home_v1"); assert.equal(early.label, "UTM 30d_home_v1 (outside the campaign's run)");
   const unlisted = attr([rec("contact", "2026-12-01T18:00:00Z", { leadSource: ls({ utmCampaign: "b2b_v1" }) })]);
   assert.equal(unlisted.label, "UTM b2b_v1 (not in campaign list)");
 });
@@ -46,7 +46,7 @@ test("rule 2: R&O's portal campaign tag at intake credits the campaign; an unkno
 test("rule 3: click ids with no campaign tag; rule 4: referrer or landing page; rule 5: self-reported only", () => {
   assert.equal(attr([rec("booking", "2026-12-01T18:00:00Z", { leadSource: ls({ gclid: "g1" }) })]).label, "Google Ads (untagged)");
   assert.equal(attr([rec("booking", "2026-12-01T18:00:00Z", { leadSource: ls({ fbclid: "f1" }) })]).label, "Meta paid (untagged)");
-  assert.equal(attr([rec("contact", "2026-12-01T18:00:00Z", { leadSource: ls({ referrer: "https://www.google.com/" }) })]).label, "Organic / referral");
+  assert.equal(attr([rec("contact", "2026-12-01T18:00:00Z", { leadSource: ls({ referrer: "https://www.google.com/" }) })]).label, "Other websites and search (no tag)");
   const self = attr([rec("waitlist", "2026-12-01T18:00:00Z", { leadSource: null, heardAbout: "Friend or family" })]);
   assert.equal(self.label, "Self-reported: Friend or family"); assert.equal(self.rule, "self");
 });
@@ -138,7 +138,9 @@ test("report: spend and cost per real lead appear only where hand-entered spend 
   const r = L.buildCampaignReport({ ...fixture(), from: "2026-11-01", to: "2026-12-31" });
   const meta = byKey(r)["campaign:cmp_30d_home_v1"];
   assert.equal(meta.spend, 45.5); assert.equal(meta.spendDisplay, "$45.50 (2 days entered)");
-  assert.equal(meta.cplDisplay, "$45.50 (n=1)");
+  assert.equal(meta.cplDisplay, "$45.50 (1 real lead)");
+  const two = L.buildCampaignReport({ ...fixture(), bookings: fixture().bookings.concat({ id: "b9", createdAt: "2026-11-30T19:00:00Z", status: "new", firstName: "Zed", lastName: "Y", email: "zed@example.com", leadSource: ls({ utmCampaign: "30d_home_v1" }) }), from: "2026-11-01", to: "2026-12-31" });
+  assert.equal(byKey(two)["campaign:cmp_30d_home_v1"].cplDisplay, "$22.75 (2 real leads)");
   const ksl = byKey(r)["campaign:cmp_h24"];
   assert.equal(ksl.spend, null); assert.equal(ksl.spendDisplay, "No spend source"); assert.equal(ksl.cplDisplay, null);
   const later = L.buildCampaignReport({ ...fixture(), from: "2026-12-01", to: "2026-12-31" });
@@ -183,7 +185,8 @@ test("campaign list: required fields, lowercase unique UTM tag, add and end only
   assert.deepEqual(sp.rows[0].spend.map((s) => [s.day, s.amount]), [["2026-11-28", 20], ["2026-11-29", 30]]);
   assert.equal(L.setSpend(rows, "cmp_h24", "2026-11-29", 5).error, "This campaign has no spend source.");
   assert.match(L.setSpend(rows, "cmp_30d_home_v1", "2026-12-06", 5).error, /inside the campaign's run/);
-  assert.match(L.setSpend(rows, "cmp_30d_home_v1", "2026-11-30", -1).error, /dollar amount/);
+  assert.equal(L.setSpend(rows, "cmp_30d_home_v1", "2026-11-30", -1).error, "Spend must be between $0 and $100,000.");
+  assert.equal(L.setSpend(rows, "cmp_30d_home_v1", "2026-11-30", 100000.01).error, "Spend must be between $0 and $100,000.");
 });
 
 // ───────── Handlers (stubbed auth and storage) ─────────
@@ -262,4 +265,23 @@ test("admin.html: Leads by Campaign keeps the 'Last updated … MT' stamp and st
   const toml = require("fs").readFileSync(path.join(__dirname, "..", "netlify.toml"), "utf8");
   assert.match(toml, /from = "\/api\/admin\/campaign-leads"\n  to = "\/\.netlify\/functions\/admin-campaign-leads"/);
   assert.match(toml, /from = "\/api\/admin\/campaigns"\n  to = "\/\.netlify\/functions\/admin-campaigns"/);
+});
+
+test("admin.html (Proof-reader edits): portal tag placeholder, campaign-run option, singular/plural spend days", () => {
+  const html = require("fs").readFileSync(path.join(__dirname, "..", "admin.html"), "utf8");
+  assert.match(html, /id="lcPortalTag"[^>]*placeholder="e\.g\. campaign-30d-home-v1"/);
+  assert.match(html, /c\.name \+ ' \(campaign run\)'/);
+  assert.doesNotMatch(html, /\(run window\)/);
+  const start = html.indexOf("// ───────── Leads by Campaign");
+  const block = html.slice(start, html.indexOf("// ───────── OKRs, KPIs, and Metrics", start));
+  const expr = block.match(/const spentLine = (.+);\n/)[1];
+  const fn = new Function("c", "spent", "return " + expr);
+  const c = (n) => ({ spendSource: "manual", spend: Array.from({ length: n }, () => ({ amount: 10 })) });
+  assert.equal(fn(c(1), 10), "$10.00 over 1 day");
+  assert.equal(fn(c(3), 30), "$30.00 over 3 days");
+  assert.equal(fn(c(0), 0), "None yet");
+  // A portal tag derived from a UTM tag turns "_" into "-", so it passes the portal-tag check; typed tags too.
+  const r = L.newCampaign({ name: "x", utmCampaign: "a_b_c", channel: "Meta", owner: "DG", start: "2026-12-01", portalTag: "Campaign_A_B" }, []);
+  assert.equal(r.row.portalTag, "campaign-a-b");
+  assert.equal(L.newCampaign({ name: "x", utmCampaign: "a_b_c", channel: "Meta", owner: "DG", start: "2026-12-01" }, []).row.portalTag, "campaign-a-b-c");
 });

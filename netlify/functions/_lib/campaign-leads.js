@@ -106,7 +106,7 @@ function setSpend(rows, id, day, amount, { nowIso = new Date().toISOString(), to
   if (row.spendSource !== "manual") return { error: "This campaign has no spend source." };
   if (!isDay(day) || day < row.start || (row.end && day > row.end) || (today && day > today)) return { error: "Spend date must be inside the campaign's run, and not in the future." };
   const n = Number(amount);
-  if (!Number.isFinite(n) || n < 0 || n > 100000) return { error: "Spend must be a dollar amount from 0 to 100,000." };
+  if (!Number.isFinite(n) || n < 0 || n > 100000) return { error: "Spend must be between $0 and $100,000." };
   const spend = (row.spend || []).filter((s) => s.day !== day).concat({ day, amount: money(n), enteredAt: nowIso }).sort((a, b) => a.day.localeCompare(b.day));
   return { rows: rows.map((r) => (r.id === id ? { ...r, spend } : r)) };
 }
@@ -150,14 +150,14 @@ function attribute(records, rows, cutoffMs) {
   for (const r of records) {
     const utm = ls(r) && lc(ls(r).utmCampaign);
     if (!utm) continue;
-    const label = byUtm.has(utm) ? `UTM ${utm} (outside the campaign window)` : `UTM ${utm} (not in campaign list)`;
+    const label = byUtm.has(utm) ? `UTM ${utm} (outside the campaign's run)` : `UTM ${utm} (not in campaign list)`;
     return { key: "utm:" + utm, label, rule: "utm_unlisted" };
   }
   // 3. Click id with no campaign tag.
   for (const r of records) if (ls(r) && ls(r).gclid) return { key: "click:google", label: "Google Ads (untagged)", rule: "click" };
   for (const r of records) if (ls(r) && ls(r).fbclid) return { key: "click:meta", label: "Meta paid (untagged)", rule: "click" };
   // 4. Referrer / landing path only.
-  for (const r of records) if (ls(r) && (ls(r).referrer || ls(r).landingPath)) return { key: "organic", label: "Organic / referral", rule: "referrer" };
+  for (const r of records) if (ls(r) && (ls(r).referrer || ls(r).landingPath)) return { key: "organic", label: "Other websites and search (no tag)", rule: "referrer" };
   // 5. Self-reported "How did you hear about us?" only (never merged with tracked rows).
   for (const r of records) if (r.raw.heardAbout) return { key: "self:" + r.raw.heardAbout, label: `Self-reported: ${r.raw.heardAbout}`, rule: "self" };
   // Off-site leads (hello@, DMs, KSL, phone or text) with an R&O source tag but no campaign tag.
@@ -253,7 +253,7 @@ function buildCampaignReport(input) {
       const s = row.spendSource === "manual" ? spendInRange(row, range.from, toDay) : null;
       if (s) {
         spend = s.amount; spendDisplay = `${usd(s.amount)} (${s.days} day${s.days === 1 ? "" : "s"} entered)`;
-        if (g.realLeads >= 1) { cpl = money(s.amount / g.realLeads); cplDisplay = `${usd(cpl)} (n=${g.realLeads})`; }
+        if (g.realLeads >= 1) { cpl = money(s.amount / g.realLeads); cplDisplay = `${usd(cpl)} (${g.realLeads === 1 ? "1 real lead" : g.realLeads + " real leads"})`; }
         else cplDisplay = "No real leads yet";
       } else spendDisplay = row.spendSource === "manual" ? "No spend entered for this range" : "No spend source";
     }

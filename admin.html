@@ -1076,7 +1076,7 @@ The Purebaric team</textarea></div>
           <div><label for="lcStart">Start</label><input type="date" id="lcStart" name="start" required></div>
           <div><label for="lcEnd">End (optional)</label><input type="date" id="lcEnd" name="end"></div>
           <div><label for="lcSpendSource">Spend source</label><select id="lcSpendSource" name="spendSource"><option value="">Default for the channel</option><option value="manual">Entered by hand (daily)</option><option value="none">No spend source</option></select></div>
-          <div><label for="lcPortalTag">Portal tag (optional)</label><input id="lcPortalTag" name="portalTag" maxlength="60" placeholder="campaign-&lt;UTM tag&gt;"></div>
+          <div><label for="lcPortalTag">Portal tag (optional)</label><input id="lcPortalTag" name="portalTag" maxlength="60" placeholder="e.g. campaign-30d-home-v1"></div>
           <div><button type="submit" class="btn btn-primary btn-sm">Add campaign</button></div>
         </form>
         <h4 style="margin:1.1rem 0 0.5rem;">Enter a day's spend</h4>
@@ -1995,7 +1995,7 @@ The Purebaric team</textarea></div>
   function renderLeadsByCampaign(d) {
     _lcCampaigns = d.campaigns || [];
     const sel = document.getElementById('lcPreset');
-    const opts = [['30', 'Last 30 days'], ['7', 'Last 7 days']].concat(_lcCampaigns.map(c => ['c:' + c.id, c.name + ' (run window)'])).concat([['custom', 'Custom dates']]);
+    const opts = [['30', 'Last 30 days'], ['7', 'Last 7 days']].concat(_lcCampaigns.map(c => ['c:' + c.id, c.name + ' (campaign run)'])).concat([['custom', 'Custom dates']]);
     sel.innerHTML = opts.map(([v, t]) => `<option value="${escape(v)}">${escape(t)}</option>`).join('');
     sel.value = opts.some(o => o[0] === _lcRange.preset) ? _lcRange.preset : '30';
     const r = d.range || {};
@@ -2028,7 +2028,7 @@ The Purebaric team</textarea></div>
       : `Totals do not match the portal's real-lead count (${t.realLeads} vs ${t.portalRealLeads}). This is a bug: tell Engineering.`;
     document.querySelector('#lcCampaigns tbody').innerHTML = _lcCampaigns.length ? _lcCampaigns.map(c => {
       const spent = (c.spend || []).reduce((s, x) => s + Number(x.amount || 0), 0);
-      const spentLine = c.spendSource === 'manual' ? ((c.spend || []).length ? `$${spent.toFixed(2)} over ${(c.spend || []).length} day${(c.spend || []).length === 1 ? '' : 's'}` : 'None yet') : '—';
+      const spentLine = c.spendSource === 'manual' ? ((c.spend || []).length ? ((c.spend || []).length === 1 ? `$${spent.toFixed(2)} over 1 day` : `$${spent.toFixed(2)} over ${(c.spend || []).length} days`) : 'None yet') : '—';
       return `<tr>
         <td>${escape(c.name)}</td><td><code>${escape(c.utmCampaign)}</code></td><td><code>${escape(c.portalTag || '')}</code></td>
         <td>${escape(c.channel)}</td><td>${escape(c.owner)}</td>
