@@ -73,6 +73,8 @@
 .stars-input label:hover span,.stars-input label:hover~label span{color:#d99a2b}
 .stars-input label:has(input:checked) span,.stars-input label:has(input:checked)~label span{color:#d99a2b}
 .stars-input input:focus-visible+span{outline:2px solid var(--terra);outline-offset:2px;border-radius:4px}
+.rv-form-preface{font-size:14px;color:var(--ink);margin:0 0 16px;line-height:1.5}
+.stars-help{font-size:13px;color:var(--muted);margin:8px 0 0;line-height:1.45}
 .rv-card .stars{color:#d99a2b;font-size:14px;letter-spacing:2px;margin-bottom:8px}
 .lbl{display:block;font-size:13.5px;font-weight:600;margin-bottom:2px;color:var(--ink)}
 #reviews,#write{scroll-margin-top:80px}
@@ -133,6 +135,7 @@
       <form id="reviewForm" class="frm formwrap" novalidate>
         <span id="write"></span>
         <h3 style="font-size:19px;font-weight:700;margin-bottom:16px">Write a review</h3>
+        <p class="rv-form-preface">Only leave a review if you've rented a chamber from Purebaric. Use your own words, and please skip any health details.</p>
         <div class="result" id="rResult" role="status" aria-live="polite"></div>
         <p hidden><label>Do not fill this out <input name="bot-field" id="rBot" tabindex="-1" autocomplete="off"></label></p>
 
@@ -142,9 +145,10 @@
         </div>
         <div class="fg"><label for="rCity">City (optional)</label><input type="text" id="rCity" name="city" maxlength="60"></div>
         <div class="fg"><span class="lbl" id="rStarsLabel">Your rating <span class="req">*</span></span>
-          <div class="stars-input" role="radiogroup" aria-labelledby="rStarsLabel">
-            <label><input type="radio" name="stars" value="5" checked><span>★</span></label><label><input type="radio" name="stars" value="4"><span>★</span></label><label><input type="radio" name="stars" value="3"><span>★</span></label><label><input type="radio" name="stars" value="2"><span>★</span></label><label><input type="radio" name="stars" value="1"><span>★</span></label>
+          <div class="stars-input" role="radiogroup" aria-labelledby="rStarsLabel" aria-describedby="rStarsHelp">
+            <label><input type="radio" name="stars" value="5" required><span>★</span></label><label><input type="radio" name="stars" value="4" required><span>★</span></label><label><input type="radio" name="stars" value="3" required><span>★</span></label><label><input type="radio" name="stars" value="2" required><span>★</span></label><label><input type="radio" name="stars" value="1" required><span>★</span></label>
           </div>
+          <p class="stars-help" id="rStarsHelp">Pick the star rating that fits your experience.</p>
         </div>
         <div class="fg"><label for="rText">Your review <span class="req">*</span></label><textarea id="rText" name="text" maxlength="1500" required placeholder="What was your experience like, delivery, setup, using the chamber, support?"></textarea></div>
         <label class="consent"><input type="checkbox" id="rConsent" required> I'm okay with Purebaric sharing my review (first name, last initial, and city) on their website.</label>
@@ -212,7 +216,7 @@ function rvInitials(rv){return esc(((rv.firstName||'').charAt(0)+(rv.lastInitial
     var agg=document.getElementById('rvAgg');
     if(agg&&rated.length){
       var avg=rated.reduce(function(a,rv){return a+rv.stars;},0)/rated.length;
-      agg.innerHTML='<span class="score">'+(Math.round(avg*10)/10)+'</span><span><span class="stars">'+starChars(avg)+'</span><span class="count"> · '+rated.length+(rated.length===1?' verified review':' verified reviews')+'</span></span>';
+      agg.innerHTML='<span class="score">'+(Math.round(avg*10)/10)+'</span><span><span class="stars">'+starChars(avg)+'</span><span class="count"> · '+rated.length+(rated.length===1?' review':' reviews')+'</span></span>';
       agg.hidden=false;
     }
     list.innerHTML=reviews.map(function(rv,i){
@@ -246,7 +250,8 @@ document.getElementById('reviewForm').addEventListener('submit',function(e){
   data.set('lastInitial',document.getElementById('rInitial').value);
   data.set('city',document.getElementById('rCity').value);
   var starEl=f.querySelector('input[name="stars"]:checked');
-  data.set('stars',starEl?starEl.value:'5');
+  if(!starEl){f.reportValidity();return;}
+  data.set('stars',starEl.value);
   data.set('text',document.getElementById('rText').value);
   var orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='Submitting...';
   fetch('/api/reviews-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
