@@ -817,6 +817,17 @@ async function setCampaignList(rows) {
   return rows;
 }
 
+// One settings doc: { id: "staticMetrics", values: { [metricId]: { value, note, updatedAt } }, updatedAt }.
+// Team-entered admin metrics (renewal touch on time, lead reply time); see _lib/static-metrics.js.
+async function getStaticMetrics() {
+  const doc = await getOne(STORES.settings, "staticMetrics");
+  return doc && doc.values ? doc : { id: "staticMetrics", values: {} };
+}
+async function setStaticMetrics(doc) {
+  await store(STORES.settings).setJSON("staticMetrics", doc);
+  return doc;
+}
+
 // ───────── Passkey credentials + admin sessions (see _lib/passkeys.js, _lib/session.js) ─────────
 // One admin "account" — there's a single real owner — so these are keyed only
 // by their own id (credentialId / sessionId / challenge nonce), not by a user id.
@@ -873,6 +884,8 @@ module.exports = {
   setAdminLayout,
   getCampaignList,
   setCampaignList,
+  getStaticMetrics,
+  setStaticMetrics,
   getAuthChallenge,
   putAuthChallenge,
   deleteAuthChallenge,

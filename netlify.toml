@@ -235,6 +235,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/admin/metrics-static"
+  to = "/.netlify/functions/admin-metrics-static"
+  status = 200
+
+[[redirects]]
   from = "/api/admin/notifications-test"
   to = "/.netlify/functions/admin-notifications-test"
   status = 200

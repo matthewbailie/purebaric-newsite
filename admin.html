@@ -369,6 +369,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   .lc-sub { font-size: 0.78rem; color: var(--stone-muted); }
   .lc-total td { font-weight: 600; border-top: 2px solid var(--line); }
   .lc-warn { color: #82402f; font-weight: 600; }
+  .lc-toggle { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; margin: 0 0 0.5rem; }
   .mx-section { margin: 0 0 1.5rem; }
   .mx-updated { font-size: 0.78rem; color: var(--stone-muted); margin: -0.35rem 0 0.5rem; }
   .mx-row { display: grid; grid-template-columns: minmax(180px, 1.3fr) minmax(140px, 1fr) minmax(160px, 1.2fr) auto; gap: 0.5rem 1rem; align-items: center; padding: 0.7rem 0.9rem; border: 1px solid var(--line); border-top: 0; background: var(--cream); }
@@ -377,6 +378,10 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   .mx-src { font-size: 0.78rem; color: var(--stone-muted); }
   .mx-val { font-variant-numeric: tabular-nums; }
   .mx-note { grid-column: 1 / -1; font-size: 0.8rem; color: var(--stone-muted); margin-top: -0.2rem; }
+  .mx-stamp { font-size: 0.75rem; color: var(--stone-muted); }
+  .mx-edit { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: flex-end; margin-top: 0.2rem; }
+  .mx-edit input { padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; font: inherit; font-size: 0.85rem; }
+  .mx-static-foot { font-size: 0.8rem; color: var(--stone-muted); margin: 0.4rem 0 0; }
   .mx-bar { position: relative; height: 10px; border-radius: 999px; background: var(--cream-warm, #efe6d6); }
   .mx-bar-fill { height: 100%; border-radius: 999px; background: var(--terracotta); }
   .mx-bar-mark { position: absolute; top: -3px; width: 2px; height: 16px; background: var(--ink, #2b2320); }
@@ -1045,6 +1050,7 @@ The Purebaric team</textarea></div>
       <div class="mx-section"><h3 class="inv-heading">KPIs</h3><p class="mx-updated" data-mx-updated></p><div id="mxKpi"></div></div>
       <div class="mx-section"><h3 class="inv-heading">Leading metrics</h3><p class="mx-updated" data-mx-updated></p><div id="mxLeading"></div></div>
       <p class="renter-line" id="mxFoot" style="margin:0.6rem 0 0;max-width:820px;"></p>
+      <p class="mx-static-foot" id="mxStaticFoot"></p>
       </div>
       <div class="an-leads">
       <div class="panel-actions">
@@ -1060,23 +1066,28 @@ The Purebaric team</textarea></div>
       </div>
       <div class="mx-section">
         <h3 class="inv-heading">Real leads by campaign</h3><p class="mx-updated" data-lc-updated></p>
-        <div class="table-wrap"><table class="data-table" id="lcTable"><thead><tr><th>Campaign or source</th><th>Matched by</th><th>Channel</th><th>Dates</th><th class="lc-num">Real leads</th><th class="lc-num">Partial leads</th><th class="lc-num">Paying rentals</th><th>Spend</th><th>Cost per real lead</th></tr></thead><tbody></tbody></table></div>
-        <p class="renter-line" id="lcCheck" style="margin:0.6rem 0 0;max-width:820px;"></p>
+        <label class="lc-toggle"><input type="checkbox" id="lcShowEmpty" onchange="lcToggleEmpty()"> Show empty campaigns</label>
+        <div class="table-wrap"><table class="data-table" id="lcTable"><thead><tr><th>Campaign or source</th><th>Platform</th><th>Channel</th><th>Dates</th><th class="lc-num">Real leads</th><th class="lc-num">Partial leads</th><th class="lc-num">Paying rentals</th><th>Spend</th><th>Cost per real lead</th></tr></thead><tbody></tbody></table></div>
+        <p class="renter-line" id="lcNoSource" style="margin:0.6rem 0 0;max-width:820px;"></p>
+        <p class="renter-line" id="lcSpendNoLeads" style="margin:0.4rem 0 0;max-width:820px;"></p>
+        <p class="renter-line" id="lcCheck" style="margin:0.4rem 0 0;max-width:820px;"></p>
       </div>
       <div class="mx-section">
-        <h3 class="inv-heading">Campaign list</h3><p class="mx-updated" data-lc-updated></p>
-        <p class="renter-line" style="margin:0 0 10px;max-width:820px;">Add a row before a campaign goes live, with its UTM link. Rows can be ended, not deleted. Spend is typed in by hand from the daily ad-account check (Meta and Google); there is no automatic spend feed.</p>
-        <div class="table-wrap"><table class="data-table" id="lcCampaigns"><thead><tr><th>Name</th><th>UTM campaign tag</th><th>Portal tag</th><th>Channel</th><th>Owner</th><th>Run</th><th>Spend source</th><th>Spend entered</th><th></th></tr></thead><tbody></tbody></table></div>
+        <h3 class="inv-heading">Campaign list *</h3><p class="mx-updated" data-lc-updated></p>
+        <p class="renter-line" style="margin:0 0 10px;max-width:820px;">Add a row before a campaign goes live, with its UTM link. Rows can be ended, not deleted. For a Meta or Google row, set its ad platform campaign name (exactly as named in Meta Ads Manager or Google Ads) to read spend live; otherwise type spend in by hand from the daily ad-account check.</p>
+        <div class="table-wrap"><table class="data-table" id="lcCampaigns"><thead><tr><th>Name</th><th>UTM campaign tag</th><th>Portal tag</th><th>Platform</th><th>Channel</th><th>Owner</th><th>Run</th><th>Spend source</th><th>Ad platform campaign name</th><th>Spend entered</th><th>Last updated</th><th></th></tr></thead><tbody></tbody></table></div>
         <h4 style="margin:1.1rem 0 0.5rem;">Add a campaign</h4>
         <form class="lc-form" id="lcAddForm" onsubmit="lcAddCampaign(event)">
           <div><label for="lcName">Name</label><input id="lcName" name="name" maxlength="80" required></div>
           <div><label for="lcUtm">UTM campaign tag</label><input id="lcUtm" name="utmCampaign" maxlength="60" pattern="[a-z0-9][a-z0-9_\-]*" placeholder="e.g. 30d_home_v1" required></div>
-          <div><label for="lcChannel">Channel</label><select id="lcChannel" name="channel" required><option value="">Choose…</option><option>Meta</option><option>Google</option><option>Marketplace</option><option>KSL</option><option>Retention email</option><option>Outreach</option><option>Other</option></select></div>
+          <div><label for="lcPlatform">Platform</label><select id="lcPlatform" name="platform" required onchange="lcPlatformChanged()"><option value="">Choose…</option><option>Meta</option><option>Google Ads</option><option>Email outreach</option><option>Retention email</option><option>Facebook Marketplace</option><option>KSL</option><option>Organic / Google search</option><option>Referral</option><option>Phone or text</option><option>Other website</option><option>Email inbox</option></select></div>
+          <div id="lcChannelWrap" hidden><label for="lcChannel">Channel</label><select id="lcChannel" name="channel"><option>Paid</option><option>Organic</option></select></div>
           <div><label for="lcOwner">Owner</label><input id="lcOwner" name="owner" maxlength="60" placeholder="e.g. Demand Gen" required></div>
           <div><label for="lcStart">Start</label><input type="date" id="lcStart" name="start" required></div>
           <div><label for="lcEnd">End (optional)</label><input type="date" id="lcEnd" name="end"></div>
-          <div><label for="lcSpendSource">Spend source</label><select id="lcSpendSource" name="spendSource"><option value="">Default for the channel</option><option value="manual">Entered by hand (daily)</option><option value="none">No spend source</option></select></div>
+          <div><label for="lcSpendSource">Spend source</label><select id="lcSpendSource" name="spendSource"><option value="">Default for the platform</option><option value="manual">Entered by hand (daily)</option><option value="none">No spend source</option></select></div>
           <div><label for="lcPortalTag">Portal tag (optional)</label><input id="lcPortalTag" name="portalTag" maxlength="60" placeholder="e.g. campaign-30d-home-v1"></div>
+          <div><label for="lcAdsName">Ad platform campaign name (optional)</label><input id="lcAdsName" name="adsCampaignName" maxlength="120"></div>
           <div><button type="submit" class="btn btn-primary btn-sm">Add campaign</button></div>
         </form>
         <h4 style="margin:1.1rem 0 0.5rem;">Enter a day's spend</h4>
@@ -1088,6 +1099,7 @@ The Purebaric team</textarea></div>
         </form>
       </div>
       <p class="renter-line" id="lcFoot" style="margin:0.6rem 0 0;max-width:820px;">Read-only over existing portal records. Counts only, no rates at this volume. Each lead is counted once, under the first rule it matches.</p>
+      <p class="mx-static-foot" id="lcStaticFoot">* Static: updated by the team; accurate only when kept current.</p>
       </div>
       <div class="panel-actions">
         <h3 style="margin:0;">Analytics &amp; Data</h3>
@@ -1968,6 +1980,14 @@ The Purebaric team</textarea></div>
   // hand-entered spend). Rules: netlify/functions/_lib/campaign-leads.js.
   let _lcRange = { preset: '30', from: '', to: '' };
   let _lcCampaigns = [];
+  let _lcData = null;
+  let _lcShowEmpty = false; // page state only; never stored
+  function lcToggleEmpty() { _lcShowEmpty = document.getElementById('lcShowEmpty').checked; if (_lcData) renderLeadsByCampaign(_lcData); }
+  function lcPlatformChanged() {
+    const meta = document.getElementById('lcPlatform').value === 'Meta';
+    document.getElementById('lcChannelWrap').hidden = !meta;
+    document.getElementById('lcAdsName').disabled = !['Meta', 'Google Ads'].includes(document.getElementById('lcPlatform').value);
+  }
   function loadLeadsByCampaignWithStatus() {
     return withPanelLoading(['analytics'], loadLeadsByCampaign).catch(err => toast(err.message, true));
   }
@@ -1993,6 +2013,7 @@ The Purebaric team</textarea></div>
   }
   function lcNum(v) { return v == null ? '—' : escape(String(v)); }
   function renderLeadsByCampaign(d) {
+    _lcData = d;
     _lcCampaigns = d.campaigns || [];
     const sel = document.getElementById('lcPreset');
     const opts = [['30', 'Last 30 days'], ['7', 'Last 7 days']].concat(_lcCampaigns.map(c => ['c:' + c.id, c.name + ' (campaign run)'])).concat([['custom', 'Custom dates']]);
@@ -2001,42 +2022,46 @@ The Purebaric team</textarea></div>
     const r = d.range || {};
     document.getElementById('lcFrom').value = r.from || '';
     document.getElementById('lcTo').value = r.to || '';
-    const stamp = d.updated && d.updated.label ? `${d.updated.label}. Not live: press Refresh to read again.` : 'Last updated: unknown.';
+    const stamp = d.updated && d.updated.label ? `${d.updated.label}. Refresh to update.` : 'Last updated: unknown.';
     document.querySelectorAll('[data-lc-updated]').forEach(el => { el.textContent = stamp; });
     const stripeLine = d.stripe && d.stripe.ok ? 'Paying rentals are matched in Stripe by email, within 30 days of first touch.' : (d.stripe && d.stripe.configured ? 'Stripe could not be read, so paying rentals show —.' : 'Stripe is not configured, so paying rentals show —.');
     document.getElementById('lcNote').textContent = `${r.from} to ${r.to} (Mountain time), by each lead's first touch. ${stripeLine}`;
-    const groups = d.groups || [];
-    const body = groups.map(g => `<tr>
-      <td><strong>${escape(g.label)}</strong>${g.note ? `<div class="lc-sub">${escape(g.note)}</div>` : ''}</td>
-      <td class="lc-sub">${escape(g.ruleLabel || '')}</td>
+    // Zero-count campaign rows are hidden unless "Show empty campaigns" is ticked. "Matched by" is a tooltip.
+    const groups = (d.groups || []).filter(g => _lcShowEmpty || !g.empty);
+    const body = groups.length ? groups.map(g => `<tr>
+      <td title="${escape('Matched by: ' + (g.ruleLabel || ''))}"><strong>${escape(g.label)}</strong></td>
+      <td>${escape(g.platform || '—')}</td>
       <td>${escape(g.channel || '—')}</td>
       <td class="lc-sub">${escape(g.dates || '—')}</td>
       <td class="lc-num">${lcNum(g.realLeads)}</td>
       <td class="lc-num">${lcNum(g.partialLeads)}</td>
       <td class="lc-num">${lcNum(g.payingRentals)}</td>
-      <td>${g.spendDisplay ? escape(g.spendDisplay) : '—'}</td>
-      <td>${g.cplDisplay ? escape(g.cplDisplay) : '—'}</td>
-    </tr>`).join('');
-    const t = d.totals || {}, i = d.internal || {};
+      <td>${g.spendDisplay ? escape(g.spendDisplay) + (g.spendStatic ? ' *' : '') : '—'}${g.spendStatic ? `<div class="lc-sub">${escape(mxStamp(g.spendUpdated))}</div>` : ''}</td>
+      <td>${g.cplDisplay ? escape(g.cplDisplay) + (g.spendStatic && g.spend != null ? ' *' : '') : '—'}</td>
+    </tr>`).join('') : '<tr><td colspan="9" class="lc-sub">No sourced leads in this range.</td></tr>';
+    const t = d.totals || {}, ns = d.noSource || {};
     const total = `<tr class="lc-total"><td>Total</td><td></td><td></td><td></td><td class="lc-num">${lcNum(t.realLeads)}</td><td class="lc-num">${lcNum(t.partialLeads)}</td><td class="lc-num">${lcNum(t.payingRentals)}</td><td></td><td></td></tr>`;
-    const internal = `<tr><td colspan="4" class="lc-sub">TEST and internal (not counted)</td><td class="lc-num lc-sub">${lcNum(i.realLeads)}</td><td class="lc-num lc-sub">${lcNum(i.partialLeads)}</td><td colspan="3"></td></tr>`;
-    document.querySelector('#lcTable tbody').innerHTML = body + total + internal;
+    document.querySelector('#lcTable tbody').innerHTML = body + total;
+    document.getElementById('lcNoSource').textContent = ns.footnote || '';
+    document.getElementById('lcSpendNoLeads').textContent = d.spendNoLeadsFootnote || '';
+    // Rows plus the no-source footnote must equal the portal's real leads; only a mismatch is shown.
     const check = document.getElementById('lcCheck');
     check.className = 'renter-line' + (t.reconciled ? '' : ' lc-warn');
-    check.textContent = t.reconciled
-      ? `Totals match the portal's real-lead count for this range (${t.portalRealLeads}). Partial leads (step 1 only) are never added to real leads.`
-      : `Totals do not match the portal's real-lead count (${t.realLeads} vs ${t.portalRealLeads}). This is a bug: tell Engineering.`;
+    check.textContent = t.reconciled ? '' : `Totals do not match the portal's real-lead count (${(t.realLeads || 0) + (ns.total || 0)} vs ${t.portalRealLeads}). This is a bug: tell Engineering.`;
     document.querySelector('#lcCampaigns tbody').innerHTML = _lcCampaigns.length ? _lcCampaigns.map(c => {
       const spent = (c.spend || []).reduce((s, x) => s + Number(x.amount || 0), 0);
       const spentLine = c.spendSource === 'manual' ? ((c.spend || []).length ? ((c.spend || []).length === 1 ? `$${spent.toFixed(2)} over 1 day` : `$${spent.toFixed(2)} over ${(c.spend || []).length} days`) : 'None yet') : '—';
       return `<tr>
         <td>${escape(c.name)}</td><td><code>${escape(c.utmCampaign)}</code></td><td><code>${escape(c.portalTag || '')}</code></td>
-        <td>${escape(c.channel)}</td><td>${escape(c.owner)}</td>
+        <td>${escape(c.platform || '—')}</td><td>${escape(c.channel || '—')}</td><td>${escape(c.owner)}</td>
         <td class="lc-sub">${escape(c.start)} to ${escape(c.end || 'open')}</td>
-        <td>${escape(c.spendSourceLabel || '')}</td><td>${escape(spentLine)}</td>
-        <td><button type="button" class="btn btn-ghost btn-sm" onclick="lcEndCampaign('${escape(c.id)}')">End</button></td>
+        <td>${escape(c.spendSourceLabel || '')}</td>
+        <td>${['Meta', 'Google Ads'].includes(c.platform) ? `${c.adsCampaignName ? escape(c.adsCampaignName) : '<span class="lc-sub">Not set</span>'} <button type="button" class="btn btn-ghost btn-sm" onclick="lcSetAdsName('${escape(c.id)}')">Set</button>` : '—'}</td>
+        <td>${escape(spentLine)}</td>
+        <td class="lc-sub">${escape(mxStamp(c.lastUpdated))}</td>
+        <td><button type="button" class="btn btn-ghost btn-sm" onclick="lcEndCampaign('${escape(c.id)}')">End campaign</button></td>
       </tr>`;
-    }).join('') : '<tr><td colspan="9" class="lc-sub">No campaigns yet. Add one below before it goes live.</td></tr>';
+    }).join('') : '<tr><td colspan="12" class="lc-sub">No campaigns yet. Add one below before it goes live.</td></tr>';
     const manual = _lcCampaigns.filter(c => c.spendSource === 'manual');
     document.getElementById('lcSpendCampaign').innerHTML = manual.length
       ? manual.map(c => `<option value="${escape(c.id)}">${escape(c.name)}</option>`).join('')
@@ -2050,7 +2075,15 @@ The Purebaric team</textarea></div>
   async function lcAddCampaign(e) {
     e.preventDefault();
     const f = e.target, v = Object.fromEntries(new FormData(f).entries());
-    try { await lcPost({ action: 'add', ...v, utmCampaign: String(v.utmCampaign || '').trim().toLowerCase() }); f.reset(); toast('Campaign added.'); }
+    if (v.platform !== 'Meta') delete v.channel;
+    try { await lcPost({ action: 'add', ...v, utmCampaign: String(v.utmCampaign || '').trim().toLowerCase() }); f.reset(); lcPlatformChanged(); toast('Campaign added.'); }
+    catch (err) { toast(err.message, true); }
+  }
+  async function lcSetAdsName(id) {
+    const c = _lcCampaigns.find(x => x.id === id); if (!c) return;
+    const name = prompt(`Ad platform campaign name for "${c.name}", exactly as named in ${c.platform === 'Google Ads' ? 'Google Ads' : 'Meta Ads Manager'}. Leave empty to clear.`, c.adsCampaignName || '');
+    if (name === null) return;
+    try { await lcPost({ action: 'ads_name', id, adsCampaignName: name.trim() }); toast('Ad platform campaign name saved.'); }
     catch (err) { toast(err.message, true); }
   }
   async function lcEndCampaign(id) {
@@ -2090,31 +2123,56 @@ The Purebaric team</textarea></div>
     return `<div class="mx-bar"><div class="mx-bar-fill" style="width:${pct(p.current)}%"></div>${marks.join('')}</div>`
       + `<div class="mx-bar-cap">${escape(fmt(p.current))} vs ${escape(fmt(p.target))} ${escape(p.targetLabel || 'target')}${extra.length ? ' · stretch ' + escape(extra.map(fmt).join(' / ')) : ''}</div>`;
   }
+  // A static (team-entered) metric gets " *" after its name; mirrors staticLabel() in _lib/static-metrics.js.
+  function mxLabel(r) { return r.static ? r.label + ' *' : r.label; }
+  function mxStamp(lu) { return lu && lu.label ? lu.label : 'Not updated yet'; }
   function mxRow(r) {
     const val = r.display != null ? escape(r.display) : (r.status === 'not_connected' ? 'Not connected' : r.status === 'no_data' ? 'No data' : '—');
     const status = r.statusLabel ? `<span class="pill mx-status ${escape(r.status)}">${escape(r.statusLabel)}</span>` : '';
     const prov = r.provisional ? '<span class="pill mx-prov" title="Pending the glossary lock">Provisional</span>' : '';
+    const stamp = r.static ? `<div class="mx-stamp">${escape(mxStamp(r.lastUpdated))}</div>` : '';
+    const edit = r.editable ? `<details class="mx-edit"><summary class="mx-src">Update value</summary>
+        <form class="mx-edit" onsubmit="mxSaveStatic(event, '${escape(r.id)}')">
+          <div><label class="mx-src" for="mxv_${escape(r.id)}">Value</label><br><input id="mxv_${escape(r.id)}" name="value" maxlength="80" required placeholder="e.g. 1 of 1 on time"></div>
+          <div><label class="mx-src" for="mxn_${escape(r.id)}">Note (optional)</label><br><input id="mxn_${escape(r.id)}" name="note" maxlength="300" size="40" placeholder="Where the number came from; no names"></div>
+          <div><button type="submit" class="btn btn-primary btn-sm">Save</button></div>
+        </form></details>` : '';
     return `<div class="mx-row">
-      <div><div class="mx-label">${escape(r.label)}${prov}</div><div class="mx-src">${escape(r.source || '')}</div></div>
+      <div><div class="mx-label">${escape(mxLabel(r))}${prov}</div><div class="mx-src">${escape(r.source || '')}</div>${stamp}</div>
       <div class="mx-val">${val}</div>
       <div class="mx-progress">${mxBar(r.progress)}</div>
       <div>${status}</div>
       ${r.note ? `<div class="mx-note">${escape(r.note)}</div>` : ''}
+      ${edit}
     </div>`;
+  }
+  async function mxSaveStatic(e, id) {
+    e.preventDefault();
+    const v = Object.fromEntries(new FormData(e.target).entries());
+    try {
+      await api('/api/admin/metrics-static', { method: 'POST', body: JSON.stringify({ id, value: v.value, note: v.note }) });
+      toast('Saved.');
+      await withPanelLoading(['analytics'], loadMetrics);
+    } catch (err) { toast(err.message, true); }
   }
   function renderMetrics(d) {
     const rows = d.rows || [];
     const put = (id, section) => { document.getElementById(id).innerHTML = rows.filter(r => r.section === section).map(mxRow).join('') || '<p class="renter-line">Nothing to show.</p>'; };
     put('mxOkr', 'okr'); put('mxKpi', 'kpi'); put('mxLeading', 'leading');
-    const stamp = d.updated && d.updated.label ? `${d.updated.label}. Not live: press Refresh to read again.` : 'Last updated: unknown.';
+    const stamp = d.updated && d.updated.label ? `${d.updated.label}. Refresh to update.` : 'Last updated: unknown.';
     document.querySelectorAll('[data-mx-updated]').forEach(el => { el.textContent = stamp; });
     const p = d.period || {};
     const asOf = p.asOf ? new Date(p.asOf).toLocaleString('en-US', { timeZone: 'America/Denver', dateStyle: 'medium', timeStyle: 'short' }) + ' MT' : '';
-    const stripeLine = d.stripe && d.stripe.ok ? 'Stripe: live read.' : (d.stripe && d.stripe.configured ? 'Stripe could not be read; Stripe rows show no data.' : 'Stripe is not configured; Stripe rows show no data.');
-    document.getElementById('mxNote').textContent = `${p.start === p.end ? p.start : p.start + ' to ' + p.end} (Mountain time). Point-in-time values as of ${asOf}; flows are summed over the period. ${stripeLine} Google Analytics and ads are not connected on this tab yet.`;
+    const stripeLine = d.stripe && d.stripe.ok ? 'Stripe: live.' : (d.stripe && d.stripe.configured ? 'Stripe could not be read; Stripe rows show no data.' : 'Stripe is not configured; Stripe rows show no data.');
+    const src = d.sources || {};
+    const gaLine = src.ga4 === 'live' ? 'Google Analytics: live.' : 'Google Analytics is not connected; its rows say why.';
+    const metaLine = src.meta === 'live' ? 'Meta spend: live.' : (src.meta === 'error' ? "Couldn't read Meta, so Meta spend is entered by hand." : 'Meta spend is entered by hand.');
+    document.getElementById('mxNote').textContent = `${p.start === p.end ? p.start : p.start + ' to ' + p.end} (Mountain time). Point-in-time values as of ${asOf}; flows are summed over the period. ${stripeLine} ${gaLine} ${metaLine}`;
     const tol = d.config && d.config.scorecardTolerance;
-    document.getElementById('mxFoot').textContent = `Read-only. Targets come from the metrics config (${d.config ? d.config.version : ''}); ${d.config ? d.config.provisionalCount : ''} rows are provisional until the glossary lock.`
-      + (tol ? ` Scorecard match tolerance (${tol.status}): exact on counts, MRR within $${tol.mrrDollars}.` : '');
+    document.getElementById('mxFoot').textContent = `Read-only. Targets * come from the metrics config (${d.config ? d.config.version : ''}); ${d.config ? d.config.provisionalCount : ''} rows are provisional until the glossary lock.`
+      + (tol ? ` Scorecard match tolerance (${tol.status}): exact on counts, MRR within $${tol.mrrDollars}.` : '')
+      + ` Targets: ${mxStamp(d.config && d.config.lastUpdated)}.`;
+    document.getElementById('mxStaticFoot').textContent = d.staticFootnote || '';
   }
 
   async function loadTraffic(refresh) {
@@ -2286,8 +2344,8 @@ The Purebaric team</textarea></div>
       return;
     }
     const s = r.summary, c = r.chart;
-    const when = r.fetchedAt ? new Date(r.fetchedAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) : '';
-    const source = `Source: Google Analytics${when ? ' · updated ' + escape(when) : ''}${r.stale ? ' · <span style="color:#9a4f3a;">showing the last good copy, refresh failed: ' + escape(String(r.stale)) + '</span>' : ''}`;
+    const when = r.fetchedAt ? new Date(r.fetchedAt).toLocaleString('en-US', { timeZone: 'America/Denver', month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) + ' MT' : '';
+    const source = `Source: Google Analytics${when ? ' · Last updated ' + escape(when) : ''}${r.stale ? ' · <span style="color:#9a4f3a;">showing the last good copy, refresh failed: ' + escape(String(r.stale)) + '</span>' : ''}`;
     // Home: one number and the trend line, for the same window as the Site analytics tab.
     if (kpis) { paintAnRange(); renderHomeTraffic(); }
     // Site analytics tab: full comparison plus pages.

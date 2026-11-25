@@ -1,13 +1,13 @@
 // GET /api/admin/ga-traffic[?refresh=1] — daily website visits (GA4 sessions) for the Home tab:
 // this year vs last year by day, plus month-to-date and year-to-date daily averages.
-// Results are cached in the settings store for six hours so the Google API is not hit on every load.
+// Results are cached in the settings store for about 5 minutes so the Google API is not hit on every click.
 const { requireAuth, json } = require("./_lib/admin");
 const { store, STORES } = require("./_lib/storage");
 const { mountainToday } = require("./_lib/delivery");
 const ga = require("./_lib/ga-traffic");
 
 const CACHE_KEY = "gaTraffic";
-const CACHE_MS = 6 * 60 * 60 * 1000;
+const CACHE_MS = 5 * 60 * 1000; // about 5 minutes: close to live without calling Google on every click
 const PROPERTY = (process.env.GA4_PROPERTY_ID || "555169638").trim();
 
 exports.handler = async (event, context) => {

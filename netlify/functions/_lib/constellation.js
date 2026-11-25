@@ -19,6 +19,8 @@
 const { isInternalLead } = require("./internal-lead");
 const { isPlaceholderEmail } = require("./placeholder-email");
 const { subscriptionAmount } = require("./stripe-billing");
+const S = require("./static-metrics");
+const { platformOf } = require("./campaign-platform");
 
 const DAY_MS = 86400000;
 const PERIODS = ["day", "week", "month", "quarter", "year"];
@@ -250,6 +252,40 @@ function lastUpdated({ nowMs, portalMs, stripeMs }) {
 const money = (n) => (n == null ? null : Math.round(n * 100) / 100);
 const usd = (n) => "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+// ───────── Spend (CPL, CAC) ─────────
+// Hand-entered days from the campaign list for one platform ("Google Ads" or "Meta"), inside from..to.
+function manualSpend(campaigns, platform, from, to) {
+  let amount = 0, days = 0; const times = [];
+  for (const r of campaigns || []) {
+    if (platformOf(r) !== platform || r.spendSource !== "manual") continue;
+    for (const e of r.spend || []) if (e.day >= from && e.day <= to) { amount += Number(e.amount) || 0; days += 1; if (e.enteredAt) times.push(e.enteredAt); }
+  }
+  return { amount: money(amount), days, live: false, lastUpdatedAt: S.latest(times) };
+}
+function periodSpend({ ga, meta, campaigns, from, to }) {
+  const google = ga && ga.ok && ga.adsCost ? { amount: money(Object.values(ga.adsCost).reduce((t, v) => t + v, 0)), live: true } : manualSpend(campaigns, "Google Ads", from, to);
+  const fb = meta && meta.ok ? { amount: money(meta.total), live: true } : manualSpend(campaigns, "Meta", from, to);
+  return { google, meta: fb, total: money(google.amount + fb.amount), static: !google.live || !fb.live,
+    lastUpdatedAt: S.latest(google.live ? null : google.lastUpdatedAt, fb.live ? null : fb.lastUpdatedAt) };
+}
+function spendLine(spend, ga, meta) {
+  const part = (name, p, liveFrom) => `${name} ${usd(p.amount)} ${p.live ? `(live from ${liveFrom})` : (p.days ? `(entered by hand for ${p.days === 1 ? "1 day" : p.days + " days"})` : "(no spend entered yet)")}`;
+  const why = [];
+  if (!spend.google.live) why.push(ga && ga.ok ? "Google Ads cost isn't available in GA4." : "Google Ads cost needs Google Analytics.");
+  if (!spend.meta.live) why.push(meta && meta.configured ? "Meta could not be read." : "Meta isn't connected.");
+  return `Spend ${usd(spend.total)}: ${part("Google", spend.google, "Google Ads")} + ${part("Meta", spend.meta, "Meta")}.${why.length ? " " + why.join(" ") : ""}`;
+}
+
+// The MT days a report reads (GA4, Meta): the period start to its end, or to today while it's open.
+// null for a period that hasn't started.
+function reportRange(period, date, nowMs) {
+  const today = mtDayOfMs(nowMs);
+  const anchor = /^\d{4}-\d{2}-\d{2}$/.test(date || "") ? date : today;
+  const b = periodBounds(PERIODS.includes(period) ? period : "day", anchor, today);
+  if (b.future) return null;
+  return { from: b.start, to: b.complete ? b.end : mtDayOfMs(asOfMs(b, nowMs)) };
+}
+
 // ───────── Config ─────────
 // The keys every config must carry; anything else (targets, baselines, notes) is optional and may be null.
 const REQUIRED_METRICS = ["payingRentals", "mrr", "januaryTermEnds", "newPaidStarts", "realLeads", "leadToRental", "cpl", "cac",
@@ -279,6 +315,11 @@ function buildReport(input) {
   const subs = input.subs || [];
   const stripeOk = !!(input.stripe && input.stripe.configured && !input.stripe.error);
   const minN = cfg.tooThinMinN || 8;
+  const ga = input.ga || null;
+  const gaOk = !!(ga && ga.ok);
+  const gaReason = ga && ga.reason ? ga.reason : "Google Analytics is not set up: GA4_SERVICE_ACCOUNT is missing or unreadable.";
+  const collecting = cfg.ga4CustomDimensionsSince ? `Collecting since ${cfg.ga4CustomDimensionsSince}; GA doesn't backfill.` : "Collecting since the dimension was registered; GA doesn't backfill.";
+  const dimMissing = (param) => `Waiting for the GA4 custom dimension "${param}" (customEvent:${param}) to appear in the property.`;
 
   const machines = (input.machines || []).filter((m) => m.status !== "archived").length || cfg.machinesFallback || 8;
 
@@ -335,7 +376,7 @@ function buildReport(input) {
   const stripeVal = (v) => (stripeOk ? v : null);
   const rows = [];
   const row = (r) => rows.push({
-    status: null, provisional: false, value: null, display: null, target: null, stretch: null, progress: null, note: "", ...r,
+    status: null, provisional: false, value: null, display: null, target: null, stretch: null, progress: null, note: "", static: false, lastUpdated: null, ...r,
   });
   const prov = (key) => !!(M[key] && M[key].provisional);
   const stripeMissing = stripeOk ? "" : (input.stripe && input.stripe.error ? "Stripe could not be read." : "Stripe is not configured.");
@@ -379,9 +420,32 @@ function buildReport(input) {
     rows[rows.length - 1].value = Math.round(rate * 1000) / 1000;
     rows[rows.length - 1].status = rate >= M.leadToRental.targetRate ? "on_track" : "behind";
   }
-  row({ id: "cpl", section: "okr", label: "Cost per real lead", source: "Ads + portal", provisional: prov("cpl"), status: "not_connected", note: M.cpl.note || "" });
-  row({ id: "cac", section: "okr", label: "CAC", source: "Ads + Stripe", provisional: prov("cac"), status: "not_connected", note: M.cac.note || "" });
-  row({ id: "personalization", section: "okr", label: "Personalization exposure / lift", source: "GA4", provisional: prov("personalization"), status: "not_connected" });
+  // Spend: Google Ads cost (live through GA4) + Meta (live through the Marketing API), each falling back to
+  // the campaign list's hand-entered days when its live read is missing. Any fallback makes the row static.
+  const spend = periodSpend({ ga, meta: input.meta, campaigns: input.campaigns, from: b.start, to: b.complete ? b.end : asOfDay });
+  const spendNote = spendLine(spend, ga, input.meta);
+  const spendStatic = { static: spend.static, lastUpdated: spend.static ? S.stamp(spend.lastUpdatedAt) : null };
+  const perLead = (n, noun) => `${n === 1 ? "1 " + noun : n + " " + noun + "s"}`;
+  row({ id: "cpl", section: "okr", label: "Cost per real lead", source: "Google Ads (GA4) + Meta + portal", provisional: prov("cpl"), ...spendStatic,
+    value: realLeads >= 1 ? money(spend.total / realLeads) : null,
+    display: realLeads >= 1 ? `${usd(spend.total / realLeads)} (${perLead(realLeads, "real lead")})` : "No real leads yet",
+    status: prov("cpl") ? "provisional" : null, note: [spendNote, M.cpl.note].filter(Boolean).join(" ") });
+  row({ id: "cac", section: "okr", label: "CAC", source: "Google Ads (GA4) + Meta + Stripe", provisional: prov("cac"), ...spendStatic,
+    value: stripeOk && startsInPeriod >= 1 ? money(spend.total / startsInPeriod) : null,
+    display: !stripeOk ? null : startsInPeriod >= 1 ? `${usd(spend.total / startsInPeriod)} (${perLead(startsInPeriod, "new paid start")})` : "No new paid starts yet",
+    status: !stripeOk ? "no_data" : prov("cac") ? "provisional" : null, note: stripeMissing || [spendNote, M.cac.note].filter(Boolean).join(" ") });
+  const pz = M.personalization;
+  if (!gaOk) row({ id: "personalization", section: "okr", label: "Personalization exposure / lift", source: "GA4", provisional: prov("personalization"), status: "not_connected", note: gaReason });
+  else if (!ga.has.variant) row({ id: "personalization", section: "okr", label: "Personalization exposure / lift", source: "GA4", provisional: prov("personalization"), status: "not_connected",
+    value: ga.exposures, display: `${ga.exposures} exposure${ga.exposures === 1 ? "" : "s"}`, note: dimMissing("variant") });
+  else {
+    const v = ga.variant;
+    row({ id: "personalization", section: "okr", label: "Personalization exposure / lift", source: "GA4", provisional: prov("personalization"),
+      value: v.control.exposures + v.personalized.exposures,
+      display: `Control ${v.control.exposures} · personalized ${v.personalized.exposures} exposures`,
+      status: v.control.exposures < (pz.minControlExposures || 100) ? "too_thin" : (prov("personalization") ? "provisional" : null),
+      note: `Form starts by arm: control ${v.control.starts} · personalized ${v.personalized.starts}. Call on ${pz.callDate}, after at least ${pz.minControlExposures || 100} control exposures. ${collecting}` });
+  }
 
   // KPIs
   const util = stripeOk ? end.count / machines : null;
@@ -417,17 +481,34 @@ function buildReport(input) {
     status: postCutoff.length < minN ? "too_thin" : "provisional",
     note: `Proposed target ${Math.round(covTarget * 100)}% by ${M.leadSourceCoverage.proposedBy}. Leads before the Release 3 cutoff are excluded.` });
   row({ id: "step1_to_step2", section: "leading", label: "Step 1 → step 2", source: "Portal bookings", value: null,
-    display: `${partial} step-1 only · ${completed} completed`, status: "too_thin", note: "Counts, not a rate, at current volume." });
-  row({ id: "renewal_touch", section: "leading", label: "Renewal touch on time", source: "R&O log (not captured)", status: "no_data" });
-  row({ id: "reply_time", section: "leading", label: "Lead reply time / outreach reply", source: "Gmail / portal timestamps (not captured)", status: "no_data" });
-  for (const [id, label, key] of [
-    ["booking_completion_rate", "Booking completion rate", "bookingCompletionRate"],
-    ["form_starts", "Form starts", "formStarts"],
-    ["paid_form_start_rate", "Paid form-start rate", "paidFormStartRate"],
-    ["booking_page_visits", "Booking page visits", "bookingPageVisits"],
-    ["scroll_depth", "Scroll depth", "scrollDepth"],
-    ["device_split", "Device split (widget engagement)", "deviceSplit"],
-  ]) row({ id, section: "leading", label, source: "GA4", provisional: prov(key), status: "not_connected" });
+    display: `${partial} step-1 only · ${completed} completed`, status: "too_thin", note: "Too few for a rate yet." });
+  // Team-entered: no portal or API source records these (see DECISIONS 2026-11-25 live metrics).
+  for (const id of ["renewal_touch", "reply_time"]) {
+    const sv = (input.staticValues || {})[id] || {};
+    row({ id, section: "leading", label: S.STATIC_IDS[id].label, source: `Team-entered (${S.STATIC_IDS[id].who})`, provisional: prov(id === "renewal_touch" ? "renewalTouch" : "replyTime"),
+      static: true, editable: true, lastUpdated: sv.lastUpdated || null, display: sv.value || "Not entered yet", note: sv.note || "" });
+  }
+  const gaRow = (id, label, key, build) => {
+    if (!gaOk) return row({ id, section: "leading", label, source: "GA4", provisional: prov(key), status: "not_connected", note: gaReason });
+    return row({ id, section: "leading", label, source: "GA4", provisional: prov(key), ...build() });
+  };
+  const thin = (num, den, unitNote) => (den >= minN ? { value: Math.round((num / den) * 1000) / 1000, note: `Rate ${Math.round((num / den) * 100)}%.${unitNote ? " " + unitNote : ""}` }
+    : { status: "too_thin", note: `Too few for a rate yet.${unitNote ? " " + unitNote : ""}` });
+  gaRow("booking_completion_rate", "Booking completion rate", "bookingCompletionRate", () => ({
+    display: `${completed} completed of ${ga.formStarts} form starts`, ...thin(completed, ga.formStarts, "Completed from the portal; starts from GA4.") }));
+  gaRow("form_starts", "Form starts", "formStarts", () => ({ value: ga.formStarts, display: String(ga.formStarts), note: "GA4 booking_form_start events." }));
+  gaRow("paid_form_start_rate", "Paid form-start rate", "paidFormStartRate", () => (!ga.paid
+    ? { display: "No paid campaigns listed", note: "Add the campaign to the campaign list (Meta or Google channel) or to the metrics config." }
+    : { display: `${ga.paid.starts} form starts of ${ga.paid.sessions} paid sessions`, ...thin(ga.paid.starts, ga.paid.sessions, `Campaigns: ${(input.paidCampaigns || []).join(", ")}.`) }));
+  gaRow("booking_page_visits", "Booking page visits", "bookingPageVisits", () => ({ value: ga.bookPageViews, display: String(ga.bookPageViews), note: "Page views of /book (home and business)." }));
+  gaRow("scroll_depth", "Scroll depth", "scrollDepth", () => (!ga.has.percent
+    ? { status: "not_connected", value: ga.scrollEvents, display: `${ga.scrollEvents} scroll event${ga.scrollEvents === 1 ? "" : "s"}`, note: dimMissing("percent") }
+    : { display: `25%: ${ga.scroll[25]} · 50%: ${ga.scroll[50]} · 75%: ${ga.scroll[75]} · 90%: ${ga.scroll[90]}`,
+        note: [ga.topScrollPage ? `Most scroll events: ${ga.topScrollPage.path} (${ga.topScrollPage.count}).` : (ga.has.page_path ? "" : "Page split waits on customEvent:page_path."), collecting].filter(Boolean).join(" ") }));
+  gaRow("device_split", "Device split (widget engagement)", "deviceSplit", () => (!ga.has.device
+    ? { status: "not_connected", note: dimMissing("device") }
+    : { display: `${ga.device.mobile} mobile · ${ga.device.desktop} desktop${ga.device.unknown ? ` · ${ga.device.unknown} unknown` : ""}`,
+        note: `Booking form starts by screen width (mobile is under 768 px). ${collecting}` }));
 
   for (const r of rows) r.statusLabel = r.status ? STATUS_LABEL[r.status] : null;
 
@@ -436,8 +517,15 @@ function buildReport(input) {
     period: { name: b.period, start: b.start, end: b.end, days: b.days, elapsed: b.elapsed, complete: b.complete, asOf: new Date(asOf).toISOString(), asOfDay, today },
     stripe: { configured: !!(input.stripe && input.stripe.configured), ok: stripeOk, error: input.stripe && input.stripe.error ? "stripe_read_failed" : null,
       testModeOnly: subs.length > 0 && subs.every((s) => s.livemode !== true) },
-    sources: { ga4: "not_connected", ads: "not_connected" },
-    config: { version: cfg.version, provisionalCount: Object.values(M).filter((m) => m.provisional).length, scorecardTolerance: cfg.scorecardTolerance },
+    sources: {
+      ga4: gaOk ? "live" : "not_connected",
+      googleAds: gaOk && ga.adsCost ? "live" : "not_connected",
+      meta: input.meta && input.meta.ok ? "live" : (input.meta && input.meta.configured ? "error" : "not_connected"),
+      readAt: gaOk && ga.readMs ? new Date(ga.readMs).toISOString() : null,
+    },
+    config: { version: cfg.version, provisionalCount: Object.values(M).filter((m) => m.provisional).length, scorecardTolerance: cfg.scorecardTolerance,
+      static: true, lastUpdated: S.stamp(cfg.updatedAt) },
+    staticFootnote: S.STATIC_FOOTNOTE,
     rows,
   };
 }
@@ -448,4 +536,5 @@ module.exports = {
   monthlyRate, payingAt, stripeSnapshot, newPaidStarts,
   personKey, leadRecords, dedupeLeads, isPartialBooking, isInternal, hasTag, firstPaidStartByEmail, reachedRental,
   deadlineStatus, flowStatus, loadConfig, buildReport, formatMt, lastUpdated,
+  manualSpend, periodSpend, reportRange,
 };
