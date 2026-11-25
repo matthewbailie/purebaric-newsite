@@ -238,3 +238,10 @@
 **Alternatives considered:** Leaving the current line in place; shipping placeholder copy; editing every footer again when the wording arrives.
 
 **Status:** On `feat/claims-cleanup`. Not deployed.
+
+## Admin Metrics tab reads Stripe on the server and returns aggregates only (2026-11-24)
+
+**Decision:** A read-only Metrics tab (right after Home) shows the constellation OKRs, KPIs and leading metrics by Mountain-time calendar period. `GET /api/admin/metrics` (`admin-metrics.js`, `requireAuth`) lists Stripe subscriptions read-only and reads the portal stores, and returns counts, dollars and labels only, never names, emails, phones, addresses or notes. Paying rentals and MRR come from Stripe livemode, excluding comps ($0 rate), paused (status `paused` or `pause_collection`) and canceled subscriptions. Rules are in `_lib/constellation.js`; targets, baselines and provisional flags are in `netlify/functions/_data/metrics-config.json`. GA4 and ads rows show "Not connected" in v1.
+**Context:** The owner wanted one admin view of progress against the team's targets. The Home tab's MRR is derived from portal rentals and has disagreed with Stripe; the team's metric definitions say Stripe wins. Several targets and baselines are provisional until the glossary lock, so they must change without a code change.
+**Alternatives considered:** Extending the Home tab's client-side metrics (`dashboard-metrics.js`) would keep the portal-derived MRR and ship lead records with personal details to the browser; reusing `stripe-billing.js`'s `LIVE` set would count paused subscriptions as paying.
+**Status:** On `feat/admin-metrics-tab` (PR). Not deployed.

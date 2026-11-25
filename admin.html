@@ -354,6 +354,26 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     .btn-sm { padding: 0.35rem 0.6rem; font-size: 0.75rem; }
     .toast { left: 1rem; right: 1rem; max-width: none; bottom: 1rem; }
   }
+  /* Metrics tab (read-only constellation view) */
+  .mx-section { margin: 0 0 1.5rem; }
+  .mx-row { display: grid; grid-template-columns: minmax(180px, 1.3fr) minmax(140px, 1fr) minmax(160px, 1.2fr) auto; gap: 0.5rem 1rem; align-items: center; padding: 0.7rem 0.9rem; border: 1px solid var(--line); border-top: 0; background: var(--cream); }
+  .mx-row:first-child { border-top: 1px solid var(--line); }
+  .mx-label { font-weight: 600; }
+  .mx-src { font-size: 0.78rem; color: var(--stone-muted); }
+  .mx-val { font-variant-numeric: tabular-nums; }
+  .mx-note { grid-column: 1 / -1; font-size: 0.8rem; color: var(--stone-muted); margin-top: -0.2rem; }
+  .mx-bar { position: relative; height: 10px; border-radius: 999px; background: var(--cream-warm, #efe6d6); }
+  .mx-bar-fill { height: 100%; border-radius: 999px; background: var(--terracotta); }
+  .mx-bar-mark { position: absolute; top: -3px; width: 2px; height: 16px; background: var(--ink, #2b2320); }
+  .mx-bar-mark.stretch { background: var(--stone-muted); }
+  .mx-bar-cap { font-size: 0.72rem; color: var(--stone-muted); margin-top: 3px; }
+  .mx-status { white-space: nowrap; }
+  .mx-status.on_track { background: #dcebd6; color: #2f5a26; }
+  .mx-status.behind { background: #f6dccf; color: #82402f; }
+  .mx-status.too_thin, .mx-status.no_data, .mx-status.provisional { background: #efe6d6; color: #5b4c40; }
+  .mx-status.not_connected { background: #e6e3df; color: #6b625b; }
+  .mx-prov { font-size: 0.65rem; background: #f3ead9; color: #6b4f1d; margin-left: 0.35rem; }
+  @media (max-width: 760px) { .mx-row { grid-template-columns: 1fr auto; } .mx-row .mx-progress { grid-column: 1 / -1; } }
 </style>
 </head>
 <body>
@@ -368,6 +388,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
     </div>
     <nav class="sidebar-nav" id="sidebarNav" aria-label="Admin sections">
       <button class="tab-btn active" data-tab="home">Home</button>
+      <button class="tab-btn" data-tab="metrics">Metrics</button>
       <button class="tab-btn" data-tab="bookings">Rental requests</button>
       <button class="tab-btn" data-tab="rentals">Rentals</button>
       <button class="tab-btn" data-tab="chambers">Chambers</button>
@@ -487,6 +508,28 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
 
       <h3 class="inv-heading">Business health</h3>
       <div class="health-row" id="healthRow" data-sortable="home-health"></div>
+    </section>
+
+    <!-- ───── Metrics (read-only constellation view; /api/admin/metrics) ───── -->
+    <section class="tab-panel" data-panel="metrics">
+      <div class="panel-actions">
+        <h2>Metrics</h2>
+        <button class="btn btn-ghost btn-sm" onclick="setMetricsPeriod(_mxPeriod)">Refresh</button>
+      </div>
+      <p class="renter-line" id="mxNote" style="margin:0 0 14px;max-width:820px;">Loading…</p>
+      <div class="pin-bar" style="margin-bottom:1.25rem;">
+        <div class="seg" id="mxPeriod" role="group" aria-label="Time period">
+          <button type="button" data-p="day" class="on" onclick="setMetricsPeriod('day')">Day</button>
+          <button type="button" data-p="week" onclick="setMetricsPeriod('week')">Week</button>
+          <button type="button" data-p="month" onclick="setMetricsPeriod('month')">Month</button>
+          <button type="button" data-p="quarter" onclick="setMetricsPeriod('quarter')">Quarter</button>
+          <button type="button" data-p="year" onclick="setMetricsPeriod('year')">Year</button>
+        </div>
+      </div>
+      <div class="mx-section"><h3 class="inv-heading">Main OKRs</h3><div id="mxOkr"></div></div>
+      <div class="mx-section"><h3 class="inv-heading">KPIs</h3><div id="mxKpi"></div></div>
+      <div class="mx-section"><h3 class="inv-heading">Leading metrics</h3><div id="mxLeading"></div></div>
+      <p class="renter-line" id="mxFoot" style="margin:0.6rem 0 0;max-width:820px;"></p>
     </section>
 
     <!-- ───── Chambers ───── -->
@@ -1712,6 +1755,7 @@ The Purebaric team</textarea></div>
       notifications: () => Promise.all([loadNotifications(), loadTwilioConfig()]),
       outreach: () => Promise.all([loadOutreach(), loadRoutes(false).catch(() => {})]),
       analytics: () => loadTraffic(true),
+      metrics: () => loadMetrics(),
     };
     const loader = loaders[tab];
     if (!loader || (!force && _tabDataLoaded.has(tab))) return;
@@ -1830,6 +1874,53 @@ The Purebaric team</textarea></div>
   setInterval(rolloverIfNewDay, 5 * 60 * 1000);
 
   // ─── Website visits (Google Analytics sessions by day; see netlify/functions/admin-ga-traffic.js) ───
+  // ───────── Metrics tab (read-only; aggregates only, nothing is stored in the browser) ─────────
+  let _mxPeriod = 'day';
+  function setMetricsPeriod(p) {
+    _mxPeriod = p;
+    document.querySelectorAll('#mxPeriod button').forEach(b => b.classList.toggle('on', b.dataset.p === p));
+    withPanelLoading(['metrics'], loadMetrics).catch(err => toast(err.message, true));
+  }
+  async function loadMetrics() {
+    const data = await api('/api/admin/metrics?period=' + encodeURIComponent(_mxPeriod));
+    renderMetrics(data);
+  }
+  function mxBar(p) {
+    if (!p || !(p.target > 0)) return '';
+    const top = Math.max(p.target, p.stretch || 0, p.current || 0, ...(p.markers || [])) || 1;
+    const pct = v => Math.max(0, Math.min(100, (v / top) * 100)).toFixed(1);
+    const extra = p.markers && p.markers.length ? p.markers : (p.stretch ? [p.stretch] : []);
+    const marks = [`<span class="mx-bar-mark" style="left:${pct(p.target)}%" title="${escape(p.targetLabel || 'target')}"></span>`]
+      .concat(extra.map(v => `<span class="mx-bar-mark stretch" style="left:${pct(v)}%" title="Stretch"></span>`));
+    const fmt = v => p.money ? '$' + Number(v).toLocaleString('en-US', { maximumFractionDigits: 0 }) : String(v);
+    return `<div class="mx-bar"><div class="mx-bar-fill" style="width:${pct(p.current)}%"></div>${marks.join('')}</div>`
+      + `<div class="mx-bar-cap">${escape(fmt(p.current))} vs ${escape(fmt(p.target))} ${escape(p.targetLabel || 'target')}${extra.length ? ' · stretch ' + escape(extra.map(fmt).join(' / ')) : ''}</div>`;
+  }
+  function mxRow(r) {
+    const val = r.display != null ? escape(r.display) : (r.status === 'not_connected' ? 'Not connected' : r.status === 'no_data' ? 'No data' : '—');
+    const status = r.statusLabel ? `<span class="pill mx-status ${escape(r.status)}">${escape(r.statusLabel)}</span>` : '';
+    const prov = r.provisional ? '<span class="pill mx-prov" title="Pending the glossary lock">Provisional</span>' : '';
+    return `<div class="mx-row">
+      <div><div class="mx-label">${escape(r.label)}${prov}</div><div class="mx-src">${escape(r.source || '')}</div></div>
+      <div class="mx-val">${val}</div>
+      <div class="mx-progress">${mxBar(r.progress)}</div>
+      <div>${status}</div>
+      ${r.note ? `<div class="mx-note">${escape(r.note)}</div>` : ''}
+    </div>`;
+  }
+  function renderMetrics(d) {
+    const rows = d.rows || [];
+    const put = (id, section) => { document.getElementById(id).innerHTML = rows.filter(r => r.section === section).map(mxRow).join('') || '<p class="renter-line">Nothing to show.</p>'; };
+    put('mxOkr', 'okr'); put('mxKpi', 'kpi'); put('mxLeading', 'leading');
+    const p = d.period || {};
+    const asOf = p.asOf ? new Date(p.asOf).toLocaleString('en-US', { timeZone: 'America/Denver', dateStyle: 'medium', timeStyle: 'short' }) + ' MT' : '';
+    const stripeLine = d.stripe && d.stripe.ok ? 'Stripe: live read.' : (d.stripe && d.stripe.configured ? 'Stripe could not be read; Stripe rows show no data.' : 'Stripe is not configured; Stripe rows show no data.');
+    document.getElementById('mxNote').textContent = `${p.start === p.end ? p.start : p.start + ' to ' + p.end} (Mountain time). Point-in-time values as of ${asOf}; flows are summed over the period. ${stripeLine} Google Analytics and ads are not connected on this tab yet.`;
+    const tol = d.config && d.config.scorecardTolerance;
+    document.getElementById('mxFoot').textContent = `Read-only. Targets come from the metrics config (${d.config ? d.config.version : ''}); ${d.config ? d.config.provisionalCount : ''} rows are provisional until the glossary lock.`
+      + (tol ? ` Scorecard match tolerance (${tol.status}): exact on counts, MRR within $${tol.mrrDollars}.` : '');
+  }
+
   async function loadTraffic(refresh) {
     const note = document.getElementById('trafficNote'); if (!note) return;
     if (refresh) note.textContent = 'Refreshing from Google Analytics…';
