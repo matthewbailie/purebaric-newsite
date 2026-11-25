@@ -183,7 +183,8 @@ test("report: no PII in the payload, only whitelisted keys", () => {
   for (const bad of ["@example.com", "placeholder.invalid", "555-01", "555 01", "Alex", "Tyra", "Scott", "Shanto", "Cassie", "Muse", "Main St", "Elm", "gate code", "secret", "call back", "Is it safe", "cus_", "b1", "w1", "c1", "k1", "r1"]) {
     assert.ok(!text.includes(bad), `payload leaks ${bad}`);
   }
-  assert.deepEqual(Object.keys(r).sort(), ["config", "period", "rows", "sources", "stripe"]);
+  assert.deepEqual(Object.keys(r).sort(), ["config", "period", "rows", "sources", "stripe", "updated"]);
+  assert.deepEqual(Object.keys(r.updated).sort(), ["at", "computedAt", "label", "portalAt", "stripeAt"]);
   const allowed = new Set(["id", "section", "label", "source", "value", "display", "target", "stretch", "progress", "status", "statusLabel", "provisional", "note"]);
   for (const row of r.rows) {
     for (const k of Object.keys(row)) assert.ok(allowed.has(k), `unexpected row key ${k}`);
@@ -300,6 +301,8 @@ test("handler: 401 without auth, 405 on writes, aggregates on GET with a read-on
   assert.equal(body.stripe.ok, true);
   assert.deepEqual(stripeCalls, [{ status: "all", limit: 100, expand: ["data.customer"] }]);
   assert.deepEqual(writes, []);
+  assert.match(body.updated.label, /^Last updated [A-Z][a-z]{2} \d{1,2}, \d{4}, \d{1,2}:\d{2} [AP]M MT$/);
+  assert.ok(body.updated.portalAt && body.updated.stripeAt);
   assert.ok(!res.body.includes("@example.com") && !res.body.includes("fixture-key-not-real"));
 
   // Stripe failing is reported without leaking the error text and without failing the page.
@@ -324,4 +327,28 @@ test("admin.html: Metrics tab sits right after Home and loads on demand", () => 
   const start = html.indexOf("// ───────── Metrics tab");
   const block = html.slice(start, html.indexOf("async function loadTraffic", start));
   assert.doesNotMatch(block, /localStorage|sessionStorage|document\.cookie/);
+});
+
+test("last updated: every report carries the MT time its data was read, shown on each panel", () => {
+  assert.equal(C.formatMt(Date.parse("2026-11-25T17:52:00Z")), "Nov 25, 2026, 10:52 AM MT");
+  assert.equal(C.formatMt(Date.parse("2026-07-01T05:05:00Z")), "Jun 30, 2026, 11:05 PM MT"); // daylight time, previous MT day
+  // The stamp is the older of the two reads; Stripe read later than the portal → the portal time.
+  const u = C.lastUpdated({ nowMs: Date.parse("2026-11-25T17:53:00Z"), portalMs: Date.parse("2026-11-25T17:52:10Z"), stripeMs: Date.parse("2026-11-25T17:52:40Z") });
+  assert.equal(u.at, "2026-11-25T17:52:10.000Z");
+  assert.equal(u.label, "Last updated Nov 25, 2026, 10:52 AM MT");
+  assert.equal(u.stripeAt, "2026-11-25T17:52:40.000Z");
+  // No fetch times → the compute time.
+  assert.equal(C.lastUpdated({ nowMs: Date.parse("2026-11-25T18:00:00Z") }).label, "Last updated Nov 25, 2026, 11:00 AM MT");
+  // In the report; a Stripe read that failed does not count as fresh.
+  const r = C.buildReport({ period: "day", nowMs: NOW, subs: [], stripe: { configured: true, error: "x" }, machines: MACHINES, config: cfg(),
+    fetchedAt: { portalMs: NOW - 5000, stripeMs: NOW - 1000 } });
+  assert.equal(r.updated.at, new Date(NOW - 5000).toISOString());
+  assert.equal(r.updated.stripeAt, null);
+  assert.match(r.updated.label, /^Last updated Nov 24, 2026, 5:59 PM MT$/);
+  // admin.html shows it on all three panels.
+  const html = require("fs").readFileSync(path.join(__dirname, "..", "admin.html"), "utf8");
+  const panel = html.slice(html.indexOf('data-panel="metrics"'), html.indexOf("<!-- ───── Chambers"));
+  assert.equal((panel.match(/data-mx-updated/g) || []).length, 3);
+  assert.match(html, /document\.querySelectorAll\('\[data-mx-updated\]'\)/);
+  assert.match(html, /Not live: press Refresh to read again\./);
 });

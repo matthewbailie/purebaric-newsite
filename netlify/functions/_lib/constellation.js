@@ -205,6 +205,23 @@ function flowStatus({ actual, targetForPeriod, elapsed, days }) {
 }
 const STATUS_LABEL = { on_track: "On track", behind: "Behind", too_thin: "Too thin to call", not_connected: "Not connected", no_data: "No data", provisional: "Provisional" };
 
+// "Nov 25, 2026, 10:52 AM MT": when the numbers were read, shown on every panel so nobody takes them for live.
+const MT_STAMP = new Intl.DateTimeFormat("en-US", { timeZone: "America/Denver", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
+function formatMt(ms) { return `${MT_STAMP.format(new Date(ms))} MT`; }
+// The time the data behind the report was read: the earlier of the portal and Stripe reads (a panel is only as
+// fresh as its oldest source), falling back to the time the report was computed.
+function lastUpdated({ nowMs, portalMs, stripeMs }) {
+  const times = [portalMs, stripeMs].filter((t) => Number.isFinite(t));
+  const at = times.length ? Math.min(...times) : nowMs;
+  return {
+    at: new Date(at).toISOString(),
+    label: `Last updated ${formatMt(at)}`,
+    portalAt: Number.isFinite(portalMs) ? new Date(portalMs).toISOString() : null,
+    stripeAt: Number.isFinite(stripeMs) ? new Date(stripeMs).toISOString() : null,
+    computedAt: new Date(nowMs).toISOString(),
+  };
+}
+
 const money = (n) => (n == null ? null : Math.round(n * 100) / 100);
 const usd = (n) => "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
@@ -402,6 +419,7 @@ function buildReport(input) {
   for (const r of rows) r.statusLabel = r.status ? STATUS_LABEL[r.status] : null;
 
   return {
+    updated: lastUpdated({ nowMs, portalMs: input.fetchedAt && input.fetchedAt.portalMs, stripeMs: stripeOk ? input.fetchedAt && input.fetchedAt.stripeMs : null }),
     period: { name: b.period, start: b.start, end: b.end, days: b.days, elapsed: b.elapsed, complete: b.complete, asOf: new Date(asOf).toISOString(), asOfDay, today },
     stripe: { configured: !!(input.stripe && input.stripe.configured), ok: stripeOk, error: input.stripe && input.stripe.error ? "stripe_read_failed" : null,
       testModeOnly: subs.length > 0 && subs.every((s) => s.livemode !== true) },
@@ -416,5 +434,5 @@ module.exports = {
   mtDayOfMs, mtMidnightMs, addDays, periodBounds, asOfMs,
   monthlyRate, payingAt, stripeSnapshot, newPaidStarts,
   personKey, leadRecords, dedupeLeads,
-  deadlineStatus, flowStatus, loadConfig, buildReport,
+  deadlineStatus, flowStatus, loadConfig, buildReport, formatMt, lastUpdated,
 };

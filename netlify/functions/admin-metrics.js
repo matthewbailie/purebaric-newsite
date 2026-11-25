@@ -32,14 +32,16 @@ exports.handler = async (event, context) => {
       storage.listRentals(),
       storage.getStripeConfig(),
     ]);
+    const portalMs = Date.now();
     const stripe = stripeClientFrom(stripeCfg);
     let subs = [];
+    let stripeMs = null;
     let stripeError = null;
     if (stripe) {
-      try { subs = await listSubscriptions(stripe); } catch (e) { stripeError = e.message || "stripe_error"; console.error("admin-metrics stripe read failed", stripeError); }
+      try { subs = await listSubscriptions(stripe); stripeMs = Date.now(); } catch (e) { stripeError = e.message || "stripe_error"; console.error("admin-metrics stripe read failed", stripeError); }
     }
     const report = C.buildReport({
-      period, date, nowMs: Date.now(), subs,
+      period, date, nowMs: Date.now(), subs, fetchedAt: { portalMs, stripeMs },
       stripe: { configured: !!stripe, error: stripeError },
       bookings, waitlist, customers, contacts, machines, rentals, config,
     });
