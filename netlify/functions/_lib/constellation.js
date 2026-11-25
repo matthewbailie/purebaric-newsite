@@ -20,6 +20,7 @@ const { isInternalLead } = require("./internal-lead");
 const { isPlaceholderEmail } = require("./placeholder-email");
 const { subscriptionAmount } = require("./stripe-billing");
 const S = require("./static-metrics");
+const { platformOf } = require("./campaign-platform");
 
 const DAY_MS = 86400000;
 const PERIODS = ["day", "week", "month", "quarter", "year"];
@@ -252,17 +253,17 @@ const money = (n) => (n == null ? null : Math.round(n * 100) / 100);
 const usd = (n) => "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 // ───────── Spend (CPL, CAC) ─────────
-// Hand-entered days from the campaign list for one channel, inside from..to.
-function manualSpend(campaigns, channel, from, to) {
+// Hand-entered days from the campaign list for one platform ("Google Ads" or "Meta"), inside from..to.
+function manualSpend(campaigns, platform, from, to) {
   let amount = 0, days = 0; const times = [];
   for (const r of campaigns || []) {
-    if (r.channel !== channel || r.spendSource !== "manual") continue;
+    if (platformOf(r) !== platform || r.spendSource !== "manual") continue;
     for (const e of r.spend || []) if (e.day >= from && e.day <= to) { amount += Number(e.amount) || 0; days += 1; if (e.enteredAt) times.push(e.enteredAt); }
   }
   return { amount: money(amount), days, live: false, lastUpdatedAt: S.latest(times) };
 }
 function periodSpend({ ga, meta, campaigns, from, to }) {
-  const google = ga && ga.ok && ga.adsCost ? { amount: money(Object.values(ga.adsCost).reduce((t, v) => t + v, 0)), live: true } : manualSpend(campaigns, "Google", from, to);
+  const google = ga && ga.ok && ga.adsCost ? { amount: money(Object.values(ga.adsCost).reduce((t, v) => t + v, 0)), live: true } : manualSpend(campaigns, "Google Ads", from, to);
   const fb = meta && meta.ok ? { amount: money(meta.total), live: true } : manualSpend(campaigns, "Meta", from, to);
   return { google, meta: fb, total: money(google.amount + fb.amount), static: !google.live || !fb.live,
     lastUpdatedAt: S.latest(google.live ? null : google.lastUpdatedAt, fb.live ? null : fb.lastUpdatedAt) };

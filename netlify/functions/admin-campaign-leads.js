@@ -11,15 +11,16 @@ const L = require("./_lib/campaign-leads");
 const gaTraffic = require("./_lib/ga-traffic");
 const gaOkr = require("./_lib/ga-okr");
 const meta = require("./_lib/meta-ads");
+const { platformOf } = require("./_lib/campaign-platform");
 
 const PROPERTY = (process.env.GA4_PROPERTY_ID || "555169638").trim();
 
 // Live spend by ad platform campaign name for the range, only for platforms some row asks for. Never throws.
 async function liveSpend(campaigns, range, { env = process.env, fetchFn = fetch } = {}) {
-  const wants = (ch) => (campaigns || []).some((r) => r.channel === ch && r.adsCampaignName);
+  const wants = (platform) => (campaigns || []).some((r) => platformOf(r) === platform && r.adsCampaignName);
   const metaCfg = meta.metaEnv(env);
   const [google, fb] = await Promise.all([
-    wants("Google") ? gaOkr.fetchAdsCost({ sa: gaTraffic.parseServiceAccount(env.GA4_SERVICE_ACCOUNT), propertyId: PROPERTY, from: range.from, to: range.to, fetchFn }) : null,
+    wants("Google Ads") ? gaOkr.fetchAdsCost({ sa: gaTraffic.parseServiceAccount(env.GA4_SERVICE_ACCOUNT), propertyId: PROPERTY, from: range.from, to: range.to, fetchFn }) : null,
     wants("Meta") && metaCfg ? meta.fetchMetaSpend({ ...metaCfg, from: range.from, to: range.to, fetchFn }) : null,
   ]);
   if (google && !google.ok) console.error("admin-campaign-leads Google Ads cost:", google.reason);

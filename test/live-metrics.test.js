@@ -254,6 +254,21 @@ test("admin-metrics liveSources: no network without keys; Meta read only when bo
   assert.deepEqual(_test.paidCampaignTags(cfg(), [{ channel: "Meta", utmCampaign: "H13_X" }, { channel: "KSL", utmCampaign: "ksl1" }]).sort(), ["30d_home_v1", "h13_x"]);
 });
 
+test("Rev 2 platform rows: paid tags are Google Ads and Meta Paid only; hand-entered spend sums by platform", () => {
+  const { _test } = require("../netlify/functions/admin-metrics");
+  const C = require("../netlify/functions/_lib/constellation");
+  const rows = [
+    { platform: "Meta", channel: "Organic", utmCampaign: "m_org", spendSource: "manual", spend: [{ day: "2026-11-20", amount: 4 }] },
+    { platform: "Meta", channel: "Paid", utmCampaign: "m_paid", spendSource: "manual", spend: [{ day: "2026-11-20", amount: 6 }] },
+    { platform: "Google Ads", channel: null, utmCampaign: "g1", spendSource: "manual", spend: [{ day: "2026-11-21", amount: 7.5 }] },
+    { channel: "Google", utmCampaign: "g_old", spendSource: "manual", spend: [{ day: "2026-11-22", amount: 2.5 }] },
+    { platform: "Email outreach", utmCampaign: "e1", spendSource: "manual", spend: [{ day: "2026-11-22", amount: 99 }] },
+  ];
+  assert.deepEqual(_test.paidCampaignTags(cfg(), rows).sort(), ["30d_home_v1", "g1", "g_old", "m_paid"]);
+  assert.equal(C.manualSpend(rows, "Google Ads", "2026-11-01", "2026-11-30").amount, 10);
+  assert.equal(C.manualSpend(rows, "Meta", "2026-11-01", "2026-11-30").amount, 10);
+});
+
 // ───────── Static values ─────────
 test("static rows: renewal touch and reply time stay, carry ' *', and show the server-stamped Last updated", () => {
   const save = S.saveStatic({ values: {} }, "renewal_touch", { value: " 1 of 1 on time ", note: "1 <check-in> sent Dec 1" }, { nowIso: "2026-12-01T17:05:00.000Z" });

@@ -369,6 +369,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
   .lc-sub { font-size: 0.78rem; color: var(--stone-muted); }
   .lc-total td { font-weight: 600; border-top: 2px solid var(--line); }
   .lc-warn { color: #82402f; font-weight: 600; }
+  .lc-toggle { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; margin: 0 0 0.5rem; }
   .mx-section { margin: 0 0 1.5rem; }
   .mx-updated { font-size: 0.78rem; color: var(--stone-muted); margin: -0.35rem 0 0.5rem; }
   .mx-row { display: grid; grid-template-columns: minmax(180px, 1.3fr) minmax(140px, 1fr) minmax(160px, 1.2fr) auto; gap: 0.5rem 1rem; align-items: center; padding: 0.7rem 0.9rem; border: 1px solid var(--line); border-top: 0; background: var(--cream); }
@@ -1065,24 +1066,28 @@ The Purebaric team</textarea></div>
       </div>
       <div class="mx-section">
         <h3 class="inv-heading">Real leads by campaign</h3><p class="mx-updated" data-lc-updated></p>
-        <div class="table-wrap"><table class="data-table" id="lcTable"><thead><tr><th>Campaign or source</th><th>Matched by</th><th>Channel</th><th>Dates</th><th class="lc-num">Real leads</th><th class="lc-num">Partial leads</th><th class="lc-num">Paying rentals</th><th>Spend</th><th>Cost per real lead</th></tr></thead><tbody></tbody></table></div>
-        <p class="renter-line" id="lcCheck" style="margin:0.6rem 0 0;max-width:820px;"></p>
+        <label class="lc-toggle"><input type="checkbox" id="lcShowEmpty" onchange="lcToggleEmpty()"> Show empty campaigns</label>
+        <div class="table-wrap"><table class="data-table" id="lcTable"><thead><tr><th>Campaign or source</th><th>Platform</th><th>Channel</th><th>Dates</th><th class="lc-num">Real leads</th><th class="lc-num">Partial leads</th><th class="lc-num">Paying rentals</th><th>Spend</th><th>Cost per real lead</th></tr></thead><tbody></tbody></table></div>
+        <p class="renter-line" id="lcNoSource" style="margin:0.6rem 0 0;max-width:820px;"></p>
+        <p class="renter-line" id="lcSpendNoLeads" style="margin:0.4rem 0 0;max-width:820px;"></p>
+        <p class="renter-line" id="lcCheck" style="margin:0.4rem 0 0;max-width:820px;"></p>
       </div>
       <div class="mx-section">
         <h3 class="inv-heading">Campaign list *</h3><p class="mx-updated" data-lc-updated></p>
         <p class="renter-line" style="margin:0 0 10px;max-width:820px;">Add a row before a campaign goes live, with its UTM link. Rows can be ended, not deleted. For a Meta or Google row, set its ad platform campaign name (exactly as named in Meta Ads Manager or Google Ads) to read spend live; otherwise type spend in by hand from the daily ad-account check.</p>
-        <div class="table-wrap"><table class="data-table" id="lcCampaigns"><thead><tr><th>Name</th><th>UTM campaign tag</th><th>Portal tag</th><th>Channel</th><th>Owner</th><th>Run</th><th>Spend source</th><th>Ad platform campaign name</th><th>Spend entered</th><th>Last updated</th><th></th></tr></thead><tbody></tbody></table></div>
+        <div class="table-wrap"><table class="data-table" id="lcCampaigns"><thead><tr><th>Name</th><th>UTM campaign tag</th><th>Portal tag</th><th>Platform</th><th>Channel</th><th>Owner</th><th>Run</th><th>Spend source</th><th>Ad platform campaign name</th><th>Spend entered</th><th>Last updated</th><th></th></tr></thead><tbody></tbody></table></div>
         <h4 style="margin:1.1rem 0 0.5rem;">Add a campaign</h4>
         <form class="lc-form" id="lcAddForm" onsubmit="lcAddCampaign(event)">
           <div><label for="lcName">Name</label><input id="lcName" name="name" maxlength="80" required></div>
           <div><label for="lcUtm">UTM campaign tag</label><input id="lcUtm" name="utmCampaign" maxlength="60" pattern="[a-z0-9][a-z0-9_\-]*" placeholder="e.g. 30d_home_v1" required></div>
-          <div><label for="lcChannel">Channel</label><select id="lcChannel" name="channel" required><option value="">Choose…</option><option>Meta</option><option>Google</option><option>Marketplace</option><option>KSL</option><option>Retention email</option><option>Outreach</option><option>Other</option></select></div>
+          <div><label for="lcPlatform">Platform</label><select id="lcPlatform" name="platform" required onchange="lcPlatformChanged()"><option value="">Choose…</option><option>Meta</option><option>Google Ads</option><option>Email outreach</option><option>Retention email</option><option>Facebook Marketplace</option><option>KSL</option><option>Organic / Google search</option><option>Referral</option><option>Phone or text</option><option>Other website</option><option>Email inbox</option></select></div>
+          <div id="lcChannelWrap" hidden><label for="lcChannel">Channel</label><select id="lcChannel" name="channel"><option>Paid</option><option>Organic</option></select></div>
           <div><label for="lcOwner">Owner</label><input id="lcOwner" name="owner" maxlength="60" placeholder="e.g. Demand Gen" required></div>
           <div><label for="lcStart">Start</label><input type="date" id="lcStart" name="start" required></div>
           <div><label for="lcEnd">End (optional)</label><input type="date" id="lcEnd" name="end"></div>
           <div><label for="lcSpendSource">Spend source</label><select id="lcSpendSource" name="spendSource"><option value="">Default for the channel</option><option value="manual">Entered by hand (daily)</option><option value="none">No spend source</option></select></div>
           <div><label for="lcPortalTag">Portal tag (optional)</label><input id="lcPortalTag" name="portalTag" maxlength="60" placeholder="e.g. campaign-30d-home-v1"></div>
-          <div><label for="lcAdsName">Ad platform campaign name (optional)</label><input id="lcAdsName" name="adsCampaignName" maxlength="120" placeholder="Exactly as in Meta or Google Ads"></div>
+          <div><label for="lcAdsName">Ad platform campaign name (optional)</label><input id="lcAdsName" name="adsCampaignName" maxlength="120"></div>
           <div><button type="submit" class="btn btn-primary btn-sm">Add campaign</button></div>
         </form>
         <h4 style="margin:1.1rem 0 0.5rem;">Enter a day's spend</h4>
@@ -1975,6 +1980,14 @@ The Purebaric team</textarea></div>
   // hand-entered spend). Rules: netlify/functions/_lib/campaign-leads.js.
   let _lcRange = { preset: '30', from: '', to: '' };
   let _lcCampaigns = [];
+  let _lcData = null;
+  let _lcShowEmpty = false; // page state only; never stored
+  function lcToggleEmpty() { _lcShowEmpty = document.getElementById('lcShowEmpty').checked; if (_lcData) renderLeadsByCampaign(_lcData); }
+  function lcPlatformChanged() {
+    const meta = document.getElementById('lcPlatform').value === 'Meta';
+    document.getElementById('lcChannelWrap').hidden = !meta;
+    document.getElementById('lcAdsName').disabled = !['Meta', 'Google Ads'].includes(document.getElementById('lcPlatform').value);
+  }
   function loadLeadsByCampaignWithStatus() {
     return withPanelLoading(['analytics'], loadLeadsByCampaign).catch(err => toast(err.message, true));
   }
@@ -2000,6 +2013,7 @@ The Purebaric team</textarea></div>
   }
   function lcNum(v) { return v == null ? '—' : escape(String(v)); }
   function renderLeadsByCampaign(d) {
+    _lcData = d;
     _lcCampaigns = d.campaigns || [];
     const sel = document.getElementById('lcPreset');
     const opts = [['30', 'Last 30 days'], ['7', 'Last 7 days']].concat(_lcCampaigns.map(c => ['c:' + c.id, c.name + ' (campaign run)'])).concat([['custom', 'Custom dates']]);
@@ -2012,10 +2026,11 @@ The Purebaric team</textarea></div>
     document.querySelectorAll('[data-lc-updated]').forEach(el => { el.textContent = stamp; });
     const stripeLine = d.stripe && d.stripe.ok ? 'Paying rentals are matched in Stripe by email, within 30 days of first touch.' : (d.stripe && d.stripe.configured ? 'Stripe could not be read, so paying rentals show —.' : 'Stripe is not configured, so paying rentals show —.');
     document.getElementById('lcNote').textContent = `${r.from} to ${r.to} (Mountain time), by each lead's first touch. ${stripeLine}`;
-    const groups = d.groups || [];
-    const body = groups.map(g => `<tr>
-      <td><strong>${escape(g.label)}</strong>${g.note ? `<div class="lc-sub">${escape(g.note)}</div>` : ''}</td>
-      <td class="lc-sub">${escape(g.ruleLabel || '')}</td>
+    // Zero-count campaign rows are hidden unless "Show empty campaigns" is ticked. "Matched by" is a tooltip.
+    const groups = (d.groups || []).filter(g => _lcShowEmpty || !g.empty);
+    const body = groups.length ? groups.map(g => `<tr>
+      <td title="${escape('Matched by: ' + (g.ruleLabel || ''))}"><strong>${escape(g.label)}</strong></td>
+      <td>${escape(g.platform || '—')}</td>
       <td>${escape(g.channel || '—')}</td>
       <td class="lc-sub">${escape(g.dates || '—')}</td>
       <td class="lc-num">${lcNum(g.realLeads)}</td>
@@ -2023,30 +2038,30 @@ The Purebaric team</textarea></div>
       <td class="lc-num">${lcNum(g.payingRentals)}</td>
       <td>${g.spendDisplay ? escape(g.spendDisplay) + (g.spendStatic ? ' *' : '') : '—'}${g.spendStatic ? `<div class="lc-sub">${escape(mxStamp(g.spendUpdated))}</div>` : ''}</td>
       <td>${g.cplDisplay ? escape(g.cplDisplay) + (g.spendStatic && g.spend != null ? ' *' : '') : '—'}</td>
-    </tr>`).join('');
-    const t = d.totals || {}, i = d.internal || {};
+    </tr>`).join('') : '<tr><td colspan="9" class="lc-sub">No sourced leads in this range.</td></tr>';
+    const t = d.totals || {}, ns = d.noSource || {};
     const total = `<tr class="lc-total"><td>Total</td><td></td><td></td><td></td><td class="lc-num">${lcNum(t.realLeads)}</td><td class="lc-num">${lcNum(t.partialLeads)}</td><td class="lc-num">${lcNum(t.payingRentals)}</td><td></td><td></td></tr>`;
-    const internal = `<tr><td colspan="4" class="lc-sub">TEST and internal (not counted)</td><td class="lc-num lc-sub">${lcNum(i.realLeads)}</td><td class="lc-num lc-sub">${lcNum(i.partialLeads)}</td><td colspan="3"></td></tr>`;
-    document.querySelector('#lcTable tbody').innerHTML = body + total + internal;
+    document.querySelector('#lcTable tbody').innerHTML = body + total;
+    document.getElementById('lcNoSource').textContent = ns.footnote || '';
+    document.getElementById('lcSpendNoLeads').textContent = d.spendNoLeadsFootnote || '';
+    // Rows plus the no-source footnote must equal the portal's real leads; only a mismatch is shown.
     const check = document.getElementById('lcCheck');
     check.className = 'renter-line' + (t.reconciled ? '' : ' lc-warn');
-    check.textContent = t.reconciled
-      ? `Totals match the portal's real-lead count for this range (${t.portalRealLeads}). Partial leads (step 1 only) are never added to real leads.`
-      : `Totals do not match the portal's real-lead count (${t.realLeads} vs ${t.portalRealLeads}). This is a bug: tell Engineering.`;
+    check.textContent = t.reconciled ? '' : `Totals do not match the portal's real-lead count (${(t.realLeads || 0) + (ns.total || 0)} vs ${t.portalRealLeads}). This is a bug: tell Engineering.`;
     document.querySelector('#lcCampaigns tbody').innerHTML = _lcCampaigns.length ? _lcCampaigns.map(c => {
       const spent = (c.spend || []).reduce((s, x) => s + Number(x.amount || 0), 0);
       const spentLine = c.spendSource === 'manual' ? ((c.spend || []).length ? ((c.spend || []).length === 1 ? `$${spent.toFixed(2)} over 1 day` : `$${spent.toFixed(2)} over ${(c.spend || []).length} days`) : 'None yet') : '—';
       return `<tr>
         <td>${escape(c.name)}</td><td><code>${escape(c.utmCampaign)}</code></td><td><code>${escape(c.portalTag || '')}</code></td>
-        <td>${escape(c.channel)}</td><td>${escape(c.owner)}</td>
+        <td>${escape(c.platform || '—')}</td><td>${escape(c.channel || '—')}</td><td>${escape(c.owner)}</td>
         <td class="lc-sub">${escape(c.start)} to ${escape(c.end || 'open')}</td>
         <td>${escape(c.spendSourceLabel || '')}</td>
-        <td>${['Meta', 'Google'].includes(c.channel) ? `${c.adsCampaignName ? escape(c.adsCampaignName) : '<span class="lc-sub">Not set</span>'} <button type="button" class="btn btn-ghost btn-sm" onclick="lcSetAdsName('${escape(c.id)}')">Set</button>` : '—'}</td>
+        <td>${['Meta', 'Google Ads'].includes(c.platform) ? `${c.adsCampaignName ? escape(c.adsCampaignName) : '<span class="lc-sub">Not set</span>'} <button type="button" class="btn btn-ghost btn-sm" onclick="lcSetAdsName('${escape(c.id)}')">Set</button>` : '—'}</td>
         <td>${escape(spentLine)}</td>
         <td class="lc-sub">${escape(mxStamp(c.lastUpdated))}</td>
-        <td><button type="button" class="btn btn-ghost btn-sm" onclick="lcEndCampaign('${escape(c.id)}')">End</button></td>
+        <td><button type="button" class="btn btn-ghost btn-sm" onclick="lcEndCampaign('${escape(c.id)}')">End campaign</button></td>
       </tr>`;
-    }).join('') : '<tr><td colspan="11" class="lc-sub">No campaigns yet. Add one below before it goes live.</td></tr>';
+    }).join('') : '<tr><td colspan="12" class="lc-sub">No campaigns yet. Add one below before it goes live.</td></tr>';
     const manual = _lcCampaigns.filter(c => c.spendSource === 'manual');
     document.getElementById('lcSpendCampaign').innerHTML = manual.length
       ? manual.map(c => `<option value="${escape(c.id)}">${escape(c.name)}</option>`).join('')
@@ -2060,12 +2075,13 @@ The Purebaric team</textarea></div>
   async function lcAddCampaign(e) {
     e.preventDefault();
     const f = e.target, v = Object.fromEntries(new FormData(f).entries());
-    try { await lcPost({ action: 'add', ...v, utmCampaign: String(v.utmCampaign || '').trim().toLowerCase() }); f.reset(); toast('Campaign added.'); }
+    if (v.platform !== 'Meta') delete v.channel;
+    try { await lcPost({ action: 'add', ...v, utmCampaign: String(v.utmCampaign || '').trim().toLowerCase() }); f.reset(); lcPlatformChanged(); toast('Campaign added.'); }
     catch (err) { toast(err.message, true); }
   }
   async function lcSetAdsName(id) {
     const c = _lcCampaigns.find(x => x.id === id); if (!c) return;
-    const name = prompt(`Ad platform campaign name for "${c.name}", exactly as named in ${c.channel === 'Google' ? 'Google Ads' : 'Meta Ads Manager'}. Leave empty to clear.`, c.adsCampaignName || '');
+    const name = prompt(`Ad platform campaign name for "${c.name}", exactly as named in ${c.platform === 'Google Ads' ? 'Google Ads' : 'Meta Ads Manager'}. Leave empty to clear.`, c.adsCampaignName || '');
     if (name === null) return;
     try { await lcPost({ action: 'ads_name', id, adsCampaignName: name.trim() }); toast('Ad platform campaign name saved.'); }
     catch (err) { toast(err.message, true); }

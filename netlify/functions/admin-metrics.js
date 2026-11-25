@@ -9,6 +9,7 @@ const storage = require("./_lib/storage");
 const { stripeClientFrom } = require("./_lib/stripe");
 const C = require("./_lib/constellation");
 const S = require("./_lib/static-metrics");
+const { platformOf, metaChannelOf } = require("./_lib/campaign-platform");
 const gaTraffic = require("./_lib/ga-traffic");
 const gaOkr = require("./_lib/ga-okr");
 const meta = require("./_lib/meta-ads");
@@ -24,7 +25,8 @@ async function listSubscriptions(stripe) {
 // UTM campaign tags that count as paid: the config list plus every Meta or Google row in the campaign list.
 function paidCampaignTags(config, campaigns) {
   const tags = new Set(((config.metrics.paidFormStartRate || {}).campaigns || []).map((t) => String(t).toLowerCase()));
-  for (const r of campaigns || []) if (["Meta", "Google"].includes(r.channel) && r.utmCampaign) tags.add(String(r.utmCampaign).toLowerCase());
+  // Paid campaigns only: Google Ads, and Meta rows whose Channel is Paid (Rev 2 platform + channel; old rows read too).
+  for (const r of campaigns || []) if ((platformOf(r) === "Google Ads" || metaChannelOf(r) === "Paid") && r.utmCampaign) tags.add(String(r.utmCampaign).toLowerCase());
   return [...tags];
 }
 

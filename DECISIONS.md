@@ -262,3 +262,10 @@
 **Leads by Campaign:** only an optional "Ad platform campaign name" was added to campaign-list rows, used solely to match live spend (Google via GA4, Meta via the API). Groups, names and attribution are untouched while PdM revises the spec.
 **Status:** Proposed (PR on hold for Matthew's yes)
 
+## 2026-11-25 Leads by Campaign Rev 2: human names, Platform badge, no placeholder rows
+
+**Decision:** Leads by Campaign follows spec Rev 2 (`purebaric-team/pdm/spec-admin-campaign-leads-tab.md`) with the Proof-reader's signed-off strings verbatim. Every row has a human name and a Platform (11 values) plus a Meta-only Channel (Paid / Organic); the matching rule moved to a "Matched by" tooltip. hello@ = Email inbox, Messenger = Meta Organic, GBP = Organic / Google search. The Unattributed, Before source tracking and TEST rows are gone: leads with no source are a footnote split at the Release 3 cutoff (M before, K after), TEST/internal appear nowhere, and rows + footnote N equal the portal's real leads (unit-tested). Zero-count campaign rows hide behind "Show empty campaigns". Campaigns with spend above $0 and no leads get a footnote.
+**Deviation from spec line 110 (approved by Matthew):** spend is not hand-entered only; the live wiring already on the branch stays (GA4 cost for Google Ads, Meta Marketing API with hand-entered fallback).
+**Other choices:** the campaign list stores `platform` and, for Meta, `channel`; pre-Rev 2 rows (old channel list) are read through a mapping, so nothing is migrated in the live store. Off-site source tags with no approved name (e.g. `source-waitlist-email`) count in K rather than getting an invented row name. Partial leads with no source are not shown (the footnote counts real leads only). A Bing or other search-engine referrer is "Other website: <domain>" because the only approved search name is "Google search".
+**Status:** Proposed (PR #39 on hold)
+
