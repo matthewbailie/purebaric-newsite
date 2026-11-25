@@ -202,3 +202,15 @@ test("Proof-reader Nov 25 edits: C1, C12, lead, D7, keywords and JSON-LD", () =>
     );
   }
 });
+
+
+test("homepage meta, og and twitter descriptions are the signed text with no mHBOT (Proof-reader Nov 25)", () => {
+  const html = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
+  const signed = "Rent a mild 1.5 ATA hyperbaric chamber in Utah from $529/mo (12-month rate). Delivered, set up and maintained in your home.";
+  for (const sel of ['name="description"', 'property="og:description"', 'name="twitter:description"']) {
+    const m = html.match(new RegExp("<meta " + sel + ' content="([^"]*)"'));
+    assert.ok(m, sel);
+    assert.equal(m[1], signed);
+  }
+  assert.doesNotMatch(html.slice(0, html.indexOf("</head>")).replace(/<script[\s\S]*?<\/script>/g, ""), /mHBOT/);
+});
