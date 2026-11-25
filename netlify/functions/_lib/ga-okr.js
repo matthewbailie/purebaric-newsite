@@ -22,7 +22,9 @@ const eq = (fieldName, value) => ({ filter: { fieldName, stringFilter: { matchTy
 // The report bodies for one MT date range (the property's time zone is America/Denver, so GA's dates are
 // the same calendar days as the portal's). `has` = { [customParam]: true } from metadata; `adsCost` = the
 // property exposes advertiserAdCost (Google Ads link).
-function okrRequests({ from, to, paidCampaigns = [], has = {}, adsCost = false }) {
+// `adsTo` = the last day to read Google Ads cost (GA4 imports cost about a day late, so callers pass
+// yesterday for a range that runs through today); no cost report when it falls before `from`.
+function okrRequests({ from, to, paidCampaigns = [], has = {}, adsCost = false, adsTo = to }) {
   const dateRanges = [{ startDate: from, endDate: to }];
   const req = {
     events: { dimensions: [{ name: "eventName" }], metrics: [{ name: "eventCount" }], dateRanges, dimensionFilter: inList("eventName", EVENTS), limit: 50 },
@@ -34,7 +36,8 @@ function okrRequests({ from, to, paidCampaigns = [], has = {}, adsCost = false }
     req.paidStarts = { dimensions: [{ name: "sessionCampaignName" }], metrics: [{ name: "eventCount" }], dateRanges,
       dimensionFilter: { andGroup: { expressions: [eq("eventName", "booking_form_start"), inList("sessionCampaignName", paidCampaigns)] } }, limit: 50 };
   }
-  if (adsCost) req.adsCost = { dimensions: [{ name: "sessionGoogleAdsCampaignName" }], metrics: [{ name: "advertiserAdCost" }], dateRanges, limit: 200 };
+  const costTo = adsTo && adsTo < to ? adsTo : to;
+  if (adsCost && costTo >= from) req.adsCost = { dimensions: [{ name: "sessionGoogleAdsCampaignName" }], metrics: [{ name: "advertiserAdCost" }], dateRanges: [{ startDate: from, endDate: costTo }], limit: 200 };
   if (has.percent) {
     const dims = [{ name: CUSTOM.percent }].concat(has.page_path ? [{ name: CUSTOM.page_path }] : []);
     req.scroll = { dimensions: dims, metrics: [{ name: "eventCount" }], dateRanges, dimensionFilter: eq("eventName", "scroll_depth"), limit: 500 };
@@ -83,34 +86,48 @@ function mapOkrReports(resp, has = {}) {
   return out;
 }
 
+// The MT calendar day before `nowMs` (GA4's Google Ads cost is complete through yesterday at best).
+function mtYesterday(nowMs = Date.now()) {
+  const day = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Denver", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(nowMs));
+  const d = new Date(day + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() - 1);
+  return d.toISOString().slice(0, 10);
+}
+
 // Network: token, metadata, then every report in parallel. Never throws: returns { ok:false, reason } instead.
-async function fetchOkrGa({ sa, propertyId, from, to, paidCampaigns = [], fetchFn = fetch }) {
+// adsCostTo: the last day the Google Ads cost covers (to, or yesterday when the range reaches today).
+async function fetchOkrGa({ sa, propertyId, from, to, paidCampaigns = [], fetchFn = fetch, nowMs = Date.now() }) {
   if (!sa) return { ok: false, reason: "Google Analytics is not set up: GA4_SERVICE_ACCOUNT is missing or unreadable." };
   try {
     const token = await ga.accessToken(sa, fetchFn);
     const meta = await ga.getMetadata(token, propertyId, fetchFn);
     const dims = new Set(meta.dimensions);
     const has = Object.fromEntries(Object.entries(CUSTOM).map(([k, api]) => [k, dims.has(api)]));
-    const reqs = okrRequests({ from, to, paidCampaigns, has, adsCost: meta.metrics.includes("advertiserAdCost") });
+    const y = mtYesterday(nowMs);
+    const adsCostTo = to > y ? y : to;
+    const reqs = okrRequests({ from, to, paidCampaigns, has, adsCost: meta.metrics.includes("advertiserAdCost"), adsTo: adsCostTo });
     const keys = Object.keys(reqs);
     const resps = await Promise.all(keys.map((k) => ga.runReport(token, propertyId, reqs[k], fetchFn)));
     const resp = Object.fromEntries(keys.map((k, i) => [k, resps[i]]));
-    return { ok: true, readMs: Date.now(), from, to, ...mapOkrReports(resp, has) };
+    return { ok: true, readMs: Date.now(), from, to, adsCostTo, ...mapOkrReports(resp, has) };
   } catch (e) {
     return { ok: false, reason: `Google Analytics could not be read: ${String((e && e.message) || "error").replace(/^Google Analytics error: /, "")}` };
   }
 }
 
 // Google Ads cost by Google Ads campaign name for a range (Leads by Campaign spend). Never throws.
-async function fetchAdsCost({ sa, propertyId, from, to, fetchFn = fetch }) {
+async function fetchAdsCost({ sa, propertyId, from, to, fetchFn = fetch, nowMs = Date.now() }) {
   if (!sa) return { ok: false, reason: "Google Analytics is not set up." };
+  const y = mtYesterday(nowMs);
+  const costTo = to > y ? y : to;
+  // A range that is only today has no imported cost yet: not connected for this range (caller falls back).
+  if (costTo < from) return { ok: false, reason: "Google Ads cost isn't available in GA4.", costTo };
   try {
     const token = await ga.accessToken(sa, fetchFn);
-    const resp = await ga.runReport(token, propertyId, okrRequests({ from, to, adsCost: true }).adsCost, fetchFn);
-    return { ok: true, readMs: Date.now(), byCampaign: mapOkrReports({ adsCost: resp }).adsCost || {} };
+    const resp = await ga.runReport(token, propertyId, okrRequests({ from, to: costTo, adsCost: true }).adsCost, fetchFn);
+    return { ok: true, readMs: Date.now(), costTo, byCampaign: mapOkrReports({ adsCost: resp }).adsCost || {} };
   } catch (e) {
     return { ok: false, reason: String((e && e.message) || "error") };
   }
 }
 
-module.exports = { EVENTS, CUSTOM, okrRequests, mapOkrReports, fetchOkrGa, fetchAdsCost };
+module.exports = { EVENTS, CUSTOM, okrRequests, mapOkrReports, fetchOkrGa, fetchAdsCost, mtYesterday };

@@ -262,18 +262,52 @@ function manualSpend(campaigns, platform, from, to) {
   }
   return { amount: money(amount), days, live: false, lastUpdatedAt: S.latest(times) };
 }
+// A live read counts only when it returned cost above $0. No rows, a missing total or a $0 total means
+// the source is treated as not connected (GA4 reports no Google Ads cost until the link imports it, and a
+// read that "works" but returns nothing must never show a paying campaign as free).
+function liveAmount(v) {
+  if (v == null) return null;
+  const n = typeof v === "object" ? Object.values(v).reduce((t, x) => t + (Number(x) || 0), 0) : Number(v);
+  return Number.isFinite(n) && n > 0 ? money(n) : null;
+}
+// One platform's spend for from..to. live: the live amount (null = not connected); liveTo: the last day the
+// live read covers (GA4 cost lags about a day, so a range ending today is read live through yesterday).
+// Returns { amount, live, days, lastUpdatedAt, unknown, extra }: unknown = no live cost and no hand entry
+// (never shown as $0); extra = hand-entered days after liveTo, added to a live amount.
+function platformSpend(campaigns, platform, from, to, live, liveTo) {
+  if (live != null) {
+    const cover = liveTo && liveTo < to ? liveTo : to;
+    const extra = cover < to ? manualSpend(campaigns, platform, addDays(cover, 1), to) : null;
+    const used = extra && extra.days ? extra : null;
+    return { amount: money(live + (used ? used.amount : 0)), live: true, days: 0, unknown: false, extra: used,
+      lastUpdatedAt: used ? used.lastUpdatedAt : null };
+  }
+  const m = manualSpend(campaigns, platform, from, to);
+  return { ...m, amount: m.days ? m.amount : null, unknown: !m.days, extra: null };
+}
 function periodSpend({ ga, meta, campaigns, from, to }) {
-  const google = ga && ga.ok && ga.adsCost ? { amount: money(Object.values(ga.adsCost).reduce((t, v) => t + v, 0)), live: true } : manualSpend(campaigns, "Google Ads", from, to);
-  const fb = meta && meta.ok ? { amount: money(meta.total), live: true } : manualSpend(campaigns, "Meta", from, to);
-  return { google, meta: fb, total: money(google.amount + fb.amount), static: !google.live || !fb.live,
-    lastUpdatedAt: S.latest(google.live ? null : google.lastUpdatedAt, fb.live ? null : fb.lastUpdatedAt) };
+  const gaOk = !!(ga && ga.ok);
+  // fetchOkrGa skips the cost report for a range that is only today (adsCostTo < from), so adsCost is null.
+  const gLive = gaOk && ga.adsCost && !(ga.adsCostTo && ga.adsCostTo < from) ? liveAmount(ga.adsCost) : null;
+  const google = platformSpend(campaigns, "Google Ads", from, to, gLive, gaOk ? ga.adsCostTo : null);
+  const fb = platformSpend(campaigns, "Meta", from, to, meta && meta.ok ? liveAmount(meta.total) : null, null);
+  const handPart = (p) => !p.live || !!p.extra;
+  return { google, meta: fb, total: google.unknown || fb.unknown ? null : money(google.amount + fb.amount),
+    static: handPart(google) || handPart(fb),
+    lastUpdatedAt: S.latest(handPart(google) ? google.lastUpdatedAt : null, handPart(fb) ? fb.lastUpdatedAt : null) };
 }
 function spendLine(spend, ga, meta) {
-  const part = (name, p, liveFrom) => `${name} ${usd(p.amount)} ${p.live ? `(live from ${liveFrom})` : (p.days ? `(entered by hand for ${p.days === 1 ? "1 day" : p.days + " days"})` : "(no spend entered yet)")}`;
+  const days = (n) => `(entered by hand for ${n === 1 ? "1 day" : n + " days"})`;
+  const part = (name, p, liveFrom) => {
+    if (p.unknown) return `${name} (no spend entered yet)`;
+    if (p.live) return `${name} ${usd(p.amount - (p.extra ? p.extra.amount : 0))} (live from ${liveFrom})${p.extra ? ` + ${usd(p.extra.amount)} ${days(p.extra.days)}` : ""}`;
+    return `${name} ${usd(p.amount)} ${days(p.days)}`;
+  };
   const why = [];
   if (!spend.google.live) why.push(ga && ga.ok ? "Google Ads cost isn't available in GA4." : "Google Ads cost needs Google Analytics.");
-  if (!spend.meta.live) why.push(meta && meta.configured ? "Meta could not be read." : "Meta isn't connected.");
-  return `Spend ${usd(spend.total)}: ${part("Google", spend.google, "Google Ads")} + ${part("Meta", spend.meta, "Meta")}.${why.length ? " " + why.join(" ") : ""}`;
+  if (!spend.meta.live) why.push(meta && meta.ok ? "Meta spend is entered by hand." : meta && meta.configured ? "Meta could not be read." : "Meta isn't connected.");
+  const parts = `${part("Google", spend.google, "Google Ads")} + ${part("Meta", spend.meta, "Meta")}.`;
+  return `${spend.total == null ? parts : `Spend ${usd(spend.total)}: ${parts}`}${why.length ? " " + why.join(" ") : ""}`;
 }
 
 // The MT days a report reads (GA4, Meta): the period start to its end, or to today while it's open.
@@ -427,12 +461,13 @@ function buildReport(input) {
   const spendStatic = { static: spend.static, lastUpdated: spend.static ? S.stamp(spend.lastUpdatedAt) : null };
   const perLead = (n, noun) => `${n === 1 ? "1 " + noun : n + " " + noun + "s"}`;
   row({ id: "cpl", section: "okr", label: "Cost per real lead", source: "Google Ads (GA4) + Meta + portal", provisional: prov("cpl"), ...spendStatic,
-    value: realLeads >= 1 ? money(spend.total / realLeads) : null,
-    display: realLeads >= 1 ? `${usd(spend.total / realLeads)} (${perLead(realLeads, "real lead")})` : "No real leads yet",
+    // Spend unknown (no live cost and no hand entry): blank, never $0.
+    value: realLeads >= 1 && spend.total != null ? money(spend.total / realLeads) : null,
+    display: realLeads < 1 ? "No real leads yet" : spend.total == null ? null : `${usd(spend.total / realLeads)} (${perLead(realLeads, "real lead")})`,
     status: prov("cpl") ? "provisional" : null, note: [spendNote, M.cpl.note].filter(Boolean).join(" ") });
   row({ id: "cac", section: "okr", label: "CAC", source: "Google Ads (GA4) + Meta + Stripe", provisional: prov("cac"), ...spendStatic,
-    value: stripeOk && startsInPeriod >= 1 ? money(spend.total / startsInPeriod) : null,
-    display: !stripeOk ? null : startsInPeriod >= 1 ? `${usd(spend.total / startsInPeriod)} (${perLead(startsInPeriod, "new paid start")})` : "No new paid starts yet",
+    value: stripeOk && startsInPeriod >= 1 && spend.total != null ? money(spend.total / startsInPeriod) : null,
+    display: !stripeOk ? null : startsInPeriod < 1 ? "No new paid starts yet" : spend.total == null ? null : `${usd(spend.total / startsInPeriod)} (${perLead(startsInPeriod, "new paid start")})`,
     status: !stripeOk ? "no_data" : prov("cac") ? "provisional" : null, note: stripeMissing || [spendNote, M.cac.note].filter(Boolean).join(" ") });
   const pz = M.personalization;
   if (!gaOk) row({ id: "personalization", section: "okr", label: "Personalization exposure / lift", source: "GA4", provisional: prov("personalization"), status: "not_connected", note: gaReason });
@@ -519,8 +554,9 @@ function buildReport(input) {
       testModeOnly: subs.length > 0 && subs.every((s) => s.livemode !== true) },
     sources: {
       ga4: gaOk ? "live" : "not_connected",
-      googleAds: gaOk && ga.adsCost ? "live" : "not_connected",
-      meta: input.meta && input.meta.ok ? "live" : (input.meta && input.meta.configured ? "error" : "not_connected"),
+      // "live" only when the live read returned cost above $0 (see periodSpend).
+      googleAds: spend.google.live ? "live" : "not_connected",
+      meta: spend.meta.live ? "live" : (input.meta && input.meta.ok ? "not_connected" : input.meta && input.meta.configured ? "error" : "not_connected"),
       readAt: gaOk && ga.readMs ? new Date(ga.readMs).toISOString() : null,
     },
     config: { version: cfg.version, provisionalCount: Object.values(M).filter((m) => m.provisional).length, scorecardTolerance: cfg.scorecardTolerance,
@@ -536,5 +572,5 @@ module.exports = {
   monthlyRate, payingAt, stripeSnapshot, newPaidStarts,
   personKey, leadRecords, dedupeLeads, isPartialBooking, isInternal, hasTag, firstPaidStartByEmail, reachedRental,
   deadlineStatus, flowStatus, loadConfig, buildReport, formatMt, lastUpdated,
-  manualSpend, periodSpend, reportRange,
+  manualSpend, liveAmount, platformSpend, periodSpend, spendLine, reportRange,
 };

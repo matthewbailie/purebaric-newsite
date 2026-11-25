@@ -152,7 +152,11 @@ function liveSpendFor(row, live) {
   const want = lc(row.adsCampaignName);
   let amount = 0;
   for (const [name, v] of Object.entries(src.byCampaign)) if (lc(name) === want) amount += Number(v) || 0;
-  return { amount: money(amount), from: platform === "Google Ads" ? "Google Ads" : "Meta" };
+  // No matching campaign, or $0: not connected for this row, so the caller falls back to hand-entered spend
+  // (or "No spend entered for this range" / "No spend source"), never a live $0.
+  if (!(amount > 0)) return null;
+  // costTo: the last day the live read covers (GA4 cost lags about a day).
+  return { amount: money(amount), from: platform === "Google Ads" ? "Google Ads" : "Meta", costTo: src.costTo || null };
 }
 
 // Records one day's hand-entered spend (from Demand Gen's daily check). Entering a day again replaces it.
@@ -362,7 +366,11 @@ function buildCampaignReport(input) {
     let spend = null, spendDisplay = null, cplDisplay = null, cpl = null, spendStatic = false, spendUpdated = null;
     const liveSpend = liveSpendFor(row, input.liveSpend);
     if (row && liveSpend) {
-      spend = liveSpend.amount; spendDisplay = `${usd(spend)} (live from ${liveSpend.from})`;
+      // Days after the live read's last day (today, for GA4) use the hand entries, when there are any.
+      const extra = liveSpend.costTo && liveSpend.costTo < toDay && row.spendSource === "manual" ? spendInRange(row, C.addDays(liveSpend.costTo, 1), toDay) : null;
+      spend = money(liveSpend.amount + (extra ? extra.amount : 0));
+      spendDisplay = `${usd(liveSpend.amount)} (live from ${liveSpend.from})` + (extra ? ` + ${usd(extra.amount)} (${extra.days} day${extra.days === 1 ? "" : "s"} entered)` : "");
+      if (extra) { spendStatic = true; spendUpdated = S.stamp(extra.lastEnteredAt); }
       if (g.realLeads >= 1) { cpl = money(spend / g.realLeads); cplDisplay = `${usd(cpl)} (${g.realLeads === 1 ? "1 real lead" : g.realLeads + " real leads"})`; }
       else cplDisplay = "No real leads yet";
     } else if (row) {

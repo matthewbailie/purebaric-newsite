@@ -142,7 +142,8 @@ test("Proof-reader edits (@7e812fc): thin-rate notes, spend-days wording, page-n
   assert.equal(by.paid_form_start_rate.note, "Too few for a rate yet. Campaigns: 30d_home_v1.");
   // N in "(entered by hand for N days)" is the number of days of spend in the period, not the entry's age.
   const one = Object.fromEntries(report({ campaigns: [CAMPAIGNS[1]] }).rows.map((r) => [r.id, r]));
-  assert.match(one.cpl.note, /Google \$7\.00 \(entered by hand for 1 day\) \+ Meta \$0\.00 \(no spend entered yet\)/);
+  assert.match(one.cpl.note, /Google \$7\.00 \(entered by hand for 1 day\) \+ Meta \(no spend entered yet\)/);
+  assert.doesNotMatch(one.cpl.note, /\$0\.00/); // unknown Meta spend is never shown as $0 (fix/spend-empty-fallback)
   assert.doesNotMatch(one.cpl.note, /for 0 days/);
   const html = fs.readFileSync(path.join(__dirname, "..", "admin.html"), "utf8");
   for (const str of ["'Google Analytics: live.'", "'Meta spend: live.'", `"Couldn't read Meta, so Meta spend is entered by hand."`, "'Meta spend is entered by hand.'"]) assert.ok(html.includes(str), str);
