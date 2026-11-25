@@ -86,10 +86,12 @@ test("homepage ZIP checker offers a short area waitlist only when out of area", 
   assert.match(areaWaitlist, /reason: "Area waitlist via homepage ZIP checker"/);
 });
 
-test("booking_form_start and abandon carry device/variant (pbFunnel) and source", () => {
-  assert.match(bookHtml, /'booking_form_start',pbFunnel\(\{chamber_id:[^;]*source:'book_page'/);
-  assert.match(bookHtml, /'booking_form_abandon',pbFunnel\(\{last_field:[^;]*source:'book_page'/);
+test("booking page installs v2 funnel events and keeps pbFunnel", () => {
+  assert.match(bookHtml, /src="\/book-funnel-events\.js"/);
+  assert.match(bookHtml, /PBBookFunnel\)window\.PBBookFunnel\.install\(window,document\)/);
   assert.match(bookHtml, /function pbFunnel\(o\)\{return window\.PBMetrics&&window\.PBMetrics\.funnelParams\?window\.PBMetrics\.funnelParams\(o\):o;\}/);
+  assert.match(bookHtml, /in_area:!!inArea/);
+  assert.match(bookHtml, /PBBookFunnel\.step1Save\(window,!j\.outOfArea\)/);
 });
 
 test("measurement fires for defaults: plan, area, and typed dates count", () => {
