@@ -44,7 +44,7 @@ exports.handler = async (event) => {
       email: (body.email || "").trim(),
       phone,
       zip,
-      reason: "Area waitlist via homepage ZIP checker",
+      reason: (body.source || "").trim() === "book_page" ? "Area waitlist via /book" : "Area waitlist via homepage ZIP checker",
       // First-touch attribution and the internal/TEST flag.
       ...leadSourceFields(body, { name, email: (body.email || "").trim() }),
     });

@@ -73,6 +73,8 @@
 .stars-input label:hover span,.stars-input label:hover~label span{color:#d99a2b}
 .stars-input label:has(input:checked) span,.stars-input label:has(input:checked)~label span{color:#d99a2b}
 .stars-input input:focus-visible+span{outline:2px solid var(--terra);outline-offset:2px;border-radius:4px}
+.rv-form-preface{font-size:14px;color:var(--ink);margin:0 0 16px;line-height:1.5}
+.stars-help{font-size:13px;color:var(--muted);margin:8px 0 0;line-height:1.45}
 .rv-card .stars{color:#d99a2b;font-size:14px;letter-spacing:2px;margin-bottom:8px}
 .lbl{display:block;font-size:13.5px;font-weight:600;margin-bottom:2px;color:var(--ink)}
 #reviews,#write{scroll-margin-top:80px}
@@ -143,7 +145,7 @@
         <div class="fg"><label for="rCity">City (optional)</label><input type="text" id="rCity" name="city" maxlength="60"></div>
         <div class="fg"><span class="lbl" id="rStarsLabel">Your rating <span class="req">*</span></span>
           <div class="stars-input" role="radiogroup" aria-labelledby="rStarsLabel">
-            <label><input type="radio" name="stars" value="5" checked><span>★</span></label><label><input type="radio" name="stars" value="4"><span>★</span></label><label><input type="radio" name="stars" value="3"><span>★</span></label><label><input type="radio" name="stars" value="2"><span>★</span></label><label><input type="radio" name="stars" value="1"><span>★</span></label>
+            <label><input type="radio" name="stars" value="5" required><span>★</span></label><label><input type="radio" name="stars" value="4" required><span>★</span></label><label><input type="radio" name="stars" value="3" required><span>★</span></label><label><input type="radio" name="stars" value="2" required><span>★</span></label><label><input type="radio" name="stars" value="1" required><span>★</span></label>
           </div>
         </div>
         <div class="fg"><label for="rText">Your review <span class="req">*</span></label><textarea id="rText" name="text" maxlength="1500" required placeholder="What was your experience like, delivery, setup, using the chamber, support?"></textarea></div>
@@ -162,7 +164,7 @@
       <div class="foot-brand">
         <img class="foot-logo" src="/images/logo-cream.png?v=3" alt="Purebaric">
         <p class="foot-tag">Hyperbaric chamber rentals, delivered across Utah.</p>
-        <p class="foot-desc">Professional-grade mild hyperbaric oxygen therapy brought to your home, delivery, setup, and support included, for less than the cost of a single month at a clinic.</p>
+        <p class="foot-desc">Mild 1.5 ATA hyperbaric chambers brought to your home, with delivery, setup and support included.</p>
       </div>
       <div class="foot-col"><h5>Service</h5><ul>
         <li><a href="/how-it-works">How it works</a></li><li><a href="/chambers">Chambers</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/service-area">Service area</a></li><li><a href="/business">For businesses</a></li><li><a href="/book">Book now</a></li><li><a href="/waitlist">Waitlist</a></li></ul></div>
@@ -176,7 +178,7 @@
     </div>
     <div class="foot-bottom">
       <span>© <span class="foot-year">2026</span> Purebaric. All rights reserved.</span>
-      <span class="foot-disc">Provided for general wellness and relaxation only. Not a medical device; not intended to diagnose, treat, cure, or prevent any disease. Consult your physician before use.</span>
+      <span class="foot-disc">Provided for general wellness and relaxation only. Consult your physician before use.</span><span data-fda-line hidden></span>
     </div>
   </div>
 </footer>
@@ -246,7 +248,8 @@ document.getElementById('reviewForm').addEventListener('submit',function(e){
   data.set('lastInitial',document.getElementById('rInitial').value);
   data.set('city',document.getElementById('rCity').value);
   var starEl=f.querySelector('input[name="stars"]:checked');
-  data.set('stars',starEl?starEl.value:'5');
+  if(!starEl){f.reportValidity();return;}
+  data.set('stars',starEl.value);
   data.set('text',document.getElementById('rText').value);
   var orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='Submitting...';
   fetch('/api/reviews-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
@@ -271,4 +274,5 @@ document.getElementById('reviewForm').addEventListener('submit',function(e){
    });
 });
 </script>
+<script src="/fda-disclaimer.js" defer></script>
 </body></html>

@@ -34,9 +34,20 @@ test("booking page is a two-step form: step 1 captures the lead, step 2 holds de
   assert.match(bookHtml, /data\.set\('lead_id',leadIdVal\)/);
 });
 
-test("step-1 out-of-area is a confirmation only, with no second form", () => {
-  assert.match(bookHtml, /Out-of-area is a confirmation only: no second form, no re-entry\./);
-  assert.match(bookHtml, /we'll reach out if we're able to deliver to your area\./);
+test("out-of-area on /book joins the area waitlist, not a booking lead", () => {
+  assert.match(bookHtml, /id="waitlistBtn"/);
+  assert.match(bookHtml, /fetch\('\/api\/area-waitlist'/);
+  assert.match(bookHtml, /new URLSearchParams\(\{name:name,phone:phone,zip:z,email:email,source:'book_page'\}\)/);
+  assert.match(bookHtml, /appendPurebaricLeadSource\(awData,\{name:name,email:email\}\)/);
+  assert.match(bookHtml, /pbTrack\('waitlist_join',pbFunnel\(\{source:'book_page',in_area:false\}\)\)/);
+  assert.match(bookHtml, /pbMeta\('Subscribe',\{content_category:'waitlist'\}\)/);
+  const wait = bookHtml.slice(bookHtml.indexOf("var _waitlistJoining"), bookHtml.indexOf("var _submitting"));
+  assert.doesNotMatch(wait, /booking-submit/);
+  assert.doesNotMatch(wait, /booking_step1_save/);
+  assert.doesNotMatch(wait, /generate_lead/);
+  assert.doesNotMatch(wait, /trackPurebaricMeta\?\.\('Lead'/);
+  assert.doesNotMatch(wait, /InitiateCheckout/);
+  assert.match(areaWaitlist, /body\.source \|\| ""\)\.trim\(\) === "book_page"/);
 });
 
 test("booking-submit handles step-1 leads and converts them on full submit", () => {
@@ -83,18 +94,20 @@ test("homepage ZIP checker offers a short area waitlist only when out of area", 
   assert.match(netlifyToml, /from = "\/api\/area-waitlist"/);
   assert.match(netlifyToml, /to = "\/.netlify\/functions\/area-waitlist"/);
   assert.match(areaWaitlist, /name, phone and zip are required/);
-  assert.match(areaWaitlist, /reason: "Area waitlist via homepage ZIP checker"/);
+  assert.match(areaWaitlist, /"Area waitlist via homepage ZIP checker"/);
+  assert.match(areaWaitlist, /"Area waitlist via \/book"/);
 });
 
-test("booking_form_start and abandon carry device/variant (pbFunnel) and source", () => {
-  assert.match(bookHtml, /'booking_form_start',pbFunnel\(\{chamber_id:[^;]*source:'book_page'/);
-  assert.match(bookHtml, /'booking_form_abandon',pbFunnel\(\{last_field:[^;]*source:'book_page'/);
+test("booking page installs v2 funnel events and keeps pbFunnel", () => {
+  assert.match(bookHtml, /src="\/book-funnel-events\.js"/);
+  assert.match(bookHtml, /PBBookFunnel\)window\.PBBookFunnel\.install\(window,document\)/);
   assert.match(bookHtml, /function pbFunnel\(o\)\{return window\.PBMetrics&&window\.PBMetrics\.funnelParams\?window\.PBMetrics\.funnelParams\(o\):o;\}/);
-});
+  assert.match(bookHtml, /in_area:!!inArea/);
+  assert.match(bookHtml, /PBBookFunnel\.step1Save\(window,!j\.outOfArea\)/);});
 
 test("measurement fires for defaults: plan, area, and typed dates count", () => {
   assert.match(bookHtml, /var areaFired=false,planFired=false,dateFired=false/);
-  assert.match(bookHtml, /if\(!areaFired\)\{areaFired=true/);
+  assert.match(bookHtml, /fireServiceAreaCheck\(document\.getElementById\('zip'\)\.value\)/);
   assert.match(bookHtml, /if\(!planFired\)\{planFired=true/);
   assert.match(bookHtml, /if\(dateVal&&!dateFired\)\{dateFired=true/);
 });
@@ -102,10 +115,10 @@ test("measurement fires for defaults: plan, area, and typed dates count", () => 
 test("step-1 submit fires InitiateCheckout once, step 2 fires Lead and CompleteRegistration", () => {
   // A step-1 save is a partial lead: InitiateCheckout once per new lead; a
   // re-submit of an existing lead (back button, edit, re-submit) does not fire again.
-  assert.match(bookHtml, /if\(!existingLead\)window\.trackPurebaricMeta\?\.\('InitiateCheckout',\{content_category:document\.getElementById\('rentalType'\)\.value\|\|'residential'\},\{eventID:j\.id\+':step1'\}\)/);
+  assert.match(bookHtml, /if\(!existingLead\)pbMeta\('InitiateCheckout',\{content_category:document\.getElementById\('rentalType'\)\.value\|\|'residential'\},\{eventID:j\.id\+':step1'\}\)/);
   // The completed request is the Lead (one per visitor), plus CompleteRegistration.
-  assert.match(bookHtml, /trackPurebaricMeta\?\.\('Lead',\{content_category:rtype,value:Number\(leadValue\)\|\|0,currency:'USD'\},\{eventID:leadEventId\}\)/);
-  assert.match(bookHtml, /trackPurebaricMeta\?\.\('CompleteRegistration',\{content_category:rtype\},\{eventID:leadEventId\+':complete'\}\)/);
+  assert.match(bookHtml, /pbMeta\('Lead',\{content_category:rtype,value:Number\(leadValue\)\|\|0,currency:'USD'\},\{eventID:leadEventId\}\)/);
+  assert.match(bookHtml, /pbMeta\('CompleteRegistration',\{content_category:rtype\},\{eventID:leadEventId\+':complete'\}\)/);
   // Step 1 sends the anonymous GA identifiers so the backend can send the
   // server-side lead event for the new lead.
   assert.match(bookHtml, /data\.set\('analytics_client_id',analyticsContext\.clientId\)/);
@@ -119,15 +132,29 @@ test("homepage promo signup and area waitlist fire Meta Subscribe, not Lead", ()
   assert.match(indexHtml, /appendPurebaricLeadSource\(awData,\{name:name\}\)/);
 });
 
-test("step 1 asks for ZIP and delivery date first, contact details last, and sends address and date", () => {
+test("step 1 is ZIP and contact only; address, date and optional answers are on step 2", () => {
   const lead = bookHtml.slice(bookHtml.indexOf('id="leadForm"'), bookHtml.indexOf('id="resForm"'));
-  const at = (s) => { const i = lead.indexOf(s); assert.ok(i > 0, s); return i; };
-  assert.ok(at('id="zip"') < at('id="dateBookRow"'));
-  assert.ok(at('id="dateBookRow"') < at('id="cstreet"'));
-  assert.ok(at('id="cstreet"') < at('id="cfn"'));
-  assert.ok(at('id="cfn"') < at('id="leadBtn"'));
-  assert.match(bookHtml, /data\.set\('street-address',document\.getElementById\('cstreet'\)\.value\.trim\(\)\);data\.set\('city'/);
-  assert.match(bookHtml, /if\(leadDate\)data\.set\('preferred_date',leadDate\)/);
+  const step2 = bookHtml.slice(bookHtml.indexOf('id="resForm"'), bookHtml.indexOf('class="book-side"'));
+  const at = (html, s) => { const i = html.indexOf(s); assert.ok(i >= 0, s); return i; };
+  assert.ok(at(lead, 'id="zip"') < at(lead, 'id="cfn"'));
+  assert.ok(at(lead, 'id="cfn"') < at(lead, 'id="ce"'));
+  assert.ok(at(lead, 'id="ce"') < at(lead, 'id="cp"'));
+  assert.ok(at(lead, 'id="cp"') < at(lead, 'id="leadBtn"'));
+  assert.equal(lead.includes('id="addrRow"'), false);
+  assert.equal(lead.includes('id="dateBookRow"'), false);
+  assert.equal(lead.includes('id="dateReqRow"'), false);
+  assert.equal(lead.includes('id="cstreet"'), false);
+  assert.equal(lead.includes('id="cheard"'), false);
+  assert.ok(at(step2, 'id="addrRow"') < at(step2, 'id="dateBookRow"'));
+  assert.ok(at(step2, 'id="dateBookRow"') < at(step2, 'id="cbiz"'));
+  assert.ok(at(step2, 'id="cheard"') < at(step2, 'id="cnotes"'));
+  const leadSubmit = bookHtml.slice(bookHtml.indexOf("/* ───── Step 1:"), bookHtml.indexOf("document.getElementById('backBtn')"));
+  assert.doesNotMatch(leadSubmit, /data\.set\('street-address'/);
+  assert.doesNotMatch(leadSubmit, /data\.set\('preferred_date'/);
+  assert.doesNotMatch(leadSubmit, /data\.set\('heard_about'/);
+  assert.match(leadSubmit, /data\.set\('lead_stage','step1'\)/);
+  assert.match(leadSubmit, /data\.set\('zip_code'/);
+  // Server still accepts address and date on a step-1 post; the client no longer sends them.
   const leadBranch = bookingSubmit.slice(bookingSubmit.indexOf('body.lead_stage === "step1"'), bookingSubmit.indexOf("let lead = null"));
   assert.match(leadBranch, /streetAddress:/);
   assert.match(leadBranch, /startDate:/);
