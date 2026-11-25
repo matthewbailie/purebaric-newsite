@@ -637,7 +637,6 @@ document.getElementById('leadForm').addEventListener('submit',async function(e){
        // (not Lead) once per new lead; a re-submit (back button, edit) does not fire again.
        // The Lead itself fires only when step 2 completes the request.
        if(!existingLead)window.trackPurebaricMeta?.('InitiateCheckout',{content_category:document.getElementById('rentalType').value||'residential'},{eventID:j.id+':step1'});
-       window.trackPurebaricEvent?.('booking_step1_save',pbFunnel({in_area:true,def_v:2}));
        res.className='result ok';
        res.textContent=window.BOOKMODE?'Saved. Now pick your delivery date.':'Saved. One more step to send your request.';
        f.hidden=true;

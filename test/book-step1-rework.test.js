@@ -99,6 +99,9 @@ test("step-1 200 fires PBBookFunnel.step1Save and InitiateCheckout for a new lea
   assert.match(step1, /if\(!existingLead\)window\.trackPurebaricMeta\?\.\('InitiateCheckout'/);
   assert.doesNotMatch(step1, /'Lead'/);
   assert.doesNotMatch(step1, /generate_lead/);
+  // A leftover direct track call would double-count the start-to-step-1 rate.
+  assert.doesNotMatch(step1, /trackPurebaricEvent\?\.\('booking_step1_save'/);
+  assert.equal((step1.match(/booking_step1_save/g) || []).length, 0);
 });
 
 test("service_area_check includes in_area; the v2 module is installed for pbtest and starts", () => {
