@@ -1085,7 +1085,7 @@ The Purebaric team</textarea></div>
           <div><label for="lcOwner">Owner</label><input id="lcOwner" name="owner" maxlength="60" placeholder="e.g. Demand Gen" required></div>
           <div><label for="lcStart">Start</label><input type="date" id="lcStart" name="start" required></div>
           <div><label for="lcEnd">End (optional)</label><input type="date" id="lcEnd" name="end"></div>
-          <div><label for="lcSpendSource">Spend source</label><select id="lcSpendSource" name="spendSource"><option value="">Default for the channel</option><option value="manual">Entered by hand (daily)</option><option value="none">No spend source</option></select></div>
+          <div><label for="lcSpendSource">Spend source</label><select id="lcSpendSource" name="spendSource"><option value="">Default for the platform</option><option value="manual">Entered by hand (daily)</option><option value="none">No spend source</option></select></div>
           <div><label for="lcPortalTag">Portal tag (optional)</label><input id="lcPortalTag" name="portalTag" maxlength="60" placeholder="e.g. campaign-30d-home-v1"></div>
           <div><label for="lcAdsName">Ad platform campaign name (optional)</label><input id="lcAdsName" name="adsCampaignName" maxlength="120"></div>
           <div><button type="submit" class="btn btn-primary btn-sm">Add campaign</button></div>
@@ -2163,7 +2163,7 @@ The Purebaric team</textarea></div>
     document.querySelectorAll('[data-mx-updated]').forEach(el => { el.textContent = stamp; });
     const p = d.period || {};
     const asOf = p.asOf ? new Date(p.asOf).toLocaleString('en-US', { timeZone: 'America/Denver', dateStyle: 'medium', timeStyle: 'short' }) + ' MT' : '';
-    const stripeLine = d.stripe && d.stripe.ok ? 'Stripe: live read.' : (d.stripe && d.stripe.configured ? 'Stripe could not be read; Stripe rows show no data.' : 'Stripe is not configured; Stripe rows show no data.');
+    const stripeLine = d.stripe && d.stripe.ok ? 'Stripe: live.' : (d.stripe && d.stripe.configured ? 'Stripe could not be read; Stripe rows show no data.' : 'Stripe is not configured; Stripe rows show no data.');
     const src = d.sources || {};
     const gaLine = src.ga4 === 'live' ? 'Google Analytics: live.' : 'Google Analytics is not connected; its rows say why.';
     const metaLine = src.meta === 'live' ? 'Meta spend: live.' : (src.meta === 'error' ? "Couldn't read Meta, so Meta spend is entered by hand." : 'Meta spend is entered by hand.');

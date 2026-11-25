@@ -390,3 +390,10 @@ test("campaign list: an ad platform campaign name is kept only for Meta and Goog
   assert.ok(L.setAdsName([legacyMeta], "a", "n").rows);
   assert.equal(L.setAdsName([{ id: "b", platform: "Email inbox" }], "b", "n").error, "Only Meta and Google campaigns have an ad platform campaign name.");
 });
+
+test("admin.html (Rev 2 Proof-reader edits): Default for the platform, Stripe: live.", () => {
+  const html = require("fs").readFileSync(path.join(__dirname, "..", "admin.html"), "utf8");
+  assert.match(html, /<option value="">Default for the platform<\/option>/);
+  assert.doesNotMatch(html, /Default for the channel|Stripe: live read\./);
+  assert.match(html, /'Stripe: live\.'/);
+});

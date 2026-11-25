@@ -163,6 +163,7 @@ test("report: waitlist signups vs active waitlist, serviceable split, too-thin r
   assert.match(by.lead_to_rental.display, /of 6 real leads/);
   assert.equal(by.lead_source_coverage.status, "too_thin");
   assert.equal(by.step1_to_step2.status, "too_thin");
+  assert.equal(by.step1_to_step2.note, "Too few for a rate yet.");
   // No GA4 key in this fixture: every GA4 row says Not connected, with the reason.
   for (const id of ["personalization", "booking_completion_rate", "form_starts", "paid_form_start_rate", "booking_page_visits", "scroll_depth", "device_split"]) {
     assert.equal(by[id].status, "not_connected", id);

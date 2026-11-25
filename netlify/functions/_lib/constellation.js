@@ -269,7 +269,7 @@ function periodSpend({ ga, meta, campaigns, from, to }) {
     lastUpdatedAt: S.latest(google.live ? null : google.lastUpdatedAt, fb.live ? null : fb.lastUpdatedAt) };
 }
 function spendLine(spend, ga, meta) {
-  const part = (name, p, liveFrom) => `${name} ${usd(p.amount)} ${p.live ? `(live from ${liveFrom})` : `(entered by hand for ${p.days === 1 ? "1 day" : p.days + " days"})`}`;
+  const part = (name, p, liveFrom) => `${name} ${usd(p.amount)} ${p.live ? `(live from ${liveFrom})` : (p.days ? `(entered by hand for ${p.days === 1 ? "1 day" : p.days + " days"})` : "(no spend entered yet)")}`;
   const why = [];
   if (!spend.google.live) why.push(ga && ga.ok ? "Google Ads cost isn't available in GA4." : "Google Ads cost needs Google Analytics.");
   if (!spend.meta.live) why.push(meta && meta.configured ? "Meta could not be read." : "Meta isn't connected.");
@@ -481,7 +481,7 @@ function buildReport(input) {
     status: postCutoff.length < minN ? "too_thin" : "provisional",
     note: `Proposed target ${Math.round(covTarget * 100)}% by ${M.leadSourceCoverage.proposedBy}. Leads before the Release 3 cutoff are excluded.` });
   row({ id: "step1_to_step2", section: "leading", label: "Step 1 → step 2", source: "Portal bookings", value: null,
-    display: `${partial} step-1 only · ${completed} completed`, status: "too_thin", note: "Counts, not a rate, at current volume." });
+    display: `${partial} step-1 only · ${completed} completed`, status: "too_thin", note: "Too few for a rate yet." });
   // Team-entered: no portal or API source records these (see DECISIONS 2026-11-25 live metrics).
   for (const id of ["renewal_touch", "reply_time"]) {
     const sv = (input.staticValues || {})[id] || {};
