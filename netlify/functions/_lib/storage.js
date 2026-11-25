@@ -804,6 +804,19 @@ async function setAdminLayout(orders) {
   return clean;
 }
 
+// ───────── Campaign list (admin Leads by Campaign; see _lib/campaign-leads.js) ─────────
+// One settings doc: { id: "campaignList", rows: [{ id, name, utmCampaign, channel, owner, start, end,
+// spendSource, portalTag, spend: [{ day, amount, enteredAt }], createdAt, endedAt }], updatedAt }.
+// Rows are added and ended, never deleted; spend is typed in by an admin. No lead data lives here.
+async function getCampaignList() {
+  const doc = await getOne(STORES.settings, "campaignList");
+  return doc && Array.isArray(doc.rows) ? doc.rows : [];
+}
+async function setCampaignList(rows) {
+  await store(STORES.settings).setJSON("campaignList", { id: "campaignList", rows, updatedAt: nowIso() });
+  return rows;
+}
+
 // ───────── Passkey credentials + admin sessions (see _lib/passkeys.js, _lib/session.js) ─────────
 // One admin "account" — there's a single real owner — so these are keyed only
 // by their own id (credentialId / sessionId / challenge nonce), not by a user id.
@@ -858,6 +871,8 @@ module.exports = {
   deletePasskeyCredential,
   getAdminLayout,
   setAdminLayout,
+  getCampaignList,
+  setCampaignList,
   getAuthChallenge,
   putAuthChallenge,
   deleteAuthChallenge,
