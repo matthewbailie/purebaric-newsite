@@ -62,5 +62,76 @@
     if (digits) { const d = all.find(c => c.phoneDigits === digits); if (d) return d; }
     return null;
   }
-  return { matchesSearch, orderByKeys, customerKey, findCustomerFor };
+
+  // Mirrors isInternalLead() in netlify/functions/_lib/lead-source.js (tests keep them equal).
+  // Used only to classify already-stored rows in memory; nothing is written back.
+  const OWNER_EMAILS = ["matthewbailie@gmail.com"];
+  function isInternalLead({ name = "", firstName = "", lastName = "", email = "", flag = "" } = {}) {
+    if (String(flag) === "1") return true;
+    const fullName = [name, firstName, lastName].filter(Boolean).join(" ");
+    if (/\btest\b/i.test(fullName)) return true;
+    const e = String(email || "").trim().toLowerCase();
+    if (!e) return false;
+    const [local, domain] = e.split("@");
+    if (domain === "gmail.com" && local.split("+")[0].replace(/\./g, "") === "matthewbailie") return true;
+    if (OWNER_EMAILS.includes(e)) return true;
+    return /(^|[._+\-])test([._+\-]|\d|$)/.test(local || "");
+  }
+
+  // Prefer the stored `internal` flag. If it is missing (pre-flag rows), apply
+  // isInternalLead() to the stored name and email in memory only.
+  function isStoredInternalLead(rec) {
+    const r = rec || {};
+    if (r.internal === true) return true;
+    if (r.internal === false) return false;
+    return isInternalLead({
+      name: r.name || "",
+      firstName: r.firstName || "",
+      lastName: r.lastName || "",
+      email: r.email || "",
+    });
+  }
+
+  const UNFINISHED_STEP1_FILTER = "unfinished-step1";
+  const UNFINISHED_STEP1_LABEL = "Unfinished step-1 leads > 24h";
+  const COMPLETED_REQUEST_STATUSES = new Set(["new", "contacted", "approved", "converted"]);
+  const DAY_MS = 24 * 60 * 60 * 1000;
+
+  function normalizeEmail(email) {
+    return String(email || "").trim().toLowerCase();
+  }
+
+  function isStep1Partial(b) {
+    return !!(b && b.status === "lead" && b.bookingMode === "lead");
+  }
+
+  function isOlderThan24h(b, now) {
+    const t = Date.parse(b && b.createdAt);
+    return Number.isFinite(t) && (now - t) > DAY_MS;
+  }
+
+  function hasCompletedRequest(bookings, email) {
+    if (!email) return false;
+    return (bookings || []).some((b) => COMPLETED_REQUEST_STATUSES.has(b && b.status) && normalizeEmail(b.email) === email);
+  }
+
+  // Split unfinished step-1 leads (>24h, no later completed request) into real
+  // rows (the partial-lead count) and TEST/internal rows (shown separately, not counted).
+  // Both lists are oldest first. Out-of-area rows are included.
+  function unfinishedStep1Leads(bookings, now = Date.now()) {
+    const all = bookings || [];
+    const candidates = all.filter((b) => isStep1Partial(b) && isOlderThan24h(b, now) && !hasCompletedRequest(all, normalizeEmail(b.email)));
+    const real = [];
+    const internal = [];
+    for (const b of candidates) {
+      if (isStoredInternalLead(b)) internal.push(b);
+      else real.push(b);
+    }
+    const byOldest = (a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt);
+    real.sort(byOldest);
+    internal.sort(byOldest);
+    return { real, internal, count: real.length };
+  }
+
+  return { matchesSearch, orderByKeys, customerKey, findCustomerFor, isInternalLead, isStoredInternalLead, unfinishedStep1Leads, UNFINISHED_STEP1_FILTER, UNFINISHED_STEP1_LABEL };
 });

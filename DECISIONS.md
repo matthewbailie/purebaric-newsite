@@ -252,3 +252,13 @@
 **Context:** Matthew asked for leads per marketing, ad and retention campaign, updated when a new campaign goes live with no deploy. The site server has no usable ad-platform credentials, and the browser sends no privacy marker (`lead-source.js` and `pb-metrics.js` simply skip capture on GPC, DNT or the `/privacy` opt-out), so a separate "privacy-skipped" group would be a guess.
 **Alternatives considered:** A "privacy-skipped" group (no stored marker to drive it; adding one would be new capture); pulling spend from the Meta or Google Ads APIs (needs new credentials from Matthew; a later step); a separate lead store per campaign (duplicates portal data); letting rows be deleted (would orphan matched leads).
 **Status:** On `feat/admin-metrics-tab` (PR #37, held for one combined release). Not deployed.
+
+## TEST/internal bookings do not hold capacity; unfinished step-1 leads view (2026-11-25)
+
+**Decision:** Book-mode holds marked TEST/internal are excluded from delivery capacity and availability (`holdsFrom` / `bookingHolds`) and from the /admin "Booked requests to convert" count. They stay visible and marked in /admin. When a stored row has no `internal` flag, `isInternalLead()` is applied to the stored name and email in memory only (no write-back). The Rental requests tab gains a filter labeled "Unfinished step-1 leads > 24h": real step-1-only partials older than 24 hours, with no later completed request on the same email, oldest first, including out-of-area. TEST/internal matches appear in a separate section and are left out of the partial-lead count. The change is read-only on Netlify Blobs.
+
+**Context:** A completed TEST booking was holding one of two free chambers, so the weekly live TEST path was paused. Retention & Ops also had no /admin view of real unfinished step-1 leads, and Optimization & Personalization needed that view's count to match the Nov 24 real-lead definition (step-1 saves excluding TEST and internal).
+
+**Alternatives considered:** Deleting or rewriting existing TEST rows in Blobs would mutate the shared live store; skipping only rows with `internal: true` would leave pre-flag TEST holds in capacity.
+
+**Status:** On `feat/test-hold-unfinished-leads`. Not deployed.
