@@ -317,18 +317,20 @@ test("handler: 401 without auth, 405 on writes, aggregates on GET with a read-on
   } finally { console.error = orig; }
 });
 
-test("admin.html: Site OKRs & Analytics tab holds two sub-tabs; no separate Metrics tab; old links land right", () => {
+test("admin.html: Site OKRs & Analytics tab holds three sub-tabs; no separate Metrics tab; old links land right", () => {
   const html = require("fs").readFileSync(path.join(__dirname, "..", "admin.html"), "utf8");
   // One root tab, renamed; the top-level Metrics tab is gone.
   assert.match(html, /<button class="tab-btn" data-tab="analytics">Site OKRs &amp; Analytics<\/button>/);
   assert.doesNotMatch(html, /data-tab="metrics"/);
   assert.doesNotMatch(html, /data-panel="metrics"/);
   assert.doesNotMatch(html, />Site analytics</);
-  // Two sub-tabs, in this order, inside the analytics panel; Metrics content first, GA content after it.
+  // Three sub-tabs, in this order, inside the analytics panel; Metrics content first, GA content after it.
   const panel = html.slice(html.indexOf('<section class="tab-panel" data-panel="analytics">'), html.indexOf("<!-- ───── Delivery availability"));
   const okrsBtn = panel.indexOf('data-sub="okrs" onclick="showAnalyticsSub(\'okrs\')">OKRs, KPIs, and Metrics</button>');
   const dataBtn = panel.indexOf('data-sub="data" onclick="showAnalyticsSub(\'data\')">Analytics &amp; Data</button>');
-  assert.ok(okrsBtn > 0 && dataBtn > okrsBtn);
+  const leadsBtn = panel.indexOf('data-sub="leads" onclick="showAnalyticsSub(\'leads\')">Leads by Campaign</button>');
+  assert.ok(okrsBtn > 0 && dataBtn > okrsBtn && leadsBtn > dataBtn);
+  assert.ok(panel.indexOf('<div class="an-leads">') > panel.indexOf('id="mxFoot"') && panel.indexOf('id="lcTable"') > panel.indexOf('<div class="an-leads">'));
   const okrs = panel.indexOf('<div class="an-okrs">');
   assert.ok(okrs > dataBtn);
   assert.ok(panel.indexOf('id="mxOkr"') > okrs && panel.indexOf('id="mxPeriod"') > okrs);
@@ -337,15 +339,20 @@ test("admin.html: Site OKRs & Analytics tab holds two sub-tabs; no separate Metr
   // CSS shows one sub-tab at a time (the funnel card dashboard-charts.js appends is hidden with the GA content).
   assert.match(html, /\.tab-panel\[data-panel="analytics"\]\.sub-okrs > :not\(\.an-subnav\):not\(\.an-okrs\):not\(\.tab-loading-status\) \{ display: none !important; \}/);
   assert.match(html, /\.tab-panel\[data-panel="analytics"\]:not\(\.sub-okrs\) > \.an-okrs \{ display: none; \}/);
+  assert.match(html, /\.tab-panel\[data-panel="analytics"\]\.sub-leads > :not\(\.an-subnav\):not\(\.an-leads\):not\(\.tab-loading-status\) \{ display: none !important; \}/);
+  assert.match(html, /\.tab-panel\[data-panel="analytics"\]:not\(\.sub-leads\) > \.an-leads \{ display: none; \}/);
   // Loading: the shown sub-tab loads on demand; GA only auto-refreshes on Analytics & Data.
   assert.match(html, /analytics: \(\) => loadAnalyticsSub\(\)/);
-  assert.match(html, /const task = sub === 'okrs' \? loadMetrics\(\) : loadTraffic\(true\);/);
+  assert.match(html, /const task = sub === 'okrs' \? loadMetrics\(\) : sub === 'leads' \? loadLeadsByCampaign\(\) : loadTraffic\(true\);/);
   assert.match(html, /_anSub !== 'data' \|\| document\.hidden/);
   assert.match(html, /api\('\/api\/admin\/metrics\?period='/);
   // Deep links: #okrs and the old #metrics → OKRs sub-tab; #analytics (old Site analytics) → Analytics & Data.
   assert.match(html, /if \(name === 'okrs' \|\| name === 'metrics'\) \{ _anSub = 'okrs'; name = 'analytics'; \}/);
   assert.match(html, /else if \(name === 'analytics'\) _anSub = 'data';/);
-  assert.match(html, /_anSub === 'okrs' \? '#okrs' : '#analytics'/);
+  assert.match(html, /_anSub === 'okrs' \? '#okrs' : _anSub === 'leads' \? '#leads' : '#analytics'/);
+  // #leads (and the spec's #leads-by-campaign) → Leads by Campaign.
+  assert.match(html, /else if \(name === 'leads' \|\| name === 'leads-by-campaign'\) \{ _anSub = 'leads'; name = 'analytics'; \}/);
+  assert.match(html, /api\('\/api\/admin\/campaign-leads'/);
   assert.match(html, /onclick="openAnalyticsData\(\);return false;"[^>]*>Analytics &amp; Data<\/a> tab under Site OKRs &amp; Analytics/);
   // Nothing from the metrics view goes into browser storage.
   const start = html.indexOf("// ───────── OKRs, KPIs, and Metrics");
@@ -358,12 +365,12 @@ test("admin.html: Site OKRs & Analytics tab holds two sub-tabs; no separate Metr
 test("Site OKRs & Analytics: sub-tab switching, deep links and lazy loads behave", () => {
   const html = require("fs").readFileSync(path.join(__dirname, "..", "admin.html"), "utf8");
   const pick = (from, to) => html.slice(html.indexOf(from), html.indexOf(to, html.indexOf(from)));
-  const subCode = pick("  let _anSub = 'okrs';", "  // ───────── OKRs, KPIs, and Metrics");
+  const subCode = pick("  let _anSub = 'okrs';", "  // ───────── Leads by Campaign");
   const restoreCode = pick("  function restoreTab() {", "  // Links from the ending-soon");
   const cls = () => { const set = new Set(); return { toggle: (c, on) => (on ? set.add(c) : set.delete(c)), contains: (c) => set.has(c), set }; };
   const panel = { classList: cls() }; panel.classList.set.add("active");
   const mkBtn = (sub) => ({ dataset: { sub }, classList: cls(), attrs: {}, setAttribute(k, v) { this.attrs[k] = v; } });
-  const subBtns = [mkBtn("okrs"), mkBtn("data")];
+  const subBtns = [mkBtn("okrs"), mkBtn("data"), mkBtn("leads")];
   const calls = []; const hashes = [];
   let clicked = null;
   const tabBtn = { dataset: { tab: "analytics" }, click() { clicked = "analytics"; } };
@@ -375,7 +382,8 @@ test("Site OKRs & Analytics: sub-tab switching, deep links and lazy loads behave
   const history = { replaceState: (a, b, h) => hashes.push(h) };
   const env = { document, location, history, toast: () => {},
     withPanelLoading: (tabs, fn) => { calls.push("panel:" + tabs.join()); return fn(); },
-    loadMetrics: async () => { calls.push("metrics"); }, loadTraffic: async () => { calls.push("traffic"); } };
+    loadMetrics: async () => { calls.push("metrics"); }, loadTraffic: async () => { calls.push("traffic"); },
+    loadLeadsByCampaign: async () => { calls.push("leads"); } };
   const run = new Function(...Object.keys(env), subCode + restoreCode + "\nreturn { showAnalyticsSub, loadAnalyticsSub, openAnalyticsData, restoreTab, get sub() { return _anSub; }, set sub(v) { _anSub = v; } };");
   const api = run(...Object.values(env));
   // Default sub-tab is OKRs, KPIs, and Metrics.
@@ -393,8 +401,18 @@ test("Site OKRs & Analytics: sub-tab switching, deep links and lazy loads behave
     api.showAnalyticsSub("okrs");
     api.showAnalyticsSub("data");
     assert.deepEqual(calls.filter((c) => c === "metrics" || c === "traffic"), ["metrics", "traffic"]);
+    // Leads by Campaign: its own class and address, loaded once.
+    api.showAnalyticsSub("leads");
+    assert.ok(panel.classList.contains("sub-leads") && !panel.classList.contains("sub-okrs"));
+    assert.equal(subBtns[2].attrs["aria-selected"], "true");
+    assert.equal(hashes.at(-1), "#leads");
+  }).then(() => {
+    api.showAnalyticsSub("okrs");
+    assert.ok(!panel.classList.contains("sub-leads"));
+    api.showAnalyticsSub("leads");
+    assert.deepEqual(calls.filter((c) => c === "leads"), ["leads"]);
     // Deep links.
-    for (const [hash, sub] of [["#metrics", "okrs"], ["#okrs", "okrs"], ["#analytics", "data"]]) {
+    for (const [hash, sub] of [["#metrics", "okrs"], ["#okrs", "okrs"], ["#analytics", "data"], ["#leads", "leads"], ["#leads-by-campaign", "leads"]]) {
       clicked = null; location.hash = hash; api.sub = sub === "okrs" ? "data" : "okrs";
       api.restoreTab();
       assert.equal(clicked, "analytics", hash);

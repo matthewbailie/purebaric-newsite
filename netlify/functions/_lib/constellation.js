@@ -153,20 +153,24 @@ const hasTag = (c, t) => Array.isArray(c.tags) && c.tags.some((x) => String(x).t
 const isPartialBooking = (b) => b.status === "lead" || b.bookingMode === "lead";
 const hasLeadSource = (r) => !!(r.leadSource && typeof r.leadSource === "object" && Object.values(r.leadSource).some(Boolean));
 
-// Every record that counts toward a real lead, normalized. Internal/TEST rows are dropped here.
-function leadRecords({ bookings = [], waitlist = [], customers = [], contacts = [] }) {
+// Every record that counts toward a real lead, normalized. Internal/TEST rows are dropped here unless
+// keepInternal is set (then each carries isInternal). `raw` is the stored record, for server-side grouping
+// only (_lib/campaign-leads.js); it never goes into a report payload.
+function leadRecords({ bookings = [], waitlist = [], customers = [], contacts = [] }, { keepInternal = false } = {}) {
   const out = [];
   for (const b of bookings) {
     if (isPartialBooking(b)) continue;
-    out.push({ kind: "booking", id: b.id, at: b.createdAt, email: b.email, phone: b.phone, name: [b.firstName, b.lastName].filter(Boolean).join(" "), firstName: b.firstName, lastName: b.lastName, internal: b.internal, outOfArea: !!b.outOfArea, sourced: hasLeadSource(b) });
+    out.push({ kind: "booking", id: b.id, at: b.createdAt, email: b.email, phone: b.phone, name: [b.firstName, b.lastName].filter(Boolean).join(" "), firstName: b.firstName, lastName: b.lastName, internal: b.internal, outOfArea: !!b.outOfArea, sourced: hasLeadSource(b), raw: b });
   }
-  for (const w of waitlist) out.push({ kind: "waitlist", id: w.id, at: w.createdAt, email: w.email, phone: w.phone, name: w.name, internal: w.internal, outOfArea: w.category === "out-of-area", sourced: hasLeadSource(w) });
+  for (const w of waitlist) out.push({ kind: "waitlist", id: w.id, at: w.createdAt, email: w.email, phone: w.phone, name: w.name, internal: w.internal, outOfArea: w.category === "out-of-area", sourced: hasLeadSource(w), raw: w });
   for (const c of customers) {
     if (!hasTag(c, "lead")) continue;
-    out.push({ kind: "customer", id: c.id, at: c.createdAt, email: c.email, phone: c.phone, name: c.name, internal: c.internal, outOfArea: hasTag(c, "out-of-area"), sourced: hasLeadSource(c) || (c.tags || []).some((t) => /^source-/i.test(String(t))) });
+    out.push({ kind: "customer", id: c.id, at: c.createdAt, email: c.email, phone: c.phone, name: c.name, internal: c.internal, outOfArea: hasTag(c, "out-of-area"), sourced: hasLeadSource(c) || (c.tags || []).some((t) => /^source-/i.test(String(t))), raw: c });
   }
-  for (const m of contacts) out.push({ kind: "contact", id: m.id, at: m.createdAt, email: m.email, phone: m.phone, name: m.name, internal: m.internal, outOfArea: false, sourced: hasLeadSource(m) });
-  return out.filter((r) => r.at && !isInternal(r));
+  for (const m of contacts) out.push({ kind: "contact", id: m.id, at: m.createdAt, email: m.email, phone: m.phone, name: m.name, internal: m.internal, outOfArea: false, sourced: hasLeadSource(m), raw: m });
+  const dated = out.filter((r) => r.at);
+  if (keepInternal) return dated.map((r) => ({ ...r, isInternal: isInternal(r) }));
+  return dated.filter((r) => !isInternal(r));
 }
 
 // One person = one lead. First touch (earliest record) wins; out-of-area if any record says so.
@@ -180,6 +184,27 @@ function dedupeLeads(records) {
     if (r.at < cur.firstAt) { cur.firstAt = r.at; cur.firstSourced = r.sourced; }
   }
   return [...byKey.values()].map((l) => ({ ...l, firstDay: mtDayOfMs(Date.parse(l.firstAt)) }));
+}
+
+// Earliest non-comp (livemode when required) subscription start per Stripe customer email, in epoch ms.
+function firstPaidStartByEmail(subs, cfg) {
+  const out = new Map();
+  for (const s of subs || []) {
+    if ((cfg.requireLivemode && s.livemode !== true) || isComp(s)) continue;
+    const e = normEmail(s.customer && typeof s.customer === "object" ? s.customer.email : "");
+    if (!e) continue;
+    const ms = (s.start_date || s.created) * 1000;
+    if (!out.has(e) || ms < out.get(e)) out.set(e, ms);
+  }
+  return out;
+}
+// Lead → rental: the lead's email started a paying subscription from a day before first touch to
+// leadToRentalDays (30) after it. Matched on the server only.
+function reachedRental(lead, startsByEmail, cfg) {
+  if (!lead.key.startsWith("e:")) return false;
+  const ms = startsByEmail.get(lead.key.slice(2));
+  const first = Date.parse(lead.firstAt);
+  return ms != null && ms >= first - DAY_MS && ms <= first + (cfg.leadToRentalDays || 30) * DAY_MS;
 }
 
 const inPeriod = (day, b) => day >= b.start && day <= b.end;
@@ -290,20 +315,8 @@ function buildReport(input) {
   // started a paying subscription (matched on the Stripe customer's email) within 30 days of first touch.
   const cohortFrom = addDays(asOfDay, -((cfg.leadToRentalDays || 30) - 1));
   const cohort = leads.filter((l) => l.firstDay >= cohortFrom && l.firstDay <= asOfDay);
-  const subStartsByEmail = new Map();
-  for (const s of subs) {
-    if ((cfg.requireLivemode && s.livemode !== true) || isComp(s)) continue;
-    const e = normEmail(s.customer && typeof s.customer === "object" ? s.customer.email : "");
-    if (!e) continue;
-    const ms = (s.start_date || s.created) * 1000;
-    if (!subStartsByEmail.has(e) || ms < subStartsByEmail.get(e)) subStartsByEmail.set(e, ms);
-  }
-  const converted = cohort.filter((l) => {
-    if (!l.key.startsWith("e:")) return false;
-    const ms = subStartsByEmail.get(l.key.slice(2));
-    const first = Date.parse(l.firstAt);
-    return ms != null && ms >= first - DAY_MS && ms <= first + (cfg.leadToRentalDays || 30) * DAY_MS;
-  }).length;
+  const subStartsByEmail = firstPaidStartByEmail(subs, cfg);
+  const converted = cohort.filter((l) => reachedRental(l, subStartsByEmail, cfg)).length;
 
   // Portal term ends × Stripe rates
   const subById = new Map(subs.map((s) => [s.id, s]));
@@ -433,6 +446,6 @@ module.exports = {
   PERIODS, STATUS_LABEL,
   mtDayOfMs, mtMidnightMs, addDays, periodBounds, asOfMs,
   monthlyRate, payingAt, stripeSnapshot, newPaidStarts,
-  personKey, leadRecords, dedupeLeads,
+  personKey, leadRecords, dedupeLeads, isPartialBooking, isInternal, hasTag, firstPaidStartByEmail, reachedRental,
   deadlineStatus, flowStatus, loadConfig, buildReport, formatMt, lastUpdated,
 };
