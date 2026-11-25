@@ -149,7 +149,14 @@ test("(4) GA4 lag on Leads by Campaign: fetchAdsCost stops at yesterday; today's
     nowMs: NOW, from, to: TO, config: cfg(), liveSpend: live });
   const grp = rep({ google: { ok: true, costTo: "2026-11-24", byCampaign: { "Utah Search": 30 } }, meta: { ok: true, byCampaign: { "H-13 home": 7 } } }).groups;
   const gg = grp.find((x) => x.campaignId === "cmp_g");
-  assert.deepEqual([gg.spend, gg.spendDisplay, gg.spendStatic], [34, "$30.00 (live from Google Ads) + $4.00 (1 day entered)", true]);
+  assert.deepEqual([gg.spend, gg.spendDisplay, gg.spendStatic], [34, "$30.00 (live from Google Ads) + $4.00 (entered by hand for 1 day)", true]);
+  assert.equal(C.handDays(1), "(entered by hand for 1 day)"); assert.equal(C.handDays(2), "(entered by hand for 2 days)");
+  // plural: live through Nov 22 (a two-day lag) + hand entries on Nov 23 and 25 → same wording as the OKRs line
+  const two = { ...row, spend: [{ day: "2026-11-23", amount: 2, enteredAt: "2026-11-23T17:00:00Z" }, { day: TO, amount: 4, enteredAt: "2026-11-25T17:00:00Z" }] };
+  const pl = L.buildCampaignReport({ bookings: [], waitlist: [], customers: [], contacts: [], campaigns: [two], subs: [], stripe: { configured: false }, nowMs: NOW, from: FROM, to: TO, config: cfg(),
+    liveSpend: { google: { ok: true, costTo: "2026-11-22", byCampaign: { "Utah Search": 30 } } } }).groups.find((x) => x.campaignId === "cmp_g");
+  assert.deepEqual([pl.spend, pl.spendDisplay], [36, "$30.00 (live from Google Ads) + $6.00 (entered by hand for 2 days)"]);
+  assert.doesNotMatch(pl.spendDisplay, /days entered/);
   assert.equal(grp.find((x) => x.campaignId === "cmp_m").spendDisplay, "$7.00 (live from Meta)");
   const day = rep({ google: todayOnly, meta: { ok: true, byCampaign: { "H-13 home": 0 } } }, TO).groups;
   assert.equal(day.find((x) => x.campaignId === "cmp_g").spendDisplay, "$4.00 (1 day entered)");

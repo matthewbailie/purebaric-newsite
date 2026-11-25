@@ -296,8 +296,11 @@ function periodSpend({ ga, meta, campaigns, from, to }) {
     static: handPart(google) || handPart(fb),
     lastUpdatedAt: S.latest(handPart(google) ? google.lastUpdatedAt : null, handPart(fb) ? fb.lastUpdatedAt : null) };
 }
+// "(entered by hand for 1 day)" / "(entered by hand for N days)": shared by the OKRs spend line and Leads by Campaign.
+const handDays = (n) => `(entered by hand for ${n === 1 ? "1 day" : n + " days"})`;
+
 function spendLine(spend, ga, meta) {
-  const days = (n) => `(entered by hand for ${n === 1 ? "1 day" : n + " days"})`;
+  const days = handDays;
   const part = (name, p, liveFrom) => {
     if (p.unknown) return `${name} (no spend entered yet)`;
     if (p.live) return `${name} ${usd(p.amount - (p.extra ? p.extra.amount : 0))} (live from ${liveFrom})${p.extra ? ` + ${usd(p.extra.amount)} ${days(p.extra.days)}` : ""}`;
@@ -572,5 +575,5 @@ module.exports = {
   monthlyRate, payingAt, stripeSnapshot, newPaidStarts,
   personKey, leadRecords, dedupeLeads, isPartialBooking, isInternal, hasTag, firstPaidStartByEmail, reachedRental,
   deadlineStatus, flowStatus, loadConfig, buildReport, formatMt, lastUpdated,
-  manualSpend, liveAmount, platformSpend, periodSpend, spendLine, reportRange,
+  manualSpend, liveAmount, platformSpend, periodSpend, spendLine, handDays, reportRange,
 };

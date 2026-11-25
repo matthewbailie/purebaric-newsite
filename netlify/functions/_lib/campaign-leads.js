@@ -369,7 +369,7 @@ function buildCampaignReport(input) {
       // Days after the live read's last day (today, for GA4) use the hand entries, when there are any.
       const extra = liveSpend.costTo && liveSpend.costTo < toDay && row.spendSource === "manual" ? spendInRange(row, C.addDays(liveSpend.costTo, 1), toDay) : null;
       spend = money(liveSpend.amount + (extra ? extra.amount : 0));
-      spendDisplay = `${usd(liveSpend.amount)} (live from ${liveSpend.from})` + (extra ? ` + ${usd(extra.amount)} (${extra.days} day${extra.days === 1 ? "" : "s"} entered)` : "");
+      spendDisplay = `${usd(liveSpend.amount)} (live from ${liveSpend.from})` + (extra ? ` + ${usd(extra.amount)} ${C.handDays(extra.days)}` : "");
       if (extra) { spendStatic = true; spendUpdated = S.stamp(extra.lastEnteredAt); }
       if (g.realLeads >= 1) { cpl = money(spend / g.realLeads); cplDisplay = `${usd(cpl)} (${g.realLeads === 1 ? "1 real lead" : g.realLeads + " real leads"})`; }
       else cplDisplay = "No real leads yet";
