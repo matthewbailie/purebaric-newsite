@@ -187,8 +187,7 @@ test("payloads never include name, email, phone or ZIP values", () => {
   assert.equal(start.first_field, "customer_email");
 });
 
-test("book.html date-validation string is unchanged (owned by the step-1 rework)", () => {
-  assert.equal((bookHtml.match(/Please pick a delivery date on the calendar\./g) || []).length, 2);
-  // The signed N7 wording must not be introduced on this branch.
-  assert.doesNotMatch(bookHtml, /Please pick a delivery date\.(?! on the calendar)/);
+test("book.html uses the signed N7 date-validation string", () => {
+  assert.equal((bookHtml.match(/Please pick a delivery date on the calendar\./g) || []).length, 0);
+  assert.match(bookHtml, /Please pick a delivery date\./);
 });

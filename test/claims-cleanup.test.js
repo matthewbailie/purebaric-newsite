@@ -157,8 +157,9 @@ test("signed /book step-1 strings and final button in every mode", () => {
   assert.doesNotMatch(book, /Book chamber/);
   assert.doesNotMatch(book, /Secure my \$200 off/);
   assert.doesNotMatch(book, /leadBtn'\)\.textContent='Continue →'/);
-  // Date-validation copy is owned by the step-1 rework branch; leave it untouched.
-  assert.equal((book.match(/Please pick a delivery date on the calendar\./g) || []).length, 2);
+  // N7, signed by the Proof-reader for the step-1 rework (cut "on the calendar").
+  assert.equal((book.match(/Please pick a delivery date on the calendar\./g) || []).length, 0);
+  assert.match(book, /Please pick a delivery date\./);
 });
 
 

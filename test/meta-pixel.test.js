@@ -38,10 +38,13 @@ test("step 1 is InitiateCheckout; the completed request is the only Lead, with v
   assert.match(book, /var leadValue=BIZ\?rb:r;/);
   // generate_lead fires on step-2 success only.
   assert.equal((book.match(/'generate_lead'/g) || []).length, 1);
-  const outOfArea = book.slice(book.indexOf("j&&j.outOfArea"), book.indexOf("j.success||j.ok"));
+  const outOfArea = book.slice(book.indexOf("if(j.outOfArea)"), book.indexOf("// Measurement: a step-1 save is a PARTIAL lead"));
   assert.doesNotMatch(outOfArea, /trackPurebaricMeta/);
-  assert.equal((book.match(/trackPurebaricMeta/g) || []).length, 3);
+  assert.doesNotMatch(outOfArea, /booking_step1_save/);
+  // InitiateCheckout, Lead, CompleteRegistration, and Subscribe (out-of-area waitlist).
+  assert.equal((book.match(/trackPurebaricMeta/g) || []).length, 4);
   assert.equal((book.match(/trackPurebaricMeta\?\.\('Lead'/g) || []).length, 1);
+  assert.equal((book.match(/trackPurebaricMeta\?\.\('Subscribe'/g) || []).length, 1);
 });
 
 test("waitlist and promo sign-ups are Subscribe, never Lead", () => {
@@ -56,5 +59,5 @@ test("every lead form sends the first touch and the internal flag with the submi
   for (const page of ["book.html", "waitlist.html", "contact.html", "index.html"]) {
     assert.match(read(page), /window\.appendPurebaricLeadSource\(/, page);
   }
-  assert.equal((book.match(/appendPurebaricLeadSource\(data/g) || []).length, 2, "step 1 and step 2");
+  assert.equal((book.match(/appendPurebaricLeadSource\(/g) || []).length, 3, "step 1, waitlist join, and step 2");
 });

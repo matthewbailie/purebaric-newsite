@@ -97,6 +97,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .total{display:flex;justify-content:space-between;font-weight:700;font-size:16px;border-top:1px solid var(--line);margin-top:16px;padding-top:16px}
 .fine{font-size:12px;color:var(--muted);text-align:center;margin-top:12px}
 .msum{display:none}
+.step-label{font-size:13px;font-weight:600;color:var(--muted);margin:0 0 6px}
+html:not(.bf-on) #s1sub{display:none}
+#leadBtn[hidden],#waitlistBtn[hidden],.frm .btn[hidden],#step1wrap[hidden]{display:none!important}
 /* After a successful submit: hide the summary + details form, keep the received
    message and "What happens next". Applies at every breakpoint. */
 #reserveSection.submitted .book-side{display:none}
@@ -179,26 +182,54 @@ body.biz.bookmode .slider-block{display:block!important}
 
       <div class="book-main">
         <div class="result" id="resResult" role="status" aria-live="polite"></div>
-        <form id="leadForm" class="frm" novalidate>
+        <div id="step1wrap">
         <div class="rental-toggle" role="group" aria-label="Rental type">
           <button type="button" data-rt="home">Home</button>
           <button type="button" data-rt="business">Business</button>
         </div>
+        <div class="msum"><div><span class="mp" id="mpr">$579</span><small> /mo</small> <span class="mterm">· <span id="mmo">4 months</span></span></div><a href="#" onclick="document.getElementById('mo').scrollIntoView({block:'center'});return false;">Edit ↓</a></div>
+        <form id="leadForm" class="frm" novalidate>
         <div class="biz-banner" id="bizBanner"><strong>Business rental request.</strong> For a chamber placed at your gym, studio, salon, or clinic: from $979 a month per chamber<span class="bf-off"> plus a one-time $200 fee for staff training and initial supplies</span>. <span class="bf-only">Black Friday: $200 off your first month and the one-time $200 training and supplies fee waived when you book by Friday, Nov 27. </span>Longer rentals cost less per month: 5% off from 3 months, 15% from 6, 20% at 12. We will reply within one business day to talk through your space. Renting for your home instead? <a href="/book">Switch to a home rental</a>.</div>
         <input type="hidden" id="rentalType" name="rental_type" value="residential">
 
-        <div class="msum"><div><span class="mp" id="mpr">$579</span><small> /mo</small> <span class="mterm">· <span id="mmo">4 months</span></span></div><a href="#" onclick="document.getElementById('mo').scrollIntoView({block:'center'});return false;">Edit ↓</a></div>
-
         <div class="section-head" style="margin-bottom:18px">
-          <p class="step-progress">Step 1 of 2</p>
+          <p class="step-label step-progress" id="s1label">Step 1 of 2</p>
           <h2 style="font-size:22px"><span class="bf-only">Secure your $200 off</span><span class="bf-off">Start your booking</span></h2>
-          <p>Check your ZIP and pick a delivery date, then tell us who we are delivering to.<span class="bf-only"> Book by Friday, Nov 27 to save $200 on your first month.</span></p>
+          <p id="s1sub"><span class="bf-only"> Book by Friday, Nov 27 to save $200 on your first month.</span></p>
         </div>
 
         <p hidden><label>Do not fill this out <input name="bot-field" id="botField" tabindex="-1" autocomplete="off"></label></p>
 
         <div class="fg">
           <label for="zip">Delivery ZIP <span class="req">*</span></label><input type="text" id="zip" name="zip_code" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="Enter your ZIP code" required><div id="zipNote" class="zipnote" hidden></div>
+        </div>
+        <div class="row2">
+          <div class="fg"><label for="cfn">First name <span class="req">*</span></label><input type="text" id="cfn" name="first-name" autocomplete="given-name" required></div>
+          <div class="fg"><label for="cln">Last name <span class="req">*</span></label><input type="text" id="cln" name="last-name" autocomplete="family-name" required></div>
+        </div>
+        <div class="row2">
+          <div class="fg"><label for="ce">Email <span class="req">*</span></label><input type="email" id="ce" name="customer_email" autocomplete="email" required><div class="micro">Only used to coordinate your delivery.</div></div>
+          <div class="fg"><label for="cp">Phone <span class="req">*</span></label><input type="tel" id="cp" name="customer_phone" autocomplete="tel" required><div class="micro">We confirm your delivery time by text or call.</div></div>
+        </div>
+        <button type="submit" class="btn btn-primary submit" id="leadBtn">Save and continue →</button>
+        <button type="button" class="btn btn-primary submit" id="waitlistBtn" hidden>Join the waitlist</button>
+
+        <div class="trust">
+          <span><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Your details stay private</span>
+          <span><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Free to submit a request</span>
+          <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Reply within one business day</span>
+        </div>
+        </form>
+        </div>
+        <form id="resForm" class="frm" novalidate hidden>
+        <div class="section-head" id="s2head" style="margin-bottom:18px">
+          <h2 style="font-size:22px">Step 2 of 2</h2>
+          <p id="s2sum">Add any notes for our delivery team and confirm below.</p>
+        </div>
+        <input type="hidden" id="leadId" value="">
+        <div class="row2" id="addrRow">
+          <div class="fg"><label for="cstreet">Street address <span class="req">*</span></label><input type="text" id="cstreet" name="street-address" autocomplete="address-line1" maxlength="120" required></div>
+          <div class="fg"><label for="ccity">City <span class="req">*</span></label><input type="text" id="ccity" name="city" autocomplete="address-level2" maxlength="60" required></div>
         </div>
         <div class="fg" id="dateReqRow"><label for="cdate">Preferred start date</label><input type="date" id="cdate" name="preferred_date"></div>
         <div class="fg" id="dateBookRow" hidden>
@@ -208,38 +239,12 @@ body.biz.bookmode .slider-block{display:block!important}
           <input type="hidden" id="bookDate" value="">
           <div class="dnote" id="dnote"><strong>We will text or call to confirm the exact delivery time.</strong></div>
         </div>
-        <div class="row2" id="addrRow">
-          <div class="fg"><label for="cstreet">Street address <span class="req">*</span></label><input type="text" id="cstreet" name="street-address" autocomplete="address-line1" maxlength="120" required></div>
-          <div class="fg"><label for="ccity">City <span class="req">*</span></label><input type="text" id="ccity" name="city" autocomplete="address-level2" maxlength="60" required></div>
-        </div>
         <div class="fg" id="bizNameRow"><label for="cbiz">Business name <span class="req">*</span></label><input type="text" id="cbiz" name="business_name" autocomplete="organization" maxlength="120"></div>
-        <div class="row2">
-          <div class="fg"><label for="cfn">First name <span class="req">*</span></label><input type="text" id="cfn" name="first-name" autocomplete="given-name" required></div>
-          <div class="fg"><label for="cln">Last name <span class="req">*</span></label><input type="text" id="cln" name="last-name" autocomplete="family-name" required></div>
-        </div>
-        <div class="row2">
-          <div class="fg"><label for="ce">Email <span class="req">*</span></label><input type="email" id="ce" name="customer_email" autocomplete="email" required><div class="micro">Only used to coordinate your delivery.</div></div>
-          <div class="fg"><label for="cp">Phone <span class="req">*</span></label><input type="tel" id="cp" name="customer_phone" autocomplete="tel" required><div class="micro">We confirm your delivery time by text or call.</div></div>
-        </div>
         <div class="row2">
           <div class="fg"><label for="cheard">How did you first hear about us? <span class="micro" style="display:inline">(optional)</span></label><select id="cheard" name="heard_about"><option value="">Choose one</option><option>Facebook or Instagram</option><option>Facebook Marketplace</option><option>Google search</option><option>Google Maps</option><option>Friend or family</option><option>Gym, studio, clinic or salon</option><option>Other</option></select></div>
           <div class="fg"><label for="ctype">Which best describes you? <span class="micro" style="display:inline">(optional)</span></label><select id="ctype" name="customer_type"><option value="">Choose one</option><option value="home">Home user</option><option value="athlete">Athlete</option><option value="gym">Gym</option><option value="clinic">Clinic</option><option value="salon">Salon</option><option value="other">Other</option></select></div>
         </div>
         <div class="fg"><label for="cuse">What would you mainly use it for? <span class="micro" style="display:inline">(optional)</span></label><select id="cuse" name="use_case"><option value="">Choose one</option><option value="recovery">After workouts or activity</option><option value="wellness">General wellness and relaxation</option><option value="performance">Part of my training routine</option><option value="business_amenity">An amenity for my business</option><option value="other">Other</option></select></div>
-        <button type="submit" class="btn btn-primary submit" id="leadBtn">Save and continue →</button>
-
-        <div class="trust">
-          <span><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Your details stay private</span>
-          <span><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Free to submit a request</span>
-          <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Reply within one business day</span>
-        </div>
-        </form>
-        <form id="resForm" class="frm" novalidate hidden>
-        <div class="section-head" style="margin-bottom:18px">
-          <h2 style="font-size:22px">Step 2 of 2</h2>
-          <p id="s2sum">Add any notes for our delivery team and confirm below.</p>
-        </div>
-        <input type="hidden" id="leadId" value="">
         <div class="fg"><label for="cnotes">Notes (optional)</label><textarea id="cnotes" name="notes" placeholder="Ground floor setup, stairs, morning delivery preference..."></textarea></div>
 
         <div class="screen">
@@ -358,15 +363,25 @@ function recalc(){
 var PB_AREA={prefixes:["840","841","844"],zips:["84201","84244","84601","84602","84603","84604","84605","84606","84626","84633","84651","84653","84660","84663","84664","84050","84018","84648","84645","84628","84639","84621","84623","84627","84629","84630","84642","84647","84667","84622","84632","84634","84643","84646","84662","84665"]};
 function servedZip(z){z=String(z||'').trim();if(!/^\d{5}$/.test(z))return false;for(var i=0;i<PB_AREA.prefixes.length;i++){if(z.indexOf(PB_AREA.prefixes[i])===0)return true;}return PB_AREA.zips.indexOf(z)>=0;}
 fetch('/api/service-area').then(function(r){return r.json();}).then(function(j){if(j&&(j.prefixes||j.zips)){PB_AREA={prefixes:j.prefixes||[],zips:j.zips||[]};if(document.getElementById('zip').value)checkZip();}}).catch(function(){});
+function setAreaMode(inArea,z){
+  var n=document.getElementById('zipNote'),leadBtn=document.getElementById('leadBtn'),waitBtn=document.getElementById('waitlistBtn');
+  if(inArea){
+    n.hidden=false;n.className='zipnote ok';n.textContent='✓ We deliver to '+z+'.';
+    if(leadBtn)leadBtn.hidden=false;if(waitBtn)waitBtn.hidden=true;
+  }else{
+    n.hidden=false;n.className='zipnote warn';n.textContent="We don't deliver to "+z+" yet.";
+    if(leadBtn)leadBtn.hidden=true;if(waitBtn)waitBtn.hidden=false;
+  }
+}
 function checkZip(){
   var z=document.getElementById('zip').value.trim();var n=document.getElementById('zipNote');
-  if(!/^\d{5}$/.test(z)){n.hidden=true;return;}
-  if(servedZip(z)){n.hidden=false;n.className='zipnote ok';n.textContent='✓ We deliver to '+z+'.';}
-  else{n.hidden=false;n.className='zipnote warn';n.textContent=z+' is outside our current delivery area. You can still submit and our team will reach out if we can help.';}
+  var leadBtn=document.getElementById('leadBtn'),waitBtn=document.getElementById('waitlistBtn');
+  if(!/^\d{5}$/.test(z)){n.hidden=true;if(leadBtn)leadBtn.hidden=false;if(waitBtn)waitBtn.hidden=true;return;}
+  setAreaMode(servedZip(z),z);
 }
 document.getElementById('zip').addEventListener('input',checkZip);
 
-/* analytics: plan choice, service-area result, form start (no PII) */
+/* analytics: plan choice, service-area result, form start (no PII). Event contract (OPT Nov 25). */
 var areaFired=false,planFired=false,dateFired=false;
 document.getElementById('zip').addEventListener('change',function(){var z=this.value.trim();if(!/^\d{5}$/.test(z))return;areaFired=true;var inArea=servedZip(z);window.trackPurebaricEvent?.('service_area_check',{result:inArea?'eligible':'unsupported',in_area:!!inArea,rental_months:+document.getElementById('mo').value,rental_type:document.getElementById('rentalType').value||'residential'});});
 document.getElementById('mo').addEventListener('change',function(){var mm=+this.value,rr=rate(mm);planFired=true;window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:mm,monthly_rate:rr,estimated_total:rr*mm,currency:'USD',rental_type:document.getElementById('rentalType').value||'residential'});});
@@ -374,7 +389,6 @@ document.getElementById('mo').addEventListener('change',function(){var mm=+this.
 function pbFunnel(o){return window.PBMetrics&&window.PBMetrics.funnelParams?window.PBMetrics.funnelParams(o):o;}
 // v2 booking events (O&P contract): start/abandon/step1_save + in_area + pbtest. See book-funnel-events.js.
 if(window.PBBookFunnel)window.PBBookFunnel.install(window,document);
-
 /* carry over homepage selection */
 (function(){
   var q=new URLSearchParams(location.search);
@@ -488,10 +502,8 @@ function enterBookMode(j){
   if(BIZ){ eb.textContent='Business booking'; h1.textContent='Book a chamber for your business'; hp.textContent='Choose the chamber, your rental length, and a delivery date from our calendar. From $979 a month per chamber'+(BF?'. Black Friday: $200 off your first month and the one-time $200 training and supplies fee waived':' plus a one-time $200 fee for staff training and initial supplies')+'; longer rentals save up to 20%. There is no charge today; we text or call to confirm the delivery time.'; }
   else { eb.textContent='Book a chamber'; h1.textContent='Book your chamber'; hp.textContent='Choose your chamber, rental length, and a delivery date from our calendar. There is no charge today; we text or call to confirm the exact delivery time.'; }
   var lbl=document.querySelector('.book-side-label'); if(lbl)lbl.textContent=BIZ?'Your business booking':'Your booking';
-  var head=document.querySelector('#leadForm .section-head p'); if(head)head.innerHTML='Check your ZIP and pick a delivery date, then tell us who we are delivering to.'+(BF?' Book by Friday, Nov 27 to save $200 on your first month.':'');
   document.querySelectorAll('.trust span').forEach(function(sp){ if(/Reply within one business day/.test(sp.textContent)) sp.remove(); });
-  document.getElementById('submitBtn').textContent='Request reservation →';
-  var fine=document.querySelector('.book .fine'); if(fine)fine.textContent=BIZ?bizFeeText()+' · no charge until delivery day · we confirm the delivery time by text or call':'No charge until delivery day · we confirm the delivery time by text or call · cancel free up to 7 days before delivery';
+  document.getElementById('submitBtn').textContent='Request reservation →';  var fine=document.querySelector('.book .fine'); if(fine)fine.textContent=BIZ?bizFeeText()+' · no charge until delivery day · we confirm the delivery time by text or call':'No charge until delivery day · we confirm the delivery time by text or call · cancel free up to 7 days before delivery';
   var note=document.getElementById('dnote'); if(note&&j.deliveryNote)note.innerHTML='<strong>'+j.deliveryNote.replace(/</g,'&lt;')+'</strong>';
   if(j.styles&&j.styles.length){
     window.__pbSetChamberOptions(j.styles.map(function(t){ var lbl='1.5 ATA '+(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:t.status!=='available'&&t.status!=='later',soon:t.status==='soon',status:t.status,next:t.nextAvailable}; }));
@@ -507,13 +519,19 @@ function enterBookMode(j){
 }
 function fmtShort(iso){ var d=new Date(iso+'T00:00:00'); return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
 function fmtLong(iso){ var d=new Date(iso+'T00:00:00'); return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}); }
+function firstOpenCalendarMonth(dates){
+  var counts={},order=[];
+  (dates||[]).forEach(function(d){if(!d||!d.ok||!d.date)return;var ym=String(d.date).slice(0,7);if(!counts[ym])order.push(ym);counts[ym]=(counts[ym]||0)+1;});
+  for(var i=0;i<order.length;i++) if(counts[order[i]]>=5) return order[i];
+  return order[0]||null;
+}
 function applyDelivery(j){
   DELIV=j; var sel=document.getElementById('bookDate').value;
   if(sel && !(j.dates||[]).some(function(d){return d.date===sel&&d.ok;})){ document.getElementById('bookDate').value=''; sel=''; }
-  var firstOk=(j.dates||[]).filter(function(d){return d.ok;})[0];
+  var openMonth=firstOpenCalendarMonth(j.dates||[]);
   var cur=DCAL_MONTH, curHasOk=cur&&(j.dates||[]).some(function(d){return d.ok&&d.date.slice(0,7)===cur;});
-  if(!sel && firstOk && (!cur || !curHasOk)) DCAL_MONTH=firstOk.date.slice(0,7);
-  if(!DCAL_MONTH && j.dates && j.dates.length) DCAL_MONTH=j.dates[0].date.slice(0,7);
+  if(!sel && openMonth && (!cur || !curHasOk)) DCAL_MONTH=openMonth;
+  if(!DCAL_MONTH && j.dates && j.dates.length) DCAL_MONTH=openMonth||j.dates[0].date.slice(0,7);
   var note=document.getElementById('dnote');
   if(note){ var base=note.dataset.base||note.innerHTML; note.dataset.base=base;
     var lead=j.status==='later'&&j.nextAvailable?'<strong>Next available delivery: '+fmtLong(j.nextAvailable)+'.</strong> Every chamber is out until then, so the calendar starts there. ':'';
@@ -552,7 +570,7 @@ function renderDcal(){
   el.querySelector('#dcalMonth').addEventListener('change',function(){ DCAL_MONTH=this.value; renderDcal(); });
   el.querySelector('#dcalPrev').addEventListener('click',function(){shift(-1);});
   el.querySelector('#dcalNext').addEventListener('click',function(){shift(1);});
-  el.querySelectorAll('.dcal-day.ok').forEach(function(b){ b.addEventListener('click',function(){ document.getElementById('bookDate').value=b.dataset.d; renderDcal(); var r=document.getElementById('resResult'); if(r.className==='result err'){r.className='result';r.textContent='';} dateFired=true; window.trackPurebaricEvent?.('select_delivery_date',{rental_type:document.getElementById('rentalType').value||'residential'}); }); });
+  el.querySelectorAll('.dcal-day.ok').forEach(function(b){ b.addEventListener('click',function(){ document.getElementById('bookDate').value=b.dataset.d; renderDcal(); var r=document.getElementById('resResult'); if(r.className==='result err'){r.className='result';r.textContent='';} dateFired=true; window.trackPurebaricEvent?.('select_delivery_date',pbFunnel({rental_type:document.getElementById('rentalType').value||'residential'})); }); });
   var hint=el.parentElement.querySelector('.dnote'); if(hint){ if(!hint.dataset.base)hint.dataset.base=hint.innerHTML; hint.innerHTML=(sel?'<strong>Delivery on '+fmtLong(sel)+'.</strong> ':(hint.dataset.lead||''))+hint.dataset.base; }
 }
 var CACHED_MODE=null; try{CACHED_MODE=localStorage.getItem('pb_booking_mode');}catch(e){}
@@ -570,7 +588,7 @@ document.getElementById('leadForm').addEventListener('submit',async function(e){
   var fnEl=document.getElementById('cfn'),lnEl=document.getElementById('cln');
   [fnEl,lnEl].forEach(function(el){ el.setCustomValidity(el.value.trim()?'':'Please fill out this field.'); });
   if(!f.checkValidity()){f.reportValidity();return;}
-  if(window.BOOKMODE&&DELIV&&(DELIV.dates||[]).some(function(d){return d.ok;})&&!document.getElementById('bookDate').value){ res.className='result err'; res.textContent='Please pick a delivery date on the calendar.'; document.getElementById('dcal').scrollIntoView({block:'center',behavior:'smooth'}); return; }
+  if(!servedZip(document.getElementById('zip').value.trim())){ checkZip(); return; }
   _leadSubmitting=true;
   var m=+document.getElementById('mo').value;
   var data=new URLSearchParams();
@@ -586,20 +604,14 @@ document.getElementById('leadForm').addEventListener('submit',async function(e){
   data.set('customer_phone',document.getElementById('cp').value);
   data.set('zip_code',document.getElementById('zip').value);
   data.set('chamber_id',document.getElementById('ch').value);
-  // Address and date go with the lead, so the step-1 lead email shows where and when.
-  if(!BIZ){data.set('street-address',document.getElementById('cstreet').value.trim());data.set('city',document.getElementById('ccity').value.trim());}
-  var leadDate=window.BOOKMODE?document.getElementById('bookDate').value:document.getElementById('cdate').value;
-  if(leadDate)data.set('preferred_date',leadDate);
-  // Lead source: optional answers plus the visitor's first touch (utm/click ids/referrer/landing).
+  // Step 1 is contact + ZIP only; address, date and optional answers go with step 2.
+  // Lead source: the visitor's first touch (utm/click ids/referrer/landing).
   // A TEST/internal lead is flagged pb_internal=1 and switches tracking off for the session.
-  data.set('heard_about',document.getElementById('cheard').value);
-  data.set('customer_type',document.getElementById('ctype').value);data.set('use_case',document.getElementById('cuse').value);
   if(window.appendPurebaricLeadSource)window.appendPurebaricLeadSource(data,{firstName:document.getElementById('cfn').value,lastName:document.getElementById('cln').value,email:document.getElementById('ce').value});
   // Measurement: a homepage-prefilled ZIP never fires a change event and a
   // default length never fires one either, so fire them here if not yet fired.
   if(!areaFired){areaFired=true;var inArea=servedZip(document.getElementById('zip').value.trim());window.trackPurebaricEvent?.('service_area_check',{result:inArea?'eligible':'unsupported',in_area:!!inArea,rental_months:m,rental_type:document.getElementById('rentalType').value||'residential'});}
-  if(!planFired){planFired=true;var rr=BIZ?rateBiz(m):rate(m);window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:m,monthly_rate:rr,estimated_total:rr*m,currency:'USD',rental_type:document.getElementById('rentalType').value||'residential'});}
-  // Measurement: capture the anonymous GA identifiers so the backend can send the
+  if(!planFired){planFired=true;var rr=BIZ?rateBiz(m):rate(m);window.trackPurebaricEvent?.('select_rental_plan',{chamber_id:String(document.getElementById('ch').value||'soft_shell_1_5_ata'),rental_months:m,monthly_rate:rr,estimated_total:rr*m,currency:'USD',rental_type:document.getElementById('rentalType').value||'residential'});}  // Measurement: capture the anonymous GA identifiers so the backend can send the
   // server-side lead event for this lead (same pattern as the step-2 submit).
   var analyticsContext=window.getPurebaricAnalyticsContext
     ? await window.getPurebaricAnalyticsContext()
@@ -615,22 +627,23 @@ document.getElementById('leadForm').addEventListener('submit',async function(e){
      if(j&&j.lead){
        if(j._httpStatus===200&&window.PBBookFunnel)window.PBBookFunnel.step1Save(window,!j.outOfArea);
        document.getElementById('leadId').value=j.id;
+       // Out-of-area visitors join the waitlist instead of saving a lead; this branch is defensive.
+       if(j.outOfArea){
+         res.className='result warn';
+         res.textContent="We don't deliver to "+document.getElementById('zip').value.trim()+" yet.";
+         return;
+       }
        // Measurement: a step-1 save is a PARTIAL lead, so Meta gets InitiateCheckout
        // (not Lead) once per new lead; a re-submit (back button, edit) does not fire again.
        // The Lead itself fires only when step 2 completes the request.
        if(!existingLead)window.trackPurebaricMeta?.('InitiateCheckout',{content_category:document.getElementById('rentalType').value||'residential'},{eventID:j.id+':step1'});
-       if(j.outOfArea){
-         // Out-of-area is a confirmation only: no second form, no re-entry.
-         res.className='result warn';
-         res.textContent=j.message||"Thanks. We don't deliver to your area yet. We've saved your request, and we'll reach out if we're able to deliver to your area.";
-         document.getElementById('reserveSection').classList.add('submitted','hide-steps');
-         window.scrollTo({top:0,behavior:'smooth'});
-       }else{
-         f.hidden=true;
-         var s2=document.getElementById('s2sum'); if(s2&&leadDate&&window.BOOKMODE)s2.textContent='Delivery on '+fmtLong(leadDate)+'. Add any notes for our delivery team and confirm below.';
-         document.getElementById('resForm').hidden=false;
-         document.getElementById('resForm').scrollIntoView({block:'start',behavior:'smooth'});
-       }
+       window.trackPurebaricEvent?.('booking_step1_save',pbFunnel({in_area:true,def_v:2}));
+       res.className='result ok';
+       res.textContent=window.BOOKMODE?'Saved. Now pick your delivery date.':'Saved. One more step to send your request.';
+       f.hidden=true;
+       var wrap=document.getElementById('step1wrap');if(wrap)wrap.hidden=true;
+       document.getElementById('resForm').hidden=false;
+       scrollToStep2();
      }else{
        window.trackPurebaricEvent?.('booking_request_error',{error_type:'api_rejected',rental_type:document.getElementById('rentalType').value||'residential'});
        res.className='result err';
@@ -645,7 +658,54 @@ document.getElementById('leadForm').addEventListener('submit',async function(e){
    });
 });
 document.getElementById('backBtn').addEventListener('click',function(){ showStep1(); document.getElementById('leadForm').scrollIntoView({block:'start',behavior:'smooth'}); });
-function showStep1(){ document.getElementById('resForm').hidden=true; document.getElementById('leadForm').hidden=false; }
+function showStep1(){ document.getElementById('resForm').hidden=true; document.getElementById('leadForm').hidden=false; var wrap=document.getElementById('step1wrap');if(wrap)wrap.hidden=false; }
+function scrollToStep2(){
+  var target=document.getElementById('resResult')||document.getElementById('s2head')||document.getElementById('resForm');
+  var header=document.querySelector('header');
+  var offset=(header?header.getBoundingClientRect().height:0)+12;
+  var y=target.getBoundingClientRect().top+window.scrollY-offset;
+  window.scrollTo({top:Math.max(0,y),behavior:'smooth'});
+}
+var _waitlistJoining=false;
+document.getElementById('waitlistBtn').addEventListener('click',function(){
+  if(_waitlistJoining)return;
+  if(document.getElementById('botField').value)return;
+  var fnEl=document.getElementById('cfn'),lnEl=document.getElementById('cln');
+  [fnEl,lnEl].forEach(function(el){ el.setCustomValidity(el.value.trim()?'':'Please fill out this field.'); });
+  var f=document.getElementById('leadForm');
+  if(!f.checkValidity()){f.reportValidity();return;}
+  var name=(document.getElementById('cfn').value.trim()+' '+document.getElementById('cln').value.trim()).trim();
+  var phone=document.getElementById('cp').value.trim();
+  var z=document.getElementById('zip').value.trim();
+  var email=document.getElementById('ce').value.trim();
+  if(!name||!phone||!/^\d{5}$/.test(z)){f.reportValidity();return;}
+  _waitlistJoining=true;
+  var btn=document.getElementById('waitlistBtn'),res=document.getElementById('resResult');
+  var orig=btn.innerHTML;btn.disabled=true;btn.innerHTML='Joining…';
+  var awData=new URLSearchParams({name:name,phone:phone,zip:z,email:email,source:'book_page'});
+  if(window.appendPurebaricLeadSource)window.appendPurebaricLeadSource(awData,{name:name,email:email});
+  fetch('/api/area-waitlist',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:awData.toString()})
+   .then(function(resp){return resp.json().catch(function(){return {};});})
+   .then(function(j){
+     _waitlistJoining=false;btn.disabled=false;btn.innerHTML=orig;
+     if(j&&j.ok){
+       res.className='result ok';
+       res.textContent=j.message||"You're on the list. We'll reach out if we're able to deliver to your area.";
+       document.getElementById('reserveSection').classList.add('submitted','hide-steps');
+       window.trackPurebaricEvent?.('waitlist_join',pbFunnel({source:'book_page',in_area:false}));
+       window.trackPurebaricMeta?.('Subscribe',{content_category:'waitlist'});
+       window.scrollTo({top:0,behavior:'smooth'});
+     }else{
+       res.className='result err';
+       res.textContent=(j&&j.message)||'Something went wrong. Please try again, or email hello@purebaric.com.';
+     }
+   })
+   .catch(function(){
+     _waitlistJoining=false;btn.disabled=false;btn.innerHTML=orig;
+     res.className='result err';
+     res.textContent='Something went wrong. Please try again, or email hello@purebaric.com.';
+   });
+});
 
 var _submitting=false; // idempotency guard: blocks double-clicks / re-entry for one submission
 document.getElementById('resForm').addEventListener('submit',async function(e){
@@ -654,7 +714,7 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   var f=e.target,btn=document.getElementById('submitBtn'),res=document.getElementById('resResult');
   if(document.getElementById('botField').value)return;
   if(!f.checkValidity()){f.reportValidity();return;}
-  if(window.BOOKMODE&&!document.getElementById('bookDate').value){ res.className='result err'; res.textContent='Please pick a delivery date on the calendar.'; showStep1(); document.getElementById('dcal').scrollIntoView({block:'center',behavior:'smooth'}); return; }
+  if(window.BOOKMODE&&!document.getElementById('bookDate').value){ res.className='result err'; res.textContent='Please pick a delivery date.'; document.getElementById('dcal').scrollIntoView({block:'center',behavior:'smooth'}); return; }
   _submitting=true;
   var m=+document.getElementById('mo').value,r=rate(m),p=pct(m),total=r*m,save=(BASE-r)*m;
   var months=mos(m);
@@ -697,7 +757,7 @@ document.getElementById('resForm').addEventListener('submit',async function(e){
   // Measurement: a typed preferred date never fires a calendar-click event,
   // so fire the delivery-date step here if a date is present and not yet fired.
   var dateVal=window.BOOKMODE?document.getElementById('bookDate').value:document.getElementById('cdate').value;
-  if(dateVal&&!dateFired){dateFired=true;window.trackPurebaricEvent?.('select_delivery_date',{rental_type:document.getElementById('rentalType').value||'residential'});}
+  if(dateVal&&!dateFired){dateFired=true;window.trackPurebaricEvent?.('select_delivery_date',pbFunnel({rental_type:document.getElementById('rentalType').value||'residential'}));}
   fetch('/api/booking-submit',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data.toString()})
    .then(function(r){return r.json().catch(function(){return {};});})
    .then(function(j){
