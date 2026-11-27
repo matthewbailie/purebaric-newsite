@@ -621,8 +621,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   </div>
 </div>
 
+<script src="/pricing-defaults.js"></script>
 <script>
-var PB_PF={1:729,2:659,3:659,4:579,5:579,6:579,7:579,8:579,9:579,10:579,11:579,12:529};
+var PB_PF=Object.assign({},PB_PRICING_DEFAULTS.months);
 var PB_PRICING=Object.assign({},PB_PF);
 function money(n){return '$'+n.toLocaleString()}
 function rate(m){m=Math.max(1,Math.min(12,parseInt(m,10)||1));return PB_PRICING[m]||PB_PF[m];}

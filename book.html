@@ -323,8 +323,9 @@ body.biz.bookmode .slider-block{display:block!important}
 
 <script src="/warm.js"></script>
 <script src="/book-funnel-events.js"></script>
+<script src="/pricing-defaults.js"></script>
 <script>
-var PB_PF={1:729,2:659,3:659,4:579,5:579,6:579,7:579,8:579,9:579,10:579,11:579,12:529};
+var PB_PF=Object.assign({},PB_PRICING_DEFAULTS.months);
 var PB_PRICING=Object.assign({},PB_PF);
 /* Black Friday 2026 (set by the banner snippet at the top of the page; false after Friday, Nov 27) */
 var BF=!!window.PB_BF, BF_OFF=200, BIZ_FEE=200;
@@ -334,7 +335,7 @@ function money(n){return '$'+n.toLocaleString()}
 function rate(m){m=Math.max(1,Math.min(12,parseInt(m,10)||1));return PB_PRICING[m]||PB_PF[m];}
 var BASE=rate(1);
 function pct(m){return Math.round((BASE-rate(m))/BASE*100)}
-var PB_BIZ_PF={1:979,2:979,3:929,4:881,5:881,6:832,7:832,8:832,9:832,10:832,11:832,12:783};
+var PB_BIZ_PF=Object.assign({},PB_PRICING_DEFAULTS.business);
 var PB_BIZ=Object.assign({},PB_BIZ_PF);
 function rateBiz(m){m=Math.max(1,Math.min(12,parseInt(m,10)||1));return PB_BIZ[m]||PB_BIZ_PF[m];}
 var BASE_BIZ=rateBiz(1);

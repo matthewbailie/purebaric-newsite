@@ -30,18 +30,9 @@ const STORES = {
 };
 
 // Monthly rate per rental length (1-12 months). Editable in the admin (Pricing
-// tab) and read by the whole site via /api/pricing. Defaults match the historic
-// tiered rate() (1mo 729, 2-3mo 659, 4-11mo 579, 12mo 529).
-const DEFAULT_PRICING = {
-  1: 729, 2: 659, 3: 659, 4: 579, 5: 579, 6: 579,
-  7: 579, 8: 579, 9: 579, 10: 579, 11: 579, 12: 529,
-};
-
-// Business rentals: $979 base, 10% off from 3 months, 15% from 6, 20% at 12 (editable in the admin Pricing tab).
-const DEFAULT_BUSINESS_PRICING = {
-  1: 979, 2: 979, 3: 881, 4: 881, 5: 881, 6: 832,
-  7: 832, 8: 832, 9: 832, 10: 832, 11: 832, 12: 783,
-};
+// tab) and read by the whole site via /api/pricing. Fallback rates live in
+// pricing-defaults.js so pages, admin and storage share one table.
+const { months: DEFAULT_PRICING, business: DEFAULT_BUSINESS_PRICING } = require("../../../pricing-defaults.js");
 
 function newId() {
   return crypto.randomUUID();
@@ -713,7 +704,7 @@ async function updateReview(id, patch) {
 }
 
 // ───────── Pricing (settings) ─────────
-// One blob at settings/pricing: { months: { "1": 729, ... "12": 529 } }.
+// One blob at settings/pricing: { months: { "1": 729, ... "12": 529 } }. Missing months fall back to pricing-defaults.js.
 
 function normalizePricing(months) {
   const out = {};
