@@ -269,3 +269,26 @@
 **Other choices:** the campaign list stores `platform` and, for Meta, `channel`; pre-Rev 2 rows (old channel list) are read through a mapping, so nothing is migrated in the live store. Off-site source tags with no approved name (e.g. `source-waitlist-email`) count in K rather than getting an invented row name. Partial leads with no source are not shown (the footnote counts real leads only). A Bing or other search-engine referrer is "Other website: <domain>" because the only approved search name is "Google search".
 **Status:** Proposed (PR #39 on hold)
 
+## TEST/internal bookings do not hold capacity; unfinished step-1 leads view (2026-11-25)
+
+**Decision:** Book-mode holds marked TEST/internal are excluded from delivery capacity and availability (`holdsFrom` / `bookingHolds`) and from the /admin "Booked requests to convert" count. They stay visible and marked in /admin. When a stored row has no `internal` flag, `isInternalLead()` is applied to the stored name and email in memory only (no write-back). The Rental requests tab gains a filter labeled "Unfinished step-1 leads > 24h": real step-1-only partials older than 24 hours, with no later completed request on the same email, oldest first, including out-of-area. TEST/internal matches appear in a separate section and are left out of the partial-lead count. The change is read-only on Netlify Blobs.
+
+**Context:** A completed TEST booking was holding one of two free chambers, so the weekly live TEST path was paused. Retention & Ops also had no /admin view of real unfinished step-1 leads, and Optimization & Personalization needed that view's count to match the Nov 24 real-lead definition (step-1 saves excluding TEST and internal).
+
+**Alternatives considered:** Deleting or rewriting existing TEST rows in Blobs would mutate the shared live store; skipping only rows with `internal: true` would leave pre-flag TEST holds in capacity.
+
+**Status:** On `feat/test-hold-unfinished-leads`. Not deployed.
+
+## 2026-11-27 Missing spend reads show "No data yet", never a false $0
+
+**Decision:** A spend read that is missing, empty or errored never shows as $0. The admin spend cell is "No data yet", and cost per lead and CAC show "—" whenever spend is unknown. A real live $0 that the API returned for a matched campaign may still show $0. No new hand-entered spend fallback is added (Matthew does not want hand-entered spend as the answer to a bad live read). When no live source is attempted at all, the existing hand-entered path is unchanged. GA4 Google Ads cost is read only through yesterday (MT), because of the ~1-day import lag; a today-only range is unknown, not $0.
+
+**Context:** On main, `periodSpend` treated an empty `adsCost = {}` as live $0, and `liveSpendFor` gave an unmatched campaign a live $0. The false $0 is live now; dashboard v2 is still waiting on Matthew's yes.
+
+**Status:** On `release/2026-12-01`. Not deployed.
+
+## 2026-11-27 pz_check and contact_click measurement events
+
+**Decision:** Two measurement-only events ship in the Dec 1 batch, from the O&P contract `purebaric-team/opt/event-contract-pzcheck-contact-click.md`. `pz_check` fires once per homepage load in `applyHomeNow` after `decideForHome()`, whether or not it qualifies, and does not fire when `optedOut()` is true or the hero is missing; `personalization_exposure` is unchanged. `contact_click` fires from one delegated document listener on `a[href^="tel:"]` and `a[href^="sms:"]` and never blocks navigation. Both go through `trackPurebaricEvent` (GPC, DNT, opt-out, internal=1 already apply). Flagged TEST sessions add `test_traffic: 1` using the existing `pb_test` / `?pbtest=1` flag. No new storage, and no phone digits in params.
+
+**Status:** On `release/2026-12-01`. Not deployed.

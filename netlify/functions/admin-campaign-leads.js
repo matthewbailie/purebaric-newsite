@@ -23,7 +23,8 @@ async function liveSpend(campaigns, range, { env = process.env, fetchFn = fetch 
     wants("Google Ads") ? gaOkr.fetchAdsCost({ sa: gaTraffic.parseServiceAccount(env.GA4_SERVICE_ACCOUNT), propertyId: PROPERTY, from: range.from, to: range.to, fetchFn }) : null,
     wants("Meta") && metaCfg ? meta.fetchMetaSpend({ ...metaCfg, from: range.from, to: range.to, fetchFn }) : null,
   ]);
-  if (google && !google.ok) console.error("admin-campaign-leads Google Ads cost:", google.reason);
+  // A today-only range has no imported cost yet (costTo before from): expected, not an error.
+  if (google && !google.ok && !google.costTo) console.error("admin-campaign-leads Google Ads cost:", google.reason);
   if (fb && !fb.ok) console.error("admin-campaign-leads Meta:", fb.reason);
   return { google, meta: fb };
 }

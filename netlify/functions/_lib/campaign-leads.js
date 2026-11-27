@@ -147,12 +147,16 @@ function setAdsName(rows, id, name, { nowIso = new Date().toISOString() } = {}) 
 function liveSpendFor(row, live) {
   if (!row || !row.adsCampaignName || !live) return null;
   const platform = P.platformOf(row);
-  const src = platform === "Google Ads" ? live.google : platform === "Meta" ? live.meta : null;
-  if (!src || !src.ok || !src.byCampaign) return null;
+  const from = platform === "Google Ads" ? "Google Ads" : platform === "Meta" ? "Meta" : null;
+  if (!from) return null;
+  const src = platform === "Google Ads" ? live.google : live.meta;
+  // A live payload was given but this platform is missing, empty, errored or unmatched: unknown, not a live $0.
+  if (src == null || !src.ok || !src.byCampaign) return { unknown: true, from };
   const want = lc(row.adsCampaignName);
-  let amount = 0;
-  for (const [name, v] of Object.entries(src.byCampaign)) if (lc(name) === want) amount += Number(v) || 0;
-  return { amount: money(amount), from: platform === "Google Ads" ? "Google Ads" : "Meta" };
+  let amount = 0, matched = false;
+  for (const [name, v] of Object.entries(src.byCampaign)) if (lc(name) === want) { matched = true; amount += Number(v) || 0; }
+  if (!matched) return { unknown: true, from };
+  return { amount: money(amount), from };
 }
 
 // Records one day's hand-entered spend (from Demand Gen's daily check). Entering a day again replaces it.
@@ -361,7 +365,10 @@ function buildCampaignReport(input) {
     const row = g.campaignId ? rowById.get(g.campaignId) : null;
     let spend = null, spendDisplay = null, cplDisplay = null, cpl = null, spendStatic = false, spendUpdated = null;
     const liveSpend = liveSpendFor(row, input.liveSpend);
-    if (row && liveSpend) {
+    if (row && liveSpend && liveSpend.unknown) {
+      spendDisplay = "No data yet";
+      cplDisplay = "—";
+    } else if (row && liveSpend) {
       spend = liveSpend.amount; spendDisplay = `${usd(spend)} (live from ${liveSpend.from})`;
       if (g.realLeads >= 1) { cpl = money(spend / g.realLeads); cplDisplay = `${usd(cpl)} (${g.realLeads === 1 ? "1 real lead" : g.realLeads + " real leads"})`; }
       else cplDisplay = "No real leads yet";

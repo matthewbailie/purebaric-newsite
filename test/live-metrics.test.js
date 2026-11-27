@@ -170,7 +170,7 @@ test("spend switch: GA4 Ads cost and Meta replace hand-entered spend when live; 
   const live = C.periodSpend({ ga: gaOk(), meta: { ok: true, total: 50 }, campaigns: CAMPAIGNS, from: "2026-11-01", to: "2026-11-25" });
   assert.deepEqual([live.google.amount, live.meta.amount, live.total, live.static, live.lastUpdatedAt], [40, 50, 90, false, null]);
   const half = C.periodSpend({ ga: gaOk(), meta: { ok: false, configured: true }, campaigns: CAMPAIGNS, from: "2026-11-01", to: "2026-11-25" });
-  assert.equal(half.static, true); assert.equal(half.lastUpdatedAt, "2026-11-21T16:05:00.000Z");
+  assert.equal(half.google.live, true); assert.equal(half.meta.unknown, true); assert.equal(half.total, null); assert.equal(half.static, false);
 });
 
 test("CPL and CAC: static with ' *' and Last updated on hand-entered spend, live when both platforms are", () => {
@@ -355,9 +355,9 @@ test("Leads by Campaign: ad platform campaign name reads spend live; rows withou
   assert.equal(m.spendDisplay, "$9.50 (1 day entered)"); assert.equal(m.spendStatic, true);
   assert.equal(m.spendUpdated.label, "Last updated Nov 21, 2026, 4:30 PM MT");
   assert.equal(r.staticFootnote, FOOT);
-  // GA down → the Google row falls back to its hand-entered days.
+  // GA down → unknown spend ("No data yet"), not a live $0 and not a hand-entered fallback.
   const down = leadsReport({ google: { ok: false, reason: "x" } }).groups.find((x) => x.campaignId === "cmp_g");
-  assert.equal(down.spendDisplay, "$5.00 (1 day entered)"); assert.equal(down.spendStatic, true);
+  assert.equal(down.spendDisplay, "No data yet"); assert.equal(down.spend, null); assert.equal(down.cplDisplay, "—");
   // No live input at all (the existing behaviour) is unchanged.
   assert.equal(leadsReport(undefined).groups.find((x) => x.campaignId === "cmp_g").spendDisplay, "$5.00 (1 day entered)");
   // Meta live by name.

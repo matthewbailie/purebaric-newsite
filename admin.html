@@ -806,6 +806,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
           <option value="">All statuses</option>
           <option value="new">New</option>
           <option value="lead">Step 1 lead</option>
+          <option value="unfinished-step1">Unfinished step-1 leads > 24h</option>
           <option value="contacted">Contacted</option>
           <option value="approved">Approved</option>
           <option value="rejected">Rejected</option>
@@ -832,6 +833,7 @@ The Purebaric team</textarea></div>
           </div>
         </form>
       </div>
+      <p class="renter-line" id="bookingsUnfinishedSummary" hidden></p>
       <div id="bookingsList"></div>
     </section>
 
@@ -2391,7 +2393,7 @@ The Purebaric team</textarea></div>
     const maintTxt = maint.length ? `${maint.length} in maintenance${maint.some(c => c.maintenanceUntil) ? ' (back ' + maint.filter(c => c.maintenanceUntil).map(c => fmtDate(c.maintenanceUntil)).join(', ') + ')' : ''}` : 'none in maintenance';
     document.getElementById('statActiveSub').textContent = maintTxt;
     const bookMode = _deliveryCfg && _deliveryCfg.mode === 'book';
-    const scheduled = (_bookings || []).filter(b => b.bookingMode === 'book' && ['new', 'contacted', 'approved'].includes(b.status) && (b.startDate || '') >= today).length;
+    const scheduled = (_bookings || []).filter(b => b.bookingMode === 'book' && ['new', 'contacted', 'approved'].includes(b.status) && (b.startDate || '') >= today && !window.PurebaricAdminUtils.isStoredInternalLead(b)).length;
     const schedWrap = document.getElementById('statScheduledWrap');
     if (schedWrap) { schedWrap.hidden = !bookMode; document.getElementById('statScheduled').textContent = scheduled; }
     document.getElementById('statAvailable').textContent = available;
@@ -4471,7 +4473,8 @@ The Purebaric team</textarea></div>
   // ─── Bookings ───
   async function loadBookings() {
     const status = document.getElementById('bookingStatusFilter').value;
-    const qs = status ? `?status=${status}` : '';
+    const special = window.PurebaricAdminUtils.UNFINISHED_STEP1_FILTER;
+    const qs = (status && status !== special) ? `?status=${status}` : '';
     const data = await api(`/api/admin/bookings${qs}`);
     _bookings = data.bookings;
     renderBookings();
@@ -4484,10 +4487,16 @@ The Purebaric team</textarea></div>
     // a rental (or rejected, or archived) it's resolved and drops out of the list,
     // unless the owner explicitly filters to that status.
     const filter = document.getElementById('bookingStatusFilter').value;
-    const visible = filter
-      ? _bookings
-      : _bookings.filter(b => b.status !== 'converted' && b.status !== 'rejected' && b.status !== 'archived');
-    // The bulk-email button only makes sense on the archived view.
+    const unfinishedFilter = window.PurebaricAdminUtils.UNFINISHED_STEP1_FILTER;
+    const unfinished = filter === unfinishedFilter
+      ? window.PurebaricAdminUtils.unfinishedStep1Leads(_bookings || [])
+      : null;
+    const visible = unfinished
+      ? unfinished.real.concat(unfinished.internal)
+      : filter
+        ? _bookings
+        : _bookings.filter(b => b.status !== 'converted' && b.status !== 'rejected' && b.status !== 'archived');
+    // The bulk-email button only makes sense on the archived view; hide it on the unfinished view too.
     const emailBtn = document.getElementById('emailArchivedBtn');
     if (emailBtn) {
       const withEmail = visible.filter(b => b.email);
@@ -4497,10 +4506,24 @@ The Purebaric team</textarea></div>
     }
     const emailForm = document.getElementById('archivedEmailForm');
     if (emailForm && filter !== 'archived') { emailForm.classList.remove('open'); emailForm.hidden = true; }
+    const unfinishedSummary = document.getElementById('bookingsUnfinishedSummary');
+    if (unfinishedSummary) {
+      if (unfinished) {
+        unfinishedSummary.hidden = false;
+        unfinishedSummary.textContent = unfinished.count === 1
+          ? '1 unfinished step-1 lead'
+          : `${unfinished.count} unfinished step-1 leads`;
+      } else {
+        unfinishedSummary.hidden = true;
+        unfinishedSummary.textContent = '';
+      }
+    }
     if (!visible.length) {
-      list.innerHTML = `<div class="empty-state">${filter
-        ? 'No rental requests with this status.'
-        : 'No open rental requests. Converted, rejected, and archived requests are hidden — pick a status above to see them.'}</div>`;
+      list.innerHTML = `<div class="empty-state">${unfinished
+        ? 'No unfinished step-1 leads older than 24 hours.'
+        : filter
+          ? 'No rental requests with this status.'
+          : 'No open rental requests. Converted, rejected, and archived requests are hidden — pick a status above to see them.'}</div>`;
       return;
     }
     const rows = visible.map(b => {
@@ -4540,7 +4563,7 @@ The Purebaric team</textarea></div>
           ${bizBadge}
           ${outOfAreaBadge}
           ${leadBadge}
-          ${b.internal ? `<div class="renter-line"><span style="display:inline-block;background:#e6dccd;color:#2b2320;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;padding:2px 8px;border-radius:999px;">Internal / TEST · not a real lead</span></div>` : ''}
+          ${window.PurebaricAdminUtils.isStoredInternalLead(b) ? `<div class="renter-line"><span style="display:inline-block;background:#e6dccd;color:#2b2320;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;padding:2px 8px;border-radius:999px;">Internal / TEST · not a real lead</span></div>` : ''}
           ${leadSourceSummary(b) ? `<div class="renter-line">Source: ${escape(leadSourceSummary(b))}</div>` : ''}
           ${routingBadge}
           ${archivedLine}
@@ -4557,8 +4580,14 @@ The Purebaric team</textarea></div>
           </div>
         </td>
       </tr>`;
-    }).join('');
-    list.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Received</th><th>Contact</th><th>Rental request</th><th>Status</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    });
+    if (unfinished && unfinished.internal.length) {
+      const splitAt = unfinished.real.length;
+      const heading = `<tr><td colspan="5" style="background:#efe6d6;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:#2b2320;">Internal / TEST — not in the partial-lead count</td></tr>`;
+      rows.splice(splitAt, 0, heading);
+    }
+    const rowsHtml = rows.join('');
+    list.innerHTML = `<div class="table-wrap"><table class="data-table"><thead><tr><th>Received</th><th>Contact</th><th>Rental request</th><th>Status</th><th></th></tr></thead><tbody>${rowsHtml}</tbody></table></div>`;
     document.querySelectorAll('.booking-status-sel').forEach(sel => {
       sel.addEventListener('change', async (e) => {
         try {
@@ -5905,7 +5934,7 @@ The Purebaric team</textarea></div>
       ls ? row('Referrer', ls.referrer) : '',
       ls ? row('Landing page', ls.landingPath) : '',
       ls && ls.firstTouchAt ? row('First visit', new Date(ls.firstTouchAt).toLocaleString()) : '',
-      r.internal ? `<div class="modal-row"><strong>Internal / TEST</strong><div>Yes: excluded from real-lead counts and analytics</div></div>` : '',
+      window.PurebaricAdminUtils.isStoredInternalLead(r) ? `<div class="modal-row"><strong>Internal / TEST</strong><div>Yes: excluded from real-lead counts and analytics</div></div>` : '',
     ].join('');
   }
 

@@ -309,7 +309,7 @@ body.biz.bookmode .slider-block{display:block!important}
       <div class="foot-col"><h5>Company</h5><ul>
         <li><a href="/about">About</a></li><li><a href="/reviews">Reviews</a></li><li><a href="/faq">FAQ</a></li><li><a href="/contact">Contact</a></li><li><a href="/safety">Safety &amp; disclosures</a></li><li><a href="/terms">Terms</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/sms-consent">SMS Consent</a></li></ul></div>
       <div class="foot-col"><h5>Get in touch</h5><ul>
-        <li><a href="tel:+18019010873">(801) 901-0873</a></li>
+        <li><a href="tel:+18019010873" data-pb-placement="book">(801) 901-0873</a></li>
         <li><a href="mailto:hello@purebaric.com">hello@purebaric.com</a></li>
         <li class="foot-muted" style="margin-top:12px">Mon–Sat, 8:00 AM – 6:00 PM MT</li>
         <li class="foot-muted">Lehi, UT</li></ul></div>
@@ -519,7 +519,7 @@ function enterBookMode(j){
   else { eb.textContent='Book a chamber'; h1.textContent='Book your chamber'; hp.textContent='Choose your chamber, rental length, and a delivery date from our calendar. There is no charge today; we text or call to confirm the exact delivery time.'; }
   var lbl=document.querySelector('.book-side-label'); if(lbl)lbl.textContent=BIZ?'Your business booking':'Your booking';
   document.querySelectorAll('.trust span').forEach(function(sp){ if(/Reply within one business day/.test(sp.textContent)) sp.remove(); });
-  document.getElementById('submitBtn').textContent='Request reservation →';  var fine=document.querySelector('.book .fine'); if(fine)fine.textContent=BIZ?bizFeeText()+' · no charge until delivery day · we confirm the delivery time by text or call':'No charge until delivery day · we confirm the delivery time by text or call · cancel free up to 7 days before delivery';
+  document.getElementById('submitBtn').textContent='Request reservation →';  var fine=document.querySelector('.book .fine'); if(fine)fine.textContent=BIZ?bizFeeText()+' · no charge until delivery day · we confirm the delivery time by text or call':'No charge until delivery day · we confirm the delivery time by text or call · cancel free any time before delivery';
   var note=document.getElementById('dnote'); if(note&&j.deliveryNote)note.innerHTML='<strong>'+j.deliveryNote.replace(/</g,'&lt;')+'</strong>';
   if(j.styles&&j.styles.length){
     window.__pbSetChamberOptions(j.styles.map(function(t){ var lbl='1.5 ATA '+(t.label||'Chamber')+' chamber'; return {value:lbl,label:lbl,out:t.status!=='available'&&t.status!=='later',soon:t.status==='soon',status:t.status,next:t.nextAvailable}; }));
