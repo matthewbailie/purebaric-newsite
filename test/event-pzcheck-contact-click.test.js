@@ -314,3 +314,23 @@ test("pz_check through trackPurebaricEvent: internal=1 sends 0", () => {
   const pz = b.dataLayer.filter((a) => a[0] === "event" && a[1] === "pz_check");
   assert.equal(pz.length, 0);
 });
+
+test("book.html and 404.html tel links carry allowlisted placements, and 404 loads pb-metrics.js", () => {
+  const book = fs.readFileSync(path.join(__dirname, "..", "book.html"), "utf8");
+  const nf = fs.readFileSync(path.join(__dirname, "..", "404.html"), "utf8");
+  const bookTel = book.match(/<a href="tel:[^"]+" data-pb-placement="([^"]+)">/);
+  assert.ok(bookTel, "book.html tel link is missing data-pb-placement");
+  assert.equal(bookTel[1], "book");
+  assert.match(nf, /<script src="\/pb-metrics\.js"><\/script>/);
+  const nfTel = nf.match(/<a href="tel:[^"]+" data-pb-placement="([^"]+)">/);
+  assert.ok(nfTel, "404.html tel link is missing data-pb-placement");
+  assert.equal(nfTel[1], "404");
+
+  const fromBook = metricsBrowser({ pathname: "/book" });
+  fireClick(fromBook, anchor({ href: "tel:+18019010873", placement: bookTel[1] }));
+  assert.equal(contactEvents(fromBook.dataLayer)[0].source, "book");
+
+  const from404 = metricsBrowser({ pathname: "/missing-page" });
+  fireClick(from404, anchor({ href: "tel:+18019010873", placement: nfTel[1] }));
+  assert.equal(contactEvents(from404.dataLayer)[0].source, "404");
+});

@@ -300,7 +300,7 @@ function periodSpend({ ga, meta, campaigns, from, to }) {
     lastUpdatedAt: S.latest(hand(google) ? google.lastUpdatedAt : null, hand(fb) ? fb.lastUpdatedAt : null) };
 }
 function spendLine(spend, ga, meta) {
-  const part = (name, p, liveFrom) => p.unknown ? `${name} (No data yet)`
+  const part = (name, p, liveFrom) => p.unknown ? `${name} (no data yet)`
     : `${name} ${usd(p.amount)} ${p.live ? `(live from ${liveFrom})` : (p.days ? `(entered by hand for ${p.days === 1 ? "1 day" : p.days + " days"})` : "(no spend entered yet)")}`;
   const why = [];
   if (!spend.google.live) why.push(ga && ga.ok ? "Google Ads cost isn't available in GA4." : "Google Ads cost needs Google Analytics.");

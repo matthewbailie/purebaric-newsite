@@ -46,7 +46,8 @@ test("empty adsCost {} is not live data: No data yet, never $0, no hand-entered 
   assert.equal(s.meta.live, true);
   assert.equal(s.meta.amount, 12);
   const line = C.spendLine(s, GA({}), META(12, { "H-13 home": 12 }));
-  assert.match(line, /No data yet/);
+  assert.match(line, /Google \(no data yet\)|Meta \(no data yet\)/);
+  assert.doesNotMatch(line, /\(No data yet\)/);
   noZero(line);
   // Hand-entered Google $5 must not be used just because the live read was empty
   assert.ok(s.google.amount !== 5);
@@ -110,7 +111,8 @@ test("errored spend read: No data yet, never $0, no hand-entered fallback", () =
   assert.equal(s.meta.amount, null);
   assert.equal(s.total, null);
   const line = C.spendLine(s, { ok: false, reason: "quota" }, { ok: false, configured: true });
-  assert.match(line, /No data yet/);
+  assert.match(line, /Google \(no data yet\)|Meta \(no data yet\)/);
+  assert.doesNotMatch(line, /\(No data yet\)/);
   noZero(line);
   // Existing hand entries must not be substituted for an error
   assert.ok(s.google.amount !== 5 && s.meta.amount !== 9.5);
