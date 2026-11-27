@@ -465,20 +465,29 @@ Customer testimonials with a moderation gate. **No star ratings** by design — 
 
 **One chamber, length-tiered pricing** (Soft-Shell 1.5 ATA; the "1.5 ATA Sitting Chamber" is Coming soon · Late Oct 2026). On the homepage the current unit's card is titled "1.5 ATA Lying Chamber"; the section headline is "Soft-Shell 1.5 ATA mild hyperbaric chambers."
 
-| Rental length | Monthly rate | Savings |
+**Single source of truth (2026-11-27):** Live rates are edited in the **admin → Pricing tab**, stored in the `settings` Blobs store (keys `pricing` for home and `businessPricing` for business), and served at **`GET /api/pricing`** (`{months:{1..12}, business:{1..12}}`; admin CRUD at `/api/admin/pricing`). That API response is the source of truth. Do not change live prices in Blobs from a branch or a preview.
+
+**Fallback only:** `pricing-defaults.js` is the one shared fallback table used by the public pages, admin and `storage.js` when that read is missing. It is not the live price. After a rate change in admin, update `pricing-defaults.js` and `test/fixtures/pricing-api-snapshot.json` together. `npm test` fails if a hard-coded rate table or the snapshot drifts from the shared fallback; `npm run check:pricing` does a read-only live GET and fails if the fallback no longer matches `/api/pricing`.
+
+Snapshot of the live table as of Friday, Nov 27, 2026 (America/Denver). Always prefer `/api/pricing` over this snapshot.
+
+| Rental length | Home | Business |
 |---|---|---|
-| 1 month | $729 | — |
-| 2–3 months | $659 | Save 10% |
-| 4–11 months | $579 | Save 21% |
-| 12 months | $529 | Save 27% |
+| 1 month | $729 | $979 |
+| 2 months | $659 | $979 |
+| 3 months | $659 | $929 |
+| 4–5 months | $579 | $881 |
+| 6–8 months | $559 | $832 |
+| 9–11 months | $549 | $810 |
+| 12 months | $529 | $783 |
 
-**Pricing page (`pricing.html`, rewritten 2026-10-08).** Hero, then a **For your home** section = short included-list + the same booking calculator as the homepage (`.book` card: slider 1–12 months, strike price, save pill, ZIP check, "Due today $0", Book button → `/book?months=N`), the clinic comparison (~$8 a session = 12-month rate, two sessions a day, same formula as the homepage), a **For your business** section (four tiers at 1, 3, 6 and 12 months showing length, rate and % saved only, the one-time $200, and the net-revenue table from `business.html`: net = sessions × ($75 − $1.30) − standard monthly rate), the always-included strip and a custom-quote band. Owner rule (2026-10-08): no tier cards for home (they implied other lengths were unavailable), no fine print or "Reserve with confidence" box, no "priced in between" wording. Everything with an id is filled from `GET /api/pricing` (`months` for home, `business` for business); the static defaults in the HTML and JSON-LD must be updated by hand if the defaults in `storage.js` change.
+**Pricing page (`pricing.html`, rewritten 2026-10-08).** Hero, then a **For your home** section = short included-list + the same booking calculator as the homepage (`.book` card: slider 1–12 months, strike price, save pill, ZIP check, "Due today $0", Book button → `/book?months=N`), the clinic comparison (~$8 a session = 12-month rate, two sessions a day, same formula as the homepage), a **For your business** section (four tiers at 1, 3, 6 and 12 months showing length, rate and % saved only, the one-time $200, and the net-revenue table from `business.html`: net = sessions × ($75 − $1.30) − standard monthly rate), the always-included strip and a custom-quote band. Owner rule (2026-10-08): no tier cards for home (they implied other lengths were unavailable), no fine print or "Reserve with confidence" box, no "priced in between" wording. Everything with an id is filled from `GET /api/pricing` (`months` for home, `business` for business). Fallback rates and the static JSON-LD offers (home and business at 1, 3, 6 and 12 months only) come from `pricing-defaults.js`; the catalog is also rewritten from the API at runtime. `npm test` fails if those static prices drift.
 
-**Prices are admin-managed (2026-09-23).** Rates are now **per rental length (1–12 months)**, edited in the **admin → Pricing tab**, stored in the `settings` Blobs store (key `pricing`), and served at **`GET /api/pricing`** (`{months:{1..12}}`; admin CRUD at `/api/admin/pricing`). Defaults match the table above. The table above expands per-length as 1:729, 2-3:659, 4-11:579, 12:529.
+**Prices are admin-managed (2026-09-23, source-of-truth rule 2026-11-27).** Rates are **per rental length (1–12 months)** as described above.
 
-- **Website reads it live:** `index.html` + `book.html` calculators call `/api/pricing` and use `rate(m)=table[m]` (baked-in fallback if the fetch fails); `pricing.html` tier cards/savings/annual and the `from $X` figures on `index.html`/`chambers.html` update via the same fetch. The `PB_PF` fallback objects and the pricing-page inline `PF` mirror the defaults — keep them in sync if defaults change.
+- **Website reads it live:** `index.html` + `book.html` calculators call `/api/pricing` and use `rate(m)=table[m]` (shared `pricing-defaults.js` fallback if the fetch fails); `pricing.html` tier cards/savings/annual and the `from $X` figures on `index.html`/`chambers.html` update via the same fetch.
 - **Admin rentals:** the rental form's Monthly rate **auto-fills** from the rental length × the pricing table (`updateRentalRate` on date change and on edit-open; booking→rental conversion uses `rateForMonths`). This replaced the old hardcoded `729`.
-- **Not auto-updated (static, edit by hand if defaults change a lot):** page `<title>`/meta descriptions, the pricing-page **JSON-LD** offers, and the clinic-comparison numbers ($80–$150, 40-session protocol).
+- **Not auto-updated (static, edit by hand if rates change a lot):** page `<title>`/meta descriptions, and the clinic-comparison numbers ($80–$150, 40-session protocol). JSON-LD offer prices must still match the fallback (and are updated from the API when JavaScript runs); the test covers them. `business.html` body copy is still static (see below).
 
 **Delivery area / email routing:** a new in-area reservation routes by *effective* availability = available chambers minus untriaged (`new`) requests: enough capacity → "chamber available" email; chambers exist but spoken for by earlier untriaged requests → "pending availability" email (`notifyCustomerPendingAvailability`, admin badge "pending availability (triage)"); zero chambers → waitlist email. See `booking-submit.js`.
 
@@ -486,7 +495,7 @@ Customer testimonials with a moderation gate. **No star ratings** by design — 
 
 ---
 
-**Business page + business booking (state on 2026-10-04):** `business.html` prices are **static text**, not read from `/api/pricing`: $979/mo, 10/15/20% tiers at 3/6/12 months ($881/$832/$783), the **$200 one-time training and supplies** fee (the old $500 setup fee is gone everywhere, incl. prospectus/pamphlet/waiver), single session "$75 to $150" (matches the homepage clinic figure). If business rates change in admin → Pricing, update `business.html` by hand. The bottom "sliding" bar is pinned at all times on every width and shows the 3-month rate ($881, $979 struck through, Save 10%) with a "Book for your business" button to `/book?type=business`; the nav button on that page also goes there. `/book?type=business` defaults the length slider to **4 months** (home bookings still 3).
+**Business page + business booking (state on 2026-10-04, rates checked 2026-11-27):** `business.html` prices are **static text**, not read from `/api/pricing`. As of the Nov 27, 2026 live table the page lists $979 a month, $929 from 3 months, $832 from 6, and $783 on a 12-month term, plus the **$200 one-time training and supplies** fee (the old $500 setup fee is gone everywhere, incl. prospectus/pamphlet/waiver), and single session "$75 to $150" (matches the homepage clinic figure). If business rates change in admin → Pricing, update `business.html` by hand (or wire it to `/api/pricing`; see §15). The bottom "sliding" bar is pinned at all times on every width and shows the 3-month rate ($929, $979 struck through, Save 5%) with a "Book for your business" button to `/book?type=business`; the nav button on that page also goes there. `/book?type=business` defaults the length slider to **4 months** (home bookings still 3).
 
 ## 10a. Chambers, machines & availability (inventory model, reworked 2026-09-24)
 

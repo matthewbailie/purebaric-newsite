@@ -269,3 +269,10 @@
 **Other choices:** the campaign list stores `platform` and, for Meta, `channel`; pre-Rev 2 rows (old channel list) are read through a mapping, so nothing is migrated in the live store. Off-site source tags with no approved name (e.g. `source-waitlist-email`) count in K rather than getting an invented row name. Partial leads with no source are not shown (the footnote counts real leads only). A Bing or other search-engine referrer is "Other website: <domain>" because the only approved search name is "Google search".
 **Status:** Proposed (PR #39 on hold)
 
+
+## 2026-11-27 /api/pricing is the single source of truth for rental rates
+
+**Decision:** `GET /api/pricing` (admin-edited rates stored in Netlify Blobs, served by `pricing-public.js`) is the single source of truth for home and business monthly rates. Public pages, admin and `storage.js` share one fallback module, `pricing-defaults.js`, used only when that read is missing. A snapshot test and `npm run check:pricing` (a read-only live GET) fail if the fallback drifts from the API. JSON-LD on `/pricing` keeps the 1/3/6/12 term set, with every value matching the API; the catalog is also rewritten from the API at runtime. Live Blobs prices are not changed by this work.
+**Context:** UX found hard-coded 6–11 month home rates of $579 in JSON-LD, page fallbacks, admin and storage, while the live admin table (and `/api/pricing`) had $559 for 6–8 months and $549 for 9–11. Business fallbacks were also stale (3 months $881 vs $929; 9–11 $832 vs $810). Matthew confirmed (relayed Nov 27, 11:01 AM MT) that the admin portal pricing is current and correct, and everything else follows it.
+**Alternatives considered:** Patching each hard-coded table by hand would drift again. Putting the price fix in the Dec 1 batch was rejected so Matthew could confirm the live rates first. Changing live Blobs prices was not needed and was out of scope.
+**Status:** On `fix/pricing-single-source`. Not deployed. Awaiting Proof-reader sign-off on the JSON-LD change, then a PR after #41.
