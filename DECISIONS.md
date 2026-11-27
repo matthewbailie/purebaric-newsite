@@ -269,3 +269,12 @@
 **Other choices:** the campaign list stores `platform` and, for Meta, `channel`; pre-Rev 2 rows (old channel list) are read through a mapping, so nothing is migrated in the live store. Off-site source tags with no approved name (e.g. `source-waitlist-email`) count in K rather than getting an invented row name. Partial leads with no source are not shown (the footnote counts real leads only). A Bing or other search-engine referrer is "Other website: <domain>" because the only approved search name is "Google search".
 **Status:** Proposed (PR #39 on hold)
 
+## TEST/internal bookings do not hold capacity; unfinished step-1 leads view (2026-11-25)
+
+**Decision:** Book-mode holds marked TEST/internal are excluded from delivery capacity and availability (`holdsFrom` / `bookingHolds`) and from the /admin "Booked requests to convert" count. They stay visible and marked in /admin. When a stored row has no `internal` flag, `isInternalLead()` is applied to the stored name and email in memory only (no write-back). The Rental requests tab gains a filter labeled "Unfinished step-1 leads > 24h": real step-1-only partials older than 24 hours, with no later completed request on the same email, oldest first, including out-of-area. TEST/internal matches appear in a separate section and are left out of the partial-lead count. The change is read-only on Netlify Blobs.
+
+**Context:** A completed TEST booking was holding one of two free chambers, so the weekly live TEST path was paused. Retention & Ops also had no /admin view of real unfinished step-1 leads, and Optimization & Personalization needed that view's count to match the Nov 24 real-lead definition (step-1 saves excluding TEST and internal).
+
+**Alternatives considered:** Deleting or rewriting existing TEST rows in Blobs would mutate the shared live store; skipping only rows with `internal: true` would leave pre-flag TEST holds in capacity.
+
+**Status:** On `feat/test-hold-unfinished-leads`. Not deployed.

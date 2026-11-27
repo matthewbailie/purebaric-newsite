@@ -13,6 +13,7 @@ const DEFAULTS = {
   deliveryNote: "We will text or call to confirm the exact delivery time.",
   holidaysOff: false,         // block the major U.S. holidays (see usHolidays)
 };
+const { isStoredInternalLead } = require("./stored-internal");
 const ISO = /^(\d{4})-(\d{2})-(\d{2})$/;
 const HOLD_STATUSES = new Set(["new", "contacted", "approved"]);
 
@@ -91,8 +92,9 @@ const liveRental = r => r && (r.status === "scheduled" || r.status === "active")
 const styleOf = c => String(c.style || c.posture || "lying").toLowerCase() === "sitting" ? "sitting" : "lying";
 
 // Bookings made in book mode that the owner has not yet converted or rejected reserve their window.
+// TEST/internal rows stay in /admin but do not hold capacity or reduce availability.
 function holdsFrom(bookings) {
-  return (bookings || []).filter(b => b && b.bookingMode === "book" && HOLD_STATUSES.has(b.status) && b.startDate && b.endDate)
+  return (bookings || []).filter(b => b && b.bookingMode === "book" && HOLD_STATUSES.has(b.status) && b.startDate && b.endDate && !isStoredInternalLead(b))
     .map(b => ({ style: styleOf({ style: b.chamberStyle }), startDate: b.startDate, endDate: b.endDate }));
 }
 
