@@ -278,6 +278,41 @@
     if (disabled || !profile) return null;
     return decide(profile, now());
   }
+  // Existing TEST flag only (book-funnel-events.js): ?pbtest=1 or sessionStorage pb_test. No new keys.
+  function testTraffic(w) {
+    w = w || win;
+    try {
+      var search = (w.location && w.location.search) || '';
+      if (/(?:^|[?&])pbtest=1(?:&|$)/.test(search)) {
+        try { w.sessionStorage.setItem('pb_test', '1'); } catch (e) {}
+        return true;
+      }
+      return w.sessionStorage.getItem('pb_test') === '1';
+    } catch (e) { return false; }
+  }
+  function missReason(p, t, dec) {
+    if (dec) return 'none';
+    if (!p) return 'no_signal';
+    var sc = scores(p, t);
+    var hasScore = INTERESTS.some(function (k) { return sc[k] > 0; });
+    return hasScore ? 'below_threshold' : 'no_signal';
+  }
+  function reportPzCheck(dec) {
+    if (!win || optedOut(win) || disabled || !profile) return;
+    try {
+      if (typeof win.trackPurebaricEvent !== 'function') return;
+      var t = now();
+      var params = {
+        qualified: dec ? 'yes' : 'no',
+        variant: (dec && dec.variant) || (profile.g === 'c' ? 'control' : 'personalized'),
+        visit_type: (dec ? dec.returning : (profile.n || 0) >= 2) ? 'return' : 'first',
+        miss_reason: missReason(profile, t, dec),
+        def_v: 1
+      };
+      if (testTraffic(win)) params.test_traffic = 1;
+      win.trackPurebaricEvent('pz_check', params);
+    } catch (e) {}
+  }
   function report(dec) {
     if (reported || !dec) return;
     reported = true;
@@ -337,6 +372,7 @@
   }
   function applyHomeNow(d) {
     var dec = decideForHome();
+    reportPzCheck(dec);
     if (!dec) return null;
     report(dec);
     if (dec.variant !== 'personalized') return dec;

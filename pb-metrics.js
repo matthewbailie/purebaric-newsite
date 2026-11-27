@@ -393,6 +393,42 @@
   }
   window.PBMetrics.onReady(scrollDepth);
 
+  // contact_click: one delegated listener on tel:/sms: links. Never blocks navigation.
+  // Params are allowlisted only (no digits, no href). TEST sessions add test_traffic: 1
+  // with the existing pb_test / ?pbtest=1 flag; no new storage.
+  var CONTACT_PLACEMENT = { header: 1, footer: 1, hero: 1, contact: 1, book: 1, '404': 1 };
+  function isTestTraffic() {
+    try {
+      var search = (window.location && window.location.search) || '';
+      if (/(?:^|[?&])pbtest=1(?:&|$)/.test(search)) {
+        set(ss(), 'pb_test', '1');
+        return true;
+      }
+      return get(ss(), 'pb_test') === '1';
+    } catch (e) { return false; }
+  }
+  function contactClickParams(a) {
+    var href = String((a && (a.getAttribute && a.getAttribute('href'))) || (a && a.href) || '').toLowerCase();
+    var method = href.indexOf('sms:') === 0 ? 'sms' : href.indexOf('tel:') === 0 ? 'tel' : '';
+    if (!method) return null;
+    var raw = (a.getAttribute && a.getAttribute('data-pb-placement')) || '';
+    var source = CONTACT_PLACEMENT[raw] ? raw : 'other';
+    var page_path = (window.location && window.location.pathname) || '/';
+    var params = { method: method, source: source, page_path: page_path, def_v: 1 };
+    if (isTestTraffic()) params.test_traffic = 1;
+    return params;
+  }
+  if (window.document && typeof window.document.addEventListener === 'function') {
+    window.document.addEventListener('click', function (e) {
+      try {
+        var a = e.target && e.target.closest ? e.target.closest('a[href^="tel:"], a[href^="sms:"]') : null;
+        if (!a) return;
+        var params = contactClickParams(a);
+        if (params) window.trackPurebaricEvent('contact_click', params);
+      } catch (err) {}
+    });
+  }
+
   // Load GA and the Meta pixel on page load unless tracking is blocked.
   if (!blocked) {
     configGA();
