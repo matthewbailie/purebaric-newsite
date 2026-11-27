@@ -74,6 +74,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') { tr
 <script src="/admin-utils.js"></script>
 <script src="/dashboard-metrics.js"></script>
 <script src="/dashboard-charts.js"></script>
+<script src="/pricing-defaults.js"></script>
 <style>
   body { background: var(--cream-warm); overflow-x: clip; } /* styles.css sets overflow-x:hidden, which makes body a scroll container and silently disables position:sticky; clip hides sideways overflow without that */
   /* ─── Shell + left sidebar navigation ─── */
@@ -1770,7 +1771,7 @@ The Purebaric team</textarea></div>
   let _customers = [];
   let _reviews = [];
   let _pricing = {};
-  const PRICING_FALLBACK = {1:729,2:659,3:659,4:579,5:579,6:579,7:579,8:579,9:579,10:579,11:579,12:529};
+  const PRICING_FALLBACK = Object.assign({}, PB_PRICING_DEFAULTS.months);
 
   const loadErrorEl = document.getElementById('loadError');
   function showLoadError(html) { loadErrorEl.innerHTML = html; loadErrorEl.hidden = false; }
@@ -5222,7 +5223,7 @@ The Purebaric team</textarea></div>
     m = Math.max(1, Math.min(12, parseInt(m, 10) || 1));
     return Number(_pricing[m]) || PRICING_FALLBACK[m];
   }
-  const BIZ_PRICING_FALLBACK = { 1: 979, 2: 979, 3: 881, 4: 881, 5: 881, 6: 832, 7: 832, 8: 832, 9: 832, 10: 832, 11: 832, 12: 783 };
+  const BIZ_PRICING_FALLBACK = Object.assign({}, PB_PRICING_DEFAULTS.business);
   let _bizPricing = {};
   function renderPricing() {
     const draw = (gridId, prefix, table, fallback) => {

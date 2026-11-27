@@ -114,7 +114,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
     "itemListElement": [
       { "@type": "Offer", "name": "Home, 1 month", "priceCurrency": "USD", "price": "729", "url": "https://purebaric.com/book?months=1" },
       { "@type": "Offer", "name": "Home, 3 months", "priceCurrency": "USD", "price": "659", "url": "https://purebaric.com/book?months=3" },
-      { "@type": "Offer", "name": "Home, 6 months", "priceCurrency": "USD", "price": "579", "url": "https://purebaric.com/book?months=6" },
+      { "@type": "Offer", "name": "Home, 6 months", "priceCurrency": "USD", "price": "559", "url": "https://purebaric.com/book?months=6" },
       { "@type": "Offer", "name": "Home, 12 months", "priceCurrency": "USD", "price": "529", "url": "https://purebaric.com/book?months=12" },
       { "@type": "Offer", "name": "Business, 1 month", "priceCurrency": "USD", "price": "979", "url": "https://purebaric.com/book?type=business" },
       { "@type": "Offer", "name": "Business, 3 months", "priceCurrency": "USD", "price": "929", "url": "https://purebaric.com/book?type=business" },
@@ -311,11 +311,12 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 </footer>
 
 <script src="/warm.js"></script>
+<script src="/pricing-defaults.js"></script>
 <script>
 /* booking calculator, same maths as the homepage; both rate tables come from the admin Pricing tab via /api/pricing */
-var PB_PF={1:729,2:659,3:659,4:579,5:579,6:579,7:579,8:579,9:579,10:579,11:579,12:529};
+var PB_PF=Object.assign({},PB_PRICING_DEFAULTS.months);
 var PB_PRICING=Object.assign({},PB_PF);
-var BF={1:979,2:979,3:929,4:881,5:881,6:832,7:832,8:832,9:832,10:832,11:832,12:783};
+var BF=Object.assign({},PB_PRICING_DEFAULTS.business);
 function money(n){return '$'+Math.round(n).toLocaleString()}
 function rate(m){m=Math.max(1,Math.min(12,parseInt(m,10)||1));return PB_PRICING[m]||PB_PF[m];}
 var BASE=rate(1);
