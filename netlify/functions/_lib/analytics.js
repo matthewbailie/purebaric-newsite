@@ -31,9 +31,26 @@ function cleanVariant(value) {
   const v = String(value || "").trim();
   return v === "personalized" || v === "control" ? v : "none";
 }
+
+// Same bucket strings the browser sends. Raw integers and anything else are dropped.
+const VISIT_NUMBER = ["1", "2", "3", "4-5", "6+"];
+const DAYS_SINCE_FIRST = ["0", "1-3", "4-7", "8-30", "31+"];
+function cleanVisitNumber(value) {
+  const v = String(value || "").trim();
+  return VISIT_NUMBER.includes(v) ? v : "";
+}
+function cleanDaysSinceFirstVisit(value) {
+  const v = String(value || "").trim();
+  return DAYS_SINCE_FIRST.includes(v) ? v : "";
+}
 function funnelParams(booking) {
   const a = booking?.analytics || {};
-  return { device: a.device || "unknown", variant: a.variant || "none" };
+  const params = { device: a.device || "unknown", variant: a.variant || "none" };
+  const visitNumber = cleanVisitNumber(booking?.ls_visit_number);
+  const daysSince = cleanDaysSinceFirstVisit(booking?.ls_days_since_first_visit);
+  if (visitNumber) params.visit_number = visitNumber;
+  if (daysSince) params.days_since_first_visit = daysSince;
+  return params;
 }
 
 function rentalMonths(startDate, endDate) {

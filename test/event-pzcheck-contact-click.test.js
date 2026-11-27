@@ -244,7 +244,7 @@ function contactEvents(dataLayer) {
 // Phone digits must never appear in a param. def_v is the number 1 (the definition version).
 function leaksPhone(params, phone = "8019010873") {
   return Object.entries(params).some(([k, v]) => {
-    if (k === "def_v") return false;
+    if (k === "def_v" || k === "visit_number" || k === "days_since_first_visit") return false;
     const s = String(v);
     return s.replace(/\D/g, "").includes(phone) || /\d/.test(s);
   });
@@ -255,7 +255,7 @@ test("contact_click: tel and sms each fire one event with no digits in any param
   const tel = fireClick(b, anchor({ href: "tel:+18019010873", placement: "book", text: "(801) 901-0873" }));
   const telEv = contactEvents(b.dataLayer);
   assert.equal(telEv.length, 1);
-  assert.deepEqual(telEv[0], { method: "tel", source: "book", page_path: "/book", def_v: 1 });
+  assert.deepEqual(telEv[0], { method: "tel", source: "book", page_path: "/book", def_v: 1, visit_number: "1", days_since_first_visit: "0" });
   assert.equal(leaksPhone(telEv[0]), false);
   assert.equal(tel.defaultPrevented, false);
   assert.equal(tel.stopped, false);
@@ -264,7 +264,7 @@ test("contact_click: tel and sms each fire one event with no digits in any param
   const sms = fireClick(b2, anchor({ href: "sms:+18019010873", placement: "contact" }));
   const smsEv = contactEvents(b2.dataLayer);
   assert.equal(smsEv.length, 1);
-  assert.deepEqual(smsEv[0], { method: "sms", source: "contact", page_path: "/contact/", def_v: 1 });
+  assert.deepEqual(smsEv[0], { method: "sms", source: "contact", page_path: "/contact/", def_v: 1, visit_number: "1", days_since_first_visit: "0" });
   assert.equal(leaksPhone(smsEv[0]), false);
   assert.equal(sms.defaultPrevented, false);
 

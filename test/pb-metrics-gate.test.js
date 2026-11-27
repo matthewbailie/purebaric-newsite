@@ -84,6 +84,7 @@ for (const [label, opts, reason] of [
     assert.equal(b.window.dataLayer.length, before, "no event queued");
     assert.equal(b.window.dataLayer.length, 0, "not even consent defaults are queued");
     assert.equal(b.window.localStorage.getItem("pb_ft"), null, "no first-touch capture");
+    assert.equal(b.window.localStorage.getItem("pb_vn"), null, "no visit clock");
     assert.equal(b.window.sessionStorage.getItem("pb_gclid"), null, "no gclid capture");
     assert.equal(b.window.getPurebaricGclid(), "");
     const data = new URLSearchParams();
@@ -177,6 +178,7 @@ test("declining on /privacy stops tracking immediately and erases first touch", 
   b.window.declinePurebaricAnalytics();
   assert.equal(b.window.localStorage.getItem("pb_cookie"), "decline");
   assert.equal(b.window.localStorage.getItem("pb_ft"), null);
+  assert.equal(b.window.localStorage.getItem("pb_vn"), null);
   const n = b.window.dataLayer.length;
   b.window.trackPurebaricEvent("x");
   assert.equal(b.window.dataLayer.length, n);
@@ -184,7 +186,7 @@ test("declining on /privacy stops tracking immediately and erases first touch", 
 
 test("hooks: device/variant funnel params and scroll_depth at 25/50/75/90 once each on tracked pages", () => {
   const b = browser({ pathname: "/book", width: 390, local: { pb_pz: JSON.stringify({ g: "c" }) } });
-  assert.deepEqual(JSON.parse(JSON.stringify(b.window.PBMetrics.funnelParams({ source: "book_page" }))), { device: "mobile", variant: "control", source: "book_page" });
+  assert.deepEqual(JSON.parse(JSON.stringify(b.window.PBMetrics.funnelParams({ source: "book_page" }))), { device: "mobile", variant: "control", source: "book_page", visit_number: "1", days_since_first_visit: "0", def_v: 1 });
   const events = () => JSON.parse(JSON.stringify(b.window.dataLayer.filter((a) => a[0] === "event" && a[1] === "scroll_depth").map((a) => a[2])));
   b.window.pageYOffset = 1300; // (1300+800)/4000 = 52.5%
   b.listeners.scroll.forEach((f) => f());
@@ -193,7 +195,7 @@ test("hooks: device/variant funnel params and scroll_depth at 25/50/75/90 once e
   b.listeners.scroll.forEach((f) => f());
   b.listeners.scroll.forEach((f) => f());
   assert.deepEqual(events().map((e) => e.percent), [25, 50, 75, 90]);
-  assert.deepEqual(events()[0], { device: "mobile", variant: "control", percent: 25, page_path: "/book" });
+  assert.deepEqual(events()[0], { device: "mobile", variant: "control", percent: 25, page_path: "/book", visit_number: "1", days_since_first_visit: "0", def_v: 1 });
   // Untracked pages and blocked visitors get no listener.
   assert.equal(browser({ pathname: "/faq" }).listeners.scroll, undefined);
   assert.equal(browser({ pathname: "/book", nav: { globalPrivacyControl: true } }).listeners.scroll, undefined);

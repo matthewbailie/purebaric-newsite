@@ -58,7 +58,7 @@ function parseBody(event) {
 // A step-1 lead converted (or re-submitted) keeps its earlier attribution and
 // answers when the later submission did not carry them, and stays internal once flagged.
 function keepAttribution(existing, fields) {
-  return {
+  const out = {
     ...fields,
     leadSource: fields.leadSource || existing.leadSource || null,
     heardAbout: fields.heardAbout || existing.heardAbout || "",
@@ -66,6 +66,13 @@ function keepAttribution(existing, fields) {
     useCase: fields.useCase || existing.useCase || "",
     internal: !!(fields.internal || existing.internal),
   };
+  const visitNumber = fields.ls_visit_number || existing.ls_visit_number;
+  const daysSince = fields.ls_days_since_first_visit || existing.ls_days_since_first_visit;
+  if (visitNumber) out.ls_visit_number = visitNumber;
+  else delete out.ls_visit_number;
+  if (daysSince) out.ls_days_since_first_visit = daysSince;
+  else delete out.ls_days_since_first_visit;
+  return out;
 }
 
 function bool(v) {

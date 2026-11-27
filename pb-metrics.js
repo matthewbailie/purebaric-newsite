@@ -128,6 +128,7 @@
     blocked = true;
     reason = why || reason || 'internal';
     window.gtag = function () {}; // trackPurebaricMeta checks `blocked`, so fbq stays as loaded
+    try { forgetVisitClock(); } catch (e) {}
   }
 
   // Meta standard events (Lead, InitiateCheckout, CompleteRegistration, Subscribe, Contact).
@@ -141,7 +142,10 @@
   // GA4 event helper. Never pass a form, FormData, response, or free text.
   window.trackPurebaricEvent = function (name, params) {
     if (blocked || typeof window.gtag !== 'function') return;
-    window.gtag('event', name, params || {});
+    var p = {};
+    if (params) for (var k in params) p[k] = params[k];
+    attachVisitParams(name, p);
+    window.gtag('event', name, p);
   };
 
   // /privacy "Turn analytics back on" (if ever offered). GPC, DNT and the internal
@@ -217,9 +221,90 @@
    * touch wins). Sent with booking, waitlist and contact submissions as ls_* fields. */
   var FT_KEY = 'pb_ft';
   var FT_DAYS = 90;
+  var VN_KEY = 'pb_vn';
+  var VN_DAYS = 90;
+  var VN_GAP = 30 * 60 * 1000;
   function captureAllowed() { return !blocked && get(ls(), 'pb_pz_off') !== '1'; }
   function clip(v, n) { return v ? String(v).slice(0, n) : ''; }
-  function forgetLeadSource() { del(ls(), FT_KEY); del(ss(), FT_KEY); del(ss(), 'pb_gclid'); }
+  function forgetVisitClock() { del(ls(), VN_KEY); }
+  function forgetLeadSource() { del(ls(), FT_KEY); del(ss(), FT_KEY); del(ss(), 'pb_gclid'); forgetVisitClock(); }
+
+  /* Visit clock (measurement only): localStorage pb_vn = {v:1,n,c,u} — visit count,
+   * first-visit time, last activity. No PII, no sessionStorage, 90-day TTL from c,
+   * new visit when now-u >= 30 minutes. Skipped and erased on GPC, DNT, /privacy
+   * opt-out (incl. pb_pz_off) or internal=1. */
+  function bucketVisitNumber(n) {
+    n = Number(n);
+    if (!isFinite(n) || n < 1) return '';
+    if (n === 1) return '1';
+    if (n === 2) return '2';
+    if (n === 3) return '3';
+    if (n <= 5) return '4-5';
+    return '6+';
+  }
+  function bucketDays(c, now) {
+    now = now || Date.now();
+    var days = Math.floor((now - c) / 864e5);
+    if (!isFinite(days)) return '';
+    if (days < 0) days = 0;
+    if (days === 0) return '0';
+    if (days <= 3) return '1-3';
+    if (days <= 7) return '4-7';
+    if (days <= 30) return '8-30';
+    return '31+';
+  }
+  function readVisitClock() {
+    var raw = get(ls(), VN_KEY);
+    if (!raw) return null;
+    try {
+      var clock = JSON.parse(raw);
+      if (!clock || clock.v !== 1) return null;
+      if (typeof clock.n !== 'number' || typeof clock.c !== 'number' || typeof clock.u !== 'number') return null;
+      if (!isFinite(clock.n) || !isFinite(clock.c) || !isFinite(clock.u) || clock.n < 1) return null;
+      return clock;
+    } catch (e) { return null; }
+  }
+  function writeVisitClock(clock) {
+    set(ls(), VN_KEY, JSON.stringify(clock));
+  }
+  function tickVisitClock() {
+    if (!captureAllowed()) { forgetVisitClock(); return null; }
+    var now = Date.now();
+    var clock = readVisitClock();
+    if (!clock || (now - clock.c) > VN_DAYS * 864e5) {
+      clock = { v: 1, n: 1, c: now, u: now };
+    } else if (now - clock.u >= VN_GAP) {
+      clock = { v: 1, n: clock.n + 1, c: clock.c, u: now };
+    } else {
+      clock = { v: 1, n: clock.n, c: clock.c, u: now };
+    }
+    writeVisitClock(clock);
+    if (!get(ls(), VN_KEY)) return null; // never fall back to sessionStorage
+    return clock;
+  }
+  function visitParams() {
+    var clock = tickVisitClock();
+    if (!clock) return null;
+    var vn = bucketVisitNumber(clock.n);
+    var ds = bucketDays(clock.c);
+    if (!vn || !ds) return null;
+    return { visit_number: vn, days_since_first_visit: ds, def_v: 1 };
+  }
+  function isVisitEvent(name) {
+    return name === 'booking_form_start' || name === 'booking_form_abandon'
+        || name === 'booking_step1_save' || name === 'generate_lead'
+        || name === 'booking_thank_you' || name === 'waitlist_join'
+        || name === 'contact_submit' || name === 'contact_click'
+        || name === 'pz_check';
+  }
+  function attachVisitParams(name, p) {
+    if (!p || !isVisitEvent(name)) return;
+    var v = visitParams();
+    if (!v) return;
+    if (p.visit_number == null) p.visit_number = v.visit_number;
+    if (p.days_since_first_visit == null) p.days_since_first_visit = v.days_since_first_visit;
+    if (p.def_v == null) p.def_v = v.def_v;
+  }
 
   function readFirstTouch() {
     var raw = get(ls(), FT_KEY) || get(ss(), FT_KEY);
@@ -263,6 +348,7 @@
     if (!get(ls(), FT_KEY)) set(ss(), FT_KEY, json); // storage-restricted browsers: session only
   }
   try { captureFirstTouch(); } catch (e) {}
+  try { if (captureAllowed()) tickVisitClock(); else forgetVisitClock(); } catch (e) {}
 
   // The Google Ads click id of THIS visit (session-scoped), sent as the booking's gclid.
   try {
@@ -306,6 +392,13 @@
           ls_utm_term: ft.t, ls_fbclid: ft.fb, ls_gclid: ft.gc, ls_referrer: ft.r, ls_landing: ft.l, ls_ts: ft.ts };
         for (var k in map) if (map[k]) data.set(k, map[k]);
       }
+      var vn = captureAllowed() ? tickVisitClock() : null;
+      if (vn) {
+        var vb = bucketVisitNumber(vn.n);
+        var db = bucketDays(vn.c);
+        if (vb) data.set('ls_visit_number', vb);
+        if (db) data.set('ls_days_since_first_visit', db);
+      }
     } catch (e) {}
     return internal;
   };
@@ -335,6 +428,12 @@
   // Allowlisted funnel params (metrics.md section 2): device + variant. No PII.
   function funnelParams(extra) {
     var p = { device: deviceType(), variant: variant() };
+    var v = visitParams();
+    if (v) {
+      p.visit_number = v.visit_number;
+      p.days_since_first_visit = v.days_since_first_visit;
+      p.def_v = 1;
+    }
     if (extra) for (var k in extra) p[k] = extra[k];
     return p;
   }

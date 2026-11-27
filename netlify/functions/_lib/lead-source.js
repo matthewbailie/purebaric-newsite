@@ -85,6 +85,14 @@ function isoTime(value) {
   return Number.isNaN(Date.parse(v)) ? "" : v;
 }
 
+// Bucket strings only. Raw counters, integers and timestamps are dropped.
+const VISIT_NUMBER = ["1", "2", "3", "4-5", "6+"];
+const DAYS_SINCE_FIRST = ["0", "1-3", "4-7", "8-30", "31+"];
+function visitBucket(value, allowed) {
+  const v = String(value || "").trim();
+  return allowed.includes(v) ? v : "";
+}
+
 // Returns { leadSource, heardAbout, customerType, useCase } for a parsed form body.
 // leadSource is null when the browser sent no capture (opted out, blocked, old page).
 function cleanLeadSource(body = {}) {
@@ -106,6 +114,8 @@ function cleanLeadSource(body = {}) {
     heardAbout: pick(body.heard_about, HEARD_ABOUT),
     customerType: pick(body.customer_type, CUSTOMER_TYPES),
     useCase: pick(body.use_case, USE_CASES),
+    visitNumber: visitBucket(body.ls_visit_number, VISIT_NUMBER),
+    daysSinceFirstVisit: visitBucket(body.ls_days_since_first_visit, DAYS_SINCE_FIRST),
   };
 }
 
@@ -168,14 +178,17 @@ function leadSourceLines(rec = {}) {
 
 // Fields to spread into a stored record.
 function leadSourceFields(body, who) {
-  const { leadSource, heardAbout, customerType, useCase } = cleanLeadSource(body);
-  return {
+  const { leadSource, heardAbout, customerType, useCase, visitNumber, daysSinceFirstVisit } = cleanLeadSource(body);
+  const fields = {
     leadSource,
     heardAbout,
     customerType,
     useCase,
     internal: isInternalLead({ ...who, flag: body.pb_internal }),
   };
+  if (visitNumber) fields.ls_visit_number = visitNumber;
+  if (daysSinceFirstVisit) fields.ls_days_since_first_visit = daysSinceFirstVisit;
+  return fields;
 }
 
 module.exports = {
